@@ -116,3 +116,27 @@ test('an unknown render mode is refused rather than silently embedded', () => {
     /sepia|mode/,
   );
 });
+
+test('place_image inside a plan resolves a file path exactly as the tool does', async () => {
+  // The defect this pins: source resolution lived in the tool handler only, so
+  // `place_image` meant one thing as a tool and another inside `plan` — the same
+  // split that once bit `place_box` with its two span formats.
+  const { createSession, createTools } = await import('../src/mcp/tools.js');
+  const { writeFile, mkdtemp } = await import('node:fs/promises');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+
+  const dir = await mkdtemp(join(tmpdir(), 'turtlepen-img-'));
+  await writeFile(join(dir, 'pic.png'), pngBytes(40, 20));
+
+  const session = createSession({ cwd: dir });
+  const tools = Object.fromEntries(createTools(session).map((t) => [t.name, t]));
+  await tools.new_diagram.handler({ name: 'plan-image', path: join(dir, 'd.turtlepen.json') });
+
+  const out = await tools.plan.handler({
+    operations: [{ op: 'place_image', id: 'p', at: 'C4.tl', span: '8x4', source: 'pic.png' }],
+    commit: true,
+  });
+  assert.doesNotMatch(out, /FAILED/, out);
+  assert.match(core.renderSvg(session.doc), /data:image\/png;base64,/, 'embedded, not left as a path');
+});

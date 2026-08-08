@@ -1,67 +1,111 @@
-import { traceProgram, ellipseAt, addr } from './trace.mjs';
+// The logo, rebuilt on the new primitives.
+//
+// Proportions first: the shell is the mass (his back is to us), the head is a
+// third of its width and sits ON it rather than floating above, and the arm
+// carries a pen that actually reaches the board.
 import { writeFileSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
+import { traceProgram, ellipseAt, addr, col } from './trace.mjs';
+
+const { encodePng } = await import(
+  pathToFileURL('x:/Python Projects/Home Base - Brainn.dev/03_EXPERIMENTS/TurtlePen/test/helpers/png-fixture.js').href
+);
 
 const ops = [];
+const pen = (id, program, page) => ops.push({ op: 'pen', id, program, page });
 const shape = (id, page, inside, x0, y0, x1, y1) => {
   const t = traceProgram(inside, x0, y0, x1, y1);
   if (!t) throw new Error(`no boundary for ${id}`);
-  ops.push({ op: 'pen', id, program: t.program, page });
+  pen(id, t.program, page);
   return t;
 };
 
-// ---- the turtle, seen from behind -----------------------------------------
-// shell: the mass, centred at (25,29)
-const shell = shape('shell', 'base', ellipseAt(25, 29, 19, 11), 4, 16, 46, 42);
-// carapace inner rim
-shape('rim', 'parts', ellipseAt(25, 29, 13.5, 7.5), 4, 16, 46, 42);
-// vertebral plates down the centre line
-shape('plate-c1', 'parts', ellipseAt(25, 22, 4.5, 2.6), 18, 18, 32, 27);
-shape('plate-c2', 'parts', ellipseAt(25, 29, 5, 3), 18, 24, 32, 34);
-shape('plate-c3', 'parts', ellipseAt(25, 36, 4.5, 2.6), 18, 32, 32, 40);
-// costal plates
-shape('plate-l1', 'parts', ellipseAt(15, 25, 3.6, 2.4), 10, 21, 20, 29);
-shape('plate-l2', 'parts', ellipseAt(15, 33, 3.6, 2.4), 10, 29, 20, 37);
-shape('plate-r1', 'parts', ellipseAt(35, 25, 3.6, 2.4), 30, 21, 40, 29);
-shape('plate-r2', 'parts', ellipseAt(35, 33, 3.6, 2.4), 30, 29, 40, 37);
+// ---- pages: depth is Z plus opacity, not just separation -------------------
+ops.push({ op: 'add_page', id: 'shade', intent: 'overlay', z: 1, opacity: 0.45 });
+ops.push({ op: 'add_page', id: 'body', intent: 'overlay', z: 2 });
+ops.push({ op: 'add_page', id: 'detail', intent: 'overlay', z: 3 });
 
-// head, turned back over his shoulder, and the snout pointing away
-shape('head', 'base', ellipseAt(15, 9, 7, 5), 6, 3, 24, 16);
-shape('snout', 'parts', ellipseAt(8, 11, 3, 2.2), 3, 7, 13, 15);
-// the one visible eye
-shape('eye', 'parts', ellipseAt(15, 7, 2.4, 2), 11, 4, 19, 11);
-ops.push({ op: 'place_box', id: 'pupil', at: `${addr(15, 7)}.tl`, span: '1x1', corner: 'square', page: 'face' });
-
-// feet and tail
-shape('foot-l', 'parts', ellipseAt(15, 40, 5, 2.6), 9, 36, 21, 44);
-shape('foot-r', 'parts', ellipseAt(35, 40, 5, 2.6), 29, 36, 41, 44);
-shape('tail', 'parts', ellipseAt(25, 41, 2, 2.4), 22, 38, 28, 45);
-
-// neck, and the two arms
-ops.push({ op: 'pen', id: 'neck', program: `pen ${addr(14, 14)}.q1\ndown 4 line`, page: 'parts' });
-ops.push({ op: 'pen', id: 'neck2', program: `pen ${addr(17, 14)}.q1\ndown 4 line`, page: 'parts' });
+// ---- the easel, furthest back ----------------------------------------------
 ops.push({
-  op: 'pen', id: 'arm-far', page: 'parts',
-  program: `pen ${addr(43, 26)}.q1\nright 6 line\nright corner align left top\nup 6 line`,
-});
-ops.push({
-  op: 'pen', id: 'arm-near', page: 'parts',
-  program: `pen ${addr(7, 33)}.q1\nleft 3 line\nleft corner align right bottom\ndown 5 line`,
-});
-shape('hand-far', 'face', ellipseAt(49, 19, 2, 1.8), 46, 16, 53, 23);
-shape('hand-near', 'face', ellipseAt(4, 39, 2, 1.8), 1, 36, 8, 43);
-
-// ---- the easel he is working at -------------------------------------------
-ops.push({
-  op: 'place_box', id: 'board', at: `${addr(52, 6)}.tl`, span: '34x21',
+  op: 'place_box', id: 'board', at: `${addr(48, 5)}.tl`, span: '36x22',
   label: 'TURTLE\nPEN', align: 'center', fontSize: 'title', corner: 'square', page: 'base',
 });
-ops.push({ op: 'pen', id: 'tray', program: `pen ${addr(51, 28)}.q1\nright 36 line`, page: 'parts' });
-ops.push({ op: 'pen', id: 'leg-l', program: `pen ${addr(58, 28)}.q1\ndown 16 line`, page: 'parts' });
-ops.push({ op: 'pen', id: 'leg-r', program: `pen ${addr(80, 28)}.q1\ndown 16 line`, page: 'parts' });
-ops.push({ op: 'pen', id: 'brace', program: `pen ${addr(58, 38)}.q1\nright 22 line`, page: 'parts' });
+pen('tray', `pen ${addr(47, 28)}.q1\nright 38 line`, 'base');
+pen('leg-l', `pen ${addr(54, 28)}.q1\ndown 18 line`, 'base');
+pen('leg-r', `pen ${addr(78, 28)}.q1\ndown 18 line`, 'base');
+pen('brace', `pen ${addr(54, 39)}.q1\nright 24 line`, 'base');
 
-writeFileSync('logo-ops.json', JSON.stringify(ops, null, 1));
+// ---- the turtle ------------------------------------------------------------
+// Shell: 40 cells across, 24 deep — the dominant mass.
+const SHELL = { cx: 24, cy: 33, rx: 20, ry: 12 };
+shape('shell', 'body', ellipseAt(SHELL.cx, SHELL.cy, SHELL.rx, SHELL.ry), 2, 19, 46, 47);
+shape('rim', 'detail', ellipseAt(SHELL.cx, SHELL.cy, SHELL.rx - 5, SHELL.ry - 3), 2, 19, 46, 47);
+
+// Carapace plates, now real circles rather than traced blobs. Radii are in
+// quadrants, so 6 = three cells across.
+pen('plate-c1', `pen ${addr(24, 26)}.q1\ncircle 6`, 'detail');
+pen('plate-c2', `pen ${addr(24, 33)}.q1\ncircle 7`, 'detail');
+pen('plate-c3', `pen ${addr(24, 40)}.q1\ncircle 6`, 'detail');
+pen('plate-l1', `pen ${addr(15, 29)}.q1\ncircle 5`, 'detail');
+pen('plate-l2', `pen ${addr(15, 37)}.q1\ncircle 5`, 'detail');
+pen('plate-r1', `pen ${addr(33, 29)}.q1\ncircle 5`, 'detail');
+pen('plate-r2', `pen ${addr(33, 37)}.q1\ncircle 5`, 'detail');
+
+// Head: a third of the shell's width, sitting ON the shell, glancing back.
+pen('head', `pen ${addr(15, 18)}.q1\ncircle 17`, 'body');
+pen('snout', `pen ${addr(5, 21)}.q1\ncircle 8`, 'body');
+pen('eye', `pen ${addr(12, 15)}.q1\ncircle 5`, 'detail');
+pen('pupil', `pen ${addr(12, 15)}.q1\ndisc 2`, 'detail');
+// brow: a short diagonal, which the lattice could not draw until now
+pen('brow', `pen ${addr(9, 11)}.q1\ndash 6 ne`, 'detail');
+// neck, joining head to shell so it no longer floats
+pen('neck-l', `pen ${addr(16, 24)}.q1\nray to ${addr(18, 27)}.q1`, 'body');
+pen('neck-r', `pen ${addr(21, 23)}.q1\nray to ${addr(23, 27)}.q1`, 'body');
+
+// Feet and tail
+pen('foot-l', `pen ${addr(12, 45)}.q1\ncircle 7`, 'detail');
+pen('foot-r', `pen ${addr(36, 45)}.q1\ncircle 7`, 'detail');
+pen('tail', `pen ${addr(24, 45)}.q1\ntriangle ${addr(27, 45)}.q1 ${addr(25, 50)}.q1`, 'detail');
+
+// ---- the arm and the pen he is holding -------------------------------------
+// The arm runs up and out to the board as one diagonal ray.
+pen('arm', `pen ${addr(43, 33)}.q1\nray to ${addr(48, 27)}.q1`, 'body');
+pen('hand', `pen ${addr(48, 27)}.q1\ncircle 5`, 'detail');
+// THE PEN: a diagonal from the hand to the board, with a nib triangle at the
+// tip and the stroke it is laying down. It meets the board BELOW the wordmark,
+// so the name the logo exists to say is never covered by the mascot saying it.
+pen('pen-barrel', `pen ${addr(50, 26)}.q1\nray to ${addr(57, 21)}.q1`, 'detail');
+pen('pen-nib', `pen ${addr(57, 21)}.q1\ntriangle ${addr(60, 20)}.q1 ${addr(58, 23)}.q1`, 'detail');
+pen('pen-stroke', `pen ${addr(60, 21)}.q1\nright 10 line`, 'detail');
+
+// ---- morse-style accent marks, the 1-bit interface idiom -------------------
+pen('mark-1', `pen ${addr(88, 8)}.q1\ndash 4 se`, 'detail');
+pen('mark-2', `pen ${addr(88, 12)}.q1\ndot`, 'detail');
+pen('mark-3', `pen ${addr(88, 15)}.q1\ndash 4 se`, 'detail');
+pen('mark-4', `pen ${addr(3, 8)}.q1\ndash 4 sw`, 'detail');
+pen('mark-5', `pen ${addr(3, 12)}.q1\ndot`, 'detail');
+
+// ---- dithered shading: volume on the shell, at page opacity 0.45 -----------
+// A vertical gradient, darker at the bottom, so the carapace reads as domed.
+const W = 76, H = 44;
+const s = new Uint8Array(W * H * 3);
+for (let y = 0; y < H; y++) {
+  for (let x = 0; x < W; x++) {
+    const nx = (x - W / 2) / (W / 2), ny = (y - H / 2) / (H / 2);
+    const inside = nx * nx + ny * ny <= 1;
+    // Lambert-ish: lit from the upper left, so the lower right carries the tone.
+    const v = inside ? Math.round(120 + 130 * Math.max(0, -(nx * 0.6 + ny * 0.8))) : 255;
+    const i = (y * W + x) * 3;
+    s[i] = s[i + 1] = s[i + 2] = 255 - (255 - v);
+  }
+}
+const shadePng = 'x:/Python Projects/Home Base - Brainn.dev/03_EXPERIMENTS/TurtlePen/brand/_shade.png';
+writeFileSync(shadePng, encodePng(W, H, s, { colorType: 2 }));
+ops.push({
+  op: 'place_image', id: 'shell-shade', at: `${addr(8, 25)}.tl`, span: '32x16',
+  source: 'brand/_shade.png', mode: 'dither', page: 'shade',
+});
+
+writeFileSync('logo2-ops.json', JSON.stringify(ops, null, 1));
 console.log(`${ops.length} operations`);
-console.log(`shell traced in ${shell.runs} runs from ${shell.start}`);
-console.log('--- shell program (first 12 lines) ---');
-console.log(shell.program.split('\n').slice(0, 12).join('\n'));
+for (const o of ops) console.log('  ', o.id ?? o.op, o.op, o.page ?? '');

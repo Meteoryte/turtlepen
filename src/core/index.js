@@ -62,6 +62,19 @@ export function corridorAt(doc, pageId, axis, along, perp, limit = 400) {
   return { min, max };
 }
 
+/**
+ * Did this trace come back to where it began?
+ *
+ * Adjacent counts as closed, not just identical: a pen walking an outline ends
+ * one quadrant away from its start as often as it lands exactly on it, and both
+ * read to a human as a finished loop.
+ */
+export function isClosedPath(pieces) {
+  if (!pieces || pieces.length < 4) return false;
+  const a = pieces[0], b = pieces[pieces.length - 1];
+  return Math.abs(a.x - b.x) <= 1 && Math.abs(a.y - b.y) <= 1;
+}
+
 export function applyPen(doc, pageId, program, { id = null } = {}) {
   getPage(doc, pageId);
   const result = runPen(program, {
@@ -86,7 +99,11 @@ export function applyPen(doc, pageId, program, { id = null } = {}) {
   let path = null;
   if (result.pieces.length) {
     path = addPath(doc, pageId, { id: id ?? nextId(doc, 'path', 0), pieces: result.pieces });
-    if (result.notes.length) path.penNotes = result.notes;
+    // A shape is not a connector. If the trace comes back to where it started,
+    // say so — the rules about loose ends and retraced quadrants are about
+    // connectors, and applying them to an outline is how a rule cries wolf.
+    if (isClosedPath(result.pieces)) path.closed = true;
+    if (result.notes.length) path.penNotes = result.notes.filter((n) => !(path.closed && n.code === 'L015'));
     // Remembering where the pen stopped is what makes a path resumable.
     path.end = { x: result.cursor.x, y: result.cursor.y, facing: result.facing };
     // What the path was aiming at, so validation can check it actually arrived.

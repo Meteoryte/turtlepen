@@ -327,6 +327,9 @@ function withinPage(doc, p) {
   const occupied = new Map();
   for (const el of els) for (const k of elementClaimed(el)) occupied.set(k, el.id);
   for (const path of paths) {
+    // A closed shape has no loose ends by definition; its "ends" are the same
+    // point. Reporting them was the single largest source of false findings.
+    if (path.closed) continue;
     const loose = [];
     for (const [which, piece] of [['start', path.pieces[0]], ['end', path.pieces[path.pieces.length - 1]]]) {
       if (!piece) continue;

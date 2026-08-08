@@ -70,6 +70,9 @@ export function renderAscii(doc, { page = null, region = null, maxCells = 90, fi
 const ARROW_GLYPHS = Object.freeze({ up: '▲', down: '▼', left: '◀', right: '▶' });
 
 function glyphForPiece(piece) {
+  // A mark has no direction — it is one quadrant of a computed shape, so it is
+  // drawn as a solid cell rather than as a length of line.
+  if (piece.type === 'mark') return '█';
   if (piece.type === 'arrow') return ARROW_GLYPHS[piece.dir] ?? '▶';
   if (piece.type === 'hop') return piece.dir === 'up' || piece.dir === 'down' ? '╫' : '╪';
   if (piece.type === 'corner') {

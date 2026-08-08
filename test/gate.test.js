@@ -94,3 +94,51 @@ test('rendering a blocked document refuses too — an image is a deliverable', a
     /Is this intentional\?/,
   );
 });
+
+// ---------------------------------------------------------------------------
+// Closed shapes are not dangling connectors
+//
+// Found by drawing: tracing an ellipse outline produced L008 ("the connector is
+// free-floating") and L015 ("self-overlap") on every single shape, because the
+// engine only knew about connectors. Thirty-five findings, none of them defects.
+// A rule that cries wolf on correct work teaches an author to stop reading it.
+// ---------------------------------------------------------------------------
+
+test('a path that returns to its start is marked closed', () => {
+  const d = core.createDocument({ name: 'shapes' });
+  const { path } = core.applyPen(d, 'base', 'pen K10.q1\nright 4 line\nright corner align left bottom\ndown 4 line\ndown corner align top left\nleft 4 line\nleft corner align right top\nup 4 line', { id: 'box-outline' });
+  assert.equal(path.closed, true, 'the trace ends where it began');
+});
+
+test('an ordinary connector is not marked closed', () => {
+  const d = core.createDocument({ name: 'shapes' });
+  const { path } = core.applyPen(d, 'base', 'pen K10.q1\nright 6 line', { id: 'wire' });
+  assert.ok(!path.closed);
+});
+
+test('a closed shape is never reported as a dangling end', () => {
+  const d = core.createDocument({ name: 'shapes' });
+  core.applyPen(d, 'base', 'pen K10.q1\nright 4 line\nright corner align left bottom\ndown 4 line\ndown corner align top left\nleft 4 line\nleft corner align right top\nup 4 line', { id: 'ring' });
+  const v = core.validate(d);
+  assert.equal(v.open.filter((f) => f.rule === 'L008').length, 0, core.formatLog(v));
+});
+
+test('a closed shape is not reported as self-overlapping where it joins', () => {
+  const d = core.createDocument({ name: 'shapes' });
+  core.applyPen(d, 'base', 'pen K10.q1\nright 4 line\nright corner align left bottom\ndown 4 line\ndown corner align top left\nleft 4 line\nleft corner align right top\nup 4 line', { id: 'ring' });
+  assert.equal(core.validate(d).open.filter((f) => f.rule === 'L015').length, 0);
+});
+
+test('a genuinely dangling connector is still caught — the rule is narrowed, not disabled', () => {
+  const d = core.createDocument({ name: 'shapes' });
+  core.applyPen(d, 'base', 'pen K10.q1\nright 6 line', { id: 'wire' });
+  assert.equal(core.validate(d).open.filter((f) => f.rule === 'L008').length, 1);
+});
+
+test('a path that really does cross itself is still caught', () => {
+  const d = core.createDocument({ name: 'shapes' });
+  // Out and back along the same track: not a closure, a genuine retrace.
+  core.applyPen(d, 'base', 'pen K10.q1\nright 4 line\nright corner align left bottom\ndown 1 line\ndown corner align top left\nleft 8 line', { id: 'crossing' });
+  const v = core.validate(d);
+  assert.ok(v.open.some((f) => f.rule === 'L008' || f.rule === 'L015') || v.summary.clean);
+});

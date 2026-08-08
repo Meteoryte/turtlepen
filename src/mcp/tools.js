@@ -31,6 +31,30 @@ async function imageBytes(session, source) {
   return readFile(resolve(session.cwd, source));
 }
 
+/**
+ * Turn any file-path image source into a data: URI before the operation reaches
+ * core.
+ *
+ * Core is pure — no file I/O — so reading bytes has to happen out here. The
+ * trap is doing it in ONE path: `place_image` resolved its source in the tool
+ * handler but not inside `plan`, so the same operation meant two different
+ * things depending on how it was invoked. `place_box` had exactly this bug with
+ * span formats once already. Both entry points now go through this.
+ */
+async function resolveSources(session, operations) {
+  const out = [];
+  for (const op of operations) {
+    if (op?.op === 'place_image' && op.source && !String(op.source).startsWith('data:')) {
+      const bytes = await imageBytes(session, op.source);
+      const probed = core.image.probe(bytes);
+      out.push({ ...op, source: `data:${MIME[probed.format]};base64,${bytes.toString('base64')}` });
+    } else {
+      out.push(op);
+    }
+  }
+  return out;
+}
+
 async function persist(session) {
   // Working state, not a deliverable: checkpoints never adjudicate, so an
   // author can place roughly and repair afterwards exactly as before.
@@ -484,7 +508,7 @@ export function createTools(session) {
         properties: {
           operations: {
             type: 'array',
-            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box pen extend_path replace_path resize restyle move rename remove set_canvas accept_finding unaccept_finding. Args match the same-named tool.',
+            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image pen extend_path replace_path resize restyle move rename remove set_canvas accept_finding unaccept_finding. Args match the same-named tool.',
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
@@ -494,7 +518,8 @@ export function createTools(session) {
       },
       handler: async ({ operations, commit = false }) => {
         const doc = need(session);
-        const result = commit ? core.commitOperations(doc, operations) : core.planOperations(doc, operations);
+        const ops = await resolveSources(session, operations);
+        const result = commit ? core.commitOperations(doc, ops) : core.planOperations(doc, ops);
         if (!result.ok) {
           return [
             `plan FAILED at operation ${result.failedAt + 1} of ${operations.length}: ${result.error}`,
@@ -709,6 +734,21 @@ PEN GRAMMAR
   <dir> [n] [align <side>] [<style>] line      draw n cells of 5px stroke
   <dir> [<style>] corner align <sideA> <sideB> place a junction and turn
   <dir> ... line to <address|id.port>          draw until it reaches a target
+
+SHAPES — anything that is not a rectangle
+  ray to <address>                             a straight line at ANY angle
+  circle <r>                                   outline; radius in quadrants
+  disc <r>                                     the same circle, filled
+  arc <r> <startDeg> <endDeg>                  clockwise from east
+  polygon <addr> <addr> <addr> ...             closed
+  triangle <addr> <addr> <addr>                exactly three points
+  dot [<dir8>]                                 one quadrant
+  dash <n> <dir8>                              n quadrants, any of eight ways
+  dir8 = n ne e se s sw w nw  (up/down/left/right also accepted)
+
+  These are integer algorithms — Bresenham for lines, midpoint for circles — so
+  the same command always covers the same quadrants. A stepped diagonal is not
+  an approximation of a line; on a lattice it IS the line.
   <dir> arrow                                  arrowhead pointing that way
   <dir> hop                                    deliberate crossing (exempt from L006)
   box span <W>x<H> at <address> label "..." [style <s>] [id <name>]

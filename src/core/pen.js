@@ -28,11 +28,23 @@
 import { DIRECTIONS, OPPOSITE, isDirection, rect } from './geometry.js';
 import { parseAddress, addressRect, pinPoint, looksLikeAddress, quadToAddress, assertOnGrid, PIN_NAMES, PINS } from './address.js';
 import { alignmentFor, alignTrack, BOX_CORNER_STYLES, JUNCTION_STYLES, portPoint, approachPoint } from './shapes.js';
+import { rayQuads, circleQuads, arcQuads, polygonQuads, dashQuads, discQuads, resolveDir8 } from './raster.js';
 
 const SIDES = Object.freeze(['top', 'bottom', 'left', 'right']);
 const SIDE_TO_DIR = Object.freeze({ top: 'up', bottom: 'down', left: 'left', right: 'right' });
 const DIR_TO_INCOMING_SIDE = Object.freeze({ up: 'bottom', down: 'top', left: 'right', right: 'left' });
-const ELEMENTS = Object.freeze(['line', 'corner', 'box', 'text', 'arrow', 'hop']);
+const ELEMENTS = Object.freeze(['line', 'corner', 'box', 'text', 'arrow', 'hop', 'ray', 'circle', 'disc', 'arc', 'polygon', 'triangle', 'dot', 'dash']);
+
+/**
+ * Shapes that are not rectangles.
+ *
+ * A diagonal, a circle and an arc are the same kind of thing on this lattice: a
+ * computed set of whole quadrants. They are parsed positionally rather than by
+ * the general token sweep, because their arguments are numbers and addresses in
+ * a fixed order and guessing at them would make errors harder to read, not
+ * easier.
+ */
+const SHAPES = Object.freeze(['ray', 'circle', 'disc', 'arc', 'polygon', 'triangle', 'dot', 'dash']);
 const STYLES = Object.freeze([...new Set([...BOX_CORNER_STYLES, ...JUNCTION_STYLES])]);
 
 // ---------------------------------------------------------------------------
@@ -66,8 +78,16 @@ export function splitProgram(program) {
 
 export function parseCommand(source) {
   const toks = tokenize(source);
-  const cmd = { source, dir: null, n: null, align: [], style: null, element: null, at: null, from: null, to: null, label: null, span: null, id: null, font: null, fill: null, arrowEnd: false };
+  const cmd = { source, dir: null, n: null, align: [], style: null, element: null, at: null, from: null, to: null, label: null, span: null, id: null, font: null, fill: null, arrowEnd: false, args: [] };
   const seen = [];
+
+  // Shapes read their own arguments positionally.
+  const head = toks[0]?.t?.toLowerCase();
+  if (SHAPES.includes(head)) {
+    cmd.element = head;
+    cmd.args = toks.slice(1).map((x) => x.t);
+    return cmd;
+  }
 
   for (let i = 0; i < toks.length; i++) {
     const { t, quoted } = toks[i];
@@ -251,6 +271,20 @@ export function runPen(program, ctx = {}) {
         state.y += DIRECTIONS[dir].dy;
         return;
       }
+      case 'ray': case 'circle': case 'disc': case 'arc':
+      case 'polygon': case 'triangle': case 'dot': case 'dash': {
+        const quads = shapeQuads(cmd, state, ctx);
+        for (const q of quads) {
+          recordPiece(pieces, occupied, notes, { x: q.x, y: q.y, type: 'mark', style: cmd.style ?? 'square' }, step + 1);
+        }
+        // The cursor lands on the last quadrant drawn, so a shape can be
+        // followed by more drawing without re-stating where you are.
+        const tip = quads[quads.length - 1];
+        state.x = tip.x;
+        state.y = tip.y;
+        trace.push({ step: step + 1, source: cmd.source, action: cmd.element, at: quadToAddress(tip.x, tip.y), quadrants: quads.length });
+        return;
+      }
       case 'corner': {
         const facing = cmd.dir ?? state.facing;
         const incoming = DIR_TO_INCOMING_SIDE[facing];
@@ -392,6 +426,75 @@ export function runPen(program, ctx = {}) {
   });
 
   return { pieces, boxes, texts, cursor: { x: state.x, y: state.y }, facing: state.facing, trace, notes, targets };
+}
+
+/**
+ * Resolve a shape command into the quadrants it covers.
+ *
+ * Everything here is integer arithmetic on the lattice, so the same command
+ * always produces the same quadrants — the property every other guarantee in
+ * this engine is built on.
+ *
+ *   ray to <address>              a straight line at ANY angle, not just the four
+ *   circle <r>                    outline, midpoint algorithm, radius in quadrants
+ *   disc <r>                      the same circle, filled
+ *   arc <r> <startDeg> <endDeg>   part of that circle, clockwise from east
+ *   polygon <addr> <addr> <addr>… closed; three points is a triangle
+ *   triangle <addr> <addr> <addr> the same thing, named for what it is
+ *   dot                           one quadrant, the morse dot
+ *   dash <n> <dir8>               n quadrants in any of the eight directions
+ */
+function shapeQuads(cmd, state, ctx) {
+  const at = (token) => {
+    const r = addressRect(parseAddress(token));
+    return { x: r.x, y: r.y };
+  };
+  const num = (token, what) => {
+    const v = Number(token);
+    if (!Number.isInteger(v)) {
+      throw new SyntaxError(`${cmd.element} needs a whole number for ${what} — got "${token}" in: ${cmd.source}`);
+    }
+    return v;
+  };
+
+  switch (cmd.element) {
+    case 'ray': {
+      // "ray to X" and "ray X" both read naturally; accept either.
+      const target = cmd.args[0]?.toLowerCase() === 'to' ? cmd.args[1] : cmd.args[0];
+      if (!target) throw new SyntaxError(`ray needs a destination address, e.g. "ray to AF20.q1" — in: ${cmd.source}`);
+      const p = at(target);
+      return rayQuads(state.x, state.y, p.x, p.y);
+    }
+    case 'circle': return circleQuads(state.x, state.y, num(cmd.args[0], 'radius'));
+    case 'disc': return discQuads(state.x, state.y, num(cmd.args[0], 'radius'));
+    case 'arc': {
+      if (cmd.args.length < 3) throw new SyntaxError(`arc needs a radius and two angles, e.g. "arc 12 0 90" — in: ${cmd.source}`);
+      return arcQuads(state.x, state.y, num(cmd.args[0], 'radius'), num(cmd.args[1], 'start angle'), num(cmd.args[2], 'end angle'));
+    }
+    case 'polygon': case 'triangle': {
+      const pts = cmd.args.filter((a) => looksLikeAddress(a)).map(at);
+      // The cursor counts as the first vertex, so "triangle A B" is legal and
+      // means "from here, to A, to B, and back".
+      const all = pts.length >= 3 ? pts : [{ x: state.x, y: state.y }, ...pts];
+      if (cmd.element === 'triangle' && all.length !== 3) {
+        throw new SyntaxError(`a triangle needs exactly three points — got ${all.length} in: ${cmd.source}. Use "polygon" for more.`);
+      }
+      return polygonQuads(all);
+    }
+    case 'dot': return dashQuads(state.x, state.y, cmd.args[0] ?? 'right', 1);
+    case 'dash': {
+      // "dash 6 se" and "dash se 6" both read naturally.
+      const a = cmd.args[0], b = cmd.args[1];
+      const isNum = (v) => v != null && /^\d+$/.test(v);
+      const length = isNum(a) ? Number(a) : isNum(b) ? Number(b) : null;
+      const dir = isNum(a) ? b : a;
+      if (length == null) throw new SyntaxError(`dash needs a length, e.g. "dash 6 se" — in: ${cmd.source}`);
+      resolveDir8(dir ?? 'right');
+      return dashQuads(state.x, state.y, dir ?? 'right', length);
+    }
+    default:
+      throw new SyntaxError(`unsupported shape "${cmd.element}" in: ${cmd.source}`);
+  }
 }
 
 function recordPiece(pieces, occupied, notes, piece, step) {
