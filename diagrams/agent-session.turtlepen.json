@@ -1,0 +1,907 @@
+{
+  "schema": 1,
+  "name": "checkout service",
+  "canvas": {
+    "cols": 140,
+    "rows": 80
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-08T14:51:32.832Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    },
+    {
+      "id": "review",
+      "z": 1,
+      "intent": "overlay",
+      "title": "review",
+      "visible": true,
+      "opacity": 0.92
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "client",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 6,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Web & Mobile Clients",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "gateway",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 22,
+          "w": 32,
+          "h": 6
+        },
+        "label": "API Gateway",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "checkout",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 38,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Checkout Orchestrator",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "payments",
+        "kind": "box",
+        "rect": {
+          "x": 44,
+          "y": 22,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Payment Provider Adapter",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "inventory",
+        "kind": "box",
+        "rect": {
+          "x": 44,
+          "y": 38,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Inventory Service",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "ledger",
+        "kind": "box",
+        "rect": {
+          "x": 44,
+          "y": 54,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Postgres Ledger",
+        "fontSize": 10,
+        "corner": "indented",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "events",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 54,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Event Bus",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "client-gateway",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 21,
+            "y": 12,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 13,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 14,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 15,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 16,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 17,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 18,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 19,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 20,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 21,
+            "type": "arrow",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 21,
+          "y": 22,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "gateway",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "gateway-checkout",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 21,
+            "y": 28,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 29,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 30,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 31,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 32,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 33,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 34,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 35,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 36,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 37,
+            "type": "arrow",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 21,
+          "y": 38,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "checkout",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "checkout-events",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 21,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 48,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 49,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 50,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 51,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 52,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 53,
+            "type": "arrow",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 21,
+          "y": 54,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "events",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "checkout-payments",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 36,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 41,
+            "type": "corner",
+            "sides": [
+              "left",
+              "top"
+            ],
+            "style": "square",
+            "dir": "up"
+          },
+          {
+            "x": 38,
+            "y": 40,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 39,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 38,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 37,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 36,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 35,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 34,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 33,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 32,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 31,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 30,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 29,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 28,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 27,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 26,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 25,
+            "type": "corner",
+            "sides": [
+              "bottom",
+              "right"
+            ],
+            "style": "square",
+            "dir": "right"
+          },
+          {
+            "x": 39,
+            "y": 25,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 25,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 25,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 25,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 25,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 44,
+          "y": 25,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "payments",
+            "port": "W",
+            "step": 4
+          },
+          {
+            "id": "payments",
+            "port": "W",
+            "step": 6
+          }
+        ]
+      },
+      {
+        "id": "payments-inventory",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 61,
+            "y": 28,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 29,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 30,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 31,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 32,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 33,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 34,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 35,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 36,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 37,
+            "type": "arrow",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 61,
+          "y": 38,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "inventory",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "inventory-ledger",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 61,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 48,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 49,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 50,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 51,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 52,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 53,
+            "type": "arrow",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 61,
+          "y": 54,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "ledger",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "review": [
+      {
+        "id": "slow",
+        "kind": "box",
+        "rect": {
+          "x": 8,
+          "y": 40,
+          "w": 20,
+          "h": 6
+        },
+        "label": "p95 4.2s",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      }
+    ]
+  },
+  "acceptances": []
+}

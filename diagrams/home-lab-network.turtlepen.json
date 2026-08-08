@@ -1,0 +1,604 @@
+{
+  "schema": 1,
+  "name": "Home Lab Network",
+  "canvas": {
+    "cols": 60,
+    "rows": 46
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-08T14:16:23.400Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true
+    },
+    {
+      "id": "notes",
+      "z": 1,
+      "intent": "overlay",
+      "title": "notes",
+      "visible": true
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "ont",
+        "kind": "box",
+        "rect": {
+          "x": 34,
+          "y": 14,
+          "w": 24,
+          "h": 6
+        },
+        "label": "Fiber ONT 1Gb",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "switch",
+        "kind": "box",
+        "rect": {
+          "x": 34,
+          "y": 38,
+          "w": 24,
+          "h": 6
+        },
+        "label": "Managed Switch",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "nas",
+        "kind": "box",
+        "rect": {
+          "x": 34,
+          "y": 62,
+          "w": 24,
+          "h": 6
+        },
+        "label": "NAS Array 40TB",
+        "fontSize": 10,
+        "corner": "indented",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "desk",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 38,
+          "w": 24,
+          "h": 6
+        },
+        "label": "Workstation",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "mesh",
+        "kind": "box",
+        "rect": {
+          "x": 64,
+          "y": 38,
+          "w": 24,
+          "h": 6
+        },
+        "label": "Wi-Fi Mesh AP",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "ont-switch",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 46,
+            "y": 20,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 21,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 22,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 23,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 24,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 25,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 26,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 27,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 28,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 29,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 30,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 31,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 32,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 33,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 34,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 35,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 36,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 37,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 46,
+          "y": 38,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "switch",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "switch-nas",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 46,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 48,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 49,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 50,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 51,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 52,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 53,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 54,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 55,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 56,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 57,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 58,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 59,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 60,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 61,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 46,
+          "y": 62,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "nas",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "desk-switch",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 28,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 41,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 34,
+          "y": 41,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "switch",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "switch-mesh",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 58,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 41,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 64,
+          "y": 41,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "mesh",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "notes": [
+      {
+        "id": "trunk",
+        "kind": "box",
+        "rect": {
+          "x": 38,
+          "y": 48,
+          "w": 20,
+          "h": 6
+        },
+        "label": "2.5GbE trunk",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null
+      }
+    ]
+  },
+  "acceptances": [
+    {
+      "fingerprint": "a900ddf43015",
+      "reason": "the 2.5GbE trunk callout is meant to sit over the switch-to-NAS link",
+      "acceptedAt": "2026-08-08T14:16:50.370Z"
+    }
+  ]
+}

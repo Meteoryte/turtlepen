@@ -1,0 +1,1121 @@
+{
+  "schema": 1,
+  "name": "Morning Coffee Ritual",
+  "canvas": {
+    "cols": 56,
+    "rows": 54
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-08T14:22:19.665Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "alarm",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 6,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Alarm Goes Off",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "grind",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 22,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Grind 22g Of Beans",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "kettle",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 38,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Kettle At 96C?",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "wait",
+        "kind": "box",
+        "rect": {
+          "x": 44,
+          "y": 38,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Wait 40 Seconds",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "bloom",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 58,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Pour 50g Bloom",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "brew",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 74,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Brew Out To 360g",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "drink",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 90,
+          "w": 32,
+          "h": 6
+        },
+        "label": "Drink It While Hot",
+        "fontSize": 10,
+        "corner": "indented",
+        "align": "left",
+        "fill": null,
+        "note": null
+      },
+      {
+        "id": "alarm-grind",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 20,
+            "y": 12,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 13,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 14,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 15,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 16,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 17,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 18,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 19,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 20,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 21,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 20,
+          "y": 22,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "grind",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "grind-kettle",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 20,
+            "y": 28,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 29,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 30,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 31,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 32,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 33,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 34,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 35,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 36,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 37,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 20,
+          "y": 38,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "kettle",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "kettle-bloom",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 20,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 48,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 49,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 50,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 51,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 52,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 53,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 54,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 55,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 56,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 57,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 20,
+          "y": 58,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "bloom",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "bloom-brew",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 20,
+            "y": 64,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 65,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 66,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 67,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 68,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 69,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 70,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 71,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 72,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 73,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 20,
+          "y": 74,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "brew",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "brew-drink",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 20,
+            "y": 80,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 81,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 82,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 83,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 84,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 85,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 86,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 87,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 88,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 89,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 20,
+          "y": 90,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "drink",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "kettle-wait",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 36,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 41,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 41,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 44,
+          "y": 41,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "wait",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "wait-bloom",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 60,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 48,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 49,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 50,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 51,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 52,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 53,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 54,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 55,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 56,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 57,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 58,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 59,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 60,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 61,
+            "type": "corner",
+            "sides": [
+              "left",
+              "top"
+            ],
+            "style": "square",
+            "dir": "left"
+          },
+          {
+            "x": 59,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 56,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 55,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 54,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 53,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 52,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 51,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 49,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 48,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 47,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 61,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 61,
+            "type": "arrow",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 35,
+          "y": 61,
+          "facing": "left"
+        },
+        "targets": [
+          {
+            "id": "bloom",
+            "port": "E",
+            "step": 2
+          },
+          {
+            "id": "bloom",
+            "port": "E",
+            "step": 4
+          }
+        ]
+      }
+    ]
+  },
+  "acceptances": []
+}

@@ -1,0 +1,18 @@
+{
+  "name": "turtlepen",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "TurtlePen — an integer-exact grid substrate for AI-authored diagrams: a turtle/pen command language, measurement before placement, severity-ranked collision reporting, and Z-page overlays.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\"",
+    "viewer": "node src/viewer/server.js",
+    "mcp": "node src/mcp/server.js",
+    "example": "node examples/build-example.js",
+    "session": "node examples/agent-session.js",
+    "check": "node --test \"test/**/*.test.js\" && node examples/build-example.js && node examples/agent-session.js --quiet"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
