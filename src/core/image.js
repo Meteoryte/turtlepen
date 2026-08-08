@@ -92,17 +92,12 @@ export function bytesOfDataUri(source) {
 }
 
 /**
- * Modes that are recognised but not yet built.
- *
- * Accepting `dither` and quietly drawing an ordinary embed would be exactly the
- * silent substitution this engine exists to prevent — the author would ask for
- * one thing, get another, and nothing would say so. So it refuses, by name, and
- * points at where the work is specified.
+ * Modes recognised but not yet built. Empty, and it should stay that way:
+ * accepting a mode and quietly doing something else is the silent substitution
+ * this engine exists to prevent. Add an entry here the moment a mode is named
+ * before it works, and remove it in the same change that makes it work.
  */
-export const UNIMPLEMENTED = Object.freeze({
-  dither: 'drawing an image into the lattice as stipple needs a PNG decoder (node:zlib, no dependencies). '
-    + 'It is specified in prompts/06_IMAGE_DITHER.md of the TurtlePen improvements prompt pack. Use mode "embed" until it is built.',
-});
+export const UNIMPLEMENTED = Object.freeze({});
 
 export function assertMode(mode) {
   if (!MODES.includes(mode)) {

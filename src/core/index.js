@@ -16,6 +16,8 @@ import * as text from './text.js';
 import * as shapes from './shapes.js';
 import * as occupancy from './occupancy.js';
 import * as image from './image.js';
+import * as png from './png.js';
+import * as dither from './dither.js';
 
 import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, MIN_OPACITY, DEFAULT_PAGE_OPACITY, assertOpacity } from './document.js';
 import { runPen } from './pen.js';
@@ -23,7 +25,7 @@ import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL }
 import { renderAscii } from './ascii.js';
 import { renderSvg } from './svg.js';
 
-export { geometry, address, text, shapes, occupancy, image };
+export { geometry, address, text, shapes, occupancy, image, png, dither };
 export {
   createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, findElement,
   elementsOf, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
@@ -263,7 +265,17 @@ export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', 
   const w = cells.w * 2, h = cells.h * 2;
   const [px, py] = a.kind === 'pin' ? address.PINS[a.part] : [0, 0];
   const r = address.assertOnGrid(geometry.rect(p.x - (px * w) / 2, p.y - (py * h) / 2, w, h), `image "${id}" pinned at ${at}`);
-  return addImage(doc, pageId, { id, rect: r, source, mode, fit, opacity });
+  // Dithering happens HERE, at placement, not at render time. The quadrant grid
+  // becomes part of the document, so re-rendering an old file cannot drift from
+  // what its author saw — the same reason measurement precedes placement.
+  let runs = null;
+  if (mode === 'dither') {
+    const inline = image.bytesOfDataUri(source);
+    if (!inline) throw new SyntaxError(`image "${id}" cannot be dithered from "${String(source).slice(0, 40)}" — dithering needs the bytes, so pass a data: URI`);
+    const grid = dither.ditherToQuadrants(png.decode(inline.bytes), r.w, r.h);
+    runs = dither.runsOf(grid);
+  }
+  return addImage(doc, pageId, { id, rect: r, source, mode, fit, opacity, runs });
 }
 
 export function acceptFinding(doc, fingerprint, reason) {

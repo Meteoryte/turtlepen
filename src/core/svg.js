@@ -124,6 +124,7 @@ function style() {
   .hit-S2 { fill: ${PALETTE.warn}; opacity: 0.24; }
   .hit-S3 { fill: ${PALETTE.info}; opacity: 0.20; }
   .dimmed { fill: url(#tp-stipple); }
+  .dither-run { fill: ${PALETTE.ink}; }
   @media (prefers-color-scheme: dark) {
     .bg { fill: ${PALETTE_DARK.paper}; }
     .grid { stroke: ${PALETTE_DARK.grid}; }
@@ -157,9 +158,25 @@ function style() {
  */
 function imageEl(el) {
   const { x, y, w, h } = toPx(el.rect);
+  if (el.mode === 'dither') return ditherEl(el, x, y);
   const aspect = el.fit === 'cover' ? 'xMidYMid slice' : 'xMidYMid meet';
   return `<image class="image" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="${aspect}"`
     + `${el.opacity != null ? ` opacity="${el.opacity}"` : ''} data-id="${escapeAttr(el.id)}" href="${escapeAttr(el.source)}"/>`;
+}
+
+/**
+ * A picture drawn IN the lattice rather than laid on top of it.
+ *
+ * The runs were computed at placement time and stored on the element, so this
+ * is pure emission — re-rendering an old document cannot drift from what its
+ * author saw. Every rect is a whole number of quadrants by construction.
+ */
+function ditherEl(el, x, y) {
+  const q = PX_PER_QUAD;
+  const parts = (el.runs ?? []).map(
+    (r) => `<rect class="dither-run" x="${x + r.x * q}" y="${y + r.y * q}" width="${r.w * q}" height="${q}"/>`,
+  );
+  return `<g class="dither" data-id="${escapeAttr(el.id)}"${el.opacity != null ? ` opacity="${el.opacity}"` : ''}>${parts.join('')}</g>`;
 }
 
 function gridPattern(b, ox, oy) {

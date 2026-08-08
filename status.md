@@ -1,13 +1,13 @@
 # TurtlePen — status
 
-**As of 2026-08-08.** Prototype, working end to end, 108/108 tests green,
+**As of 2026-08-08.** Prototype, working end to end, 161/161 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **108/108 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **161/161 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
 - **An agent authors a real diagram cleanly** (`node examples/agent-session.js`,
   exit 0): seven boxes in two columns and six connectors — including a three-leg
@@ -21,9 +21,14 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (25 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (27 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
+- **A photo is drawn INTO the lattice**: `mode: 'dither'` decodes PNG on
+  `node:zlib` alone, quantises to quadrants through a 4×4 Bayer matrix, and
+  emits merged horizontal runs. A 400×300 solid area collapses from 4800
+  quadrants to 60 rects. The same image renders byte-identically every run,
+  which is why an ordered matrix is the default rather than error diffusion.
 - **The viewer serves**: HTTP 200 on `/`; `/api/state` returns the document,
   ranked findings, SVG with per-page groups and fingerprinted finding marks, and
   the ASCII view.

@@ -13,6 +13,7 @@
   .hit-S2 { fill: #87805a; opacity: 0.24; }
   .hit-S3 { fill: #4a6572; opacity: 0.20; }
   .dimmed { fill: url(#tp-stipple); }
+  .dither-run { fill: #2b2a26; }
   @media (prefers-color-scheme: dark) {
     .bg { fill: #1a1917; }
     .grid { stroke: #2e2c28; }

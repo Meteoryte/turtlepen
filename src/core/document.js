@@ -163,7 +163,7 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
   return el;
 }
 
-export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit = 'contain', opacity = null, note = null }) {
+export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit = 'contain', opacity = null, note = null, runs = null }) {
   getPage(doc, pageId);
   assertFreeId(doc, id);
   const el = {
@@ -175,6 +175,7 @@ export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit
     fit,
     opacity: assertOpacity(opacity, 'element opacity'),
     note,
+    ...(runs ? { runs } : {}),
   };
   doc.elements[pageId].push(el);
   return el;
