@@ -77,6 +77,32 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
   at the cursor.
 - **An omitted `align` continues on the track the cursor is already on.** A
   fixed default would fight a deliberately seated cursor.
+## Shapes: anything that is not a rectangle
+
+The lattice is orthogonal, so a diagonal, a circle and an arc are the same kind
+of thing — a computed set of whole quadrants. These are the classic integer
+algorithms, chosen for the reason they were invented and the reason this project
+exists: they are exact.
+
+```
+ray to AF20.q1        a straight line at ANY angle (Bresenham)
+circle 12             outline (midpoint); radius in QUADRANTS, not cells
+disc 12               the same circle, filled
+arc 12 0 90           part of it, clockwise from east
+triangle M4.q1 T9.q1  three points; polygon takes more
+dash 6 se             six quadrants diagonally — the morse dash
+dot                   one quadrant — the morse dot
+```
+
+`dir8` is `n ne e se s sw w nw`, and `up/down/left/right` still work. A stepped
+diagonal is not an approximation of a smooth line; on a lattice it **is** the
+line, which is how interface art was drawn on 1-bit displays.
+
+**Closed shapes are not connectors.** A path that returns to its start is marked
+`closed`, and the rules about dangling ends and retraced quadrants do not apply
+to it — they are about connectors, and applying them to an outline is how a rule
+cries wolf.
+
 - **`hop` marks a deliberate crossing.** It renders as a bridge arc and exempts
   that quadrant from the stroke-overlap rule, so an intended crossing is not
   reported as a defect. It still claims its quadrant, so a hop through a box is

@@ -1,13 +1,13 @@
 # TurtlePen — status
 
-**As of 2026-08-08.** Prototype, working end to end, 161/161 tests green,
+**As of 2026-08-08.** Prototype, working end to end, 186/186 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **161/161 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **186/186 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
 - **An agent authors a real diagram cleanly** (`node examples/agent-session.js`,
   exit 0): seven boxes in two columns and six connectors — including a three-leg
@@ -24,6 +24,11 @@ Verified by running it, not by inspection:
 - **The MCP server responds over stdio**: `initialize`, `tools/list` (27 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
+- **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),
+  `circle`/`disc` (midpoint), `arc`, `polygon`/`triangle`, and `dot`/`dash`
+  marks in eight directions. Integer algorithms throughout, so the same command
+  always covers the same quadrants — a stepped diagonal is not an approximation
+  of a line; on a lattice it is the line.
 - **A photo is drawn INTO the lattice**: `mode: 'dither'` decodes PNG on
   `node:zlib` alone, quantises to quadrants through a 4×4 Bayer matrix, and
   emits merged horizontal runs. A 400×300 solid area collapses from 4800
@@ -89,6 +94,26 @@ invisible from either the drawing or the rule table:
   outward` holds on all four faces and arrival shares one code path. The
   directional special-case that would have "fixed" only left and up was rejected
   deliberately — it was the same class of asymmetry that caused the bug.
+
+A third session — drawing the project's own logo — found the engine could not
+draw a curve at all, and that its rules did not know what a drawing was:
+
+- **The lattice had no diagonals, circles or arcs.** Anything round had to be
+  faked from boxes, and a `rounded` corner cuts a fixed 5px whatever the box's
+  size, so a 380px-wide "rounded" shell rendered as a plain rectangle. The
+  constraint was real but the conclusion was wrong: a curve on a lattice is
+  arithmetic, so `src/core/raster.js` computes it. See above.
+- **Every closed shape was reported as a broken connector.** Tracing an outline
+  produced `L008` (dangling end) and `L015` (self-overlap) on each shape,
+  because the engine only modelled connectors — 35 findings on a correct
+  drawing, none of them defects. A rule that cries wolf on correct work teaches
+  an author to stop reading the log, which destroys the log. Paths that return
+  to their start now carry `closed: true` and are exempt from both; genuinely
+  dangling connectors are still caught, so the rule was narrowed, not disabled.
+- **`place_image` meant two different things.** Its source was resolved to bytes
+  in the tool handler but not inside `plan`, so a file path worked as a tool
+  call and failed in a batch. Exactly the split `place_box` once had with its
+  two span formats — normalisation must sit on the path both entry points take.
 
 ## What is deferred, deliberately
 

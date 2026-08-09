@@ -52,8 +52,8 @@ pen('plate-r1', `pen ${addr(33, 29)}.q1\ncircle 5`, 'detail');
 pen('plate-r2', `pen ${addr(33, 37)}.q1\ncircle 5`, 'detail');
 
 // Head: a third of the shell's width, sitting ON the shell, glancing back.
-pen('head', `pen ${addr(15, 18)}.q1\ncircle 17`, 'body');
-pen('snout', `pen ${addr(5, 21)}.q1\ncircle 8`, 'body');
+pen('head', `pen ${addr(16, 18)}.q1\ncircle 17`, 'body');
+pen('snout', `pen ${addr(7, 22)}.q1\ncircle 7`, 'body');
 pen('eye', `pen ${addr(12, 15)}.q1\ncircle 5`, 'detail');
 pen('pupil', `pen ${addr(12, 15)}.q1\ndisc 2`, 'detail');
 // brow: a short diagonal, which the lattice could not draw until now
@@ -102,7 +102,7 @@ for (let y = 0; y < H; y++) {
 const shadePng = 'x:/Python Projects/Home Base - Brainn.dev/03_EXPERIMENTS/TurtlePen/brand/_shade.png';
 writeFileSync(shadePng, encodePng(W, H, s, { colorType: 2 }));
 ops.push({
-  op: 'place_image', id: 'shell-shade', at: `${addr(8, 25)}.tl`, span: '32x16',
+  op: 'place_image', id: 'shell-shade', at: `${addr(6, 23)}.tl`, span: '36x20',
   source: 'brand/_shade.png', mode: 'dither', page: 'shade',
 });
 

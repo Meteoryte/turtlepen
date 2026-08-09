@@ -6,7 +6,25 @@
 it is a 5px lattice quadrant in `logo.turtlepen.json`, a validated document with
 39 adjudicated findings and zero errors.
 
-The lattice has no curves, so a curve is arithmetic:
+The engine now has real shape primitives, so most of the figure is a single
+command each — `circle`, `disc`, `ray`, `triangle`, `dash`. Only the shell is
+still traced, because it is an ellipse and the engine draws true circles:
+
+| Part | How it is drawn |
+|---|---|
+| shell, inner rim | traced ellipse outline (`trace.mjs`) |
+| carapace plates, head, snout, eye, feet, hand | `circle` / `disc` — midpoint algorithm |
+| pupil | `disc 2` |
+| arm, neck, pen barrel | `ray` — Bresenham at any angle |
+| pen nib, tail | `triangle` |
+| brow, corner accents | `dash <n> <dir8>` and `dot` — morse-style marks |
+| shell volume | a dithered gradient on an overlay page at 0.45 opacity |
+| wordmark | a real `place_box` label, measured before placement |
+
+Four Z-pages carry the depth: `base` (easel), `shade` (dither, 0.45),
+`body` (outlines), `detail` (everything on top).
+
+The shell is still traced because an ellipse is not a circle:
 
 1. Define the form implicitly — the shell is `(x-cx)²/rx² + (y-cy)²/ry² <= 1`.
 2. Rasterise it at cell resolution.
