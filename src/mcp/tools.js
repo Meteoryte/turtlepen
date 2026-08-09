@@ -508,7 +508,7 @@ export function createTools(session) {
         properties: {
           operations: {
             type: 'array',
-            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image pen extend_path replace_path resize restyle move rename remove set_canvas accept_finding unaccept_finding. Args match the same-named tool.',
+            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image place_reference pen extend_path replace_path resize restyle move rename remove set_canvas accept_finding unaccept_finding. Args match the same-named tool.',
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
@@ -614,6 +614,40 @@ export function createTools(session) {
           + (m.aspectDriftPct > 0
             ? `aspect: drawn at ${m.drawnAspect} against a source of ${m.sourceAspect} — ${m.aspectDriftPct}% drift from rounding to whole cells`
             : 'aspect: exact — the source ratio survives whole-cell rounding');
+      },
+    },
+    {
+      name: 'place_reference',
+      description:
+        'Lay a reference image UNDER the drawing to trace over. Dithers it onto the lattice, puts it on a page below the base at low opacity, and flags it — L020 then reminds you it is still there, because scaffolding that ships is worse than no scaffolding. Draw on top, then remove_page it.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', description: 'page id; defaults to "reference"' },
+          source: { type: 'string', description: 'a data: URI, or a path relative to the document' },
+          at: { type: 'string' },
+          span: { type: ['string', 'object'] },
+          opacity: { type: 'number', description: 'default 0.25 — faint enough to draw over' },
+        },
+        required: ['source', 'span'],
+        additionalProperties: false,
+      },
+      handler: async ({ id = 'reference', source, at = 'A1.tl', span, opacity = undefined }) => {
+        const doc = need(session);
+        const bytes = await imageBytes(session, source);
+        const probed = core.image.probe(bytes);
+        const page = core.placeReference(doc, {
+          id, at, span, opacity,
+          source: source.startsWith('data:') ? source : `data:${MIME[probed.format]};base64,${bytes.toString('base64')}`,
+        });
+        await persist(session);
+        const cells = core.normalizeSpan(span, 'reference span');
+        const m = core.image.measure(probed, { maxWidthCells: cells.w });
+        return `laid reference "${page.id}" at z:${page.z}, opacity ${page.opacity}, ${cells.w}x${cells.h} cells
+`
+          + `source: ${probed.format} ${probed.width}x${probed.height}${m.aspectDriftPct > 0 ? `, ${m.aspectDriftPct}% aspect drift from whole-cell rounding` : ', aspect exact'}
+`
+          + `draw on top, then remove_page { id: "${page.id}" } — L020 will remind you until you do`;
       },
     },
     {
@@ -745,6 +779,17 @@ SHAPES — anything that is not a rectangle
   dot [<dir8>]                                 one quadrant
   dash <n> <dir8>                              n quadrants, any of eight ways
   dir8 = n ne e se s sw w nw  (up/down/left/right also accepted)
+
+ANCHORS — position as a relationship, not a coordinate
+  pen at <id>.<anchor>                         put the cursor ON an element
+  <shape> ... at <id>.<anchor>                 anchor a shape to one
+  <shape> ... at <id>.<anchor> offset <dx> <dy>   nudge in whole quadrants
+  anchors: N NE E SE S SW W NW C
+
+  "from" gives the SEAT, one step OUTSIDE the element, where a connector starts.
+  "at" gives the anchor itself, on the element, where a shape belongs. Anchoring
+  is what stops proportions drifting: a head anchored to shell.N cannot float
+  off the shell, however the shell is later resized.
 
   These are integer algorithms — Bresenham for lines, midpoint for circles — so
   the same command always covers the same quadrants. A stepped diagonal is not

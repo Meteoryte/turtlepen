@@ -98,6 +98,42 @@ dot                   one quadrant — the morse dot
 diagonal is not an approximation of a smooth line; on a lattice it **is** the
 line, which is how interface art was drawn on 1-bit displays.
 
+## Anchors: position as a relationship
+
+Connectors got `pen from <id>.<face>` early, because a hand-computed address is
+where the mistakes live. Shapes did not, so every part of the first logo was an
+absolute coordinate and the proportions drifted. An anchor fixes that: a head
+anchored to `shell.N` cannot float off the shell, however the shell changes.
+
+```
+pen at shell.C                       put the cursor ON an element
+circle 15 at shell.N                 anchor a shape to one
+circle 7 at head.W offset -3 4       nudge in whole quadrants
+```
+
+`from` gives the **seat**, one step *outside* the element, where a connector
+starts. `at` gives the **anchor**, on the element, where a shape belongs.
+Anchors are `N NE E SE S SW W NW C`, and work on anything with a footprint —
+including a drawn path, whose footprint is computed from the quadrants it covers.
+
+> **Corner anchors are bounding-box corners.** On a rectangle that is what you
+> want. On an ellipse or any organic shape, `SW` is the corner of the box around
+> it, which is empty space — anchoring feet there puts them off the body. Use
+> the edge midpoints (`N S E W C`) with an offset for anything not rectangular.
+
+## Tracing over a reference
+
+```
+place_reference { source: "ref.png", span: "40x24" }
+… draw over it …
+remove_page { id: "reference" }
+```
+
+The image is dithered onto the lattice — so it is made of the same quadrants you
+will draw in — put on a page below the base at 0.25 opacity, and flagged. `L020`
+reports it until you remove it, because scaffolding that ships is worse than no
+scaffolding.
+
 **Closed shapes are not connectors.** A path that returns to its start is marked
 `closed`, and the rules about dangling ends and retraced quadrants do not apply
 to it — they are about connectors, and applying them to an outline is how a rule

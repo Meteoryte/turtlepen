@@ -1,13 +1,13 @@
 # TurtlePen — status
 
-**As of 2026-08-08.** Prototype, working end to end, 186/186 tests green,
+**As of 2026-08-08.** Prototype, working end to end, 198/198 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **186/186 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **198/198 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
 - **An agent authors a real diagram cleanly** (`node examples/agent-session.js`,
   exit 0): seven boxes in two columns and six connectors — including a three-leg
@@ -29,6 +29,14 @@ Verified by running it, not by inspection:
   marks in eight directions. Integer algorithms throughout, so the same command
   always covers the same quadrants — a stepped diagonal is not an approximation
   of a line; on a lattice it is the line.
+- **Position can be a relationship, not a coordinate.** `circle 15 at shell.N
+  offset 0 -4` anchors a shape to an element, including to a drawn path, whose
+  footprint is computed from the quadrants it covers. This is the lesson
+  connectors learned with `pen from <id>.<face>`, applied to shapes — the first
+  logo drifted precisely because every part was an address worked out by hand.
+- **A reference can be traced over.** `place_reference` dithers an image onto a
+  page below the base at low opacity and flags it; `L020` reports it until it is
+  removed, so the scaffolding cannot ship.
 - **A photo is drawn INTO the lattice**: `mode: 'dither'` decodes PNG on
   `node:zlib` alone, quantises to quadrants through a 4×4 Bayer matrix, and
   emits merged horizontal runs. A 400×300 solid area collapses from 4800

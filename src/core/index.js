@@ -295,6 +295,28 @@ export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', 
   return addImage(doc, pageId, { id, rect: r, source, mode, fit, opacity, runs });
 }
 
+/**
+ * Lay a reference image UNDER the drawing, to trace over.
+ *
+ * This is how illustrators actually work, and the engine already had every
+ * piece: dither the reference onto the lattice so it is made of the same
+ * quadrants you will draw in, put it on a page below the base at low opacity,
+ * then draw on top and delete the layer.
+ *
+ * The page is flagged so `L020` can remind you it is still there. Scaffolding
+ * that ships is worse than no scaffolding — this is the one thing the workflow
+ * needs the engine to remember for you.
+ */
+export const REFERENCE_OPACITY = 0.25;
+
+export function placeReference(doc, { id = 'reference', source, at = 'A1.tl', span, opacity = REFERENCE_OPACITY, mode = 'dither' }) {
+  if (!source) throw new SyntaxError('a reference needs an image source — a data: URI, or a path the tool layer has already read');
+  const lowest = doc.pages.reduce((m, p) => Math.min(m, p.z), 0);
+  const page = addPage(doc, { id, z: lowest - 1, intent: 'overlay', title: `${id} (tracing reference)`, opacity, reference: true });
+  placeImage(doc, id, { id: `${id}-image`, at, span, source, mode });
+  return page;
+}
+
 export function acceptFinding(doc, fingerprint, reason) {
   if (!reason || !String(reason).trim()) throw new Error('accepting a finding requires a reason — an unexplained acceptance is indistinguishable from a missed defect');
   const existing = doc.acceptances.find((a) => a.fingerprint === fingerprint);
@@ -333,6 +355,7 @@ export const OPERATIONS = Object.freeze({
   remove_page: (doc, a) => removePage(doc, a.id),
   place_box: (doc, a) => placeBox(doc, a.page ?? 'base', a),
   place_image: (doc, a) => placeImage(doc, a.page ?? 'base', a),
+  place_reference: (doc, a) => placeReference(doc, a),
   pen: (doc, a) => applyPen(doc, a.page ?? 'base', a.program, { id: a.id }),
   extend_path: (doc, a) => extendPath(doc, a.id, a.program),
   replace_path: (doc, a) => replacePath(doc, a.id, a.program),

@@ -51,7 +51,7 @@ export function assertOpacity(value, what = 'opacity') {
   return value;
 }
 
-export function addPage(doc, { id, z = null, intent = 'exclusive', title = null, opacity = null }) {
+export function addPage(doc, { id, z = null, intent = 'exclusive', title = null, opacity = null, reference = false }) {
   if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) {
     throw new SyntaxError(`page id "${id}" must be non-empty and alphanumeric (dashes and underscores allowed)`);
   }
@@ -61,7 +61,7 @@ export function addPage(doc, { id, z = null, intent = 'exclusive', title = null,
   }
   const zed = z == null ? doc.pages.reduce((m, p) => Math.max(m, p.z), -1) + 1 : z;
   if (doc.pages.some((p) => p.z === zed)) throw new Error(`z-index ${zed} is already occupied by page "${doc.pages.find((p) => p.z === zed).id}"`);
-  const page = { id, z: zed, intent, title: title ?? id, visible: true, opacity: assertOpacity(opacity, 'page opacity') ?? DEFAULT_PAGE_OPACITY[intent] };
+  const page = { id, z: zed, intent, title: title ?? id, visible: true, opacity: assertOpacity(opacity, 'page opacity') ?? DEFAULT_PAGE_OPACITY[intent], ...(reference ? { reference: true } : {}) };
   doc.pages.push(page);
   doc.pages.sort((a, b) => a.z - b.z);
   doc.elements[id] = [];

@@ -46,6 +46,7 @@ export const RULES = Object.freeze({
   L017: { severity: 'S3', title: 'centring bias', blurb: 'centred text could not be split evenly, so a pixel went left' },
   L018: { severity: 'S3', title: 'centring bias', blurb: 'a stroke centred in an even corridor could not sit exactly in the middle' },
   L019: { severity: 'S2', title: 'invisible but claiming', blurb: 'an element faded past legibility still occupies its quadrants' },
+  L020: { severity: 'S2', title: 'reference still present', blurb: 'a tracing underlay is still in the document' },
 });
 
 /**
@@ -475,6 +476,28 @@ function againstLowerPages(doc, p) {
 
 function documentWide(doc, pages) {
   const out = [];
+
+  // L020 — a tracing reference is still in the document.
+  //
+  // An underlay is scaffolding: it exists to be drawn over and then removed.
+  // Forgetting it is easy, because at 0.25 opacity it looks like part of the
+  // drawing rather than a mistake. This is the one thing the tracing workflow
+  // needs the engine to remember, so it warns rather than trusting a habit.
+  for (const p of pages) {
+    if (!p.reference) continue;
+    out.push(
+      finding('L020', p.id, {
+        message:
+          `page "${p.id}" is a tracing reference and is still in the document. It was laid down to draw over, ` +
+          'not to ship — remove it before this becomes artwork.',
+        actors: [p.id],
+        cells: [],
+        metrics: { z: p.z, opacity: p.opacity },
+        fixes: [{ kind: 'remove', description: `remove the page: remove_page { id: "${p.id}" }`, params: { id: p.id } }],
+      }),
+    );
+  }
+
   const seen = new Map();
   for (const p of pages) {
     for (const el of elementsOf(doc, p.id)) {

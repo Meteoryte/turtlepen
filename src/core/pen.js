@@ -201,7 +201,7 @@ export function runPen(program, ctx = {}) {
   commands.forEach((cmd, step) => {
     const label = `step ${step + 1}: ${cmd.source}`;
 
-    if (cmd.at) setCursorFromAddress(state, cmd.at);
+    if (cmd.at) setCursorFromLocation(state, cmd.at, ctx, cmd.source);
 
     switch (cmd.element) {
       case 'pen': {
@@ -445,10 +445,30 @@ export function runPen(program, ctx = {}) {
  *   dash <n> <dir8>               n quadrants in any of the eight directions
  */
 function shapeQuads(cmd, state, ctx) {
-  const at = (token) => {
-    const r = addressRect(parseAddress(token));
-    return { x: r.x, y: r.y };
-  };
+  const at = (token) => resolveLocation(token, ctx ?? {}, cmd.source);
+
+  // An anchored shape is positioned by relationship rather than by a coordinate
+  // someone worked out by hand. `offset` nudges it in whole quadrants without
+  // breaking that relationship.
+  let origin = { x: state.x, y: state.y };
+  const atIdx = cmd.args.findIndex((a) => String(a).toLowerCase() === 'at');
+  if (atIdx >= 0) {
+    const target = cmd.args[atIdx + 1];
+    if (!target) throw new SyntaxError(`"at" needs an anchor, e.g. "at shell.C" — in: ${cmd.source}`);
+    origin = at(target);
+    cmd.args.splice(atIdx, 2);
+  }
+  const offIdx = cmd.args.findIndex((a) => String(a).toLowerCase() === 'offset');
+  if (offIdx >= 0) {
+    const dx = Number(cmd.args[offIdx + 1]), dy = Number(cmd.args[offIdx + 2]);
+    if (!Number.isInteger(dx) || !Number.isInteger(dy)) {
+      throw new SyntaxError(`"offset" needs two whole quadrant counts, e.g. "offset 4 -3" — in: ${cmd.source}`);
+    }
+    origin = { x: origin.x + dx, y: origin.y + dy };
+    cmd.args.splice(offIdx, 3);
+  }
+  state.x = origin.x;
+  state.y = origin.y;
   const num = (token, what) => {
     const v = Number(token);
     if (!Number.isInteger(v)) {
@@ -515,6 +535,62 @@ function setCursorFromAddress(state, address) {
   const r = addressRect(parseAddress(address));
   state.x = r.x;
   state.y = r.y;
+}
+
+/**
+ * A location is either an address or an ANCHOR on an existing element.
+ *
+ * Connectors learned this early — `pen from gateway.S` exists because a
+ * hand-computed address is where the mistakes live. Shapes never learned it, so
+ * every part of the first logo was an absolute coordinate worked out by hand and
+ * the proportions drifted. An anchor makes position a relationship, and a
+ * relationship cannot drift.
+ *
+ * `from` gives the SEAT (one step outside the element, where a connector
+ * starts); `at` gives the anchor itself (on the element, where a shape belongs).
+ */
+export function resolveLocation(token, ctx, source) {
+  if (looksLikeAddress(token)) {
+    const r = addressRect(parseAddress(token));
+    return { x: r.x, y: r.y };
+  }
+  const m = /^([A-Za-z0-9_-]+)\.([A-Za-z]{1,2})$/.exec(String(token));
+  if (!m) {
+    throw new SyntaxError(`"${token}" is neither an address like C4.q2 nor an anchor like shell.C — in: ${source}`);
+  }
+  if (typeof ctx.resolveElement !== 'function') {
+    throw new Error(`"at ${token}" needs a document to resolve against — in: ${source}`);
+  }
+  const el = ctx.resolveElement(m[1]);
+  if (!el) throw new Error(`no element "${m[1]}" to anchor to — in: ${source}`);
+  return portPoint(anchorRect(el, m[1], source), m[2]);
+}
+
+/**
+ * The footprint an anchor is measured against.
+ *
+ * Boxes and images carry a rect. A path does not — but a drawn shape is exactly
+ * the thing you most want to anchor to, so its bounding box is computed from
+ * the quadrants it actually covers. Without this, anchoring would work for
+ * every element except the ones you drew.
+ */
+function anchorRect(el, id, source) {
+  if (el.rect) return el.rect;
+  if (!el.pieces?.length) {
+    throw new Error(`"${id}" is a ${el.kind} with no footprint to anchor to — in: ${source}`);
+  }
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const p of el.pieces) {
+    x0 = Math.min(x0, p.x); y0 = Math.min(y0, p.y);
+    x1 = Math.max(x1, p.x); y1 = Math.max(y1, p.y);
+  }
+  return rect(x0, y0, x1 - x0 + 1, y1 - y0 + 1);
+}
+
+function setCursorFromLocation(state, token, ctx, source) {
+  const p = resolveLocation(token, ctx ?? {}, source);
+  state.x = p.x;
+  state.y = p.y;
 }
 
 function distanceToTarget(state, dir, target, ctx, source) {
