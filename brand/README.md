@@ -1,60 +1,50 @@
 # TurtlePen brand
 
-## The logo
+## The actual logo
 
-`logo.svg` is drawn **by TurtlePen**, not by hand and not imported. Every mark in
-it is a 5px lattice quadrant in `logo.turtlepen.json`, a validated document with
-39 adjudicated findings and zero errors.
+`logo.svg` is the canonical full TurtlePen logo: the supplied friendly turtle
+drawing on an easel, with the **Turtle Pen / MCP** wordmark. `logo-mark.svg` is
+the illustration-only mark used by the live viewer.
 
-The engine now has real shape primitives, so most of the figure is a single
-command each — `circle`, `disc`, `ray`, `triangle`, `dash`. Only the shell is
-still traced, because it is an ellipse and the engine draws true circles:
+Both are rendered by TurtlePen from `logo.turtlepen.json`. The supplied bitmap
+was used as a visual reference only; it is not embedded, traced as an image, or
+shipped in either artifact.
 
-| Part | How it is drawn |
+| Part | TurtlePen construction |
 |---|---|
-| shell, inner rim | traced ellipse outline (`trace.mjs`) |
-| carapace plates, head, snout, eye, feet, hand | `circle` / `disc` — midpoint algorithm |
-| pupil | `disc 2` |
-| arm, neck, pen barrel | `ray` — Bresenham at any angle |
-| pen nib, tail | `triangle` |
-| brow, corner accents | `dash <n> <dir8>` and `dot` — morse-style marks |
-| shell volume | a dithered gradient on an overlay page at 0.45 opacity |
-| wordmark | a real `place_box` label, measured before placement |
+| shell, body, head, feet, arm, hand | scan-converted to exact 5px quadrant runs and painted with `paint: "cells"` |
+| navy silhouettes and shell plates | open/closed artwork paths with safe hex colour, 1–5px width, and round caps |
+| eyes and pupils | `disc` fills plus `circle` outlines |
+| pen and nib | `ray`/polyline barrel plus a filled lattice polygon |
+| easel, board, clamp, tray, legs | filled lattice polygons with separate vector outlines |
+| board flourish | a green polyline and arc |
+| wordmark | measured TurtlePen text with explicit colour, alignment, size, and weight |
 
-Four Z-pages carry the depth: `base` (easel), `shade` (dither, 0.45),
-`body` (outlines), `detail` (everything on top).
-
-The shell is still traced because an ellipse is not a circle:
-
-1. Define the form implicitly — the shell is `(x-cx)²/rx² + (y-cy)²/ry² <= 1`.
-2. Rasterise it at cell resolution.
-3. Walk the boundary, keeping the outside on the left.
-4. Compress each straight run into one `<dir> N line`, and put a corner at every
-   turn.
-
-The shell comes out as **63 orthogonal runs**. The pen literally walks the
-outline, which is what a turtle graphics system is for.
-
-- `trace.mjs` — the shape-to-pen-program tracer. `traceProgram(inside, x0, y0,
-  x1, y1)` takes a membership test and returns a pen program.
-- `build-logo.mjs` — the composition: which ellipse is which body part.
-
-Spur cancellation matters: at the extreme tips of an ellipse the boundary walk
-goes out one cell and straight back, which would retrace its own quadrants and
-ask for a corner joining a side to itself — not a corner at all. Those pairs are
-cancelled before emission.
+The construction uses four semantic Z-pages above the base: colour, outlines,
+features, and type. Cartoon parts deliberately overlap. The build validates
+those overlaps and accepts each non-INFO finding by its geometry fingerprint
+with an explicit reason; any changed geometry produces a new fingerprint and
+will block the next build until it is reviewed. The current artifact has no
+open finding above INFO.
 
 ## Regenerating
 
 ```bash
-node brand/build-logo.mjs          # writes logo-ops.json
-# then send the operations through the turtlepen MCP `plan` tool, commit,
-# adjudicate, and render
+pnpm run logo
 ```
 
-## Why so many accepted findings
+That one command uses TurtlePen's own tool handlers to:
 
-A drawing is not a diagram. Every closed outline begins and ends at the same
-quadrant (`L008`, `L015`), and body parts touch each other on purpose (`L006`).
-Each one is accepted with a stated reason rather than forced, so the intent is
-on the record and lapses automatically if the geometry moves.
+1. create a 120×120-cell document;
+2. rehearse all 64 composition operations;
+3. commit them transactionally;
+4. validate and fingerprint intentional construction overlaps;
+5. save `logo.turtlepen.json`;
+6. render the 1200×1200 `logo.svg` and cropped `logo-mark.svg`.
+
+The creation timestamp and acceptance timestamps are pinned presentation
+metadata, so rerunning the command produces byte-identical JSON and SVG files.
+
+`trace.mjs` remains a general implicit-shape tracer from the earlier logo
+study. The canonical logo builder now uses finer quadrant scan conversion in
+`build-logo.mjs`, which is better suited to the supplied cartoon reference.

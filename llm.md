@@ -40,6 +40,27 @@ of placement and makes every defect a ranked, numeric finding.
   hash of rule + page + actors + exact quadrants. Never add an
   accept-by-rule or accept-by-element escape hatch; an acceptance that survives
   a geometry change is indistinguishable from a missed defect.
+- **A green `validate` is not evidence of a good diagram.** It is evidence of an
+  undefective one. `summary.clean` considers only `S0` and `S1`; composition
+  findings are `S3` and deliberately do not affect it. Adjudicate them like any
+  other finding — compose the page, or declare the page intent `schematic` to
+  state that the sparseness is deliberate. Never suppress one by lowering its
+  severity or widening the threshold to fit the diagram in front of you: the
+  threshold is calibrated against `diagrams/`, and moving it silently
+  reclassifies every past diagram.
+- **Composition is judged per document, on its densest page.** Judging each page
+  independently was tried and was wrong — an annotation overlay is legitimately
+  sparse, and four of the seven shipped diagrams tripped on their `notes`,
+  `review` and `leaves` overlays while their base pages were richly composed.
+- **Composition rules C002–C004 are deferred, not forgotten.** Primitive-heaviness,
+  repetition, and absolute addressing cannot be measured from a saved document:
+  it stores rasterized `line`/`corner` pieces and no program, and anchors are
+  declarative inputs that are never persisted. Geometric proxies for them
+  false-flag real diagrams — `branching-tree` and `home-lab-network` are 100%
+  straight runs because a network diagram legitimately is. They are unblocked by
+  a negative corpus under `diagrams/negative/`, not by a cleverer heuristic. See
+  `docs/superpowers/specs/2026-08-09-turtlepen-composition-findings-design.md`
+  at the workspace root.
 - **Placement is never rejected for collision.** Only structurally impossible
   input throws (off-grid placement, a corner that does not include its arrival
   side, a malformed program). Collisions are reported, not blocked.
@@ -62,6 +83,13 @@ of placement and makes every defect a ranked, numeric finding.
 - **A batch is all-or-nothing.** `commitOperations` rehearses first and applies
   only if every operation succeeds. A partially applied batch leaves the
   document in a state the caller never asked for.
+- **Anchors resolve at execution time.** `at shell.N` derives a coordinate from
+  the target's current footprint when the pen program runs. It does not create
+  a stored constraint graph; later moving `shell` will not move elements that
+  already exist. Rerun the declarative program to recompute them.
+- **Artwork styling is presentation-only.** An artwork path may use a colour,
+  thin width, and cap, and the SVG may simplify the painted polyline. Its stored
+  integer pieces remain the sole collision and selection geometry.
 
 ## Boundaries
 
@@ -107,7 +135,7 @@ exact quadrant footprint, not just that it parses.
 
 ## Testing
 
-`pnpm run check` — 104 tests plus both examples. No framework. Assert exact cell
+`pnpm run check` — 229 tests plus the examples, canonical logo, and tree study. No framework. Assert exact cell
 sets and exact pixel counts. The whole point of integer geometry is that tests
 can be exact; an approximate assertion here is a smell.
 

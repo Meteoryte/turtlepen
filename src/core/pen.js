@@ -67,7 +67,9 @@ export function tokenize(line) {
 export function splitProgram(program) {
   return String(program)
     .split('\n')
-    .map((l) => l.replace(/#.*$/, '').trim())
+    // A hash at the start of a line, or " # " after a command, is a comment.
+    // A compact hash token is a hex colour (`fill #001b35`) and must survive.
+    .map((l) => (l.trimStart().startsWith('#') ? '' : l.replace(/\s+#(?=\s|$).*$/, '')).trim())
     .filter(Boolean)
     .flatMap((l) => l.split(';').map((s) => s.trim()).filter(Boolean));
 }
@@ -78,7 +80,7 @@ export function splitProgram(program) {
 
 export function parseCommand(source) {
   const toks = tokenize(source);
-  const cmd = { source, dir: null, n: null, align: [], style: null, element: null, at: null, from: null, to: null, label: null, span: null, id: null, font: null, fill: null, arrowEnd: false, args: [] };
+  const cmd = { source, dir: null, n: null, align: [], style: null, element: null, at: null, from: null, to: null, label: null, span: null, id: null, font: null, weight: null, fill: null, arrowEnd: false, args: [] };
   const seen = [];
 
   // Shapes read their own arguments positionally.
@@ -119,6 +121,7 @@ export function parseCommand(source) {
     if (low === 'fill') { cmd.fill = requireNext(toks, ++i, 'fill', source); continue; }
     if (low === 'span') { cmd.span = parseSpan(requireNext(toks, ++i, 'span', source), source); continue; }
     if (low === 'font') { cmd.font = Number(requireNext(toks, ++i, 'font', source)); continue; }
+    if (low === 'weight') { cmd.weight = Number(requireNext(toks, ++i, 'weight', source)); continue; }
 
     if (/^\d+$/.test(low)) { cmd.n = Number(low); continue; }
     if (/^\d+x\d+$/i.test(low)) { cmd.span = parseSpan(low, source); continue; }
@@ -246,7 +249,8 @@ export function runPen(program, ctx = {}) {
         const a = parseAddress(cmd.at);
         const p = pinPoint(a);
         const span = cmd.span ?? { w: Math.max(1, Math.ceil(String(cmd.label ?? '').length / 3)), h: 1 };
-        texts.push({ id: cmd.id, rect: rect(p.x, p.y, span.w * 2, span.h * 2), text: cmd.label ?? '', fontSize: cmd.font });
+        const align = cmd.align.find((value) => ['left', 'center', 'right'].includes(value)) ?? 'left';
+        texts.push({ id: cmd.id, rect: rect(p.x, p.y, span.w * 2, span.h * 2), text: cmd.label ?? '', fontSize: cmd.font, align, color: cmd.fill, weight: cmd.weight });
         trace.push({ step: step + 1, source: cmd.source, action: 'text', at: quadToAddress(p.x, p.y) });
         return;
       }
@@ -447,9 +451,9 @@ export function runPen(program, ctx = {}) {
 function shapeQuads(cmd, state, ctx) {
   const at = (token) => resolveLocation(token, ctx ?? {}, cmd.source);
 
-  // An anchored shape is positioned by relationship rather than by a coordinate
-  // someone worked out by hand. `offset` nudges it in whole quadrants without
-  // breaking that relationship.
+  // An anchored shape resolves its coordinate from a relationship at execution
+  // time rather than from a value someone worked out by hand. `offset` nudges
+  // that resolved point in whole quadrants.
   let origin = { x: state.x, y: state.y };
   const atIdx = cmd.args.findIndex((a) => String(a).toLowerCase() === 'at');
   if (atIdx >= 0) {
@@ -543,8 +547,8 @@ function setCursorFromAddress(state, address) {
  * Connectors learned this early — `pen from gateway.S` exists because a
  * hand-computed address is where the mistakes live. Shapes never learned it, so
  * every part of the first logo was an absolute coordinate worked out by hand and
- * the proportions drifted. An anchor makes position a relationship, and a
- * relationship cannot drift.
+ * the proportions drifted. An anchor derives position from a relationship when
+ * the program runs, so the author does not have to recompute the coordinate.
  *
  * `from` gives the SEAT (one step outside the element, where a connector
  * starts); `at` gives the anchor itself (on the element, where a shape belongs).

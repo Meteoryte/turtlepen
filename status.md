@@ -1,14 +1,21 @@
 # TurtlePen — status
 
-**As of 2026-08-08.** Prototype, working end to end, 198/198 tests green,
+**As of 2026-08-10.** Prototype, working end to end, 229/229 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **198/198 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **229/229 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
+- **A diagram can be judged on composition, not just correctness.** `C001`
+  (S3/INFO) reports a document whose densest page inks less than 1.2% of its
+  canvas — the case that previously scored green because "no defects" is
+  trivially achieved by drawing almost nothing. Judged per document rather than
+  per page, because an annotation overlay is legitimately sparse. Calibrated
+  against all seven shipped diagrams, which is asserted by a regression test:
+  if the fidelity bar ever trips the rule, the threshold is wrong.
 - **An agent authors a real diagram cleanly** (`node examples/agent-session.js`,
   exit 0): seven boxes in two columns and six connectors — including a three-leg
   route around an obstructing box — rehearsed, committed, and annotated on an
@@ -21,7 +28,7 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (27 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (29 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
 - **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),
@@ -31,9 +38,9 @@ Verified by running it, not by inspection:
   of a line; on a lattice it is the line.
 - **Position can be a relationship, not a coordinate.** `circle 15 at shell.N
   offset 0 -4` anchors a shape to an element, including to a drawn path, whose
-  footprint is computed from the quadrants it covers. This is the lesson
-  connectors learned with `pen from <id>.<face>`, applied to shapes — the first
-  logo drifted precisely because every part was an address worked out by hand.
+  footprint is computed from the quadrants it covers. The anchor resolves when
+  the program runs; it prevents hand-calculation drift but is not a stored live
+  constraint after the element has been created.
 - **A reference can be traced over.** `place_reference` dithers an image onto a
   page below the base at low opacity and flags it; `L020` reports it until it is
   removed, so the scaffolding cannot ship.
@@ -47,12 +54,21 @@ Verified by running it, not by inspection:
   the ASCII view.
 - **SVG geometry is integer pixels throughout**, and every text run carries
   `textLength` matching the measured width exactly.
+- **The supplied tree is reproducible through TurtlePen itself.** `pnpm run
+  tree` rehearses and commits 65 branch segments plus 50 leaves through the MCP
+  tool handlers, validates the result, and regenerates a deterministic 540×960
+  document and SVG with no open finding above INFO.
+- **The supplied turtle-at-easel artwork is now the actual logo.** `pnpm run
+  logo` uses TurtlePen's own tool handlers for 64 rehearsed/committed operations
+  and regenerates byte-identical source, full-logo, and mark SVG artifacts. The
+  source bitmap is not embedded; solid colour is exact claimed-cell paint, and
+  all intentional construction overlaps are fingerprint-adjudicated.
 
 ## Closed since the first build
 
 - **Every fix the engine suggests now has a tool that applies it** — `resize`,
   `restyle`, `move`, `rename`, `update_page`, `set_canvas`, `extend_path`,
-  `replace_path`. A test asserts the mapping stays closed, so a new fix kind
+  `replace_path`, `remove`, `remove_page`. A test asserts the mapping stays closed, so a new fix kind
   without a repair route fails the suite.
 - **`plan`** rehearses a whole composition on a clone and reports conflicts
   before committing; `commit: true` applies all-or-nothing.
@@ -66,6 +82,32 @@ Verified by running it, not by inspection:
   quadrants it names.
 - **Occupied-port detection** in the viewer, with a message naming the likely
   cause instead of an unhandled `EADDRINUSE`.
+
+## Closed in the full audit
+
+- **Single operations are transactional as well as plans.** A failed multi-mark
+  pen program, reference placement, or path replacement now leaves the live
+  document byte-identical instead of leaking partial elements, orphan pages, or
+  deleting the path it was meant to replace.
+- **Path movement preserves resumability.** The stored pen end moves with its
+  pieces, so a later `extend_path` continues from the visible endpoint.
+- **Reference tracing has parity and correct collision semantics.** Local image
+  paths resolve inside `plan`, drawing over a reference no longer raises a false
+  exclusive-page collision, and `L020` routes to the direct `remove_page` tool.
+- **Forced-save provenance survives load/save round trips.** The warning can no
+  longer disappear merely because a document was reopened.
+- **Open illustration paths are first-class artwork.** They retain exact integer
+  claims while supporting safe hex colour, 1–5px width, cap style, smooth line
+  presentation, or solid claimed-cell paint without connector-only
+  dangling/retrace warnings.
+- **Full-canvas rendering is explicit.** `render { bounds: "canvas" }` preserves
+  the declared portrait canvas instead of cropping to content.
+- **The live viewer survives its first successful poll.** Missing helpers were
+  restored, finding rows are keyboard buttons, status updates are announced,
+  reduced motion is honoured, error text is escaped, static paths are confined,
+  and the favicon request is quiet. Unchanged polls now compare the file
+  timestamp before loading the document and return a tiny acknowledgement,
+  avoiding repeated validation, rendering, and transfer of large artwork.
 
 ## Found by using it, then fixed
 
@@ -141,6 +183,9 @@ draw a curve at all, and that its rules did not know what a drawing was:
   of tokens, with no pagination or filtering by region.
 - **No grouping or containers** — no way to say "these five boxes are one
   subsystem" and move or validate them as a unit.
+- **Anchors are execution-time placement helpers, not persistent constraints.**
+  Moving a target later does not move already-created dependents; rerun the
+  declarative program to recompute them.
 - **`free_space` searches one page at a time**, so it can propose a spot that is
   free on the target page but occupied on an exclusive page below it.
 - **Text elements are not collision-checked against each other for legibility**,
@@ -150,11 +195,10 @@ draw a curve at all, and that its rules did not know what a drawing was:
 
 Ranked by what the authoring session actually suggested, not by guesswork:
 
-1. **A second, harder session.** One diagram is one data point. The obvious next
-   shapes to try: a dense diagram where free space runs out, a wide fan-out
-   where many connectors leave one box on the same face, and a rework pass where
-   an existing diagram is edited rather than authored fresh. Editing is the
-   least-exercised path in the whole tool.
+1. **A dense constraint-stress session.** The flow, topology, tree, and actual
+   logo now cover substantially different authoring modes. The next useful edge
+   is a diagram where free space runs out and many connectors compete for the
+   same face, followed by a rework pass over that crowded document.
 2. **Multiple connectors on one face.** Every connector leaving a box currently
    seats at the same midpoint, so two would overlap immediately. Seats probably
    need an index (`gateway.S#2`) or an offset.

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TurtlePen viewer</title>
+<link rel="icon" href="/brand-logo.svg" type="image/svg+xml">
 <style>
   :root {
     --bg: #f7f8fb; --panel: #ffffff; --ink: #171a22; --muted: #5b6478;
@@ -17,8 +18,9 @@
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink);
          font: 13px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
-  header { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
            padding: 12px 18px; border-bottom: 1px solid var(--line); background: var(--panel); }
+  .brand-mark { width: 30px; height: 30px; object-fit: contain; flex: 0 0 auto; }
   h1 { margin: 0; font-size: 15px; letter-spacing: -0.01em; }
   .meta { color: var(--muted); font-family: var(--mono); font-size: 11.5px; }
   .counts { margin-left: auto; display: flex; gap: 6px; font-family: var(--mono); font-size: 11.5px; }
@@ -39,8 +41,10 @@
   .pages label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; color: var(--muted); }
   .pages label.on { color: var(--ink); }
   .finding { border-left: 3px solid var(--line); padding: 6px 0 6px 10px; margin-bottom: 10px;
-             cursor: pointer; border-radius: 0 4px 4px 0; }
+             cursor: pointer; border-radius: 0 4px 4px 0; width: 100%; text-align: left;
+             color: inherit; background: transparent; font: inherit; border-top: 0; border-right: 0; border-bottom: 0; }
   .finding:hover { background: var(--bg); }
+  .finding:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
   .finding.sel { background: var(--bg); outline: 1px solid var(--line); }
   @keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
   .flash { animation: flash 0.4s ease-in-out 3; }
@@ -56,13 +60,18 @@
   .empty { color: var(--muted); font-style: italic; }
   .err { color: var(--s1); font-family: var(--mono); }
   details summary { cursor: pointer; color: var(--muted); font-size: 12px; }
+  @media (prefers-reduced-motion: reduce) {
+    .flash { animation: none; outline: 2px solid var(--s2); }
+    * { scroll-behavior: auto !important; }
+  }
 </style>
 </head>
 <body>
 <header>
+  <img class="brand-mark" src="/brand-logo.svg" alt="">
   <h1>TurtlePen</h1>
-  <span class="meta" id="doc">connecting…</span>
-  <span class="counts" id="counts"></span>
+  <span class="meta" id="doc" aria-live="polite">connecting…</span>
+  <span class="counts" id="counts" aria-live="polite"></span>
 </header>
 <main>
   <section id="stage"></section>
@@ -70,7 +79,7 @@
     <h2>Pages</h2>
     <div id="pages" class="pages"></div>
     <h2>Collision log</h2>
-    <div id="log" class="empty">waiting for a diagram…</div>
+    <div id="log" class="empty" aria-live="polite">waiting for a diagram…</div>
     <h2>ASCII</h2>
     <details><summary>show quadrant view</summary><pre id="ascii"></pre></details>
   </aside>
@@ -82,21 +91,31 @@
   let selected = null;          // fingerprint of the focused finding
 
   const SEV = { S0: 'CRITICAL', S1: 'ERROR', S2: 'WARN', S3: 'INFO' };
+  const esc = (value) => String(value)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  const pill = (severity, count) => count
+    ? '<span class="pill on-' + severity + '">' + SEV[severity].toLowerCase() + ' ' + count + '</span>'
+    : '';
 
   async function tick() {
     let s;
-    try { s = await (await fetch('/api/state', { cache: 'no-store' })).json(); }
+    const stateUrl = '/api/state' + (lastMtime >= 0 ? '?since=' + encodeURIComponent(lastMtime) : '');
+    try { s = await (await fetch(stateUrl, { cache: 'no-store' })).json(); }
     catch { el('doc').textContent = 'viewer offline'; return; }
 
     if (!s.ok) {
-      el('doc').innerHTML = '<span class="err">' + s.error + '</span>';
+      el('doc').classList.add('err');
+      el('doc').textContent = s.error;
       el('stage').innerHTML = '';
       el('log').textContent = 'no diagram loaded';
       return;
     }
+    if (s.unchanged) return;
     if (s.mtime === lastMtime) return;
     lastMtime = s.mtime;
 
+    el('doc').classList.remove('err');
     el('doc').textContent = s.name + '  ·  ' + s.pages.map(p => p.id + ' z:' + p.z + ' ' + p.intent).join('  ·  ')
       + '  ·  ' + s.lattice.pxPerCell + 'px cells / ' + s.lattice.pxPerQuadrant + 'px quadrants';
 
@@ -108,7 +127,7 @@
     el('pages').innerHTML = s.pages.map(p =>
       '<label class="' + (hidden.has(p.id) ? '' : 'on') + '">' +
         '<input type="checkbox" data-page="' + esc(p.id) + '"' + (hidden.has(p.id) ? '' : ' checked') + '>' +
-        esc(p.id) + ' z:' + p.z + ' ' + p.intent +
+        esc(p.id) + ' z:' + p.z + ' ' + esc(p.intent) +
       '</label>').join('');
 
     el('stage').innerHTML = s.svg;
@@ -119,13 +138,13 @@
       el('log').innerHTML = '<div class="empty">no open findings</div>';
     } else {
       el('log').innerHTML = s.findings.map(f =>
-        '<div class="finding ' + f.severity + (f.fingerprint === selected ? ' sel' : '') + '" data-fp="' + f.fingerprint + '">' +
+        '<button type="button" class="finding ' + f.severity + (f.fingerprint === selected ? ' sel' : '') + '" data-fp="' + f.fingerprint + '">' +
           '<div class="rule">' + SEV[f.severity] + ' · ' + f.rule + ' ' + esc(f.title) + ' · page:' + esc(f.page) + '</div>' +
           '<div class="msg">' + esc(f.message) + '</div>' +
           (f.cellSummary ? '<div class="fix">at ' + esc(f.cellSummary) + '</div>' : '') +
           f.fixes.map(x => '<div class="fix">fix: ' + esc(x.description) + '</div>').join('') +
           '<div class="fp">#' + f.fingerprint + '</div>' +
-        '</div>').join('');
+        '</button>').join('');
     }
   }
 
@@ -154,7 +173,7 @@
     for (const c of document.querySelectorAll('.finding')) c.classList.toggle('sel', c.dataset.fp === selected);
     const marks = document.querySelectorAll('#stage rect[data-fp="' + selected + '"]');
     if (!marks.length) return;
-    marks[0].scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' });
+    marks[0].scrollIntoView({ block: 'center', inline: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     for (const m of marks) { m.classList.remove('flash'); void m.getBoundingClientRect(); m.classList.add('flash'); }
   });
 

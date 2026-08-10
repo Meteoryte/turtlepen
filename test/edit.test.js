@@ -32,6 +32,7 @@ test('every fix kind the engine emits is covered by an operation', () => {
     widen: 'resize', heighten: 'resize', shorten: 'restyle', font: 'restyle',
     move: 'move', rename: 'rename', intent: 'update_page', canvas: 'set_canvas',
     extend: 'extend_path', reroute: 'replace_path', offset: 'replace_path', hop: 'replace_path',
+    remove: 'remove', remove_page: 'remove_page',
   };
   for (const kind of kinds) {
     assert.ok(routes[kind], `fix kind "${kind}" has no documented repair route`);
@@ -92,6 +93,20 @@ test('moving a path shifts every piece together', () => {
   });
 });
 
+test('moving a path also moves its resumable end state', () => {
+  const d = core.createDocument({ name: 'move-end' });
+  core.applyPen(d, 'base', 'pen C4.q1\nright 2 align top line', { id: 'wire' });
+  const path = core.findElement(d, 'wire').element;
+  const before = { ...path.end };
+  core.moveElement(d, 'wire', 4, 6);
+  assert.deepEqual(path.end, { ...before, x: before.x + 4, y: before.y + 6 });
+
+  const oldLength = path.pieces.length;
+  core.extendPath(d, 'wire', 'right 1 align top line');
+  assert.equal(path.pieces[oldLength].x, before.x + 4, 'the extension begins at the moved endpoint');
+  assert.equal(path.pieces[oldLength].y, before.y + 6);
+});
+
 test('restyle relabels and re-measures', () => {
   const d = doc();
   core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 }, label: 'Immutable Audit Trail' });
@@ -99,6 +114,25 @@ test('restyle relabels and re-measures', () => {
   const r = core.restyleBox(d, 'a', { label: 'Audit' });
   assert.ok(r.fit.fits);
   assert.ok(core.validate(d).summary.clean);
+});
+
+test('a failed restyle validates every field before changing any of them', () => {
+  const d = core.createDocument({ name: 'atomic-restyle' });
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: '8x4', label: 'Before' });
+  const before = core.serialize(d);
+  assert.throws(
+    () => core.restyleBox(d, 'a', { label: 'After', fill: 'url(javascript:alert(1))' }),
+    /hex colour/,
+  );
+  assert.equal(core.serialize(d), before);
+});
+
+test('a failed page update is atomic across intent and stacking changes', () => {
+  const d = core.createDocument({ name: 'atomic-page' });
+  core.addPage(d, { id: 'notes', z: 1, intent: 'exclusive' });
+  const before = core.serialize(d);
+  assert.throws(() => core.updatePage(d, 'notes', { intent: 'overlay', z: 0 }), /already occupied/);
+  assert.equal(core.serialize(d), before);
 });
 
 test('update_page turns an exclusive error into an overlay note', () => {
@@ -179,6 +213,24 @@ test('replace_path keeps the id and the draw order', () => {
   const ids = core.elementsOf(d, 'base').map((e) => e.id);
   assert.deepEqual(ids, ['first', 'second'], 'draw order is unchanged');
   assert.equal(core.findElement(d, 'first').element.pieces.length, 6);
+});
+
+test('a failed replacement preserves the original path', () => {
+  const d = core.createDocument({ name: 'safe-replace' });
+  core.applyPen(d, 'base', 'pen C4.q1\nright 2 align top line', { id: 'wire' });
+  const before = core.serialize(d);
+  assert.throws(() => core.replacePath(d, 'wire', 'pen A1.q1'), /drew no strokes/);
+  assert.equal(core.serialize(d), before, 'a malformed replacement cannot delete the path it was meant to replace');
+});
+
+test('a pen program that fails while adding elements applies nothing', () => {
+  const d = core.createDocument({ name: 'atomic-pen' });
+  const before = core.serialize(d);
+  assert.throws(
+    () => core.applyPen(d, 'base', 'box span 2x2 at C4.tl id same; box span 2x2 at H4.tl id same'),
+    /already exists/,
+  );
+  assert.equal(core.serialize(d), before, 'the first box must not leak out of the failed pen operation');
 });
 
 // ---------------------------------------------------------------------------

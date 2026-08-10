@@ -11,11 +11,12 @@
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve, extname } from 'node:path';
+import { dirname, join, resolve, extname, relative, isAbsolute } from 'node:path';
 
 import * as core from '../core/index.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
+const BRAND_MARK = resolve(here, '../../brand/logo-mark.svg');
 const args = process.argv.slice(2);
 const argOf = (name, fallback) => {
   const i = args.indexOf(`--${name}`);
@@ -28,15 +29,22 @@ const DOC_PATH = resolve(process.cwd(), argOf('doc', 'diagrams/example.turtlepen
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml' };
 
-async function state() {
+async function state(since = null) {
   let doc;
+  let info;
   try {
+    // Check the cheap file timestamp before loading, validating, and rendering
+    // the whole document. Large artwork documents otherwise made every quiet
+    // poll as expensive as the initial page load.
+    info = await stat(DOC_PATH);
+    if (since !== null && Number(since) === info.mtimeMs) {
+      return { ok: true, unchanged: true, mtime: info.mtimeMs };
+    }
     doc = await core.loadDocument(DOC_PATH);
   } catch (err) {
     return { ok: false, path: DOC_PATH, error: err.code === 'ENOENT' ? `no diagram at ${DOC_PATH}` : err.message };
   }
   const validation = core.validate(doc);
-  const info = await stat(DOC_PATH);
   return {
     ok: true,
     path: DOC_PATH,
@@ -54,16 +62,27 @@ async function state() {
 }
 
 const server = createServer(async (req, res) => {
-  const url = new URL(req.url, `http://${req.headers.host}`);
   try {
+    // The viewer is local-only; a Host header should never influence routing.
+    const url = new URL(req.url ?? '/', 'http://127.0.0.1');
     if (url.pathname === '/api/state') {
-      const body = JSON.stringify(await state());
+      const body = JSON.stringify(await state(url.searchParams.get('since')));
       res.writeHead(200, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' });
+      return res.end(body);
+    }
+    if (url.pathname === '/favicon.ico') {
+      res.writeHead(204, { 'cache-control': 'public, max-age=86400' });
+      return res.end();
+    }
+    if (url.pathname === '/brand-logo.svg') {
+      const body = await readFile(BRAND_MARK);
+      res.writeHead(200, { 'content-type': 'image/svg+xml', 'cache-control': 'public, max-age=3600' });
       return res.end(body);
     }
     const file = url.pathname === '/' ? 'index.html' : url.pathname.replace(/^\/+/, '');
     const full = join(here, file);
-    if (!full.startsWith(here)) { res.writeHead(403); return res.end('forbidden'); }
+    const rel = relative(here, full);
+    if (rel.startsWith('..') || isAbsolute(rel)) { res.writeHead(403); return res.end('forbidden'); }
     const body = await readFile(full);
     res.writeHead(200, { 'content-type': MIME[extname(full)] ?? 'application/octet-stream' });
     return res.end(body);

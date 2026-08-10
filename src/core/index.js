@@ -19,7 +19,7 @@ import * as image from './image.js';
 import * as png from './png.js';
 import * as dither from './dither.js';
 
-import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, MIN_OPACITY, DEFAULT_PAGE_OPACITY, assertOpacity } from './document.js';
+import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
 import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL } from './collide.js';
 import { renderAscii } from './ascii.js';
@@ -28,10 +28,10 @@ import { renderSvg } from './svg.js';
 export { geometry, address, text, shapes, occupancy, image, png, dither };
 export {
   createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, findElement,
-  elementsOf, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
+  elementsOf, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
   runPen, validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL,
   renderAscii, renderSvg,
-  MIN_OPACITY, DEFAULT_PAGE_OPACITY, assertOpacity,
+  MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign,
 };
 export { PALETTE, PALETTE_DARK, SEVERITY_CUE } from './svg.js';
 
@@ -75,7 +75,18 @@ export function isClosedPath(pieces) {
   return Math.abs(a.x - b.x) <= 1 && Math.abs(a.y - b.y) <= 1;
 }
 
-export function applyPen(doc, pageId, program, { id = null } = {}) {
+export function applyPen(doc, pageId, program, options = {}) {
+  // A pen program can add multiple elements. Rehearse on a clone first so a
+  // duplicate id or malformed later element cannot leak an earlier element
+  // into the live document.
+  const draft = structuredClone(doc);
+  const result = applyPenMutable(draft, pageId, program, options);
+  doc.pages = draft.pages;
+  doc.elements = draft.elements;
+  return result;
+}
+
+function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', stroke = null, color = null, width = null, cap = null, paint = null } = {}) {
   getPage(doc, pageId);
   const result = runPen(program, {
     resolveElement: (name) => findElement(doc, name)?.element ?? null,
@@ -93,24 +104,32 @@ export function applyPen(doc, pageId, program, { id = null } = {}) {
     }),
   );
   const texts = result.texts.map((t, i) =>
-    addText(doc, pageId, { id: t.id ?? nextId(doc, 'text', i), rect: t.rect, text: t.text, fontSize: t.fontSize ?? doc.font.size }),
+    addText(doc, pageId, {
+      id: t.id ?? nextId(doc, 'text', i), rect: t.rect, text: t.text,
+      fontSize: t.fontSize ?? doc.font.size, align: t.align, color: t.color, weight: t.weight ?? 400,
+    }),
   );
 
   let path = null;
   if (result.pieces.length) {
-    path = addPath(doc, pageId, { id: id ?? nextId(doc, 'path', 0), pieces: result.pieces });
+    const presentation = stroke ?? (color != null || width != null || cap != null || paint != null
+      ? { color: color ?? undefined, width: width ?? undefined, cap: cap ?? undefined, paint: paint ?? undefined }
+      : null);
+    path = addPath(doc, pageId, { id: id ?? nextId(doc, 'path', 0), pieces: result.pieces, role, stroke: presentation });
     // A shape is not a connector. If the trace comes back to where it started,
     // say so — the rules about loose ends and retraced quadrants are about
     // connectors, and applying them to an outline is how a rule cries wolf.
     if (isClosedPath(result.pieces)) path.closed = true;
-    if (result.notes.length) path.penNotes = result.notes.filter((n) => !(path.closed && n.code === 'L015'));
+    const notes = result.notes.filter((n) => !((path.closed || role === 'artwork') && n.code === 'L015'));
+    if (notes.length) path.penNotes = notes;
     // Remembering where the pen stopped is what makes a path resumable.
     path.end = { x: result.cursor.x, y: result.cursor.y, facing: result.facing };
     // What the path was aiming at, so validation can check it actually arrived.
     if (result.targets.length) path.targets = result.targets;
   }
 
-  return { path, boxes, texts, trace: result.trace, notes: result.notes, cursor: result.cursor, facing: result.facing };
+  const notes = role === 'artwork' ? result.notes.filter((n) => n.code !== 'L015') : result.notes;
+  return { path, boxes, texts, trace: result.trace, notes, cursor: result.cursor, facing: result.facing };
 }
 
 /**
@@ -148,16 +167,22 @@ export function replacePath(doc, id, program) {
   if (!found) throw new Error(`no path "${id}" to replace`);
   if (found.element.kind !== 'path') throw new Error(`"${id}" is a ${found.element.kind}, not a path`);
 
+  const original = found.element;
   const list = doc.elements[found.page];
   const index = list.findIndex((e) => e.id === id);
-  list.splice(index, 1);
+  const draft = structuredClone(doc);
+  const draftList = draft.elements[found.page];
+  draftList.splice(index, 1);
 
-  const result = applyPen(doc, found.page, program, { id });
+  const result = applyPen(draft, found.page, program, { id, role: original.role ?? 'connector', stroke: original.stroke });
   if (!result.path) throw new Error(`the replacement program for "${id}" drew no strokes`);
 
   // Restore the original draw order so stacking within the page is unchanged.
-  list.splice(list.indexOf(result.path), 1);
-  list.splice(index, 0, result.path);
+  const committedList = draft.elements[found.page];
+  committedList.splice(committedList.indexOf(result.path), 1);
+  committedList.splice(index, 0, result.path);
+  doc.pages = draft.pages;
+  doc.elements = draft.elements;
 
   return { path: result.path, page: found.page, trace: result.trace, notes: result.notes };
 }
@@ -207,11 +232,19 @@ export function restyleBox(doc, id, { label = null, corner = null, align = null,
   if (!found) throw new Error(`no element "${id}" to restyle`);
   const el = found.element;
   if (el.kind === 'path') throw new Error(`"${id}" is a path and carries no label`);
+  if (el.kind === 'image') throw new Error(`"${id}" is an image — restyle changes box or text presentation only`);
+  if (el.kind === 'text' && (corner != null || fill != null)) throw new Error(`"${id}" is text — corner and fill apply to boxes only`);
+  // Validate the whole request before touching the element. A repair operation
+  // is as atomic as a plan even when called directly.
+  const nextCorner = corner != null ? shapes.assertCornerStyle(corner) : null;
+  const nextAlign = align != null ? assertTextAlign(align) : null;
+  const nextFontSize = fontSize != null ? text.resolveFontSize(fontSize) : null;
+  const nextFill = fill != null ? normalizeColor(fill, 'box fill') : null;
   if (label != null) el.kind === 'text' ? (el.text = label) : (el.label = label);
-  if (corner != null) el.corner = shapes.assertCornerStyle(corner);
-  if (align != null) el.align = align;
-  if (fontSize != null) el.fontSize = fontSize;
-  if (fill != null) el.fill = fill;
+  if (nextCorner != null) el.corner = nextCorner;
+  if (nextAlign != null) el.align = nextAlign;
+  if (nextFontSize != null) el.fontSize = nextFontSize;
+  if (nextFill != null) el.fill = nextFill;
   const content = el.kind === 'text' ? el.text : el.label;
   return { element: el, page: found.page, fit: content ? text.fitReport(content, el.rect, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
 }
@@ -311,9 +344,12 @@ export const REFERENCE_OPACITY = 0.25;
 
 export function placeReference(doc, { id = 'reference', source, at = 'A1.tl', span, opacity = REFERENCE_OPACITY, mode = 'dither' }) {
   if (!source) throw new SyntaxError('a reference needs an image source — a data: URI, or a path the tool layer has already read');
-  const lowest = doc.pages.reduce((m, p) => Math.min(m, p.z), 0);
-  const page = addPage(doc, { id, z: lowest - 1, intent: 'overlay', title: `${id} (tracing reference)`, opacity, reference: true });
-  placeImage(doc, id, { id: `${id}-image`, at, span, source, mode });
+  const draft = structuredClone(doc);
+  const lowest = draft.pages.reduce((m, p) => Math.min(m, p.z), 0);
+  const page = addPage(draft, { id, z: lowest - 1, intent: 'overlay', title: `${id} (tracing reference)`, opacity, reference: true });
+  placeImage(draft, id, { id: `${id}-image`, at, span, source, mode });
+  doc.pages = draft.pages;
+  doc.elements = draft.elements;
   return page;
 }
 
@@ -356,7 +392,9 @@ export const OPERATIONS = Object.freeze({
   place_box: (doc, a) => placeBox(doc, a.page ?? 'base', a),
   place_image: (doc, a) => placeImage(doc, a.page ?? 'base', a),
   place_reference: (doc, a) => placeReference(doc, a),
-  pen: (doc, a) => applyPen(doc, a.page ?? 'base', a.program, { id: a.id }),
+  pen: (doc, a) => applyPen(doc, a.page ?? 'base', a.program, {
+    id: a.id, role: a.role, stroke: a.stroke, color: a.color, width: a.width, cap: a.cap, paint: a.paint,
+  }),
   extend_path: (doc, a) => extendPath(doc, a.id, a.program),
   replace_path: (doc, a) => replacePath(doc, a.id, a.program),
   resize: (doc, a) => resizeBox(doc, a.id, a),
@@ -457,7 +495,7 @@ const FIX_TOOL = Object.freeze({
   widen: 'resize', heighten: 'resize', shorten: 'restyle', font: 'restyle',
   move: 'move', rename: 'rename', intent: 'update_page', canvas: 'set_canvas',
   extend: 'extend_path', reroute: 'replace_path', offset: 'replace_path',
-  hop: 'replace_path', remove: 'remove',
+  hop: 'replace_path', remove: 'remove', remove_page: 'remove_page',
 });
 
 /**

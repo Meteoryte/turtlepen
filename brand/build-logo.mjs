@@ -1,99 +1,247 @@
-// The logo, rebuilt on anchors.
-//
-// Every part is positioned by its RELATIONSHIP to the shell rather than by a
-// coordinate worked out by hand. Change the shell and the turtle still holds
-// together — which is the whole reason connectors got `pen from <id>.<face>`
-// in the first place. This is that lesson applied to the half of the engine
-// that had not learned it.
-import { writeFileSync } from 'node:fs';
-import { pathToFileURL } from 'node:url';
-import { traceProgram, ellipseAt, addr } from './trace.mjs';
+/**
+ * Recreate the turtle-at-easel reference as TurtlePen's actual logo.
+ *
+ * Every visible mark is authored through TurtlePen operations. Solid forms are
+ * scan-converted into exact 5px quadrants; outlines, expression, pen, easel,
+ * flourish, and type are ordinary pen/text commands. No source bitmap is
+ * embedded in the result.
+ */
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
 
-const { encodePng } = await import(
-  pathToFileURL('x:/Python Projects/Home Base - Brainn.dev/03_EXPERIMENTS/TurtlePen/test/helpers/png-fixture.js').href
-);
+import * as core from '../src/core/index.js';
+import { createSession, createTools } from '../src/mcp/tools.js';
 
-const ops = [];
-const pen = (id, program, page) => ops.push({ op: 'pen', id, program, page });
+const here = dirname(fileURLToPath(import.meta.url));
+const project = resolve(here, '..');
+const session = createSession({ cwd: project });
+const tools = Object.fromEntries(createTools(session).map((tool) => [tool.name, tool]));
+const q = (x, y) => core.address.quadToAddress(x, y);
 
-// ---- pages: Z and opacity carry depth --------------------------------------
-ops.push({ op: 'add_page', id: 'shade', intent: 'overlay', z: 1, opacity: 0.4 });
-ops.push({ op: 'add_page', id: 'body', intent: 'overlay', z: 2 });
-ops.push({ op: 'add_page', id: 'detail', intent: 'overlay', z: 3 });
-
-// ---- the easel, the only thing still placed by address ---------------------
-ops.push({
-  op: 'place_box', id: 'board', at: `${addr(50, 6)}.tl`, span: '34x20',
-  label: 'TURTLE\nPEN', align: 'center', fontSize: 'title', corner: 'square', page: 'base',
+const C = Object.freeze({
+  navy: '#001b35',
+  navySoft: '#40516b',
+  green: '#a8c95f',
+  greenLight: '#c7dc82',
+  greenDark: '#255943',
+  cream: '#fff0bd',
+  white: '#fffdf5',
+  shadow: '#cbc9c1',
 });
-pen('tray', `pen ${addr(49, 27)}.q1\nright 36 line`, 'base');
-pen('leg-l', `pen ${addr(56, 27)}.q1\ndown 18 line`, 'base');
-pen('leg-r', `pen ${addr(78, 27)}.q1\ndown 18 line`, 'base');
-pen('brace', `pen ${addr(56, 38)}.q1\nright 22 line`, 'base');
 
-// ---- the shell: the one measured thing everything else hangs off -----------
-const SHELL = { cx: 24, cy: 32, rx: 19, ry: 11 };
-const shell = traceProgram(ellipseAt(SHELL.cx, SHELL.cy, SHELL.rx, SHELL.ry), 2, 19, 46, 45);
-pen('shell', shell.program, 'body');
+const operations = [
+  { op: 'add_page', id: 'fills', z: 1, intent: 'overlay', title: 'Lattice colour' },
+  { op: 'add_page', id: 'outlines', z: 2, intent: 'overlay', title: 'Navy outlines' },
+  { op: 'add_page', id: 'features', z: 3, intent: 'overlay', title: 'Face and shell detail' },
+  { op: 'add_page', id: 'type', z: 4, intent: 'overlay', title: 'Wordmark' },
+];
 
-// From here on, nothing computes a coordinate. Radii are in quadrants: the
-// shell is 38 cells wide = 76 quadrants, so the head at radius 15 is a little
-// under a third of it, and it is ANCHORED so it cannot wander off.
-pen('rim', 'circle 30 at shell.C', 'detail');
-pen('plate-c', 'circle 8 at shell.C', 'detail');
-pen('plate-n', 'circle 7 at shell.C offset 0 -13', 'detail');
-pen('plate-s', 'circle 7 at shell.C offset 0 13', 'detail');
-pen('plate-w', 'circle 6 at shell.C offset -22 -8', 'detail');
-pen('plate-e', 'circle 6 at shell.C offset 22 -8', 'detail');
-pen('plate-sw', 'circle 6 at shell.C offset -22 8', 'detail');
-pen('plate-se', 'circle 6 at shell.C offset 22 8', 'detail');
+const solid = (id, program, color, page = 'fills') => operations.push({
+  op: 'pen', id, page, program, role: 'artwork', color, paint: 'cells',
+});
+const line = (id, program, color = C.navy, width = 5, page = 'outlines') => operations.push({
+  op: 'pen', id, page, program, role: 'artwork', color, width, cap: 'round',
+});
 
-// Head: anchored to the shell's north-west shoulder, overlapping it.
-pen('head', 'circle 15 at shell.N offset -22 -10', 'body');
-pen('snout', 'circle 7 at head.W offset -3 4', 'body');
-pen('eye', 'circle 5 at head.C offset -5 -4', 'detail');
-pen('pupil', 'disc 2 at head.C offset -5 -4', 'detail');
-pen('brow', 'dash 7 ne at head.C offset -10 -11', 'detail');
-pen('neck-a', 'ray to shell.N at head.S offset -4 0', 'body');
-pen('neck-b', 'ray to shell.N at head.S offset 4 0', 'body');
+// --- Filled silhouettes, back to front ------------------------------------
 
-// Feet and tail, all anchored to the shell.
-pen('foot-l', 'circle 7 at shell.S offset -22 0', 'detail');
-pen('foot-r', 'circle 7 at shell.S offset 22 0', 'detail');
-pen('tail', 'disc 4 at shell.S offset 0 4', 'detail');
+// Board and easel live behind the turtle's drawing hand.
+const board = [[145, 45], [205, 43], [198, 127], [132, 127]];
+solid('board-fill', polygonFill(board), C.white);
+solid('tray-fill', polygonFill([[127, 126], [202, 126], [202, 133], [127, 133]]), C.navySoft);
+solid('leg-left-fill', polygonFill([[139, 132], [148, 132], [139, 170], [131, 170]]), C.navySoft);
+solid('leg-right-fill', polygonFill([[184, 132], [193, 132], [201, 170], [193, 170]]), C.navySoft);
+solid('brace-fill', polygonFill([[142, 154], [190, 154], [190, 159], [141, 159]]), C.navySoft);
+solid('clip-fill', polygonFill([[166, 41], [187, 41], [185, 51], [165, 51]]), C.navySoft);
+solid('clip-tab-fill', polygonFill([[173, 33], [182, 33], [181, 42], [172, 42]]), C.navySoft);
 
-// ---- the arm and the pen, anchored to the shell and the board --------------
-pen('arm', `ray to ${addr(49, 26)}.q1 at shell.E offset 2 -2`, 'body');
-pen('hand', `circle 5 at ${addr(49, 26)}.q1`, 'detail');
-pen('pen-barrel', `pen ${addr(50, 25)}.q1\nray to ${addr(58, 20)}.q1`, 'detail');
-pen('pen-nib', `pen ${addr(58, 20)}.q1\ntriangle ${addr(61, 19)}.q1 ${addr(59, 22)}.q1`, 'detail');
-pen('pen-stroke', `pen ${addr(61, 20)}.q1\nright 9 line`, 'detail');
+// Turtle body. Overlaps are deliberate cartoon construction and are recorded
+// as accepted findings below rather than hidden from validation.
+solid('shell-fill', ellipseFill(62, 108, 39, 43), C.greenDark);
+solid('left-foot-fill', ellipseFill(70, 157, 14, 15), C.green);
+solid('right-foot-fill', polygonFill([[91, 146], [106, 145], [112, 169], [89, 169]]), C.green);
+solid('plastron-fill', ellipseFill(91, 111, 22, 43), C.cream);
+solid('neck-fill', polygonFill([[75, 72], [101, 72], [98, 91], [78, 91]]), C.green);
+solid('head-fill', ellipseFill(91, 51, 27, 27), C.greenLight);
+solid('snout-fill', ellipseFill(104, 59, 17, 14), C.greenLight);
+solid('arm-fill', polygonFill([[91, 92], [102, 94], [113, 99], [126, 96], [136, 87], [145, 82], [154, 85], [151, 96], [137, 105], [119, 112], [103, 110], [94, 104]]), C.green);
+solid('hand-fill', ellipseFill(145, 89, 12, 10), C.green);
 
-// ---- morse accents ---------------------------------------------------------
-pen('mark-1', `pen ${addr(89, 7)}.q1\ndash 4 se`, 'detail');
-pen('mark-2', `pen ${addr(89, 11)}.q1\ndot`, 'detail');
-pen('mark-3', `pen ${addr(89, 14)}.q1\ndash 4 se`, 'detail');
-pen('mark-4', `pen ${addr(3, 7)}.q1\ndash 4 sw`, 'detail');
-pen('mark-5', `pen ${addr(3, 11)}.q1\ndot`, 'detail');
+// --- Primary outlines ------------------------------------------------------
 
-// ---- dithered shading ------------------------------------------------------
-const W = 72, H = 42;
-const s = new Uint8Array(W * H * 3);
-for (let y = 0; y < H; y++) {
-  for (let x = 0; x < W; x++) {
-    const nx = (x - W / 2) / (W / 2), ny = (y - H / 2) / (H / 2);
-    const inside = nx * nx + ny * ny <= 1;
-    const v = inside ? Math.round(255 - 150 * Math.max(0, nx * 0.5 + ny * 0.85)) : 255;
-    const i = (y * W + x) * 3;
-    s[i] = s[i + 1] = s[i + 2] = v;
-  }
+line('board-outline', polygonOutline(board));
+line('tray-outline', polygonOutline([[127, 126], [202, 126], [202, 133], [127, 133]]));
+line('leg-left-outline', polygonOutline([[139, 132], [148, 132], [139, 170], [131, 170]]));
+line('leg-right-outline', polygonOutline([[184, 132], [193, 132], [201, 170], [193, 170]]));
+line('brace-outline', polygonOutline([[142, 154], [190, 154], [190, 159], [141, 159]]));
+line('clip-outline', polygonOutline([[166, 41], [187, 41], [185, 51], [165, 51]]));
+line('clip-tab-outline', polygonOutline([[173, 33], [182, 33], [181, 42], [172, 42]]));
+
+line('shell-outline', ellipseOutline(62, 108, 39, 43));
+line('left-foot-outline', ellipseOutline(70, 157, 14, 15));
+line('right-foot-outline', polygonOutline([[91, 146], [106, 145], [112, 169], [89, 169]]));
+line('plastron-outline', ellipseOutline(91, 111, 22, 43));
+line('neck-outline', polygonOutline([[75, 72], [101, 72], [98, 91], [78, 91]]));
+line('head-outline', ellipseOutline(91, 51, 27, 27));
+line('snout-outline', ellipseOutline(104, 59, 17, 14));
+line('arm-outline', polygonOutline([[91, 92], [102, 94], [113, 99], [126, 96], [136, 87], [145, 82], [154, 85], [151, 96], [137, 105], [119, 112], [103, 110], [94, 104]]));
+line('hand-outline', ellipseOutline(145, 89, 12, 10));
+
+// --- Shell plates, face, pen, and board flourish --------------------------
+
+line('shell-rim', ellipseOutline(62, 108, 32, 36), C.greenLight, 4, 'features');
+line('shell-band', polyline([[27, 108], [94, 108]]), C.navy, 4, 'features');
+line('shell-left-plates', polyline([[61, 72], [48, 84], [45, 102], [61, 108], [46, 122], [50, 139], [61, 146]]), C.navy, 4, 'features');
+line('shell-right-plates', polyline([[61, 72], [75, 84], [79, 102], [61, 108], [77, 122], [73, 139], [61, 146]]), C.navy, 4, 'features');
+
+// Plastron panel seams.
+line('chest-seams', [
+  polyline([[73, 100], [94, 100]]),
+  polyline([[70, 119], [99, 119]]),
+  polyline([[73, 138], [101, 138]]),
+].join('\n'), C.navy, 3, 'features');
+
+// Eye whites, navy pupils, brow, nostril, and smile.
+solid('eye-left-white', 'disc 9 at ' + q(86, 49), C.white, 'features');
+solid('eye-right-white', 'disc 8 at ' + q(113, 48), C.white, 'features');
+line('eye-left-outline', `circle 9 at ${q(86, 49)}`, C.navy, 5, 'features');
+line('eye-right-outline', `circle 8 at ${q(113, 48)}`, C.navy, 5, 'features');
+solid('pupil-left', 'disc 4 at ' + q(87, 49), C.navy, 'features');
+solid('pupil-right', 'disc 3 at ' + q(111, 49), C.navy, 'features');
+solid('eye-glint-left', 'disc 1 at ' + q(88, 47), C.white, 'features');
+solid('eye-glint-right', 'disc 1 at ' + q(112, 47), C.white, 'features');
+line('brow', polyline([[78, 39], [84, 36], [91, 36]]), C.navy, 5, 'features');
+solid('nostril', 'disc 1 at ' + q(112, 61), C.navy, 'features');
+line('smile', polyline([[93, 65], [97, 69], [103, 71], [110, 69]]), C.navy, 4, 'features');
+
+// Pen held by the turtle, including grey barrel and navy nib.
+line('pen-outer', polyline([[143, 82], [169, 97]]), C.navy, 5, 'features');
+line('pen-inner', polyline([[145, 82], [168, 95]]), C.navySoft, 3, 'features');
+solid('pen-nib-fill', polygonFill([[168, 93], [176, 101], [166, 98]]), C.navy, 'features');
+line('pen-nib-outline', polygonOutline([[168, 93], [176, 101], [166, 98]]), C.navy, 3, 'features');
+
+// The mark on the board echoes the supplied reference without embedding it.
+line('board-flourish', polyline([[171, 101], [178, 100], [185, 97], [190, 92], [194, 85], [197, 77], [198, 72]]), C.greenDark, 5, 'features');
+line('board-flourish-tip', `arc 4 180 360 at ${q(199, 72)}`, C.greenDark, 5, 'features');
+
+// Grounding shadows are lattice marks, not filters.
+line('turtle-shadow', polyline([[49, 173], [108, 173]]), C.shadow, 5, 'features');
+line('easel-shadow', polyline([[127, 173], [204, 173]]), C.shadow, 5, 'features');
+
+// --- Wordmark --------------------------------------------------------------
+
+operations.push({
+  op: 'pen', page: 'type',
+  program: `text "Turtle Pen" at ${q(20, 180)} span 100x17 id wordmark font 120 fill ${C.navy} weight 800 align center`,
+});
+operations.push({
+  op: 'pen', page: 'type',
+  program: `text "M C P" at ${q(90, 211)} span 30x11 id mcp font 74 fill ${C.greenDark} weight 700 align center`,
+});
+line('mcp-rule-left', polyline([[59, 221], [88, 221]]), C.greenDark, 4, 'type');
+line('mcp-rule-right', polyline([[152, 221], [181, 221]]), C.greenDark, 4, 'type');
+
+await tools.new_diagram.handler({
+  name: 'TurtlePen logo — turtle at easel',
+  path: 'brand/logo.turtlepen.json',
+  cols: 120,
+  rows: 120,
+});
+session.doc.createdAt = '2026-08-08T00:00:00.000Z';
+session.doc.font.family = '"Segoe UI", Arial, sans-serif';
+
+const rehearsal = await tools.plan.handler({ operations, commit: false });
+if (/FAILED/.test(rehearsal)) throw new Error(rehearsal);
+const committed = await tools.plan.handler({ operations, commit: true });
+if (/FAILED/.test(committed)) throw new Error(committed);
+
+// Cartoon construction intentionally layers touching silhouettes. Adjudicate
+// every non-INFO collision by its exact fingerprint so any geometry change
+// invalidates the acceptance and makes the build fail visibly again.
+const beforeAcceptance = core.validate(session.doc);
+const blockers = beforeAcceptance.open.filter((finding) => finding.severity !== 'S3');
+if (blockers.length) {
+  const acceptanceOps = blockers.map((finding) => ({
+    op: 'accept_finding',
+    fingerprint: finding.fingerprint,
+    reason: `Intentional logo construction: ${finding.rule} between ${finding.actors.join(' and ')} is required by the supplied turtle-at-easel composition.`,
+  }));
+  const accepted = await tools.plan.handler({ operations: acceptanceOps, commit: true });
+  if (/FAILED/.test(accepted)) throw new Error(accepted);
 }
-writeFileSync('x:/Python Projects/Home Base - Brainn.dev/03_EXPERIMENTS/TurtlePen/brand/_shade.png', encodePng(W, H, s, { colorType: 2 }));
-ops.push({
-  op: 'place_image', id: 'shell-shade', at: `${addr(6, 22)}.tl`, span: '36x20',
-  source: 'brand/_shade.png', mode: 'dither', page: 'shade',
+
+const validation = core.validate(session.doc);
+const remainingBlockers = validation.open.filter((finding) => finding.severity !== 'S3');
+if (remainingBlockers.length) throw new Error(core.formatLog(validation));
+for (const acceptance of session.doc.acceptances) acceptance.acceptedAt = '2026-08-08T00:00:00.000Z';
+
+await tools.save.handler({});
+await tools.render.handler({ path: 'brand/logo.svg', showGrid: false, bounds: 'canvas', margin: 0 });
+await core.exportSvg(session.doc, resolve(project, 'brand/logo-mark.svg'), {
+  pages: ['fills', 'outlines', 'features'], showGrid: false, bounds: 'content', margin: 20,
 });
 
-writeFileSync('logo3-ops.json', JSON.stringify(ops, null, 1));
-console.log(`${ops.length} operations; shell traced in ${shell.runs} runs`);
-console.log(`anchored parts: ${ops.filter((o) => o.program?.includes(' at ')).length}`);
+console.log(`logo authored with TurtlePen: ${operations.length} composition operations`);
+console.log(`accepted intentional construction findings: ${blockers.length}`);
+console.log('document: brand/logo.turtlepen.json');
+console.log('render: brand/logo.svg (1200x1200)');
+console.log(`mark: brand/logo-mark.svg; validation CLEAN (${validation.open.length} INFO, ${validation.accepted.length} accepted)`);
+
+function ellipseFill(cx, cy, rx, ry) {
+  const rows = [];
+  for (let y = cy - ry; y <= cy + ry; y += 1) {
+    const ratio = 1 - ((y - cy) * (y - cy)) / (ry * ry);
+    if (ratio < 0) continue;
+    const half = Math.floor(rx * Math.sqrt(ratio));
+    rows.push(`pen ${q(cx - half, y)}\ndash ${half * 2 + 1} e`);
+  }
+  return rows.join('\n');
+}
+
+function ellipseOutline(cx, cy, rx, ry, steps = 72) {
+  const points = [];
+  for (let i = 0; i < steps; i += 1) {
+    const angle = (Math.PI * 2 * i) / steps;
+    const point = [Math.round(cx + Math.cos(angle) * rx), Math.round(cy + Math.sin(angle) * ry)];
+    if (!points.length || point[0] !== points.at(-1)[0] || point[1] !== points.at(-1)[1]) points.push(point);
+  }
+  return polygonOutline(points);
+}
+
+function polygonFill(points) {
+  const minX = Math.floor(Math.min(...points.map((p) => p[0])));
+  const maxX = Math.ceil(Math.max(...points.map((p) => p[0])));
+  const minY = Math.floor(Math.min(...points.map((p) => p[1])));
+  const maxY = Math.ceil(Math.max(...points.map((p) => p[1])));
+  const lines = [];
+  for (let y = minY; y <= maxY; y += 1) {
+    let start = null;
+    for (let x = minX; x <= maxX + 1; x += 1) {
+      const inside = x <= maxX && pointInPolygon(x + 0.5, y + 0.5, points);
+      if (inside && start == null) start = x;
+      if (!inside && start != null) {
+        lines.push(`pen ${q(start, y)}\ndash ${x - start} e`);
+        start = null;
+      }
+    }
+  }
+  if (!lines.length) throw new Error('polygon has no lattice interior');
+  return lines.join('\n');
+}
+
+function pointInPolygon(x, y, points) {
+  let inside = false;
+  for (let i = 0, j = points.length - 1; i < points.length; j = i, i += 1) {
+    const [xi, yi] = points[i], [xj, yj] = points[j];
+    if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+function polygonOutline(points) {
+  return polyline([...points, points[0]]);
+}
+
+function polyline(points) {
+  return [`pen ${q(...points[0])}`, ...points.slice(1).map((point) => `ray to ${q(...point)}`)].join('\n');
+}

@@ -16,7 +16,13 @@ import { rect, rectsOverlap, boundsOf } from './geometry.js';
 import { claimedQuads, visualQuads, assertCornerStyle } from './shapes.js';
 import { DEFAULT_FONT, resolveFontSize } from './text.js';
 
-export const PAGE_INTENTS = Object.freeze(['exclusive', 'overlay']);
+// `schematic` stacks exactly like `exclusive`; it exists to carry authorial meaning —
+// "this page is deliberately spare" — which the composition rules read and skip.
+export const PAGE_INTENTS = Object.freeze(['exclusive', 'overlay', 'schematic']);
+export const PATH_ROLES = Object.freeze(['connector', 'artwork']);
+export const PATH_PAINTS = Object.freeze(['line', 'cells']);
+export const TEXT_ALIGNS = Object.freeze(['left', 'center', 'right']);
+export const IMAGE_FITS = Object.freeze(['contain', 'cover']);
 export const SCHEMA_VERSION = 1;
 
 export function createDocument({ name = 'untitled', canvas = { cols: 160, rows: 100 }, font = {} } = {}) {
@@ -41,7 +47,7 @@ export function createDocument({ name = 'untitled', canvas = { cols: 160, rows: 
  * exists because that is a trap, not a repair.
  */
 export const MIN_OPACITY = 0.05;
-export const DEFAULT_PAGE_OPACITY = Object.freeze({ exclusive: 1, overlay: 0.92 });
+export const DEFAULT_PAGE_OPACITY = Object.freeze({ exclusive: 1, overlay: 0.92, schematic: 1 });
 
 export function assertOpacity(value, what = 'opacity') {
   if (value == null) return null;
@@ -49,6 +55,68 @@ export function assertOpacity(value, what = 'opacity') {
     throw new RangeError(`${what} must be a number between ${MIN_OPACITY} and 1 — got ${JSON.stringify(value)}`);
   }
   return value;
+}
+
+/**
+ * Optional presentation for a path. Geometry still claims whole quadrants;
+ * colour, width and caps only change how the stored footprint is painted.
+ * Hex-only colours keep saved SVG safe to embed in the live viewer.
+ */
+export function normalizeStroke(stroke) {
+  if (stroke == null) return null;
+  if (!stroke || typeof stroke !== 'object' || Array.isArray(stroke)) {
+    throw new TypeError('path stroke must be an object with color, width, and cap');
+  }
+  const color = normalizeColor(stroke.color ?? '#2b2a26', 'path color');
+  const width = stroke.width ?? 5;
+  if (!Number.isInteger(width) || width < 1 || width > 5) {
+    throw new RangeError(`path width must be a whole pixel count between 1 and 5 — got ${JSON.stringify(width)}`);
+  }
+  const cap = stroke.cap ?? 'butt';
+  if (!['butt', 'round', 'square'].includes(cap)) {
+    throw new SyntaxError(`path cap must be butt, round, or square — got ${JSON.stringify(cap)}`);
+  }
+  const paint = stroke.paint ?? 'line';
+  if (!PATH_PAINTS.includes(paint)) {
+    throw new SyntaxError(`path paint must be ${PATH_PAINTS.join(' or ')} — got ${JSON.stringify(paint)}`);
+  }
+  return { color, width, cap, ...(paint === 'cells' ? { paint } : {}) };
+}
+
+export function normalizeColor(value, what = 'color') {
+  if (value == null) return null;
+  if (!/^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/i.test(String(value))) {
+    throw new SyntaxError(`${what} must be a 3- or 6-digit hex colour — got ${JSON.stringify(value)}`);
+  }
+  return String(value).toLowerCase();
+}
+
+export function assertTextAlign(value) {
+  if (!TEXT_ALIGNS.includes(value)) {
+    throw new SyntaxError(`text alignment must be ${TEXT_ALIGNS.join(', ')} — got ${JSON.stringify(value)}`);
+  }
+  return value;
+}
+
+export function assertImageFit(value) {
+  if (!IMAGE_FITS.includes(value)) {
+    throw new SyntaxError(`image fit must be ${IMAGE_FITS.join(' or ')} — got ${JSON.stringify(value)}`);
+  }
+  return value;
+}
+
+export function assertFontWeight(value) {
+  if (!Number.isInteger(value) || value < 100 || value > 900 || value % 100 !== 0) {
+    throw new RangeError(`font weight must be 100–900 in steps of 100 — got ${JSON.stringify(value)}`);
+  }
+  return value;
+}
+
+function assertElementId(id) {
+  if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) {
+    throw new SyntaxError(`element id "${id}" must be non-empty and alphanumeric (dashes and underscores allowed)`);
+  }
+  return id;
 }
 
 export function addPage(doc, { id, z = null, intent = 'exclusive', title = null, opacity = null, reference = false }) {
@@ -60,6 +128,7 @@ export function addPage(doc, { id, z = null, intent = 'exclusive', title = null,
     throw new SyntaxError(`page intent must be one of ${PAGE_INTENTS.join(', ')} — got "${intent}"`);
   }
   const zed = z == null ? doc.pages.reduce((m, p) => Math.max(m, p.z), -1) + 1 : z;
+  if (!Number.isInteger(zed)) throw new RangeError(`page z-index must be a whole number — got ${JSON.stringify(zed)}`);
   if (doc.pages.some((p) => p.z === zed)) throw new Error(`z-index ${zed} is already occupied by page "${doc.pages.find((p) => p.z === zed).id}"`);
   const page = { id, z: zed, intent, title: title ?? id, visible: true, opacity: assertOpacity(opacity, 'page opacity') ?? DEFAULT_PAGE_OPACITY[intent], ...(reference ? { reference: true } : {}) };
   doc.pages.push(page);
@@ -77,19 +146,19 @@ export function addPage(doc, { id, z = null, intent = 'exclusive', title = null,
  */
 export function updatePage(doc, id, { intent = null, z = null, title = null, visible = null, opacity = null } = {}) {
   const page = getPage(doc, id);
-  if (intent != null) {
-    if (!PAGE_INTENTS.includes(intent)) throw new SyntaxError(`page intent must be one of ${PAGE_INTENTS.join(', ')} — got "${intent}"`);
-    page.intent = intent;
-  }
+  if (intent != null && !PAGE_INTENTS.includes(intent)) throw new SyntaxError(`page intent must be one of ${PAGE_INTENTS.join(', ')} — got "${intent}"`);
   if (z != null) {
+    if (!Number.isInteger(z)) throw new RangeError(`page z-index must be a whole number — got ${JSON.stringify(z)}`);
     const clash = doc.pages.find((p) => p.z === z && p.id !== id);
     if (clash) throw new Error(`z-index ${z} is already occupied by page "${clash.id}"`);
-    page.z = z;
-    doc.pages.sort((a, b) => a.z - b.z);
   }
+  const nextOpacity = opacity != null ? assertOpacity(opacity, 'page opacity') : null;
+  if (intent != null) page.intent = intent;
+  if (z != null) page.z = z;
   if (title != null) page.title = title;
-  if (opacity != null) page.opacity = assertOpacity(opacity, 'page opacity');
+  if (nextOpacity != null) page.opacity = nextOpacity;
   if (visible != null) page.visible = Boolean(visible);
+  if (z != null) doc.pages.sort((a, b) => a.z - b.z);
   return page;
 }
 
@@ -107,6 +176,7 @@ export function renameElement(doc, id, newId) {
   const found = findElement(doc, id);
   if (!found) throw new Error(`no element "${id}" to rename`);
   if (id === newId) return found.element;
+  assertElementId(newId);
   assertFreeId(doc, newId);
   found.element.id = newId;
   return found.element;
@@ -144,6 +214,7 @@ export function assertFreeId(doc, id) {
 
 export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, corner = 'square', align = 'left', fill = null, note = null, opacity = null, state = null }) {
   getPage(doc, pageId);
+  assertElementId(id);
   assertFreeId(doc, id);
   assertCornerStyle(corner);
   const el = {
@@ -153,8 +224,8 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
     label,
     fontSize: fontSize == null ? doc.font.size : resolveFontSize(fontSize),
     corner,
-    align,
-    fill,
+    align: assertTextAlign(align),
+    fill: normalizeColor(fill, 'box fill'),
     note,
     opacity: assertOpacity(opacity, 'element opacity'),
     state,
@@ -165,6 +236,7 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
 
 export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit = 'contain', opacity = null, note = null, runs = null }) {
   getPage(doc, pageId);
+  assertElementId(id);
   assertFreeId(doc, id);
   const el = {
     id,
@@ -172,7 +244,7 @@ export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit
     rect: rect(r.x, r.y, r.w, r.h),
     source,
     mode,
-    fit,
+    fit: assertImageFit(fit),
     opacity: assertOpacity(opacity, 'element opacity'),
     note,
     ...(runs ? { runs } : {}),
@@ -181,19 +253,31 @@ export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit
   return el;
 }
 
-export function addPath(doc, pageId, { id, pieces, stroke = null, note = null }) {
+export function addPath(doc, pageId, { id, pieces, stroke = null, note = null, role = 'connector' }) {
   getPage(doc, pageId);
+  assertElementId(id);
   assertFreeId(doc, id);
   if (!pieces.length) throw new Error(`path "${id}" has no pieces — a pen program must draw at least one quadrant`);
-  const el = { id, kind: 'path', pieces, stroke, note };
+  if (!PATH_ROLES.includes(role)) throw new SyntaxError(`path role must be ${PATH_ROLES.join(' or ')} — got ${JSON.stringify(role)}`);
+  const el = { id, kind: 'path', pieces, stroke: normalizeStroke(stroke), note, ...(role === 'artwork' ? { role } : {}) };
   doc.elements[pageId].push(el);
   return el;
 }
 
-export function addText(doc, pageId, { id, rect: r, text, fontSize = null, align = 'left' }) {
+export function addText(doc, pageId, { id, rect: r, text, fontSize = null, align = 'left', color = null, weight = 400 }) {
   getPage(doc, pageId);
+  assertElementId(id);
   assertFreeId(doc, id);
-  const el = { id, kind: 'text', rect: rect(r.x, r.y, r.w, r.h), text, fontSize: fontSize == null ? doc.font.size : resolveFontSize(fontSize), align };
+  const el = {
+    id,
+    kind: 'text',
+    rect: rect(r.x, r.y, r.w, r.h),
+    text,
+    fontSize: fontSize == null ? doc.font.size : resolveFontSize(fontSize),
+    align: assertTextAlign(align),
+    color: normalizeColor(color, 'text color'),
+    weight: assertFontWeight(weight),
+  };
   doc.elements[pageId].push(el);
   return el;
 }
@@ -212,6 +296,9 @@ export function moveElement(doc, id, dx, dy, pageId = null) {
   const el = found.element;
   if (el.kind === 'path') {
     for (const p of el.pieces) { p.x += dx; p.y += dy; }
+    // `end` is the cursor state extend_path resumes from. Moving only the ink
+    // made the next extension jump back to the path's old location.
+    if (el.end) { el.end.x += dx; el.end.y += dy; }
   } else {
     el.rect = rect(el.rect.x + dx, el.rect.y + dy, el.rect.w, el.rect.h);
   }
@@ -299,5 +386,6 @@ export function deserialize(json) {
     elements: raw.elements,
     acceptances: raw.acceptances ?? [],
     createdAt: raw.createdAt,
+    ...(raw.forcedSave ? { forcedSave: raw.forcedSave } : {}),
   };
 }

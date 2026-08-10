@@ -24,6 +24,14 @@ test('a bare address is a location — the (location) form', () => {
   assert.equal(parseCommand('right align bottom line to db.W').to, 'db.W');
 });
 
+test('free text carries explicit alignment, safe colour, and weight through the pen grammar', () => {
+  const r = runPen('text "Turtle Pen" at C4.tl span 20x5 id wordmark font 40 fill #001b35 weight 800 align center');
+  assert.deepEqual(r.texts[0], {
+    id: 'wordmark', rect: { x: 4, y: 6, w: 40, h: 10 }, text: 'Turtle Pen',
+    fontSize: 40, align: 'center', color: '#001b35', weight: 800,
+  });
+});
+
 test('align centre is rejected because it would leave the lattice', () => {
   assert.throws(() => alignmentFor('v', 'center'), /2\.5px/);
   assert.equal(alignTrack(2, 'left'), 2);

@@ -44,7 +44,7 @@ async function imageBytes(session, source) {
 async function resolveSources(session, operations) {
   const out = [];
   for (const op of operations) {
-    if (op?.op === 'place_image' && op.source && !String(op.source).startsWith('data:')) {
+    if (['place_image', 'place_reference'].includes(op?.op) && op.source && !String(op.source).startsWith('data:')) {
       const bytes = await imageBytes(session, op.source);
       const probed = core.image.probe(bytes);
       out.push({ ...op, source: `data:${MIME[probed.format]};base64,${bytes.toString('base64')}` });
@@ -131,6 +131,23 @@ export function createTools(session) {
     },
 
     {
+      name: 'remove_page',
+      description:
+        'Remove an entire Z-page and every element on it. This is the repair for L020 after a tracing reference has served its purpose. A document must retain at least one page.',
+      inputSchema: {
+        type: 'object',
+        properties: { id: { type: 'string' } },
+        required: ['id'],
+        additionalProperties: false,
+      },
+      handler: async ({ id }) => {
+        const page = core.removePage(need(session), id);
+        await persist(session);
+        return `removed page "${page.id}" and all of its elements`;
+      },
+    },
+
+    {
       name: 'measure',
       description:
         'Measure text BEFORE placing a box. Returns advance width, characters per line, wrapped line count, and the cell span the label actually needs. Use this to size boxes rather than estimating.',
@@ -190,22 +207,27 @@ export function createTools(session) {
     {
       name: 'pen',
       description:
-        'Run a pen program. Each command draws and advances a cursor. Distances count 10px cells; strokes are 5px and "align" picks which half of the cell they hug. Locations may appear on any command, so relative walking and absolute re-anchoring can be mixed. Call turtlepen_help for the grammar.',
+        'Run a pen program. Each command draws and advances a cursor. Geometry always claims exact 5px quadrants. Set role="artwork" for open illustrations, optional hex color/width/cap for line ink, or paint="cells" for solid lattice artwork. Call turtlepen_help for the grammar.',
       inputSchema: {
         type: 'object',
         properties: {
-          program: { type: 'string', description: 'one command per line; # starts a comment' },
+          program: { type: 'string', description: 'one command per line; a line-leading # or spaced " # comment" starts a comment' },
           page: { type: 'string' },
           id: { type: 'string', description: 'id for the path this program creates' },
+          role: { type: 'string', enum: ['connector', 'artwork'], description: 'connector (default) is checked for loose ends; artwork may be intentionally open' },
+          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$', description: 'optional 3- or 6-digit hex ink colour' },
+          width: { type: 'integer', minimum: 1, maximum: 5, description: 'presentation width in px; collision geometry remains quadrant-exact' },
+          cap: { type: 'string', enum: ['butt', 'round', 'square'] },
+          paint: { type: 'string', enum: ['line', 'cells'], description: 'line paints continuous ink; cells paints every exact 5px claimed quadrant' },
         },
         required: ['program'],
         additionalProperties: false,
       },
-      handler: async ({ program, page = 'base', id = null }) => {
+      handler: async ({ program, page = 'base', id = null, role = 'connector', color = null, width = null, cap = null, paint = null }) => {
         const doc = need(session);
-        const r = core.applyPen(doc, page, program, { id });
+        const r = core.applyPen(doc, page, program, { id, role, color, width, cap, paint });
         await persist(session);
-        const lines = [`pen program applied to page "${page}"`];
+        const lines = [`pen program applied to page "${page}" as ${role}`];
         if (r.path) lines.push(`path "${r.path.id}": ${r.path.pieces.length} quadrant(s)`);
         for (const b of r.boxes) lines.push(`box "${b.id}" at ${core.address.quadToAddress(b.rect.x, b.rect.y)} ${b.rect.w / 2}x${b.rect.h / 2} cells`);
         lines.push('', 'trace:');
@@ -508,7 +530,7 @@ export function createTools(session) {
         properties: {
           operations: {
             type: 'array',
-            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image place_reference pen extend_path replace_path resize restyle move rename remove set_canvas accept_finding unaccept_finding. Args match the same-named tool.',
+            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image place_reference pen extend_path replace_path resize restyle move rename remove set_canvas accept_finding unaccept_finding. Args match the same-named tool, including pen role/color/width/cap.',
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
@@ -548,14 +570,16 @@ export function createTools(session) {
           showGrid: { type: 'boolean' },
           markFindings: { type: 'boolean' },
           force: { type: 'boolean', description: 'render even with findings outstanding' },
+          bounds: { type: 'string', enum: ['content', 'canvas'], description: 'crop to occupied content (default), or preserve the declared canvas composition' },
+          margin: { type: 'integer', minimum: 0, description: 'outer margin in px (default 20)' },
         },
         additionalProperties: false,
       },
-      handler: async ({ path = null, showGrid = true, markFindings = false, force = false }) => {
+      handler: async ({ path = null, showGrid = true, markFindings = false, force = false, bounds = 'content', margin = 20 }) => {
         const doc = need(session);
         const target = resolve(session.cwd, path ?? (session.path ? session.path.replace(/\.turtlepen\.json$/, '.svg') : 'diagram.svg'));
         const findings = markFindings ? core.validate(doc).open : null;
-        await core.exportSvg(doc, target, { showGrid, findings, force });
+        await core.exportSvg(doc, target, { showGrid, findings, force, bounds, margin });
         return `wrote ${target}`;
       },
     },
@@ -788,8 +812,9 @@ ANCHORS — position as a relationship, not a coordinate
 
   "from" gives the SEAT, one step OUTSIDE the element, where a connector starts.
   "at" gives the anchor itself, on the element, where a shape belongs. Anchoring
-  is what stops proportions drifting: a head anchored to shell.N cannot float
-  off the shell, however the shell is later resized.
+  avoids hand-computed placement drift when the program runs. It is not a live
+  stored constraint: moving the target later does not move existing dependents;
+  rerun the declarative program to recompute them.
 
   These are integer algorithms — Bresenham for lines, midpoint for circles — so
   the same command always covers the same quadrants. A stepped diagonal is not
@@ -798,6 +823,12 @@ ANCHORS — position as a relationship, not a coordinate
   <dir> hop                                    deliberate crossing (exempt from L006)
   box span <W>x<H> at <address> label "..." [style <s>] [id <name>]
   text "..." at <address> [span <W>x<H>] [id <name>]
+       [font <px>] [fill <#hex>] [weight <100..900>] [align left|center|right]
+
+ARTWORK PRESENTATION (arguments on the pen tool or plan operation)
+  role: "artwork"                              open marks are not connectors
+  color: "#rrggbb", width: 1..5, cap: "round" continuous presentation ink
+  paint: "cells"                               colour every exact claimed quadrant
 
   dir     up down left right          n counts whole 10px cells
   align   vertical strokes: left|right    horizontal strokes: top|bottom

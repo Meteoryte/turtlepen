@@ -21,6 +21,9 @@ import { quadToAddress, quadToCell, describeRegion } from './address.js';
 import { elementsOf, elementClaimed, elementVisual, elementRects, findElement } from './document.js';
 import { cornerCutQuads } from './shapes.js';
 import { fitReport, MIN_LEGIBLE_FONT_PX } from './text.js';
+// Cycle with composition.js is deliberate and safe: every use on both sides is inside a
+// function body, so neither module reads the other's bindings during initialisation.
+import { compositionFindings } from './composition.js';
 
 export const SEVERITIES = Object.freeze(['S0', 'S1', 'S2', 'S3']);
 export const SEVERITY_LABEL = Object.freeze({ S0: 'CRITICAL', S1: 'ERROR', S2: 'WARN', S3: 'INFO' });
@@ -47,6 +50,8 @@ export const RULES = Object.freeze({
   L018: { severity: 'S3', title: 'centring bias', blurb: 'a stroke centred in an even corridor could not sit exactly in the middle' },
   L019: { severity: 'S2', title: 'invisible but claiming', blurb: 'an element faded past legibility still occupies its quadrants' },
   L020: { severity: 'S2', title: 'reference still present', blurb: 'a tracing underlay is still in the document' },
+  // Composition rules. S3 by design: a taste heuristic must never outrank a real defect.
+  C001: { severity: 'S3', title: 'sparse canvas', blurb: 'the page has so little ink that nothing was really composed' },
 });
 
 /**
@@ -57,15 +62,28 @@ export const RULES = Object.freeze({
  */
 export const INVISIBLE_OPACITY = 0.15;
 
-export function fingerprintOf(rule, page, actors, cells) {
-  const material = [rule, page, [...actors].sort().join('+'), [...cells].sort().join(' ')].join('|');
+/**
+ * `extra` carries material for findings that name no actors and no quadrants.
+ *
+ * A composition finding is document-shaped, not element-shaped, so without something that
+ * varies it would hash to a constant — and one acceptance would suppress it forever, which
+ * is the exact failure this fingerprint exists to prevent. The separator is appended only
+ * when `extra` is non-empty so every acceptance already on disk stays valid.
+ */
+export function fingerprintOf(rule, page, actors, cells, extra = '') {
+  const base = [rule, page, [...actors].sort().join('+'), [...cells].sort().join(' ')].join('|');
+  const material = extra ? `${base}|${extra}` : base;
   return createHash('sha256').update(material).digest('hex').slice(0, 12);
 }
 
-function finding(rule, page, { message, actors = [], cells = [], metrics = {}, fixes = [] }) {
+/**
+ * The one findings factory. Exported so `composition.js` builds findings identically —
+ * same severity lookup, same fingerprint construction — instead of growing a second shape.
+ */
+export function buildFinding(rule, page, { message, actors = [], cells = [], metrics = {}, fixes = [], extra = '' }) {
   const spec = RULES[rule];
   return {
-    fingerprint: fingerprintOf(rule, page, actors, cells),
+    fingerprint: fingerprintOf(rule, page, actors, cells, extra),
     rule,
     severity: spec.severity,
     severityLabel: SEVERITY_LABEL[spec.severity],
@@ -79,6 +97,10 @@ function finding(rule, page, { message, actors = [], cells = [], metrics = {}, f
     fixes,
   };
 }
+
+// The ~20 rule call sites below were written against `finding`; keeping the short local
+// alias means exporting the factory changed no existing line.
+const finding = buildFinding;
 
 function summariseCells(cells, limit = 8) {
   const unique = [...new Set(cells.map((c) => c.split('.')[0]))];
@@ -107,6 +129,8 @@ export function validate(doc, { page = null } = {}) {
     found.push(...againstLowerPages(doc, p));
   }
   found.push(...documentWide(doc, pages));
+  // Document-wide, not per page: a sparse annotation overlay is part of a good diagram.
+  found.push(...compositionFindings(doc, pages));
 
   found.sort(
     (a, b) =>
@@ -330,7 +354,7 @@ function withinPage(doc, p) {
   for (const path of paths) {
     // A closed shape has no loose ends by definition; its "ends" are the same
     // point. Reporting them was the single largest source of false findings.
-    if (path.closed) continue;
+    if (path.closed || path.role === 'artwork') continue;
     const loose = [];
     for (const [which, piece] of [['start', path.pieces[0]], ['end', path.pieces[path.pieces.length - 1]]]) {
       if (!piece) continue;
@@ -365,6 +389,7 @@ function withinPage(doc, p) {
   // intermediate leg is correct usage ("go right until level with it, then
   // turn"), so only the final endpoint can say whether the path arrived.
   for (const path of paths) {
+    if (path.role === 'artwork') continue;
     const aim = path.targets?.at(-1);
     if (!aim) continue;
     const target = els.find((e) => e.id === aim.id);
@@ -400,6 +425,7 @@ function withinPage(doc, p) {
   // L014 / L015 — notes carried over from pen execution
   for (const path of paths) {
     for (const note of path.penNotes ?? []) {
+      if (path.role === 'artwork' && note.code === 'L015') continue;
       out.push(
         finding(note.code, p.id, {
           message: `path "${path.id}" — ${note.message}`,
@@ -445,7 +471,7 @@ function againstLowerPages(doc, p) {
   const mine = elementsOf(doc, p.id);
   if (!mine.length) return out;
 
-  for (const lower of doc.pages.filter((q) => q.z < p.z)) {
+  for (const lower of doc.pages.filter((q) => q.z < p.z && !q.reference)) {
     for (const a of mine) {
       const aq = elementClaimed(a);
       for (const b of elementsOf(doc, lower.id)) {
@@ -493,7 +519,7 @@ function documentWide(doc, pages) {
         actors: [p.id],
         cells: [],
         metrics: { z: p.z, opacity: p.opacity },
-        fixes: [{ kind: 'remove', description: `remove the page: remove_page { id: "${p.id}" }`, params: { id: p.id } }],
+        fixes: [{ kind: 'remove_page', description: `remove the page: remove_page { id: "${p.id}" }`, params: { id: p.id } }],
       }),
     );
   }

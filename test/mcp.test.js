@@ -26,7 +26,7 @@ const SERVER = resolve(here, '../src/mcp/server.js');
 
 test('the tool module loads and every tool is well formed', () => {
   const tools = createTools(createSession());
-  assert.ok(tools.length >= 20, `expected a full surface, got ${tools.length}`);
+  assert.equal(tools.length, 29, `the documented tool count drifted: got ${tools.length}`);
   for (const t of tools) {
     assert.match(t.name, /^[a-z_]+$/, `bad tool name "${t.name}"`);
     assert.ok(t.description.length > 30, `${t.name} needs a real description`);
@@ -39,8 +39,6 @@ test('the tool module loads and every tool is well formed', () => {
 test('every core operation has a matching tool, so a plan can be built by hand', () => {
   const names = new Set(createTools(createSession()).map((t) => t.name));
   for (const op of Object.keys(core.OPERATIONS)) {
-    // remove_page is reachable through plan only; everything else is a tool.
-    if (op === 'remove_page') continue;
     assert.ok(names.has(op), `operation "${op}" has no tool of the same name`);
   }
 });
@@ -49,6 +47,26 @@ test('tools that need a document say so instead of throwing something cryptic', 
   const tools = createTools(createSession());
   const validate = tools.find((t) => t.name === 'validate');
   await assert.rejects(async () => validate.handler({}), /no diagram is open/);
+});
+
+test('the validate tool surfaces composition findings to the agent', async () => {
+  // An INFO finding the tool layer filters out cannot change any model's behaviour,
+  // which would defeat the point of having it. Drive the real handler, not core.validate.
+  const tools = createTools(createSession());
+  await tools.find((t) => t.name === 'new_diagram').handler({
+    name: 'sparse', path: 'sparse.turtlepen.json', cols: 40, rows: 20,
+  });
+
+  const validate = tools.find((t) => t.name === 'validate');
+  const asJson = JSON.parse(await validate.handler({ format: 'json' }));
+  const c001 = asJson.open.find((f) => f.rule === 'C001');
+
+  assert.ok(c001, 'a near-empty diagram must reach the agent as C001');
+  assert.equal(c001.severity, 'S3');
+  assert.ok(c001.message.length > 0, 'every finding must carry a message an agent can act on');
+
+  const asLog = await validate.handler({});
+  assert.match(asLog, /C001/, 'the human-readable log must mention it too');
 });
 
 test('help documents the lattice, the grammar and every rule', () => {

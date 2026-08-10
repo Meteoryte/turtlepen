@@ -69,12 +69,16 @@ export const SEVERITY_CUE = Object.freeze({
   S3: 'dotted',
 });
 
-export function renderSvg(doc, { pages = null, findings = null, showGrid = true, margin = 20 } = {}) {
+export function renderSvg(doc, { pages = null, findings = null, showGrid = true, margin = 20, bounds = 'content' } = {}) {
   const visible = (pages ? doc.pages.filter((p) => pages.includes(p.id)) : doc.pages)
     .filter((p) => p.visible !== false)
     .sort((a, b) => a.z - b.z);
 
-  const b = contentBounds(doc) ?? { x: 0, y: 0, w: 40, h: 24 };
+  if (!['content', 'canvas'].includes(bounds)) throw new SyntaxError(`SVG bounds must be "content" or "canvas" — got ${JSON.stringify(bounds)}`);
+  if (!Number.isInteger(margin) || margin < 0) throw new RangeError(`SVG margin must be a whole non-negative pixel count — got ${JSON.stringify(margin)}`);
+  const b = bounds === 'canvas'
+    ? { x: 0, y: 0, w: doc.canvas.cols * 2, h: doc.canvas.rows * 2 }
+    : contentBounds(doc) ?? { x: 0, y: 0, w: 40, h: 24 };
   const px = toPx(b);
   const width = px.w + margin * 2;
   const height = px.h + margin * 2;
@@ -256,13 +260,15 @@ function textBlock(el, doc) {
     .map((line, i) => {
       if (!line) return '';
       const runW = line.length * m.advance;
-      return `<text class="free-text" x="${x}" y="${Math.round(y + m.lineHeight * (i + 0.75))}" font-size="${el.fontSize}" textLength="${runW}" lengthAdjust="spacingAndGlyphs" xml:space="preserve">${escapeText(line)}</text>`;
+      const tx = el.align === 'center' ? x + Math.floor((w - runW) / 2) : el.align === 'right' ? x + w - runW : x;
+      return `<text class="free-text" x="${tx}" y="${Math.round(y + m.lineHeight * (i + 0.75))}" font-size="${el.fontSize}" font-weight="${el.weight ?? 400}" textLength="${runW}" lengthAdjust="spacingAndGlyphs"${el.color ? ` style="fill:${escapeAttr(el.color)}"` : ''} xml:space="preserve">${escapeText(line)}</text>`;
     })
     .join('');
 }
 
 /** Every stroke quadrant is a 5x5 square; junction styles shave the outer corner. */
 function path(el) {
+  if (el.stroke) return styledPath(el);
   const shapes = el.pieces.map((p) => {
     const x = p.x * PX_PER_QUAD, y = p.y * PX_PER_QUAD, s = PX_PER_QUAD;
     if (p.type === 'arrow') return `<path class="stroke" d="${arrowPath(x, y, s, p.dir)}"/>`;
@@ -273,6 +279,89 @@ function path(el) {
     return `<path class="stroke" d="${junctionPath(x, y, s, p.sides, p.style)}"/>`;
   });
   return `<g data-id="${escapeAttr(el.id)}" data-kind="path">${shapes.join('')}</g>`;
+}
+
+/** Paint a path as continuous vector ink while retaining its quadrant claim. */
+function styledPath(el) {
+  if (el.stroke.paint === 'cells') return paintedCells(el);
+  const groups = [];
+  let group = [];
+  for (const piece of el.pieces) {
+    const prev = group.at(-1);
+    if (prev && (Math.abs(piece.x - prev.x) > 1 || Math.abs(piece.y - prev.y) > 1)) {
+      groups.push(group);
+      group = [];
+    }
+    group.push(piece);
+  }
+  if (group.length) groups.push(group);
+
+  const color = escapeAttr(el.stroke.color);
+  const width = el.stroke.width;
+  const cap = el.stroke.cap;
+  const ink = groups.map((pieces) => {
+    // The collision model deliberately keeps every Bresenham quadrant. Painting
+    // every one of those cell centres, however, turns a straight diagonal into
+    // a visible staircase. Simplify only the presentation polyline: the stored
+    // pieces (and therefore collision/selection geometry) remain byte-for-byte
+    // exact, while explicit bends survive because they exceed half a quadrant.
+    const points = simplifyPolyline(
+      pieces.map((p) => ({
+        x: p.x * PX_PER_QUAD + Math.floor(PX_PER_QUAD / 2),
+        y: p.y * PX_PER_QUAD + Math.floor(PX_PER_QUAD / 2),
+      })),
+      PX_PER_QUAD / 2,
+    );
+    if (points.length === 1) {
+      return `<line x1="${points[0].x}" y1="${points[0].y}" x2="${points[0].x}" y2="${points[0].y}" stroke="${color}" stroke-width="${width}" stroke-linecap="${cap}"/>`;
+    }
+    const encoded = points.map((p) => `${p.x},${p.y}`).join(' ');
+    return `<polyline points="${encoded}" fill="none" stroke="${color}" stroke-width="${width}" stroke-linecap="${cap}" stroke-linejoin="round"/>`;
+  });
+  return `<g data-id="${escapeAttr(el.id)}" data-kind="path" data-role="${escapeAttr(el.role ?? 'connector')}">${ink.join('')}</g>`;
+}
+
+/** Colour exact claimed quadrants, merging adjacent cells into compact runs. */
+function paintedCells(el) {
+  const rows = new Map();
+  for (const piece of el.pieces) {
+    if (!rows.has(piece.y)) rows.set(piece.y, new Set());
+    rows.get(piece.y).add(piece.x);
+  }
+  const rects = [];
+  for (const y of [...rows.keys()].sort((a, b) => a - b)) {
+    const xs = [...rows.get(y)].sort((a, b) => a - b);
+    let start = xs[0], previous = xs[0];
+    const emit = () => rects.push(`<rect x="${start * PX_PER_QUAD}" y="${y * PX_PER_QUAD}" width="${(previous - start + 1) * PX_PER_QUAD}" height="${PX_PER_QUAD}" fill="${escapeAttr(el.stroke.color)}"/>`);
+    for (let i = 1; i < xs.length; i += 1) {
+      if (xs[i] !== previous + 1) { emit(); start = xs[i]; }
+      previous = xs[i];
+    }
+    emit();
+  }
+  return `<g data-id="${escapeAttr(el.id)}" data-kind="path" data-role="${escapeAttr(el.role ?? 'connector')}" data-paint="cells">${rects.join('')}</g>`;
+}
+
+/** Ramer-Douglas-Peucker simplification for presentation-only artwork ink. */
+function simplifyPolyline(points, tolerance) {
+  if (points.length <= 2) return points;
+  const first = points[0], last = points.at(-1);
+  let split = -1, furthest = 0;
+  for (let i = 1; i < points.length - 1; i += 1) {
+    const distance = distanceToSegment(points[i], first, last);
+    if (distance > furthest) { furthest = distance; split = i; }
+  }
+  if (furthest <= tolerance) return [first, last];
+  const left = simplifyPolyline(points.slice(0, split + 1), tolerance);
+  const right = simplifyPolyline(points.slice(split), tolerance);
+  return [...left.slice(0, -1), ...right];
+}
+
+function distanceToSegment(point, start, end) {
+  const dx = end.x - start.x, dy = end.y - start.y;
+  if (dx === 0 && dy === 0) return Math.hypot(point.x - start.x, point.y - start.y);
+  const t = Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / (dx * dx + dy * dy)));
+  return Math.hypot(point.x - (start.x + t * dx), point.y - (start.y + t * dy));
 }
 
 /** A filled triangle occupying one quadrant, pointing the way the path travels. */

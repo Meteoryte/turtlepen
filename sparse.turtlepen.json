@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "name": "sparse",
+  "canvas": {
+    "cols": 40,
+    "rows": 20
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-10T12:14:02.609Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": []
+  },
+  "acceptances": []
+}

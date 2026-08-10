@@ -90,6 +90,20 @@ test('documents round-trip through serialisation unchanged', () => {
   assert.equal(core.serialize(back), core.serialize(d), 'serialisation is deterministic');
 });
 
+test('forced-save provenance survives a document round trip', () => {
+  const d = sample();
+  d.forcedSave = { at: '2026-08-08T00:00:00.000Z', findingCount: 1, rules: ['L008'] };
+  const back = core.deserialize(core.serialize(d));
+  assert.deepEqual(back.forcedSave, d.forcedSave, 'the next reader must see that the gate was overridden');
+});
+
+test('rendering can preserve the declared canvas instead of cropping to content', () => {
+  const d = core.createDocument({ name: 'poster', canvas: { cols: 54, rows: 96 } });
+  core.applyPen(d, 'base', 'pen C4.q1\ndot', { id: 'mark', role: 'artwork' });
+  const svg = core.renderSvg(d, { bounds: 'canvas', margin: 0, showGrid: false });
+  assert.match(svg, /width="540" height="960"/, 'the portrait whitespace is part of the composition');
+});
+
 test('lattice info gives the AI the arithmetic it needs', () => {
   const info = core.latticeInfo(core.createDocument({ name: 'x' }));
   assert.equal(info.pxPerCell, 10);

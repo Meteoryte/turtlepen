@@ -1,10 +1,12 @@
 # TurtlePen
 
+![TurtlePen — turtle drawing at an easel](brand/logo.svg)
+
 An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype**, 104 tests green, zero runtime dependencies.
+Status: **prototype**, 229 tests green, zero runtime dependencies.
 
 ## The problem it solves
 
@@ -77,12 +79,22 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
   at the cursor.
 - **An omitted `align` continues on the track the cursor is already on.** A
   fixed default would fight a deliberately seated cursor.
+
 ## Shapes: anything that is not a rectangle
 
 The lattice is orthogonal, so a diagonal, a circle and an arc are the same kind
 of thing — a computed set of whole quadrants. These are the classic integer
 algorithms, chosen for the reason they were invented and the reason this project
 exists: they are exact.
+
+**They are starting points, not results.** A single `circle` is one gesture; a
+composition is what you build from several, related by anchors and varied
+deliberately. `validate` now says so out loud — `C001` reports a document whose
+densest page has too little ink to have been composed at all.
+
+The worked example to measure against is `diagrams/art-deco-hero.svg`, drawn
+entirely on these primitives and inking 11% of its canvas. A page that reaches
+for one primitive and stops will typically ink under 1%.
 
 ```
 ray to AF20.q1        a straight line at ANY angle (Bresenham)
@@ -102,8 +114,9 @@ line, which is how interface art was drawn on 1-bit displays.
 
 Connectors got `pen from <id>.<face>` early, because a hand-computed address is
 where the mistakes live. Shapes did not, so every part of the first logo was an
-absolute coordinate and the proportions drifted. An anchor fixes that: a head
-anchored to `shell.N` cannot float off the shell, however the shell changes.
+absolute coordinate and the proportions drifted. An anchor fixes that during
+authorship: the relationship is resolved from the target's current footprint
+when the program runs, instead of being recomputed by the author.
 
 ```
 pen at shell.C                       put the cursor ON an element
@@ -115,6 +128,10 @@ circle 7 at head.W offset -3 4       nudge in whole quadrants
 starts. `at` gives the **anchor**, on the element, where a shape belongs.
 Anchors are `N NE E SE S SW W NW C`, and work on anything with a footprint —
 including a drawn path, whose footprint is computed from the quadrants it covers.
+
+Anchors are declarative inputs, not live constraints stored in the document.
+Rerunning the same program after changing `shell` recomputes the relationship;
+moving `shell` later does not automatically move already-created dependents.
 
 > **Corner anchors are bounding-box corners.** On a rectangle that is what you
 > want. On an ellipse or any organic shape, `SW` is the corner of the box around
@@ -138,6 +155,16 @@ scaffolding.
 `closed`, and the rules about dangling ends and retraced quadrants do not apply
 to it — they are about connectors, and applying them to an outline is how a rule
 cries wolf.
+
+**Open artwork is not a connector either.** Set `role: "artwork"` on `pen` (or
+inside `plan`) to draw branches, contours, and other intentionally open marks
+without connector-only `L008`/`L015` findings. Artwork may also declare a hex
+`color`, a `width` from 1–5px, and `cap: "butt"|"round"|"square"`. Those are
+presentation properties: the collision engine still claims the exact integer
+quadrants, while the SVG paints a simplified continuous line through them.
+Set `paint: "cells"` to colour every claimed quadrant instead; this is how the
+canonical logo builds solid forms without embedding a bitmap or weakening
+collision geometry.
 
 - **`hop` marks a deliberate crossing.** It renders as a bridge arc and exempts
   that quadrant from the stroke-overlap rule, so an intended crossing is not
@@ -208,8 +235,10 @@ Within a single page, overlap is always an error regardless of intent.
 | `L014` | S2 warn | a stroke drawn on a track the cursor was not on |
 | `L015` | S2 warn | a path re-draws a quadrant it already covered |
 | `L016` | S2 warn | a path named a destination but stops short of touching it |
+| `L020` | S2 warn | a temporary tracing-reference page is still present |
 | `L010` | S3 info | expected overlap from an overlay page |
 | `L013` | S3 info | a path crosses a claimed but un-inked corner cut |
+| `C001` | S3 info | sparse canvas — too little ink to have been composed; compose it, or declare the page `schematic` |
 
 ## The workflow
 
@@ -258,37 +287,46 @@ cannot exit, so these are kept a closed set — and a test asserts it.
 | `canvas` | `set_canvas` |
 | `extend` | `extend_path` |
 | `reroute`, `offset`, `hop` | `replace_path` |
+| `remove` | `remove` or `remove_page` according to target kind |
 
 ## Running it
 
 ```bash
-pnpm run check                         # tests + both examples
-node --test "test/**/*.test.js"        # 104 tests
+pnpm run check                         # 229 tests + examples, logo, and tree
+node --test "test/**/*.test.js"        # 229 tests
 node examples/build-example.js         # the plan -> commit cycle, end to end
 node examples/agent-session.js         # an agent authoring a real diagram over MCP
+pnpm run logo                          # regenerate the canonical 1200x1200 logo
+pnpm run tree                          # regenerate the 540x960 branching-tree study
 node src/viewer/server.js --doc diagrams/example.turtlepen.json
 node src/mcp/server.js                 # MCP over stdio
 ```
 
-Register the MCP server with any MCP-aware agent:
+Register the MCP server with any MCP-aware agent. Use the absolute path to your
+own clone — `args` is resolved by the agent, not by a shell, so `~` and relative
+paths do not expand:
 
 ```json
 { "mcpServers": { "turtlepen": {
     "command": "node",
-    "args": ["03_EXPERIMENTS/TurtlePen/src/mcp/server.js"],
-    "cwd": "x:/Python Projects/Home Base - Brainn.dev"
+    "args": ["/absolute/path/to/turtlepen/src/mcp/server.js"]
 } } }
 ```
 
-25 tools. Call `turtlepen_help` first — it returns the grammar, the lattice
+There is nothing to install first: no runtime dependencies, Node 20 or newer.
+Clone it, point the config at `src/mcp/server.js`, and run `npm test` once to
+confirm the clone is sound.
+
+29 tools. Call `turtlepen_help` first — it returns the grammar, the lattice
 constants, the rule table, and the fix→tool map.
 
 | Group | Tools |
 |---|---|
 | orient | `turtlepen_help` `describe` `ascii` `free_space` |
-| author | `new_diagram` `open_diagram` `add_page` `measure` `place_box` `pen` `plan` |
+| author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `plan` |
 | check | `validate` `accept_finding` `unaccept_finding` |
 | repair | `resize` `restyle` `move` `rename` `update_page` `set_canvas` `extend_path` `replace_path` `remove` |
+| image | `measure_image` `place_image` `place_reference` |
 | output | `render` `save` |
 
 ## Seeing the drawing
@@ -334,7 +372,9 @@ fit glyphs into exactly the width the engine measured.
 ranked log, and the ASCII view, re-read from disk as the AI writes. Pages can be
 toggled off, and clicking a finding flashes the exact quadrants it names — the
 log line and the drawing are the same fact, so the link between them is a click
-rather than something to reconstruct by eye.
+rather than something to reconstruct by eye. Polls compare the file timestamp
+first, so an unchanged large artwork returns a tiny acknowledgement instead of
+revalidating, rerendering, and retransmitting the document every 700ms.
 
 ## Deferred, deliberately
 

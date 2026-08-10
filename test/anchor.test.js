@@ -5,7 +5,7 @@
  * hand-computed addresses go wrong, and a box's faces are not symmetric. Shapes
  * never learned it — every part of the first logo was placed by an absolute
  * coordinate worked out by hand, so proportions drifted and the head floated off
- * the shell. An anchor makes position a RELATIONSHIP, which cannot drift.
+ * the shell. An anchor resolves position from the target when the program runs.
  *
  * The underlay is the other half: dither a reference onto a page below the
  * drawing, trace over it, delete it. The engine warns if you forget.
@@ -14,8 +14,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { deflateSync } from 'node:zlib';
+import { mkdtemp, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 import * as core from '../src/core/index.js';
+import { createSession, createTools } from '../src/mcp/tools.js';
 
 const ctx = (d) => ({ resolveElement: (id) => core.findElement(d, id)?.element ?? null });
 
@@ -43,7 +47,7 @@ test('the cursor can be placed at an element anchor instead of an address', () =
   assert.deepEqual({ x: r.cursor.x, y: r.cursor.y }, core.shapes.portPoint(el.rect, 'C'));
 });
 
-test('a shape can be anchored to an element, so it cannot drift off it', () => {
+test('a shape can be placed from an element anchor instead of hand-computed coordinates', () => {
   const d = withShell();
   const { path } = core.applyPen(d, 'base', 'circle 6 at shell.C', { id: 'ring' });
   const el = core.findElement(d, 'shell').element;
@@ -54,7 +58,7 @@ test('a shape can be anchored to an element, so it cannot drift off it', () => {
   }
 });
 
-test('an offset moves the anchor by whole quadrants, keeping the relationship', () => {
+test('an offset moves the execution-time anchor by whole quadrants', () => {
   const d = withShell();
   const plain = core.applyPen(d, 'base', 'dot at shell.C', { id: 'a' }).path.pieces[0];
   const moved = core.applyPen(d, 'base', 'dot at shell.C offset 4 -3', { id: 'b' }).path.pieces[0];
@@ -71,7 +75,7 @@ test('an unknown anchor names the ones that exist', () => {
   assert.throws(() => core.applyPen(d, 'base', 'circle 4 at shell.MIDDLE', { id: 'x' }), /MIDDLE|expected/i);
 });
 
-test('the head stays on the shell when both are anchored — the whole point', () => {
+test('the head is placed overlapping the shell when resolved from its anchor', () => {
   const d = withShell();
   const el = core.findElement(d, 'shell').element;
   core.applyPen(d, 'base', 'circle 8 at shell.N offset 0 -4', { id: 'head' });
@@ -121,6 +125,7 @@ test('a reference still in the document is reported — it is scaffolding, not a
   const hit = core.validate(d).open.filter((f) => f.rule === 'L020')[0];
   assert.ok(hit, 'the engine reminds you to remove the tracing layer');
   assert.equal(hit.severity, 'S2', 'and it gates a render, because scaffolding must not ship');
+  assert.equal(hit.fixes[0].kind, 'remove_page', 'the suggested fix must route to the page-removal operation');
 });
 
 test('removing the reference clears the finding', () => {
@@ -128,6 +133,40 @@ test('removing the reference clears the finding', () => {
   core.placeReference(d, { id: 'ref', source: uri(tinyPng(40, 20)), at: 'C4.tl', span: { w: 20, h: 10 } });
   core.removePage(d, 'ref');
   assert.equal(core.validate(d).open.filter((f) => f.rule === 'L020').length, 0);
+});
+
+test('drawing over a tracing reference does not create a false exclusive-page collision', () => {
+  const d = core.createDocument({ name: 'tracing' });
+  core.placeReference(d, { id: 'ref', source: uri(tinyPng(40, 20)), at: 'C4.tl', span: '8x4' });
+  core.placeBox(d, 'base', { id: 'trace', at: 'C4.tl', span: '4x2' });
+  const rules = core.validate(d).open.map((f) => f.rule);
+  assert.ok(rules.includes('L020'), 'the underlay reminder remains active');
+  assert.ok(!rules.includes('L005'), 'drawing over scaffolding is the intended workflow, not an exclusive-page defect');
+});
+
+test('a failed reference placement leaves the document byte-identical', () => {
+  const d = core.createDocument({ name: 'tracing' });
+  const before = core.serialize(d);
+  assert.throws(
+    () => core.placeReference(d, { id: 'ref', source: uri(tinyPng(40, 20)), at: 'C4.tl', span: 'bad' }),
+    /span/,
+  );
+  assert.equal(core.serialize(d), before, 'no orphan page survives a failed operation');
+});
+
+test('place_reference inside a plan resolves a local image exactly as the direct tool does', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'turtlepen-ref-'));
+  await writeFile(join(dir, 'ref.png'), tinyPng(40, 20));
+  const session = createSession({ cwd: dir });
+  const tools = Object.fromEntries(createTools(session).map((t) => [t.name, t]));
+  await tools.new_diagram.handler({ name: 'plan-reference', path: join(dir, 'd.turtlepen.json') });
+
+  const out = await tools.plan.handler({
+    operations: [{ op: 'place_reference', id: 'ref', at: 'C4.tl', span: '8x4', source: 'ref.png' }],
+    commit: true,
+  });
+  assert.doesNotMatch(out, /FAILED/, out);
+  assert.equal(session.doc.pages.find((p) => p.id === 'ref')?.reference, true);
 });
 
 test('a drawn shape is anchorable too — it is the thing you most want to anchor to', () => {
