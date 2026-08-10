@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "name": "Workflow - CI/CD",
+  "name": "Gears Workflow",
   "canvas": {
     "cols": 160,
-    "rows": 100
+    "rows": 90
   },
   "font": {
     "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
@@ -11,7 +11,7 @@
     "advanceRatio": 0.6,
     "paddingQuads": 1
   },
-  "createdAt": "2026-08-10T13:37:29.129Z",
+  "createdAt": "2026-08-10T13:40:58.616Z",
   "pages": [
     {
       "id": "base",
@@ -20,10 +20,19 @@
       "title": "Base",
       "visible": true,
       "opacity": 1
+    },
+    {
+      "id": "belts",
+      "z": 1,
+      "intent": "overlay",
+      "title": "Conveyor Belts",
+      "visible": true,
+      "opacity": 0.92
     }
   ],
   "elements": {
-    "base": []
+    "base": [],
+    "belts": []
   },
   "acceptances": []
 }

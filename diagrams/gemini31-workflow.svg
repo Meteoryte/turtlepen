@@ -39,4 +39,6 @@
 <g transform="translate(20,20)">
 <g data-page="base" data-z="0" opacity="1">
 </g>
+<g data-page="belts" data-z="1" opacity="0.92">
+</g>
 </g></svg>
