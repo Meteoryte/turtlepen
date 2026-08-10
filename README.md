@@ -406,3 +406,21 @@ The following sample diagrams and visual scenes were authored using TurtlePen MC
 Authoring script: `build_all_diagrams.js`  
 Model used: **Gemini 3.6 Flash (High)**
 
+---
+
+The following sample diagrams and visual scenes were authored using TurtlePen MCP tools by **Gemini 3.1 Pro (High)**:
+
+### Domain & System Architecture
+- **Server Structure**: [Load Balanced Architecture](diagrams/gemini31-server-structure.svg) ([JSON](diagrams/gemini31-server-structure.turtlepen.json))
+- **Teaching & Education**: [Learning Feedback Loop](diagrams/gemini31-teaching-loop.svg) ([JSON](diagrams/gemini31-teaching-loop.turtlepen.json))
+- **Technical Analysis**: [Algorithmic Trading Engine](diagrams/gemini31-technical-analysis.svg) ([JSON](diagrams/gemini31-technical-analysis.turtlepen.json))
+- **Workflow**: [DevOps CI/CD Pipeline](diagrams/gemini31-workflow.svg) ([JSON](diagrams/gemini31-workflow.turtlepen.json))
+
+### Illustrative Scenes
+- **Apple**: [Juicy Apple Illustration](diagrams/gemini31-scene-apple.svg) ([JSON](diagrams/gemini31-scene-apple.turtlepen.json))
+- **Tree**: [Green Tree Scene](diagrams/gemini31-scene-tree.svg) ([JSON](diagrams/gemini31-scene-tree.turtlepen.json))
+- **Fence**: [White Picket Fence Scene](diagrams/gemini31-scene-fence.svg) ([JSON](diagrams/gemini31-scene-fence.turtlepen.json))
+- **Living Room**: [Living Room Family](diagrams/gemini31-scene-living-room-family.svg) ([JSON](diagrams/gemini31-scene-living-room-family.turtlepen.json))
+
+Authoring script: `build_gemini_3.1_diagrams.js`  
+Model used: **Gemini 3.1 Pro (High)**
