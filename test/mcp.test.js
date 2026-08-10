@@ -52,9 +52,12 @@ test('tools that need a document say so instead of throwing something cryptic', 
 test('the validate tool surfaces composition findings to the agent', async () => {
   // An INFO finding the tool layer filters out cannot change any model's behaviour,
   // which would defeat the point of having it. Drive the real handler, not core.validate.
+  // Write into a temp dir, never the repo — a relative path here lands in the
+  // project root and gets committed by accident.
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
   const tools = createTools(createSession());
   await tools.find((t) => t.name === 'new_diagram').handler({
-    name: 'sparse', path: 'sparse.turtlepen.json', cols: 40, rows: 20,
+    name: 'sparse', path: resolve(dir, 'sparse.turtlepen.json'), cols: 40, rows: 20,
   });
 
   const validate = tools.find((t) => t.name === 'validate');
@@ -67,6 +70,8 @@ test('the validate tool surfaces composition findings to the agent', async () =>
 
   const asLog = await validate.handler({});
   assert.match(asLog, /C001/, 'the human-readable log must mention it too');
+
+  await rm(dir, { recursive: true, force: true });
 });
 
 test('help documents the lattice, the grammar and every rule', () => {
