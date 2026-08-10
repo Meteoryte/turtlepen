@@ -386,3 +386,23 @@ revalidating, rerendering, and retransmitting the document every 700ms.
   AI can do reliably.
 - **Negative addressing** — the grid runs `A1` rightward and downward only.
   Start at an inset origin if a drawing may need to grow up or left.
+
+## AI Generated Examples
+
+The following sample diagrams and visual scenes were authored using TurtlePen MCP tools by **Gemini 3.6 Flash (High)**:
+
+### Domain & System Architecture
+- **Server Structure**: [High-Availability Microservices Architecture](diagrams/server-structure-ha-microservices.svg) ([JSON](diagrams/server-structure-ha-microservices.turtlepen.json))
+- **Teaching & Education**: [Adaptive Mastery Learning & Assessment Cycle](diagrams/teaching-mastery-learning-cycle.svg) ([JSON](diagrams/teaching-mastery-learning-cycle.turtlepen.json))
+- **Technical Analysis**: [Quantitative Trading Signal & Risk Engine](diagrams/technical-analysis-quant-engine.svg) ([JSON](diagrams/technical-analysis-quant-engine.turtlepen.json))
+- **Workflow**: [Automated CI/CD Deployment Pipeline](diagrams/workflow-cicd-deployment-pipeline.svg) ([JSON](diagrams/workflow-cicd-deployment-pipeline.turtlepen.json))
+
+### Illustrative Scenes
+- **Apple**: [Crisp Red Apple Illustration](diagrams/scene-apple.svg) ([JSON](diagrams/scene-apple.turtlepen.json))
+- **Tree**: [Lush Apple Tree Scene](diagrams/scene-tree.svg) ([JSON](diagrams/scene-tree.turtlepen.json))
+- **Fence**: [Wooden Picket Fence Scene](diagrams/scene-fence.svg) ([JSON](diagrams/scene-fence.turtlepen.json))
+- **Living Room**: [Cozy Living Room & Stick Figure Family](diagrams/scene-living-room-family.svg) ([JSON](diagrams/scene-living-room-family.turtlepen.json))
+
+Authoring script: `build_all_diagrams.js`  
+Model used: **Gemini 3.6 Flash (High)**
+

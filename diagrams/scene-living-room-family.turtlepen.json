@@ -1,0 +1,1337 @@
+{
+  "schema": 1,
+  "name": "Scene - Living Room Family",
+  "canvas": {
+    "cols": 160,
+    "rows": 100
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-10T13:28:37.452Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    },
+    {
+      "id": "furniture",
+      "z": 1,
+      "intent": "overlay",
+      "title": "Furniture Overlay",
+      "visible": true,
+      "opacity": 0.92
+    },
+    {
+      "id": "family",
+      "z": 2,
+      "intent": "overlay",
+      "title": "Family Figures Overlay",
+      "visible": true,
+      "opacity": 0.92
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "header",
+        "kind": "box",
+        "rect": {
+          "x": 20,
+          "y": 6,
+          "w": 56,
+          "h": 8
+        },
+        "label": "Cozy Living Room & Family",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rug",
+        "kind": "box",
+        "rect": {
+          "x": 12,
+          "y": 42,
+          "w": 52,
+          "h": 12
+        },
+        "label": "Area Rug",
+        "fontSize": 10,
+        "corner": "indented",
+        "align": "left",
+        "fill": "#f4a261",
+        "note": null,
+        "opacity": null,
+        "state": null
+      }
+    ],
+    "furniture": [
+      {
+        "id": "couch",
+        "kind": "box",
+        "rect": {
+          "x": 16,
+          "y": 30,
+          "w": 44,
+          "h": 12
+        },
+        "label": "Family Sofa",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": "#457b9d",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "tv_unit",
+        "kind": "box",
+        "rect": {
+          "x": 80,
+          "y": 26,
+          "w": 28,
+          "h": 16
+        },
+        "label": "OLED TV Screen",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": "#1d3557",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "table",
+        "kind": "box",
+        "rect": {
+          "x": 24,
+          "y": 44,
+          "w": 24,
+          "h": 6
+        },
+        "label": "Coffee Table",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": "#e9c46a",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "lamp",
+        "kind": "box",
+        "rect": {
+          "x": 6,
+          "y": 26,
+          "w": 8,
+          "h": 20
+        },
+        "label": "Lamp",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": "#2a9d8f",
+        "note": null,
+        "opacity": null,
+        "state": null
+      }
+    ],
+    "family": [
+      {
+        "id": "dad_head",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 18,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#e63946",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 18,
+          "y": 23,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "dad_body",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 18,
+            "y": 24,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 25,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 26,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 27,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 28,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 29,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#1d3557",
+          "width": 3,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 18,
+          "y": 30,
+          "facing": "down"
+        }
+      },
+      {
+        "id": "dad_arms",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 14,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#1d3557",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 22,
+          "y": 26,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "mom_head",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 30,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#e63946",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 30,
+          "y": 23,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "mom_body",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 30,
+            "y": 24,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 25,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 26,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 27,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 28,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 29,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#1d3557",
+          "width": 3,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 30,
+          "y": 30,
+          "facing": "down"
+        }
+      },
+      {
+        "id": "mom_arms",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 26,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#1d3557",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 34,
+          "y": 26,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "child_head",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 40,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#e63946",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 40,
+          "y": 24,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "child_body",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 40,
+            "y": 26,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 27,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 28,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 29,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#1d3557",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 40,
+          "y": 30,
+          "facing": "down"
+        }
+      },
+      {
+        "id": "child_arms",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 38,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 26,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#1d3557",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 42,
+          "y": 26,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "dog_head",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 66,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#7f5539",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 66,
+          "y": 46,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "dog_body",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 62,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#7f5539",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 62,
+          "y": 49,
+          "facing": "right"
+        }
+      }
+    ]
+  },
+  "acceptances": [],
+  "forcedSave": {
+    "at": "2026-08-10T13:28:37.478Z",
+    "findingCount": 4,
+    "rules": [
+      "L006",
+      "L006",
+      "L006",
+      "L006"
+    ]
+  }
+}

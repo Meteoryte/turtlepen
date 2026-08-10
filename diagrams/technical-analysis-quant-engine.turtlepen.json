@@ -1,0 +1,660 @@
+{
+  "schema": 1,
+  "name": "Technical Analysis - Quant Engine",
+  "canvas": {
+    "cols": 160,
+    "rows": 100
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-10T13:28:37.363Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "feed",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 6,
+          "w": 36,
+          "h": 8
+        },
+        "label": "Realtime Tick Stream",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "indicators",
+        "kind": "box",
+        "rect": {
+          "x": 44,
+          "y": 6,
+          "w": 36,
+          "h": 8
+        },
+        "label": "MACD / RSI Calc Engine",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "strategy",
+        "kind": "box",
+        "rect": {
+          "x": 44,
+          "y": 26,
+          "w": 36,
+          "h": 8
+        },
+        "label": "Strategy Signal Rules",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "risk",
+        "kind": "box",
+        "rect": {
+          "x": 44,
+          "y": 46,
+          "w": 36,
+          "h": 8
+        },
+        "label": "Position & Risk Filter",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rejection",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 46,
+          "w": 36,
+          "h": 8
+        },
+        "label": "Risk Violation Log",
+        "fontSize": 10,
+        "corner": "indented",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "executor",
+        "kind": "box",
+        "rect": {
+          "x": 44,
+          "y": 66,
+          "w": 36,
+          "h": 8
+        },
+        "label": "Order Router Gateway",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "exchange",
+        "kind": "box",
+        "rect": {
+          "x": 84,
+          "y": 66,
+          "w": 36,
+          "h": 8
+        },
+        "label": "Broker API Exchange",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "c1",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 40,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 10,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 44,
+          "y": 10,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "indicators",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 63,
+            "y": 14,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 15,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 16,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 17,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 18,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 19,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 20,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 21,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 22,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 23,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 24,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 25,
+            "type": "arrow",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 63,
+          "y": 26,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "strategy",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 63,
+            "y": 34,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 35,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 36,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 37,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 38,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 39,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 40,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 41,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 42,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 43,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 45,
+            "type": "arrow",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 63,
+          "y": 46,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "risk",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 43,
+            "y": 50,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 50,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 50,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 50,
+            "type": "arrow",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 39,
+          "y": 50,
+          "facing": "left"
+        },
+        "targets": [
+          {
+            "id": "rejection",
+            "port": "E",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "c5",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 63,
+            "y": 54,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 55,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 56,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 57,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 58,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 59,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 60,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 61,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 62,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 63,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 64,
+            "type": "line",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 65,
+            "type": "arrow",
+            "dir": "down",
+            "align": "right",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 63,
+          "y": 66,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "executor",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "c6",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 80,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 83,
+            "y": 70,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 84,
+          "y": 70,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "exchange",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      }
+    ]
+  },
+  "acceptances": []
+}

@@ -1,0 +1,2218 @@
+{
+  "schema": 1,
+  "name": "Scene - Apple",
+  "canvas": {
+    "cols": 80,
+    "rows": 60
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-10T13:28:37.392Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "label_apple",
+        "kind": "box",
+        "rect": {
+          "x": 10,
+          "y": 34,
+          "w": 32,
+          "h": 8
+        },
+        "label": "Crisp Red Apple",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "apple_left",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 18,
+            "y": 12,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 13,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 13,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 13,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 12,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 13,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 13,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 13,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 13,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#e63946",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 18,
+          "y": 24,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "apple_right",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 24,
+            "y": 12,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#e63946",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 24,
+          "y": 24,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "apple_bottom",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 20,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#d90429",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 20,
+          "y": 27,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "apple_stem",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 20,
+            "y": 10,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 11,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 12,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 13,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 14,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 15,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#6b705c",
+          "width": 3,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 20,
+          "y": 16,
+          "facing": "down"
+        }
+      },
+      {
+        "id": "apple_leaf",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 22,
+            "y": 5,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 6,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 6,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 6,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 6,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 6,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 7,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 7,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 7,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 7,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 7,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 8,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 8,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 8,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 8,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 8,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 8,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 8,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 10,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 10,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 10,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 10,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 10,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 11,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2a9d8f",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 22,
+          "y": 11,
+          "facing": "right"
+        }
+      }
+    ]
+  },
+  "acceptances": [],
+  "forcedSave": {
+    "at": "2026-08-10T13:28:37.415Z",
+    "findingCount": 6,
+    "rules": [
+      "L006",
+      "L006",
+      "L006",
+      "L006",
+      "L006",
+      "L006"
+    ]
+  }
+}
