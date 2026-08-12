@@ -219,16 +219,30 @@ export function createTools(session) {
           width: { type: 'integer', minimum: 1, maximum: 5, description: 'presentation width in px; collision geometry remains quadrant-exact' },
           cap: { type: 'string', enum: ['butt', 'round', 'square'] },
           paint: { type: 'string', enum: ['line', 'cells'], description: 'line paints continuous ink; cells paints every exact 5px claimed quadrant' },
+          tone: { type: ['number', 'string'], description: 'density 0.0625..1, or quarter | half | three-quarter | solid. A toned shape inks fewer real quadrants, so it CLAIMS fewer — unlike opacity, which changes nothing about geometry' },
+          feather: { type: 'integer', minimum: 0, description: 'quadrants of tone falloff inward from the region boundary' },
+          texture: { type: 'string', enum: ['eroded'], description: 'seeded roughening of the boundary; deterministic from the path id' },
         },
         required: ['program'],
         additionalProperties: false,
       },
-      handler: async ({ program, page = 'base', id = null, role = 'connector', color = null, width = null, cap = null, paint = null }) => {
+      handler: async ({ program, page = 'base', id = null, role = 'connector', color = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null }) => {
         const doc = need(session);
-        const r = core.applyPen(doc, page, program, { id, role, color, width, cap, paint });
+        const r = core.applyPen(doc, page, program, { id, role, color, width, cap, paint, tone, feather, texture });
         await persist(session);
         const lines = [`pen program applied to page "${page}" as ${role}`];
-        if (r.path) lines.push(`path "${r.path.id}": ${r.path.pieces.length} quadrant(s)`);
+        if (r.path) {
+          lines.push(`path "${r.path.id}": ${r.path.pieces.length} quadrant(s)`);
+          // Say what tone removed. A silently thinner shape is the kind of
+          // surprise this project exists to prevent.
+          const s = r.path.stroke ?? {};
+          if (s.tone != null || s.feather != null || s.texture != null) {
+            lines.push(`  tone ${s.tone ?? 1}`
+              + `${s.feather ? `, feather ${s.feather}` : ''}`
+              + `${s.texture ? `, texture ${s.texture}` : ''}`
+              + ' — the count above is what actually inked, and what the path claims');
+          }
+        }
         for (const b of r.boxes) lines.push(`box "${b.id}" at ${core.address.quadToAddress(b.rect.x, b.rect.y)} ${b.rect.w / 2}x${b.rect.h / 2} cells`);
         lines.push('', 'trace:');
         for (const t of r.trace) lines.push(`  ${String(t.step).padStart(2)}. ${t.action.padEnd(6)} ${describeTrace(t)}   << ${t.source}`);
@@ -829,6 +843,26 @@ ARTWORK PRESENTATION (arguments on the pen tool or plan operation)
   role: "artwork"                              open marks are not connectors
   color: "#rrggbb", width: 1..5, cap: "round" continuous presentation ink
   paint: "cells"                               colour every exact claimed quadrant
+
+TONE — density, and why it is not opacity
+  tone: 0.0625..1                              or "quarter" "half"
+                                               "three-quarter" "solid"
+  feather: <n>                                 quadrants of falloff inward
+                                               from the region boundary
+  texture: "eroded"                            seeded rough edge, deterministic
+
+  tone changes WHAT IS INKED. A half-tone shape inks half its quadrants through
+  the same ordered matrix that dithers images, so it CLAIMS half — collision
+  stays honest and the result survives into a font as real contours.
+  opacity changes how the SAME geometry is painted; the element still claims
+  every quadrant it did at full strength, which is what L019 exists to catch.
+  They are separate controls on purpose. Do not reach for opacity to make an
+  overlap go away.
+
+  The threshold keys off absolute lattice position, so two toned shapes tile
+  seamlessly where they meet and the same command always inks the same
+  quadrants. Below 0.0625 nothing inks at all, so it is rejected rather than
+  drawn as an invisible element that still occupies space.
 
 DRAWING FROM A SOURCE — reach for this BEFORE deriving geometry by hand
   place_image  id at span source [mode] [fit] [opacity] [page]

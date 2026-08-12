@@ -15,6 +15,7 @@
 import { rect, rectsOverlap, boundsOf } from './geometry.js';
 import { claimedQuads, visualQuads, assertCornerStyle } from './shapes.js';
 import { DEFAULT_FONT, resolveFontSize } from './text.js';
+import { normalizeTone, normalizeFeather, normalizeTexture } from './tone.js';
 
 // `schematic` stacks exactly like `exclusive`; it exists to carry authorial meaning —
 // "this page is deliberately spare" — which the composition rules read and skip.
@@ -80,7 +81,22 @@ export function normalizeStroke(stroke) {
   if (!PATH_PAINTS.includes(paint)) {
     throw new SyntaxError(`path paint must be ${PATH_PAINTS.join(' or ')} — got ${JSON.stringify(paint)}`);
   }
-  return { color, width, cap, ...(paint === 'cells' ? { paint } : {}) };
+  // Tone is normalised HERE, in core, so an operation means the same thing
+  // called directly, invoked as a tool, or rehearsed inside a plan. Parsing it
+  // in the tool handler is how place_box once ended up with two incompatible
+  // signatures for one name.
+  const tone = normalizeTone(stroke.tone, 'path tone');
+  const feather = normalizeFeather(stroke.feather, 'path feather');
+  const texture = normalizeTexture(stroke.texture, 'path texture');
+  return {
+    color,
+    width,
+    cap,
+    ...(paint === 'cells' ? { paint } : {}),
+    ...(tone < 1 ? { tone } : {}),
+    ...(feather > 0 ? { feather } : {}),
+    ...(texture ? { texture } : {}),
+  };
 }
 
 export function normalizeColor(value, what = 'color') {

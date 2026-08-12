@@ -49,6 +49,21 @@ Verified by running it, not by inspection:
   emits merged horizontal runs. A 400×300 solid area collapses from 4800
   quadrants to 60 rects. The same image renders byte-identically every run,
   which is why an ordered matrix is the default rather than error diffusion.
+- **Drawn artwork has density, not just presence.** `tone` (0.0625–1, or
+  `quarter`/`half`/`three-quarter`/`solid`), `feather`, and `texture` on a pen
+  path filter its pieces through that same ordered matrix. Because a piece IS
+  one quadrant, a half-tone shape claims exactly its half — `elementClaimed`,
+  the SVG emitter and the ASCII view all became correct without the collision
+  engine being touched, which is the strongest evidence the design matched the
+  engine's grain. `tone: 1` is the default and a proven no-op: the logo and
+  tree artifacts regenerate byte-identically. `tone` and `opacity` stay
+  separate on purpose — density changes what is inked and therefore what is
+  claimed, opacity changes neither, so `L019` can still police a fade used to
+  make an overlap disappear. Below 0.0625 the matrix inks nothing at all, so
+  `normalizeTone` rejects it rather than allowing an invisible element that
+  still occupies space; prevention was cheaper than a new finding, which would
+  have needed a new fix kind and a repair route.
+  Design: `docs/superpowers/specs/2026-08-12-turtlepen-tone-design.md`.
 - **The viewer serves**: HTTP 200 on `/`; `/api/state` returns the document,
   ranked findings, SVG with per-page groups and fingerprinted finding marks, and
   the ASCII view.
