@@ -240,9 +240,16 @@ sound and the *help text* at fault, in the same family as the `ray` incident:
   drawing" lesson was recorded here in `status.md` but never reached the surface
   an agent actually reads. `WORKFLOW` now ends `-> render -> LOOK AT IT`, and
   names `ascii` as the cheap way to read the quadrants.
-- **`render { showGrid: true }` appears to be inert** — it produced a
-  byte-identical file to the plain render. Not yet diagnosed; `ascii` covers the
-  need, so it was routed around rather than fixed.
+- **A false defect was filed against `showGrid`, and is retracted here.** The
+  session reported it "appears to be inert" because passing `showGrid: true`
+  produced a byte-identical file to a plain render. It is not inert: the default
+  is already `true`, so passing it changes nothing, and `true` vs `false` differ
+  by 1164 bytes with the grid pattern correctly present or absent. The grid was
+  in both renders the whole time — it is a deliberately faint hairline, so
+  "I cannot see a difference" was read as "the flag does nothing".
+  The lesson is the cheaper one: **test the flag against its opposite, not
+  against the default.** A no-op result comparing X to a default of X carries no
+  information either way.
 
 The through-line across the `ray` incident and this one: **the engine's
 capabilities are discoverable only from the surface the agent reads first.**
