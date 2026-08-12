@@ -603,14 +603,14 @@ export function latticeInfo(doc = null) {
  * an ordinary L001 rather than a rule the engine had to learn.
  */
 export function applyWireframe(doc, {
-  page = 'base', widthIn, depthIn, items = [], scale = 2, origin = null,
-  clearance = true, labels = true,
+  page = 'base', widthIn, depthIn, heightIn = null, items = [], runs = [], scale = 2,
+  origin = null, clearance = true, labels = true, view = 'plan',
 } = {}) {
   getPage(doc, page);
   const plan = wireframe_.layout(
-    { widthIn, depthIn },
+    { widthIn, depthIn, ...(heightIn != null ? { heightIn } : {}) },
     items,
-    { scale, ...(origin ? { origin } : {}) },
+    { scale, view, ...(origin ? { origin } : {}) },
   );
   const drawn = [];
   for (const b of wireframe_.boxes(plan, { includeClearance: clearance })) {
@@ -622,6 +622,22 @@ export function applyWireframe(doc, {
       fontSize: doc.font.size,
     }));
   }
+  // Runs are paths, not boxes — a line set has a length, which is the number an
+  // estimator actually wants. Drawn with the pattern its kind implies: control
+  // wiring dashed, drain dotted, so the three are told apart without a legend.
+  plan.runs = [];
+  for (const r of runs) {
+    const routed = wireframe_.route(plan, r);
+    applyPen(doc, page, wireframe_.runProgram(routed), {
+      id: routed.id, role: 'artwork', pattern: routed.pattern,
+    });
+    routed.penetrations = wireframe_.penetrations(plan, routed);
+    for (const pen of routed.penetrations) {
+      addBox(doc, page, { id: pen.id, rect: { x: pen.x - 1, y: pen.y - 1, w: 3, h: 3 }, label: '', corner: 'rounded' });
+    }
+    plan.runs.push(routed);
+  }
+
   doc.wireframe = plan;          // kept so export_prompt describes what was drawn
 
   // A unit's own four clearance bands meet at its corners — that is what makes

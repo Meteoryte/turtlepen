@@ -648,15 +648,37 @@ export function createTools(session) {
               additionalProperties: false,
             },
           },
+          heightIn: { type: 'number', description: 'for an elevation: wall height in inches (use instead of depthIn)' },
+          view: { type: 'string', enum: ['plan', 'elevation'], description: 'plan looks down; elevation looks at a wall, where items may be positioned by atAffIn' },
+          runs: {
+            type: 'array',
+            description: 'routed paths — line sets, drain, control wiring, conduit. Length is measured along the route, not estimated.',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                kind: { type: 'string', enum: ['lineset', 'drain', 'control', 'power'], description: 'sets the stroke pattern so the runs tell apart without a legend' },
+                waypoints: {
+                  type: 'array',
+                  description: 'corners of the route, in inches from the area top-left',
+                  items: { type: 'object', properties: { xIn: { type: 'number' }, yIn: { type: 'number' } }, required: ['xIn', 'yIn'], additionalProperties: false },
+                },
+                allowanceIn: { type: 'number', description: 'extra length not visible in this view — an interior leg beyond a wall, or service slack' },
+                describe: { type: 'string' },
+              },
+              required: ['id', 'waypoints'],
+              additionalProperties: false,
+            },
+          },
           clearance: { type: 'boolean', description: 'draw clearance bands (default true)' },
           page: { type: 'string' },
         },
-        required: ['widthIn', 'depthIn', 'items'],
+        required: ['widthIn', 'items'],
         additionalProperties: false,
       },
-      handler: async ({ widthIn, depthIn, items, scale = 2, clearance = true, page = 'base' }) => {
+      handler: async ({ widthIn, depthIn, heightIn = null, items, runs = [], scale = 2, clearance = true, view = 'plan', page = 'base' }) => {
         const doc = need(session);
-        const r = core.applyWireframe(doc, { page, widthIn, depthIn, items, scale, clearance });
+        const r = core.applyWireframe(doc, { page, widthIn, depthIn, heightIn, items, runs, scale, clearance, view });
         await persist(session);
         const v = core.validate(doc);
         const errs = v.open.filter((f) => ['S0', 'S1'].includes(f.severity));
@@ -664,6 +686,11 @@ export function createTools(session) {
           `wireframe on page "${page}": ${core.wireframe.feetInches(widthIn)} x ${core.wireframe.feetInches(depthIn)}`,
           `scale ${typeof scale === 'number' ? `${scale} quadrants per foot` : scale} — one quadrant is ${core.wireframe.feetInches(1 / r.plan.quadrantsPerInch)}`,
           `${r.boxes.length} boxes placed (4 walls + ${items.length} unit(s)${clearance ? ' + clearance bands' : ''})`,
+          ...(r.plan.runs?.length
+            ? r.plan.runs.map((run) => `run ${run.id} (${run.kind}): ${core.wireframe.feetInches(run.lengthIn + (run.allowanceIn || 0))}`
+              + (run.allowanceIn ? ` = ${core.wireframe.feetInches(run.lengthIn)} routed + ${core.wireframe.feetInches(run.allowanceIn)} allowance` : ' measured along the route')
+              + (run.penetrations?.length ? `, ${run.penetrations.length} penetration(s)` : ''))
+            : []),
           '',
           ...(r.plan.drift.length
             ? ['ROUNDING — these do not land on a whole quadrant:',

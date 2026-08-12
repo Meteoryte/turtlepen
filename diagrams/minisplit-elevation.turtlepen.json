@@ -1,0 +1,751 @@
+{
+  "schema": 1,
+  "name": "minisplit",
+  "canvas": {
+    "cols": 110,
+    "rows": 80
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-12T22:21:14.007Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "wall_n",
+        "kind": "box",
+        "rect": {
+          "x": 1,
+          "y": 1,
+          "w": 98,
+          "h": 1
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "wall_s",
+        "kind": "box",
+        "rect": {
+          "x": 1,
+          "y": 66,
+          "w": 98,
+          "h": 1
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "wall_w",
+        "kind": "box",
+        "rect": {
+          "x": 1,
+          "y": 2,
+          "w": 1,
+          "h": 64
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "wall_e",
+        "kind": "box",
+        "rect": {
+          "x": 98,
+          "y": 2,
+          "w": 1,
+          "h": 64
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "STAIR",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 30,
+          "w": 32,
+          "h": 36
+        },
+        "label": "STAIR",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "COND",
+        "kind": "box",
+        "rect": {
+          "x": 38,
+          "y": 27,
+          "w": 12,
+          "h": 9
+        },
+        "label": "COND",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "COND_clr_n",
+        "kind": "box",
+        "rect": {
+          "x": 34,
+          "y": 23,
+          "w": 20,
+          "h": 4
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "COND_clr_s",
+        "kind": "box",
+        "rect": {
+          "x": 34,
+          "y": 36,
+          "w": 20,
+          "h": 4
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "COND_clr_w",
+        "kind": "box",
+        "rect": {
+          "x": 34,
+          "y": 27,
+          "w": 4,
+          "h": 9
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "COND_clr_e",
+        "kind": "box",
+        "rect": {
+          "x": 50,
+          "y": 27,
+          "w": 4,
+          "h": 9
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "DISC",
+        "kind": "box",
+        "rect": {
+          "x": 40,
+          "y": 45,
+          "w": 3,
+          "h": 3
+        },
+        "label": "DISC",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "DISC_clr_n",
+        "kind": "box",
+        "rect": {
+          "x": 30,
+          "y": 35,
+          "w": 23,
+          "h": 10
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "DISC_clr_s",
+        "kind": "box",
+        "rect": {
+          "x": 30,
+          "y": 48,
+          "w": 23,
+          "h": 10
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "DISC_clr_w",
+        "kind": "box",
+        "rect": {
+          "x": 30,
+          "y": 45,
+          "w": 10,
+          "h": 3
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "DISC_clr_e",
+        "kind": "box",
+        "rect": {
+          "x": 43,
+          "y": 45,
+          "w": 10,
+          "h": 3
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "HEAD",
+        "kind": "box",
+        "rect": {
+          "x": 58,
+          "y": 20,
+          "w": 11,
+          "h": 4
+        },
+        "label": "HEAD",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "BINS",
+        "kind": "box",
+        "rect": {
+          "x": 54,
+          "y": 51,
+          "w": 44,
+          "h": 15
+        },
+        "label": "BINS",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "LS1",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 44,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 23,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 47,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 48,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 49,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 51,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 52,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 53,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 54,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 55,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 56,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 21,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 22,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 64,
+          "y": 22,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "PWR1",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 41,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 41,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 40,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 39,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 41,
+          "y": 39,
+          "facing": "right"
+        }
+      }
+    ]
+  },
+  "acceptances": [
+    {
+      "fingerprint": "15bca345d2ee",
+      "reason": "A clearance band sits against COND by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "2463fdf65132",
+      "reason": "A clearance band sits against COND by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "3cca9139ee77",
+      "reason": "A clearance band sits against DISC by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "50269a547c59",
+      "reason": "Clearance bands of DISC meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "5a19fb64e37c",
+      "reason": "A clearance band sits against COND by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "676fccba6b31",
+      "reason": "Clearance bands of COND meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "6ac063ae3eb3",
+      "reason": "Clearance bands of DISC meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "7a5ac86543db",
+      "reason": "A clearance band sits against DISC by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "8569a26b8075",
+      "reason": "Clearance bands of DISC meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "a4184d797fe3",
+      "reason": "Clearance bands of DISC meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "ab0c48f56c58",
+      "reason": "A clearance band sits against DISC by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "ac3e5bbb7671",
+      "reason": "Clearance bands of COND meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "b5d080d203b4",
+      "reason": "Clearance bands of COND meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "ca70522e70c0",
+      "reason": "A clearance band sits against COND by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "e7f15ee4eec5",
+      "reason": "Clearance bands of COND meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    },
+    {
+      "fingerprint": "fe441959f94b",
+      "reason": "A clearance band sits against DISC by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:21:14.080Z"
+    }
+  ]
+}

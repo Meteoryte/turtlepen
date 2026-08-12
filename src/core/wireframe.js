@@ -78,10 +78,16 @@ export function feetInches(inches) {
  * Each item: { id, widthIn, depthIn, atXIn, atYIn, clearanceIn?, describe? }
  * Coordinates are inches from the area's top-left corner.
  */
-export function layout(area, items, { scale = 2, origin = { x: 2, y: 2 } } = {}) {
+export function layout(area, items, { scale = 2, origin = { x: 2, y: 2 }, view = 'plan' } = {}) {
   const qpi = quadrantsPerInch(scale);
+  // An elevation is a wall: the second axis is HEIGHT, and equipment on it is
+  // called out AFF — above finished floor — not measured down from a ceiling.
+  // Accepting heightIn and atAffIn is not sugar; asking an installer to convert
+  // "condenser at 7'-0 AFF" into inches from the top is how a drawing acquires
+  // an error that nobody can see.
+  const vertical = area.heightIn ?? area.depthIn;
   const w = toQuadrants(area.widthIn, qpi);
-  const d = toQuadrants(area.depthIn, qpi);
+  const d = toQuadrants(vertical, qpi);
 
   const placed = [];
   const drift = [];
@@ -92,7 +98,13 @@ export function layout(area, items, { scale = 2, origin = { x: 2, y: 2 } } = {})
     const iw = toQuadrants(it.widthIn, qpi);
     const id_ = toQuadrants(it.depthIn, qpi);
     const x = origin.x + Math.round(it.atXIn * qpi);
-    const y = origin.y + Math.round(it.atYIn * qpi);
+    // atAffIn measures the item's BOTTOM up from the floor; atYIn measures its
+    // top down from the area's top edge. One drawing may use either.
+    const topIn = it.atAffIn != null
+      ? vertical - it.atAffIn - it.depthIn
+      : it.atYIn;
+    if (topIn == null) throw new RangeError(`${it.id} needs atYIn or atAffIn`);
+    const y = origin.y + Math.round(topIn * qpi);
     for (const [what, r] of [['width', iw], ['depth', id_]]) {
       if (r.driftInches) drift.push(`${it.id} ${what} off by ${r.driftInches}"`);
     }
@@ -104,7 +116,8 @@ export function layout(area, items, { scale = 2, origin = { x: 2, y: 2 } } = {})
       widthIn: it.widthIn,
       depthIn: it.depthIn,
       atXIn: it.atXIn,
-      atYIn: it.atYIn,
+      atYIn: topIn,
+      atAffIn: it.atAffIn ?? null,
     };
 
     // Clearance is real geometry, not a note — but it must be drawn as a RING
@@ -132,7 +145,8 @@ export function layout(area, items, { scale = 2, origin = { x: 2, y: 2 } } = {})
   return {
     scale,
     quadrantsPerInch: qpi,
-    area: { rect: { x: origin.x, y: origin.y, w: w.quadrants, h: d.quadrants }, ...area },
+    view,
+    area: { rect: { x: origin.x, y: origin.y, w: w.quadrants, h: d.quadrants }, verticalIn: vertical, ...area },
     items: placed,
     drift,
   };
@@ -145,7 +159,9 @@ export function layout(area, items, { scale = 2, origin = { x: 2, y: 2 } } = {})
  * the normalised boxes, one that only reads prose gets the same arrangement
  * stated in feet and inches and in plain position words.
  */
-export function toPrompt(plan, { style = null, subject = null, view = 'plan' } = {}) {
+export function toPrompt(plan, { style = null, subject = null, view = null } = {}) {
+  view = view ?? plan.view ?? 'plan';
+  const vName = view === 'plan' ? 'deep' : 'tall';
   const a = plan.area.rect;
   const nx = (q) => clamp01((q - a.x) / a.w);
   const ny = (q) => clamp01((q - a.y) / a.h);
@@ -154,9 +170,9 @@ export function toPrompt(plan, { style = null, subject = null, view = 'plan' } =
   const out = [];
   out.push(subject
     ? subject.trim()
-    : `A ${view} view of a ${feetInches(plan.area.widthIn)} by ${feetInches(plan.area.depthIn)} area.`);
+    : `A ${view} view of a ${feetInches(plan.area.widthIn)} by ${feetInches(plan.area.verticalIn)} area.`);
   out.push('');
-  out.push(`AREA        ${feetInches(plan.area.widthIn)} wide x ${feetInches(plan.area.depthIn)} deep`);
+  out.push(`AREA        ${feetInches(plan.area.widthIn)} wide x ${feetInches(plan.area.verticalIn)} ${vName}`);
   out.push(`VIEW        ${view}${view === 'plan' ? ' (looking straight down, no perspective)' : ''}`);
   out.push(`SCALE       ${typeof plan.scale === 'number' ? `${plan.scale} quadrants per foot` : plan.scale}`);
   out.push('');
@@ -168,7 +184,8 @@ export function toPrompt(plan, { style = null, subject = null, view = 'plan' } =
   for (const it of plan.items) {
     const r = it.rect;
     const box = [nx(r.x), ny(r.y), nx(r.x + r.w), ny(r.y + r.h)].map(p3).join(',');
-    out.push(`  ${it.id.padEnd(pad)}  ${box}   ${feetInches(it.widthIn)} x ${feetInches(it.depthIn)}  ${where(it, a)}`);
+    const aff = it.atAffIn != null ? `  ${feetInches(it.atAffIn)} AFF` : '';
+    out.push(`  ${it.id.padEnd(pad)}  ${box}   ${feetInches(it.widthIn)} x ${feetInches(it.depthIn)}  ${where(it, a)}${aff}`);
     if (it.describe) out.push(`  ${' '.repeat(pad)}  ${it.describe}`);
     if (it.clearance) {
       out.push(`  ${' '.repeat(pad)}  clearance ${feetInches(it.clearance.inches)} on all sides — keep this band empty`);
@@ -176,6 +193,20 @@ export function toPrompt(plan, { style = null, subject = null, view = 'plan' } =
     out.push('');
   }
 
+  if (plan.runs?.length) {
+    out.push('RUNS — routed paths. Lengths are measured along the route, not estimated.');
+    out.push('');
+    for (const r of plan.runs) {
+      const total = r.lengthIn + (r.allowanceIn || 0);
+      out.push(`  ${r.id.padEnd(pad)}  ${r.kind}  ${feetInches(total)}`
+        + (r.allowanceIn ? ` (${feetInches(r.lengthIn)} routed + ${feetInches(r.allowanceIn)} allowance)` : ''));
+      out.push(`  ${' '.repeat(pad)}  ${r.describe}`);
+      if (r.penetrations?.length) {
+        out.push(`  ${' '.repeat(pad)}  ${r.penetrations.length} wall penetration(s) — sleeve and seal each one`);
+      }
+      out.push('');
+    }
+  }
   if (style) out.push(`STYLE: ${style.trim()}`, '');
   out.push('Hold the proportions: the boxes are to scale against the area, so an');
   out.push('item drawn larger than its box is drawn at the wrong size. Do not add');
@@ -222,4 +253,108 @@ export function boxes(plan, { includeClearance = true, wallQuads = 1 } = {}) {
     }
   }
   return out;
+}
+
+// ---------------------------------------------------------------------------
+// Runs — line sets, drain, control wiring, conduit.
+//
+// The most important element in a mini-split drawing is not a box. It is the
+// refrigerant line set, and what an estimator needs from it is its LENGTH.
+// A sketch that says "~25 FT LINE SET" has asserted a number nobody measured;
+// routing the run through its actual waypoints and adding up the segments
+// produces the same number as a fact, and disagrees loudly when the route
+// changes.
+// ---------------------------------------------------------------------------
+
+export const RUN_KINDS = Object.freeze({
+  lineset: { pattern: null, describe: 'refrigerant line set, insulated pair' },
+  drain: { pattern: 'dotted', describe: 'condensate drain, gravity fall' },
+  control: { pattern: 'dashed', describe: 'control wiring' },
+  power: { pattern: null, describe: 'power conduit' },
+});
+
+/**
+ * Route a run through waypoints given in inches from the area's top-left.
+ *
+ * Length is summed from the WAYPOINTS, not from the drawn quadrants: the
+ * drawing rounds to the lattice, the estimate must not. Both are reported so
+ * the difference is visible rather than assumed away.
+ */
+export function route(plan, run) {
+  const qpi = plan.quadrantsPerInch;
+  const a = plan.area.rect;
+  const pts = run.waypoints;
+  if (!Array.isArray(pts) || pts.length < 2) {
+    throw new RangeError(`run "${run.id}" needs at least two waypoints`);
+  }
+
+  let trueIn = 0;
+  const quads = pts.map((p) => ({
+    x: a.x + Math.round(p.xIn * qpi),
+    y: a.y + Math.round(p.yIn * qpi),
+  }));
+  for (let i = 1; i < pts.length; i += 1) {
+    const dx = pts[i].xIn - pts[i - 1].xIn;
+    const dy = pts[i].yIn - pts[i - 1].yIn;
+    trueIn += Math.hypot(dx, dy);
+  }
+
+  let drawnQ = 0;
+  for (let i = 1; i < quads.length; i += 1) {
+    drawnQ += Math.hypot(quads[i].x - quads[i - 1].x, quads[i].y - quads[i - 1].y);
+  }
+
+  const kind = RUN_KINDS[run.kind] ?? RUN_KINDS.lineset;
+  return {
+    id: run.id,
+    kind: run.kind ?? 'lineset',
+    pattern: run.pattern ?? kind.pattern,
+    describe: run.describe ?? kind.describe,
+    quads,
+    lengthIn: Math.round(trueIn * 10) / 10,
+    drawnLengthIn: Math.round((drawnQ / qpi) * 10) / 10,
+    allowanceIn: run.allowanceIn ?? 0,
+  };
+}
+
+/** A pen program tracing the run, one segment at a time. */
+export function runProgram(routed) {
+  const dir = (dx, dy) => (dx > 0 ? 'e' : dx < 0 ? 'w' : dy > 0 ? 's' : 'n');
+  const lines = [];
+  for (let i = 1; i < routed.quads.length; i += 1) {
+    const p = routed.quads[i - 1];
+    const q = routed.quads[i];
+    const dx = q.x - p.x;
+    const dy = q.y - p.y;
+    if (dx !== 0 && dy !== 0) {
+      // A sloped run is drawn as a ray; the lattice steps it, which IS the line.
+      lines.push(`pen ${addr(p.x, p.y)}`, `ray to ${addr(q.x, q.y)}`);
+      continue;
+    }
+    const n = Math.abs(dx) + Math.abs(dy);
+    if (!n) continue;
+    lines.push(`pen ${addr(p.x, p.y)}`, `dash ${n + 1} ${dir(dx, dy)}`);
+  }
+  return lines.join('\n');
+}
+
+/** Where a run crosses a wall — the penetration that needs a sleeve. */
+export function penetrations(plan, routed, { wallQuads = 1 } = {}) {
+  const a = plan.area.rect;
+  const onWall = (p) => p.x <= a.x || p.x >= a.x + a.w - 1 || p.y <= a.y || p.y >= a.y + a.h - 1;
+  const out = [];
+  for (let i = 1; i < routed.quads.length; i += 1) {
+    for (const p of [routed.quads[i - 1], routed.quads[i]]) {
+      if (onWall(p) && !out.some((o) => o.x === p.x && o.y === p.y)) {
+        out.push({ id: `${routed.id}_pen${out.length + 1}`, x: p.x, y: p.y });
+      }
+    }
+  }
+  return out;
+}
+
+function addr(x, y) {
+  const col = (n) => { let s = ''; let v = Math.floor(n / 2) + 1; while (v > 0) { const r = (v - 1) % 26; s = String.fromCharCode(65 + r) + s; v = Math.floor((v - 1) / 26); } return s; };
+  const q = (x % 2 === 0 ? (y % 2 === 0 ? 1 : 3) : (y % 2 === 0 ? 2 : 4));
+  return `${col(x)}${Math.floor(y / 2) + 1}.q${q}`;
 }

@@ -77,7 +77,19 @@ Verified by running it, not by inspection:
   standing in it. Rounding drift is reported per dimension in inches, never
   swallowed. The module supplies **no clearance values of its own** — those come
   from the listing and the governing code, and plausible invented numbers would
-  be worse than none.
+  be worse than none. Runs close the gap that a first real job exposed:
+  a mini-split drawing's most important element is the line set, and it is a
+  PATH, not a box. `runs` routes one through waypoints and reports its length
+  measured along the route — a sketch reading "~25 FT LINE SET" asserts a number
+  nobody measured, and routing it produces the same number as a fact that
+  disagrees loudly when the route changes. `allowanceIn` carries the leg that is
+  not visible in the view, so "20'-4" = 10'-4" routed + 10'-0" allowance" states
+  which part was measured and which was assumed. Kinds set the stroke pattern —
+  control dashed, drain dotted — so three runs tell apart with no legend, which
+  is the first real use of the `pattern` work. Elevations and `atAffIn` came from
+  the same job: a wall's second axis is height, and asking an installer to
+  convert "7'-6 AFF" into inches from a ceiling is how a drawing acquires an
+  error nobody can see.
 - **A line can be dashed.** `pattern: "dashed" | "dotted"` on a pen path, which
   the lattice previously could not express at all — a projected trendline or an
   inferred boundary had to be faked mark by mark, so the intent lived in the
