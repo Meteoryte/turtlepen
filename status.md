@@ -1,13 +1,13 @@
 # TurtlePen — status
 
-**As of 2026-08-10.** Prototype, working end to end, 229/229 tests green,
+**As of 2026-08-10.** Prototype, working end to end, 230/230 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **229/229 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **230/230 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
 - **A diagram can be judged on composition, not just correctness.** `C001`
   (S3/INFO) reports a document whose densest page inks less than 1.2% of its
@@ -145,6 +145,47 @@ invisible from either the drawing or the rule table:
   directional special-case that would have "fixed" only left and up was rejected
   deliberately — it was the same class of asymmetry that caused the bug.
 
+A fourth session — eight dense artwork diagrams authored non-interactively by
+another model, then audited — found nothing wrong with the engine and a great
+deal wrong with how a script can use it. It is on record because the failure is
+the one this project exists to make impossible, wearing a different coat:
+
+- **Six of the eight documents were empty, and the script reported success.**
+  `plan` is all-or-nothing, so one bad operation in a batch of 204 discarded the
+  other 203; the unconditional `save` that followed then wrote a valid, empty
+  document. The tool layer had returned each failure as readable text — the
+  right shape for an agent that reads results, and a loaded gun for a script
+  that ignores them. `build_gemini_3.1_diagrams.js` now throws on a failed
+  operation and refuses to save a document carrying an S0 or S1 finding.
+  Transactional writes protect the document; they do not protect a caller from
+  believing it succeeded.
+- **The authoring log blamed the lattice for its own mistakes.** It reported
+  that TurtlePen "restricts angled lines to eight compass directions" — written
+  after `ne 8 line` failed to parse, while `ray` was available and draws at any
+  angle. A bare `unrecognised token` left the author with that conclusion and
+  they faked diagonals with stacked discs for the rest of the run. A compass
+  word used as a movement verb now names `ray` and `dash` in the error.
+- **A hand-rolled column converter produced `^59`.** `String.fromCharCode(65+n)`
+  runs off the end of the alphabet at index 26; `indexToCol` was already
+  exported from `core/address.js` and is correct to `AA` and beyond.
+- **An overlay page is a paint layer.** Every L004 in the corpus came from
+  detail drawn INSIDE a filled box on the same page — blades in a rack, a peak
+  on a picket, an arm on a sofa. Moved onto an overlay, the same ink reports
+  L010: information that a planned layering worked, rather than an error that
+  two things collided. This is the single most useful thing the session
+  learned, and it is not obvious from the rule table.
+- **A clean log is not a finished drawing.** Every diagram validated clean while
+  the rug sat 60 cells from the sofa, three figures floated above the floor,
+  connectors stopped in open space, and an apple's stem hovered four cells clear
+  of the fruit. `C001` catches an empty canvas; nothing catches an incoherent
+  one. Those were found by rendering the SVGs and looking at them, which is now
+  part of the loop rather than an optional last step.
+
+The eight rebuilt diagrams are dense (2.2%–26.4% ink on their densest page,
+against a 1.2% floor), deterministic — the candlestick walk was seeded, having
+previously used `Math.random()` and so producing an unrepeatable document — and
+carry zero critical or error findings.
+
 A third session — drawing the project's own logo — found the engine could not
 draw a curve at all, and that its rules did not know what a drawing was:
 
@@ -164,6 +205,36 @@ draw a curve at all, and that its rules did not know what a drawing was:
   in the tool handler but not inside `plan`, so a file path worked as a tool
   call and failed in a batch. Exactly the split `place_box` once had with its
   two span formats — normalisation must sit on the path both entry points take.
+
+A fifth session — drawing a pixel typeface and a brand mark — found the engine
+sound and the *help text* at fault, in the same family as the `ray` incident:
+
+- **An author read `turtlepen_help` first, as instructed, and still never
+  learned that images exist.** The help documented the lattice, addressing, pen
+  grammar, shapes, anchors, artwork presentation, workflow and the fix table —
+  and said nothing about `place_image`, `place_reference`, or `mode: "dither"`.
+  The author hand-generated every glyph as an ASCII bitmap converted to pen
+  programs, pasting ~16KB of JSON per commit, then spent five failed attempts
+  deriving a brain silhouette from unions of discs and sine-wave "folds" before
+  reading `status.md` and discovering that a 4×4 Bayer dither of a source image
+  had been available the whole time. `HELP` now carries a **DRAWING FROM A
+  SOURCE** section, placed next to artwork presentation where the need arises,
+  and it says plainly that a formula will not produce a shape that has to look
+  like something real.
+- **The workflow line stopped at `validate`.** The "clean log is not a finished
+  drawing" lesson was recorded here in `status.md` but never reached the surface
+  an agent actually reads. `WORKFLOW` now ends `-> render -> LOOK AT IT`, and
+  names `ascii` as the cheap way to read the quadrants.
+- **`render { showGrid: true }` appears to be inert** — it produced a
+  byte-identical file to the plain render. Not yet diagnosed; `ascii` covers the
+  need, so it was routed around rather than fixed.
+
+The through-line across the `ray` incident and this one: **the engine's
+capabilities are discoverable only from the surface the agent reads first.**
+Anything documented solely in `status.md`, `README.md`, or a tool's own
+description is, in practice, invisible — an agent calls `turtlepen_help`, gets a
+complete-looking reference, and reasonably stops looking. When a capability is
+added, it is not shipped until `HELP` names it at the moment of need.
 
 ## What is deferred, deliberately
 

@@ -830,6 +830,22 @@ ARTWORK PRESENTATION (arguments on the pen tool or plan operation)
   color: "#rrggbb", width: 1..5, cap: "round" continuous presentation ink
   paint: "cells"                               colour every exact claimed quadrant
 
+DRAWING FROM A SOURCE — reach for this BEFORE deriving geometry by hand
+  place_image  id at span source [mode] [fit] [opacity] [page]
+    mode "dither"  quantises the image ONTO the lattice through a 4x4 Bayer
+                   matrix. Real quadrants, merged into runs, byte-identical
+                   every run. PNG decodes on node:zlib alone.
+    mode "embed"   (default) keeps a picture as a picture; it still claims an
+                   exact footprint and collides like any other element.
+  place_reference source span [at] [opacity] [id]
+    Lays a dithered copy UNDER the drawing to trace over, flagged L020 until
+    remove_page takes it out, so scaffolding cannot ship.
+
+  If a shape has to LOOK like something real — a brain, a leaf, a face — a
+  formula will not get there. Sine waves are not cortex. Dither a source or
+  trace a reference. Hand-computing a bitmap is the long way round, and the
+  usual reason an author reaches for it is that they did not know these exist.
+
   dir     up down left right          n counts whole 10px cells
   align   vertical strokes: left|right    horizontal strokes: top|bottom
           (no centre — a 5px stroke centred in a 10px cell starts at 2.5px)
@@ -851,7 +867,14 @@ CONNECTORS: THE TWO MISTAKES WORTH KNOWING
      target, it stops level with it and never touches it — reported as L016.
 
 WORKFLOW
-  measure -> plan -> commit -> validate -> accept_finding for anything deliberate.
+  measure -> plan -> commit -> validate -> render -> LOOK AT IT
+                                        -> accept_finding for anything deliberate.
+
+  Rendering and looking is part of the loop, not an optional last step. A clean
+  log is evidence the drawing is undefective, never that it is finished — a
+  corpus once validated clean while a rug sat 60 cells from the sofa and an
+  apple's stem floated clear of the fruit. Use "ascii" to read the actual
+  quadrants; it is cheaper than a render and catches a malformed shape fastest.
 
   "plan" is the important one: send the whole composition as a batch of
   operations and read the collision log BEFORE anything is committed. The
