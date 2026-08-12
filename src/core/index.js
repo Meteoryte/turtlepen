@@ -19,6 +19,7 @@ import * as image from './image.js';
 import * as png from './png.js';
 import * as dither from './dither.js';
 import * as tone_ from './tone.js';
+import * as pattern_ from './pattern.js';
 
 import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
@@ -28,6 +29,7 @@ import { renderSvg } from './svg.js';
 
 export { geometry, address, text, shapes, occupancy, image, png, dither };
 export { tone_ as tone };
+export { pattern_ as pattern };
 export {
   createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, findElement,
   elementsOf, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
@@ -88,7 +90,7 @@ export function applyPen(doc, pageId, program, options = {}) {
   return result;
 }
 
-function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', stroke = null, color = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null } = {}) {
+function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', stroke = null, color = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null } = {}) {
   getPage(doc, pageId);
   const result = runPen(program, {
     resolveElement: (name) => findElement(doc, name)?.element ?? null,
@@ -115,10 +117,11 @@ function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', 
   let path = null;
   if (result.pieces.length) {
     const presentation = stroke ?? (color != null || width != null || cap != null || paint != null
-      || tone != null || feather != null || texture != null
+      || tone != null || feather != null || texture != null || pattern != null
       ? {
         color: color ?? undefined, width: width ?? undefined, cap: cap ?? undefined, paint: paint ?? undefined,
         tone: tone ?? undefined, feather: feather ?? undefined, texture: texture ?? undefined,
+        pattern: pattern ?? undefined,
       }
       : null);
     const pathId = id ?? nextId(doc, 'path', 0);
@@ -127,16 +130,16 @@ function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', 
     // view — derives from this array, so a 50% shape claims exactly its 50%
     // without the collision engine needing to know tone exists at all.
     const pieces = presentation
-      ? tone_.toneMask(result.pieces, {
+      ? pattern_.patternMask(tone_.toneMask(result.pieces, {
         tone: presentation.tone ?? 1,
         feather: presentation.feather ?? 0,
         texture: presentation.texture ?? null,
         seed: pathId,
-      })
+      }), presentation.pattern ?? null)
       : result.pieces;
     if (!pieces.length) {
       throw new RangeError(
-        `tone left "${pathId}" with no inked quadrants — raise the tone, reduce the feather, or drop the texture`,
+        `tone or pattern left "${pathId}" with no inked quadrants — raise the tone, reduce the feather, or drop the texture or pattern`,
       );
     }
     path = addPath(doc, pageId, { id: pathId, pieces, role, stroke: presentation });
@@ -418,7 +421,7 @@ export const OPERATIONS = Object.freeze({
   place_reference: (doc, a) => placeReference(doc, a),
   pen: (doc, a) => applyPen(doc, a.page ?? 'base', a.program, {
     id: a.id, role: a.role, stroke: a.stroke, color: a.color, width: a.width, cap: a.cap, paint: a.paint,
-    tone: a.tone, feather: a.feather, texture: a.texture,
+    tone: a.tone, feather: a.feather, texture: a.texture, pattern: a.pattern,
   }),
   extend_path: (doc, a) => extendPath(doc, a.id, a.program),
   replace_path: (doc, a) => replacePath(doc, a.id, a.program),

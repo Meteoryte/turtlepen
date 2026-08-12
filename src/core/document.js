@@ -16,6 +16,7 @@ import { rect, rectsOverlap, boundsOf } from './geometry.js';
 import { claimedQuads, visualQuads, assertCornerStyle } from './shapes.js';
 import { DEFAULT_FONT, resolveFontSize } from './text.js';
 import { normalizeTone, normalizeFeather, normalizeTexture } from './tone.js';
+import { normalizePattern } from './pattern.js';
 
 // `schematic` stacks exactly like `exclusive`; it exists to carry authorial meaning —
 // "this page is deliberately spare" — which the composition rules read and skip.
@@ -88,6 +89,7 @@ export function normalizeStroke(stroke) {
   const tone = normalizeTone(stroke.tone, 'path tone');
   const feather = normalizeFeather(stroke.feather, 'path feather');
   const texture = normalizeTexture(stroke.texture, 'path texture');
+  const pattern = normalizePattern(stroke.pattern, 'path pattern');
   return {
     color,
     width,
@@ -96,6 +98,7 @@ export function normalizeStroke(stroke) {
     ...(tone < 1 ? { tone } : {}),
     ...(feather > 0 ? { feather } : {}),
     ...(texture ? { texture } : {}),
+    ...(pattern ? { pattern } : {}),
   };
 }
 

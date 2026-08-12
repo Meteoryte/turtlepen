@@ -222,13 +222,14 @@ export function createTools(session) {
           tone: { type: ['number', 'string'], description: 'density 0.0625..1, or quarter | half | three-quarter | solid. A toned shape inks fewer real quadrants, so it CLAIMS fewer — unlike opacity, which changes nothing about geometry' },
           feather: { type: 'integer', minimum: 0, description: 'quadrants of tone falloff inward from the region boundary' },
           texture: { type: 'string', enum: ['eroded'], description: 'seeded roughening of the boundary; deterministic from the path id' },
+          pattern: { type: 'string', enum: ['dashed', 'dotted'], description: 'rhythm ALONG the path — a projected trendline or an inferred boundary. Keyed to distance travelled, so a dash survives a corner' },
         },
         required: ['program'],
         additionalProperties: false,
       },
-      handler: async ({ program, page = 'base', id = null, role = 'connector', color = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null }) => {
+      handler: async ({ program, page = 'base', id = null, role = 'connector', color = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null }) => {
         const doc = need(session);
-        const r = core.applyPen(doc, page, program, { id, role, color, width, cap, paint, tone, feather, texture });
+        const r = core.applyPen(doc, page, program, { id, role, color, width, cap, paint, tone, feather, texture, pattern });
         await persist(session);
         const lines = [`pen program applied to page "${page}" as ${role}`];
         if (r.path) {
@@ -236,10 +237,11 @@ export function createTools(session) {
           // Say what tone removed. A silently thinner shape is the kind of
           // surprise this project exists to prevent.
           const s = r.path.stroke ?? {};
-          if (s.tone != null || s.feather != null || s.texture != null) {
+          if (s.tone != null || s.feather != null || s.texture != null || s.pattern != null) {
             lines.push(`  tone ${s.tone ?? 1}`
               + `${s.feather ? `, feather ${s.feather}` : ''}`
               + `${s.texture ? `, texture ${s.texture}` : ''}`
+              + `${s.pattern ? `, ${s.pattern}` : ''}`
               + ' — the count above is what actually inked, and what the path claims');
           }
         }
@@ -858,6 +860,14 @@ TONE — density, and why it is not opacity
   every quadrant it did at full strength, which is what L019 exists to catch.
   They are separate controls on purpose. Do not reach for opacity to make an
   overlap go away.
+
+  pattern: "dashed" | "dotted"                rhythm ALONG the path
+
+  A dash is keyed to DISTANCE TRAVELLED, not to the lattice, so it keeps its
+  rhythm around a corner and reads as one broken line. Keying it to the lattice
+  the way tone is keyed would restart the cycle at every turn and produce a line
+  that looks damaged rather than dashed. Use it for a projected trendline, a
+  leader, or any boundary the reader should understand as inferred.
 
   The threshold keys off absolute lattice position, so two toned shapes tile
   seamlessly where they meet and the same command always inks the same

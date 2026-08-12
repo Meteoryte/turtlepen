@@ -64,6 +64,21 @@ Verified by running it, not by inspection:
   still occupies space; prevention was cheaper than a new finding, which would
   have needed a new fix kind and a repair route.
   Design: `docs/superpowers/specs/2026-08-12-turtlepen-tone-design.md`.
+- **A line can be dashed.** `pattern: "dashed" | "dotted"` on a pen path, which
+  the lattice previously could not express at all — a projected trendline or an
+  inferred boundary had to be faked mark by mark, so the intent lived in the
+  author's head rather than in the document. It shares the piece-filtering
+  mechanism with `tone` and nothing else: **tone removes quadrants by position
+  on the LATTICE, a pattern removes them by position ALONG THE PATH.** Keying a
+  dash to the lattice would restart its rhythm at every corner and produce a
+  line that reads as damaged rather than dashed; keying it to distance travelled
+  means the cadence survives a turn with no geometry recomputed.
+- **Additional corner styles were considered and declined.** The four existing
+  styles already span the design space at the stated one-quadrant cut — sharp,
+  curved, concave, angled — so a fifth is a near-duplicate. The useful version
+  is a variable cut DEPTH, but that moves the boundary between `elementClaimed`
+  and `elementVisual`, which is load-bearing. It needs its own spec rather than
+  being added to round out a list.
 - **The viewer serves**: HTTP 200 on `/`; `/api/state` returns the document,
   ranked findings, SVG with per-page groups and fingerprinted finding marks, and
   the ASCII view.

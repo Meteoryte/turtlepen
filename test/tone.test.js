@@ -108,3 +108,41 @@ test('tone reaches the same place through plan as through the tool', () => {
   const { element } = core.findElement(doc, 'viaplan');
   assert.equal(element.stroke.tone, 0.5, 'a named step normalises identically in core');
 });
+
+// ---------------------------------------------------------------------------
+// Stroke patterns — rhythm along the path, not density across the lattice.
+// ---------------------------------------------------------------------------
+import { patternMask, normalizePattern } from '../src/core/pattern.js';
+
+test('dashed and dotted keep their exact cadence', () => {
+  const run = Array.from({ length: 20 }, (_, i) => ({ x: i, y: 0 }));
+  assert.equal(patternMask(run, 'dashed').length, 12, '3 on / 2 off over 20');
+  assert.equal(patternMask(run, 'dotted').length, 10, '1 on / 1 off over 20');
+  assert.equal(patternMask(run, null), run, 'no pattern is a no-op');
+});
+
+test('a dash is keyed to distance travelled, not to the lattice', () => {
+  // The same run shifted on the lattice keeps an identical cadence. Tone would
+  // change here; a dash must not, or it would restart at every corner.
+  const at = (dx) => patternMask(
+    Array.from({ length: 12 }, (_, i) => ({ x: i + dx, y: 0 })), 'dashed',
+  ).map((q) => q.x - dx);
+  assert.deepEqual(at(0), at(1));
+  assert.deepEqual(at(0), at(7));
+});
+
+test('a dashed path claims only the quadrants it inks', () => {
+  const doc = core.createDocument({ name: 'dash', cols: 30, rows: 8 });
+  core.applyPen(doc, 'base', 'pen C3.q1\ndash 20 e', { id: 'trend', role: 'artwork', pattern: 'dashed' });
+  const { element } = core.findElement(doc, 'trend');
+  assert.equal(element.pieces.length, 12);
+  assert.equal(core.elementClaimed(element).size, 12);
+  assert.equal(element.stroke.pattern, 'dashed');
+});
+
+test('normalizePattern rejects anything not in the closed set', () => {
+  assert.equal(normalizePattern(null), null);
+  for (const bad of ['dash', 'solid', 'double', 7]) {
+    assert.throws(() => normalizePattern(bad), `${JSON.stringify(bad)} must be rejected`);
+  }
+});
