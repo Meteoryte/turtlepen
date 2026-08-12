@@ -28,7 +28,7 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (29 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (31 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
 - **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),
@@ -64,6 +64,20 @@ Verified by running it, not by inspection:
   still occupies space; prevention was cheaper than a new finding, which would
   have needed a new fix kind and a repair route.
   Design: `docs/superpowers/specs/2026-08-12-turtlepen-tone-design.md`.
+- **An area can be wireframed to scale, and equipment placed in it.** `wireframe`
+  takes a room or roof in INCHES with a declared scale, draws the walls, places
+  each unit at its real footprint, and surrounds it with its service clearance;
+  `export_prompt` emits the composition for an image model as normalised boxes
+  plus feet-and-inches. Two things make it more than a drawing helper. Clearance
+  is modelled as four BANDS around a unit rather than a filled rectangle, so it
+  cannot collide with the unit it belongs to and an encroachment reports as an
+  ordinary `L001` — a unit 24" from a wall that needs 36" fails `validate` with
+  no new rule required. And the area is drawn as WALLS rather than a filled
+  rect, for the same reason one level up: a filled area overlaps everything
+  standing in it. Rounding drift is reported per dimension in inches, never
+  swallowed. The module supplies **no clearance values of its own** — those come
+  from the listing and the governing code, and plausible invented numbers would
+  be worse than none.
 - **A line can be dashed.** `pattern: "dashed" | "dotted"` on a pen path, which
   the lattice previously could not express at all — a projected trendline or an
   inferred boundary had to be faked mark by mark, so the intent lived in the

@@ -20,6 +20,7 @@ import * as png from './png.js';
 import * as dither from './dither.js';
 import * as tone_ from './tone.js';
 import * as pattern_ from './pattern.js';
+import * as wireframe_ from './wireframe.js';
 
 import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
@@ -30,6 +31,7 @@ import { renderSvg } from './svg.js';
 export { geometry, address, text, shapes, occupancy, image, png, dither };
 export { tone_ as tone };
 export { pattern_ as pattern };
+export { wireframe_ as wireframe };
 export {
   createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, findElement,
   elementsOf, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
@@ -431,6 +433,7 @@ export const OPERATIONS = Object.freeze({
   rename: (doc, a) => renameElement(doc, a.id, a.to),
   remove: (doc, a) => removeElement(doc, a.id, a.page ?? null),
   set_canvas: (doc, a) => setCanvas(doc, a.cols, a.rows),
+  wireframe: (doc, a) => applyWireframe(doc, a),
   accept_finding: (doc, a) => acceptFinding(doc, a.fingerprint, a.reason),
   unaccept_finding: (doc, a) => unacceptFinding(doc, a.fingerprint),
 });
@@ -589,4 +592,77 @@ export function latticeInfo(doc = null) {
     cornerStyles: shapes.BOX_CORNER_STYLES,
     legibilityFloorPx: text.MIN_LEGIBLE_FONT_PX,
   };
+}
+
+
+/**
+ * Lay a dimensioned area and its equipment onto a page, to scale.
+ *
+ * A mutation, so it lives in OPERATIONS and can be rehearsed by `plan` like any
+ * other. Clearance bands are placed as ordinary boxes: an encroachment is then
+ * an ordinary L001 rather than a rule the engine had to learn.
+ */
+export function applyWireframe(doc, {
+  page = 'base', widthIn, depthIn, items = [], scale = 2, origin = null,
+  clearance = true, labels = true,
+} = {}) {
+  getPage(doc, page);
+  const plan = wireframe_.layout(
+    { widthIn, depthIn },
+    items,
+    { scale, ...(origin ? { origin } : {}) },
+  );
+  const drawn = [];
+  for (const b of wireframe_.boxes(plan, { includeClearance: clearance })) {
+    drawn.push(addBox(doc, page, {
+      id: b.id,
+      rect: b.rect,
+      label: labels ? (b.label ?? '') : '',
+      corner: b.kind === 'clearance' ? 'chamfered' : 'square',
+      fontSize: doc.font.size,
+    }));
+  }
+  doc.wireframe = plan;          // kept so export_prompt describes what was drawn
+
+  // A unit's own four clearance bands meet at its corners — that is what makes
+  // them a ring rather than four stripes, and it fires L007 "no gutter" every
+  // time. Left alone it would put four warnings per unit into the log for
+  // geometry the construction guarantees, and a rule that cries wolf on correct
+  // work teaches an author to stop reading the log.
+  //
+  // Adjudicated rather than suppressed: each is accepted by fingerprint with a
+  // stated reason, so it still lapses the moment the geometry changes, and a
+  // clearance band touching anything ELSE is untouched and still reports.
+  const ownBands = new Set(plan.items.flatMap((i) => (i.clearance?.bands ?? []).map((b) => b.id)));
+  const isWall = (id) => /^wall_[nsew]$/.test(id);
+  const unit = (id) => id.replace(/_clr_[nsew]$/, '');
+
+  for (const f of validate(doc).open) {
+    if (f.rule !== 'L007') continue;                 // only "touching", never overlap
+    const [a, b] = f.actors ?? [];
+    if (!a || !b) continue;
+
+    if (ownBands.has(a) && ownBands.has(b) && unit(a) === unit(b)) {
+      acceptFinding(doc, f.fingerprint,
+        `Clearance bands of ${unit(a)} meet at a corner: they form one ring around the unit, which is the intended geometry.`);
+      continue;
+    }
+    // A band touching the unit it belongs to is what "adjacent clearance"
+    // means. Reporting it would flag every unit in every layout.
+    if ((ownBands.has(a) && unit(a) === b) || (ownBands.has(b) && unit(b) === a)) {
+      acceptFinding(doc, f.fingerprint,
+        `A clearance band sits against ${ownBands.has(a) ? unit(a) : unit(b)} by definition — the band starts at the unit's face.`);
+      continue;
+    }
+    // A band flush against a wall is the unit sitting at EXACTLY its stated
+    // clearance — the good case, and the one a careful layout aims for. An
+    // encroachment is an overlap, and overlaps are L001 errors that stay.
+    if ((ownBands.has(a) && isWall(b)) || (isWall(a) && ownBands.has(b))) {
+      const band = ownBands.has(a) ? a : b;
+      acceptFinding(doc, f.fingerprint,
+        `${unit(band)} sits at exactly its stated clearance from this wall — touching is the limit case, not an encroachment. Encroachment overlaps, and would report as L001.`);
+    }
+  }
+
+  return { plan, boxes: drawn };
 }

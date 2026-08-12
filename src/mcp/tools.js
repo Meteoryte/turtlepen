@@ -621,6 +621,84 @@ export function createTools(session) {
       },
     },
     {
+      name: 'wireframe',
+      description:
+        'Lay a dimensioned area and its equipment onto the page, to scale. Authored in INCHES and converted at a declared scale, so the drawing is measurable rather than suggestive. Walls are drawn as walls and service clearance as bands around each unit, which means an encroachment reports as an ordinary collision — a unit too near a wall or another unit fails validate. Supply clearance values from the equipment listing and governing code; this tool invents none. Follow with export_prompt to brief an image model.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          widthIn: { type: 'number', description: 'area width in inches' },
+          depthIn: { type: 'number', description: 'area depth in inches' },
+          scale: { type: ['number', 'string'], description: 'quadrants per foot (2 = one quadrant per 6in), or 1/4in=1ft | 1/2in=1ft | 1in=1ft' },
+          items: {
+            type: 'array',
+            description: 'equipment; positions are inches from the area top-left corner',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                widthIn: { type: 'number' },
+                depthIn: { type: 'number' },
+                atXIn: { type: 'number' },
+                atYIn: { type: 'number' },
+                clearanceIn: { type: 'number', description: 'required service clearance on all sides, from the listing or code' },
+                describe: { type: 'string', description: 'what an image model should draw here' },
+              },
+              required: ['id', 'widthIn', 'depthIn', 'atXIn', 'atYIn'],
+              additionalProperties: false,
+            },
+          },
+          clearance: { type: 'boolean', description: 'draw clearance bands (default true)' },
+          page: { type: 'string' },
+        },
+        required: ['widthIn', 'depthIn', 'items'],
+        additionalProperties: false,
+      },
+      handler: async ({ widthIn, depthIn, items, scale = 2, clearance = true, page = 'base' }) => {
+        const doc = need(session);
+        const r = core.applyWireframe(doc, { page, widthIn, depthIn, items, scale, clearance });
+        await persist(session);
+        const v = core.validate(doc);
+        const errs = v.open.filter((f) => ['S0', 'S1'].includes(f.severity));
+        return [
+          `wireframe on page "${page}": ${core.wireframe.feetInches(widthIn)} x ${core.wireframe.feetInches(depthIn)}`,
+          `scale ${typeof scale === 'number' ? `${scale} quadrants per foot` : scale} — one quadrant is ${core.wireframe.feetInches(1 / r.plan.quadrantsPerInch)}`,
+          `${r.boxes.length} boxes placed (4 walls + ${items.length} unit(s)${clearance ? ' + clearance bands' : ''})`,
+          '',
+          ...(r.plan.drift.length
+            ? ['ROUNDING — these do not land on a whole quadrant:',
+              ...r.plan.drift.map((d) => `  ${d}`),
+              '  Use a finer scale if any of these matter.']
+            : ['rounding: every dimension lands exactly on the lattice']),
+          '',
+          errs.length
+            ? `${errs.length} clearance/collision error(s) — run validate for the detail. A unit whose clearance band reaches a wall does not have its stated clearance.`
+            : 'clearance: CLEAR — every unit has the clearance it declared',
+        ].join('\n');
+      },
+    },
+
+    {
+      name: 'export_prompt',
+      description:
+        'Emit the composition brief for an image-generation model: the area in feet and inches, each item as a normalised box within it, its real size, its position in plain words, and its description. Read-only. Serves both kinds of model — one that accepts regional conditioning reads the numbers, one that only reads prose gets the same arrangement stated in words.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          subject: { type: 'string', description: 'opening line; defaults to a plain description of the area' },
+          style: { type: 'string', description: 'rendering style, e.g. "clean architectural line drawing, top-down"' },
+          view: { type: 'string', description: 'plan | elevation | isometric (default plan)' },
+        },
+        additionalProperties: false,
+      },
+      handler: ({ subject = null, style = null, view = 'plan' }) => {
+        const doc = need(session);
+        if (!doc.wireframe) throw new Error('no wireframe on this document — call wireframe first');
+        return core.wireframe.toPrompt(doc.wireframe, { subject, style, view });
+      },
+    },
+
+    {
       name: 'place_image',
       description: 'Place an image, claiming an exact quadrant footprint like any other element. It participates in every collision rule — an image over a stroke is an ordinary L001, not a special case. The source is embedded so a saved document stays self-contained.',
       inputSchema: {
