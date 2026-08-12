@@ -910,6 +910,21 @@ CONNECTORS: THE TWO MISTAKES WORTH KNOWING
      you are travelling. If the run is on a different row or column from the
      target, it stops level with it and never touches it — reported as L016.
 
+THE CANVAS IS NOT A BUDGET
+  The grid is unbounded right and down. 160x100 is a starting size, not a limit,
+  and set_canvas grows it. If a shape is cramped, MAKE IT BIGGER — an author who
+  fights for room inside a size they picked early has mistaken their own first
+  guess for a constraint.
+
+  Two more things that are easy to forget you have:
+    - A feature can be MORE THAN ONE STROKE. If detail would damage a shape by
+      being carved out of it, draw a second mark beside it instead. Additive
+      beats subtractive: subtracting from a stroke that carries the meaning
+      destroys the thing you are annotating.
+    - Layers. add_page with intent "overlay" puts marks ON TOP without an L001,
+      so annotation, texture, and construction can live apart from the artwork
+      instead of competing with it for the same quadrants.
+
 WORKFLOW
   measure -> plan -> commit -> validate -> render -> LOOK AT IT
                                         -> accept_finding for anything deliberate.

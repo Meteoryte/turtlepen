@@ -91,6 +91,37 @@ of placement and makes every defect a ranked, numeric finding.
   thin width, and cap, and the SVG may simplify the painted polyline. Its stored
   integer pieces remain the sole collision and selection geometry.
 
+## Size is a choice, not a constraint
+
+The lattice is unbounded right and down, and `set_canvas` grows a document. A
+size chosen early is a first guess; it is not a budget, and it is not a reason
+to cram.
+
+This is written down because an authoring session hit it hard. A pixel typeface
+was drawn in a 7x7 quadrant box, and when a feature needed diagonals long enough
+to carry a dash, the author reported that the lattice could not express it —
+having picked 7 themselves an hour earlier. The same session had already
+concluded that curves were impossible before `raster.js` existed, and that
+angled lines were limited to eight compass directions while `ray` sat available.
+Three instances of the same error: **a limit the author imposed being reported
+as a property of the engine.**
+
+Two capabilities are forgotten in exactly this way, so check them before
+concluding something cannot be drawn:
+
+- **A feature may be more than one stroke.** If detail would damage a shape by
+  being carved out of it, draw a second mark beside it. Additive beats
+  subtractive — subtracting from the stroke that carries the meaning destroys
+  the thing being annotated. The trendline work failed repeatedly for this
+  reason before the box size was even in question.
+- **Layers exist.** An `overlay` page puts marks on top without an `L001`, so
+  annotation, texture, and construction do not have to compete with the artwork
+  for the same quadrants.
+
+None of this argues for unbounded growth. A canvas far larger than its content
+trips `C001`, and a diagram nobody can read at a glance has failed differently.
+Take the room the drawing needs, and no more.
+
 ## Boundaries
 
 - `src/core/` is pure: no file I/O, no network, no process state. Persistence
