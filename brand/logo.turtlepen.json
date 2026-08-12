@@ -151579,5 +151579,356 @@
       }
     ]
   },
-  "acceptances": []
+  "acceptances": [
+    {
+      "fingerprint": "012ca42721a8",
+      "reason": "Intentional logo construction: L006 between shell-fill and head-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "059ccfcb77e4",
+      "reason": "Intentional logo construction: L006 between neck-fill and head-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "0aafa66b422b",
+      "reason": "Intentional logo construction: L006 between tray-fill and leg-left-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "164957d5b4e7",
+      "reason": "Intentional logo construction: L006 between clip-outline and clip-tab-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "16c840ef6ff3",
+      "reason": "Intentional logo construction: L006 between shell-right-plates and chest-seams is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "181790f8589c",
+      "reason": "Intentional logo construction: L006 between pen-inner and pen-nib-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "1dc5216ff097",
+      "reason": "Intentional logo construction: L006 between left-foot-outline and plastron-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "24c5e74425e9",
+      "reason": "Intentional logo construction: L006 between tray-fill and leg-right-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "25f91315d05e",
+      "reason": "Intentional logo construction: L006 between pen-nib-outline and board-flourish is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "2bd93028afb1",
+      "reason": "Intentional logo construction: L006 between eye-right-white and eye-right-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "3f9627bebcd2",
+      "reason": "Intentional logo construction: L006 between shell-outline and left-foot-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "489bb52315b9",
+      "reason": "Intentional logo construction: L006 between board-outline and hand-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "49a9bc6a3527",
+      "reason": "Intentional logo construction: L006 between neck-fill and snout-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "4b9d888d97b3",
+      "reason": "Intentional logo construction: L006 between eye-left-white and pupil-left is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "4d8775378307",
+      "reason": "Intentional logo construction: L006 between eye-left-white and eye-left-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "528187118d30",
+      "reason": "Intentional logo construction: L006 between shell-rim and shell-band is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "55e63d6aa883",
+      "reason": "Intentional logo construction: L006 between plastron-outline and head-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "5e87f6771ca1",
+      "reason": "Intentional logo construction: L006 between shell-rim and shell-left-plates is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "5f6ad5a29a00",
+      "reason": "Intentional logo construction: L006 between pupil-left and eye-glint-left is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "61ce1e89d22c",
+      "reason": "Intentional logo construction: L006 between plastron-outline and neck-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "6732db99256e",
+      "reason": "Intentional logo construction: L006 between eye-right-white and eye-glint-right is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "68bf081f47cd",
+      "reason": "Intentional logo construction: L006 between shell-fill and arm-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "68ed08c845c2",
+      "reason": "Intentional logo construction: L006 between pen-nib-fill and pen-nib-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "6a28c59b6f5d",
+      "reason": "Intentional logo construction: L006 between plastron-outline and snout-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "7149b776a1f0",
+      "reason": "Intentional logo construction: L006 between arm-outline and hand-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "724792fce6fe",
+      "reason": "Intentional logo construction: L006 between neck-outline and head-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "768276bb4723",
+      "reason": "Intentional logo construction: L006 between shell-outline and head-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "7a7e9b4e9de9",
+      "reason": "Intentional logo construction: L006 between shell-outline and arm-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "7bf60cef158b",
+      "reason": "Intentional logo construction: L006 between tray-outline and leg-left-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "7e57b63b2412",
+      "reason": "Intentional logo construction: L006 between pen-outer and pen-nib-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "809bf0d54d3a",
+      "reason": "Intentional logo construction: L006 between plastron-fill and neck-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "80b6b5c22c8b",
+      "reason": "Intentional logo construction: L006 between plastron-fill and snout-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "80f3170dc720",
+      "reason": "Intentional logo construction: L006 between head-outline and snout-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "8c72be68aecd",
+      "reason": "Intentional logo construction: L006 between arm-fill and hand-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "8f3a7e34d267",
+      "reason": "Intentional logo construction: L006 between eye-left-white and eye-glint-left is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "90c58705eb0b",
+      "reason": "Intentional logo construction: L006 between shell-fill and neck-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "915b77d572db",
+      "reason": "Intentional logo construction: L006 between eye-right-white and pupil-right is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "917ca5f85513",
+      "reason": "Intentional logo construction: L006 between board-fill and clip-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "932dac2ae65e",
+      "reason": "Intentional logo construction: L006 between leg-right-outline and brace-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "93c27883841d",
+      "reason": "Intentional logo construction: L006 between tray-outline and leg-right-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "95931edae97f",
+      "reason": "Intentional logo construction: L006 between board-outline and clip-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "9c5e026721a8",
+      "reason": "Intentional logo construction: L006 between shell-rim and shell-right-plates is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "a282ef6fdb74",
+      "reason": "Intentional logo construction: L006 between pen-outer and pen-nib-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "a3e3b936920c",
+      "reason": "Intentional logo construction: L006 between plastron-fill and arm-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "a41fab7e6ff8",
+      "reason": "Intentional logo construction: L006 between leg-left-fill and brace-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "aaa9091bcdbc",
+      "reason": "Intentional logo construction: L006 between shell-band and shell-left-plates is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "aeb97b8d2cd4",
+      "reason": "Intentional logo construction: L006 between board-outline and tray-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "afa95232c2ff",
+      "reason": "Intentional logo construction: L006 between shell-left-plates and shell-right-plates is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "b1c3a690b598",
+      "reason": "Intentional logo construction: L006 between shell-fill and plastron-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "b873ffa81c5a",
+      "reason": "Intentional logo construction: L006 between shell-band and shell-right-plates is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "b9f203d59b8f",
+      "reason": "Intentional logo construction: L006 between left-foot-fill and plastron-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "c3db398833c5",
+      "reason": "Intentional logo construction: L006 between leg-right-fill and brace-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "c46ab03ff9ba",
+      "reason": "Intentional logo construction: L006 between shell-rim and chest-seams is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "d1c235c043e3",
+      "reason": "Intentional logo construction: L006 between plastron-fill and head-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "d295d8f86293",
+      "reason": "Intentional logo construction: L006 between board-fill and hand-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "d467f139c348",
+      "reason": "Intentional logo construction: L001 between wordmark and mcp is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "d6793dd9dd33",
+      "reason": "Intentional logo construction: L006 between shell-outline and plastron-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "d9cafa8d0aa4",
+      "reason": "Intentional logo construction: L006 between leg-left-outline and brace-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "db5f43c9f39c",
+      "reason": "Intentional logo construction: L006 between neck-outline and snout-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "dbcefc686aba",
+      "reason": "Intentional logo construction: L006 between clip-fill and clip-tab-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "dc3bcd6af2a9",
+      "reason": "Intentional logo construction: L006 between right-foot-fill and plastron-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "e245ae30a59e",
+      "reason": "Intentional logo construction: L006 between pupil-right and eye-glint-right is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "e30e34bcdc0a",
+      "reason": "Intentional logo construction: L006 between right-foot-outline and plastron-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "e77e5d5c558e",
+      "reason": "Intentional logo construction: L006 between shell-outline and neck-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "ec1336e2ee5a",
+      "reason": "Intentional logo construction: L006 between board-fill and arm-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "f00b10ee94c8",
+      "reason": "Intentional logo construction: L006 between shell-fill and left-foot-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "f3a3b873a129",
+      "reason": "Intentional logo construction: L006 between board-fill and tray-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "f6ff6f7e13e9",
+      "reason": "Intentional logo construction: L006 between head-fill and snout-fill is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "fad40311db01",
+      "reason": "Intentional logo construction: L006 between plastron-outline and arm-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "fingerprint": "fc8fb498da82",
+      "reason": "Intentional logo construction: L006 between board-outline and arm-outline is required by the supplied turtle-at-easel composition.",
+      "acceptedAt": "2026-08-08T00:00:00.000Z"
+    }
+  ]
 }

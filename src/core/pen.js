@@ -28,7 +28,7 @@
 import { DIRECTIONS, OPPOSITE, isDirection, rect } from './geometry.js';
 import { parseAddress, addressRect, pinPoint, looksLikeAddress, quadToAddress, assertOnGrid, PIN_NAMES, PINS } from './address.js';
 import { alignmentFor, alignTrack, BOX_CORNER_STYLES, JUNCTION_STYLES, portPoint, approachPoint } from './shapes.js';
-import { rayQuads, circleQuads, arcQuads, polygonQuads, dashQuads, discQuads, resolveDir8 } from './raster.js';
+import { rayQuads, circleQuads, arcQuads, polygonQuads, dashQuads, discQuads, resolveDir8, DIR8, DIR8_ALIAS } from './raster.js';
 
 const SIDES = Object.freeze(['top', 'bottom', 'left', 'right']);
 const SIDE_TO_DIR = Object.freeze({ top: 'up', bottom: 'down', left: 'left', right: 'right' });
@@ -46,6 +46,19 @@ const ELEMENTS = Object.freeze(['line', 'corner', 'box', 'text', 'arrow', 'hop',
  */
 const SHAPES = Object.freeze(['ray', 'circle', 'disc', 'arc', 'polygon', 'triangle', 'dot', 'dash']);
 const STYLES = Object.freeze([...new Set([...BOX_CORNER_STYLES, ...JUNCTION_STYLES])]);
+
+/**
+ * Compass words that a mark understands but the cursor does not — `ne`, `sw`,
+ * `north`, `down-left` and so on, minus the four that ARE movement verbs.
+ *
+ * Derived from the mark vocabulary rather than listed, so the two can never
+ * drift: a direction added to `DIR8_ALIAS` is diagnosable here the same day.
+ */
+const COMPASS_WORDS = Object.freeze(
+  [...Object.keys(DIR8), ...Object.keys(DIR8_ALIAS)].filter((w) => !isDirection(w)),
+);
+
+const isCompassWord = (t) => COMPASS_WORDS.includes(t);
 
 // ---------------------------------------------------------------------------
 // Tokenising
@@ -140,6 +153,22 @@ export function parseCommand(source) {
     }
 
     if (/^[A-Za-z0-9_-]+\.[A-Za-z]{1,2}$/.test(t)) { cmd.to = t; continue; } // id.port
+
+    // A compass word where a movement verb belongs is the single most expensive
+    // wrong turn in this grammar. The pen cursor runs on four orthogonal tracks
+    // because a stroke has to sit on a lattice track to be aligned at all — but
+    // `ray` draws at ANY angle, and `dot`/`dash` mark in all eight. An author who
+    // writes `ne 8 line` has concluded the engine cannot do diagonals and starts
+    // faking them, when the primitive they wanted was one token away. A generic
+    // "unrecognised token" leaves them with that wrong conclusion, so this names
+    // the two commands that do what they were reaching for.
+    if (isCompassWord(low)) {
+      throw new SyntaxError(
+        `"${t}" is a compass direction, and the pen cursor only travels ${Object.keys(DIRECTIONS).join(', ')} — ` +
+          `a stroke has to sit on a lattice track. For a straight line at any angle use "ray to <address>"; ` +
+          `for a mark in this direction use "dash ${resolveDir8(low)} <length>" or "dot ${resolveDir8(low)}". In: ${source}`,
+      );
+    }
 
     throw new SyntaxError(`unrecognised token "${t}" in: ${source}`);
   }

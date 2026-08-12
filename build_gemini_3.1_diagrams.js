@@ -1,387 +1,580 @@
+/**
+ * The dense-artwork corpus — eight intricate diagrams built through TurtlePen's
+ * own tool handlers.
+ *
+ * These eight were first authored in a single non-interactive pass that never
+ * read a return value. Six of them committed nothing at all: `plan` is
+ * all-or-nothing, so one bad operation in a batch of 204 discarded the other
+ * 203, and the unconditional `save` that followed wrote a valid, empty, and
+ * entirely convincing document. The script printed "built" eight times and
+ * exited 0. The engine had reported every failure precisely and in plain
+ * English; nothing was listening.
+ *
+ * So the harness below is the point of the file as much as the drawings are:
+ *
+ * - `call` throws on a failed operation. A tool that returns its errors as
+ *   readable text is right for an agent that reads them, and a loaded gun for a
+ *   script that does not.
+ * - `finish` validates before saving and refuses to write a document carrying an
+ *   S0 or S1 finding. Nothing here may ship broken and claim otherwise.
+ * - Columns come from the engine's own `indexToCol`. The original hand-rolled
+ *   `String.fromCharCode(65 + n)`, which yields `[`, `\` and `^` past Z — the
+ *   candlestick chart died on `pen at ^59`.
+ * - Positions that must line up exactly are computed in QUADRANTS and converted
+ *   with `quadToAddress`. Cylinder caps meeting a body, gear teeth meeting a
+ *   hub, and a picket meeting its peak are all cases where cell-resolution
+ *   arithmetic silently lands half a cell out.
+ * - Diagonals use `ray to <address>`, which is Bresenham at any angle. The first
+ *   pass wrote `ne 8 line`, took the resulting parse error to mean the lattice
+ *   had no diagonals, and faked them with stacked discs for the rest of the run.
+ *
+ * LAYERING. Intentionally overlapping artwork goes on its own overlay page.
+ * Two paths sharing a quadrant on one page is L006, a warning that something
+ * unintended happened; the same ink on an overlay is L010, information that
+ * something planned did. The page stack is this engine's layer stack — using it
+ * is what separates a dense drawing from a noisy one.
+ */
+
 import { createSession, createTools } from './src/mcp/tools.js';
+import { indexToCol, quadToAddress } from './src/core/address.js';
+
+// --- addressing helpers ----------------------------------------------------
+
+/** 0-based cell column/row -> "AN20". Rows are 1-based in an address. */
+const cell = (cx, cy) => `${indexToCol(cx)}${cy + 1}`;
+/** Absolute quadrant point -> "AN21.q4". Two quadrants to a cell. */
+const q = (x, y) => quadToAddress(x, y);
+/** The top-left quadrant of a 0-based cell. */
+const qOf = (cx, cy) => [cx * 2, cy * 2];
+
+const session = createSession({ cwd: process.cwd() });
+const toolMap = new Map(createTools(session).map((t) => [t.name, t.handler]));
+
+/**
+ * Every tool result is inspected. `plan` reports a failed batch as text rather
+ * than throwing, which is correct for an agent and fatal for a script.
+ */
+async function call(name, args) {
+  const handler = toolMap.get(name);
+  if (!handler) throw new Error(`unknown tool: ${name}`);
+  const result = await handler(args);
+  const text = typeof result === 'string' ? result : JSON.stringify(result);
+  if (result?.isError || /^plan FAILED|\bFAILED at operation\b/m.test(text)) {
+    throw new Error(`${name} failed:\n${text}`);
+  }
+  return text;
+}
+
+/**
+ * Validate, then save only if nothing above a warning is open.
+ *
+ * S2 and S3 are reported but permitted: a warning on deliberately layered
+ * artwork is the engine telling you what it sees, and INFO on an overlay is it
+ * confirming the layering worked. S0 and S1 are defects and block the write.
+ */
+async function finish(name, svgPath) {
+  const log = await call('validate', {});
+  const counts = /(\d+) open\s+\((\d+) critical, (\d+) error, (\d+) warn, (\d+) info\)/.exec(log);
+  const [, total, critical, error, warn, info] = counts ?? [];
+  if (Number(critical) || Number(error)) {
+    throw new Error(`${name} is not clean — ${critical} critical, ${error} error:\n${log.slice(0, 3000)}`);
+  }
+  await call('render', { path: svgPath, force: true });
+  await call('save', { force: true });
+  console.log(`  ${name}: clean — ${total} open (${warn} warn, ${info} info)`);
+}
+
+// ---------------------------------------------------------------------------
+// 1. An intricate datacenter
+// ---------------------------------------------------------------------------
+async function datacenter() {
+  console.log('1. Datacenter…');
+  await call('new_diagram', { name: 'Datacenter', path: 'diagrams/gemini31-server-structure.turtlepen.json', cols: 140, rows: 90 });
+  // One overlay per layer that deliberately covers the layer beneath it.
+  for (const [id, z, title] of [
+    ['chassis', 1, 'Storage chassis'], ['caps', 2, 'Cylinder caps'],
+    ['blades', 3, 'Server blades'], ['lights', 4, 'Status LEDs'], ['cabling', 5, 'Cabling'],
+  ]) await call('add_page', { id, z, intent: 'overlay', title });
+
+  const ops = [
+    { op: 'place_box', id: 'title', at: `${cell(4, 3)}.tl`, span: { w: 34, h: 4 }, label: 'Global Datacenter Topology', corner: 'chamfered' },
+  ];
+
+  // Three racks, each with eight blades and a column of status LEDs. The blades
+  // sit INSIDE the rack, which is why they belong on an overlay: a stroke
+  // through a box body on the same page is L004, and it is a real error there.
+  const rackCols = [1, 15, 29];
+  rackCols.forEach((rc, i) => {
+    ops.push({ op: 'place_box', id: `rack${i}`, at: `${cell(rc, 14)}.tl`, span: { w: 10, h: 40 }, label: `Rack 0${i + 1}`, corner: 'square', fill: '#2B2D42' });
+    for (let j = 0; j < 8; j++) {
+      const row = 19 + j * 4;
+      ops.push({ op: 'pen', id: `blade_${i}_${j}`, page: 'blades', role: 'artwork', color: '#8D99AE', width: 2, program: `pen at ${cell(rc, row)}\nright 9 align top line` });
+      const lit = (i + j) % 3 === 0 ? '#EF233C' : '#80ED99';
+      ops.push({ op: 'pen', id: `led_${i}_${j}_a`, page: 'lights', role: 'artwork', paint: 'cells', color: lit, program: `pen at ${cell(rc, row)}.q2\ndot` });
+      ops.push({ op: 'pen', id: `led_${i}_${j}_b`, page: 'lights', role: 'artwork', paint: 'cells', color: '#00B4D8', program: `pen at ${cell(rc + 8, row)}.q4\ndot` });
+    }
+  });
+
+  // Two storage cylinders. Radius is in quadrants, so a 14-quadrant cap is
+  // exactly 7 cells each way — the body box lines up with the caps by
+  // construction rather than by eye.
+  const R = 14;
+  [52, 72].forEach((centreCol, i) => {
+    const [cxq] = qOf(centreCol, 0);
+    const topRow = 19, bodyCells = 18;
+    const [, topq] = qOf(0, topRow);
+    const botq = topq + bodyCells * 2;
+    ops.push({ op: 'place_box', id: `db_body_${i}`, page: 'chassis', at: `${cell(centreCol - R / 2, topRow)}.tl`, span: { w: R, h: bodyCells }, label: '', corner: 'square', fill: '#0077B6' });
+    ops.push({ op: 'pen', id: `db_cap_${i}`, page: 'caps', role: 'artwork', paint: 'cells', color: '#023E8A', program: `pen at ${q(cxq, topq)}\narc ${R} 180 360` });
+    ops.push({ op: 'pen', id: `db_foot_${i}`, page: 'caps', role: 'artwork', paint: 'cells', color: '#03045E', program: `pen at ${q(cxq, botq)}\narc ${R} 0 180` });
+    ops.push({ op: 'place_box', id: `db_label_${i}`, at: `${cell(centreCol - R / 2, topRow + bodyCells + 3)}.tl`, span: { w: R, h: 4 }, label: `DB Cluster ${i + 1}`, corner: 'rounded' });
+  });
+
+  // Cabling runs beneath the racks and up into the storage tier. Only the first
+  // stroke names an alignment: an omitted `align` continues on the track the
+  // cursor is already on, which is what keeps a multi-leg run continuous.
+  ops.push({ op: 'pen', id: 'cable_a', page: 'cabling', role: 'artwork', color: '#FCA311', width: 2, program: `pen at ${cell(3, 60)}\nright 45 align bottom line\nup 12 line\nright 14 line\nup 6 line` });
+  ops.push({ op: 'pen', id: 'cable_b', page: 'cabling', role: 'artwork', color: '#E63946', width: 2, program: `pen at ${cell(17, 63)}\nright 41 align bottom line\nup 9 line\nright 20 line\nup 4 line` });
+
+  await call('plan', { operations: ops, commit: true });
+  await finish('datacenter', 'diagrams/gemini31-server-structure.svg');
+}
+
+// ---------------------------------------------------------------------------
+// 2. Brain and neural learning process
+// ---------------------------------------------------------------------------
+async function brain() {
+  console.log('2. Brain…');
+  await call('new_diagram', { name: 'Neural Learning', path: 'diagrams/gemini31-teaching-loop.turtlepen.json', cols: 140, rows: 100 });
+
+  // Six lobes that deliberately overlap. Each is its own paint layer, so every
+  // overlap between them is L010 (planned) rather than L006 (accidental).
+  const lobes = [
+    { col: 41, row: 30, r: 15, fill: '#FFB5A7' },
+    { col: 48, row: 24, r: 18, fill: '#FEC5BB' },
+    { col: 59, row: 29, r: 16, fill: '#FCD5CE' },
+    { col: 42, row: 44, r: 14, fill: '#F8EDEB' },
+    { col: 52, row: 44, r: 17, fill: '#F9E2AE' },
+    { col: 48, row: 54, r: 12, fill: '#E8E8E4' },
+  ];
+  for (let i = 0; i < lobes.length; i++) await call('add_page', { id: `lobe${i}`, z: i + 1, intent: 'overlay', title: `Lobe ${i + 1}` });
+  await call('add_page', { id: 'synapses', z: 7, intent: 'overlay', title: 'Synapses' });
+  await call('add_page', { id: 'pulses', z: 8, intent: 'overlay', title: 'Pulses' });
+
+  const ops = [
+    { op: 'place_box', id: 'title', at: `${cell(13, 3)}.tl`, span: { w: 30, h: 4 }, label: 'Cognitive Learning Patterns', corner: 'indented' },
+    { op: 'place_box', id: 'input_read', at: `${cell(4, 24)}.tl`, span: { w: 12, h: 4 }, label: 'Reading', corner: 'rounded' },
+    { op: 'place_box', id: 'input_prac', at: `${cell(4, 44)}.tl`, span: { w: 12, h: 4 }, label: 'Practice', corner: 'rounded' },
+    { op: 'place_box', id: 'output', at: `${cell(112, 34)}.tl`, span: { w: 14, h: 4 }, label: 'Mastery', corner: 'rounded' },
+  ];
+
+  // An outline plus a slightly smaller filled disc: the disc sits strictly
+  // inside the ring, so the two never share a quadrant within one path.
+  lobes.forEach((l, i) => {
+    ops.push({ op: 'pen', id: `lobe_${i}`, page: `lobe${i}`, role: 'artwork', paint: 'cells', color: l.fill, program: `pen at ${cell(l.col, l.row)}\ncircle ${l.r}\ndisc ${l.r - 1}` });
+  });
+
+  // Synapses are true diagonals — `ray`, not a stack of discs.
+  const links = [[0, 1], [1, 2], [2, 4], [4, 5], [5, 3], [3, 0]];
+  links.forEach(([a, b], i) => {
+    ops.push({ op: 'pen', id: `synapse_${i}`, page: 'synapses', role: 'artwork', color: '#9D8189', width: 3, program: `pen at ${cell(lobes[a].col, lobes[a].row)}\nray to ${cell(lobes[b].col, lobes[b].row)}` });
+    ops.push({ op: 'pen', id: `pulse_${i}`, page: 'pulses', role: 'artwork', paint: 'cells', color: '#FFE5D9', program: `pen at ${cell(lobes[b].col, lobes[b].row)}\ndisc 3` });
+  });
+
+  // Inputs feed the cortex and mastery leaves it. A connector has to ARRIVE:
+  // the first pass drew these as fixed-length stubs that stopped in open space,
+  // which validates clean and reads as unfinished. Each one now ends on the rim
+  // of the lobe it feeds, computed from that lobe's own centre and radius.
+  const rim = (lobe, dx) => {
+    const [lx, ly] = qOf(lobe.col, lobe.row);
+    return q(lx + dx * (lobe.r + 1), ly);
+  };
+  ops.push({ op: 'pen', id: 'read_flow', role: 'artwork', color: '#6D6875', width: 2, program: `pen from input_read.E\nray to ${rim(lobes[0], -1)}` });
+  ops.push({ op: 'pen', id: 'prac_flow', role: 'artwork', color: '#6D6875', width: 2, program: `pen from input_prac.E\nray to ${rim(lobes[3], -1)}` });
+  ops.push({ op: 'pen', id: 'out_flow', role: 'artwork', color: '#6D6875', width: 2, program: `pen from output.W\nray to ${rim(lobes[2], 1)}` });
+
+  await call('plan', { operations: ops, commit: true });
+  await finish('brain', 'diagrams/gemini31-teaching-loop.svg');
+}
+
+// ---------------------------------------------------------------------------
+// 3. A dense candlestick chart
+// ---------------------------------------------------------------------------
+async function candlesticks() {
+  console.log('3. Candlesticks…');
+  await call('new_diagram', { name: 'Candlestick Chart', path: 'diagrams/gemini31-technical-analysis.turtlepen.json', cols: 150, rows: 100 });
+  await call('add_page', { id: 'wicks', z: 1, intent: 'overlay', title: 'Wicks' });
+  await call('add_page', { id: 'moving_avg', z: 2, intent: 'overlay', title: 'Moving average' });
+
+  const ops = [
+    { op: 'place_box', id: 'title', at: `${cell(2, 1)}.tl`, span: { w: 26, h: 4 }, label: 'BTC/USD  1H', corner: 'square' },
+    // Only the opening stroke names a track; the other three continue on the one
+    // the cursor is already on, which is what closes the rectangle without a gap.
+    { op: 'pen', id: 'frame', role: 'artwork', color: '#333333', width: 2, program: `pen at ${cell(3, 9)}\nright 130 align top line\ndown 62 line\nleft 130 line\nup 62 line` },
+  ];
+
+  // A deterministic pseudo-random walk. The original used Math.random(), so no
+  // two runs produced the same chart — and a document that changes every build
+  // cannot be regression-tested, which is half of what this lattice is for.
+  let seed = 20260810;
+  const rand = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+
+  const BARS = 25, PITCH = 5, FIRST = 5;
+  let close = 40;
+  const maPoints = [];
+  for (let i = 0; i < BARS; i++) {
+    const col = FIRST + i * PITCH;
+    const up = rand() > 0.45;
+    const body = Math.floor(rand() * 8) + 3;
+    const wickUp = Math.floor(rand() * 5) + 1;
+    const wickDown = Math.floor(rand() * 5) + 1;
+    close = Math.max(16, Math.min(52, close + (up ? -Math.floor(rand() * 5) : Math.floor(rand() * 5))));
+
+    // The wick is a single stroke behind the body, so it goes on its own layer.
+    ops.push({ op: 'pen', id: `wick_${i}`, page: 'wicks', role: 'artwork', color: '#666666', width: 2, program: `pen at ${cell(col + 1, close - wickUp)}\ndown ${body + wickUp + wickDown} align left line` });
+    ops.push({ op: 'place_box', id: `body_${i}`, at: `${cell(col, close)}.tl`, span: { w: 3, h: body }, label: '', corner: 'square', fill: up ? '#2A9D8F' : '#E63946' });
+
+    const vol = Math.floor(rand() * 10) + 2;
+    ops.push({ op: 'place_box', id: `vol_${i}`, at: `${cell(col, 70 - vol)}.tl`, span: { w: 3, h: vol }, label: '', corner: 'square', fill: up ? '#1B4332' : '#6A040F' });
+
+    const [mx, my] = qOf(col + 1, close + Math.floor(body / 2));
+    maPoints.push(q(mx, my));
+  }
+
+  // One continuous ray-to-ray polyline through every bar's midpoint.
+  ops.push({ op: 'pen', id: 'ma_line', page: 'moving_avg', role: 'artwork', color: '#E0A96D', width: 3, program: `pen at ${maPoints[0]}\n${maPoints.slice(1).map((p) => `ray to ${p}`).join('\n')}` });
+
+  await call('plan', { operations: ops, commit: true });
+  await finish('candlesticks', 'diagrams/gemini31-technical-analysis.svg');
+}
+
+// ---------------------------------------------------------------------------
+// 4. A mechanical CI/CD pipeline drawn as gears
+// ---------------------------------------------------------------------------
+async function gears() {
+  console.log('4. Gears…');
+  await call('new_diagram', { name: 'Gears Workflow', path: 'diagrams/gemini31-workflow.turtlepen.json', cols: 160, rows: 90 });
+  await call('add_page', { id: 'teeth', z: 1, intent: 'overlay', title: 'Gear teeth' });
+  await call('add_page', { id: 'hubs', z: 2, intent: 'overlay', title: 'Hubs' });
+  await call('add_page', { id: 'belts', z: 3, intent: 'overlay', title: 'Drive belts' });
+
+  const ops = [
+    { op: 'place_box', id: 'title', at: `${cell(9, 3)}.tl`, span: { w: 32, h: 4 }, label: 'Mechanical CI/CD Pipeline', corner: 'chamfered' },
+  ];
+
+  // Teeth at 24 real angles, not eight. `ray to` takes any endpoint, so the
+  // tooth angle is trigonometry rounded once, at the endpoint, to a whole
+  // quadrant — which is the only place a lattice needs it to be whole.
+  const cogs = [
+    { col: 22, row: 26, r: 12, color: '#457B9D', label: 'Code', labelCol: 18, labelRow: 42 },
+    { col: 62, row: 26, r: 14, color: '#E63946', label: 'Build', labelCol: 58, labelRow: 44 },
+    { col: 108, row: 26, r: 10, color: '#2A9D8F', label: 'Deploy', labelCol: 103, labelRow: 40 },
+  ];
+
+  cogs.forEach((g, i) => {
+    const [cx, cy] = qOf(g.col, g.row);
+    ops.push({ op: 'pen', id: `gear_${i}`, role: 'artwork', paint: 'cells', color: g.color, program: `pen at ${q(cx, cy)}\ndisc ${g.r}` });
+    ops.push({ op: 'pen', id: `hub_${i}`, page: 'hubs', role: 'artwork', paint: 'cells', color: '#1D3557', program: `pen at ${q(cx, cy)}\ndisc 3\ncircle 5` });
+
+    const TEETH = 24;
+    for (let t = 0; t < TEETH; t++) {
+      const a = (t / TEETH) * Math.PI * 2;
+      const inner = g.r - 1, outer = g.r + 4;
+      const x0 = cx + Math.round(Math.cos(a) * inner), y0 = cy + Math.round(Math.sin(a) * inner);
+      const x1 = cx + Math.round(Math.cos(a) * outer), y1 = cy + Math.round(Math.sin(a) * outer);
+      ops.push({ op: 'pen', id: `tooth_${i}_${t}`, page: 'teeth', role: 'artwork', paint: 'cells', color: '#A8DADC', program: `pen at ${q(x0, y0)}\nray to ${q(x1, y1)}` });
+    }
+    ops.push({ op: 'place_box', id: `cog_label_${i}`, at: `${cell(g.labelCol, g.labelRow)}.tl`, span: { w: 12, h: 4 }, label: g.label, corner: 'rounded' });
+  });
+
+  ops.push({ op: 'pen', id: 'belt_top', page: 'belts', role: 'artwork', color: '#333333', width: 3, program: `pen at ${cell(22, 17)}\nright 86 align bottom line` });
+  ops.push({ op: 'pen', id: 'belt_bottom', page: 'belts', role: 'artwork', color: '#333333', width: 3, program: `pen at ${cell(22, 35)}\nright 86 align top line` });
+
+  await call('plan', { operations: ops, commit: true });
+  await finish('gears', 'diagrams/gemini31-workflow.svg');
+}
+
+// ---------------------------------------------------------------------------
+// 5. A detailed apple
+// ---------------------------------------------------------------------------
+async function apple() {
+  console.log('5. Apple…');
+  await call('new_diagram', { name: 'Detailed Apple', path: 'diagrams/gemini31-scene-apple.turtlepen.json', cols: 100, rows: 80 });
+  for (const [id, z, title] of [
+    ['flesh', 1, 'Flesh'], ['shading', 2, 'Shading'], ['bite', 3, 'Bite'],
+    ['stem', 4, 'Stem and leaf'], ['gloss', 5, 'Highlight'],
+  ]) await call('add_page', { id, z, intent: 'overlay', title });
+
+  // The silhouette is two r=20-quadrant discs centred on row 34 — ten cells of
+  // radius — so the fruit occupies rows 24-44 and the stem has to leave from
+  // row 26, not from an eyeballed row 20 that floats four cells clear of it.
+  const [sx, sy] = qOf(24, 26);
+
+  const ops = [
+    { op: 'place_box', id: 'title', at: `${cell(9, 3)}.tl`, span: { w: 22, h: 4 }, label: 'Intricate Apple', corner: 'rounded' },
+    // A shadow the fruit actually sits in: three overlapping discs make the
+    // flattened ellipse the lattice has no primitive for, centred beneath the
+    // silhouette rather than offset from it.
+    { op: 'pen', id: 'shadow', role: 'artwork', paint: 'cells', color: '#E5E5E5', program: `pen at ${cell(19, 46)}\ndisc 11\npen at ${cell(24, 46)}\ndisc 11\npen at ${cell(29, 46)}\ndisc 11` },
+    // Two overlapping lobes make the classic apple silhouette.
+    { op: 'pen', id: 'body_left', page: 'flesh', role: 'artwork', paint: 'cells', color: '#D90429', program: `pen at ${cell(20, 34)}\ndisc 20` },
+    { op: 'pen', id: 'body_right', page: 'flesh', role: 'artwork', paint: 'cells', color: '#D90429', program: `pen at ${cell(28, 34)}\ndisc 20` },
+    { op: 'pen', id: 'body_warm', page: 'shading', role: 'artwork', paint: 'cells', color: '#EF233C', program: `pen at ${cell(23, 39)}\ndisc 18` },
+    // The bite is subtraction by overpainting, which is what a lattice offers
+    // instead of a boolean: the quadrants are still claimed, just recoloured.
+    // It has to STRADDLE the silhouette edge. Painted wholly inside it — the
+    // first pass put both discs in the body — the result is not a bite, it is
+    // two white circles on an apple.
+    { op: 'pen', id: 'bite_a', page: 'bite', role: 'artwork', paint: 'cells', color: '#FFFFFF', program: `pen at ${cell(39, 31)}\ndisc 9` },
+    { op: 'pen', id: 'bite_b', page: 'bite', role: 'artwork', paint: 'cells', color: '#FFFFFF', program: `pen at ${cell(40, 39)}\ndisc 8` },
+    // The stem curves, so it is two rays rather than a stroke-corner-stroke
+    // run. A corner must name the side the path ARRIVES on — travelling up, a
+    // path enters from the bottom — and a stalk that bends twice needs four
+    // tokens to say what two endpoints already say.
+    { op: 'pen', id: 'stem', page: 'stem', role: 'artwork', color: '#5C4033', width: 5, program: `pen at ${q(sx, sy)}\nray to ${q(sx + 5, sy - 11)}\nray to ${q(sx + 7, sy - 24)}` },
+    // The leaf hangs off the stem's actual tip, not off an address that looked
+    // about right — the first pass left it floating clear of the fruit.
+    { op: 'pen', id: 'leaf_body', page: 'stem', role: 'artwork', paint: 'cells', color: '#2E8B57', program: `pen at ${q(sx + 14, sy - 22)}\ndisc 7` },
+    { op: 'pen', id: 'leaf_edge', page: 'stem', role: 'artwork', paint: 'cells', color: '#1B5E3F', program: `pen at ${q(sx + 14, sy - 22)}\ncircle 8` },
+    { op: 'pen', id: 'leaf_vein', page: 'stem', role: 'artwork', color: '#A7C957', width: 2, program: `pen at ${q(sx + 8, sy - 20)}\nray to ${q(sx + 21, sy - 24)}` },
+    { op: 'pen', id: 'gloss', page: 'gloss', role: 'artwork', color: '#FFFFFF', width: 3, program: `pen at ${cell(16, 26)}\nray to ${q(...qOf(15, 31))}` },
+  ];
+
+  await call('plan', { operations: ops, commit: true });
+  await finish('apple', 'diagrams/gemini31-scene-apple.svg');
+}
+
+// ---------------------------------------------------------------------------
+// 6. A recursively branching tree
+// ---------------------------------------------------------------------------
+async function tree() {
+  console.log('6. Tree…');
+  await call('new_diagram', { name: 'Fractal Tree', path: 'diagrams/gemini31-scene-tree.turtlepen.json', cols: 120, rows: 100 });
+  await call('add_page', { id: 'branches', z: 1, intent: 'overlay', title: 'Branches' });
+  await call('add_page', { id: 'canopy', z: 2, intent: 'overlay', title: 'Canopy' });
+  await call('add_page', { id: 'highlights', z: 3, intent: 'overlay', title: 'Leaf highlights' });
+
+  const ops = [
+    { op: 'place_box', id: 'title', at: `${cell(9, 3)}.tl`, span: { w: 24, h: 4 }, label: 'Deep Branching Tree', corner: 'rounded' },
+  ];
+
+  // Real recursion, in quadrant space. Every branch is a `ray` at its true
+  // angle; the eight compass directions never enter into it.
+  // A child starts one quadrant along its own heading rather than on its
+  // parent's last quadrant. Two paths sharing a quadrant with no junction is
+  // L006, and a tree of 60 branches would raise it 60 times for something that
+  // is structure, not a defect — the log stops being worth reading long before
+  // that. One quadrant of separation is invisible at 5px and honest to the rule.
+  const tips = [];
+  function branch(x, y, angle, length, depth) {
+    const x0 = Math.round(x + Math.cos(angle));
+    const y0 = Math.round(y + Math.sin(angle));
+    const x1 = Math.round(x + Math.cos(angle) * length);
+    const y1 = Math.round(y + Math.sin(angle) * length);
+    ops.push({
+      op: 'pen', id: `branch_${ops.length}`, page: 'branches', role: 'artwork',
+      color: depth > 2 ? '#A0522D' : '#8B5A2B', width: Math.max(1, 5 - depth),
+      program: `pen at ${q(x0, y0)}\nray to ${q(x1, y1)}`,
+    });
+    if (depth >= 4) { tips.push([x1, y1]); return; }
+    branch(x1, y1, angle - 0.42 - depth * 0.05, length * 0.72, depth + 1);
+    branch(x1, y1, angle + 0.42 + depth * 0.05, length * 0.72, depth + 1);
+    if (depth === 1) branch(x1, y1, angle, length * 0.6, depth + 1);
+  }
+  const [rootX, rootY] = qOf(59, 88);
+  branch(rootX, rootY, -Math.PI / 2, 34, 0);
+
+  // Roots, splayed at their own angles.
+  [Math.PI * 0.78, Math.PI * 0.22, Math.PI * 0.5].forEach((a, i) => {
+    const x1 = Math.round(rootX + Math.cos(a) * 22), y1 = Math.round(rootY + Math.sin(a) * 22);
+    ops.push({ op: 'pen', id: `root_${i}`, role: 'artwork', color: '#6F4E37', width: 4, program: `pen at ${q(rootX, rootY)}\nray to ${q(x1, y1)}` });
+  });
+
+  // Foliage clusters at the real branch tips rather than at guessed addresses.
+  tips.forEach(([x, y], i) => {
+    ops.push({ op: 'pen', id: `leaf_${i}`, page: 'canopy', role: 'artwork', paint: 'cells', color: i % 2 ? '#228B22' : '#2E8B57', program: `pen at ${q(x, y)}\ndisc 7` });
+    ops.push({ op: 'pen', id: `leaf_hi_${i}`, page: 'highlights', role: 'artwork', paint: 'cells', color: '#32CD32', program: `pen at ${q(x + 2, y - 2)}\ndisc 4` });
+  });
+
+  await call('plan', { operations: ops, commit: true });
+  await finish('tree', 'diagrams/gemini31-scene-tree.svg');
+}
+
+// ---------------------------------------------------------------------------
+// 7. A weathered picket fence
+// ---------------------------------------------------------------------------
+async function fence() {
+  console.log('7. Fence…');
+  await call('new_diagram', { name: 'Detailed Fence', path: 'diagrams/gemini31-scene-fence.turtlepen.json', cols: 140, rows: 70 });
+  for (const [id, z, title] of [
+    ['rails', 1, 'Crossbars'], ['grain', 2, 'Wood grain'],
+    ['nails', 3, 'Nails'], ['vines', 4, 'Vines'],
+  ]) await call('add_page', { id, z, intent: 'overlay', title });
+
+  const ops = [
+    { op: 'place_box', id: 'title', at: `${cell(5, 3)}.tl`, span: { w: 26, h: 4 }, label: 'Weathered Picket Fence', corner: 'chamfered' },
+  ];
+
+  const PICKETS = 12, PITCH = 10, FIRST = 4, TOP = 15, TALL = 40, WIDE = 5;
+  for (let i = 0; i < PICKETS; i++) {
+    const col = FIRST + i * PITCH;
+    ops.push({ op: 'place_box', id: `picket_${i}`, at: `${cell(col, TOP)}.tl`, span: { w: WIDE, h: TALL }, label: '', corner: 'square', fill: '#DDB892' });
+
+    // A real triangular peak, from the picket's two top corners to a point
+    // above its centre — computed in quadrants so the apex is exactly centred.
+    //
+    // The base sits one quadrant ABOVE the board's top row. Drawn on the row
+    // itself it is inside the box, and a stroke through a box body is L004 — an
+    // error the engine is right to raise even when the ink looks intentional.
+    const [lx, ty] = qOf(col, TOP);
+    const baseY = ty - 1;
+    const rx = lx + WIDE * 2 - 1;
+    const apexX = lx + WIDE, apexY = baseY - 9;
+    ops.push({ op: 'pen', id: `peak_${i}`, role: 'artwork', paint: 'cells', color: '#DDB892', program: `pen at ${q(lx, baseY)}\ntriangle ${q(rx, baseY)} ${q(apexX, apexY)}` });
+
+    // Grain: two off-vertical rays, so the boards do not read as printed.
+    ops.push({ op: 'pen', id: `grain_a_${i}`, page: 'grain', role: 'artwork', color: '#B08968', width: 1, program: `pen at ${q(lx + 2, ty + 8)}\nray to ${q(lx + 3, ty + 34)}` });
+    ops.push({ op: 'pen', id: `grain_b_${i}`, page: 'grain', role: 'artwork', color: '#B08968', width: 1, program: `pen at ${q(lx + 6, ty + 20)}\nray to ${q(lx + 5, ty + 58)}` });
+
+    for (const railRow of [25, 45]) {
+      const [, ny] = qOf(0, railRow);
+      ops.push({ op: 'pen', id: `nail_${i}_${railRow}`, page: 'nails', role: 'artwork', paint: 'cells', color: '#4A4E69', program: `pen at ${q(lx + 4, ny + 2)}\ndot` });
+    }
+  }
+
+  for (const [n, row] of [[1, 25], [2, 45]]) {
+    ops.push({ op: 'place_box', id: `rail_${n}`, page: 'rails', at: `${cell(2, row)}.tl`, span: { w: 130, h: 3 }, label: '', corner: 'square', fill: '#9C6644' });
+  }
+
+  // One continuous vine, climbing at real angles.
+  const vine = [[10, 120], [40, 96], [70, 104], [110, 78], [150, 88], [200, 46], [240, 58]];
+  ops.push({
+    op: 'pen', id: 'vine', page: 'vines', role: 'artwork', color: '#52B788', width: 3,
+    program: `pen at ${q(...vine[0])}\n${vine.slice(1).map((p) => `ray to ${q(...p)}`).join('\n')}`,
+  });
+  vine.forEach(([x, y], i) => {
+    ops.push({ op: 'pen', id: `vine_leaf_${i}`, page: 'vines', role: 'artwork', paint: 'cells', color: '#2D6A4F', program: `pen at ${q(x + 3, y - 3)}\ndisc 3` });
+  });
+
+  await call('plan', { operations: ops, commit: true });
+  await finish('fence', 'diagrams/gemini31-scene-fence.svg');
+}
+
+// ---------------------------------------------------------------------------
+// 8. A dense living room
+// ---------------------------------------------------------------------------
+async function livingRoom() {
+  console.log('8. Living room…');
+  await call('new_diagram', { name: 'Living Room Family', path: 'diagrams/gemini31-scene-living-room-family.turtlepen.json', cols: 160, rows: 110 });
+  for (const [id, z, title] of [
+    ['fittings', 1, 'Window and rug detail'], ['furniture', 2, 'Furniture'],
+    // The sofa's arms sit ON its back and seat. Two boxes overlapping on one
+    // page is L001 — critical, and correctly so, because on a single layer that
+    // is two nodes claiming one space rather than one object drawn in front of
+    // another. Upholstery is a layer.
+    ['upholstery', 3, 'Sofa arms'],
+    ['lamp', 4, 'Lamp'], ['people', 5, 'People'], ['pets', 6, 'Dog'],
+  ]) await call('add_page', { id, z, intent: 'overlay', title });
+
+  // One floor line and one rug span, so every object in the room is placed
+  // against the same two numbers instead of against its own guess.
+  const FLOOR = 70, RUG_COL = 64, RUG_W = 54;
+
+  const ops = [
+    { op: 'place_box', id: 'title', at: `${cell(9, 3)}.tl`, span: { w: 32, h: 4 }, label: 'Highly Detailed Living Room', corner: 'indented' },
+
+    // Window, curtains and mullions.
+    { op: 'place_box', id: 'window', at: `${cell(1, 14)}.tl`, span: { w: 20, h: 25 }, label: '', corner: 'square', fill: '#8ECAE6' },
+    { op: 'pen', id: 'mullion_v', page: 'fittings', role: 'artwork', color: '#FFFFFF', width: 4, program: `pen at ${cell(11, 14)}\ndown 25 align left line` },
+    { op: 'pen', id: 'mullion_h', page: 'fittings', role: 'artwork', color: '#FFFFFF', width: 4, program: `pen at ${cell(1, 26)}\nright 20 align top line` },
+    { op: 'place_box', id: 'curtain_l', page: 'furniture', at: `${cell(1, 14)}.tl`, span: { w: 4, h: 25 }, label: '', corner: 'square', fill: '#E63946' },
+    { op: 'place_box', id: 'curtain_r', page: 'furniture', at: `${cell(17, 14)}.tl`, span: { w: 4, h: 25 }, label: '', corner: 'square', fill: '#E63946' },
+
+    // The rug lies UNDER the sofa. It was previously placed at the far left of
+    // a 160-cell canvas while the furniture sat on the right — each element
+    // individually correct, the room incoherent. Nothing in a collision log
+    // catches that; only looking at the render does.
+    { op: 'place_box', id: 'rug', at: `${cell(RUG_COL, FLOOR - 10)}.tl`, span: { w: RUG_W, h: 12 }, label: '', corner: 'square', fill: '#F4A261' },
+  ];
+  for (let i = 0; i < 10; i++) {
+    ops.push({ op: 'pen', id: `rug_stripe_${i}`, page: 'fittings', role: 'artwork', color: '#E76F51', width: 3, program: `pen at ${cell(RUG_COL + 2 + i * 5, FLOOR - 10)}\ndown 12 align left line` });
+  }
+
+  // Sofa, built from four overlapping solids on one furniture layer — so they
+  // are placed apart rather than stacked, and the shapes that must overlap sit
+  // on the layer above.
+  ops.push(
+    { op: 'place_box', id: 'sofa_back', page: 'furniture', at: `${cell(74, 39)}.tl`, span: { w: 25, h: 6 }, label: '', corner: 'rounded', fill: '#2A9D8F' },
+    { op: 'place_box', id: 'sofa_seat', page: 'furniture', at: `${cell(76, 45)}.tl`, span: { w: 21, h: 8 }, label: '', corner: 'rounded', fill: '#264653' },
+    { op: 'place_box', id: 'sofa_arm_l', page: 'upholstery', at: `${cell(72, 41)}.tl`, span: { w: 4, h: 12 }, label: '', corner: 'rounded', fill: '#1D3557' },
+    { op: 'place_box', id: 'sofa_arm_r', page: 'upholstery', at: `${cell(97, 41)}.tl`, span: { w: 4, h: 12 }, label: '', corner: 'rounded', fill: '#1D3557' },
+    { op: 'pen', id: 'lamp_stand', page: 'lamp', role: 'artwork', color: '#333333', width: 4, program: `pen at ${cell(64, 34)}\ndown 25 align left line` },
+    { op: 'pen', id: 'lamp_shade', page: 'lamp', role: 'artwork', paint: 'cells', color: '#FFB703', program: `pen at ${cell(64, 33)}\narc 8 180 360` },
+  );
+
+  // Three figures. A standing figure's feet are derived from FLOOR and its head
+  // from its own height, so nobody hovers; a seated one is pinned to the sofa
+  // seat instead. The first pass gave every figure a hand-picked head address
+  // and fixed-length legs, and all three floated above the rug.
+  const figures = [
+    { id: 'p1', col: 82, scale: 1.0, seated: true, seatRow: 45 },
+    { id: 'p2', col: 106, scale: 1.2, seated: false },
+    { id: 'p3', col: 114, scale: 0.85, seated: false },
+  ];
+  figures.forEach((f) => {
+    const s = f.scale;
+    const [hx] = qOf(f.col, 0);
+    // head -> neck -> hip -> feet, in quadrants, measured up from the floor.
+    const legLen = Math.round(26 * s), torso = Math.round(16 * s), headR = Math.round(4 * s);
+    const [, floorQ] = qOf(0, FLOOR);
+    const hip = f.seated ? qOf(0, f.seatRow)[1] : floorQ - legLen;
+    const neck = hip - torso;
+    const hy = neck - headR - 2;
+    ops.push({ op: 'pen', id: `${f.id}_head`, page: 'people', role: 'artwork', paint: 'cells', color: '#FDB833', program: `pen at ${q(hx, hy)}\ndisc ${Math.round(4 * s)}` });
+    ops.push({ op: 'pen', id: `${f.id}_spine`, page: 'people', role: 'artwork', color: '#22223B', width: 3, program: `pen at ${q(hx, neck)}\nray to ${q(hx, hip)}` });
+    ops.push({ op: 'pen', id: `${f.id}_arm_l`, page: 'people', role: 'artwork', color: '#22223B', width: 2, program: `pen at ${q(hx, neck + 2)}\nray to ${q(hx - Math.round(9 * s), neck + Math.round(9 * s))}` });
+    ops.push({ op: 'pen', id: `${f.id}_arm_r`, page: 'people', role: 'artwork', color: '#22223B', width: 2, program: `pen at ${q(hx, neck + 2)}\nray to ${q(hx + Math.round(10 * s), neck - Math.round(4 * s))}` });
+    if (f.seated) {
+      // Seated: thighs forward along the seat, shins hanging to the floor. The
+      // first version stopped both legs inside the sofa, where they read as
+      // scribble over the upholstery rather than as a person sitting on it.
+      const knee = hx + Math.round(14 * s);
+      ops.push({ op: 'pen', id: `${f.id}_leg_l`, page: 'people', role: 'artwork', color: '#22223B', width: 2, program: `pen at ${q(hx, hip)}\nray to ${q(knee, hip + 2)}\nray to ${q(knee + 2, floorQ)}` });
+      ops.push({ op: 'pen', id: `${f.id}_leg_r`, page: 'people', role: 'artwork', color: '#22223B', width: 2, program: `pen at ${q(hx, hip + 2)}\nray to ${q(knee - 2, hip + 4)}\nray to ${q(knee, floorQ)}` });
+    } else {
+      ops.push({ op: 'pen', id: `${f.id}_leg_l`, page: 'people', role: 'artwork', color: '#22223B', width: 2, program: `pen at ${q(hx, hip)}\nray to ${q(hx - Math.round(7 * s), floorQ)}` });
+      ops.push({ op: 'pen', id: `${f.id}_leg_r`, page: 'people', role: 'artwork', color: '#22223B', width: 2, program: `pen at ${q(hx, hip)}\nray to ${q(hx + Math.round(7 * s), floorQ)}` });
+    }
+  });
+
+  // The dog, curled on the rug — positioned from RUG_COL and FLOOR like
+  // everything else in the room, not from an address that looked about right.
+  const [dx, dy] = qOf(RUG_COL + 8, FLOOR - 5);
+  ops.push(
+    { op: 'pen', id: 'dog_body', page: 'pets', role: 'artwork', paint: 'cells', color: '#7F5539', program: `pen at ${q(dx, dy)}\ndisc 5` },
+    { op: 'pen', id: 'dog_head', page: 'pets', role: 'artwork', paint: 'cells', color: '#9C6644', program: `pen at ${q(dx - 6, dy - 3)}\ndisc 3` },
+    { op: 'pen', id: 'dog_tail', page: 'pets', role: 'artwork', color: '#7F5539', width: 2, program: `pen at ${q(dx + 5, dy + 2)}\nray to ${q(dx + 12, dy - 4)}` },
+  );
+
+  await call('plan', { operations: ops, commit: true });
+  await finish('living room', 'diagrams/gemini31-scene-living-room-family.svg');
+}
+
+// ---------------------------------------------------------------------------
+
+const BUILDS = [datacenter, brain, candlesticks, gears, apple, tree, fence, livingRoom];
 
 async function run() {
-  const session = createSession({ cwd: process.cwd() });
-  const tools = createTools(session);
-  const toolMap = new Map(tools.map((t) => [t.name, t.handler]));
-
-  async function call(name, args) {
-    const handler = toolMap.get(name);
-    if (!handler) throw new Error(`Unknown tool: ${name}`);
-    return await handler(args);
+  console.log('=== TurtlePen dense-artwork corpus ===\n');
+  const only = process.argv[2] ? Number(process.argv[2]) : null;
+  for (let i = 0; i < BUILDS.length; i++) {
+    if (only && only !== i + 1) continue;
+    await BUILDS[i]();
   }
-
-  console.log('=== TurtlePen Diagram Generator (Gemini 3.1 Pro - Dense & Intricate) ===\n');
-
-  // ---------------------------------------------------------------------------
-  // 1. Server Structures (Intricate Datacenter)
-  // ---------------------------------------------------------------------------
-  console.log('Building Diagram 1: Intricate Datacenter...');
-  await call('new_diagram', { name: 'Datacenter', path: 'diagrams/gemini31-server-structure.turtlepen.json', cols: 140, rows: 90 });
-  await call('add_page', { id: 'cabling', z: 1, intent: 'overlay', title: 'Cabling' });
-  await call('add_page', { id: 'lights', z: 2, intent: 'overlay', title: 'Blinking Lights' });
-
-  const ops1 = [
-    { op: 'place_box', id: 'lbl', at: 'E4.tl', span: { w: 30, h: 4 }, label: 'Global Datacenter Topology', corner: 'chamfered' },
-  ];
-
-  // Draw 3 detailed server racks
-  for (let i = 0; i < 3; i++) {
-    let col = ['B', 'P', 'AD'][i]; // Base columns
-    let atStr = `${col}15.tl`;
-    ops1.push({ op: 'place_box', id: `rack${i}`, at: atStr, span: { w: 10, h: 40 }, label: `Rack 0${i+1}`, corner: 'square', fill: '#2B2D42' });
-    
-    // Draw 8 server blades inside each rack using manual artwork lines
-    for (let j = 0; j < 8; j++) {
-      let r = 20 + (j * 4);
-      ops1.push({ op: 'pen', id: `blade_${i}_${j}`, role: 'artwork', color: '#8D99AE', width: 2, program: `pen at ${col}${r}\nright 9 align top line` });
-      
-      // Add blinking lights on overlay
-      let lightColor = (i + j) % 3 === 0 ? '#EF233C' : '#80ED99';
-      ops1.push({ op: 'pen', id: `light_${i}_${j}_a`, page: 'lights', role: 'artwork', paint: 'cells', color: lightColor, program: `pen at ${col}${r}.q2\ndot` });
-      ops1.push({ op: 'pen', id: `light_${i}_${j}_b`, page: 'lights', role: 'artwork', paint: 'cells', color: '#00B4D8', program: `pen at ${col}${r}.q4\ndot` });
-    }
-  }
-
-  // Draw detailed Database Cylinders (using arcs)
-  const dbs = ['AN', 'BD'];
-  for (let i = 0; i < 2; i++) {
-    let base = dbs[i];
-    ops1.push({ op: 'pen', id: `db_top_${i}`, role: 'artwork', paint: 'cells', color: '#023E8A', program: `pen at ${base}20\narc 15 180 360` });
-    ops1.push({ op: 'pen', id: `db_body_${i}`, role: 'artwork', paint: 'cells', color: '#0077B6', program: `pen at ${base}21\nright 15 align top line\ndown 18 align left line\nleft 15 align top line\nup 18 align left line` });
-    ops1.push({ op: 'pen', id: `db_base_${i}`, role: 'artwork', paint: 'cells', color: '#03045E', program: `pen at ${base}39\narc 15 0 180` });
-    ops1.push({ op: 'place_box', id: `db_lbl_${i}`, at: `${base}45.tl`, span: { w: 12, h: 4 }, label: `DB Cluster ${i}`, corner: 'rounded' });
-  }
-
-  // Intricate cabling network on overlay
-  ops1.push({ op: 'pen', id: 'cable1', page: 'cabling', role: 'artwork', color: '#FCA311', width: 2, program: `pen at D56\nright 45 align bottom line\nup 10 align right line\nright 15 align bottom line\nup 5 align right line` });
-  ops1.push({ op: 'pen', id: 'cable2', page: 'cabling', role: 'artwork', color: '#E63946', width: 2, program: `pen at R56\nright 40 align bottom line\nup 8 align right line\nright 20 align bottom line\nup 3 align right line` });
-
-  await call('plan', { operations: ops1, commit: true });
-  await call('render', { path: 'diagrams/gemini31-server-structure.svg', force: true });
-  await call('save', { force: true });
-
-  // ---------------------------------------------------------------------------
-  // 2. Teaching & Education (Brain & Neural Pathways)
-  // ---------------------------------------------------------------------------
-  console.log('Building Diagram 2: Brain & Neural Learning Process...');
-  await call('new_diagram', { name: 'Neural Learning', path: 'diagrams/gemini31-teaching-loop.turtlepen.json', cols: 140, rows: 100 });
-  
-  const ops2 = [
-    { op: 'place_box', id: 'lbl2', at: 'N4.tl', span: { w: 25, h: 4 }, label: 'Cognitive Learning Patterns', corner: 'indented' },
-  ];
-
-  // Draw an intricate brain using overlapping circles and arcs
-  const brainLobes = [
-    { at: 'AB30', r: 15, c: '#FFB5A7' },
-    { at: 'AI25', r: 18, c: '#FEC5BB' },
-    { at: 'AT30', r: 16, c: '#FCD5CE' },
-    { at: 'AC45', r: 14, c: '#F8EDEB' },
-    { at: 'AM45', r: 17, c: '#F9E2AE' },
-    { at: 'AI55', r: 12, c: '#E8E8E4' }
-  ];
-  for (let i = 0; i < brainLobes.length; i++) {
-    ops2.push({ op: 'pen', id: `lobe_${i}`, role: 'artwork', paint: 'cells', color: brainLobes[i].c, program: `pen at ${brainLobes[i].at}\ncircle ${brainLobes[i].r}\ndisc ${brainLobes[i].r - 1}` });
-  }
-
-  // Draw neural synapses connecting them
-  const synapses = [
-    { from: 'AB30', to: 'AI25' },
-    { from: 'AI25', to: 'AT30' },
-    { from: 'AT30', to: 'AM45' },
-    { from: 'AM45', to: 'AI55' },
-    { from: 'AI55', to: 'AC45' },
-    { from: 'AC45', to: 'AB30' },
-  ];
-  for (let i = 0; i < synapses.length; i++) {
-    ops2.push({ op: 'pen', id: `synapse_${i}`, role: 'artwork', color: '#D8E2DC', width: 3, program: `pen at ${synapses[i].from}\nray to ${synapses[i].to}.q2` });
-    ops2.push({ op: 'pen', id: `pulse_${i}`, role: 'artwork', paint: 'cells', color: '#FFE5D9', program: `pen at ${synapses[i].to}\ndisc 3` });
-  }
-
-  // Draw knowledge inputs
-  ops2.push({ op: 'place_box', id: 'input_read', at: 'E25.tl', span: { w: 12, h: 4 }, label: 'Reading', corner: 'rounded' });
-  ops2.push({ op: 'place_box', id: 'input_prac', at: 'E45.tl', span: { w: 12, h: 4 }, label: 'Practice', corner: 'rounded' });
-  ops2.push({ op: 'pen', id: 'read_flow', role: 'artwork', color: '#9D8189', width: 2, program: 'pen from input_read.E\nright 4 align top line\ndown 2 align left line\nright line to AB30.q1 arrow' });
-  ops2.push({ op: 'pen', id: 'prac_flow', role: 'artwork', color: '#9D8189', width: 2, program: 'pen from input_prac.E\nright line to AC45.q1 arrow' });
-
-  await call('plan', { operations: ops2, commit: true });
-  await call('render', { path: 'diagrams/gemini31-teaching-loop.svg', force: true });
-  await call('save', { force: true });
-
-  // ---------------------------------------------------------------------------
-  // 3. Technical Analysis (Dense Candlestick Chart)
-  // ---------------------------------------------------------------------------
-  console.log('Building Diagram 3: Candlestick Chart...');
-  await call('new_diagram', { name: 'Candlestick Chart', path: 'diagrams/gemini31-technical-analysis.turtlepen.json', cols: 150, rows: 100 });
-  await call('add_page', { id: 'moving_avg', z: 1, intent: 'overlay', title: 'Moving Average Line' });
-
-  const ops3 = [
-    { op: 'place_box', id: 'lbl3', at: 'C2.tl', span: { w: 25, h: 4 }, label: 'BTC/USD 1H Chart', corner: 'square' },
-    // Chart borders
-    { op: 'pen', id: 'chart_border', role: 'artwork', color: '#333333', width: 2, program: 'pen at D10\nright 130 align top line\ndown 60 align left line\nleft 130 align bottom line\nup 60 align right line' },
-  ];
-
-  // Generate 25 candlesticks manually
-  let trend = 60;
-  let maPath = 'pen at F60\n';
-  for (let i = 0; i < 25; i++) {
-    let col = String.fromCharCode(69 + (i * 5) % 26); // E, J, O, T... simplified column logic for demo
-    if (i * 5 >= 26) {
-      let pref = String.fromCharCode(64 + Math.floor((i * 5) / 26));
-      col = pref + String.fromCharCode(65 + ((i * 5) % 26));
-    } else {
-      col = String.fromCharCode(69 + (i * 5));
-    }
-
-    let isGreen = Math.random() > 0.4;
-    let bodyH = Math.floor(Math.random() * 8) + 2;
-    let wickTop = Math.floor(Math.random() * 5) + 1;
-    let wickBot = Math.floor(Math.random() * 5) + 1;
-    
-    if (isGreen) trend -= Math.floor(Math.random() * 5);
-    else trend += Math.floor(Math.random() * 5);
-    
-    let color = isGreen ? '#00FF00' : '#FF0000';
-    
-    // Wick
-    ops3.push({ op: 'pen', id: `wick_${i}`, role: 'artwork', color: '#666666', width: 2, program: `pen at ${col}${trend - wickTop}\ndown ${bodyH + wickTop + wickBot} line` });
-    // Body
-    ops3.push({ op: 'place_box', id: `body_${i}`, at: `${col}${trend}.tl`, span: { w: 2, h: bodyH }, label: '', corner: 'square', fill: color });
-    
-    // Volume bar
-    let volH = Math.floor(Math.random() * 10) + 2;
-    ops3.push({ op: 'place_box', id: `vol_${i}`, at: `${col}${70 - volH}.tl`, span: { w: 2, h: volH }, label: '', corner: 'square', fill: isGreen ? '#005500' : '#550000' });
-
-    maPath += `ray to ${col}${trend + 2}.q2\n`;
-  }
-  
-  ops3.push({ op: 'pen', id: 'ma_line', page: 'moving_avg', role: 'artwork', color: '#E0A96D', width: 3, program: maPath });
-
-  await call('plan', { operations: ops3, commit: true });
-  await call('render', { path: 'diagrams/gemini31-technical-analysis.svg', force: true });
-  await call('save', { force: true });
-
-  // ---------------------------------------------------------------------------
-  // 4. Workflow (Mechanical Gears Pipeline)
-  // ---------------------------------------------------------------------------
-  console.log('Building Diagram 4: Mechanical CI/CD Gears...');
-  await call('new_diagram', { name: 'Gears Workflow', path: 'diagrams/gemini31-workflow.turtlepen.json', cols: 160, rows: 90 });
-  await call('add_page', { id: 'belts', z: 1, intent: 'overlay', title: 'Conveyor Belts' });
-
-  const ops4 = [
-    { op: 'place_box', id: 'lbl4', at: 'J4.tl', span: { w: 30, h: 4 }, label: 'Mechanical CI/CD Pipeline', corner: 'chamfered' },
-  ];
-
-  const gears = [
-    { at: 'P25', r: 12, color: '#457B9D', lbl: 'Code', l_at: 'M35.tl' },
-    { at: 'AL25', r: 14, color: '#E63946', lbl: 'Build', l_at: 'AI37.tl' },
-    { at: 'BK25', r: 10, color: '#2A9D8F', lbl: 'Deploy', l_at: 'BH33.tl' }
-  ];
-
-  for (let i = 0; i < gears.length; i++) {
-    let g = gears[i];
-    // Main gear body
-    ops4.push({ op: 'pen', id: `gear_${i}`, role: 'artwork', paint: 'cells', color: g.color, program: `pen at ${g.at}\ndisc ${g.r}\ncircle ${g.r + 2}` });
-    // Hub
-    ops4.push({ op: 'pen', id: `hub_${i}`, role: 'artwork', paint: 'cells', color: '#1D3557', program: `pen at ${g.at}\ndisc 3` });
-    // Teeth (rays extending out)
-    for (let angle = 0; angle < 360; angle += 45) {
-       // Since exact trigonometric rays aren't natively supported by angle, we draw specific 8-way directional rays
-       let dirs = ['up', 'ne', 'right', 'se', 'down', 'sw', 'left', 'nw'];
-       dirs.forEach((dir, idx) => {
-         ops4.push({ op: 'pen', id: `tooth_${i}_${idx}`, role: 'artwork', color: '#A8DADC', width: 4, program: `pen at ${g.at}\n${dir} ${Math.floor(g.r/2) + 2} line` });
-       });
-    }
-    ops4.push({ op: 'place_box', id: `g_lbl_${i}`, at: g.l_at, span: { w: 10, h: 4 }, label: g.lbl, corner: 'rounded' });
-  }
-
-  // Conveyor belt connecting them
-  ops4.push({ op: 'pen', id: 'belt_top', page: 'belts', role: 'artwork', color: '#333333', width: 3, program: `pen at P12\nright 60 align bottom line` });
-  ops4.push({ op: 'pen', id: 'belt_bot', page: 'belts', role: 'artwork', color: '#333333', width: 3, program: `pen at P38\nright 60 align top line` });
-
-  await call('plan', { operations: ops4, commit: true });
-  await call('render', { path: 'diagrams/gemini31-workflow.svg', force: true });
-  await call('save', { force: true });
-
-  // ---------------------------------------------------------------------------
-  // 5. Scene - Apple (Highly detailed)
-  // ---------------------------------------------------------------------------
-  console.log('Building Diagram 5: Detailed Apple...');
-  await call('new_diagram', { name: 'Detailed Apple', path: 'diagrams/gemini31-scene-apple.turtlepen.json', cols: 100, rows: 80 });
-
-  const ops5 = [
-    { op: 'place_box', id: 'lbl5', at: 'J4.tl', span: { w: 20, h: 4 }, label: 'Intricate Apple Art', corner: 'rounded' },
-    // Shadow
-    { op: 'pen', id: 'shadow', role: 'artwork', paint: 'cells', color: '#E5E5E5', program: 'pen at W55\ndisc 18' },
-    // Base apple structure (overlapping discs for shape)
-    { op: 'pen', id: 'apple_b1', role: 'artwork', paint: 'cells', color: '#D90429', program: 'pen at U35\ndisc 20' },
-    { op: 'pen', id: 'apple_b2', role: 'artwork', paint: 'cells', color: '#D90429', program: 'pen at AC35\ndisc 20' },
-    { op: 'pen', id: 'apple_b3', role: 'artwork', paint: 'cells', color: '#EF233C', program: 'pen at X40\ndisc 18' },
-    // Bite mark (masking with background-like color)
-    { op: 'pen', id: 'apple_bite', role: 'artwork', paint: 'cells', color: '#FFFFFF', program: 'pen at AJ30\ndisc 12' },
-    { op: 'pen', id: 'apple_bite2', role: 'artwork', paint: 'cells', color: '#FFFFFF', program: 'pen at AL38\ndisc 10' },
-    // Stem
-    { op: 'pen', id: 'stem', role: 'artwork', color: '#5C4033', width: 5, program: 'pen at Y20\nup 2 align left line\nright corner align top right\nright 4 align top line\nup corner align left top\nup 4 line' },
-    // Detailed Leaf
-    { op: 'pen', id: 'leaf_a', role: 'artwork', paint: 'cells', color: '#2A9D8F', program: 'pen at AC15\ncircle 8' },
-    { op: 'pen', id: 'leaf_b', role: 'artwork', paint: 'cells', color: '#2E8B57', program: 'pen at AD16\ndisc 6' },
-    // Glossy Highlight
-    { op: 'pen', id: 'highlight', role: 'artwork', color: '#FFFFFF', width: 3, program: 'pen at R28\ndown 5 line\nleft 1 line' },
-  ];
-
-  await call('plan', { operations: ops5, commit: true });
-  await call('render', { path: 'diagrams/gemini31-scene-apple.svg', force: true });
-  await call('save', { force: true });
-
-  // ---------------------------------------------------------------------------
-  // 6. Scene - Tree (Fractal-like branching)
-  // ---------------------------------------------------------------------------
-  console.log('Building Diagram 6: Fractal Tree...');
-  await call('new_diagram', { name: 'Fractal Tree', path: 'diagrams/gemini31-scene-tree.turtlepen.json', cols: 120, rows: 100 });
-  await call('add_page', { id: 'leaves2', z: 1, intent: 'overlay', title: 'Dense Leaves' });
-
-  const ops6 = [
-    { op: 'place_box', id: 'lbl6', at: 'J4.tl', span: { w: 20, h: 4 }, label: 'Deep Branching Tree', corner: 'rounded' },
-    // Roots
-    { op: 'pen', id: 'root1', role: 'artwork', color: '#6F4E37', width: 4, program: 'pen at W80\nsw 10 line' },
-    { op: 'pen', id: 'root2', role: 'artwork', color: '#6F4E37', width: 4, program: 'pen at Y80\nse 12 line' },
-    { op: 'pen', id: 'root3', role: 'artwork', color: '#6F4E37', width: 5, program: 'pen at X80\ndown 8 line' },
-    // Trunk
-    { op: 'pen', id: 'trunk', role: 'artwork', color: '#8B5A2B', width: 5, program: 'pen at X80\nup 25 line' },
-    // Primary branches
-    { op: 'pen', id: 'b1', role: 'artwork', color: '#8B5A2B', width: 4, program: 'pen at X55\nnw 15 line' },
-    { op: 'pen', id: 'b2', role: 'artwork', color: '#8B5A2B', width: 4, program: 'pen at X55\nne 18 line' },
-    { op: 'pen', id: 'b3', role: 'artwork', color: '#8B5A2B', width: 4, program: 'pen at X60\nleft 10 line' },
-    // Secondary branches
-    { op: 'pen', id: 'b1_1', role: 'artwork', color: '#A0522D', width: 3, program: 'pen at O40\nup 10 line' },
-    { op: 'pen', id: 'b1_2', role: 'artwork', color: '#A0522D', width: 3, program: 'pen at O40\nleft 8 line' },
-    { op: 'pen', id: 'b2_1', role: 'artwork', color: '#A0522D', width: 3, program: 'pen at AL37\nne 10 line' },
-    { op: 'pen', id: 'b2_2', role: 'artwork', color: '#A0522D', width: 3, program: 'pen at AL37\nnw 8 line' },
-  ];
-
-  // Leaves (Dense scattering of overlapping discs)
-  const leafCenters = ['O40', 'L30', 'O30', 'R30', 'G40', 'AL37', 'AV27', 'AD29', 'AI25', 'X45', 'U35', 'AA35'];
-  leafCenters.forEach((c, idx) => {
-    ops6.push({ op: 'pen', id: `l_${idx}_a`, page: 'leaves2', role: 'artwork', paint: 'cells', color: '#228B22', program: `pen at ${c}\ndisc 8` });
-    ops6.push({ op: 'pen', id: `l_${idx}_b`, page: 'leaves2', role: 'artwork', paint: 'cells', color: '#32CD32', program: `pen at ${c}.q4\ndisc 6` });
-    ops6.push({ op: 'pen', id: `l_${idx}_c`, page: 'leaves2', role: 'artwork', paint: 'cells', color: '#006400', program: `pen at ${c}.tl\ncircle 5` });
-  });
-
-  await call('plan', { operations: ops6, commit: true });
-  await call('render', { path: 'diagrams/gemini31-scene-tree.svg', force: true });
-  await call('save', { force: true });
-
-  // ---------------------------------------------------------------------------
-  // 7. Scene - Fence (Detailed wood grain and vines)
-  // ---------------------------------------------------------------------------
-  console.log('Building Diagram 7: Detailed Fence...');
-  await call('new_diagram', { name: 'Detailed Fence', path: 'diagrams/gemini31-scene-fence.turtlepen.json', cols: 140, rows: 70 });
-  await call('add_page', { id: 'vines', z: 1, intent: 'overlay', title: 'Growing Vines' });
-
-  const ops7 = [
-    { op: 'place_box', id: 'lbl7', at: 'F4.tl', span: { w: 25, h: 4 }, label: 'Weathered Picket Fence', corner: 'chamfered' },
-  ];
-
-  // Draw 8 pickets manually (no simple place_box) to include wood grain lines and peaked triangles
-  for (let i = 0; i < 8; i++) {
-    let col = String.fromCharCode(67 + i * 5); // C, H, M, R, W...
-    
-    // Main body of picket
-    ops7.push({ op: 'place_box', id: `picket_${i}`, at: `${col}15.tl`, span: { w: 4, h: 40 }, label: '', corner: 'square', fill: '#DDB892' });
-    
-    // Triangle peak for picket
-    ops7.push({ op: 'pen', id: `peak_${i}`, role: 'artwork', paint: 'cells', color: '#DDB892', program: `pen at ${col}15\nup 5 align right line\nright corner align top right\nright 2 align top line\ndown corner align right bottom\ndown 5 align left line` }); // Simplified peak using lines
-
-    // Wood grain lines
-    ops7.push({ op: 'pen', id: `grain1_${i}`, role: 'artwork', color: '#B08968', width: 1, program: `pen at ${col}20\ndown 10 line` });
-    ops7.push({ op: 'pen', id: `grain2_${i}`, role: 'artwork', color: '#B08968', width: 1, program: `pen at ${String.fromCharCode(col.charCodeAt(0)+2)}35\ndown 15 line` });
-  }
-
-  // Crossbars
-  ops7.push({ op: 'place_box', id: `bar1`, at: `A25.tl`, span: { w: 50, h: 3 }, label: '', corner: 'square', fill: '#9C6644' });
-  ops7.push({ op: 'place_box', id: `bar2`, at: `A45.tl`, span: { w: 50, h: 3 }, label: '', corner: 'square', fill: '#9C6644' });
-
-  // Nails
-  for (let i = 0; i < 8; i++) {
-    let col = String.fromCharCode(67 + i * 5 + 1); // center of picket
-    ops7.push({ op: 'pen', id: `nail1_${i}`, role: 'artwork', paint: 'cells', color: '#4A4E69', program: `pen at ${col}26\ndot` });
-    ops7.push({ op: 'pen', id: `nail2_${i}`, role: 'artwork', paint: 'cells', color: '#4A4E69', program: `pen at ${col}46\ndot` });
-  }
-
-  // Vines growing over fence
-  ops7.push({ op: 'pen', id: `vine_main`, page: 'vines', role: 'artwork', color: '#52B788', width: 3, program: `pen at B55\nne 15 line\nright 10 line\nse 8 line\nright 5 line\nne 20 line` });
-  // Leaves on vine
-  ['G40', 'M35', 'R37', 'X40', 'AD25', 'AH20'].forEach((c, idx) => {
-    ops7.push({ op: 'pen', id: `vine_leaf_${idx}`, page: 'vines', role: 'artwork', paint: 'cells', color: '#2D6A4F', program: `pen at ${c}\ndisc 2` });
-  });
-
-  await call('plan', { operations: ops7, commit: true });
-  await call('render', { path: 'diagrams/gemini31-scene-fence.svg', force: true });
-  await call('save', { force: true });
-
-  // ---------------------------------------------------------------------------
-  // 8. Scene - Living Room Family (Articulated and Dense)
-  // ---------------------------------------------------------------------------
-  console.log('Building Diagram 8: Dense Living Room Scene...');
-  await call('new_diagram', { name: 'Living Room Family', path: 'diagrams/gemini31-scene-living-room-family.turtlepen.json', cols: 160, rows: 110 });
-  await call('add_page', { id: 'foreground', z: 1, intent: 'overlay', title: 'Foreground' });
-
-  const ops8 = [
-    { op: 'place_box', id: 'lbl8', at: 'J4.tl', span: { w: 30, h: 4 }, label: 'Highly Detailed Living Room', corner: 'indented' },
-    
-    // Window with panes
-    { op: 'place_box', id: 'win_frame', at: 'B15.tl', span: { w: 20, h: 25 }, label: '', corner: 'square', fill: '#8ECAE6' },
-    { op: 'pen', id: 'win_mullion1', role: 'artwork', color: '#FFFFFF', width: 4, program: 'pen at L15\ndown 25 line' },
-    { op: 'pen', id: 'win_mullion2', role: 'artwork', color: '#FFFFFF', width: 4, program: 'pen at B27\nright 20 line' },
-    // Curtains
-    { op: 'place_box', id: 'curtain_l', at: 'B15.tl', span: { w: 4, h: 25 }, label: '', corner: 'square', fill: '#E63946' },
-    { op: 'place_box', id: 'curtain_r', at: 'R15.tl', span: { w: 4, h: 25 }, label: '', corner: 'square', fill: '#E63946' },
-    
-    // Large intricate rug (stripes)
-    { op: 'place_box', id: 'rug_base', at: 'G60.tl', span: { w: 50, h: 10 }, label: '', corner: 'square', fill: '#F4A261' },
-    { op: 'pen', id: 'rug_stripe1', role: 'artwork', color: '#E76F51', width: 3, program: 'pen at J60\ndown 10 line' },
-    { op: 'pen', id: 'rug_stripe2', role: 'artwork', color: '#E76F51', width: 3, program: 'pen at O60\ndown 10 line' },
-    { op: 'pen', id: 'rug_stripe3', role: 'artwork', color: '#E76F51', width: 3, program: 'pen at T60\ndown 10 line' },
-    { op: 'pen', id: 'rug_stripe4', role: 'artwork', color: '#E76F51', width: 3, program: 'pen at Y60\ndown 10 line' },
-
-    // Intricate Sofa (composed of 4 overlapping shapes)
-    { op: 'place_box', id: 'sofa_back', at: 'Y40.tl', span: { w: 25, h: 10 }, label: '', corner: 'rounded', fill: '#2A9D8F' },
-    { op: 'place_box', id: 'sofa_seat', at: 'W45.tl', span: { w: 29, h: 8 }, label: '', corner: 'rounded', fill: '#264653' },
-    { op: 'place_box', id: 'sofa_arm_l', at: 'W42.tl', span: { w: 4, h: 11 }, label: '', corner: 'rounded', fill: '#1D3557' },
-    { op: 'place_box', id: 'sofa_arm_r', at: 'AW42.tl', span: { w: 4, h: 11 }, label: '', corner: 'rounded', fill: '#1D3557' },
-
-    // Standing Lamp
-    { op: 'pen', id: 'lamp_base', role: 'artwork', color: '#333333', width: 4, program: 'pen at T35\ndown 25 line' },
-    { op: 'pen', id: 'lamp_shade', role: 'artwork', paint: 'cells', color: '#FFB703', program: 'pen at T33\narc 4 0 180' },
-
-    // People (Articulated on foreground)
-    // Person 1 (Sitting on sofa)
-    { op: 'pen', id: 'p1_head', page: 'foreground', role: 'artwork', paint: 'cells', color: '#FDB833', program: 'pen at AB35\ndisc 3' },
-    { op: 'pen', id: 'p1_body', page: 'foreground', role: 'artwork', color: '#000000', width: 3, program: 'pen at AB38\ndown 6 line' },
-    { op: 'pen', id: 'p1_legs', page: 'foreground', role: 'artwork', color: '#000000', width: 3, program: 'pen at AB44\nright 4 line\ndown 5 line' }, // sitting posture
-    { op: 'pen', id: 'p1_arm', page: 'foreground', role: 'artwork', color: '#000000', width: 3, program: 'pen at AB40\nright 3 line\nup 3 line' }, // waving
-    
-    // Person 2 (Standing next to sofa)
-    { op: 'pen', id: 'p2_head', page: 'foreground', role: 'artwork', paint: 'cells', color: '#FDB833', program: 'pen at AS30\ndisc 3' },
-    { op: 'pen', id: 'p2_body', page: 'foreground', role: 'artwork', color: '#000000', width: 3, program: 'pen at AS33\ndown 10 line' },
-    { op: 'pen', id: 'p2_legL', page: 'foreground', role: 'artwork', color: '#000000', width: 3, program: 'pen at AS43\nsw 6 line\ndown 3 line' },
-    { op: 'pen', id: 'p2_legR', page: 'foreground', role: 'artwork', color: '#000000', width: 3, program: 'pen at AS43\nse 6 line\ndown 3 line' },
-    { op: 'pen', id: 'p2_arms', page: 'foreground', role: 'artwork', color: '#000000', width: 3, program: 'pen at AP36\nright 6 line' }, // arms crossed
-    
-    // Dog (Curled on rug)
-    { op: 'pen', id: 'dog_body', page: 'foreground', role: 'artwork', paint: 'cells', color: '#7F5539', program: 'pen at AD62\ndisc 4' },
-    { op: 'pen', id: 'dog_head', page: 'foreground', role: 'artwork', paint: 'cells', color: '#9C6644', program: 'pen at AC60\ndisc 3' },
-    { op: 'pen', id: 'dog_tail', page: 'foreground', role: 'artwork', color: '#7F5539', width: 2, program: 'pen at AH63\nne 3 line\nup 2 line' },
-  ];
-
-  await call('plan', { operations: ops8, commit: true });
-  await call('render', { path: 'diagrams/gemini31-scene-living-room-family.svg', force: true });
-  await call('save', { force: true });
-
-  console.log('\nAll 8 highly detailed diagrams built from scratch by Gemini 3.1 Pro (High)!');
+  console.log('\nAll requested diagrams committed clean and saved.');
 }
 
 run().catch((err) => {
-  console.error('Error generating diagrams:', err);
+  console.error(`\nBUILD FAILED\n${err.message}`);
   process.exit(1);
 });

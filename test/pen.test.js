@@ -148,3 +148,27 @@ test('a placement pushed off the origin fails with an explanation, not an index 
     /off the top-left of the grid.*no negative addressing/s,
   );
 });
+
+test('a compass word used as a movement verb names the primitives that do it', () => {
+  // Three of eight diagrams in one authoring session died on `ne 8 line`, and
+  // the author concluded from a bare "unrecognised token" that the lattice had
+  // no diagonals — while `ray` was drawing arbitrary angles the whole time.
+  for (const word of ['ne', 'sw', 'north', 'down-left']) {
+    assert.throws(
+      () => runPen(`pen at A1\n${word} 8 line`),
+      /compass direction.*ray to <address>.*dash/s,
+      `"${word}" should point at ray and dash`,
+    );
+  }
+
+  // The four movement verbs are unaffected — they are directions, not a mistake.
+  assert.doesNotThrow(() => runPen('pen at A1\nright 8 align top line'));
+
+  // And the advice is true: the ray it recommends draws the diagonal exactly.
+  const diagonal = runPen('pen at A1\nray to C3');
+  assert.deepEqual(
+    diagonal.pieces.map((p) => [p.x, p.y]),
+    [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4]],
+    'the recommended command steps one quadrant diagonally per step',
+  );
+});
