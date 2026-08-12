@@ -214,3 +214,35 @@ test('a tool error comes back as a readable result, not a dead call', async () =
     await rm(dir, { recursive: true, force: true });
   }
 });
+
+// ---------------------------------------------------------------------------
+// The handshake instructions are the only text a client is guaranteed to put
+// in the model's context. Tool schemas are frequently deferred, so a capability
+// named nowhere in here is one the model will reimplement by hand.
+// ---------------------------------------------------------------------------
+test('initialize instructions name every tool and its modes', async () => {
+  const { createSession, createTools } = await import('../src/mcp/tools.js');
+  const tools = createTools(createSession({ cwd: process.cwd() }));
+
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const replies = await rpc(
+      [{ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } }],
+      dir,
+    );
+    const text = replies.find((r) => r.id === 1).result.instructions;
+
+    for (const t of tools) {
+      assert.ok(text.includes(t.name), `instructions omit the tool "${t.name}"`);
+    }
+
+    // Regression on a real incident: place_image's first sentence never says
+    // "dither", so a first-sentence-only inventory let a session hand-roll a
+    // Bayer matrix it already had. Enum modes must survive into the summary.
+    assert.match(text, /dither/, 'the dither mode must be discoverable at handshake');
+    assert.match(text, /overlay/, 'overlay pages must be discoverable at handshake');
+    assert.match(text, /not a budget/, 'the canvas-size guidance must be present');
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
