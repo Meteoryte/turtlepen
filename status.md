@@ -28,7 +28,7 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (31 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (32 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
 - **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),
@@ -90,6 +90,22 @@ Verified by running it, not by inspection:
   the same job: a wall's second axis is height, and asking an installer to
   convert "7'-6 AFF" into inches from a ceiling is how a drawing acquires an
   error nobody can see.
+- **A room can be projected in three dimensions.** `perspective_scene` places a
+  room and its contents through a real camera — eye, target, field of view —
+  with everything authored in room inches: X rightward, Y up from the finished
+  floor, Z away from the camera, so "condenser 9ft along the wall, 7'-6\" AFF,
+  6\" proud" needs no conversion. This exists because a flat elevation is a
+  plane, and a plane cannot say that a stair recedes or that a ceiling sits
+  twenty feet behind the wall being looked at; matching a photograph means
+  projecting real coordinates rather than arranging rectangles that resemble
+  one. Verified by the only test that matters for perspective: a post at the
+  near wall projects 57 quadrants tall and the same post twenty feet back
+  projects 29. Boxes draw FAR TO NEAR because the lattice has no z-buffer, so
+  draw order is the only thing that makes an occlusion read. Edges behind the
+  camera are dropped rather than clipped — clipping invents a vertex the author
+  never placed, while a hole is an honest signal that the camera is inside the
+  geometry. Run lengths are measured in the ROOM, never off the projection: a
+  run drawn shorter because it recedes is not a shorter run.
 - **A line can be dashed.** `pattern: "dashed" | "dotted"` on a pen path, which
   the lattice previously could not express at all — a projected trendline or an
   inferred boundary had to be faked mark by mark, so the intent lived in the

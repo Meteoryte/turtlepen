@@ -21,6 +21,7 @@ import * as dither from './dither.js';
 import * as tone_ from './tone.js';
 import * as pattern_ from './pattern.js';
 import * as wireframe_ from './wireframe.js';
+import * as perspective_ from './perspective.js';
 
 import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
@@ -32,6 +33,7 @@ export { geometry, address, text, shapes, occupancy, image, png, dither };
 export { tone_ as tone };
 export { pattern_ as pattern };
 export { wireframe_ as wireframe };
+export { perspective_ as perspective };
 export {
   createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, findElement,
   elementsOf, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
@@ -434,6 +436,7 @@ export const OPERATIONS = Object.freeze({
   remove: (doc, a) => removeElement(doc, a.id, a.page ?? null),
   set_canvas: (doc, a) => setCanvas(doc, a.cols, a.rows),
   wireframe: (doc, a) => applyWireframe(doc, a),
+  perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
   accept_finding: (doc, a) => acceptFinding(doc, a.fingerprint, a.reason),
   unaccept_finding: (doc, a) => unacceptFinding(doc, a.fingerprint),
 });
@@ -681,4 +684,57 @@ export function applyWireframe(doc, {
   }
 
   return { plan, boxes: drawn };
+}
+
+
+/**
+ * Project a room and its contents onto the lattice through a real camera.
+ *
+ * A flat elevation cannot say that a stair recedes or that a ceiling is twenty
+ * feet behind the wall you are looking at. Matching a photograph means
+ * projecting real 3D coordinates, not arranging rectangles that resemble one.
+ *
+ * Boxes are drawn FAR TO NEAR. The lattice has no z-buffer, so draw order is
+ * the only thing that makes an occlusion read correctly.
+ */
+export function applyPerspectiveScene(doc, {
+  page = 'base', roomIn, eyeIn, targetIn, fovDeg = 60, items = [], runs = [],
+  widthQ = null, heightQ = null,
+} = {}) {
+  getPage(doc, page);
+  const W = widthQ ?? doc.canvas.cols * 2;
+  const H = heightQ ?? doc.canvas.rows * 2;
+  const cam = perspective_.camera({ eyeIn, targetIn, fovDeg, widthQ: W, heightQ: H });
+
+  const boxes = [{ id: 'room', ...perspective_.room(roomIn) },
+    ...items.map((i) => ({ ...i }))]
+    .map((b) => ({ id: b.id, ...perspective_.projectBox(cam, b) }))
+    .sort((a, b) => b.depth - a.depth);
+
+  const drawn = [];
+  for (const b of boxes) {
+    const prog = perspective_.segmentProgram(b.segments, { widthQ: W, heightQ: H });
+    if (!prog) continue;
+    applyPen(doc, page, prog, { id: b.id, role: 'artwork' });
+    drawn.push({ id: b.id, dropped: b.dropped, depth: Math.round(b.depth) });
+  }
+
+  const paths = [];
+  for (const r of runs) {
+    const pr = perspective_.projectPath(cam, r.waypoints);
+    const prog = perspective_.segmentProgram(pr.segments, { widthQ: W, heightQ: H });
+    if (!prog) continue;
+    applyPen(doc, page, prog, { id: r.id, role: 'artwork', color: r.color, pattern: r.pattern });
+    // Length is measured in the ROOM, never off the projection: a run drawn
+    // shorter because it recedes is not a shorter run.
+    let lengthIn = 0;
+    for (let i = 1; i < r.waypoints.length; i += 1) {
+      const a = r.waypoints[i - 1], b = r.waypoints[i];
+      lengthIn += Math.hypot(b.x - a.x, b.y - a.y, b.z - a.z);
+    }
+    paths.push({ id: r.id, lengthIn: Math.round(lengthIn * 10) / 10, dropped: pr.dropped });
+  }
+
+  doc.perspective_scene = { roomIn, eyeIn, targetIn, fovDeg, boxes: drawn, runs: paths };
+  return { boxes: drawn, runs: paths };
 }

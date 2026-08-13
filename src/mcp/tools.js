@@ -706,6 +706,73 @@ export function createTools(session) {
     },
 
     {
+      name: 'perspective_scene',
+      description:
+        'Project a room and its contents onto the lattice through a real camera, in three dimensions. Use this when a flat plan or elevation cannot carry what matters — a receding stair, a ceiling far behind the wall, equipment at different depths, or matching the geometry of a photograph. Authored in room INCHES: X rightward, Y up from the finished floor, Z away from the camera. Boxes draw far-to-near because the lattice has no z-buffer, and run lengths are measured in the room rather than off the projection.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          roomIn: {
+            type: 'object',
+            properties: { widthIn: { type: 'number' }, depthIn: { type: 'number' }, heightIn: { type: 'number' } },
+            required: ['widthIn', 'depthIn', 'heightIn'],
+            additionalProperties: false,
+          },
+          eyeIn: { type: 'object', properties: { x: { type: 'number' }, y: { type: 'number' }, z: { type: 'number' } }, required: ['x', 'y', 'z'], additionalProperties: false, description: 'camera position; a standing eye is about y:66, and z is negative when outside the room' },
+          targetIn: { type: 'object', properties: { x: { type: 'number' }, y: { type: 'number' }, z: { type: 'number' } }, required: ['x', 'y', 'z'], additionalProperties: false },
+          fovDeg: { type: 'number', description: 'vertical field of view; a phone photo in a cramped room is usually 60-75' },
+          items: {
+            type: 'array',
+            description: 'equipment as boxes in room inches',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                xIn: { type: 'number' }, yIn: { type: 'number' }, zIn: { type: 'number' },
+                widthIn: { type: 'number' }, heightIn: { type: 'number' }, depthIn: { type: 'number' },
+              },
+              required: ['id', 'xIn', 'yIn', 'zIn', 'widthIn', 'heightIn', 'depthIn'],
+              additionalProperties: false,
+            },
+          },
+          runs: {
+            type: 'array',
+            description: 'routed 3D paths — line sets, conduit. Length is measured in the room, so a run that recedes is not a shorter run.',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                waypoints: { type: 'array', items: { type: 'object', properties: { x: { type: 'number' }, y: { type: 'number' }, z: { type: 'number' } }, required: ['x', 'y', 'z'], additionalProperties: false } },
+                color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' },
+                pattern: { type: 'string', enum: ['dashed', 'dotted'] },
+              },
+              required: ['id', 'waypoints'],
+              additionalProperties: false,
+            },
+          },
+          page: { type: 'string' },
+        },
+        required: ['roomIn', 'eyeIn', 'targetIn'],
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        const doc = need(session);
+        const r = core.applyPerspectiveScene(doc, args);
+        await persist(session);
+        const lines = [
+          `projected ${r.boxes.length} box(es) through a ${args.fovDeg ?? 60} degree lens, drawn far to near`,
+          ...r.boxes.map((b) => `  ${b.id.padEnd(12)} depth ${b.depth}"${b.dropped ? `  — ${b.dropped} edge(s) behind the camera, not drawn` : ''}`),
+        ];
+        for (const run of r.runs) {
+          lines.push(`  run ${run.id}: ${core.wireframe.feetInches(run.lengthIn)} measured in the room`);
+        }
+        const dropped = r.boxes.reduce((s2, b) => s2 + b.dropped, 0);
+        if (dropped) lines.push('', 'Edges behind the camera are dropped rather than clipped, so a hole means the camera is inside the geometry — move eyeIn back.');
+        return lines.join('\n');
+      },
+    },
+
+    {
       name: 'export_prompt',
       description:
         'Emit the composition brief for an image-generation model: the area in feet and inches, each item as a normalised box within it, its real size, its position in plain words, and its description. Read-only. Serves both kinds of model — one that accepts regional conditioning reads the numbers, one that only reads prose gets the same arrangement stated in words.',
