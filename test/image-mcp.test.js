@@ -7,13 +7,27 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 import { createMcpClient } from '../examples/mcp-client.js';
-import { dataUri, solidPng } from './helpers/png-fixture.js';
+import { dataUri, encodePng, solidPng } from './helpers/png-fixture.js';
+
+function tracePng(width, height) {
+  const pixels = new Uint8Array(width * height * 3).fill(255);
+  for (let y = 6; y < height - 6; y++) {
+    for (let x = 12; x < width - 12; x++) {
+      if (![6, height - 7].includes(y) && ![12, width - 13].includes(x)) continue;
+      const index = (y * width + x) * 3;
+      pixels[index] = 0; pixels[index + 1] = 0; pixels[index + 2] = 0;
+    }
+  }
+  return encodePng(width, height, pixels, { colorType: 2 });
+}
 
 test('real MCP image workflow rejects unsafe input and recovers through publication', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'turtlepen-image-mcp-'));
   const diagrams = join(dir, 'diagrams');
   await mkdir(diagrams);
   await writeFile(join(diagrams, 'pic.png'), solidPng(80, 40, [96, 128, 160]));
+  await writeFile(join(diagrams, 'trace.png'), tracePng(80, 40));
+  await writeFile(join(diagrams, 'busy.png'), solidPng(80, 40, [128, 128, 128]));
 
   const client = createMcpClient({ cwd: dir, createdAt: '2026-08-17T00:00:00.000Z' });
   const call = async (name, args = {}) => {
@@ -34,6 +48,9 @@ test('real MCP image workflow rejects unsafe input and recovers through publicat
       { width: 80, height: 40, cellsWide: 8, cellsTall: 4 },
       'the local path resolves beside the diagram rather than the server process',
     );
+    assert.equal(measured.scale.embed.render.direction, 'exact');
+    assert.equal(measured.scale.dither.sampling.direction, 'downscale');
+    assert.deepEqual(measured.scale.dither.sampling.target, { width: 16, height: 8, unit: 'quadrants' });
 
     const hostileSvg = dataUri(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"><script>throw 1</script></svg>'))
       .replace('image/png', 'image/svg+xml');
@@ -44,20 +61,40 @@ test('real MCP image workflow rejects unsafe input and recovers through publicat
     assert.equal(rejected.isError, true);
     assert.match(rejected.text, /unrecognised image format/);
 
-    await call('place_reference', { id: 'trace', source: 'pic.png', at: 'C4.tl', span: '8x4' });
+    const reference = await call('place_reference', { id: 'trace', source: 'trace.png', at: 'C4.tl', span: '8x4' });
+    assert.match(reference, /sampling: DOWNSCALE/);
+    assert.match(reference, /readability: PASS/);
     const blocked = await client.call('render', { path: 'diagrams/blocked.svg' });
     assert.equal(blocked.isError, true, 'L020 blocks publication while tracing scaffolding remains');
     assert.match(blocked.text, /L020|reference/i);
     await call('remove_page', { id: 'trace' });
 
-    await call('place_image', {
+    const embeddedReceipt = await call('place_image', {
       id: 'embedded', source: 'pic.png', at: 'C4.tl', span: '8x4', mode: 'embed',
     });
+    assert.match(embeddedReceipt, /footprint: matches the measured/);
+    assert.match(embeddedReceipt, /render: EXACT to 80x40px/);
+    assert.match(embeddedReceipt, /sampling: EXACT to 80x40 pixels/);
     const plan = await call('plan', {
-      operations: [{ op: 'place_image', id: 'dithered', source: 'pic.png', at: 'M4.tl', span: '8x4', mode: 'dither' }],
+      operations: [{ op: 'place_image', id: 'dithered', source: 'trace.png', at: 'M4.tl', span: '8x4', mode: 'dither' }],
       commit: true,
     });
     assert.match(plan, /committed 1 operation/);
+
+    const refusedResize = await client.call('resize', { id: 'dithered', cellsW: 10, cellsH: 5 });
+    assert.equal(refusedResize.isError, true);
+    assert.match(refusedResize.text, /Remove it and call place_image again/);
+
+    const busy = await call('place_image', {
+      id: 'busy', source: 'busy.png', at: 'C12.tl', span: '8x4', mode: 'dither',
+    });
+    assert.match(busy, /readability: BUSY/);
+    const noisyValidation = JSON.parse(await call('validate', { format: 'json' }));
+    assert.ok(noisyValidation.open.some((finding) => finding.rule === 'L022'));
+    const noisyRender = await client.call('render', { path: 'diagrams/noisy.svg' });
+    assert.equal(noisyRender.isError, true);
+    assert.match(noisyRender.text, /L022|busy dither/i);
+    await call('remove', { id: 'busy' });
 
     await call('save');
     await call('open_diagram', { path: 'diagrams/image.turtlepen.json' });
@@ -67,7 +104,10 @@ test('real MCP image workflow rejects unsafe input and recovers through publicat
     const parsed = JSON.parse(saved);
     const images = parsed.elements.base.filter((element) => element.kind === 'image');
     assert.equal((saved.match(/data:image/g) ?? []).length, 1, 'only embed retains source bytes');
-    assert.equal(images.find((element) => element.id === 'dithered').source, null);
+    const dithered = images.find((element) => element.id === 'dithered');
+    assert.equal(dithered.source, null);
+    assert.equal(dithered.scale.sampling.direction, 'downscale');
+    assert.equal(dithered.ditherStats.readability, 'pass');
 
     const svg = await readFile(join(diagrams, 'image.svg'), 'utf8');
     assert.equal((svg.match(/<image /g) ?? []).length, 1);

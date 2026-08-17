@@ -11,6 +11,7 @@ import { tmpdir } from 'node:os';
 
 import * as core from '../src/core/index.js';
 import { VIEWER_STATIC_FILES, VIEWER_TOOLS } from '../src/viewer/capabilities.js';
+import { dataUri, solidPng } from './helpers/png-fixture.js';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -46,6 +47,9 @@ test('the live viewer serves its UI, brand, and cheap unchanged state responses'
   assert.match(app.body, /data-unaccept/);
   assert.match(app.body, /Stale acceptances/);
   assert.match(app.body, /addEventListener\('keydown'/);
+  assert.match(app.body, /Readability/);
+  assert.match(app.body, /element\.mode === 'dither'/, 'the inspector must not offer stale-grid resize for dither');
+  assert.match(app.body, /selection-hit/, 'sparse images need a full-footprint selection target');
   assert.doesNotMatch(app.body, /setInterval|700/, 'the browser must not poll for document state');
 
   const brand = await response(port, '/brand-logo.svg');
@@ -106,6 +110,33 @@ test('the live viewer reports a missing document without crashing', async (t) =>
   const state = await waitForResponse(port, '/api/state');
   assert.equal(state.status, 200);
   assert.equal(JSON.parse(state.body).ok, false);
+});
+
+test('the live viewer exposes image scale and dither readability state', async (t) => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-viewer-image-'));
+  const path = resolve(dir, 'image.turtlepen.json');
+  const doc = core.createDocument({ name: 'image state' });
+  core.placeImage(doc, 'base', {
+    id: 'trace', at: 'C4.tl', span: '8x4', mode: 'dither',
+    source: dataUri(solidPng(80, 40, [0, 0, 0])),
+  });
+  await core.checkpointDocument(doc, path);
+
+  const port = await freePort();
+  const child = spawn(process.execPath, [
+    'src/viewer/server.js', '--port', String(port), '--doc', path,
+  ], { cwd: project, stdio: ['ignore', 'pipe', 'pipe'] });
+  t.after(() => child.kill());
+  t.after(() => rm(dir, { recursive: true, force: true }));
+
+  const response_ = await waitForResponse(port, '/api/state');
+  const state = JSON.parse(response_.body);
+  const image = state.elements.find((element) => element.id === 'trace');
+  assert.equal(image.mode, 'dither');
+  assert.equal(image.fit, 'contain');
+  assert.equal(image.scale.sampling.direction, 'downscale');
+  assert.deepEqual(image.scale.sampling.target, { width: 16, height: 8, unit: 'quadrants' });
+  assert.equal(image.ditherStats.readability, 'pass');
 });
 
 test('the WebSocket editor persists mutations, broadcasts exact state, restores history, and reloads outside edits', async (t) => {

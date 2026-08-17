@@ -855,22 +855,30 @@ export function createTools(session) {
 
     {
       name: 'measure_image',
-      description: 'Read the real dimensions from an image header and report the whole-cell footprint it needs, plus any aspect drift that rounding forces. Call this BEFORE place_image, for the same reason you measure a label before sizing a box.',
+      description: 'Read real image dimensions and report the measured whole-cell footprint, aspect rounding, rendered-pixel scale, and dither quadrant-sampling scale. Call this BEFORE place_image. Reports say exactly whether each stage upscales, downscales, or stays exact; upscaling never creates detail.',
       inputSchema: {
         type: 'object',
         properties: {
           source: { type: 'string', description: 'a data: URI, or a path relative to the document' },
           maxWidthCells: { type: 'integer' },
           maxHeightCells: { type: 'integer' },
+          fit: { type: 'string', enum: ['contain', 'cover'], description: 'scale policy to report; default contain' },
         },
         required: ['source'],
         additionalProperties: false,
       },
-      handler: async ({ source, maxWidthCells = null, maxHeightCells = null }) => {
+      handler: async ({ source, maxWidthCells = null, maxHeightCells = null, fit = 'contain' }) => {
         const resolved = await readImage(session, source);
         const probed = resolved.info;
         const m = core.image.measure(probed, { maxWidthCells, maxHeightCells });
-        return JSON.stringify({ ...probed, ...m }, null, 2);
+        return JSON.stringify({
+          ...probed,
+          ...m,
+          scale: {
+            embed: core.image.scaleReport(probed, { cellsWide: m.cellsWide, cellsTall: m.cellsTall, mode: 'embed', fit }),
+            dither: core.image.scaleReport(probed, { cellsWide: m.cellsWide, cellsTall: m.cellsTall, mode: 'dither', fit }),
+          },
+        }, null, 2);
       },
     },
     {
@@ -1048,7 +1056,7 @@ export function createTools(session) {
 
     {
       name: 'place_image',
-      description: 'Place an image, claiming an exact quadrant footprint like any other element. It participates in every collision rule — an image over a stroke is an ordinary L001, not a special case. The source is embedded so a saved document stays self-contained.',
+      description: 'Place an image at an exact footprint. Embed preserves verified source bytes and may be resized; dither area-downsamples or nearest-upscales a prepared PNG into deterministic 1-bit quadrants, reports readability, and must be removed/re-placed to change sampling size. Use embed for photographic evidence and dither only for sparse high-contrast line art. Both modes preserve aspect through contain or cover.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -1069,22 +1077,27 @@ export function createTools(session) {
         const resolved = await readImage(session, source);
         const probed = resolved.info;
         const cells = core.normalizeSpan(span, `span for "${id}"`);
-        const m = core.image.measure(probed, { maxWidthCells: cells.w });
+        const recommended = core.image.measure(probed, { maxWidthCells: cells.w });
         const el = core.placeImage(doc, page, { id, at, span, source: resolved.dataUri, mode, fit, opacity });
         await persist(session);
         return `placed image "${id}" on page "${page}" at ${core.address.quadToAddress(el.rect.x, el.rect.y)}, ${cells.w}x${cells.h} cells
 `
           + `source: ${probed.format} ${probed.width}x${probed.height}
 `
-          + (m.aspectDriftPct > 0
-            ? `aspect: drawn at ${m.drawnAspect} against a source of ${m.sourceAspect} — ${m.aspectDriftPct}% drift from rounding to whole cells`
-            : 'aspect: exact — the source ratio survives whole-cell rounding');
+          + (recommended.cellsTall === cells.h
+            ? `footprint: matches the measured ${recommended.cellsWide}x${recommended.cellsTall}-cell recommendation at this width (${recommended.aspectDriftPct}% whole-cell aspect drift)`
+            : `footprint: requested ${cells.w}x${cells.h} cells; measured recommendation at this width is ${recommended.cellsWide}x${recommended.cellsTall}. ${fit} preserves source aspect and will ${fit === 'cover' ? 'crop overflow' : 'pad unused space'}`)
+          + `\nrender: ${el.scale.render.direction.toUpperCase()} to ${el.scale.render.contentPx.width}x${el.scale.render.contentPx.height}px inside a ${el.scale.renderedPx.width}x${el.scale.renderedPx.height}px ${fit} viewport`
+          + `\nsampling: ${el.scale.sampling.direction.toUpperCase()} to ${el.scale.sampling.content.width}x${el.scale.sampling.content.height} ${el.scale.sampling.content.unit}; ${el.scale.sampling.procedure}`
+          + (mode === 'dither'
+            ? `\nreadability: ${el.ditherStats.readability.toUpperCase()} — ${(el.ditherStats.transitionRatio * 100).toFixed(1)}% neighbour transitions, ${(el.ditherStats.coverageRatio * 100).toFixed(1)}% ink, ${el.ditherStats.runCount} runs`
+            : '');
       },
     },
     {
       name: 'place_reference',
       description:
-        'Lay a reference image UNDER the drawing to trace over. Dithers it onto the lattice, puts it on a page below the base at low opacity, and flags it — L020 then reminds you it is still there, because scaffolding that ships is worse than no scaffolding. Draw on top, then remove_page it.',
+        'Lay prepared high-contrast line art UNDER the drawing to trace over. It is aspect-preserved, sampled onto the lattice, checked for busy dither, put below the base at low opacity, and flagged by L020 until remove_page removes it. Do not use raw photographic evidence as trace art.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -1108,9 +1121,14 @@ export function createTools(session) {
         await persist(session);
         const cells = core.normalizeSpan(span, 'reference span');
         const m = core.image.measure(probed, { maxWidthCells: cells.w });
+        const image = core.elementsOf(doc, page.id).find((element) => element.kind === 'image');
         return `laid reference "${page.id}" at z:${page.z}, opacity ${page.opacity}, ${cells.w}x${cells.h} cells
 `
           + `source: ${probed.format} ${probed.width}x${probed.height}${m.aspectDriftPct > 0 ? `, ${m.aspectDriftPct}% aspect drift from whole-cell rounding` : ', aspect exact'}
+`
+          + `sampling: ${image.scale.sampling.direction.toUpperCase()} to ${image.scale.sampling.content.width}x${image.scale.sampling.content.height} ${image.scale.sampling.content.unit} — ${image.scale.sampling.procedure}
+`
+          + `readability: ${image.ditherStats.readability.toUpperCase()} — ${(image.ditherStats.transitionRatio * 100).toFixed(1)}% neighbour transitions
 `
           + `draw on top, then remove_page { id: "${page.id}" } — L020 will remind you until you do`;
       },
@@ -1511,12 +1529,21 @@ TONE — density, and why it is not opacity
   drawn as an invisible element that still occupies space.
 
 DRAWING FROM A SOURCE — reach for this BEFORE deriving geometry by hand
+  measure_image source [maxWidthCells|maxHeightCells] [fit]
+    Reports the measured whole-cell footprint plus separate embedded-pixel and
+    dither-quadrant scales. Read UPSCALE, DOWNSCALE, or EXACT before placement.
+    Upscaling repeats/interpolates existing information; it creates no detail.
   place_image  id at span source [mode] [fit] [opacity] [page]
     mode "dither"  quantises the image ONTO the lattice through a 4x4 Bayer
                    matrix. Real quadrants, merged into runs, byte-identical
-                   every run. PNG decodes on node:zlib alone.
+                   every run. Downscale area-averages; upscale repeats nearest
+                   samples. PNG decodes on node:zlib alone. L022 blocks a busy
+                   checker result. Remove and re-place to change its span.
     mode "embed"   (default) keeps a picture as a picture; it still claims an
-                   exact footprint and collides like any other element.
+                   exact footprint and collides like any other element. Use it
+                   for photos and evidence. Resize recomputes its scale report.
+    fit  "contain" (default) preserves every edge with possible padding;
+         "cover" fills the footprint by cropping overflow. Both preserve aspect.
   place_reference source span [at] [opacity] [id]
     Lays a dithered copy UNDER the drawing to trace over, flagged L020 until
     remove_page takes it out, so scaffolding cannot ship.

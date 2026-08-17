@@ -233,6 +233,12 @@ export function resizeBox(doc, id, { cellsW = null, cellsH = null, anchor = 'tl'
   if (!found) throw new Error(`no element "${id}" to resize`);
   const el = found.element;
   if (el.kind === 'path') throw new Error(`"${id}" is a path — change it with extend_path or replace_path`);
+  if (el.kind === 'image' && el.mode === 'dither') {
+    throw new Error(
+      `"${id}" is a dithered image whose runs are bound to its current quadrant grid. ` +
+      'Remove it and call place_image again at the new span so upscaling or downscaling is recomputed from the source.',
+    );
+  }
 
   const w = cellsW == null ? el.rect.w : cellsW * 2;
   const h = cellsH == null ? el.rect.h : cellsH * 2;
@@ -244,6 +250,10 @@ export function resizeBox(doc, id, { cellsW = null, cellsH = null, anchor = 'tl'
     `resized "${id}"`,
   );
   el.rect = r;
+  if (el.kind === 'image') {
+    const source = image.assertEmbeddedSource(el.source);
+    el.scale = image.scaleReport(source, { cellsWide: r.w / 2, cellsTall: r.h / 2, mode: 'embed', fit: el.fit });
+  }
   reconcileElementChange(doc, id);
   return { element: el, page: found.page, fit: el.label ? text.fitReport(el.label, r, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
 }
@@ -343,7 +353,8 @@ export function placeBox(doc, pageId, { id, at, span, label = '', corner = 'squa
  *
  * The span is the author's decision, as it is for a box — but `measure_image`
  * exists so that decision is made from the picture's real dimensions instead of
- * from a guess, and the drift that whole cells impose is on the record.
+ * from a guess. Whole-cell viewport drift is reported, while contain or cover
+ * preserves the source aspect through padding or cropping.
  */
 export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', fit = 'contain', opacity = null }) {
   if (!source) throw new SyntaxError(`image "${id}" needs a source — a base64 data URI prepared by the tool layer`);
@@ -359,14 +370,19 @@ export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', 
   // becomes part of the document, so re-rendering an old file cannot drift from
   // what its author saw — the same reason measurement precedes placement.
   let runs = null;
+  let ditherStats = null;
   if (mode === 'dither') {
     if (embedded.format !== 'png') throw new SyntaxError(`image "${id}" cannot be dithered from ${embedded.format.toUpperCase()} — dithering decodes PNG only; use mode "embed" or convert it to PNG`);
-    const grid = dither.ditherToQuadrants(png.decode(embedded.bytes), r.w, r.h);
+    const grid = dither.ditherToQuadrants(png.decode(embedded.bytes), r.w, r.h, { fit });
     runs = dither.runsOf(grid);
+    ditherStats = dither.analyse(grid);
   }
+  const scale = image.scaleReport(embedded, { cellsWide: cells.w, cellsTall: cells.h, mode, fit });
   // Dither runs are the durable render source. Keeping the original bitmap as
   // well would duplicate megabytes in the document and every history snapshot.
-  return addImage(doc, pageId, { id, rect: r, source: mode === 'dither' ? null : source, mode, fit, opacity, runs });
+  return addImage(doc, pageId, {
+    id, rect: r, source: mode === 'dither' ? null : source, mode, fit, opacity, runs, scale, ditherStats,
+  });
 }
 
 /**

@@ -24,6 +24,7 @@ import { fitReport, layoutTextRuns, MIN_LEGIBLE_FONT_PX } from './text.js';
 // Cycle with composition.js is deliberate and safe: every use on both sides is inside a
 // function body, so neither module reads the other's bindings during initialisation.
 import { compositionFindings } from './composition.js';
+import { analyseRuns, MAX_READABLE_TRANSITION_RATIO } from './dither.js';
 
 export const SEVERITIES = Object.freeze(['S0', 'S1', 'S2', 'S3']);
 export const SEVERITY_LABEL = Object.freeze({ S0: 'CRITICAL', S1: 'ERROR', S2: 'WARN', S3: 'INFO' });
@@ -51,6 +52,7 @@ export const RULES = Object.freeze({
   L019: { severity: 'S2', title: 'invisible but claiming', blurb: 'an element faded past legibility still occupies its quadrants' },
   L020: { severity: 'S2', title: 'reference still present', blurb: 'a tracing underlay is still in the document' },
   L021: { severity: 'S1', title: 'overlay obscures text', blurb: 'opaque overlay content crosses a lower text run' },
+  L022: { severity: 'S2', title: 'busy dither', blurb: 'high-frequency black/white transitions obscure image identity' },
   // Composition rules. S3 by design: a taste heuristic must never outrank a real defect.
   C001: { severity: 'S3', title: 'sparse canvas', blurb: 'the page has so little ink that nothing was really composed' },
 });
@@ -201,6 +203,29 @@ function withinPage(doc, p) {
   const boxes = els.filter((e) => e.kind === 'box');
   const paths = els.filter((e) => e.kind === 'path');
   const solids = els.filter((e) => e.kind !== 'path');
+
+  // L022 — a deterministic result can still be unreadable. Dense alternation
+  // is the checkerboard failure mode: detail was reduced, but not simplified.
+  for (const el of els.filter((entry) => entry.kind === 'image' && entry.mode === 'dither')) {
+    const stats = el.ditherStats ?? analyseRuns(el.runs, el.rect.w, el.rect.h);
+    if (stats.transitionRatio <= MAX_READABLE_TRANSITION_RATIO) continue;
+    out.push(
+      finding('L022', p.id, {
+        message:
+          `dithered image "${el.id}" changes ink state across ${(stats.transitionRatio * 100).toFixed(1)}% of neighbouring samples ` +
+          `(limit ${(MAX_READABLE_TRANSITION_RATIO * 100).toFixed(0)}%). The checker pattern is likely to obscure the subject. ` +
+          'Use embed mode for photographic evidence, or prepare sparse high-contrast line art and place it again.',
+        actors: [el.id],
+        cells: [quadToAddress(el.rect.x, el.rect.y)],
+        metrics: stats,
+        fixes: [{
+          kind: 'remove',
+          description: `remove "${el.id}", simplify its source or choose embed mode, then place_image again`,
+          params: { id: el.id },
+        }],
+      }),
+    );
+  }
 
   // L001 — solid overlap
   for (let i = 0; i < solids.length; i++) {

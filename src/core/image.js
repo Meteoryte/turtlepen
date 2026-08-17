@@ -8,10 +8,10 @@
  * the file's own header BEFORE placement, and the footprint is computed from
  * them.
  *
- * Whole cells mean an image almost never lands on its exact source aspect. That
- * rounding is real, so it is reported as `aspectDriftPct` rather than absorbed —
- * the engine measures and reports; the author decides whether 1.4% of squash
- * matters for this picture.
+ * Whole cells mean the measured viewport almost never lands on the exact source
+ * aspect. That rounding is reported as `aspectDriftPct`; contain or cover then
+ * preserves the source aspect through visible padding or cropping rather than
+ * silently squashing the picture.
  *
  * No decoding happens here beyond the header. `embed` needs none, and the
  * project's zero-dependency stance means the pixel-level `dither` mode is built
@@ -29,6 +29,91 @@ export const MIME_BY_FORMAT = Object.freeze({
 export const MAX_IMAGE_BYTES = 16 * 1024 * 1024;
 export const MAX_IMAGE_DIMENSION = 16_384;
 export const MAX_IMAGE_PIXELS = 64 * 1024 * 1024;
+
+const rounded = (value) => Number(value.toFixed(4));
+
+function axisScale(source, target) {
+  const ratio = target / source;
+  return {
+    source,
+    target,
+    ratio: rounded(ratio),
+    percent: rounded(ratio * 100),
+    direction: ratio < 1 ? 'downscale' : ratio > 1 ? 'upscale' : 'exact',
+  };
+}
+
+function combinedDirection(x, y) {
+  return x.direction === y.direction ? x.direction : 'mixed';
+}
+
+function samplingProcedure(mode, x, y) {
+  if (mode !== 'dither') {
+    return 'preserve source aspect in the SVG footprint and let the renderer resample the embedded pixels';
+  }
+  const directions = new Set([x.direction, y.direction]);
+  const steps = [];
+  if (directions.has('downscale')) steps.push('area-average every contributing source pixel on downscaled axes');
+  if (directions.has('upscale')) steps.push('repeat the nearest source sample on upscaled axes');
+  if (directions.has('exact')) steps.push('map source pixels one-to-one on exact axes');
+  return `${steps.join('; ')}, then apply the ordered threshold`;
+}
+
+/** Exact source-to-footprint scaling contract for embed and dither modes. */
+export function scaleReport({ width, height }, { cellsWide, cellsTall, mode = 'embed', fit = 'contain' }) {
+  assertMode(mode);
+  assertDimensions('source', width, height);
+  if (!['contain', 'cover'].includes(fit)) throw new SyntaxError(`image fit must be contain or cover — got ${JSON.stringify(fit)}`);
+  if (![cellsWide, cellsTall].every((value) => Number.isInteger(value) && value > 0)) {
+    throw new RangeError(`image scale report needs positive whole-cell dimensions — got ${cellsWide}x${cellsTall}`);
+  }
+  const viewport = { width: cellsWide * PX_PER_CELL, height: cellsTall * PX_PER_CELL };
+  const semanticViewport = mode === 'dither'
+    ? { width: cellsWide * 2, height: cellsTall * 2, unit: 'quadrants' }
+    : { ...viewport, unit: 'pixels' };
+  const uniformRatio = fit === 'cover'
+    ? Math.max(semanticViewport.width / width, semanticViewport.height / height)
+    : Math.min(semanticViewport.width / width, semanticViewport.height / height);
+  const semanticContent = {
+    width: rounded(width * uniformRatio),
+    height: rounded(height * uniformRatio),
+    unit: semanticViewport.unit,
+  };
+  const sampleX = axisScale(width, semanticContent.width);
+  const sampleY = axisScale(height, semanticContent.height);
+  const sampleDirection = combinedDirection(sampleX, sampleY);
+  const renderRatio = mode === 'dither' ? uniformRatio * (PX_PER_CELL / 2) : uniformRatio;
+  const renderContent = { width: rounded(width * renderRatio), height: rounded(height * renderRatio) };
+  const renderX = axisScale(width, renderContent.width);
+  const renderY = axisScale(height, renderContent.height);
+
+  return {
+    sourcePx: { width, height },
+    footprintCells: { width: cellsWide, height: cellsTall },
+    renderedPx: viewport,
+    fit,
+    render: {
+      direction: combinedDirection(renderX, renderY),
+      contentPx: renderContent,
+      x: renderX,
+      y: renderY,
+      cropExpected: fit === 'cover' && (renderContent.width > viewport.width || renderContent.height > viewport.height),
+      paddingExpected: fit === 'contain' && (renderContent.width < viewport.width || renderContent.height < viewport.height),
+    },
+    sampling: {
+      direction: sampleDirection,
+      target: semanticViewport,
+      content: semanticContent,
+      x: sampleX,
+      y: sampleY,
+      sourcePixelsPerSample: {
+        x: rounded(1 / sampleX.ratio),
+        y: rounded(1 / sampleY.ratio),
+      },
+      procedure: samplingProcedure(mode, sampleX, sampleY),
+    },
+  };
+}
 
 function assertDimensions(format, width, height) {
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1) {

@@ -17,7 +17,8 @@ import { claimedQuads, visualQuads, assertCornerStyle, parsePortSpec, portPoint 
 import { DEFAULT_FONT, resolveFontSize } from './text.js';
 import { normalizeTone, normalizeFeather, normalizeTexture } from './tone.js';
 import { normalizePattern } from './pattern.js';
-import { assertEmbeddedSource, assertMode as assertImageMode } from './image.js';
+import { assertEmbeddedSource, assertMode as assertImageMode, scaleReport } from './image.js';
+import { analyseRuns } from './dither.js';
 
 // `schematic` stacks exactly like `exclusive`; it exists to carry authorial meaning —
 // "this page is deliberately spare" — which the composition rules read and skip.
@@ -269,7 +270,7 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
   return el;
 }
 
-export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit = 'contain', opacity = null, note = null, runs = null }) {
+export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit = 'contain', opacity = null, note = null, runs = null, scale = null, ditherStats = null }) {
   getPage(doc, pageId);
   assertElementId(id);
   assertFreeId(doc, id);
@@ -283,6 +284,8 @@ export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit
     opacity: assertOpacity(opacity, 'element opacity'),
     note,
     ...(runs ? { runs } : {}),
+    ...(scale ? { scale } : {}),
+    ...(ditherStats ? { ditherStats } : {}),
   };
   doc.elements[pageId].push(el);
   return el;
@@ -751,8 +754,19 @@ export function deserialize(json) {
       assertImageFit(element.fit ?? 'contain');
       if (element.mode === 'dither') {
         if (!Array.isArray(element.runs)) throw new TypeError(`dithered image "${element.id}" must carry deterministic runs`);
+        element.ditherStats = analyseRuns(element.runs, element.rect.w, element.rect.h);
+        if (element.scale?.sourcePx) {
+          element.scale = scaleReport(element.scale.sourcePx, {
+            cellsWide: element.rect.w / 2, cellsTall: element.rect.h / 2, mode: 'dither', fit: element.fit,
+          });
+        } else {
+          delete element.scale;
+        }
       } else {
-        assertEmbeddedSource(element.source);
+        const source = assertEmbeddedSource(element.source);
+        element.scale = scaleReport(source, {
+          cellsWide: element.rect.w / 2, cellsTall: element.rect.h / 2, mode: 'embed', fit: element.fit,
+        });
       }
     }
   }

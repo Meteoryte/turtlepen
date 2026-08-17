@@ -264,6 +264,7 @@ Within a single page, overlap is always an error regardless of intent.
 | `L015` | S2 warn | a path re-draws a quadrant it already covered |
 | `L016` | S2 warn | a path named a destination but stops short of touching it |
 | `L020` | S2 warn | a temporary tracing-reference page is still present |
+| `L022` | S2 warn | a dithered image has enough neighboring ink changes to obscure its identity |
 | `L010` | S3 info | expected overlap from an overlay page |
 | `L013` | S3 info | a path crosses a claimed but un-inked corner cut |
 | `C001` | S3 info | sparse canvas — too little ink to have been composed; compose it, or declare the page `schematic` |
@@ -390,10 +391,13 @@ P01-P20 references map to a reviewable
 [LLM photo-shot list](docs/condenser-replacement-photo-shot-list.md) rather than
 uncontrolled web imagery.
 
-The [real-image MCP exercise](diagrams/condenser-image-workflow.svg) uses a
-generated 1536 x 1024 condenser photo for embed, dither, reference-gate,
-save/reopen, and browser verification. Its exact prompt, hash, and usage boundary
-are recorded in [the image workflow test](docs/image-workflow-test.md).
+The [real-image MCP exercise](diagrams/condenser-image-workflow.svg) embeds a
+generated 1536 x 1024 condenser photo as evidence and uses a separate simplified
+line-art derivative for dither and the temporary reference gate. It reports the
+exact up/downscale procedure and blocks checkerboard-heavy output through
+`L022`. Prompts, hashes, metrics, and usage boundaries are recorded in
+[the image workflow test](docs/image-workflow-test.md); the operational contract
+is [the image scaling procedure](docs/image-scaling-procedure.md).
 
 | Group | Tools |
 |---|---|

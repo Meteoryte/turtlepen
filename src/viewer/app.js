@@ -125,6 +125,22 @@ function renderStage(svg) {
   const stage = byId('stage');
   stage.innerHTML = svg;
   for (const node of stage.querySelectorAll('[data-element]')) {
+    const element = current.elements.find((entry) => entry.id === node.dataset.element);
+    if (element?.kind === 'image' && element.bounds) {
+      // Sparse dither has no painted pixels in most of its footprint. Give the
+      // image an invisible, viewer-only hit surface so its whitespace remains
+      // selectable without changing the exported SVG or document geometry.
+      const hit = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      const q = current.lattice.pxPerQuadrant;
+      hit.classList.add('selection-hit');
+      hit.setAttribute('x', element.bounds.x * q);
+      hit.setAttribute('y', element.bounds.y * q);
+      hit.setAttribute('width', element.bounds.w * q);
+      hit.setAttribute('height', element.bounds.h * q);
+      hit.setAttribute('fill', 'transparent');
+      hit.setAttribute('pointer-events', 'all');
+      node.prepend(hit);
+    }
     node.tabIndex = 0;
     node.setAttribute('role', 'button');
     node.setAttribute('aria-label', `Select ${node.dataset.element}`);
@@ -190,11 +206,14 @@ function inspectorHtml(element) {
   const incoming = current.constraints.find((entry) => entry.dependent === element.id);
   const outgoing = current.constraints.filter((entry) => entry.target === element.id);
   const movable = `<div class="control-block"><h3>Position</h3><div class="nudge"><div class="icon-grid" aria-label="Move element"><button type="button" class="up" data-move-y="-1" title="Move up">↑</button><button type="button" class="left" data-move-x="-1" title="Move left">←</button><button type="button" class="down" data-move-y="1" title="Move down">↓</button><button type="button" class="right" data-move-x="1" title="Move right">→</button></div><label class="field">Step (cells)<select id="move-step">${options(['1', '5', '10'], '1')}</select></label></div></div>`;
-  const sized = element.kind !== 'path' ? `<form class="control-block" data-form="resize"><h3>Size</h3><div class="field-grid"><label class="field">Width (cells)<input name="cellsW" type="number" min="1" step="1" required value="${element.cells.w}"></label><label class="field">Height (cells)<input name="cellsH" type="number" min="1" step="1" required value="${element.cells.h}"></label><label class="field wide">Pinned corner<select name="anchor">${options(['tl', 't', 'tr', 'l', 'c', 'r', 'bl', 'b', 'br'], 'tl')}</select></label></div><div class="command-row"><button type="submit">Apply size</button></div></form>` : '';
+  const sized = element.kind !== 'path' && !(element.kind === 'image' && element.mode === 'dither') ? `<form class="control-block" data-form="resize"><h3>Size</h3><div class="field-grid"><label class="field">Width (cells)<input name="cellsW" type="number" min="1" step="1" required value="${element.cells.w}"></label><label class="field">Height (cells)<input name="cellsH" type="number" min="1" step="1" required value="${element.cells.h}"></label><label class="field wide">Pinned corner<select name="anchor">${options(['tl', 't', 'tr', 'l', 'c', 'r', 'bl', 'b', 'br'], 'tl')}</select></label></div><div class="command-row"><button type="submit">Apply size</button></div></form>` : '';
+  const imageFacts = element.kind === 'image' && element.scale
+    ? `<dt>Mode</dt><dd>${escapeHtml(element.mode)}</dd><dt>Render</dt><dd>${escapeHtml(element.scale.render.direction)} ${element.scale.render.contentPx.width} x ${element.scale.render.contentPx.height}px | ${escapeHtml(element.scale.fit)}</dd><dt>Sampling</dt><dd>${escapeHtml(element.scale.sampling.direction)} | ${escapeHtml(element.scale.sampling.content.width)} x ${escapeHtml(element.scale.sampling.content.height)} ${escapeHtml(element.scale.sampling.content.unit)}</dd>${element.ditherStats ? `<dt>Readability</dt><dd>${escapeHtml(element.ditherStats.readability)} | ${(element.ditherStats.transitionRatio * 100).toFixed(1)}% transitions</dd>` : ''}`
+    : '';
   const restyle = ['box', 'text'].includes(element.kind) ? `<form class="control-block" data-form="restyle"><h3>Content and style</h3><div class="field-grid"><label class="field wide">${element.kind === 'text' ? 'Text' : 'Label'}<input name="label" value="${escapeHtml(element.label)}"></label><label class="field">Alignment<select name="align">${options(['left', 'center', 'right'], element.align)}</select></label><label class="field">Font size (px)<input name="fontSize" type="number" min="1" step="1" value="${element.fontSize}"></label>${element.kind === 'box' ? `<label class="field">Corners<select name="corner">${options(['square', 'rounded', 'indented', 'chamfered'], element.corner)}</select></label><label class="field">Fill (hex)<input name="fill" pattern="#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?" value="${escapeHtml(element.fill ?? '')}" placeholder="#e9e7e1"></label>` : ''}</div><div class="command-row"><button type="submit">Apply changes</button></div></form>` : '';
 
   const pathEditor = element.kind === 'path' ? `<form class="control-block" data-form="extend-path"><h3>Extend path</h3><label class="field">Pen program<textarea name="program" required></textarea></label><div class="command-row"><button type="submit">Extend</button></div></form><form class="control-block" data-form="replace-path"><h3>Replace path</h3><label class="field">Pen program<textarea name="program" required></textarea></label><div class="command-row"><button type="submit">Replace</button></div></form>` : '';
-  return `<div class="selection-title"><strong>${escapeHtml(element.id)}</strong><span>${escapeHtml(element.kind)}</span></div><dl class="facts"><dt>Page</dt><dd>${escapeHtml(element.page)}</dd><dt>Address</dt><dd>${escapeHtml(element.at)}</dd><dt>Size</dt><dd>${element.cells ? `${element.cells.w} x ${element.cells.h} cells` : 'n/a'}</dd></dl>${movable}${sized}${restyle}${pathEditor}${groupHtml(element, group)}${constraintHtml(element, incoming, outgoing)}<div class="control-block"><button type="button" class="danger" data-delete>Delete element</button></div>`;
+  return `<div class="selection-title"><strong>${escapeHtml(element.id)}</strong><span>${escapeHtml(element.kind)}</span></div><dl class="facts"><dt>Page</dt><dd>${escapeHtml(element.page)}</dd><dt>Address</dt><dd>${escapeHtml(element.at)}</dd><dt>Size</dt><dd>${element.cells ? `${element.cells.w} x ${element.cells.h} cells` : 'n/a'}</dd>${imageFacts}</dl>${movable}${sized}${restyle}${pathEditor}${groupHtml(element, group)}${constraintHtml(element, incoming, outgoing)}<div class="control-block"><button type="button" class="danger" data-delete>Delete element</button></div>`;
 }
 
 function groupHtml(element, group) {

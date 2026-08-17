@@ -83,6 +83,48 @@ test('image measurement accepts exactly one positive whole-cell limit', () => {
   );
 });
 
+test('scale reports distinguish rendered pixels from dither sampling resolution', () => {
+  const source = { width: 1536, height: 1024 };
+  const embed = core.image.scaleReport(source, { cellsWide: 48, cellsTall: 32, mode: 'embed' });
+  assert.deepEqual(embed.renderedPx, { width: 480, height: 320 });
+  assert.deepEqual(embed.render.contentPx, { width: 480, height: 320 });
+  assert.equal(embed.render.direction, 'downscale');
+  assert.equal(embed.render.x.percent, 31.25);
+  assert.deepEqual(embed.sampling.target, { width: 480, height: 320, unit: 'pixels' });
+
+  const dither = core.image.scaleReport(source, { cellsWide: 48, cellsTall: 32, mode: 'dither' });
+  assert.deepEqual(dither.sampling.target, { width: 96, height: 64, unit: 'quadrants' });
+  assert.equal(dither.sampling.x.percent, 6.25);
+  assert.deepEqual(dither.sampling.sourcePixelsPerSample, { x: 16, y: 16 });
+  assert.match(dither.sampling.procedure, /area-average.*ordered threshold/);
+});
+
+test('scale reports make contain padding, cover cropping, and upscaling explicit', () => {
+  const contain = core.image.scaleReport(
+    { width: 200, height: 100 }, { cellsWide: 10, cellsTall: 10, mode: 'embed', fit: 'contain' },
+  );
+  assert.deepEqual(contain.render.contentPx, { width: 100, height: 50 });
+  assert.equal(contain.render.paddingExpected, true);
+  assert.equal(contain.render.cropExpected, false);
+
+  const cover = core.image.scaleReport(
+    { width: 200, height: 100 }, { cellsWide: 10, cellsTall: 10, mode: 'embed', fit: 'cover' },
+  );
+  assert.deepEqual(cover.render.contentPx, { width: 200, height: 100 });
+  assert.equal(cover.render.cropExpected, true);
+  assert.equal(cover.render.paddingExpected, false);
+
+  const upscale = core.image.scaleReport(
+    { width: 2, height: 1 }, { cellsWide: 2, cellsTall: 1, mode: 'dither' },
+  );
+  assert.equal(upscale.sampling.direction, 'upscale');
+  assert.match(upscale.sampling.procedure, /repeat the nearest source sample/);
+  assert.throws(
+    () => core.image.scaleReport({ width: 0, height: 1 }, { cellsWide: 1, cellsTall: 1 }),
+    /dimensions.*positive/i,
+  );
+});
+
 test('a placed image claims its quadrants like anything else', () => {
   const d = core.createDocument({ name: 'pics' });
   const el = core.placeImage(d, 'base', {
@@ -91,6 +133,7 @@ test('a placed image claims its quadrants like anything else', () => {
   });
   assert.equal(el.kind, 'image');
   assert.equal(core.shapes.claimedQuads(el.rect).size, 10 * 2 * 5 * 2);
+  assert.equal(el.scale.render.direction, 'downscale');
 });
 
 test('an image overlapping a box is an ordinary collision, not a special case', () => {
@@ -153,8 +196,48 @@ test('dither stores deterministic runs without duplicating the source bitmap', (
   });
   assert.equal(image.source, null);
   assert.ok(Array.isArray(image.runs));
+  assert.equal(image.scale.sampling.target.unit, 'quadrants');
+  assert.equal(image.ditherStats.readability, 'pass');
   assert.doesNotMatch(core.serialize(doc), /data:image/, 'the decoded source is not repeated in the document');
   assert.doesNotThrow(() => core.deserialize(core.serialize(doc)));
+});
+
+test('embed resize recomputes scale while dither resize refuses without mutation', () => {
+  const source = `data:image/png;base64,${pngBytes(20, 10).toString('base64')}`;
+  const embeddedDoc = core.createDocument({ name: 'embed resize' });
+  const embedded = core.placeImage(embeddedDoc, 'base', {
+    id: 'embed', at: 'C4.tl', span: '4x2', source, mode: 'embed',
+  });
+  assert.equal(embedded.scale.render.x.ratio, 2);
+  core.resizeBox(embeddedDoc, 'embed', { cellsW: 8, cellsH: 4 });
+  assert.equal(embedded.scale.render.x.ratio, 4);
+  assert.deepEqual(embedded.scale.footprintCells, { width: 8, height: 4 });
+
+  const ditherDoc = core.createDocument({ name: 'dither resize' });
+  core.placeImage(ditherDoc, 'base', { id: 'dither', at: 'C4.tl', span: '4x2', source, mode: 'dither' });
+  const before = core.serialize(ditherDoc);
+  assert.throws(
+    () => core.resizeBox(ditherDoc, 'dither', { cellsW: 8, cellsH: 4 }),
+    /Remove it and call place_image again/,
+  );
+  assert.equal(core.serialize(ditherDoc), before, 'a refused resample leaves the document byte-identical');
+});
+
+test('deserialization recomputes image reports rather than trusting saved metrics', () => {
+  const source = `data:image/png;base64,${pngBytes(20, 10).toString('base64')}`;
+  const doc = core.createDocument({ name: 'report integrity' });
+  core.placeImage(doc, 'base', { id: 'embed', at: 'C4.tl', span: '4x2', source });
+  core.placeImage(doc, 'base', { id: 'dither', at: 'M4.tl', span: '4x2', source, mode: 'dither' });
+  const raw = JSON.parse(core.serialize(doc));
+  raw.elements.base.find((element) => element.id === 'embed').scale.render.direction = 'invented';
+  const savedDither = raw.elements.base.find((element) => element.id === 'dither');
+  savedDither.scale.render.direction = 'invented';
+  savedDither.ditherStats.transitionRatio = 1;
+
+  const loaded = core.deserialize(raw);
+  assert.equal(core.findElement(loaded, 'embed').element.scale.render.direction, 'upscale');
+  assert.equal(core.findElement(loaded, 'dither').element.scale.render.direction, 'upscale');
+  assert.equal(core.findElement(loaded, 'dither').element.ditherStats.transitionRatio, 0);
 });
 
 test('saved documents refuse linked or unsupported embedded image sources', () => {

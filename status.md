@@ -1,13 +1,13 @@
 # TurtlePen — status
 
-**As of 2026-08-17.** Prototype, working end to end, 298/298 tests green,
+**As of 2026-08-17.** Prototype, working end to end, 307/307 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **298/298 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **307/307 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
 - **Every external surface has a drift-proof contract.** All 35 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC
@@ -25,13 +25,18 @@ Verified by running it, not by inspection:
   build applies the reported numeric height fixes and validates with zero open
   findings. P01-P20 connect the sheet to a deterministic, technician-reviewed
   LLM photo-shot list in `docs/condenser-replacement-photo-shot-list.md`.
-- **Real image handling is exercised with a representative generated asset.**
-  `pnpm run image-session` measures a 1536 x 1024 condenser photo, proves the
-  temporary-reference `L020` gate, embeds it, dithers it into deterministic
-  lattice runs, then saves, reopens, validates, and renders over real MCP stdio.
-  Image data is byte-verified as PNG/JPEG/GIF, local sources resolve beside the
-  active diagram, decode and dither allocations are bounded, and dither output
-  no longer duplicates the original multi-megabyte bitmap in document history.
+- **Real image handling separates evidence from lattice artwork.** `pnpm run
+  image-session` measures a 1536 x 1024 condenser photo and a separate simplified
+  line-art derivative, proves the temporary-reference `L020` gate, embeds the
+  photo, and dithers only the derivative before save/reopen/render over real MCP
+  stdio. Every placement stores exact source, viewport, render, semantic sample,
+  fit, and up/downscale reports. Dither downscales through area-weighted sampling,
+  upscales through nearest-sample repetition, preserves aspect for contain/cover,
+  and refuses stale-grid resizing. `L022` blocks results above 45% neighboring
+  transitions; the rejected raw photo measured 69.24% and was blind-guessed as a
+  teapot, while the final line art measures 17.40% and reads as a condenser.
+  Image bytes are verified, allocations are bounded, and deterministic runs do
+  not duplicate the multi-megabyte source in document history.
 - **A diagram can be judged on composition, not just correctness.** `C001`
   (S3/INFO) reports a document whose densest page inks less than 1.2% of its
   canvas — the case that previously scored green because "no defects" is
@@ -130,11 +135,13 @@ Verified by running it, not by inspection:
 - **A reference can be traced over.** `place_reference` dithers an image onto a
   page below the base at low opacity and flags it; `L020` reports it until it is
   removed, so the scaffolding cannot ship.
-- **A photo is drawn INTO the lattice**: `mode: 'dither'` decodes PNG on
+- **Prepared line art can be drawn INTO the lattice**: `mode: 'dither'` decodes PNG on
   `node:zlib` alone, quantises to quadrants through a 4×4 Bayer matrix, and
   emits merged horizontal runs. A 400×300 solid area collapses from 4800
   quadrants to 60 rects. The same image renders byte-identically every run,
   which is why an ordered matrix is the default rather than error diffusion.
+  Raw photographs stay embedded; deterministic conversion is not the same as
+  recognizable conversion, so `L022` and a normal-size visual check still apply.
 - **Drawn artwork has density, not just presence.** `tone` (0.0625–1, or
   `quarter`/`half`/`three-quarter`/`solid`), `feather`, and `texture` on a pen
   path filter its pieces through that same ordered matrix. Because a piece IS

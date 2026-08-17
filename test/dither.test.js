@@ -12,7 +12,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import * as core from '../src/core/index.js';
-import { ditherToQuadrants, BAYER_4 } from '../src/core/dither.js';
+import {
+  analyse, analyseRuns, ditherToQuadrants, BAYER_4, MAX_READABLE_TRANSITION_RATIO,
+} from '../src/core/dither.js';
 import { decode } from '../src/core/png.js';
 import { solidPng, encodePng, dataUri } from './helpers/png-fixture.js';
 
@@ -71,6 +73,47 @@ test('transparent pixels read as ground, not as black', () => {
   assert.equal(grid.on.filter(Boolean).length, 0, 'fully transparent is empty, not solid ink');
 });
 
+test('downscaling area-averages source pixels and upscaling repeats nearest samples', () => {
+  const row = new Uint8Array([
+    0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255,
+    0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255,
+  ]);
+  const downscaled = ditherToQuadrants(decode(encodePng(4, 2, row, { colorType: 2 })), 2, 1);
+  assert.deepEqual([...downscaled.on], [1, 0]);
+
+  const tiny = new Uint8Array([0, 0, 0, 255, 255, 255]);
+  const upscaled = ditherToQuadrants(decode(encodePng(2, 1, tiny, { colorType: 2 })), 4, 2);
+  assert.deepEqual([...upscaled.on], [1, 1, 0, 0, 1, 1, 0, 0]);
+});
+
+test('dither contain pads and cover crops without stretching the source aspect', () => {
+  const black = decode(solidPng(4, 2, [0, 0, 0]));
+  const contained = ditherToQuadrants(black, 4, 4, { fit: 'contain' });
+  assert.deepEqual([...contained.on], [
+    0, 0, 0, 0,
+    1, 1, 1, 1,
+    1, 1, 1, 1,
+    0, 0, 0, 0,
+  ]);
+  const covered = ditherToQuadrants(black, 4, 4, { fit: 'cover' });
+  assert.equal(covered.on.filter(Boolean).length, 16);
+});
+
+test('readability analysis identifies checkerboard noise and accepts sparse structure', () => {
+  const busy = ditherToQuadrants(decode(solidPng(32, 32, [128, 128, 128])), 16, 16);
+  const busyStats = analyse(busy);
+  assert.equal(busyStats.readability, 'busy');
+  assert.ok(busyStats.transitionRatio > MAX_READABLE_TRANSITION_RATIO);
+
+  const sparse = { width: 8, height: 8, on: new Uint8Array(64) };
+  for (let y = 1; y < 7; y++) sparse.on[y * 8 + 3] = 1;
+  const sparseStats = analyse(sparse);
+  assert.equal(sparseStats.readability, 'pass');
+  assert.ok(sparseStats.transitionRatio < MAX_READABLE_TRANSITION_RATIO);
+  assert.throws(() => analyseRuns([{ x: 1, y: 1, w: 2 }, { x: 2, y: 1, w: 2 }], 8, 8), /overlap/);
+  assert.throws(() => analyseRuns([{ x: 7, y: 1, w: 2 }], 8, 8), /outside/);
+});
+
 // ---------------------------------------------------------------------------
 // Through the document
 // ---------------------------------------------------------------------------
@@ -78,6 +121,22 @@ test('transparent pixels read as ground, not as black', () => {
 test('mode dither no longer refuses', () => {
   const d = core.createDocument({ name: 'pics' });
   assert.doesNotThrow(() => place(d));
+});
+
+test('busy dither blocks publication with an actionable L022 finding', () => {
+  const d = core.createDocument({ name: 'busy photo' });
+  core.placeImage(d, 'base', {
+    id: 'noisy', at: 'C4.tl', span: '8x8', mode: 'dither',
+    source: dataUri(solidPng(32, 32, [128, 128, 128])),
+  });
+  const finding = core.validate(d).open.find((entry) => entry.rule === 'L022');
+  assert.equal(finding.severity, 'S2');
+  assert.match(finding.message, /checker pattern.*embed mode.*line art/i);
+  assert.deepEqual(finding.fixes[0], {
+    kind: 'remove',
+    description: 'remove "noisy", simplify its source or choose embed mode, then place_image again',
+    params: { id: 'noisy' },
+  });
 });
 
 test('a dithered image claims exactly its footprint, and collides normally', () => {
