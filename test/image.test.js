@@ -193,6 +193,13 @@ test('an unknown render mode is refused rather than silently embedded', () => {
     /detail applies only.*simplify/,
   );
   assert.throws(
+    () => core.placeImage(d, 'base', {
+      id: 'wrong-supersample', at: 'C4.tl', span: { w: 4, h: 2 }, mode: 'dither', supersample: 4,
+      source: `data:image/png;base64,${pngBytes(20, 10).toString('base64')}`,
+    }),
+    /supersample applies only.*simplify/,
+  );
+  assert.throws(
     () => core.placeReference(d, {
       id: 'embedded-reference', at: 'C4.tl', span: '4x2', mode: 'embed',
       source: `data:image/png;base64,${pngBytes(20, 10).toString('base64')}`,
@@ -240,12 +247,19 @@ test('simplify stores an auditable approximation without retaining duplicate sou
   });
   assert.equal(image.source, null);
   assert.equal(image.detail, 'auto');
+  assert.equal(image.supersample, 'auto');
   assert.equal(image.processing.strategy, 'threshold-simplify');
   assert.equal(image.processing.nearBinary, true);
+  assert.equal(image.processing.resolvedSupersample, 4);
+  assert.deepEqual(image.processing.workingCanvas, { width: 192, height: 128, unit: 'quadrants' });
+  assert.equal(image.processing.workingSamplesPerOutput, 16);
   assert.equal(image.ditherStats.readability, 'pass');
   assert.match(core.renderSvg(doc), /class="simplify"/);
   assert.doesNotMatch(core.serialize(doc), /data:image/);
-  assert.doesNotThrow(() => core.deserialize(core.serialize(doc)));
+  const reopened = core.deserialize(core.serialize(doc));
+  const reopenedImage = core.findElement(reopened, 'simplified').element;
+  assert.equal(reopenedImage.supersample, 'auto');
+  assert.equal(reopenedImage.processing.resolvedSupersample, 4);
 });
 
 test('embed resize recomputes scale while rasterized image resize refuses without mutation', () => {

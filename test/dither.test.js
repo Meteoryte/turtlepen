@@ -14,7 +14,8 @@ import assert from 'node:assert/strict';
 import * as core from '../src/core/index.js';
 import {
   analyse, analyseRuns, ditherToQuadrants, simplifyToQuadrants, BAYER_4,
-  MAX_READABLE_TRANSITION_RATIO, MIN_SIMPLIFY_SHORT_SIDE, MAX_SIMPLIFY_QUADRANTS,
+  resolveSupersample, MAX_READABLE_TRANSITION_RATIO, MIN_SIMPLIFY_SHORT_SIDE,
+  MAX_SIMPLIFY_QUADRANTS, MAX_SIMPLIFY_WORKING_QUADRANTS,
 } from '../src/core/dither.js';
 import { decode } from '../src/core/png.js';
 import { solidPng, encodePng, dataUri } from './helpers/png-fixture.js';
@@ -39,6 +40,21 @@ function unitLineArt(width = 96, height = 64) {
   }
   for (let x = 69; x <= 80; x++) { ink(x, 42); ink(x, 44); }
   return encodePng(width, height, pixels, { colorType: 2 });
+}
+
+function subQuadrantLineArt(width = 768, height = 512) {
+  const pixels = new Uint8Array(width * height * 3).fill(255);
+  const ink = (x, y) => {
+    const index = (y * width + x) * 3;
+    pixels[index] = pixels[index + 1] = pixels[index + 2] = 0;
+  };
+  for (let y = 128; y < 448; y++) {
+    for (let x = 160; x < 608; x++) {
+      if (x < 192 || x >= 576 || y < 160 || y >= 416) ink(x, y);
+    }
+  }
+  for (let y = 32; y < 129; y++) ink(384, y);
+  return encodePng(width, height, pixels);
 }
 
 function continuousScene(width = 96, height = 64) {
@@ -167,6 +183,37 @@ test('simplify preserves near-binary structure without reproducing Bayer checker
   assert.deepEqual([...first.on], [...second.on], 'adaptive output remains deterministic');
   assert.ok(first.on.slice(0, 16 * 48).some(Boolean), 'disconnect survives in the upper region');
   assert.ok(first.on.slice(16 * 48).some(Boolean), 'cabinet survives below it');
+});
+
+test('simplify can process at 4x linear resolution and reduce to the unchanged 1x lattice', () => {
+  const decoded = decode(subQuadrantLineArt());
+  const direct = simplifyToQuadrants(decoded, 48, 32, { detail: 'medium', supersample: 1 });
+  const supersampled = simplifyToQuadrants(decoded, 48, 32, { detail: 'medium', supersample: 4 });
+  const repeated = simplifyToQuadrants(decoded, 48, 32, { detail: 'medium', supersample: 4 });
+
+  assert.deepEqual({ width: supersampled.width, height: supersampled.height }, { width: 48, height: 32 });
+  assert.equal(supersampled.processing.requestedSupersample, 4);
+  assert.equal(supersampled.processing.resolvedSupersample, 4);
+  assert.deepEqual(supersampled.processing.workingCanvas, { width: 192, height: 128, unit: 'quadrants' });
+  assert.equal(supersampled.processing.workingSamplesPerOutput, 16);
+  assert.equal(supersampled.processing.downsampleMethod, 'box-coverage');
+  assert.equal(supersampled.processing.scaleDirection, 'downscale');
+  assert.deepEqual([...supersampled.on], [...repeated.on], '4x processing remains deterministic');
+
+  const upperBand = (grid) => grid.on.slice(0, 8 * grid.width).filter(Boolean).length;
+  assert.equal(upperBand(direct), 0, 'direct reduction loses the sub-quadrant antenna');
+  assert.equal(upperBand(supersampled), 4, '4x processing retains the thin connected feature');
+});
+
+test('simplify supersampling is bounded and auto resolves without silent explicit fallback', () => {
+  assert.equal(resolveSupersample('auto', 48, 32), 4);
+  assert.equal(resolveSupersample('auto', 500, 500), 2);
+  assert.equal(500 * 500 * 2 * 2, MAX_SIMPLIFY_WORKING_QUADRANTS);
+  assert.throws(() => resolveSupersample(3, 48, 32), /must be auto, 1, 2, 4/);
+  assert.throws(
+    () => resolveSupersample(4, 500, 500),
+    /4x simplify supersampling.*4000000 working quadrants.*limit 1000000/i,
+  );
 });
 
 test('simplify reports heuristic continuous-tone processing and refuses meaningless or tiny output', () => {

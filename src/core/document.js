@@ -18,7 +18,7 @@ import { DEFAULT_FONT, resolveFontSize } from './text.js';
 import { normalizeTone, normalizeFeather, normalizeTexture } from './tone.js';
 import { normalizePattern } from './pattern.js';
 import { assertEmbeddedSource, assertMode as assertImageMode, scaleReport } from './image.js';
-import { analyseRuns, SIMPLIFY_DETAILS } from './dither.js';
+import { analyseRuns, SIMPLIFY_DETAILS, SIMPLIFY_SUPERSAMPLES } from './dither.js';
 
 // `schematic` stacks exactly like `exclusive`; it exists to carry authorial meaning —
 // "this page is deliberately spare" — which the composition rules read and skip.
@@ -270,7 +270,7 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
   return el;
 }
 
-export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit = 'contain', detail = null, opacity = null, note = null, runs = null, scale = null, ditherStats = null, processing = null }) {
+export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit = 'contain', detail = null, supersample = null, opacity = null, note = null, runs = null, scale = null, ditherStats = null, processing = null }) {
   getPage(doc, pageId);
   assertElementId(id);
   assertFreeId(doc, id);
@@ -282,6 +282,7 @@ export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit
     mode,
     fit: assertImageFit(fit),
     ...(detail ? { detail } : {}),
+    ...(supersample ? { supersample } : {}),
     opacity: assertOpacity(opacity, 'element opacity'),
     note,
     ...(runs ? { runs } : {}),
@@ -756,13 +757,19 @@ export function deserialize(json) {
       assertImageFit(element.fit ?? 'contain');
       if (element.mode === 'simplify') {
         element.detail ??= 'auto';
+        element.supersample ??= 'auto';
         if (!SIMPLIFY_DETAILS.includes(element.detail)) {
           throw new SyntaxError(`simplify detail must be ${SIMPLIFY_DETAILS.join(', ')} — got ${JSON.stringify(element.detail)}`);
+        }
+        if (element.supersample !== 'auto' && !SIMPLIFY_SUPERSAMPLES.includes(element.supersample)) {
+          throw new SyntaxError(`simplify supersample must be auto, ${SIMPLIFY_SUPERSAMPLES.join(', ')} — got ${JSON.stringify(element.supersample)}`);
         }
         if (!element.processing || typeof element.processing.nearBinary !== 'boolean') {
           element.processing = {
             strategy: 'unknown-saved-simplification', requestedDetail: element.detail,
-            resolvedDetail: element.detail, nearBinary: false, removedComponents: 0, removedSamples: 0,
+            resolvedDetail: element.detail, requestedSupersample: element.supersample,
+            resolvedSupersample: 1, workingCanvas: null, workingSamplesPerOutput: 1,
+            nearBinary: false, removedComponents: 0, removedSamples: 0,
           };
         }
       }

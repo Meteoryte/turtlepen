@@ -132,7 +132,7 @@ test('the live viewer exposes image scale, readability, and simplification state
     source: dataUri(solidPng(80, 40, [0, 0, 0])),
   });
   core.placeImage(doc, 'base', {
-    id: 'simplified', at: 'M4.tl', span: '24x16', mode: 'simplify',
+    id: 'simplified', at: 'M4.tl', span: '24x16', mode: 'simplify', supersample: 4,
     source: dataUri(lineArtPng()),
   });
   await core.checkpointDocument(doc, path);
@@ -155,7 +155,10 @@ test('the live viewer exposes image scale, readability, and simplification state
   const simplified = state.elements.find((element) => element.id === 'simplified');
   assert.equal(simplified.mode, 'simplify');
   assert.equal(simplified.detail, 'auto');
+  assert.equal(simplified.supersample, 4);
   assert.equal(simplified.processing.strategy, 'threshold-simplify');
+  assert.equal(simplified.processing.resolvedSupersample, 4);
+  assert.deepEqual(simplified.processing.workingCanvas, { width: 192, height: 128, unit: 'quadrants' });
   assert.equal(simplified.processing.nearBinary, true);
   assert.equal(simplified.ditherStats.readability, 'pass');
 });

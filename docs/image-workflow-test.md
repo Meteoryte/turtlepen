@@ -91,9 +91,11 @@ blocks that result.
 
 The line-art derivative in `dither` produces 12.94% ink coverage, 17.40%
 neighboring transitions, and 458 runs. The same derivative in `simplify auto`
-resolves to the near-binary threshold strategy at medium detail and produces
-23.83% ink, 13.03% transitions, and 371 runs. It is intentionally bolder and
-does not attempt a 1:1 copy. Both pass the deterministic noise gate.
+with explicit `supersample: 4` resolves to the near-binary threshold strategy at
+medium detail, processes at `384x256` quadrants, then reduces to the `96x64`
+final lattice. It produces 23.68% ink, 13.06% transitions, and 369 runs. It is
+intentionally bolder and does not attempt a 1:1 copy. Both pass the deterministic
+noise gate.
 
 The raw photo is also exercised through `simplify auto`; TurtlePen raises
 `L023` because continuous-tone contour selection has no semantic understanding.
@@ -114,7 +116,8 @@ check remain required. See
 5. Remove the reference before publication.
 6. Place the photo as a self-contained embedded image.
 7. Rehearse and commit the line art as both deterministic dither and non-fidelity
-   simplify.
+   simplify, proving the 4x-linear working canvas reduces to the unchanged final
+   lattice.
 8. Refuse every remaining S0-S2 finding, including `L022` and `L023`.
 9. Save, reopen, validate, and render the document.
 

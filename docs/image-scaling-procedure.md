@@ -17,7 +17,8 @@ visible before publication.
 5. Prefer `fit: "contain"`. Use `cover` only when intentional cropping has been
    reviewed.
 6. Upscaling never creates detail. A larger display is not a higher-resolution
-   source.
+   source. A supersampled working canvas can preserve thin connected structure
+   during processing, but does not create source information.
 7. Validate, render, and inspect the result at its intended reading size. A
    clean collision report does not prove that an image is understandable.
 
@@ -48,10 +49,12 @@ evidence.
    padding. `cover` fills the footprint and may crop edges. Never use `cover`
    where cropped evidence could change the meaning.
 4. **Place at the measured span.** If a different span is necessary, read the
-   new report rather than estimating the effect.
+   new report rather than estimating the effect. For `simplify`, choose
+   `supersample: 1`, `2`, `4`, or `auto` (`auto` prefers 4x within limits).
 5. **Read the response.** Confirm `UPSCALE`, `DOWNSCALE`, or `EXACT`, content
    pixels, semantic sample dimensions, selected simplification strategy/detail,
-   discarded fragments, and readability.
+   working-canvas factor and dimensions, final reduction, discarded fragments,
+   and readability.
 6. **Validate.** Resolve every S0-S2 finding. `L022` blocks high-frequency
    raster output. `L023` blocks a continuous-tone heuristic approximation until
    semantic review or replacement.
@@ -102,8 +105,21 @@ TurtlePen therefore refuses `resize` on a dithered image. Remove it and call
 
 ### Simplify
 
-`simplify` is deliberately not a 1:1 conversion. It samples onto the same
-two-quadrants-per-cell grid, then chooses one of two deterministic strategies:
+`simplify` is deliberately not a 1:1 conversion. Its final output still uses
+two quadrants per cell, but processing may occur on a larger internal canvas
+before deterministic reduction to that final lattice:
+
+1. Sample the source onto a `1x`, `2x`, or `4x` linear working canvas.
+2. Simplify on that canvas using one of the strategies below.
+3. Box-reduce each working block to one final quadrant using the resolved detail
+   coverage threshold, close isolated gaps, and remove final fragments.
+
+At `4x`, the working canvas has four times the final width and height. Each
+final quadrant is therefore decided from a `4x4` block of 16 working samples.
+For a final `96x64` lattice, processing occurs at `384x256` and then returns to
+`96x64`; document geometry and rendered footprint never change.
+
+The two deterministic simplification strategies are:
 
 - **Near-binary source:** identify the page-ground tone, keep sufficiently
   contrasting structure as solid ink, close isolated gaps, and remove fragments.
@@ -113,12 +129,22 @@ two-quadrants-per-cell grid, then chooses one of two deterministic strategies:
   rank colour-aware edges and background contrast, extend weaker pixels only
   when they continue a strong contour, and remove small disconnected fragments.
 
-`auto` resolves detail from target size and scale severity. The receipt records
-the resolved strategy and parameters. Simplify refuses a target with fewer than
+`auto` detail resolves from target size and scale severity. `auto` supersampling
+prefers `4x`, then reduces to `2x` or `1x` only when needed to stay under the
+working-canvas ceiling. An explicit factor never silently falls back: it either
+runs exactly or refuses with the calculated size. Supersampling does not infer
+new pixels; it provides more intermediate positions for thresholding, contour
+joining, and cleanup, which can retain a thin connected feature that direct
+final-size processing would discard.
+
+The receipt records the requested/resolved factor, working dimensions, source
+scale into that canvas, reduction method, samples per output, strategy, and
+parameters. Simplify refuses a target with fewer than
 24 quadrants (12 cells) on its short side; below that, use a larger footprint or
 purpose-built icon artwork. It also caps semantic analysis at 250,000 quadrants;
-larger evidence stays embedded or is simplified at a smaller semantic size.
-Like dither, simplify discards the source after
+the internal working canvas is capped at 1,000,000 quadrants. Larger evidence
+stays embedded or is simplified at a smaller semantic size. Like dither,
+simplify discards the source after
 creating durable runs and must be removed/re-placed to change its span.
 
 A continuous-tone result always raises `L023`: contrast processing can make an
@@ -145,7 +171,7 @@ Both P01 sources are `1536x1024` and are placed at `48x32` cells:
 |---|---:|---:|---|
 | Field-style photo, `embed` | `480x320` px, 31.25% | `480x320` display samples | Retains photographic evidence. |
 | Prepared line art, `dither` | `480x320` px | `96x64` quadrants, 6.25%; 16x16 source px per sample | 12.94% ink, 17.40% transitions, 458 runs: `PASS`. |
-| Prepared line art, `simplify auto` | `480x320` px | `96x64` quadrants, threshold strategy, medium detail | 23.83% ink, 13.03% transitions, 371 runs: `PASS`; bolder non-fidelity result. |
+| Prepared line art, `simplify auto`, `supersample 4` | `480x320` px | `384x256` working quadrants -> `96x64` final, threshold strategy, medium detail | 23.68% ink, 13.06% transitions, 369 runs: `PASS`; bolder non-fidelity result. |
 | Raw photo, `dither` (rejected) | `480x320` px | `96x64` quadrants, 6.25%; 16x16 source px per sample | 59.08% ink, 69.24% transitions, 2,119 runs: `BUSY`. |
 | Raw photo, `simplify auto` (review gate) | `480x320` px | `96x64` quadrants, adaptive contour strategy | Low-frequency output, but `L023` blocks it because identity is not machine-verifiable. |
 

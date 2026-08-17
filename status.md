@@ -1,13 +1,13 @@
 # TurtlePen — status
 
-**As of 2026-08-17.** Prototype, working end to end, 314/314 tests green,
+**As of 2026-08-17.** Prototype, working end to end, 316/316 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **314/314 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **316/316 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
 - **Every external surface has a drift-proof contract.** All 35 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC
@@ -34,13 +34,16 @@ Verified by running it, not by inspection:
   render, semantic sample, fit, and up/downscale reports. Dither downscales by
   area and upscales by nearest sample. Simplify selects a deterministic
   near-binary threshold or colour-aware contour strategy, resolves an explicit
-  detail budget, refuses fewer than 24 quadrants on the short side, caps analysis
-  at 250,000 quadrants with linear contour growth, and records
-  what it discarded. `L022` blocks high-frequency output; `L023` blocks
+  detail budget, and may process at 1x, 2x, or 4x linear resolution before
+  box-reducing to the unchanged final lattice. Auto prefers 4x; explicit factors
+  never silently fall back. It refuses fewer than 24 final quadrants on the
+  short side, caps final analysis at 250,000 and working analysis at 1,000,000
+  quadrants with linear contour growth, and records what it discarded. `L022`
+  blocks high-frequency output; `L023` blocks
   continuous-tone heuristic results because geometry cannot know the subject.
   The rejected raw-photo dither measured 69.24% transitions and was guessed as a
-  teapot. The published line-art dither measures 17.40%; simplify measures
-  13.03% and reads as a heavier condenser pictogram. Rasterized modes refuse
+  teapot. The published line-art dither measures 17.40%; 4x-to-1x simplify
+  measures 13.06% and reads as a heavier condenser pictogram. Rasterized modes refuse
   stale-grid resizing. Image bytes are verified, allocations are bounded, and
   deterministic runs do not duplicate the multi-megabyte source in history.
 - **A diagram can be judged on composition, not just correctness.** `C001`
@@ -150,7 +153,11 @@ Verified by running it, not by inspection:
   recognizable conversion, so `L022` and a normal-size visual check still apply.
 - **Prepared line art can be simplified instead of copied.** `mode: 'simplify'`
   preserves contrast-defined structure without Bayer checker tone and is
-  explicitly allowed to thicken, omit, and merge source features. Continuous
+  explicitly allowed to thicken, omit, and merge source features. A bounded
+  `supersample: 4` pass builds four times the width and height, performs the
+  cleanup there, and deterministically reduces each 4x4 working block to one
+  final quadrant; it can retain thin connected structure without inventing
+  source information or changing the placed footprint. Continuous
   photographs take a colour-aware contour path but always raise `L023` until a
   blind identity review is recorded or a purpose-built derivative replaces the
   result. This keeps “cleaner” from being mistaken for “semantically correct.”

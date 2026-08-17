@@ -53,6 +53,11 @@ test('real MCP image workflow rejects unsafe input and recovers through publicat
     assert.deepEqual(measured.scale.dither.sampling.target, { width: 16, height: 8, unit: 'quadrants' });
     assert.equal(measured.scale.simplify.sampling.direction, 'downscale');
     assert.match(measured.scale.simplify.sampling.procedure, /discard low-salience texture/);
+    assert.deepEqual(measured.scale.simplify.workingCanvas, {
+      available: true, requestedSupersample: 'auto', resolvedSupersample: 4,
+      width: 64, height: 32, unit: 'quadrants',
+      downsampleTo: { width: 16, height: 8, unit: 'quadrants' },
+    });
 
     const hostileSvg = dataUri(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"><script>throw 1</script></svg>'))
       .replace('image/png', 'image/svg+xml');
@@ -84,9 +89,10 @@ test('real MCP image workflow rejects unsafe input and recovers through publicat
     assert.match(plan, /committed 1 operation/);
 
     const simplifiedReceipt = await call('place_image', {
-      id: 'simplified', source: 'trace.png', at: 'V4.tl', span: '16x12', mode: 'simplify', detail: 'auto',
+      id: 'simplified', source: 'trace.png', at: 'V4.tl', span: '16x12', mode: 'simplify', detail: 'auto', supersample: 4,
     });
     assert.match(simplifiedReceipt, /simplification: LOW detail.*near-binary threshold/i);
+    assert.match(simplifiedReceipt, /4:1 working canvas 128x96 -> 1:1 final lattice.*16 working samples\/output/i);
     assert.match(simplifiedReceipt, /perceptual approximation, not a 1:1 copy/);
 
     const refusedResize = await client.call('resize', { id: 'dithered', cellsW: 10, cellsH: 5 });

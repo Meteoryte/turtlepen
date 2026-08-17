@@ -33,8 +33,10 @@ const BAYER_LEVELS = BAYER_N * BAYER_N;
 export const MAX_DITHER_QUADRANTS = 1_000_000;
 export const MAX_READABLE_TRANSITION_RATIO = 0.45;
 export const SIMPLIFY_DETAILS = Object.freeze(['auto', 'low', 'medium', 'high']);
+export const SIMPLIFY_SUPERSAMPLES = Object.freeze([1, 2, 4]);
 export const MIN_SIMPLIFY_SHORT_SIDE = 24;
 export const MAX_SIMPLIFY_QUADRANTS = 250_000;
+export const MAX_SIMPLIFY_WORKING_QUADRANTS = 1_000_000;
 
 /** Rec. 709 luminance — the weighting that matches how a viewer reads brightness. */
 function luminance(r, g, b) {
@@ -78,6 +80,30 @@ function assertGrid(qw, qh) {
 
 function assertFit(fit) {
   if (!['contain', 'cover'].includes(fit)) throw new SyntaxError(`image fit must be contain or cover — got ${JSON.stringify(fit)}`);
+}
+
+/**
+ * Resolve the internal simplification canvas without changing final geometry.
+ * A 4x linear factor creates sixteen working samples per output quadrant.
+ */
+export function resolveSupersample(requested, qw, qh) {
+  assertGrid(qw, qh);
+  if (requested === 'auto') {
+    return SIMPLIFY_SUPERSAMPLES.toReversed().find(
+      (factor) => qw * qh * factor * factor <= MAX_SIMPLIFY_WORKING_QUADRANTS,
+    ) ?? 1;
+  }
+  if (!SIMPLIFY_SUPERSAMPLES.includes(requested)) {
+    throw new SyntaxError(`simplify supersample must be auto, ${SIMPLIFY_SUPERSAMPLES.join(', ')} — got ${JSON.stringify(requested)}`);
+  }
+  const workingQuadrants = qw * qh * requested * requested;
+  if (workingQuadrants > MAX_SIMPLIFY_WORKING_QUADRANTS) {
+    throw new RangeError(
+      `${requested}x simplify supersampling would create ${workingQuadrants} working quadrants ` +
+      `(limit ${MAX_SIMPLIFY_WORKING_QUADRANTS}); use auto, a lower supersample factor, or a smaller final span`,
+    );
+  }
+  return requested;
 }
 
 /**
@@ -188,55 +214,52 @@ function percentile(values, portion) {
   return sorted[Math.max(0, Math.min(sorted.length - 1, Math.round((sorted.length - 1) * portion)))];
 }
 
-function blur(values, content, width, height, radius) {
-  if (!radius) return Float64Array.from(values);
-  const out = new Float64Array(values.length).fill(1);
+function integral(values, content, width, height, channels = 1, channel = 0, countOnly = false) {
+  const stride = width + 1;
+  const sums = new Float64Array(stride * (height + 1));
   for (let y = 0; y < height; y++) {
+    let row = 0;
     for (let x = 0; x < width; x++) {
       const index = y * width + x;
-      if (!content[index]) continue;
-      let sum = 0, count = 0;
-      for (let yy = Math.max(0, y - radius); yy <= Math.min(height - 1, y + radius); yy++) {
-        for (let xx = Math.max(0, x - radius); xx <= Math.min(width - 1, x + radius); xx++) {
-          const neighbour = yy * width + xx;
-          if (!content[neighbour]) continue;
-          sum += values[neighbour];
-          count += 1;
-        }
+      if (content[index]) row += countOnly ? 1 : values[index * channels + channel];
+      sums[(y + 1) * stride + x + 1] = sums[y * stride + x + 1] + row;
+    }
+  }
+  return sums;
+}
+
+function integralRect(sums, stride, x0, y0, x1, y1) {
+  return sums[y1 * stride + x1] - sums[y0 * stride + x1]
+    - sums[y1 * stride + x0] + sums[y0 * stride + x0];
+}
+
+function blurChannels(values, content, width, height, radius, channels, Output) {
+  if (!radius) return Output.from(values);
+  const out = new Output(values.length).fill(1);
+  const stride = width + 1;
+  const counts = integral(null, content, width, height, 1, 0, true);
+  for (let channel = 0; channel < channels; channel++) {
+    const sums = integral(values, content, width, height, channels, channel);
+    for (let y = 0; y < height; y++) {
+      const y0 = Math.max(0, y - radius), y1 = Math.min(height, y + radius + 1);
+      for (let x = 0; x < width; x++) {
+        const index = y * width + x;
+        if (!content[index]) continue;
+        const x0 = Math.max(0, x - radius), x1 = Math.min(width, x + radius + 1);
+        const count = integralRect(counts, stride, x0, y0, x1, y1);
+        if (count) out[index * channels + channel] = integralRect(sums, stride, x0, y0, x1, y1) / count;
       }
-      out[index] = count ? sum / count : 1;
     }
   }
   return out;
 }
 
+function blur(values, content, width, height, radius) {
+  return blurChannels(values, content, width, height, radius, 1, Float64Array);
+}
+
 function blurColors(values, content, width, height, radius) {
-  if (!radius) return Float32Array.from(values);
-  const out = new Float32Array(values.length).fill(1);
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const index = y * width + x;
-      if (!content[index]) continue;
-      const sums = [0, 0, 0];
-      let count = 0;
-      for (let yy = Math.max(0, y - radius); yy <= Math.min(height - 1, y + radius); yy++) {
-        for (let xx = Math.max(0, x - radius); xx <= Math.min(width - 1, x + radius); xx++) {
-          const neighbour = yy * width + xx;
-          if (!content[neighbour]) continue;
-          sums[0] += values[neighbour * 3];
-          sums[1] += values[neighbour * 3 + 1];
-          sums[2] += values[neighbour * 3 + 2];
-          count += 1;
-        }
-      }
-      if (count) {
-        out[index * 3] = sums[0] / count;
-        out[index * 3 + 1] = sums[1] / count;
-        out[index * 3 + 2] = sums[2] / count;
-      }
-    }
-  }
-  return out;
+  return blurChannels(values, content, width, height, radius, 3, Float32Array);
 }
 
 function borderTone(values, content, width, height) {
@@ -320,11 +343,57 @@ function simplifyPass(on, width, height) {
   return next;
 }
 
+const DOWNSAMPLE_COVERAGE = Object.freeze({ low: 0.32, medium: 0.2, high: 0.12 });
+
+/** Reduce a supersampled binary canvas to the exact requested lattice. */
+function downsampleInk(on, outputWidth, outputHeight, factor, detail) {
+  if (factor === 1) {
+    return {
+      on: Uint8Array.from(on),
+      method: 'identity',
+      coverageThreshold: 1,
+      workingSamplesPerOutput: 1,
+    };
+  }
+  const workingWidth = outputWidth * factor;
+  const blockArea = factor * factor;
+  const coverageThreshold = DOWNSAMPLE_COVERAGE[detail];
+  const reduced = new Uint8Array(outputWidth * outputHeight);
+  for (let y = 0; y < outputHeight; y++) {
+    for (let x = 0; x < outputWidth; x++) {
+      let ink = 0;
+      for (let wy = y * factor; wy < (y + 1) * factor; wy++) {
+        const row = wy * workingWidth;
+        for (let wx = x * factor; wx < (x + 1) * factor; wx++) ink += on[row + wx];
+      }
+      if (ink / blockArea >= coverageThreshold) reduced[y * outputWidth + x] = 1;
+    }
+  }
+  return {
+    on: simplifyPass(reduced, outputWidth, outputHeight),
+    method: 'box-coverage',
+    coverageThreshold,
+    workingSamplesPerOutput: blockArea,
+  };
+}
+
 const DETAIL = Object.freeze({
   low: { coverage: 0.08, blur: 2, componentDivisor: 700 },
   medium: { coverage: 0.13, blur: 1, componentDivisor: 1100 },
   high: { coverage: 0.20, blur: 0, componentDivisor: 1800 },
 });
+
+function finalizeSimplification(workingOn, qw, qh, factor, resolvedDetail, workingContentSamples, componentDivisor) {
+  const reduced = downsampleInk(workingOn, qw, qh, factor, resolvedDetail);
+  const finalContentSamples = Math.max(1, Math.round(workingContentSamples / (factor * factor)));
+  const minimumComponent = Math.max(2, Math.floor(finalContentSamples / componentDivisor));
+  const cleanup = cleanIslands(reduced.on, qw, qh, minimumComponent);
+  const stats = analyse({ width: qw, height: qh, on: reduced.on });
+  if (stats.ink < 4) {
+    throw new Error('adaptive simplification removed all stable features; use embed mode, choose higher detail, lower supersampling, or provide a clearer source');
+  }
+  return { ...reduced, cleanup, minimumComponent, stats };
+}
 
 function resolveDetail(detail, width, height, scale) {
   if (!SIMPLIFY_DETAILS.includes(detail)) {
@@ -343,7 +412,7 @@ function resolveDetail(detail, width, height, scale) {
  * discarded through scale-aware smoothing, border-relative contrast, edge
  * salience, an explicit ink budget, and connected-component cleanup.
  */
-export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'auto' } = {}) {
+export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'auto', supersample = 'auto' } = {}) {
   assertGrid(qw, qh);
   if (qw * qh > MAX_SIMPLIFY_QUADRANTS) {
     throw new RangeError(
@@ -357,11 +426,15 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
       `got ${qw}x${qh}. Enlarge the span or use purpose-built icon artwork.`,
     );
   }
-  const sampled = sampleTones(img, qw, qh, fit, true);
-  const resolvedDetail = resolveDetail(detail, qw, qh, sampled.scale);
+  const workingScale = resolveSupersample(supersample, qw, qh);
+  const workingWidth = qw * workingScale;
+  const workingHeight = qh * workingScale;
+  const sampled = sampleTones(img, workingWidth, workingHeight, fit, true);
+  const finalSampleScale = sampled.scale / workingScale;
+  const resolvedDetail = resolveDetail(detail, qw, qh, finalSampleScale);
   const preset = DETAIL[resolvedDetail];
   const contentTones = [...sampled.tones].filter((_, index) => sampled.content[index]);
-  const rawBackground = borderTone(sampled.tones, sampled.content, qw, qh);
+  const rawBackground = borderTone(sampled.tones, sampled.content, workingWidth, workingHeight);
   const lowTone = percentile(contentTones, 0.05);
   const highTone = percentile(contentTones, 0.95);
   const nearBinary = (rawBackground >= 0.85 && lowTone <= 0.55)
@@ -369,58 +442,69 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
 
   if (nearBinary) {
     const contrastFloor = { low: 0.16, medium: 0.1, high: 0.05 }[resolvedDetail];
-    let on = new Uint8Array(qw * qh);
+    let on = new Uint8Array(workingWidth * workingHeight);
     for (let index = 0; index < on.length; index++) {
       if (sampled.content[index] && Math.abs(sampled.tones[index] - rawBackground) >= contrastFloor) on[index] = 1;
     }
-    on = simplifyPass(on, qw, qh);
-    const contentSamples = sampled.content.filter(Boolean).length;
-    const minimumComponent = Math.max(2, Math.floor(contentSamples / (preset.componentDivisor * 1.5)));
-    const cleanup = cleanIslands(on, qw, qh, minimumComponent);
-    const stats = analyse({ width: qw, height: qh, on });
-    if (stats.ink < 4) {
-      throw new Error('adaptive simplification removed all stable features; use embed mode, choose higher detail, or provide a clearer source');
-    }
+    on = simplifyPass(on, workingWidth, workingHeight);
+    const workingContentSamples = sampled.content.filter(Boolean).length;
+    const workingMinimumComponent = Math.max(2, Math.floor(workingContentSamples / (preset.componentDivisor * 1.5)));
+    const workingCleanup = cleanIslands(on, workingWidth, workingHeight, workingMinimumComponent);
+    const final = finalizeSimplification(
+      on, qw, qh, workingScale, resolvedDetail, workingContentSamples, preset.componentDivisor * 1.5,
+    );
     return {
       width: qw,
       height: qh,
-      on,
+      on: final.on,
       processing: {
         strategy: 'threshold-simplify',
         requestedDetail: detail,
         resolvedDetail,
-        scaleDirection: sampled.scale < 1 ? 'downscale' : sampled.scale > 1 ? 'upscale' : 'exact',
-        sourcePixelsPerSample: Number((1 / sampled.scale).toFixed(4)),
+        requestedSupersample: supersample,
+        resolvedSupersample: workingScale,
+        workingCanvas: { width: workingWidth, height: workingHeight, unit: 'quadrants' },
+        workingSamplesPerOutput: final.workingSamplesPerOutput,
+        workingScaleDirection: sampled.scale < 1 ? 'downscale' : sampled.scale > 1 ? 'upscale' : 'exact',
+        workingSourcePixelsPerSample: Number((1 / sampled.scale).toFixed(4)),
+        downsampleMethod: final.method,
+        downsampleCoverageThreshold: final.coverageThreshold,
+        scaleDirection: finalSampleScale < 1 ? 'downscale' : finalSampleScale > 1 ? 'upscale' : 'exact',
+        sourcePixelsPerSample: Number((1 / finalSampleScale).toFixed(4)),
         nearBinary: true,
         backgroundTone: Number(rawBackground.toFixed(4)),
         contrastFloor,
-        minimumComponent,
-        removedComponents: cleanup.removedComponents,
-        removedSamples: cleanup.removedSamples,
+        workingMinimumComponent,
+        workingRemovedComponents: workingCleanup.removedComponents,
+        workingRemovedSamples: workingCleanup.removedSamples,
+        minimumComponent: final.minimumComponent,
+        removedComponents: final.cleanup.removedComponents,
+        removedSamples: final.cleanup.removedSamples,
       },
     };
   }
 
-  const tones = blur(sampled.tones, sampled.content, qw, qh, preset.blur);
-  const colors = blurColors(sampled.colors, sampled.content, qw, qh, preset.blur);
-  const background = borderTone(tones, sampled.content, qw, qh);
-  const backgroundRgb = borderColor(colors, sampled.content, qw, qh);
+  const workingBlur = preset.blur * workingScale;
+  const tones = blur(sampled.tones, sampled.content, workingWidth, workingHeight, workingBlur);
+  const colors = blurColors(sampled.colors, sampled.content, workingWidth, workingHeight, workingBlur);
+  const background = borderTone(tones, sampled.content, workingWidth, workingHeight);
+  const backgroundRgb = borderColor(colors, sampled.content, workingWidth, workingHeight);
   const scores = new Float64Array(tones.length);
   const candidates = [];
 
   const toneAt = (x, y) => {
-    if (x < 0 || y < 0 || x >= qw || y >= qh) return background;
-    const index = y * qw + x;
+    if (x < 0 || y < 0 || x >= workingWidth || y >= workingHeight) return background;
+    const index = y * workingWidth + x;
     return sampled.content[index] ? tones[index] : background;
   };
   const colorAt = (x, y, channel) => {
-    if (x < 0 || y < 0 || x >= qw || y >= qh) return backgroundRgb[channel];
-    const index = y * qw + x;
+    if (x < 0 || y < 0 || x >= workingWidth || y >= workingHeight) return backgroundRgb[channel];
+    const index = y * workingWidth + x;
     return sampled.content[index] ? colors[index * 3 + channel] : backgroundRgb[channel];
   };
-  for (let y = 0; y < qh; y++) {
-    for (let x = 0; x < qw; x++) {
-      const index = y * qw + x;
+  for (let y = 0; y < workingHeight; y++) {
+    for (let x = 0; x < workingWidth; x++) {
+      const index = y * workingWidth + x;
       if (!sampled.content[index]) continue;
       const gx = -toneAt(x - 1, y - 1) - 2 * toneAt(x - 1, y) - toneAt(x - 1, y + 1)
         + toneAt(x + 1, y - 1) + 2 * toneAt(x + 1, y) + toneAt(x + 1, y + 1);
@@ -455,7 +539,7 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
   const contentSamples = sampled.content.filter(Boolean).length;
   const inkBudget = Math.max(4, Math.round(contentSamples * preset.coverage));
   const selected = candidates.slice(0, Math.min(inkBudget, candidates.length));
-  let on = new Uint8Array(qw * qh);
+  let on = new Uint8Array(workingWidth * workingHeight);
   for (const { index } of selected) on[index] = 1;
 
   // Canny-style hysteresis in lattice terms: high-salience samples seed the
@@ -469,11 +553,11 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
   const frontier = selected.map(({ index }) => index);
   for (let cursor = 0; cursor < frontier.length && selected.length + expandedSamples < expandedLimit; cursor++) {
     const index = frontier[cursor];
-    const x = index % qw, y = Math.floor(index / qw);
-    for (let yy = Math.max(0, y - 1); yy <= Math.min(qh - 1, y + 1); yy++) {
-      for (let xx = Math.max(0, x - 1); xx <= Math.min(qw - 1, x + 1); xx++) {
+    const x = index % workingWidth, y = Math.floor(index / workingWidth);
+    for (let yy = Math.max(0, y - 1); yy <= Math.min(workingHeight - 1, y + 1); yy++) {
+      for (let xx = Math.max(0, x - 1); xx <= Math.min(workingWidth - 1, x + 1); xx++) {
         if (xx === x && yy === y) continue;
-        const neighbour = yy * qw + xx;
+        const neighbour = yy * workingWidth + xx;
         if (on[neighbour] || scores[neighbour] < weakFloor) continue;
         on[neighbour] = 1;
         frontier.push(neighbour);
@@ -484,25 +568,30 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
     }
   }
 
-  on = simplifyPass(on, qw, qh);
-  const minimumComponent = Math.max(2, Math.floor(contentSamples / preset.componentDivisor));
-  const cleanup = cleanIslands(on, qw, qh, minimumComponent);
-  const stats = analyse({ width: qw, height: qh, on });
-  if (stats.ink < 4) {
-    throw new Error('adaptive simplification removed all stable features; use embed mode, choose higher detail, or provide a clearer source');
-  }
+  on = simplifyPass(on, workingWidth, workingHeight);
+  const workingMinimumComponent = Math.max(2, Math.floor(contentSamples / preset.componentDivisor));
+  const workingCleanup = cleanIslands(on, workingWidth, workingHeight, workingMinimumComponent);
+  const final = finalizeSimplification(on, qw, qh, workingScale, resolvedDetail, contentSamples, preset.componentDivisor);
 
   return {
     width: qw,
     height: qh,
-    on,
+    on: final.on,
     processing: {
       strategy: 'adaptive-simplify',
       requestedDetail: detail,
       resolvedDetail,
-      scaleDirection: sampled.scale < 1 ? 'downscale' : sampled.scale > 1 ? 'upscale' : 'exact',
-      sourcePixelsPerSample: Number((1 / sampled.scale).toFixed(4)),
-      blurRadius: preset.blur,
+      requestedSupersample: supersample,
+      resolvedSupersample: workingScale,
+      workingCanvas: { width: workingWidth, height: workingHeight, unit: 'quadrants' },
+      workingSamplesPerOutput: final.workingSamplesPerOutput,
+      workingScaleDirection: sampled.scale < 1 ? 'downscale' : sampled.scale > 1 ? 'upscale' : 'exact',
+      workingSourcePixelsPerSample: Number((1 / sampled.scale).toFixed(4)),
+      downsampleMethod: final.method,
+      downsampleCoverageThreshold: final.coverageThreshold,
+      scaleDirection: finalSampleScale < 1 ? 'downscale' : finalSampleScale > 1 ? 'upscale' : 'exact',
+      sourcePixelsPerSample: Number((1 / finalSampleScale).toFixed(4)),
+      blurRadius: workingBlur,
       inkBudget,
       strongFloor: Number(strongFloor.toFixed(4)),
       weakFloor: Number(weakFloor.toFixed(4)),
@@ -512,9 +601,12 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
       colorAware: true,
       nearBinary: false,
       salienceFloor: 0.02,
-      minimumComponent,
-      removedComponents: cleanup.removedComponents,
-      removedSamples: cleanup.removedSamples,
+      workingMinimumComponent,
+      workingRemovedComponents: workingCleanup.removedComponents,
+      workingRemovedSamples: workingCleanup.removedSamples,
+      minimumComponent: final.minimumComponent,
+      removedComponents: final.cleanup.removedComponents,
+      removedSamples: final.cleanup.removedSamples,
     },
   };
 }

@@ -871,13 +871,37 @@ export function createTools(session) {
         const resolved = await readImage(session, source);
         const probed = resolved.info;
         const m = core.image.measure(probed, { maxWidthCells, maxHeightCells });
+        const simplifyScale = core.image.scaleReport(probed, {
+          cellsWide: m.cellsWide, cellsTall: m.cellsTall, mode: 'simplify', fit,
+        });
+        const simplifyTarget = { width: m.cellsWide * 2, height: m.cellsTall * 2 };
+        const simplifyTargetSize = simplifyTarget.width * simplifyTarget.height;
+        const simplifySupersample = simplifyTargetSize <= core.dither.MAX_SIMPLIFY_QUADRANTS
+          ? core.dither.resolveSupersample('auto', simplifyTarget.width, simplifyTarget.height)
+          : null;
         return JSON.stringify({
           ...probed,
           ...m,
           scale: {
             embed: core.image.scaleReport(probed, { cellsWide: m.cellsWide, cellsTall: m.cellsTall, mode: 'embed', fit }),
             dither: core.image.scaleReport(probed, { cellsWide: m.cellsWide, cellsTall: m.cellsTall, mode: 'dither', fit }),
-            simplify: core.image.scaleReport(probed, { cellsWide: m.cellsWide, cellsTall: m.cellsTall, mode: 'simplify', fit }),
+            simplify: {
+              ...simplifyScale,
+              workingCanvas: simplifySupersample === null
+                ? {
+                    available: false,
+                    reason: `final simplify target exceeds ${core.dither.MAX_SIMPLIFY_QUADRANTS} quadrants`,
+                    downsampleTo: { ...simplifyTarget, unit: 'quadrants' },
+                  }
+                : {
+                    available: true,
+                    requestedSupersample: 'auto', resolvedSupersample: simplifySupersample,
+                    width: simplifyTarget.width * simplifySupersample,
+                    height: simplifyTarget.height * simplifySupersample,
+                    unit: 'quadrants',
+                    downsampleTo: { ...simplifyTarget, unit: 'quadrants' },
+                  },
+            },
           },
         }, null, 2);
       },
@@ -1057,7 +1081,7 @@ export function createTools(session) {
 
     {
       name: 'place_image',
-      description: 'Place an image at an exact footprint. Embed preserves verified source bytes; dither reproduces tone with deterministic ordered ink; simplify intentionally discards low-salience texture and retains sparse edge/contrast structure. Rasterized modes report readability and must be removed/re-placed to change sampling size. All modes preserve aspect through contain or cover.',
+      description: 'Place an image at an exact footprint. Embed preserves verified source bytes; dither reproduces tone with deterministic ordered ink; simplify intentionally discards low-salience texture and may process on a 1x, 2x, or 4x working canvas before reducing to the final lattice. Rasterized modes report readability and must be removed/re-placed to change sampling size. All modes preserve aspect through contain or cover.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -1068,19 +1092,20 @@ export function createTools(session) {
           mode: { type: 'string', enum: ['embed', 'dither', 'simplify'] },
           fit: { type: 'string', enum: ['contain', 'cover'] },
           detail: { type: 'string', enum: ['auto', 'low', 'medium', 'high'], description: 'simplify only; auto resolves from output size and scale severity' },
+          supersample: { enum: ['auto', 1, 2, 4], description: 'simplify only; linear working-canvas factor. 4 means 4x width and height, then deterministic reduction to the final 1x lattice' },
           opacity: { type: 'number' },
           page: { type: 'string' },
         },
         required: ['id', 'at', 'span', 'source'],
         additionalProperties: false,
       },
-      handler: async ({ id, at, span, source, mode = 'embed', fit = 'contain', detail = 'auto', opacity = null, page = 'base' }) => {
+      handler: async ({ id, at, span, source, mode = 'embed', fit = 'contain', detail = 'auto', supersample = 'auto', opacity = null, page = 'base' }) => {
         const doc = need(session);
         const resolved = await readImage(session, source);
         const probed = resolved.info;
         const cells = core.normalizeSpan(span, `span for "${id}"`);
         const recommended = core.image.measure(probed, { maxWidthCells: cells.w });
-        const el = core.placeImage(doc, page, { id, at, span, source: resolved.dataUri, mode, fit, detail, opacity });
+        const el = core.placeImage(doc, page, { id, at, span, source: resolved.dataUri, mode, fit, detail, supersample, opacity });
         await persist(session);
         return `placed image "${id}" on page "${page}" at ${core.address.quadToAddress(el.rect.x, el.rect.y)}, ${cells.w}x${cells.h} cells
 `
@@ -1096,8 +1121,8 @@ export function createTools(session) {
             : '')
           + (mode === 'simplify'
             ? el.processing.strategy === 'threshold-simplify'
-              ? `\nsimplification: ${el.processing.resolvedDetail.toUpperCase()} detail (${el.processing.requestedDetail} requested), near-binary threshold at ${el.processing.contrastFloor} background contrast, removed ${el.processing.removedSamples} samples in ${el.processing.removedComponents} small fragments; perceptual approximation, not a 1:1 copy`
-              : `\nsimplification: ${el.processing.resolvedDetail.toUpperCase()} detail (${el.processing.requestedDetail} requested), ${el.processing.blurRadius}-quadrant smoothing, ${el.processing.inkBudget}-quadrant strong-feature budget plus ${el.processing.expandedSamples} contour extensions, removed ${el.processing.removedSamples} samples in ${el.processing.removedComponents} small fragments; perceptual approximation, not a 1:1 copy`
+              ? `\nsimplification: ${el.processing.resolvedDetail.toUpperCase()} detail (${el.processing.requestedDetail} requested), ${el.processing.resolvedSupersample}:1 working canvas ${el.processing.workingCanvas.width}x${el.processing.workingCanvas.height} -> 1:1 final lattice by ${el.processing.downsampleMethod} (${el.processing.workingSamplesPerOutput} working samples/output), near-binary threshold at ${el.processing.contrastFloor} background contrast, removed ${el.processing.removedSamples} final samples in ${el.processing.removedComponents} small fragments; perceptual approximation, not a 1:1 copy`
+              : `\nsimplification: ${el.processing.resolvedDetail.toUpperCase()} detail (${el.processing.requestedDetail} requested), ${el.processing.resolvedSupersample}:1 working canvas ${el.processing.workingCanvas.width}x${el.processing.workingCanvas.height} -> 1:1 final lattice by ${el.processing.downsampleMethod} (${el.processing.workingSamplesPerOutput} working samples/output), ${el.processing.blurRadius}-working-quadrant smoothing, ${el.processing.inkBudget}-working-quadrant strong-feature budget plus ${el.processing.expandedSamples} contour extensions, removed ${el.processing.removedSamples} final samples in ${el.processing.removedComponents} small fragments; perceptual approximation, not a 1:1 copy`
             : '');
       },
     },
@@ -1116,16 +1141,17 @@ export function createTools(session) {
           mode: { type: 'string', enum: ['dither', 'simplify'], description: 'default dither; use simplify when literal tonal reproduction is too busy' },
           fit: { type: 'string', enum: ['contain', 'cover'] },
           detail: { type: 'string', enum: ['auto', 'low', 'medium', 'high'], description: 'simplify only' },
+          supersample: { enum: ['auto', 1, 2, 4], description: 'simplify only; linear working-canvas factor before reduction to final size' },
         },
         required: ['source', 'span'],
         additionalProperties: false,
       },
-      handler: async ({ id = 'reference', source, at = 'A1.tl', span, opacity = undefined, mode = 'dither', fit = 'contain', detail = 'auto' }) => {
+      handler: async ({ id = 'reference', source, at = 'A1.tl', span, opacity = undefined, mode = 'dither', fit = 'contain', detail = 'auto', supersample = 'auto' }) => {
         const doc = need(session);
         const resolved = await readImage(session, source);
         const probed = resolved.info;
         const page = core.placeReference(doc, {
-          id, at, span, opacity, mode, fit, detail,
+          id, at, span, opacity, mode, fit, detail, supersample,
           source: resolved.dataUri,
         });
         await persist(session);
@@ -1543,13 +1569,16 @@ DRAWING FROM A SOURCE — reach for this BEFORE deriving geometry by hand
     Reports the measured whole-cell footprint plus separate embedded-pixel and
     dither/simplify quadrant scales. Read UPSCALE, DOWNSCALE, or EXACT before placement.
     Upscaling repeats/interpolates existing information; it creates no detail.
-  place_image  id at span source [mode] [fit] [detail] [opacity] [page]
+  place_image  id at span source [mode] [fit] [detail] [supersample] [opacity] [page]
     mode "simplify" intentionally makes a perceptual approximation rather than
                    a 1:1 copy. Near-binary sources use clean contrast thresholding;
                    continuous-tone sources use colour-aware contour selection and
                    raise L023 because geometry cannot know the subject. detail is
                    auto|low|medium|high. Fewer than 24 quadrants on the short side
                    is refused; use a larger span or purpose-built icon artwork.
+                   supersample is auto|1|2|4. A factor of 4 builds a working canvas
+                   at 4x width and height (16 samples/output), then box-downscales
+                   it to the unchanged 1x lattice. auto prefers 4x within limits.
     mode "dither"  quantises the image ONTO the lattice through a 4x4 Bayer
                    matrix. Real quadrants, merged into runs, byte-identical
                    every run. Downscale area-averages; upscale repeats nearest
@@ -1560,7 +1589,7 @@ DRAWING FROM A SOURCE — reach for this BEFORE deriving geometry by hand
                    for photos and evidence. Resize recomputes its scale report.
     fit  "contain" (default) preserves every edge with possible padding;
          "cover" fills the footprint by cropping overflow. Both preserve aspect.
-  place_reference source span [at] [opacity] [id] [mode] [fit] [detail]
+  place_reference source span [at] [opacity] [id] [mode] [fit] [detail] [supersample]
     Lays a dithered or simplified copy UNDER the drawing to trace over, flagged
     L020 until remove_page takes it out, so scaffolding cannot ship.
 

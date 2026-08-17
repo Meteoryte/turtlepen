@@ -74,6 +74,7 @@ function publicElement(doc, element, page) {
     mode: element.mode ?? null,
     fit: element.fit ?? null,
     detail: element.detail ?? null,
+    supersample: element.supersample ?? null,
     scale: element.scale ?? null,
     ditherStats: element.ditherStats ?? null,
     processing: element.processing ?? null,

@@ -356,11 +356,14 @@ export function placeBox(doc, pageId, { id, at, span, label = '', corner = 'squa
  * from a guess. Whole-cell viewport drift is reported, while contain or cover
  * preserves the source aspect through padding or cropping.
  */
-export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', fit = 'contain', detail = 'auto', opacity = null }) {
+export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', fit = 'contain', detail = 'auto', supersample = 'auto', opacity = null }) {
   if (!source) throw new SyntaxError(`image "${id}" needs a source — a base64 data URI prepared by the tool layer`);
   image.assertMode(mode);
   if (mode !== 'simplify' && detail !== 'auto') {
     throw new SyntaxError(`image detail applies only to mode "simplify" — ${mode} mode received ${JSON.stringify(detail)}`);
+  }
+  if (mode !== 'simplify' && supersample !== 'auto') {
+    throw new SyntaxError(`image supersample applies only to mode "simplify" — ${mode} mode received ${JSON.stringify(supersample)}`);
   }
   const embedded = image.assertEmbeddedSource(source);
   const cells = normalizeSpan(span, `span for "${id}"`);
@@ -379,7 +382,7 @@ export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', 
     if (embedded.format !== 'png') throw new SyntaxError(`image "${id}" cannot use ${mode} mode from ${embedded.format.toUpperCase()} — lattice rasterization decodes PNG only; use mode "embed" or convert it to PNG`);
     const decoded = png.decode(embedded.bytes);
     const grid = mode === 'simplify'
-      ? dither.simplifyToQuadrants(decoded, r.w, r.h, { fit, detail })
+      ? dither.simplifyToQuadrants(decoded, r.w, r.h, { fit, detail, supersample })
       : dither.ditherToQuadrants(decoded, r.w, r.h, { fit });
     runs = dither.runsOf(grid);
     ditherStats = dither.analyse(grid);
@@ -390,6 +393,7 @@ export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', 
   // well would duplicate megabytes in the document and every history snapshot.
   return addImage(doc, pageId, {
     id, rect: r, source: mode === 'embed' ? source : null, mode, fit, detail: mode === 'simplify' ? detail : null,
+    supersample: mode === 'simplify' ? supersample : null,
     opacity, runs, scale, ditherStats, processing,
   });
 }
@@ -408,7 +412,7 @@ export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', 
  */
 export const REFERENCE_OPACITY = 0.25;
 
-export function placeReference(doc, { id = 'reference', source, at = 'A1.tl', span, opacity = REFERENCE_OPACITY, mode = 'dither', fit = 'contain', detail = 'auto' }) {
+export function placeReference(doc, { id = 'reference', source, at = 'A1.tl', span, opacity = REFERENCE_OPACITY, mode = 'dither', fit = 'contain', detail = 'auto', supersample = 'auto' }) {
   if (!source) throw new SyntaxError('a reference needs an image source — a data: URI, or a path the tool layer has already read');
   if (!['dither', 'simplify'].includes(mode)) {
     throw new SyntaxError(`a tracing reference mode must be dither or simplify — got ${JSON.stringify(mode)}`);
@@ -416,7 +420,7 @@ export function placeReference(doc, { id = 'reference', source, at = 'A1.tl', sp
   const draft = structuredClone(doc);
   const lowest = draft.pages.reduce((m, p) => Math.min(m, p.z), 0);
   const page = addPage(draft, { id, z: lowest - 1, intent: 'overlay', title: `${id} (tracing reference)`, opacity, reference: true });
-  placeImage(draft, id, { id: `${id}-image`, at, span, source, mode, fit, detail });
+  placeImage(draft, id, { id: `${id}-image`, at, span, source, mode, fit, detail, supersample });
   doc.pages = draft.pages;
   doc.elements = draft.elements;
   return page;

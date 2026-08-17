@@ -395,9 +395,12 @@ uncontrolled web imagery.
 The [real-image MCP exercise](diagrams/condenser-image-workflow.svg) embeds a
 generated 1536 x 1024 condenser photo as evidence and uses a separate generated
 line-art derivative for tonal dither, non-fidelity simplify, and the temporary
-reference gate. It reports exact up/downscale procedures, blocks checkerboard
-output through `L022`, and blocks semantically unverified continuous-tone
-approximations through `L023`. Prompts, hashes, metrics, and usage boundaries are recorded in
+reference gate. Simplify may use a bounded 4x-linear working canvas and
+box-reduce it to the unchanged final lattice, preserving fine connected
+structure without claiming new source detail. The workflow reports every
+up/downscale stage, blocks checkerboard output through `L022`, and blocks
+semantically unverified continuous-tone approximations through `L023`. Prompts,
+hashes, metrics, and usage boundaries are recorded in
 [the image workflow test](docs/image-workflow-test.md); the operational contract
 is [the image scaling procedure](docs/image-scaling-procedure.md).
 
