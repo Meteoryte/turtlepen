@@ -855,7 +855,7 @@ export function createTools(session) {
 
     {
       name: 'measure_image',
-      description: 'Read real image dimensions and report the measured whole-cell footprint, aspect rounding, rendered-pixel scale, and dither quadrant-sampling scale. Call this BEFORE place_image. Reports say exactly whether each stage upscales, downscales, or stays exact; upscaling never creates detail.',
+      description: 'Read real image dimensions and report the measured whole-cell footprint, aspect rounding, rendered-pixel scale, and dither/simplify quadrant-sampling scales. Call this BEFORE place_image. Reports say exactly whether each stage upscales, downscales, or stays exact; upscaling never creates detail.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -877,6 +877,7 @@ export function createTools(session) {
           scale: {
             embed: core.image.scaleReport(probed, { cellsWide: m.cellsWide, cellsTall: m.cellsTall, mode: 'embed', fit }),
             dither: core.image.scaleReport(probed, { cellsWide: m.cellsWide, cellsTall: m.cellsTall, mode: 'dither', fit }),
+            simplify: core.image.scaleReport(probed, { cellsWide: m.cellsWide, cellsTall: m.cellsTall, mode: 'simplify', fit }),
           },
         }, null, 2);
       },
@@ -1056,7 +1057,7 @@ export function createTools(session) {
 
     {
       name: 'place_image',
-      description: 'Place an image at an exact footprint. Embed preserves verified source bytes and may be resized; dither area-downsamples or nearest-upscales a prepared PNG into deterministic 1-bit quadrants, reports readability, and must be removed/re-placed to change sampling size. Use embed for photographic evidence and dither only for sparse high-contrast line art. Both modes preserve aspect through contain or cover.',
+      description: 'Place an image at an exact footprint. Embed preserves verified source bytes; dither reproduces tone with deterministic ordered ink; simplify intentionally discards low-salience texture and retains sparse edge/contrast structure. Rasterized modes report readability and must be removed/re-placed to change sampling size. All modes preserve aspect through contain or cover.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -1064,21 +1065,22 @@ export function createTools(session) {
           at: { type: 'string' },
           span: { type: ['string', 'object'] },
           source: { type: 'string', description: 'a supported image data URI, or a path relative to the active diagram' },
-          mode: { type: 'string', enum: ['embed', 'dither'] },
+          mode: { type: 'string', enum: ['embed', 'dither', 'simplify'] },
           fit: { type: 'string', enum: ['contain', 'cover'] },
+          detail: { type: 'string', enum: ['auto', 'low', 'medium', 'high'], description: 'simplify only; auto resolves from output size and scale severity' },
           opacity: { type: 'number' },
           page: { type: 'string' },
         },
         required: ['id', 'at', 'span', 'source'],
         additionalProperties: false,
       },
-      handler: async ({ id, at, span, source, mode = 'embed', fit = 'contain', opacity = null, page = 'base' }) => {
+      handler: async ({ id, at, span, source, mode = 'embed', fit = 'contain', detail = 'auto', opacity = null, page = 'base' }) => {
         const doc = need(session);
         const resolved = await readImage(session, source);
         const probed = resolved.info;
         const cells = core.normalizeSpan(span, `span for "${id}"`);
         const recommended = core.image.measure(probed, { maxWidthCells: cells.w });
-        const el = core.placeImage(doc, page, { id, at, span, source: resolved.dataUri, mode, fit, opacity });
+        const el = core.placeImage(doc, page, { id, at, span, source: resolved.dataUri, mode, fit, detail, opacity });
         await persist(session);
         return `placed image "${id}" on page "${page}" at ${core.address.quadToAddress(el.rect.x, el.rect.y)}, ${cells.w}x${cells.h} cells
 `
@@ -1089,15 +1091,20 @@ export function createTools(session) {
             : `footprint: requested ${cells.w}x${cells.h} cells; measured recommendation at this width is ${recommended.cellsWide}x${recommended.cellsTall}. ${fit} preserves source aspect and will ${fit === 'cover' ? 'crop overflow' : 'pad unused space'}`)
           + `\nrender: ${el.scale.render.direction.toUpperCase()} to ${el.scale.render.contentPx.width}x${el.scale.render.contentPx.height}px inside a ${el.scale.renderedPx.width}x${el.scale.renderedPx.height}px ${fit} viewport`
           + `\nsampling: ${el.scale.sampling.direction.toUpperCase()} to ${el.scale.sampling.content.width}x${el.scale.sampling.content.height} ${el.scale.sampling.content.unit}; ${el.scale.sampling.procedure}`
-          + (mode === 'dither'
+          + (mode !== 'embed'
             ? `\nreadability: ${el.ditherStats.readability.toUpperCase()} — ${(el.ditherStats.transitionRatio * 100).toFixed(1)}% neighbour transitions, ${(el.ditherStats.coverageRatio * 100).toFixed(1)}% ink, ${el.ditherStats.runCount} runs`
+            : '')
+          + (mode === 'simplify'
+            ? el.processing.strategy === 'threshold-simplify'
+              ? `\nsimplification: ${el.processing.resolvedDetail.toUpperCase()} detail (${el.processing.requestedDetail} requested), near-binary threshold at ${el.processing.contrastFloor} background contrast, removed ${el.processing.removedSamples} samples in ${el.processing.removedComponents} small fragments; perceptual approximation, not a 1:1 copy`
+              : `\nsimplification: ${el.processing.resolvedDetail.toUpperCase()} detail (${el.processing.requestedDetail} requested), ${el.processing.blurRadius}-quadrant smoothing, ${el.processing.inkBudget}-quadrant strong-feature budget plus ${el.processing.expandedSamples} contour extensions, removed ${el.processing.removedSamples} samples in ${el.processing.removedComponents} small fragments; perceptual approximation, not a 1:1 copy`
             : '');
       },
     },
     {
       name: 'place_reference',
       description:
-        'Lay prepared high-contrast line art UNDER the drawing to trace over. It is aspect-preserved, sampled onto the lattice, checked for busy dither, put below the base at low opacity, and flagged by L020 until remove_page removes it. Do not use raw photographic evidence as trace art.',
+        'Lay an aspect-preserved image UNDER the drawing to trace over, checked for busy raster output and flagged by L020 until remove_page removes it. Dither is exact tonal lattice ink; simplify is a sparse perceptual approximation for sources whose literal dither is unreadable.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -1106,16 +1113,19 @@ export function createTools(session) {
           at: { type: 'string' },
           span: { type: ['string', 'object'] },
           opacity: { type: 'number', description: 'default 0.25 — faint enough to draw over' },
+          mode: { type: 'string', enum: ['dither', 'simplify'], description: 'default dither; use simplify when literal tonal reproduction is too busy' },
+          fit: { type: 'string', enum: ['contain', 'cover'] },
+          detail: { type: 'string', enum: ['auto', 'low', 'medium', 'high'], description: 'simplify only' },
         },
         required: ['source', 'span'],
         additionalProperties: false,
       },
-      handler: async ({ id = 'reference', source, at = 'A1.tl', span, opacity = undefined }) => {
+      handler: async ({ id = 'reference', source, at = 'A1.tl', span, opacity = undefined, mode = 'dither', fit = 'contain', detail = 'auto' }) => {
         const doc = need(session);
         const resolved = await readImage(session, source);
         const probed = resolved.info;
         const page = core.placeReference(doc, {
-          id, at, span, opacity,
+          id, at, span, opacity, mode, fit, detail,
           source: resolved.dataUri,
         });
         await persist(session);
@@ -1531,9 +1541,15 @@ TONE — density, and why it is not opacity
 DRAWING FROM A SOURCE — reach for this BEFORE deriving geometry by hand
   measure_image source [maxWidthCells|maxHeightCells] [fit]
     Reports the measured whole-cell footprint plus separate embedded-pixel and
-    dither-quadrant scales. Read UPSCALE, DOWNSCALE, or EXACT before placement.
+    dither/simplify quadrant scales. Read UPSCALE, DOWNSCALE, or EXACT before placement.
     Upscaling repeats/interpolates existing information; it creates no detail.
-  place_image  id at span source [mode] [fit] [opacity] [page]
+  place_image  id at span source [mode] [fit] [detail] [opacity] [page]
+    mode "simplify" intentionally makes a perceptual approximation rather than
+                   a 1:1 copy. Near-binary sources use clean contrast thresholding;
+                   continuous-tone sources use colour-aware contour selection and
+                   raise L023 because geometry cannot know the subject. detail is
+                   auto|low|medium|high. Fewer than 24 quadrants on the short side
+                   is refused; use a larger span or purpose-built icon artwork.
     mode "dither"  quantises the image ONTO the lattice through a 4x4 Bayer
                    matrix. Real quadrants, merged into runs, byte-identical
                    every run. Downscale area-averages; upscale repeats nearest
@@ -1544,13 +1560,13 @@ DRAWING FROM A SOURCE — reach for this BEFORE deriving geometry by hand
                    for photos and evidence. Resize recomputes its scale report.
     fit  "contain" (default) preserves every edge with possible padding;
          "cover" fills the footprint by cropping overflow. Both preserve aspect.
-  place_reference source span [at] [opacity] [id]
-    Lays a dithered copy UNDER the drawing to trace over, flagged L020 until
-    remove_page takes it out, so scaffolding cannot ship.
+  place_reference source span [at] [opacity] [id] [mode] [fit] [detail]
+    Lays a dithered or simplified copy UNDER the drawing to trace over, flagged
+    L020 until remove_page takes it out, so scaffolding cannot ship.
 
   If a shape has to LOOK like something real — a brain, a leaf, a face — a
-  formula will not get there. Sine waves are not cortex. Dither a source or
-  trace a reference. Hand-computing a bitmap is the long way round, and the
+  formula will not get there. Sine waves are not cortex. Simplify prepared
+  source art, dither it, or trace a reference. Hand-computing a bitmap is the long way round, and the
   usual reason an author reaches for it is that they did not know these exist.
 
   dir     up down left right          n counts whole 10px cells

@@ -18,7 +18,7 @@ import { DEFAULT_FONT, resolveFontSize } from './text.js';
 import { normalizeTone, normalizeFeather, normalizeTexture } from './tone.js';
 import { normalizePattern } from './pattern.js';
 import { assertEmbeddedSource, assertMode as assertImageMode, scaleReport } from './image.js';
-import { analyseRuns } from './dither.js';
+import { analyseRuns, SIMPLIFY_DETAILS } from './dither.js';
 
 // `schematic` stacks exactly like `exclusive`; it exists to carry authorial meaning —
 // "this page is deliberately spare" — which the composition rules read and skip.
@@ -270,7 +270,7 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
   return el;
 }
 
-export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit = 'contain', opacity = null, note = null, runs = null, scale = null, ditherStats = null }) {
+export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit = 'contain', detail = null, opacity = null, note = null, runs = null, scale = null, ditherStats = null, processing = null }) {
   getPage(doc, pageId);
   assertElementId(id);
   assertFreeId(doc, id);
@@ -281,11 +281,13 @@ export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit
     source,
     mode,
     fit: assertImageFit(fit),
+    ...(detail ? { detail } : {}),
     opacity: assertOpacity(opacity, 'element opacity'),
     note,
     ...(runs ? { runs } : {}),
     ...(scale ? { scale } : {}),
     ...(ditherStats ? { ditherStats } : {}),
+    ...(processing ? { processing } : {}),
   };
   doc.elements[pageId].push(el);
   return el;
@@ -752,12 +754,24 @@ export function deserialize(json) {
       if (element?.kind !== 'image') continue;
       assertImageMode(element.mode ?? 'embed');
       assertImageFit(element.fit ?? 'contain');
-      if (element.mode === 'dither') {
-        if (!Array.isArray(element.runs)) throw new TypeError(`dithered image "${element.id}" must carry deterministic runs`);
+      if (element.mode === 'simplify') {
+        element.detail ??= 'auto';
+        if (!SIMPLIFY_DETAILS.includes(element.detail)) {
+          throw new SyntaxError(`simplify detail must be ${SIMPLIFY_DETAILS.join(', ')} — got ${JSON.stringify(element.detail)}`);
+        }
+        if (!element.processing || typeof element.processing.nearBinary !== 'boolean') {
+          element.processing = {
+            strategy: 'unknown-saved-simplification', requestedDetail: element.detail,
+            resolvedDetail: element.detail, nearBinary: false, removedComponents: 0, removedSamples: 0,
+          };
+        }
+      }
+      if (element.mode !== 'embed') {
+        if (!Array.isArray(element.runs)) throw new TypeError(`${element.mode} image "${element.id}" must carry deterministic runs`);
         element.ditherStats = analyseRuns(element.runs, element.rect.w, element.rect.h);
         if (element.scale?.sourcePx) {
           element.scale = scaleReport(element.scale.sourcePx, {
-            cellsWide: element.rect.w / 2, cellsTall: element.rect.h / 2, mode: 'dither', fit: element.fit,
+            cellsWide: element.rect.w / 2, cellsTall: element.rect.h / 2, mode: element.mode, fit: element.fit,
           });
         } else {
           delete element.scale;

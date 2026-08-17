@@ -1,13 +1,13 @@
 # TurtlePen — status
 
-**As of 2026-08-17.** Prototype, working end to end, 307/307 tests green,
+**As of 2026-08-17.** Prototype, working end to end, 314/314 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **307/307 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **314/314 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
 - **Every external surface has a drift-proof contract.** All 35 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC
@@ -25,18 +25,24 @@ Verified by running it, not by inspection:
   build applies the reported numeric height fixes and validates with zero open
   findings. P01-P20 connect the sheet to a deterministic, technician-reviewed
   LLM photo-shot list in `docs/condenser-replacement-photo-shot-list.md`.
-- **Real image handling separates evidence from lattice artwork.** `pnpm run
-  image-session` measures a 1536 x 1024 condenser photo and a separate simplified
-  line-art derivative, proves the temporary-reference `L020` gate, embeds the
-  photo, and dithers only the derivative before save/reopen/render over real MCP
-  stdio. Every placement stores exact source, viewport, render, semantic sample,
-  fit, and up/downscale reports. Dither downscales through area-weighted sampling,
-  upscales through nearest-sample repetition, preserves aspect for contain/cover,
-  and refuses stale-grid resizing. `L022` blocks results above 45% neighboring
-  transitions; the rejected raw photo measured 69.24% and was blind-guessed as a
-  teapot, while the final line art measures 17.40% and reads as a condenser.
-  Image bytes are verified, allocations are bounded, and deterministic runs do
-  not duplicate the multi-megabyte source in document history.
+- **Real image handling separates evidence, tonal reproduction, and perceptual
+  simplification.** `pnpm run image-session` measures a 1536 x 1024 condenser
+  photo and a separate generated line-art derivative, proves the `L020`
+  temporary-reference gate, embeds the photo, then renders the derivative as
+  both source-like dither and a bolder non-fidelity simplify before
+  save/reopen/render over real MCP stdio. Every placement stores exact viewport,
+  render, semantic sample, fit, and up/downscale reports. Dither downscales by
+  area and upscales by nearest sample. Simplify selects a deterministic
+  near-binary threshold or colour-aware contour strategy, resolves an explicit
+  detail budget, refuses fewer than 24 quadrants on the short side, caps analysis
+  at 250,000 quadrants with linear contour growth, and records
+  what it discarded. `L022` blocks high-frequency output; `L023` blocks
+  continuous-tone heuristic results because geometry cannot know the subject.
+  The rejected raw-photo dither measured 69.24% transitions and was guessed as a
+  teapot. The published line-art dither measures 17.40%; simplify measures
+  13.03% and reads as a heavier condenser pictogram. Rasterized modes refuse
+  stale-grid resizing. Image bytes are verified, allocations are bounded, and
+  deterministic runs do not duplicate the multi-megabyte source in history.
 - **A diagram can be judged on composition, not just correctness.** `C001`
   (S3/INFO) reports a document whose densest page inks less than 1.2% of its
   canvas — the case that previously scored green because "no defects" is
@@ -142,6 +148,12 @@ Verified by running it, not by inspection:
   which is why an ordered matrix is the default rather than error diffusion.
   Raw photographs stay embedded; deterministic conversion is not the same as
   recognizable conversion, so `L022` and a normal-size visual check still apply.
+- **Prepared line art can be simplified instead of copied.** `mode: 'simplify'`
+  preserves contrast-defined structure without Bayer checker tone and is
+  explicitly allowed to thicken, omit, and merge source features. Continuous
+  photographs take a colour-aware contour path but always raise `L023` until a
+  blind identity review is recorded or a purpose-built derivative replaces the
+  result. This keeps “cleaner” from being mistaken for “semantically correct.”
 - **Drawn artwork has density, not just presence.** `tone` (0.0625–1, or
   `quarter`/`half`/`three-quarter`/`solid`), `feather`, and `texture` on a pen
   path filter its pieces through that same ordered matrix. Because a piece IS

@@ -13,7 +13,7 @@ function tracePng(width, height) {
   const pixels = new Uint8Array(width * height * 3).fill(255);
   for (let y = 6; y < height - 6; y++) {
     for (let x = 12; x < width - 12; x++) {
-      if (![6, height - 7].includes(y) && ![12, width - 13].includes(x)) continue;
+      if (y > 8 && y < height - 9 && x > 14 && x < width - 15) continue;
       const index = (y * width + x) * 3;
       pixels[index] = 0; pixels[index + 1] = 0; pixels[index + 2] = 0;
     }
@@ -51,6 +51,8 @@ test('real MCP image workflow rejects unsafe input and recovers through publicat
     assert.equal(measured.scale.embed.render.direction, 'exact');
     assert.equal(measured.scale.dither.sampling.direction, 'downscale');
     assert.deepEqual(measured.scale.dither.sampling.target, { width: 16, height: 8, unit: 'quadrants' });
+    assert.equal(measured.scale.simplify.sampling.direction, 'downscale');
+    assert.match(measured.scale.simplify.sampling.procedure, /discard low-salience texture/);
 
     const hostileSvg = dataUri(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"><script>throw 1</script></svg>'))
       .replace('image/png', 'image/svg+xml');
@@ -81,9 +83,18 @@ test('real MCP image workflow rejects unsafe input and recovers through publicat
     });
     assert.match(plan, /committed 1 operation/);
 
+    const simplifiedReceipt = await call('place_image', {
+      id: 'simplified', source: 'trace.png', at: 'V4.tl', span: '16x12', mode: 'simplify', detail: 'auto',
+    });
+    assert.match(simplifiedReceipt, /simplification: LOW detail.*near-binary threshold/i);
+    assert.match(simplifiedReceipt, /perceptual approximation, not a 1:1 copy/);
+
     const refusedResize = await client.call('resize', { id: 'dithered', cellsW: 10, cellsH: 5 });
     assert.equal(refusedResize.isError, true);
     assert.match(refusedResize.text, /Remove it and call place_image again/);
+    const refusedSimplifyResize = await client.call('resize', { id: 'simplified', cellsW: 18, cellsH: 12 });
+    assert.equal(refusedSimplifyResize.isError, true);
+    assert.match(refusedSimplifyResize.text, /simplify image.*Remove it and call place_image again/);
 
     const busy = await call('place_image', {
       id: 'busy', source: 'busy.png', at: 'C12.tl', span: '8x4', mode: 'dither',
@@ -108,10 +119,16 @@ test('real MCP image workflow rejects unsafe input and recovers through publicat
     assert.equal(dithered.source, null);
     assert.equal(dithered.scale.sampling.direction, 'downscale');
     assert.equal(dithered.ditherStats.readability, 'pass');
+    const simplified = images.find((element) => element.id === 'simplified');
+    assert.equal(simplified.source, null);
+    assert.equal(simplified.processing.strategy, 'threshold-simplify');
+    assert.equal(simplified.processing.nearBinary, true);
+    assert.equal(simplified.ditherStats.readability, 'pass');
 
     const svg = await readFile(join(diagrams, 'image.svg'), 'utf8');
     assert.equal((svg.match(/<image /g) ?? []).length, 1);
     assert.match(svg, /class="dither"/);
+    assert.match(svg, /class="simplify"/);
   } finally {
     await client.close();
     await rm(dir, { recursive: true, force: true });

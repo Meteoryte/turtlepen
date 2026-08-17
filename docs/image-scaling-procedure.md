@@ -9,13 +9,16 @@ visible before publication.
 1. Call `measure_image` before placement.
 2. Use `embed` for field photographs, nameplates, instrument displays, damage,
    wiring evidence, and any image whose real detail matters.
-3. Use `dither` only for a sparse, high-contrast derivative prepared for 1-bit
-   output. Do not use a raw photograph as trace art.
-4. Prefer `fit: "contain"`. Use `cover` only when intentional cropping has been
+3. Use `dither` when tonal pattern is intentional. Use `simplify` when a clean,
+   non-fidelity approximation is more useful than a literal 1-bit copy.
+4. A raw photograph simplified by geometry is still semantically unverified.
+   `L023` blocks it until normal-size blind review or replacement with a
+   purpose-built high-contrast derivative.
+5. Prefer `fit: "contain"`. Use `cover` only when intentional cropping has been
    reviewed.
-5. Upscaling never creates detail. A larger display is not a higher-resolution
+6. Upscaling never creates detail. A larger display is not a higher-resolution
    source.
-6. Validate, render, and inspect the result at its intended reading size. A
+7. Validate, render, and inspect the result at its intended reading size. A
    clean collision report does not prove that an image is understandable.
 
 ## Mode decision
@@ -23,29 +26,35 @@ visible before publication.
 | Need | Mode | Reason |
 |---|---|---|
 | Preserve real site or equipment evidence | `embed` | Keeps the verified source bytes in the document. |
-| Create a stylistic lattice illustration | `dither` | Converts a prepared PNG to deterministic 1-bit quadrant runs. |
-| Trace a temporary construction reference | `place_reference` | Uses dither on a flagged page that `L020` requires you to remove. |
+| Preserve source tone as 1-bit lattice pattern | `dither` | Applies deterministic Bayer thresholding to prepared PNG pixels. |
+| Preserve recognizable structure instead of every tone | `simplify` | Intentionally drops texture, joins contours, and cleans small fragments. |
+| Trace a temporary construction reference | `place_reference` | Uses dither or simplify on a flagged page that `L020` requires you to remove. |
 
 For the same subject, keeping both is valid: embed the real photo and place a
-separate line-art derivative as dither. Label the derivative so it cannot be
-mistaken for field evidence.
+separate line-art derivative as dither or simplify. The derivative may change
+proportions, remove details, thicken edges, or omit background context when
+that makes the subject clearer. Label it so it cannot be mistaken for field
+evidence.
 
 ## Placement procedure
 
 1. **Measure.** Call `measure_image` with exactly one of `maxWidthCells` or
    `maxHeightCells`. Read the source dimensions, whole-cell footprint, aspect
    drift, and both scale reports.
-2. **Choose the mode.** Select `embed` for evidence or `dither` for prepared
-   line art. Stop if the source purpose and mode disagree.
+2. **Choose the mode.** Select `embed` for evidence, `dither` for tonal lattice
+   treatment, or `simplify` for a reviewed approximation. Stop if the source
+   purpose and mode disagree.
 3. **Choose the fit.** `contain` preserves the complete image and may add blank
    padding. `cover` fills the footprint and may crop edges. Never use `cover`
    where cropped evidence could change the meaning.
 4. **Place at the measured span.** If a different span is necessary, read the
    new report rather than estimating the effect.
-5. **Read the response.** Confirm `UPSCALE`, `DOWNSCALE`, or `EXACT`, the content
-   pixels, semantic sample dimensions, procedure, and dither readability.
-6. **Validate.** Resolve every S0-S2 finding. `L022` blocks a checkerboard-heavy
-   dither from publication.
+5. **Read the response.** Confirm `UPSCALE`, `DOWNSCALE`, or `EXACT`, content
+   pixels, semantic sample dimensions, selected simplification strategy/detail,
+   discarded fragments, and readability.
+6. **Validate.** Resolve every S0-S2 finding. `L022` blocks high-frequency
+   raster output. `L023` blocks a continuous-tone heuristic approximation until
+   semantic review or replacement.
 7. **Inspect.** View the render at normal size and perform a blind identity
    check: ask a reviewer who has not seen the source what the image depicts and
    which features support that answer.
@@ -91,9 +100,36 @@ discarded from the saved document to avoid multi-megabyte history duplication.
 TurtlePen therefore refuses `resize` on a dithered image. Remove it and call
 `place_image` again from the source at the new span so sampling is recomputed.
 
+### Simplify
+
+`simplify` is deliberately not a 1:1 conversion. It samples onto the same
+two-quadrants-per-cell grid, then chooses one of two deterministic strategies:
+
+- **Near-binary source:** identify the page-ground tone, keep sufficiently
+  contrasting structure as solid ink, close isolated gaps, and remove fragments.
+  This is the preferred path for LLM-generated or edited technical line art.
+- **Continuous-tone source:** area-sample or nearest-repeat by scale direction,
+  smooth according to the resolved `low`, `medium`, or `high` detail budget,
+  rank colour-aware edges and background contrast, extend weaker pixels only
+  when they continue a strong contour, and remove small disconnected fragments.
+
+`auto` resolves detail from target size and scale severity. The receipt records
+the resolved strategy and parameters. Simplify refuses a target with fewer than
+24 quadrants (12 cells) on its short side; below that, use a larger footprint or
+purpose-built icon artwork. It also caps semantic analysis at 250,000 quadrants;
+larger evidence stays embedded or is simplified at a smaller semantic size.
+Like dither, simplify discards the source after
+creating durable runs and must be removed/re-placed to change its span.
+
+A continuous-tone result always raises `L023`: contrast processing can make an
+image cleaner, but cannot know that the fan, disconnect, data plate, or another
+feature is the subject. A generated or edited high-contrast derivative is often
+the correct recovery and does not need to match every source pixel.
+
 ## Readability gate
 
-`L022` measures how often neighboring quadrants switch between ink and ground.
+`L022` measures how often neighboring quadrants switch between ink and ground
+for both dither and simplify.
 A result above **45%** is classified `BUSY` and blocks publication at S2 because
 the Bayer checker pattern is likely to obscure the subject.
 
@@ -109,9 +145,11 @@ Both P01 sources are `1536x1024` and are placed at `48x32` cells:
 |---|---:|---:|---|
 | Field-style photo, `embed` | `480x320` px, 31.25% | `480x320` display samples | Retains photographic evidence. |
 | Prepared line art, `dither` | `480x320` px | `96x64` quadrants, 6.25%; 16x16 source px per sample | 12.94% ink, 17.40% transitions, 458 runs: `PASS`. |
+| Prepared line art, `simplify auto` | `480x320` px | `96x64` quadrants, threshold strategy, medium detail | 23.83% ink, 13.03% transitions, 371 runs: `PASS`; bolder non-fidelity result. |
 | Raw photo, `dither` (rejected) | `480x320` px | `96x64` quadrants, 6.25%; 16x16 source px per sample | 59.08% ink, 69.24% transitions, 2,119 runs: `BUSY`. |
+| Raw photo, `simplify auto` (review gate) | `480x320` px | `96x64` quadrants, adaptive contour strategy | Low-frequency output, but `L023` blocks it because identity is not machine-verifiable. |
 
 The raw-photo conversion was also blind-guessed as a teapot rather than an
 outdoor condenser. That is a semantic failure even though the file rendered.
-The corrected workflow keeps the photo embedded and uses only the simplified
-derivative for lattice art.
+The corrected workflow keeps the photo embedded and uses the reviewed generated
+derivative for both source-like dither and a bolder simplified approximation.

@@ -52,7 +52,8 @@ export const RULES = Object.freeze({
   L019: { severity: 'S2', title: 'invisible but claiming', blurb: 'an element faded past legibility still occupies its quadrants' },
   L020: { severity: 'S2', title: 'reference still present', blurb: 'a tracing underlay is still in the document' },
   L021: { severity: 'S1', title: 'overlay obscures text', blurb: 'opaque overlay content crosses a lower text run' },
-  L022: { severity: 'S2', title: 'busy dither', blurb: 'high-frequency black/white transitions obscure image identity' },
+  L022: { severity: 'S2', title: 'busy raster image', blurb: 'high-frequency black/white transitions obscure image identity' },
+  L023: { severity: 'S2', title: 'heuristic image approximation', blurb: 'continuous-tone source was simplified without semantic understanding' },
   // Composition rules. S3 by design: a taste heuristic must never outrank a real defect.
   C001: { severity: 'S3', title: 'sparse canvas', blurb: 'the page has so little ink that nothing was really composed' },
 });
@@ -206,21 +207,48 @@ function withinPage(doc, p) {
 
   // L022 — a deterministic result can still be unreadable. Dense alternation
   // is the checkerboard failure mode: detail was reduced, but not simplified.
-  for (const el of els.filter((entry) => entry.kind === 'image' && entry.mode === 'dither')) {
+  for (const el of els.filter((entry) => entry.kind === 'image' && entry.mode !== 'embed')) {
     const stats = el.ditherStats ?? analyseRuns(el.runs, el.rect.w, el.rect.h);
     if (stats.transitionRatio <= MAX_READABLE_TRANSITION_RATIO) continue;
+    const remedy = el.mode === 'dither'
+      ? 'Use embed mode for photographic evidence, or prepare sparse high-contrast line art and place it again.'
+      : 'Use lower simplify detail, a larger footprint, a clearer source, or embed mode when source fidelity matters.';
     out.push(
       finding('L022', p.id, {
         message:
-          `dithered image "${el.id}" changes ink state across ${(stats.transitionRatio * 100).toFixed(1)}% of neighbouring samples ` +
+          `${el.mode} image "${el.id}" changes ink state across ${(stats.transitionRatio * 100).toFixed(1)}% of neighbouring samples ` +
           `(limit ${(MAX_READABLE_TRANSITION_RATIO * 100).toFixed(0)}%). The checker pattern is likely to obscure the subject. ` +
-          'Use embed mode for photographic evidence, or prepare sparse high-contrast line art and place it again.',
+          remedy,
         actors: [el.id],
         cells: [quadToAddress(el.rect.x, el.rect.y)],
         metrics: stats,
         fixes: [{
           kind: 'remove',
-          description: `remove "${el.id}", simplify its source or choose embed mode, then place_image again`,
+          description: el.mode === 'dither'
+            ? `remove "${el.id}", simplify its source or choose embed mode, then place_image again`
+            : `remove "${el.id}" and place it again with lower simplify detail, a larger span, or embed mode`,
+          params: { id: el.id },
+        }],
+      }),
+    );
+  }
+
+  // L023 — an algorithm can simplify contrast but cannot know the subject.
+  // Near-binary source art has already made that semantic decision; a raw
+  // continuous-tone image has not, so publication requires explicit review.
+  for (const el of els.filter((entry) => entry.kind === 'image' && entry.mode === 'simplify' && entry.processing?.nearBinary === false)) {
+    out.push(
+      finding('L023', p.id, {
+        message:
+          `simplified image "${el.id}" came from continuous-tone source material. TurtlePen discarded texture by contrast and contour, ` +
+          'but it cannot know which object or features matter. Perform a normal-size blind identity check, replace it with a purpose-built ' +
+          'simplified derivative if the subject is unclear, or accept this exact result with the review outcome.',
+        actors: [el.id],
+        cells: [quadToAddress(el.rect.x, el.rect.y)],
+        metrics: { ...el.ditherStats, processing: el.processing },
+        fixes: [{
+          kind: 'remove',
+          description: `remove "${el.id}" and place a reviewed high-contrast derivative, or use embed mode when source fidelity matters`,
           params: { id: el.id },
         }],
       }),

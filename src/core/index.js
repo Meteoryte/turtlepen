@@ -233,9 +233,9 @@ export function resizeBox(doc, id, { cellsW = null, cellsH = null, anchor = 'tl'
   if (!found) throw new Error(`no element "${id}" to resize`);
   const el = found.element;
   if (el.kind === 'path') throw new Error(`"${id}" is a path — change it with extend_path or replace_path`);
-  if (el.kind === 'image' && el.mode === 'dither') {
+  if (el.kind === 'image' && el.mode !== 'embed') {
     throw new Error(
-      `"${id}" is a dithered image whose runs are bound to its current quadrant grid. ` +
+      `"${id}" is a ${el.mode} image whose runs are bound to its current quadrant grid. ` +
       'Remove it and call place_image again at the new span so upscaling or downscaling is recomputed from the source.',
     );
   }
@@ -356,9 +356,12 @@ export function placeBox(doc, pageId, { id, at, span, label = '', corner = 'squa
  * from a guess. Whole-cell viewport drift is reported, while contain or cover
  * preserves the source aspect through padding or cropping.
  */
-export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', fit = 'contain', opacity = null }) {
+export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', fit = 'contain', detail = 'auto', opacity = null }) {
   if (!source) throw new SyntaxError(`image "${id}" needs a source — a base64 data URI prepared by the tool layer`);
   image.assertMode(mode);
+  if (mode !== 'simplify' && detail !== 'auto') {
+    throw new SyntaxError(`image detail applies only to mode "simplify" — ${mode} mode received ${JSON.stringify(detail)}`);
+  }
   const embedded = image.assertEmbeddedSource(source);
   const cells = normalizeSpan(span, `span for "${id}"`);
   const a = address.parseAddress(at);
@@ -371,17 +374,23 @@ export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', 
   // what its author saw — the same reason measurement precedes placement.
   let runs = null;
   let ditherStats = null;
-  if (mode === 'dither') {
-    if (embedded.format !== 'png') throw new SyntaxError(`image "${id}" cannot be dithered from ${embedded.format.toUpperCase()} — dithering decodes PNG only; use mode "embed" or convert it to PNG`);
-    const grid = dither.ditherToQuadrants(png.decode(embedded.bytes), r.w, r.h, { fit });
+  let processing = null;
+  if (mode !== 'embed') {
+    if (embedded.format !== 'png') throw new SyntaxError(`image "${id}" cannot use ${mode} mode from ${embedded.format.toUpperCase()} — lattice rasterization decodes PNG only; use mode "embed" or convert it to PNG`);
+    const decoded = png.decode(embedded.bytes);
+    const grid = mode === 'simplify'
+      ? dither.simplifyToQuadrants(decoded, r.w, r.h, { fit, detail })
+      : dither.ditherToQuadrants(decoded, r.w, r.h, { fit });
     runs = dither.runsOf(grid);
     ditherStats = dither.analyse(grid);
+    processing = grid.processing ?? null;
   }
   const scale = image.scaleReport(embedded, { cellsWide: cells.w, cellsTall: cells.h, mode, fit });
   // Dither runs are the durable render source. Keeping the original bitmap as
   // well would duplicate megabytes in the document and every history snapshot.
   return addImage(doc, pageId, {
-    id, rect: r, source: mode === 'dither' ? null : source, mode, fit, opacity, runs, scale, ditherStats,
+    id, rect: r, source: mode === 'embed' ? source : null, mode, fit, detail: mode === 'simplify' ? detail : null,
+    opacity, runs, scale, ditherStats, processing,
   });
 }
 
@@ -399,12 +408,15 @@ export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', 
  */
 export const REFERENCE_OPACITY = 0.25;
 
-export function placeReference(doc, { id = 'reference', source, at = 'A1.tl', span, opacity = REFERENCE_OPACITY, mode = 'dither' }) {
+export function placeReference(doc, { id = 'reference', source, at = 'A1.tl', span, opacity = REFERENCE_OPACITY, mode = 'dither', fit = 'contain', detail = 'auto' }) {
   if (!source) throw new SyntaxError('a reference needs an image source — a data: URI, or a path the tool layer has already read');
+  if (!['dither', 'simplify'].includes(mode)) {
+    throw new SyntaxError(`a tracing reference mode must be dither or simplify — got ${JSON.stringify(mode)}`);
+  }
   const draft = structuredClone(doc);
   const lowest = draft.pages.reduce((m, p) => Math.min(m, p.z), 0);
   const page = addPage(draft, { id, z: lowest - 1, intent: 'overlay', title: `${id} (tracing reference)`, opacity, reference: true });
-  placeImage(draft, id, { id: `${id}-image`, at, span, source, mode });
+  placeImage(draft, id, { id: `${id}-image`, at, span, source, mode, fit, detail });
   doc.pages = draft.pages;
   doc.elements = draft.elements;
   return page;

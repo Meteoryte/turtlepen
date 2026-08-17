@@ -89,10 +89,17 @@ blind recognizer guessed a teapot. Its 59.08% ink coverage, 69.24% neighboring
 transition rate, and 2,119 runs quantify the checkerboard failure. `L022` now
 blocks that result.
 
-The line-art derivative produces 12.94% ink coverage, 17.40% neighboring
-transitions, and 458 runs, so it passes the deterministic noise gate. Passing
-does not prove semantic identity; normal-size render inspection and a blind
-identity check remain required. See
+The line-art derivative in `dither` produces 12.94% ink coverage, 17.40%
+neighboring transitions, and 458 runs. The same derivative in `simplify auto`
+resolves to the near-binary threshold strategy at medium detail and produces
+23.83% ink, 13.03% transitions, and 371 runs. It is intentionally bolder and
+does not attempt a 1:1 copy. Both pass the deterministic noise gate.
+
+The raw photo is also exercised through `simplify auto`; TurtlePen raises
+`L023` because continuous-tone contour selection has no semantic understanding.
+The test removes that heuristic result before publication. Passing numeric
+readability does not prove identity; normal-size inspection and a blind identity
+check remain required. See
 [`image-scaling-procedure.md`](image-scaling-procedure.md) for the full policy.
 
 ## Exercised workflow
@@ -102,12 +109,14 @@ identity check remain required. See
 1. Measure both sources before placement and require an exact 48 x 32-cell fit.
 2. Verify the dither report is 96 x 64 quadrants and 16 x 16 source pixels per
    sample.
-3. Place and detect a temporary line-art tracing reference through `L020`.
-4. Remove the reference before publication.
-5. Place the photo as a self-contained embedded image.
-6. Rehearse and commit the line art as deterministic lattice dither.
-7. Refuse every S0-S2 finding, including `L022` busy dither.
-8. Save, reopen, validate, and render the document.
+3. Place raw-photo simplify, require `L023`, and remove the unverified result.
+4. Place and detect a temporary line-art tracing reference through `L020`.
+5. Remove the reference before publication.
+6. Place the photo as a self-contained embedded image.
+7. Rehearse and commit the line art as both deterministic dither and non-fidelity
+   simplify.
+8. Refuse every remaining S0-S2 finding, including `L022` and `L023`.
+9. Save, reopen, validate, and render the document.
 
 The generated outputs are `diagrams/condenser-image-workflow.turtlepen.json`
 and `diagrams/condenser-image-workflow.svg`.

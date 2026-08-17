@@ -13,7 +13,8 @@ import assert from 'node:assert/strict';
 
 import * as core from '../src/core/index.js';
 import {
-  analyse, analyseRuns, ditherToQuadrants, BAYER_4, MAX_READABLE_TRANSITION_RATIO,
+  analyse, analyseRuns, ditherToQuadrants, simplifyToQuadrants, BAYER_4,
+  MAX_READABLE_TRANSITION_RATIO, MIN_SIMPLIFY_SHORT_SIDE, MAX_SIMPLIFY_QUADRANTS,
 } from '../src/core/dither.js';
 import { decode } from '../src/core/png.js';
 import { solidPng, encodePng, dataUri } from './helpers/png-fixture.js';
@@ -23,6 +24,45 @@ const place = (d, extra = {}) =>
     id: 'photo', at: 'C4.tl', span: { w: 6, h: 4 }, mode: 'dither',
     source: dataUri(solidPng(60, 40, [0, 0, 0])), ...extra,
   });
+
+function unitLineArt(width = 96, height = 64) {
+  const pixels = new Uint8Array(width * height * 3).fill(255);
+  const ink = (x, y) => {
+    const index = (y * width + x) * 3;
+    pixels[index] = 0; pixels[index + 1] = 0; pixels[index + 2] = 0;
+  };
+  for (let y = 12; y <= 54; y++) for (let x = 14; x <= 68; x++) {
+    if (x <= 16 || x >= 66 || y <= 14 || y >= 52 || (x % 10 < 2 && y > 22)) ink(x, y);
+  }
+  for (let y = 3; y <= 20; y++) for (let x = 73; x <= 89; x++) {
+    if (x <= 75 || x >= 87 || y <= 5 || y >= 18) ink(x, y);
+  }
+  for (let x = 69; x <= 80; x++) { ink(x, 42); ink(x, 44); }
+  return encodePng(width, height, pixels, { colorType: 2 });
+}
+
+function continuousScene(width = 96, height = 64) {
+  const pixels = new Uint8Array(width * height * 3);
+  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    const inside = x > 18 && x < 72 && y > 10 && y < 56;
+    const value = inside ? 80 + Math.round((x / width) * 80) : 125 + Math.round((y / height) * 80);
+    const index = (y * width + x) * 3;
+    pixels[index] = value;
+    pixels[index + 1] = Math.min(255, value + (inside ? 20 : 45));
+    pixels[index + 2] = Math.min(255, value + (inside ? 35 : 5));
+  }
+  return encodePng(width, height, pixels, { colorType: 2 });
+}
+
+function transparentIcon(width = 16, height = 16) {
+  const pixels = new Uint8Array(width * height * 4);
+  for (let y = 3; y < height - 3; y++) for (let x = 3; x < width - 3; x++) {
+    if (x > 5 && x < width - 6 && y > 5 && y < height - 6) continue;
+    const index = (y * width + x) * 4;
+    pixels[index + 3] = 255;
+  }
+  return encodePng(width, height, pixels, { colorType: 6 });
+}
 
 test('solid black turns every quadrant on', () => {
   const grid = ditherToQuadrants(decode(solidPng(24, 16, [0, 0, 0])), 12, 8);
@@ -112,6 +152,79 @@ test('readability analysis identifies checkerboard noise and accepts sparse stru
   assert.ok(sparseStats.transitionRatio < MAX_READABLE_TRANSITION_RATIO);
   assert.throws(() => analyseRuns([{ x: 1, y: 1, w: 2 }, { x: 2, y: 1, w: 2 }], 8, 8), /overlap/);
   assert.throws(() => analyseRuns([{ x: 7, y: 1, w: 2 }], 8, 8), /outside/);
+});
+
+test('simplify preserves near-binary structure without reproducing Bayer checker tone', () => {
+  const decoded = decode(unitLineArt());
+  const first = simplifyToQuadrants(decoded, 48, 32);
+  const second = simplifyToQuadrants(decoded, 48, 32);
+  const stats = analyse(first);
+  assert.equal(first.processing.strategy, 'threshold-simplify');
+  assert.equal(first.processing.nearBinary, true);
+  assert.equal(first.processing.scaleDirection, 'downscale');
+  assert.equal(stats.readability, 'pass');
+  assert.ok(stats.coverageRatio > 0.05 && stats.coverageRatio < 0.5);
+  assert.deepEqual([...first.on], [...second.on], 'adaptive output remains deterministic');
+  assert.ok(first.on.slice(0, 16 * 48).some(Boolean), 'disconnect survives in the upper region');
+  assert.ok(first.on.slice(16 * 48).some(Boolean), 'cabinet survives below it');
+});
+
+test('simplify reports heuristic continuous-tone processing and refuses meaningless or tiny output', () => {
+  const continuous = simplifyToQuadrants(decode(continuousScene()), 48, 32);
+  assert.equal(continuous.processing.strategy, 'adaptive-simplify');
+  assert.equal(continuous.processing.nearBinary, false);
+  assert.equal(analyse(continuous).readability, 'pass');
+
+  assert.throws(
+    () => simplifyToQuadrants(decode(solidPng(96, 64, [128, 128, 128])), 48, 32),
+    /no stable subject contrast/,
+  );
+  assert.throws(
+    () => simplifyToQuadrants(decode(unitLineArt()), MIN_SIMPLIFY_SHORT_SIDE, MIN_SIMPLIFY_SHORT_SIDE - 1),
+    /at least 24 quadrants.*short side/i,
+  );
+  assert.throws(
+    () => simplifyToQuadrants(decode(unitLineArt()), 501, 500),
+    new RegExp(`${MAX_SIMPLIFY_QUADRANTS}-quadrant analysis limit`),
+  );
+});
+
+test('simplify upscales transparent icon structure without inventing detail', () => {
+  const result = simplifyToQuadrants(decode(transparentIcon()), 32, 32, { detail: 'high' });
+  assert.equal(result.processing.scaleDirection, 'upscale');
+  assert.equal(result.processing.sourcePixelsPerSample, 0.5);
+  assert.equal(result.processing.strategy, 'threshold-simplify');
+  assert.equal(result.on[0], 0, 'transparent black composites to page ground');
+  assert.ok(analyse(result).ink > 0);
+  assert.equal(analyse(result).readability, 'pass');
+});
+
+test('simplify detail presets change the continuous-tone ink budget monotonically', () => {
+  const decoded = decode(continuousScene());
+  const low = simplifyToQuadrants(decoded, 48, 32, { detail: 'low' });
+  const medium = simplifyToQuadrants(decoded, 48, 32, { detail: 'medium' });
+  const high = simplifyToQuadrants(decoded, 48, 32, { detail: 'high' });
+  assert.equal(low.processing.resolvedDetail, 'low');
+  assert.equal(medium.processing.resolvedDetail, 'medium');
+  assert.equal(high.processing.resolvedDetail, 'high');
+  assert.ok(analyse(low).ink < analyse(medium).ink);
+  assert.ok(analyse(medium).ink < analyse(high).ink);
+});
+
+test('continuous-tone simplify creates an explicit semantic-review finding', () => {
+  const doc = core.createDocument({ name: 'heuristic simplification' });
+  core.placeImage(doc, 'base', {
+    id: 'heuristic', at: 'C4.tl', span: '24x16', source: dataUri(continuousScene()), mode: 'simplify',
+  });
+  const finding = core.validate(doc).open.find((entry) => entry.rule === 'L023');
+  assert.equal(finding.severity, 'S2');
+  assert.match(finding.message, /continuous-tone.*cannot know.*blind identity/i);
+
+  const reviewed = core.createDocument({ name: 'prepared simplification' });
+  core.placeImage(reviewed, 'base', {
+    id: 'prepared', at: 'C4.tl', span: '24x16', source: dataUri(unitLineArt()), mode: 'simplify',
+  });
+  assert.equal(core.validate(reviewed).open.some((entry) => entry.rule === 'L023'), false);
 });
 
 // ---------------------------------------------------------------------------

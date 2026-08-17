@@ -13,6 +13,7 @@ import assert from 'node:assert/strict';
 import { deflateSync } from 'node:zlib';
 
 import * as core from '../src/core/index.js';
+import { dataUri, encodePng } from './helpers/png-fixture.js';
 
 /** A real, minimal PNG — built here so the test needs no binary fixture. */
 function pngBytes(w, h) {
@@ -44,6 +45,17 @@ function crc32(buf) {
     for (let k = 0; k < 8; k++) c = (c >>> 1) ^ (0xedb88320 & -(c & 1));
   }
   return ~c;
+}
+
+function lineArtPng(w = 96, h = 64) {
+  const samples = new Uint8Array(w * h * 3).fill(255);
+  for (let y = 8; y < h - 8; y++) for (let x = 12; x < w - 12; x++) {
+    if (x === 12 || x === w - 13 || y === 8 || y === h - 9 || (x % 12 < 2 && y > 20)) {
+      const i = (y * w + x) * 3;
+      samples[i] = 0; samples[i + 1] = 0; samples[i + 2] = 0;
+    }
+  }
+  return encodePng(w, h, samples, { colorType: 2 });
 }
 
 test('image dimensions are read from the header, not guessed', () => {
@@ -97,6 +109,11 @@ test('scale reports distinguish rendered pixels from dither sampling resolution'
   assert.equal(dither.sampling.x.percent, 6.25);
   assert.deepEqual(dither.sampling.sourcePixelsPerSample, { x: 16, y: 16 });
   assert.match(dither.sampling.procedure, /area-average.*ordered threshold/);
+
+  const simplify = core.image.scaleReport(source, { cellsWide: 48, cellsTall: 32, mode: 'simplify' });
+  assert.deepEqual(simplify.sampling.target, { width: 96, height: 64, unit: 'quadrants' });
+  assert.equal(simplify.sampling.direction, 'downscale');
+  assert.match(simplify.sampling.procedure, /discard low-salience texture.*fragment cleanup/);
 });
 
 test('scale reports make contain padding, cover cropping, and upscaling explicit', () => {
@@ -168,6 +185,20 @@ test('an unknown render mode is refused rather than silently embedded', () => {
     }),
     /sepia|mode/,
   );
+  assert.throws(
+    () => core.placeImage(d, 'base', {
+      id: 'wrong-detail', at: 'C4.tl', span: { w: 4, h: 2 }, mode: 'embed', detail: 'high',
+      source: `data:image/png;base64,${pngBytes(20, 10).toString('base64')}`,
+    }),
+    /detail applies only.*simplify/,
+  );
+  assert.throws(
+    () => core.placeReference(d, {
+      id: 'embedded-reference', at: 'C4.tl', span: '4x2', mode: 'embed',
+      source: `data:image/png;base64,${pngBytes(20, 10).toString('base64')}`,
+    }),
+    /reference mode must be dither or simplify/,
+  );
 });
 
 test('embedded sources are verified from their bytes, not their declared MIME type', () => {
@@ -202,7 +233,22 @@ test('dither stores deterministic runs without duplicating the source bitmap', (
   assert.doesNotThrow(() => core.deserialize(core.serialize(doc)));
 });
 
-test('embed resize recomputes scale while dither resize refuses without mutation', () => {
+test('simplify stores an auditable approximation without retaining duplicate source bytes', () => {
+  const doc = core.createDocument({ name: 'simplified source' });
+  const image = core.placeImage(doc, 'base', {
+    id: 'simplified', at: 'C4.tl', span: '24x16', source: dataUri(lineArtPng()), mode: 'simplify', detail: 'auto',
+  });
+  assert.equal(image.source, null);
+  assert.equal(image.detail, 'auto');
+  assert.equal(image.processing.strategy, 'threshold-simplify');
+  assert.equal(image.processing.nearBinary, true);
+  assert.equal(image.ditherStats.readability, 'pass');
+  assert.match(core.renderSvg(doc), /class="simplify"/);
+  assert.doesNotMatch(core.serialize(doc), /data:image/);
+  assert.doesNotThrow(() => core.deserialize(core.serialize(doc)));
+});
+
+test('embed resize recomputes scale while rasterized image resize refuses without mutation', () => {
   const source = `data:image/png;base64,${pngBytes(20, 10).toString('base64')}`;
   const embeddedDoc = core.createDocument({ name: 'embed resize' });
   const embedded = core.placeImage(embeddedDoc, 'base', {
@@ -221,6 +267,17 @@ test('embed resize recomputes scale while dither resize refuses without mutation
     /Remove it and call place_image again/,
   );
   assert.equal(core.serialize(ditherDoc), before, 'a refused resample leaves the document byte-identical');
+
+  const simplifyDoc = core.createDocument({ name: 'simplify resize' });
+  core.placeImage(simplifyDoc, 'base', {
+    id: 'simplify', at: 'C4.tl', span: '24x16', source: dataUri(lineArtPng()), mode: 'simplify',
+  });
+  const simplifyBefore = core.serialize(simplifyDoc);
+  assert.throws(
+    () => core.resizeBox(simplifyDoc, 'simplify', { cellsW: 30, cellsH: 20 }),
+    /simplify image.*Remove it and call place_image again/,
+  );
+  assert.equal(core.serialize(simplifyDoc), simplifyBefore);
 });
 
 test('deserialization recomputes image reports rather than trusting saved metrics', () => {
@@ -238,6 +295,20 @@ test('deserialization recomputes image reports rather than trusting saved metric
   assert.equal(core.findElement(loaded, 'embed').element.scale.render.direction, 'upscale');
   assert.equal(core.findElement(loaded, 'dither').element.scale.render.direction, 'upscale');
   assert.equal(core.findElement(loaded, 'dither').element.ditherStats.transitionRatio, 0);
+});
+
+test('saved simplify without processing provenance defaults to semantic review', () => {
+  const doc = core.createDocument({ name: 'missing simplify provenance' });
+  core.placeImage(doc, 'base', {
+    id: 'simplified', at: 'C4.tl', span: '24x16', source: dataUri(lineArtPng()), mode: 'simplify',
+  });
+  const raw = JSON.parse(core.serialize(doc));
+  delete raw.elements.base[0].processing;
+  const loaded = core.deserialize(raw);
+  const image = core.findElement(loaded, 'simplified').element;
+  assert.equal(image.processing.strategy, 'unknown-saved-simplification');
+  assert.equal(image.processing.nearBinary, false);
+  assert.ok(core.validate(loaded).open.some((finding) => finding.rule === 'L023'));
 });
 
 test('saved documents refuse linked or unsupported embedded image sources', () => {

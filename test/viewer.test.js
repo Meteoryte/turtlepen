@@ -11,9 +11,19 @@ import { tmpdir } from 'node:os';
 
 import * as core from '../src/core/index.js';
 import { VIEWER_STATIC_FILES, VIEWER_TOOLS } from '../src/viewer/capabilities.js';
-import { dataUri, solidPng } from './helpers/png-fixture.js';
+import { dataUri, encodePng, solidPng } from './helpers/png-fixture.js';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+
+function lineArtPng(width = 96, height = 64) {
+  const samples = new Uint8Array(width * height * 3).fill(255);
+  for (let y = 8; y < height - 8; y++) for (let x = 12; x < width - 12; x++) {
+    if (x > 14 && x < width - 15 && y > 10 && y < height - 11) continue;
+    const index = (y * width + x) * 3;
+    samples[index] = 0; samples[index + 1] = 0; samples[index + 2] = 0;
+  }
+  return encodePng(width, height, samples, { colorType: 2 });
+}
 
 test('the live viewer serves its UI, brand, and cheap unchanged state responses', async (t) => {
   const port = await freePort();
@@ -48,7 +58,8 @@ test('the live viewer serves its UI, brand, and cheap unchanged state responses'
   assert.match(app.body, /Stale acceptances/);
   assert.match(app.body, /addEventListener\('keydown'/);
   assert.match(app.body, /Readability/);
-  assert.match(app.body, /element\.mode === 'dither'/, 'the inspector must not offer stale-grid resize for dither');
+  assert.match(app.body, /element\.mode !== 'embed'/, 'the inspector must not offer stale-grid resize for any rasterized image');
+  assert.match(app.body, /Simplification/);
   assert.match(app.body, /selection-hit/, 'sparse images need a full-footprint selection target');
   assert.doesNotMatch(app.body, /setInterval|700/, 'the browser must not poll for document state');
 
@@ -112,13 +123,17 @@ test('the live viewer reports a missing document without crashing', async (t) =>
   assert.equal(JSON.parse(state.body).ok, false);
 });
 
-test('the live viewer exposes image scale and dither readability state', async (t) => {
+test('the live viewer exposes image scale, readability, and simplification state', async (t) => {
   const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-viewer-image-'));
   const path = resolve(dir, 'image.turtlepen.json');
   const doc = core.createDocument({ name: 'image state' });
   core.placeImage(doc, 'base', {
     id: 'trace', at: 'C4.tl', span: '8x4', mode: 'dither',
     source: dataUri(solidPng(80, 40, [0, 0, 0])),
+  });
+  core.placeImage(doc, 'base', {
+    id: 'simplified', at: 'M4.tl', span: '24x16', mode: 'simplify',
+    source: dataUri(lineArtPng()),
   });
   await core.checkpointDocument(doc, path);
 
@@ -137,6 +152,12 @@ test('the live viewer exposes image scale and dither readability state', async (
   assert.equal(image.scale.sampling.direction, 'downscale');
   assert.deepEqual(image.scale.sampling.target, { width: 16, height: 8, unit: 'quadrants' });
   assert.equal(image.ditherStats.readability, 'pass');
+  const simplified = state.elements.find((element) => element.id === 'simplified');
+  assert.equal(simplified.mode, 'simplify');
+  assert.equal(simplified.detail, 'auto');
+  assert.equal(simplified.processing.strategy, 'threshold-simplify');
+  assert.equal(simplified.processing.nearBinary, true);
+  assert.equal(simplified.ditherStats.readability, 'pass');
 });
 
 test('the WebSocket editor persists mutations, broadcasts exact state, restores history, and reloads outside edits', async (t) => {

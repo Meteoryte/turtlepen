@@ -24,7 +24,7 @@ try {
   if (initialized.result?.serverInfo?.name !== 'turtlepen') throw new Error('unexpected MCP server');
 
   await call('new_diagram', {
-    name: 'Condenser image workflow test', path: DOCUMENT, cols: 106, rows: 58, fontSize: 10,
+    name: 'Condenser image workflow test', path: DOCUMENT, cols: 156, rows: 58, fontSize: 10,
   });
 
   const photoMeasurement = JSON.parse(await call('measure_image', { source: PHOTO_SOURCE, maxWidthCells: 48 }));
@@ -41,6 +41,22 @@ try {
       traceMeasurement.scale.dither.sampling.sourcePixelsPerSample.y !== 16) {
     throw new Error(`unexpected dither sampling scale: ${JSON.stringify(traceMeasurement.scale.dither)}`);
   }
+  if (traceMeasurement.scale.simplify.sampling.sourcePixelsPerSample.x !== 16 ||
+      traceMeasurement.scale.simplify.sampling.sourcePixelsPerSample.y !== 16) {
+    throw new Error(`unexpected simplify sampling scale: ${JSON.stringify(traceMeasurement.scale.simplify)}`);
+  }
+
+  // A raw photo can be simplified geometrically, but TurtlePen cannot infer
+  // which object matters. Prove L023 blocks that heuristic result, then remove
+  // it rather than publishing an ambiguous approximation.
+  await call('place_image', {
+    id: 'heuristic-photo', at: 'C8.tl', span: '48x32', source: PHOTO_SOURCE, mode: 'simplify', detail: 'auto',
+  });
+  const heuristic = JSON.parse(await call('validate', { format: 'json' }));
+  if (!heuristic.open.some((finding) => finding.rule === 'L023' && finding.actors?.includes('heuristic-photo'))) {
+    throw new Error('continuous-tone simplification did not require semantic review');
+  }
+  await call('remove', { id: 'heuristic-photo' });
 
   // A reference is intentionally temporary. Prove the shipping gate sees it,
   // then remove it before any deliverable is written.
@@ -58,16 +74,20 @@ try {
 
   // Planned endpoint: a purpose-built high-contrast derivative becomes lattice ink.
   const operations = [
-    box('title', 'C2.tl', '101x4',
-      'REAL IMAGE WORKFLOW | EMBED + DITHER + REFERENCE GATE', '#dce9ee', 'chamfered'),
+    box('title', 'C2.tl', '151x4',
+      'REAL IMAGE WORKFLOW | EMBED + DITHER + SIMPLIFY + REVIEW GATES', '#dce9ee', 'chamfered'),
     { op: 'place_image', id: 'lattice-trace', at: 'BA8.tl', span: '48x32', source: TRACE_SOURCE, mode: 'dither' },
+    { op: 'place_image', id: 'simplified-trace', at: 'CY8.tl', span: '48x32', source: TRACE_SOURCE, mode: 'simplify', detail: 'auto' },
     box('embed-caption', 'C41.tl', '48x6',
       'EMBED | Original PNG bytes are stored inside the document. Exact 48x32-cell footprint; no external file is needed after save.',
       '#e8edf0'),
     box('dither-caption', 'BA41.tl', '48x6',
-      'DITHER | Simplified line art is area-sampled to 96x64 quadrants, thresholded, and stored as deterministic runs. It is not the field evidence.',
+      'DITHER | Prepared line art keeps tonal threshold behavior at 96x64 quadrants. Deterministic and source-like, but fine tone can become pattern.',
       '#ece6f0'),
-    box('boundary', 'C49.tl', '101x7',
+    box('simplify-caption', 'CY41.tl', '48x6',
+      'SIMPLIFY | Prepared line art is reduced to salient structure without checker tone. It is an intentional approximation, not a 1:1 copy.',
+      '#e4eee6'),
+    box('boundary', 'C49.tl', '151x7',
       'ILLUSTRATIVE TEST ASSET | This generated image verifies TurtlePen image handling only. It is not equipment-specific evidence, a code-compliance example, or a substitute for the P01 field photograph captured on site.',
       '#f5edce', 'square'),
   ];
@@ -87,6 +107,8 @@ try {
   }
   const lattice = validation.open.find((finding) => finding.actors?.includes('lattice-trace'));
   if (lattice) throw new Error(`line-art dither produced ${lattice.rule}: ${lattice.message}`);
+  const simplified = validation.open.find((finding) => finding.actors?.includes('simplified-trace'));
+  if (simplified) throw new Error(`line-art simplify produced ${simplified.rule}: ${simplified.message}`);
 
   await call('save');
   await call('open_diagram', { path: DOCUMENT });
@@ -98,8 +120,9 @@ try {
 
   process.stdout.write(`measured photo and trace at ${photoMeasurement.width}x${photoMeasurement.height} -> ${photoMeasurement.cellsWide}x${photoMeasurement.cellsTall} cells, ${photoMeasurement.aspectDriftPct}% drift\n`);
   process.stdout.write('dither sampling: 1536x1024 source -> 96x64 quadrants (16x16 source pixels per sample)\n');
+  process.stdout.write('raw-photo simplify raised L023 and was removed before publication\n');
   process.stdout.write('reference gate raised L020 and cleared after removal\n');
-  process.stdout.write('photo embed and line-art dither survived save, reopen, validation, and render\n');
+  process.stdout.write('photo embed, line-art dither, and non-fidelity simplify survived save, reopen, validation, and render\n');
   process.stdout.write(`wrote ${DOCUMENT}\nwrote ${SVG}\n`);
 } finally {
   await client.close();

@@ -52,12 +52,12 @@ tool without a successful transport case fails the suite.
 | `unaccept_finding` | withdraw a prior finding acceptance |
 | `plan` | rehearse without mutation, then commit the same batch atomically |
 | `render` | export a forced full-canvas SVG without a grid |
-| `measure_image` | read intrinsic dimensions and exact contain/cover render plus semantic-sampling scale before placement |
+| `measure_image` | read intrinsic dimensions and exact contain/cover render plus embed, dither, and simplify semantic-sampling scales before placement |
 | `wireframe` | build a dimensioned HVAC area, equipment, and measured line-set run |
 | `perspective_scene` | project a room, equipment, and a measured 3D run through a camera |
 | `export_prompt` | emit a current wireframe composition brief for an image model |
-| `place_image` | embed photographic evidence or dither prepared line art, report scaling/readability, and refuse stale-grid dither resize |
-| `place_reference` | dither prepared line art onto a temporary underlay and block busy output or publication before removal |
+| `place_image` | embed evidence, dither tonal source art, or intentionally simplify prepared imagery; report scaling/processing/readability and refuse stale-grid raster resize |
+| `place_reference` | dither or simplify source art onto a temporary underlay and block busy output, unreviewed continuous-tone approximations, or publication before removal |
 | `history` | inspect, undo, redo, and clear durable edit recovery |
 | `save` | checkpoint to a new path with explicit forced-save provenance |
 
@@ -108,7 +108,7 @@ The frame matrix proves:
 | path authoring, anchors, ports, arrows, hops | `test/pen.test.js`, `test/connectors.test.js` |
 | groups and durable follow constraints | `test/edit.test.js`, `test/mcp.test.js`, `test/viewer.test.js` |
 | finding adjudication and publication gate | `test/gate.test.js`, `test/viewer.test.js` |
-| image measurement, up/downscale, contain/cover, embedding, readable dither, tracing, hostile-input refusal, resize/re-place, save/reopen | `examples/image-session.js`, `test/image-mcp.test.js`, `test/image.test.js`, `test/png.test.js`, `test/dither.test.js`, `test/endpoints.test.js`, `test/viewer.test.js` |
+| image measurement, up/downscale, contain/cover, embedding, tonal dither, non-fidelity simplification, minimum semantic size, continuous-tone review gate, tracing, hostile-input refusal, resize/re-place, save/reopen | `examples/image-session.js`, `test/image-mcp.test.js`, `test/image.test.js`, `test/png.test.js`, `test/dither.test.js`, `test/endpoints.test.js`, `test/viewer.test.js` |
 | dimensioned plan/elevation and prompt export | `test/composition.test.js`, `test/mcp.test.js` |
 | 3D perspective provenance | `test/render.test.js`, `test/endpoints.test.js` |
 | exact SVG, ASCII, PNG, and raster output | `test/render.test.js`, `test/png.test.js`, `test/raster.test.js` |

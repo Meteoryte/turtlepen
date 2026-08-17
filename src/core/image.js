@@ -20,7 +20,7 @@
 
 import { PX_PER_CELL } from './geometry.js';
 
-export const MODES = Object.freeze(['embed', 'dither']);
+export const MODES = Object.freeze(['embed', 'dither', 'simplify']);
 export const MIME_BY_FORMAT = Object.freeze({
   png: 'image/png',
   jpeg: 'image/jpeg',
@@ -48,7 +48,7 @@ function combinedDirection(x, y) {
 }
 
 function samplingProcedure(mode, x, y) {
-  if (mode !== 'dither') {
+  if (mode === 'embed') {
     return 'preserve source aspect in the SVG footprint and let the renderer resample the embedded pixels';
   }
   const directions = new Set([x.direction, y.direction]);
@@ -56,6 +56,9 @@ function samplingProcedure(mode, x, y) {
   if (directions.has('downscale')) steps.push('area-average every contributing source pixel on downscaled axes');
   if (directions.has('upscale')) steps.push('repeat the nearest source sample on upscaled axes');
   if (directions.has('exact')) steps.push('map source pixels one-to-one on exact axes');
+  if (mode === 'simplify') {
+    return `${steps.join('; ')}, then discard low-salience texture through adaptive smoothing, edge/contrast ranking, an ink budget, and fragment cleanup`;
+  }
   return `${steps.join('; ')}, then apply the ordered threshold`;
 }
 
@@ -68,7 +71,8 @@ export function scaleReport({ width, height }, { cellsWide, cellsTall, mode = 'e
     throw new RangeError(`image scale report needs positive whole-cell dimensions — got ${cellsWide}x${cellsTall}`);
   }
   const viewport = { width: cellsWide * PX_PER_CELL, height: cellsTall * PX_PER_CELL };
-  const semanticViewport = mode === 'dither'
+  const rasterized = mode !== 'embed';
+  const semanticViewport = rasterized
     ? { width: cellsWide * 2, height: cellsTall * 2, unit: 'quadrants' }
     : { ...viewport, unit: 'pixels' };
   const uniformRatio = fit === 'cover'
@@ -82,7 +86,7 @@ export function scaleReport({ width, height }, { cellsWide, cellsTall, mode = 'e
   const sampleX = axisScale(width, semanticContent.width);
   const sampleY = axisScale(height, semanticContent.height);
   const sampleDirection = combinedDirection(sampleX, sampleY);
-  const renderRatio = mode === 'dither' ? uniformRatio * (PX_PER_CELL / 2) : uniformRatio;
+  const renderRatio = rasterized ? uniformRatio * (PX_PER_CELL / 2) : uniformRatio;
   const renderContent = { width: rounded(width * renderRatio), height: rounded(height * renderRatio) };
   const renderX = axisScale(width, renderContent.width);
   const renderY = axisScale(height, renderContent.height);

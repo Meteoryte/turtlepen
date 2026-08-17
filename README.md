@@ -264,7 +264,8 @@ Within a single page, overlap is always an error regardless of intent.
 | `L015` | S2 warn | a path re-draws a quadrant it already covered |
 | `L016` | S2 warn | a path named a destination but stops short of touching it |
 | `L020` | S2 warn | a temporary tracing-reference page is still present |
-| `L022` | S2 warn | a dithered image has enough neighboring ink changes to obscure its identity |
+| `L022` | S2 warn | a rasterized image has enough neighboring ink changes to obscure its identity |
+| `L023` | S2 warn | continuous-tone source was simplified without semantic understanding |
 | `L010` | S3 info | expected overlap from an overlay page |
 | `L013` | S3 info | a path crosses a claimed but un-inked corner cut |
 | `C001` | S3 info | sparse canvas — too little ink to have been composed; compose it, or declare the page `schematic` |
@@ -356,7 +357,7 @@ node examples/agent-session.js         # an agent authoring a real diagram over 
 node examples/constraint-stress.js      # crowded same-face rehearsal and rework over MCP
 node examples/rework-session.js         # commit, detect, undo, redo, reopen over MCP
 pnpm run field-guide                    # build the condenser replacement field workflow over MCP
-pnpm run image-session                  # exercise real embed, dither, and reference image flows over MCP
+pnpm run image-session                  # exercise embed, dither, simplify, and review/reference gates over MCP
 pnpm run logo                          # regenerate the canonical 1200x1200 logo
 pnpm run tree                          # regenerate the 540x960 branching-tree study
 node src/viewer/server.js --doc diagrams/example.turtlepen.json
@@ -392,10 +393,11 @@ P01-P20 references map to a reviewable
 uncontrolled web imagery.
 
 The [real-image MCP exercise](diagrams/condenser-image-workflow.svg) embeds a
-generated 1536 x 1024 condenser photo as evidence and uses a separate simplified
-line-art derivative for dither and the temporary reference gate. It reports the
-exact up/downscale procedure and blocks checkerboard-heavy output through
-`L022`. Prompts, hashes, metrics, and usage boundaries are recorded in
+generated 1536 x 1024 condenser photo as evidence and uses a separate generated
+line-art derivative for tonal dither, non-fidelity simplify, and the temporary
+reference gate. It reports exact up/downscale procedures, blocks checkerboard
+output through `L022`, and blocks semantically unverified continuous-tone
+approximations through `L023`. Prompts, hashes, metrics, and usage boundaries are recorded in
 [the image workflow test](docs/image-workflow-test.md); the operational contract
 is [the image scaling procedure](docs/image-scaling-procedure.md).
 
