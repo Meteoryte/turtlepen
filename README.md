@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype**, 229 tests green, zero runtime dependencies.
+Status: **prototype**, full automated suite green, zero runtime dependencies.
 
 ## The problem it solves
 
@@ -71,6 +71,11 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
 - **`to <address>` or `to <id>.<port>`** draws until it reaches a target and
   reports the distance travelled, so the AI never has to count cells to a box
   whose size came from measured text.
+- **Indexed cardinal ports fan out competing connectors.** `gateway.S#1` is
+  the existing midpoint, `S#2` is one cell left, `S#3` one cell right, then the
+  sequence alternates outward by whole cells. The same syntax works on targets
+  (`to worker.N#2`). `place_box` and `describe` report each face's slot capacity;
+  an out-of-range slot is rejected rather than clamped onto another track.
 - **A corner names the two sides it connects**, one of which must be the side
   the path arrives on. Styles: `square rounded indented chamfered`.
 - **`arrow` on a `line` command turns the run's last quadrant into the
@@ -110,7 +115,7 @@ dot                   one quadrant — the morse dot
 diagonal is not an approximation of a smooth line; on a lattice it **is** the
 line, which is how interface art was drawn on 1-bit displays.
 
-## Anchors: position as a relationship
+## Anchors and durable relationships
 
 Connectors got `pen from <id>.<face>` early, because a hand-computed address is
 where the mistakes live. Shapes did not, so every part of the first logo was an
@@ -129,9 +134,22 @@ starts. `at` gives the **anchor**, on the element, where a shape belongs.
 Anchors are `N NE E SE S SW W NW C`, and work on anything with a footprint —
 including a drawn path, whose footprint is computed from the quadrants it covers.
 
-Anchors are declarative inputs, not live constraints stored in the document.
-Rerunning the same program after changing `shell` recomputes the relationship;
-moving `shell` later does not automatically move already-created dependents.
+Placement anchors remain declarative inputs: rerunning the same program after
+changing `shell` recomputes a placement. For an existing element that must keep
+following another, store an explicit relationship instead:
+
+```json
+{ "action": "create", "id": "label-follows-unit",
+  "dependent": "label", "target": "unit",
+  "dependentAnchor": "W", "targetAnchor": "E",
+  "offsetX": 2, "offsetY": 0 }
+```
+
+`constraint` supports `list`, `create`, `delete`, and `sync`. A dependent has one
+parent; chains cascade, cycles are refused, offsets are exact quadrants, and
+relationships survive save/open. Moving, resizing, or redrawing a target moves
+its dependents. Manually moving a dependent authors a new offset. `describe`
+reports both sides and whether stored and actual offsets are synchronized.
 
 > **Corner anchors are bounding-box corners.** On a rectangle that is what you
 > want. On an ellipse or any organic shape, `SW` is the corner of the box around
@@ -187,8 +205,17 @@ pen from gateway.S          # seated just outside, already facing down
 down line to checkout.N arrow
 ```
 
-`place_box` and `describe` also report the seat address for every face, so the
-number is always available without deriving it.
+When several paths leave that face, index the seats instead of merging their
+first run:
+
+```
+pen from gateway.S#2        # one full cell left of the midpoint track
+down line to worker.N#2 arrow
+```
+
+`place_box` and `describe` report the default seat address and slot capacity for
+every face, so neither the coordinate nor the valid index range has to be
+derived.
 
 **2. `to <id>.<port>` sets a distance, not a destination.** It measures along
 the direction of travel only. A run on the wrong row or column stops *level
@@ -227,6 +254,7 @@ Within a single page, overlap is always an error regardless of intent.
 | `L003` | S1 error | wrapped text needs more lines than the box shows |
 | `L004` | S1 error | a path runs through the inked body of a box |
 | `L005` | S1 error | an exclusive page overlaps content below it |
+| `L021` | S1 error | opaque overlay content obscures a lower text run |
 | `L006` | S2 warn | two paths share a quadrant with no junction or hop |
 | `L007` | S2 warn | two boxes touch with no separating quadrant |
 | `L008` | S2 warn | a path ends without meeting a box or another path (one finding per path, not per end) |
@@ -242,13 +270,40 @@ Within a single page, overlap is always an error regardless of intent.
 
 ## The workflow
 
-**measure → plan → commit → adjudicate.**
+**measure → plan → commit → adjudicate → render → look.**
 
 `plan` is the centre of it: send the whole composition as a batch of operations
 and read the collision log *before* anything is written. The document is
 untouched until the same batch is re-sent with `commit: true`, and a batch that
 fails part-way applies nothing at all — a half-applied composition would leave
 the document in a state nobody asked for.
+
+`free_space` searches the whole non-reference page stack by default, including
+hidden pages because they are still validated. Its response names the effective
+`scope`, target, and every page searched. Use `scope: "page"` only when overlap
+with other pages is intentional; tracing references are excluded because their
+declared purpose is to be drawn over. `cellsW` and `cellsH` must be supplied
+together, so an incomplete fit query cannot silently turn into list mode.
+
+`describe { region: "C4:AZ40" }` keeps large-document reads bounded. Boxes,
+text, and images intersect by their claimed rectangles; paths are checked piece
+by piece, so an empty area inside an L-shaped path's bounding box is not returned.
+The response preserves the normal per-page array and includes the normalized
+effective filter. Combine `page` and `region` to narrow both dimensions.
+
+`history` is the recovery path for a committed edit that proves wrong. It keeps
+the newest 100 successful mutations by default (configurable from 1–1000 with
+`TURTLEPEN_HISTORY_LIMIT`); failed and no-op calls consume no entry, and a
+divergent edit after undo clears redo. Undo, redo, and `clear` update a versioned
+`<diagram>.history.json` sidecar immediately. The sidecar is bound to the exact
+document hash, so history survives open and MCP restart while an outside edit
+invalidates stale recovery instead of applying it to the wrong state.
+Composition source is part of the document: reopening a wireframe still
+supports `export_prompt`, and perspective inputs remain available as provenance.
+`export_prompt` first checks the generated boxes and routed paths against the
+live document. If later editing made the source stale, it names the first stale
+element and refuses to emit an obsolete layout; undo the edit or rerun
+`wireframe` to establish a new source.
 
 ```
 plan  { operations: [ …place boxes, run pen programs… ] }
@@ -292,10 +347,15 @@ cannot exit, so these are kept a closed set — and a test asserts it.
 ## Running it
 
 ```bash
-pnpm run check                         # 229 tests + examples, logo, and tree
-node --test "test/**/*.test.js"        # 229 tests
+pnpm run check                         # full test suite + examples, logo, and tree
+pnpm test                              # automated test suite
+pnpm run test:endpoints                # MCP, HTTP, and WebSocket surface contract
 node examples/build-example.js         # the plan -> commit cycle, end to end
 node examples/agent-session.js         # an agent authoring a real diagram over MCP
+node examples/constraint-stress.js      # crowded same-face rehearsal and rework over MCP
+node examples/rework-session.js         # commit, detect, undo, redo, reopen over MCP
+pnpm run field-guide                    # build the condenser replacement field workflow over MCP
+pnpm run image-session                  # exercise real embed, dither, and reference image flows over MCP
 pnpm run logo                          # regenerate the canonical 1200x1200 logo
 pnpm run tree                          # regenerate the 540x960 branching-tree study
 node src/viewer/server.js --doc diagrams/example.turtlepen.json
@@ -314,18 +374,34 @@ paths do not expand:
 ```
 
 There is nothing to install first: no runtime dependencies, Node 20 or newer.
-Clone it, point the config at `src/mcp/server.js`, and run `npm test` once to
+Clone it, point the config at `src/mcp/server.js`, and run `pnpm test` once to
 confirm the clone is sound.
 
-29 tools. Call `turtlepen_help` first — it returns the grammar, the lattice
+35 tools. Call `turtlepen_help` first — it returns the grammar, the lattice
 constants, the rule table, and the fix→tool map.
+
+The maintained [endpoint and use-case coverage matrix](docs/endpoint-use-case-coverage.md)
+maps every transport, tool, viewer route, and known workflow to executable evidence.
+
+The project also ships a practical work product authored through the real MCP
+transport: [Condenser replacement field workflow](diagrams/condenser-replacement-field-guide.svg)
+([editable JSON](diagrams/condenser-replacement-field-guide.turtlepen.json)). Its
+P01-P20 references map to a reviewable
+[LLM photo-shot list](docs/condenser-replacement-photo-shot-list.md) rather than
+uncontrolled web imagery.
+
+The [real-image MCP exercise](diagrams/condenser-image-workflow.svg) uses a
+generated 1536 x 1024 condenser photo for embed, dither, reference-gate,
+save/reopen, and browser verification. Its exact prompt, hash, and usage boundary
+are recorded in [the image workflow test](docs/image-workflow-test.md).
 
 | Group | Tools |
 |---|---|
-| orient | `turtlepen_help` `describe` `ascii` `free_space` |
-| author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `plan` |
+| orient | `turtlepen_help` `describe` `ascii` `free_space` `history` |
+| author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `plan` `group` `constraint` |
 | check | `validate` `accept_finding` `unaccept_finding` |
 | repair | `resize` `restyle` `move` `rename` `update_page` `set_canvas` `extend_path` `replace_path` `remove` |
+| compose | `wireframe` `perspective_scene` `export_prompt` |
 | image | `measure_image` `place_image` `place_reference` |
 | output | `render` `save` |
 
@@ -352,7 +428,7 @@ Lowercase marks a claimed-but-not-inked corner cut. `✗` marks a collision.
 src/core/     pure engine, no I/O — geometry, address, text, shapes,
               document, pen, occupancy, collide, ascii, svg
 src/mcp/      MCP stdio server (hand-rolled JSON-RPC 2.0) + tool definitions
-src/viewer/   HTTP server + live browser view of the document and its log
+src/viewer/   local HTTP/WebSocket server + live browser editor and log
 test/         node:test, no framework
 examples/     worked end-to-end demonstration
 ```
@@ -368,13 +444,19 @@ fit glyphs into exactly the width the engine measured.
 
 ## Seeing it as a human
 
-`node src/viewer/server.js` serves a live view at `127.0.0.1:8791`: the SVG, the
-ranked log, and the ASCII view, re-read from disk as the AI writes. Pages can be
-toggled off, and clicking a finding flashes the exact quadrants it names — the
-log line and the drawing are the same fact, so the link between them is a click
-rather than something to reconstruct by eye. Polls compare the file timestamp
-first, so an unchanged large artwork returns a tiny acknowledgement instead of
-revalidating, rerendering, and retransmitting the document every 700ms.
+`node src/viewer/server.js` serves a local live editor at `127.0.0.1:8791`.
+WebSocket state replaces browser polling. Select SVG elements by pointer or
+keyboard, then move, resize, restyle, extend/replace paths, manage flat groups
+and follow relationships, accept or withdraw findings, delete, undo, or redo.
+The log keeps open, accepted, and stale acceptance states visible; only a
+currently reported fingerprint can be accepted. Fit/zoom and
+page visibility remain browser-owned view state; the document, validation log,
+and durable history remain server-owned. A file watcher broadcasts outside
+edits, and a focused unsubmitted inspector draft is retained and marked stale
+rather than overwritten. The compatibility `/api/state` endpoint remains for
+diagnostics. WebSocket upgrades are local-origin checked, client frames must be
+masked and protocol-valid, messages are bounded, mutations are serialized, and
+only the editor's explicit public assets and tool allowlist are reachable.
 
 ## Deferred, deliberately
 

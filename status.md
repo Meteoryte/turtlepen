@@ -1,14 +1,37 @@
 # TurtlePen — status
 
-**As of 2026-08-10.** Prototype, working end to end, 230/230 tests green,
+**As of 2026-08-17.** Prototype, working end to end, 298/298 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **230/230 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **298/298 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
+- **Every external surface has a drift-proof contract.** All 35 MCP tools
+  complete representative work over the real stdio child process; every JSON-RPC
+  method and notification path is asserted; all public viewer routes are tested
+  with GET, HEAD, method refusal, and security headers; and every browser-authorized
+  tool completes over WebSocket and persists. Frame tests cover ping/pong, clean
+  close, masking, UTF-8, fragmentation, binary and reserved frames, control sizes,
+  and the 64 KiB limit. The executable map is
+  `docs/endpoint-use-case-coverage.md`.
+- **TurtlePen has produced a field work product, not only test fixtures.**
+  `pnpm run field-guide` authors a complete condenser replacement workflow over
+  the real MCP stdio transport, rehearses 27 operations, commits atomically,
+  refuses any S0-S2 finding, and writes editable JSON plus a full-canvas SVG.
+  The first build caught three clipped instruction cards with `L003`; the final
+  build applies the reported numeric height fixes and validates with zero open
+  findings. P01-P20 connect the sheet to a deterministic, technician-reviewed
+  LLM photo-shot list in `docs/condenser-replacement-photo-shot-list.md`.
+- **Real image handling is exercised with a representative generated asset.**
+  `pnpm run image-session` measures a 1536 x 1024 condenser photo, proves the
+  temporary-reference `L020` gate, embeds it, dithers it into deterministic
+  lattice runs, then saves, reopens, validates, and renders over real MCP stdio.
+  Image data is byte-verified as PNG/JPEG/GIF, local sources resolve beside the
+  active diagram, decode and dither allocations are bounded, and dither output
+  no longer duplicates the original multi-megabyte bitmap in document history.
 - **A diagram can be judged on composition, not just correctness.** `C001`
   (S3/INFO) reports a document whose densest page inks less than 1.2% of its
   canvas — the case that previously scored green because "no defects" is
@@ -21,6 +44,69 @@ Verified by running it, not by inspection:
   route around an obstructing box — rehearsed, committed, and annotated on an
   overlay, producing zero findings above INFO. This is the "used in anger" gap
   from the first build, now closed.
+- **A dense same-face constraint session is rehearsed and repaired over MCP**
+  (`node examples/constraint-stress.js`, exit 0). Five paths deliberately share
+  the hub midpoint in the first rehearsal, which produces `L006`; the live
+  document remains empty. The rework assigns `hub.S#1` through `hub.S#5`,
+  commits with zero S0-S2 findings, confirms a fully occupied bounded
+  `free_space` query returns `fits: false`, and renders a deterministic artifact.
+  Indexed seats alternate left/up and right/down by whole cells, preserve the
+  seat-to-port invariant on every face, expose capacity through `describe`, and
+  reject overflow instead of silently clamping it. Browser inspection at
+  1440x900 and 390x844 confirmed five distinct rendered starts and arrowheads,
+  working page/ASCII controls, contained horizontal scrolling, and no console
+  errors or warnings.
+- **`free_space` no longer lies across page boundaries.** Its MCP default is
+  now `scope: "stack"`, merging every non-reference page and returning the
+  effective target and `searched_pages`; `scope: "page"` is the explicit
+  compatibility override for intended overlap. Hidden pages remain constraints
+  because they are still collision-checked, while tracing references are
+  excluded because drawing over them is the workflow. Default search bounds span
+  all constraining pages, and incomplete width-only/height-only fit queries fail
+  by name instead of silently switching modes. The behavior is proven through
+  the real stdio server as well as exact core occupancy tests.
+- **`describe` can be bounded without becoming approximate.** An optional cell
+  `region`, combinable with `page`, filters boxes/text/images by their claimed
+  rectangles and paths by every actual quadrant piece. A real-MCP regression
+  proves that an empty area inside an L-shaped path's bounding box is not
+  returned. Responses keep the compatible per-page array, add the normalized
+  effective filter, accept reversed range corners, and reject an unknown page by
+  name instead of returning a misleading empty array.
+- **Committed edits have a durable recovery path.** `history` exposes status,
+  undo, redo, and clear with a configurable 1–1000 entry bound (100 by default).
+  A versioned sidecar is bound to the exact serialized document hash. Undo and
+  redo survive open and separate MCP processes; an outside edit invalidates the
+  stale sidecar rather than applying it to the wrong state. Failed and no-op
+  calls consume no entry, divergent edits clear redo, every restoration is
+  checkpointed, and partial composite failure rolls back memory, document, and
+  sidecar together.
+- **Subsystem grouping is durable and exact.** Flat groups own explicit element
+  ids across pages, serialize deterministically, move every member by one exact
+  delta, participate in plan and history, follow rename/removal, reject ambiguous
+  ownership atomically, and are exposed by `describe` and the `group` MCP tool.
+- **Follow relationships are persistent constraints.** `constraint` stores one
+  parent per dependent with named or indexed anchors and exact quadrant offsets.
+  Chains cascade through move, resize, path extension/replacement, and group
+  movement; manual dependent movement authors a new offset. Cycles, duplicate
+  parents, dangling or ambiguous ids, invalid offsets, and out-of-face anchors
+  are refused before mutation or load. Inspection reports synchronized versus
+  actual offsets, and `sync` restores a manually edited relationship.
+- **Composition inputs survive persistence.** `wireframe` source data now
+  survives save/open, so `export_prompt` continues working after reopen;
+  `perspective_scene` retains its room, camera, boxes, and measured runs as
+  durable provenance. `export_prompt` verifies generated boxes and routes still
+  match the live drawing; a later move is refused as stale, while undo restores
+  source and geometry together. Core round-trip and real stdio regressions cover
+  both.
+- **Overlay text occlusion is validated, not left to eyesight alone.** `L021`
+  reports an error when opaque content on an overlay crosses the exact text runs
+  emitted for a lower box or free-text element. The real agent session keeps its
+  callout above the node and uses a separate edge marker, preserving deliberate
+  `L010` layering without hiding the node label.
+- **Canonical example generation is reproducible.** The direct example pins its
+  creation time, the MCP session accepts an injected creation time, and
+  `.gitattributes` fixes text output to LF so a Windows verification run does not
+  create timestamp or line-ending churn.
 - **The full cycle runs** (`node examples/build-example.js`, exit 0): a box
   sized by eye is caught during a *rehearsal* before anything is written,
   repaired in the plan using the engine's own reported numbers, then committed
@@ -28,7 +114,7 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (32 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (35 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
 - **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),
@@ -121,9 +207,21 @@ Verified by running it, not by inspection:
   is a variable cut DEPTH, but that moves the boundary between `elementClaimed`
   and `elementVisual`, which is load-bearing. It needs its own spec rather than
   being added to round out a list.
-- **The viewer serves**: HTTP 200 on `/`; `/api/state` returns the document,
-  ranked findings, SVG with per-page groups and fingerprinted finding marks, and
-  the ASCII view.
+- **The local live editor serves and mutates end to end.** HTTP 200 on `/` and a
+  compatibility `/api/state` expose document identity, pages, lattice metadata,
+  ranked findings, selectable SVG, and ASCII. The browser uses WebSocket rather
+  than polling, and supports fit/zoom, keyboard/pointer selection, move, resize,
+  restyle, path extension/replacement, flat groups, follow relationships,
+  auditable acceptance/withdrawal, deletion, and durable undo/redo. Unknown or
+  expired fingerprints are refused rather than stored as meaningless stale
+  records; accepted and stale states remain visible. Two-client tests prove broadcast
+  revisions and disk state; file-watch tests prove outside reload. Foreign
+  origins, unmasked frames, reserved opcodes, and invalid frame flags are
+  rejected; messages are bounded, tools and static assets are allowlisted,
+  mutation order is serialized, and security headers are asserted.
+  Headed browser passes at 1440x900 and 390x844 found no console errors,
+  horizontal overflow, blank canvas, control clipping, or incoherent overlap;
+  focused drafts survive concurrent updates and require an explicit re-apply.
 - **SVG geometry is integer pixels throughout**, and every text run carries
   `textLength` matching the measured width exactly.
 - **The supplied tree is reproducible through TurtlePen itself.** `pnpm run
@@ -144,6 +242,10 @@ Verified by running it, not by inspection:
   without a repair route fails the suite.
 - **`plan`** rehearses a whole composition on a clone and reports conflicts
   before committing; `commit: true` applies all-or-nothing.
+- **Batch/direct move parity is exact.** `plan` accepts the documented
+  `cellsX`/`cellsY` form instead of silently treating it as a zero delta, and a
+  geometry change invalidates the current-finding snapshot used to accelerate
+  consecutive acceptance operations.
 - **Path amendment**: paths record their end state and can be extended or
   redrawn without losing their id.
 - **Arrowheads**, including the `line … arrow` terminal form that ends a run in
@@ -174,12 +276,12 @@ Verified by running it, not by inspection:
   dangling/retrace warnings.
 - **Full-canvas rendering is explicit.** `render { bounds: "canvas" }` preserves
   the declared portrait canvas instead of cropping to content.
-- **The live viewer survives its first successful poll.** Missing helpers were
-  restored, finding rows are keyboard buttons, status updates are announced,
-  reduced motion is honoured, error text is escaped, static paths are confined,
-  and the favicon request is quiet. Unchanged polls now compare the file
-  timestamp before loading the document and return a tiny acknowledgement,
-  avoiding repeated validation, rendering, and transfer of large artwork.
+- **The live viewer no longer polls.** Missing helpers were restored, selectable
+  SVG elements and finding rows are keyboard reachable, status updates are
+  announced, reduced motion is honoured, error text is escaped, only named
+  public assets are served, and the favicon request is quiet. WebSocket broadcasts now carry
+  committed revisions; the cheap unchanged HTTP response remains only for
+  compatibility and diagnostics.
 
 ## Found by using it, then fixed
 
@@ -324,36 +426,10 @@ added, it is not shipped until `HELP` names it at the moment of need.
 - **Proportional fonts.** The monospace model is what makes capacity countable.
 - **Negative addressing.** The grid runs `A1` rightward and downward only.
 
-## Known gaps
+## Gap closure status
 
-- **The viewer is read-only** and polls at 700ms. No editing, no websocket.
-- **No undo.** `plan` covers the "check before you commit" case, which is the
-  one that matters most, but there is no history to step back through.
-- **`describe` returns whole-document JSON**; on a large diagram that is a lot
-  of tokens, with no pagination or filtering by region.
-- **No grouping or containers** — no way to say "these five boxes are one
-  subsystem" and move or validate them as a unit.
-- **Anchors are execution-time placement helpers, not persistent constraints.**
-  Moving a target later does not move already-created dependents; rerun the
-  declarative program to recompute them.
-- **`free_space` searches one page at a time**, so it can propose a spot that is
-  free on the target page but occupied on an exclusive page below it.
-- **Text elements are not collision-checked against each other for legibility**,
-  only for quadrant overlap.
-
-## Next
-
-Ranked by what the authoring session actually suggested, not by guesswork:
-
-1. **A dense constraint-stress session.** The flow, topology, tree, and actual
-   logo now cover substantially different authoring modes. The next useful edge
-   is a diagram where free space runs out and many connectors compete for the
-   same face, followed by a rework pass over that crowded document.
-2. **Multiple connectors on one face.** Every connector leaving a box currently
-   seats at the same midpoint, so two would overlap immediately. Seats probably
-   need an index (`gateway.S#2`) or an offset.
-3. **Cross-page `free_space`**, so a suggested position accounts for the whole
-   stack rather than one page.
-4. **Grouping**, if a rework session shows that moving related boxes one at a
-   time is the main friction.
-5. **Region filtering on `describe`** for large diagrams.
+Every previously recorded implementation gap is closed: the viewer is a tested
+WebSocket editor, history is durable across restarts, groups move subsystems, and
+explicit follow constraints persist and cascade. No known open implementation
+gap remains inside the intended scope below. Future work needs new observed
+authoring evidence rather than extending this list speculatively.

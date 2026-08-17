@@ -133,6 +133,58 @@ export function measureText(text, { fontSize = DEFAULT_FONT.size, availableWidth
 }
 
 /**
+ * Lay out the exact text runs the SVG renderer emits.
+ *
+ * Keeping this calculation in the measurement layer lets validation inspect
+ * the same footprint a reader sees. `verticalAlign="center"` is used by box
+ * labels; free text starts at the top of its declared rectangle.
+ */
+export function layoutTextRuns(
+  text,
+  boxRect,
+  {
+    fontSize = DEFAULT_FONT.size,
+    paddingQuads = 0,
+    align = 'left',
+    advanceRatio,
+    verticalAlign = 'top',
+  } = {},
+) {
+  const pad = paddingQuads * PX_PER_QUAD;
+  const x = boxRect.x * PX_PER_QUAD;
+  const y = boxRect.y * PX_PER_QUAD;
+  const w = boxRect.w * PX_PER_QUAD;
+  const h = boxRect.h * PX_PER_QUAD;
+  const availableWidthPx = Math.max(0, w - pad * 2);
+  const measured = measureText(text, { fontSize, availableWidthPx, advanceRatio });
+  const blockH = measured.lines.length * measured.lineHeight;
+  const firstBaseline = verticalAlign === 'center'
+    ? Math.round(y + pad + Math.max(0, (h - pad * 2 - blockH) / 2) + measured.lineHeight * 0.75)
+    : Math.round(y + measured.lineHeight * 0.75);
+
+  const runs = measured.lines.flatMap((line, i) => {
+    if (!line) return [];
+    const width = line.length * measured.advance;
+    const runX = align === 'center'
+      ? x + Math.floor((w - width) / 2)
+      : align === 'right'
+        ? x + w - pad - width
+        : x + pad;
+    const baseline = firstBaseline + i * measured.lineHeight;
+    return [{
+      text: line,
+      x: runX,
+      y: baseline - Math.ceil(measured.lineHeight * 0.75),
+      width,
+      height: measured.lineHeight,
+      baseline,
+    }];
+  });
+
+  return { ...measured, runs };
+}
+
+/**
  * How many cells wide/tall a label needs — the number the AI actually wants
  * when it is deciding a box size before placing anything.
  */

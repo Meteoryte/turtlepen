@@ -125,6 +125,28 @@ test('to <id>.<port> resolves against placed boxes', () => {
   assert.equal(r.pieces.length, 10);
 });
 
+test('indexed face grammar has an exact, dedicated quadrant footprint', () => {
+  const elements = {
+    src: { kind: 'box', rect: { x: 4, y: 6, w: 8, h: 4 } },
+    dst: { kind: 'box', rect: { x: 4, y: 16, w: 8, h: 4 } },
+  };
+  const r = runPen('pen from src.S#2\ndown line to dst.N#2 arrow', {
+    resolveElement: (id) => elements[id] ?? null,
+  });
+
+  assert.deepEqual(
+    r.pieces.map((piece) => [piece.x, piece.y, piece.type]),
+    [
+      [6, 10, 'line'],
+      [6, 11, 'line'],
+      [6, 12, 'line'],
+      [6, 13, 'line'],
+      [6, 14, 'line'],
+      [6, 15, 'arrow'],
+    ],
+  );
+});
+
 test('a target that is not ahead of the cursor fails loudly', () => {
   assert.throws(() => runPen('pen E1 tl\nright align top line to A1.q1'), /not right of the cursor/);
 });

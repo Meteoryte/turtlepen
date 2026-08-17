@@ -97,6 +97,28 @@ test('forced-save provenance survives a document round trip', () => {
   assert.deepEqual(back.forcedSave, d.forcedSave, 'the next reader must see that the gate was overridden');
 });
 
+test('composition source and perspective provenance survive a document round trip', () => {
+  const d = sample();
+  d.wireframe = {
+    area: { widthIn: 120, depthIn: 96 },
+    items: [{ id: 'condenser', widthIn: 30, depthIn: 30, atXIn: 48, atYIn: 36 }],
+    scale: 2,
+  };
+  d.perspective_scene = {
+    roomIn: { widthIn: 120, depthIn: 96, heightIn: 96 },
+    eyeIn: { x: 60, y: 66, z: -24 },
+    targetIn: { x: 60, y: 48, z: 48 },
+    fovDeg: 60,
+    boxes: [],
+    runs: [],
+  };
+
+  const back = core.deserialize(core.serialize(d));
+  assert.deepEqual(back.wireframe, d.wireframe);
+  assert.deepEqual(back.perspective_scene, d.perspective_scene);
+  assert.equal(core.serialize(back), core.serialize(d), 'extended source data stays deterministic');
+});
+
 test('rendering can preserve the declared canvas instead of cropping to content', () => {
   const d = core.createDocument({ name: 'poster', canvas: { cols: 54, rows: 96 } });
   core.applyPen(d, 'base', 'pen C4.q1\ndot', { id: 'mark', role: 'artwork' });

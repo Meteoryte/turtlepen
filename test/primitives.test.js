@@ -146,6 +146,47 @@ test('free space can be searched in an explicit region far from the content', ()
   assert.ok(far.rect.x >= 120 && far.rect.y >= 120, `expected the distant region, got ${far.at}`);
 });
 
+test('stack free space is constrained by every page and page scope remains explicit', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'blocker', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.addPage(d, { id: 'future', z: 1, intent: 'exclusive' });
+  const region = core.geometry.rect(4, 6, 12, 6); // exactly C4:H6
+
+  assert.ok(core.occupancy.firstFitting(d, 'future', 6, 3, { region, scope: 'page' }), 'future alone is empty');
+  assert.equal(core.occupancy.firstFitting(d, 'future', 6, 3, { region, scope: 'stack' }), null, 'base blocks the stack');
+  assert.deepEqual(core.occupancy.freeSpaceContext(d, 'future', 'stack').pageIds, ['base', 'future']);
+  assert.throws(() => core.occupancy.firstFitting(d, 'future', 0, 3), /positive whole-cell count/);
+  assert.throws(() => core.occupancy.freeSpaceContext(d, 'future', 'document'), /scope must be page or stack/);
+});
+
+test('stack free space includes hidden pages but excludes tracing references', () => {
+  const d = doc();
+  core.addPage(d, { id: 'trace', z: -1, intent: 'overlay', reference: true });
+  core.placeBox(d, 'trace', { id: 'reference-area', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.addPage(d, { id: 'hidden', z: 1, intent: 'exclusive' });
+  core.placeBox(d, 'hidden', { id: 'hidden-blocker', at: 'M4.tl', span: { w: 6, h: 3 } });
+  core.updatePage(d, 'hidden', { visible: false });
+  const traceRegion = core.geometry.rect(4, 6, 12, 6);
+  const hiddenRegion = core.geometry.rect(24, 6, 12, 6);
+
+  assert.ok(core.occupancy.firstFitting(d, 'base', 6, 3, { region: traceRegion, scope: 'stack' }), 'reference scaffolding is intentionally drawable');
+  assert.equal(core.occupancy.firstFitting(d, 'base', 6, 3, { region: hiddenRegion, scope: 'stack' }), null, 'hidden content still validates and blocks');
+  const context = core.occupancy.freeSpaceContext(d, 'base', 'stack');
+  assert.deepEqual(context.pageIds, ['base', 'hidden']);
+  assert.deepEqual(context.ignoredReferencePages, ['trace']);
+});
+
+test('the default stack search region spans content from every constraining page', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'far', at: 'W20.tl', span: { w: 4, h: 2 } });
+  core.addPage(d, { id: 'future', z: 1, intent: 'exclusive' });
+
+  const pageRegion = core.occupancy.defaultRegion(d, 'future');
+  const stackRegion = core.occupancy.defaultRegion(d, 'future', 4, { scope: 'stack' });
+  assert.ok(core.geometry.right(pageRegion) <= 80, 'an empty page keeps the small origin default');
+  assert.ok(core.geometry.right(stackRegion) > 52, 'stack bounds include the distant base element and margin');
+});
+
 test('describe reports live fit status alongside geometry', () => {
   const d = doc();
   core.placeBox(d, 'base', { id: 'tight', at: 'C4.tl', span: { w: 4, h: 2 }, label: 'Immutable Audit Trail' });

@@ -15,7 +15,8 @@
  *   face <dir>                                     turn without drawing
  *   <dir> [n] [align <side>] [<style>] line        draw n cells of stroke
  *   <dir> [align <sideA> <sideB>] [<style>] corner  place a junction, turn
- *   <dir> ... line to <address|id.port>            draw until it reaches a target
+ *   <dir> ... line to <address|id.port[#slot]>     draw until it reaches a target
+ *   pen from <id>.<face>[#slot]                    leave a box on a dedicated track
  *   box span <W>x<H> at <address> label "..." [style <s>] [id <name>]
  *   text "..." at <address> [span <W>x<H>] [id <name>]
  *
@@ -46,6 +47,7 @@ const ELEMENTS = Object.freeze(['line', 'corner', 'box', 'text', 'arrow', 'hop',
  */
 const SHAPES = Object.freeze(['ray', 'circle', 'disc', 'arc', 'polygon', 'triangle', 'dot', 'dash']);
 const STYLES = Object.freeze([...new Set([...BOX_CORNER_STYLES, ...JUNCTION_STYLES])]);
+const ELEMENT_PORT_RE = /^([A-Za-z0-9_-]+)\.([A-Za-z]{1,2}(?:#\d+)?)$/;
 
 /**
  * Compass words that a mark understands but the cursor does not — `ne`, `sw`,
@@ -152,7 +154,7 @@ export function parseCommand(source) {
       continue;
     }
 
-    if (/^[A-Za-z0-9_-]+\.[A-Za-z]{1,2}$/.test(t)) { cmd.to = t; continue; } // id.port
+    if (ELEMENT_PORT_RE.test(t)) { cmd.to = t; continue; } // id.port or id.face#slot
 
     // A compass word where a movement verb belongs is the single most expensive
     // wrong turn in this grammar. The pen cursor runs on four orthogonal tracks
@@ -587,7 +589,7 @@ export function resolveLocation(token, ctx, source) {
     const r = addressRect(parseAddress(token));
     return { x: r.x, y: r.y };
   }
-  const m = /^([A-Za-z0-9_-]+)\.([A-Za-z]{1,2})$/.exec(String(token));
+  const m = ELEMENT_PORT_RE.exec(String(token));
   if (!m) {
     throw new SyntaxError(`"${token}" is neither an address like C4.q2 nor an anchor like shell.C — in: ${source}`);
   }
@@ -635,7 +637,7 @@ function distanceToTarget(state, dir, target, ctx, source) {
       `"to ${target}" resolves to ${quadToAddress(point.x, point.y)}, which is not ${dir} of the cursor at ${quadToAddress(state.x, state.y)} — in: ${source}`,
     );
   }
-  const named = /^([A-Za-z0-9_-]+)\.([A-Za-z]{1,2})$/.exec(target);
+  const named = ELEMENT_PORT_RE.exec(target);
   return {
     quads: delta,
     point,
@@ -646,7 +648,7 @@ function distanceToTarget(state, dir, target, ctx, source) {
 
 /** Resolve `<id>.<port>` to the quadrant just outside that face, facing away. */
 function seatAtPort(target, ctx, source) {
-  const m = /^([A-Za-z0-9_-]+)\.([A-Za-z]{1,2})$/.exec(target);
+  const m = ELEMENT_PORT_RE.exec(target);
   if (!m) {
     throw new SyntaxError(`"pen from" expects a box port like "gateway.S" — got "${target}" in: ${source}`);
   }
@@ -664,7 +666,7 @@ function resolveTargetPoint(target, ctx, source) {
     const r = addressRect(parseAddress(target));
     return { x: r.x, y: r.y };
   }
-  const m = /^([A-Za-z0-9_-]+)\.([A-Za-z]{1,2})$/.exec(target);
+  const m = ELEMENT_PORT_RE.exec(target);
   if (m && typeof ctx.resolveElement === 'function') {
     const el = ctx.resolveElement(m[1]);
     if (!el) throw new Error(`"to ${target}" — no element named "${m[1]}" in: ${source}`);

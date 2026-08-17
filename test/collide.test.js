@@ -90,6 +90,41 @@ test('page intent decides the severity of the same geometry', () => {
   assert.ok(byRule(v2, 'L005')[0].fixes.some((f) => f.kind === 'intent'), 'suggests declaring overlay intent');
 });
 
+test('an overlay that crosses a lower label is an error, not harmless layering', () => {
+  const d = doc();
+  core.placeBox(d, 'base', {
+    id: 'checkout', at: 'C4.tl', span: { w: 16, h: 3 }, label: 'Checkout Orchestrator',
+  });
+  core.addPage(d, { id: 'review', z: 1, intent: 'overlay' });
+  core.placeBox(d, 'review', {
+    id: 'slow', at: 'E4.tl', span: { w: 10, h: 3 }, label: 'p95 4.2s',
+  });
+
+  const v = core.validate(d);
+  const hit = byRule(v, 'L021')[0];
+  assert.ok(hit, 'the overlay must report the text it hides');
+  assert.equal(hit.severity, 'S1');
+  assert.deepEqual(hit.actors.sort(), ['checkout', 'slow']);
+  assert.ok(hit.cells.length > 0, 'the finding names the obscured quadrants');
+  assert.ok(hit.fixes.some((f) => f.kind === 'move'));
+  assert.equal(v.summary.clean, false);
+});
+
+test('an overlay may cross a box border without obscuring its label', () => {
+  const d = doc();
+  core.placeBox(d, 'base', {
+    id: 'checkout', at: 'C6.tl', span: { w: 16, h: 5 }, label: 'Checkout Orchestrator',
+  });
+  core.addPage(d, { id: 'review', z: 1, intent: 'overlay' });
+  core.placeBox(d, 'review', {
+    id: 'slow', at: 'K4.tl', span: { w: 10, h: 3 }, label: 'p95 4.2s',
+  });
+
+  const v = core.validate(d);
+  assert.equal(byRule(v, 'L010').length, 1, 'the deliberate border overlap remains visible');
+  assert.equal(byRule(v, 'L021').length, 0, 'the label remains readable');
+});
+
 test('the AI adjudicates intent, and the acceptance lapses when geometry changes', () => {
   const d = doc();
   core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
@@ -103,6 +138,8 @@ test('the AI adjudicates intent, and the acceptance lapses when geometry changes
   assert.equal(byRule(after, 'L001').length, 0, 'accepted findings leave the open list');
   assert.equal(after.accepted.length, 1);
   assert.equal(after.accepted[0].reason, 'the two panes deliberately share a border');
+  assert.equal(d.acceptances[0].rule, 'L001');
+  assert.equal(d.acceptances[0].page, 'base');
   assert.equal(after.staleAcceptances.length, 0);
 
   core.moveElement(d, 'b', 2, 0);
@@ -110,11 +147,23 @@ test('the AI adjudicates intent, and the acceptance lapses when geometry changes
   assert.equal(byRule(moved, 'L001').length, 1, 'new geometry means a new finding, not a suppressed one');
   assert.equal(moved.staleAcceptances.length, 1, 'the old acceptance is reported as stale');
   assert.notEqual(byRule(moved, 'L001')[0].fingerprint, finding.fingerprint);
+  const log = core.formatLog(moved);
+  assert.match(log, /L001 page:base/);
+  assert.doesNotMatch(log, /undefined/);
 });
 
 test('accepting without a reason is refused', () => {
   const d = doc();
   assert.throws(() => core.acceptFinding(d, 'abc123', '   '), /requires a reason/);
+});
+
+test('accepting an unknown or expired fingerprint is refused without leaving a stale record', () => {
+  const d = doc();
+  assert.throws(
+    () => core.acceptFinding(d, 'abc123', 'not a real finding'),
+    /not a current finding/,
+  );
+  assert.deepEqual(d.acceptances, []);
 });
 
 test('touching boxes are flagged for having no gutter', () => {

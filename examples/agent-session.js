@@ -11,53 +11,10 @@
  *   node examples/agent-session.js --quiet  # just the verdict
  */
 
-import { spawn } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
+import { createMcpClient } from './mcp-client.js';
 
-const here = dirname(fileURLToPath(import.meta.url));
-const SERVER = resolve(here, '../src/mcp/server.js');
 const QUIET = process.argv.includes('--quiet');
-
-// --- a tiny MCP client ------------------------------------------------------
-
-function client() {
-  const child = spawn(process.execPath, [SERVER], { cwd: resolve(here, '..'), stdio: ['pipe', 'pipe', 'pipe'] });
-  const pending = new Map();
-  let id = 0;
-  let buffer = '';
-
-  child.stdout.on('data', (chunk) => {
-    buffer += chunk;
-    let nl;
-    while ((nl = buffer.indexOf('\n')) >= 0) {
-      const line = buffer.slice(0, nl).trim();
-      buffer = buffer.slice(nl + 1);
-      if (!line) continue;
-      const msg = JSON.parse(line);
-      const resolveFn = pending.get(msg.id);
-      if (resolveFn) { pending.delete(msg.id); resolveFn(msg); }
-    }
-  });
-  child.stderr.on('data', () => {}); // the server logs its readiness banner here
-
-  const send = (method, params) =>
-    new Promise((res) => {
-      const msgId = ++id;
-      pending.set(msgId, res);
-      child.stdin.write(`${JSON.stringify({ jsonrpc: '2.0', id: msgId, method, params })}\n`);
-    });
-
-  return {
-    async call(name, args = {}) {
-      const reply = await send('tools/call', { name, arguments: args });
-      if (reply.error) return { error: reply.error.message };
-      return { text: reply.result.content[0].text, isError: Boolean(reply.result.isError) };
-    },
-    init: () => send('initialize', { protocolVersion: '2025-06-18', capabilities: {} }),
-    close: () => { child.stdin.end(); },
-  };
-}
+const FIXED_CREATED_AT = '2026-08-10T13:29:24.372Z';
 
 // --- transcript helpers -----------------------------------------------------
 
@@ -86,7 +43,7 @@ async function act(mcp, intent, name, args, { show = 12 } = {}) {
 
 // --- the session ------------------------------------------------------------
 
-const mcp = client();
+const mcp = createMcpClient({ createdAt: FIXED_CREATED_AT });
 await mcp.init();
 
 // 1. Orient. An agent that skips this is guessing at the grammar.
@@ -170,8 +127,10 @@ if (JSON.parse(described.text)[0].elements.length !== 0) note('plan wrote to the
 await act(mcp, 'commit the composition', 'plan', { operations: ops, commit: true }, { show: 3 });
 
 await act(mcp, 'add a review layer', 'add_page', { id: 'review', z: 1, intent: 'overlay' }, { show: 2 });
-await act(mcp, 'annotate over the base, which an overlay is for', 'place_box',
-  { id: 'slow', page: 'review', at: 'E21.tl', span: { w: 10, h: 3 }, label: 'p95 4.2s', corner: 'chamfered' }, { show: 3 });
+await act(mcp, 'place a legible review callout above the affected node', 'place_box',
+  { id: 'slow', page: 'review', at: 'I16.tl', span: { w: 10, h: 3 }, label: 'p95 4.2s', corner: 'chamfered' }, { show: 3 });
+await act(mcp, 'mark the node edge on the overlay without covering its label', 'pen',
+  { id: 'slow-marker', page: 'review', program: 'pen R20.q1\ndot', role: 'artwork' }, { show: 3 });
 
 const final = await act(mcp, 'validate the finished diagram', 'validate', {}, { show: 30 });
 countFindings(final, 'final');
@@ -179,7 +138,7 @@ countFindings(final, 'final');
 await act(mcp, 'render', 'render', { path: 'diagrams/agent-session.svg' }, { show: 2 });
 if (!QUIET) console.log(`\n${(await mcp.call('ascii', { page: 'base', withFindings: true })).text}`);
 
-mcp.close();
+await mcp.close();
 
 /** Anything above INFO in a diagram the agent believes is correct is friction. */
 function countFindings(log, phase) {

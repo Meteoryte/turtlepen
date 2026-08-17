@@ -887,8 +887,8 @@
         "id": "slow",
         "kind": "box",
         "rect": {
-          "x": 8,
-          "y": 40,
+          "x": 16,
+          "y": 30,
           "w": 20,
           "h": 6
         },
@@ -900,6 +900,26 @@
         "note": null,
         "opacity": null,
         "state": null
+      },
+      {
+        "id": "slow-marker",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 34,
+            "y": 38,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 34,
+          "y": 38,
+          "facing": "right"
+        }
       }
     ]
   },

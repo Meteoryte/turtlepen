@@ -15,10 +15,12 @@ import * as core from '../src/core/index.js';
 
 const OUT = resolve(process.cwd(), 'diagrams/example.turtlepen.json');
 const SVG = resolve(process.cwd(), 'diagrams/example.svg');
+const FIXED_CREATED_AT = '2026-08-10T13:29:24.124Z';
 
 const rule = (s) => console.log(`\n${'─'.repeat(72)}\n${s}\n${'─'.repeat(72)}`);
 
 const doc = core.createDocument({ name: 'ingest pipeline', canvas: { cols: 120, rows: 60 } });
+doc.createdAt = FIXED_CREATED_AT;
 
 // --- 1. Measure before deciding a size ---------------------------------------
 rule('1. measure BEFORE sizing anything — the step most tools cannot offer');
@@ -88,10 +90,12 @@ console.log(committed.validation.summary.clean ? 'validates CLEAN' : 'NOT CLEAN'
 rule('5. Z-pages — identical overlap, opposite severity');
 
 core.addPage(doc, { id: 'notes', z: 1, intent: 'overlay', title: 'Review notes' });
-core.placeBox(doc, 'notes', { id: 'note-1', at: 'E5.tl', span: { w: 8, h: 3 }, label: 'p95 4.2s', corner: 'chamfered' });
+core.placeBox(doc, 'notes', { id: 'note-1', at: 'C1.tl', span: { w: 8, h: 3 }, label: 'p95 4.2s', corner: 'chamfered' });
+core.placeBox(doc, 'notes', { id: 'note-marker', at: 'P4.tl', span: { w: 1, h: 1 } });
 
 core.addPage(doc, { id: 'phase2', z: 2, intent: 'exclusive', title: 'Phase 2 additions' });
-core.placeBox(doc, 'phase2', { id: 'cache', at: 'E13.tl', span: { w: 8, h: 3 }, label: 'Redis', corner: 'rounded' });
+core.placeBox(doc, 'phase2', { id: 'cache', at: 'AH12.tl', span: { w: 8, h: 3 }, label: 'Redis', corner: 'rounded' });
+core.placeBox(doc, 'phase2', { id: 'cache-marker', at: 'P12.tl', span: { w: 1, h: 1 } });
 
 const staged = core.validate(doc);
 console.log(core.formatLog(staged, { showFixes: false }));

@@ -3,182 +3,55 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TurtlePen viewer</title>
+<title>TurtlePen live editor</title>
 <link rel="icon" href="/brand-logo.svg" type="image/svg+xml">
-<style>
-  :root {
-    --bg: #f7f8fb; --panel: #ffffff; --ink: #171a22; --muted: #5b6478;
-    --line: #e2e5ee; --s0: #b42318; --s1: #d92d20; --s2: #b54708; --s3: #175cd3;
-    --mono: ui-monospace, SFMono-Regular, "Cascadia Mono", Menlo, Consolas, monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg: #0b0d12; --panel: #12151d; --ink: #e8ebf5; --muted: #98a1b8;
-            --line: #232838; --s0: #ff7b72; --s1: #ff9d95; --s2: #f5b544; --s3: #7cb2ff; }
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink);
-         font: 13px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
-  header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-           padding: 12px 18px; border-bottom: 1px solid var(--line); background: var(--panel); }
-  .brand-mark { width: 30px; height: 30px; object-fit: contain; flex: 0 0 auto; }
-  h1 { margin: 0; font-size: 15px; letter-spacing: -0.01em; }
-  .meta { color: var(--muted); font-family: var(--mono); font-size: 11.5px; }
-  .counts { margin-left: auto; display: flex; gap: 6px; font-family: var(--mono); font-size: 11.5px; }
-  .pill { padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); }
-  .pill.on-S0, .pill.on-S1 { color: var(--s1); border-color: currentColor; }
-  .pill.on-S2 { color: var(--s2); border-color: currentColor; }
-  .pill.on-S3 { color: var(--s3); border-color: currentColor; }
-  .pill.clean { color: #12b76a; border-color: currentColor; }
-  main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 34%); height: calc(100vh - 54px); }
-  @media (max-width: 900px) { main { grid-template-columns: 1fr; height: auto; } }
-  #stage { overflow: auto; padding: 18px; }
-  #stage svg { max-width: 100%; height: auto; }
-  aside { border-left: 1px solid var(--line); background: var(--panel); overflow: auto; padding: 14px 16px; }
-  @media (max-width: 900px) { aside { border-left: none; border-top: 1px solid var(--line); } }
-  h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 18px 0 8px; }
-  h2:first-child { margin-top: 0; }
-  .pages { display: flex; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: 11.5px; }
-  .pages label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; color: var(--muted); }
-  .pages label.on { color: var(--ink); }
-  .finding { border-left: 3px solid var(--line); padding: 6px 0 6px 10px; margin-bottom: 10px;
-             cursor: pointer; border-radius: 0 4px 4px 0; width: 100%; text-align: left;
-             color: inherit; background: transparent; font: inherit; border-top: 0; border-right: 0; border-bottom: 0; }
-  .finding:hover { background: var(--bg); }
-  .finding:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-  .finding.sel { background: var(--bg); outline: 1px solid var(--line); }
-  @keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.15; } }
-  .flash { animation: flash 0.4s ease-in-out 3; }
-  .finding.S0, .finding.S1 { border-color: var(--s1); }
-  .finding.S2 { border-color: var(--s2); }
-  .finding.S3 { border-color: var(--s3); }
-  .rule { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-  .msg { margin: 2px 0; }
-  .fix { color: var(--muted); font-size: 12px; }
-  .fp { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
-  pre { font-family: var(--mono); font-size: 11px; line-height: 1.25; overflow: auto;
-        background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px; }
-  .empty { color: var(--muted); font-style: italic; }
-  .err { color: var(--s1); font-family: var(--mono); }
-  details summary { cursor: pointer; color: var(--muted); font-size: 12px; }
-  @media (prefers-reduced-motion: reduce) {
-    .flash { animation: none; outline: 2px solid var(--s2); }
-    * { scroll-behavior: auto !important; }
-  }
-</style>
+<link rel="stylesheet" href="/style.css">
+<script src="/app.js" defer></script>
 </head>
 <body>
 <header>
   <img class="brand-mark" src="/brand-logo.svg" alt="">
-  <h1>TurtlePen</h1>
-  <span class="meta" id="doc" aria-live="polite">connecting…</span>
+  <div class="identity">
+    <h1>TurtlePen</h1>
+    <span class="meta" id="doc">Connecting</span>
+  </div>
+  <span class="connection" id="connection" data-state="connecting" aria-live="polite">Connecting</span>
+  <label class="zoom-control">Zoom
+    <select id="zoom" aria-label="Canvas zoom">
+      <option value="fit" selected>Fit</option>
+      <option value="50">50%</option>
+      <option value="75">75%</option>
+      <option value="100">100%</option>
+      <option value="150">150%</option>
+      <option value="200">200%</option>
+    </select>
+  </label>
+  <div class="history-actions" aria-label="Edit history">
+    <button type="button" id="undo" title="Undo" disabled>Undo</button>
+    <button type="button" id="redo" title="Redo" disabled>Redo</button>
+  </div>
   <span class="counts" id="counts" aria-live="polite"></span>
 </header>
+<div class="operation" id="operation" aria-live="polite"></div>
 <main>
-  <section id="stage"></section>
+  <section id="stage" aria-label="Diagram canvas" tabindex="0"></section>
   <aside>
-    <h2>Pages</h2>
-    <div id="pages" class="pages"></div>
-    <h2>Collision log</h2>
-    <div id="log" class="empty" aria-live="polite">waiting for a diagram…</div>
-    <h2>ASCII</h2>
-    <details><summary>show quadrant view</summary><pre id="ascii"></pre></details>
+    <section class="panel-section">
+      <h2>Pages</h2>
+      <div id="pages" class="pages"></div>
+    </section>
+    <section class="panel-section">
+      <h2>Selection</h2>
+      <div id="inspector" class="empty">No selection</div>
+    </section>
+    <section class="panel-section">
+      <h2>Collision log</h2>
+      <div id="log" class="empty" aria-live="polite">Waiting for document state</div>
+    </section>
+    <section class="panel-section">
+      <details><summary>Quadrant view</summary><pre id="ascii"></pre></details>
+    </section>
   </aside>
 </main>
-<script>
-  const el = (id) => document.getElementById(id);
-  let lastMtime = -1;
-  const hidden = new Set();     // pages the reader has toggled off, kept across polls
-  let selected = null;          // fingerprint of the focused finding
-
-  const SEV = { S0: 'CRITICAL', S1: 'ERROR', S2: 'WARN', S3: 'INFO' };
-  const esc = (value) => String(value)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  const pill = (severity, count) => count
-    ? '<span class="pill on-' + severity + '">' + SEV[severity].toLowerCase() + ' ' + count + '</span>'
-    : '';
-
-  async function tick() {
-    let s;
-    const stateUrl = '/api/state' + (lastMtime >= 0 ? '?since=' + encodeURIComponent(lastMtime) : '');
-    try { s = await (await fetch(stateUrl, { cache: 'no-store' })).json(); }
-    catch { el('doc').textContent = 'viewer offline'; return; }
-
-    if (!s.ok) {
-      el('doc').classList.add('err');
-      el('doc').textContent = s.error;
-      el('stage').innerHTML = '';
-      el('log').textContent = 'no diagram loaded';
-      return;
-    }
-    if (s.unchanged) return;
-    if (s.mtime === lastMtime) return;
-    lastMtime = s.mtime;
-
-    el('doc').classList.remove('err');
-    el('doc').textContent = s.name + '  ·  ' + s.pages.map(p => p.id + ' z:' + p.z + ' ' + p.intent).join('  ·  ')
-      + '  ·  ' + s.lattice.pxPerCell + 'px cells / ' + s.lattice.pxPerQuadrant + 'px quadrants';
-
-    const c = s.summary;
-    el('counts').innerHTML = c.clean
-      ? '<span class="pill clean">clean</span>' + pill('S2', c.S2) + pill('S3', c.S3)
-      : pill('S0', c.S0) + pill('S1', c.S1) + pill('S2', c.S2) + pill('S3', c.S3);
-
-    el('pages').innerHTML = s.pages.map(p =>
-      '<label class="' + (hidden.has(p.id) ? '' : 'on') + '">' +
-        '<input type="checkbox" data-page="' + esc(p.id) + '"' + (hidden.has(p.id) ? '' : ' checked') + '>' +
-        esc(p.id) + ' z:' + p.z + ' ' + esc(p.intent) +
-      '</label>').join('');
-
-    el('stage').innerHTML = s.svg;
-    el('ascii').textContent = s.ascii;
-    applyPageVisibility();
-
-    if (!s.findings.length) {
-      el('log').innerHTML = '<div class="empty">no open findings</div>';
-    } else {
-      el('log').innerHTML = s.findings.map(f =>
-        '<button type="button" class="finding ' + f.severity + (f.fingerprint === selected ? ' sel' : '') + '" data-fp="' + f.fingerprint + '">' +
-          '<div class="rule">' + SEV[f.severity] + ' · ' + f.rule + ' ' + esc(f.title) + ' · page:' + esc(f.page) + '</div>' +
-          '<div class="msg">' + esc(f.message) + '</div>' +
-          (f.cellSummary ? '<div class="fix">at ' + esc(f.cellSummary) + '</div>' : '') +
-          f.fixes.map(x => '<div class="fix">fix: ' + esc(x.description) + '</div>').join('') +
-          '<div class="fp">#' + f.fingerprint + '</div>' +
-        '</button>').join('');
-    }
-  }
-
-  // Hiding a page client-side keeps the toggle instant and stateful across
-  // polls; the server always renders every page so nothing is lost.
-  function applyPageVisibility() {
-    for (const g of document.querySelectorAll('#stage g[data-page]')) {
-      g.style.display = hidden.has(g.dataset.page) ? 'none' : '';
-    }
-  }
-
-  document.getElementById('pages').addEventListener('change', (e) => {
-    const id = e.target.dataset.page;
-    if (!id) return;
-    if (e.target.checked) hidden.delete(id); else hidden.add(id);
-    e.target.closest('label').classList.toggle('on', e.target.checked);
-    applyPageVisibility();
-  });
-
-  // Clicking a finding flashes the quadrants it names, so the log line and the
-  // drawing are visibly the same fact rather than two things to reconcile.
-  document.getElementById('log').addEventListener('click', (e) => {
-    const card = e.target.closest('.finding');
-    if (!card) return;
-    selected = card.dataset.fp === selected ? null : card.dataset.fp;
-    for (const c of document.querySelectorAll('.finding')) c.classList.toggle('sel', c.dataset.fp === selected);
-    const marks = document.querySelectorAll('#stage rect[data-fp="' + selected + '"]');
-    if (!marks.length) return;
-    marks[0].scrollIntoView({ block: 'center', inline: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-    for (const m of marks) { m.classList.remove('flash'); void m.getBoundingClientRect(); m.classList.add('flash'); }
-  });
-
-  tick();
-  setInterval(tick, 700);
-</script>
 </body>
 </html>

@@ -135,3 +135,10 @@ test('dithering a format that cannot be decoded refuses by name', () => {
     /PNG|jpeg/i,
   );
 });
+
+test('dither refuses a footprint large enough to exhaust memory', () => {
+  assert.throws(
+    () => ditherToQuadrants({ width: 1, height: 1, pixels: new Uint8Array([0, 0, 0, 255]) }, 1001, 1000),
+    /safety limit/,
+  );
+});

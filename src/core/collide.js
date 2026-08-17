@@ -20,7 +20,7 @@ import { rect, rectsOverlap, intersection, expand, right, bottom, quadKey, parse
 import { quadToAddress, quadToCell, describeRegion } from './address.js';
 import { elementsOf, elementClaimed, elementVisual, elementRects, findElement } from './document.js';
 import { cornerCutQuads } from './shapes.js';
-import { fitReport, MIN_LEGIBLE_FONT_PX } from './text.js';
+import { fitReport, layoutTextRuns, MIN_LEGIBLE_FONT_PX } from './text.js';
 // Cycle with composition.js is deliberate and safe: every use on both sides is inside a
 // function body, so neither module reads the other's bindings during initialisation.
 import { compositionFindings } from './composition.js';
@@ -50,6 +50,7 @@ export const RULES = Object.freeze({
   L018: { severity: 'S3', title: 'centring bias', blurb: 'a stroke centred in an even corridor could not sit exactly in the middle' },
   L019: { severity: 'S2', title: 'invisible but claiming', blurb: 'an element faded past legibility still occupies its quadrants' },
   L020: { severity: 'S2', title: 'reference still present', blurb: 'a tracing underlay is still in the document' },
+  L021: { severity: 'S1', title: 'overlay obscures text', blurb: 'opaque overlay content crosses a lower text run' },
   // Composition rules. S3 by design: a taste heuristic must never outrank a real defect.
   C001: { severity: 'S3', title: 'sparse canvas', blurb: 'the page has so little ink that nothing was really composed' },
 });
@@ -113,6 +114,37 @@ const addrList = (keys, limit = 24) => {
 };
 
 const intersect = (a, b) => { const out = []; for (const k of a) if (b.has(k)) out.push(k); return out; };
+
+function quadsForPixelRect(r) {
+  const out = new Set();
+  if (r.width <= 0 || r.height <= 0) return out;
+  const x0 = Math.floor(r.x / 5);
+  const y0 = Math.floor(r.y / 5);
+  const x1 = Math.ceil((r.x + r.width) / 5);
+  const y1 = Math.ceil((r.y + r.height) / 5);
+  for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) out.add(quadKey(x, y));
+  return out;
+}
+
+/** The quadrants occupied by the exact text runs emitted by svg.js. */
+function textQuads(doc, el) {
+  const content = el.kind === 'text' ? el.text : el.label;
+  if (!content) return new Set();
+  const layout = layoutTextRuns(content, el.rect, {
+    fontSize: el.fontSize,
+    paddingQuads: el.kind === 'box' ? doc.font.paddingQuads : 0,
+    align: el.align,
+    verticalAlign: el.kind === 'box' ? 'center' : 'top',
+  });
+  const out = new Set();
+  for (const run of layout.runs) for (const key of quadsForPixelRect(run)) out.add(key);
+  return out;
+}
+
+/** Boxes and images paint their whole claim; paths and text paint their ink. */
+function obscuringQuads(doc, el) {
+  return el.kind === 'text' ? textQuads(doc, el) : elementClaimed(el);
+}
 
 // ---------------------------------------------------------------------------
 
@@ -494,6 +526,19 @@ function againstLowerPages(doc, p) {
                 ],
           }),
         );
+
+        const obscured = overlay ? intersect(obscuringQuads(doc, a), textQuads(doc, b)) : [];
+        if (obscured.length) {
+          out.push(
+            finding('L021', p.id, {
+              message: `"${a.id}" on overlay page "${p.id}" obscures text in "${b.id}" over ${obscured.length} quadrant(s)`,
+              actors: [a.id, b.id],
+              cells: addrList(obscured),
+              metrics: { quadrants: obscured.length, zAbove: p.z, zBelow: lower.z },
+              fixes: [{ kind: 'move', description: `move "${a.id}" clear of the text in "${b.id}"`, params: { id: a.id } }],
+            }),
+          );
+        }
       }
     }
   }
@@ -573,7 +618,10 @@ export function formatLog(result, { showAccepted = true, showFixes = true } = {}
   }
   if (result.staleAcceptances.length) {
     lines.push('stale acceptances (geometry changed, acceptance no longer applies):');
-    for (const a of result.staleAcceptances) lines.push(`  #${a.fingerprint} ${a.rule} — "${a.reason}"`);
+    for (const a of result.staleAcceptances) {
+      const identity = [a.rule, a.page ? `page:${a.page}` : null].filter(Boolean).join(' ') || 'recorded finding';
+      lines.push(`  #${a.fingerprint} ${identity} — "${a.reason}"`);
+    }
   }
   return lines.join('\n').trimEnd();
 }

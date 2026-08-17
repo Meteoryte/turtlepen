@@ -13,10 +13,11 @@
  */
 
 import { rect, rectsOverlap, boundsOf } from './geometry.js';
-import { claimedQuads, visualQuads, assertCornerStyle } from './shapes.js';
+import { claimedQuads, visualQuads, assertCornerStyle, parsePortSpec, portPoint } from './shapes.js';
 import { DEFAULT_FONT, resolveFontSize } from './text.js';
 import { normalizeTone, normalizeFeather, normalizeTexture } from './tone.js';
 import { normalizePattern } from './pattern.js';
+import { assertEmbeddedSource, assertMode as assertImageMode } from './image.js';
 
 // `schematic` stacks exactly like `exclusive`; it exists to carry authorial meaning —
 // "this page is deliberately spare" — which the composition rules read and skip.
@@ -35,6 +36,8 @@ export function createDocument({ name = 'untitled', canvas = { cols: 160, rows: 
     font: { ...DEFAULT_FONT, ...font },
     pages: [],
     elements: {},
+    groups: [],
+    constraints: [],
     acceptances: [],
     createdAt: new Date().toISOString(),
   };
@@ -184,8 +187,11 @@ export function updatePage(doc, id, { intent = null, z = null, title = null, vis
 export function removePage(doc, id) {
   const page = getPage(doc, id);
   if (doc.pages.length === 1) throw new Error('a document must keep at least one page');
+  const removedIds = new Set(elementsOf(doc, id).map((element) => element.id));
   doc.pages.splice(doc.pages.indexOf(page), 1);
   delete doc.elements[id];
+  for (const group of groupsOf(doc)) group.members = group.members.filter((member) => !removedIds.has(member));
+  doc.constraints = constraintsOf(doc).filter((constraint) => !removedIds.has(constraint.dependent) && !removedIds.has(constraint.target));
   return page;
 }
 
@@ -198,6 +204,14 @@ export function renameElement(doc, id, newId) {
   assertElementId(newId);
   assertFreeId(doc, newId);
   found.element.id = newId;
+  for (const group of groupsOf(doc)) {
+    const index = group.members.indexOf(id);
+    if (index >= 0) group.members[index] = newId;
+  }
+  for (const constraint of constraintsOf(doc)) {
+    if (constraint.dependent === id) constraint.dependent = newId;
+    if (constraint.target === id) constraint.target = newId;
+  }
   return found.element;
 }
 
@@ -229,6 +243,8 @@ export function findElement(doc, id, pageId = null) {
 export function assertFreeId(doc, id) {
   const existing = findElement(doc, id);
   if (existing) throw new Error(`element id "${id}" already exists on page "${existing.page}"`);
+  if (findGroup(doc, id)) throw new Error(`id "${id}" already belongs to group "${id}"`);
+  if (findConstraint(doc, id)) throw new Error(`id "${id}" already belongs to constraint "${id}"`);
 }
 
 export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, corner = 'square', align = 'left', fill = null, note = null, opacity = null, state = null }) {
@@ -306,13 +322,23 @@ export function removeElement(doc, id, pageId = null) {
   if (!found) throw new Error(`no element "${id}"${pageId ? ` on page "${pageId}"` : ''}`);
   const list = doc.elements[found.page];
   list.splice(list.findIndex((e) => e.id === id), 1);
+  for (const group of groupsOf(doc)) group.members = group.members.filter((member) => member !== id);
+  doc.constraints = constraintsOf(doc).filter((constraint) => constraint.dependent !== id && constraint.target !== id);
   return found;
 }
 
 export function moveElement(doc, id, dx, dy, pageId = null) {
+  if (!Number.isInteger(dx) || !Number.isInteger(dy)) {
+    throw new RangeError(`element movement must use whole quadrants — got ${JSON.stringify({ dx, dy })}`);
+  }
   const found = findElement(doc, id, pageId);
   if (!found) throw new Error(`no element "${id}" to move`);
-  const el = found.element;
+  moveElementRaw(found.element, dx, dy);
+  reconcileMovedElements(doc, new Set([id]));
+  return found;
+}
+
+function moveElementRaw(el, dx, dy) {
   if (el.kind === 'path') {
     for (const p of el.pieces) { p.x += dx; p.y += dy; }
     // `end` is the cursor state extend_path resumes from. Moving only the ink
@@ -321,7 +347,293 @@ export function moveElement(doc, id, dx, dy, pageId = null) {
   } else {
     el.rect = rect(el.rect.x + dx, el.rect.y + dy, el.rect.w, el.rect.h);
   }
-  return found;
+}
+
+// ---------------------------------------------------------------------------
+// Flat groups — explicit subsystem ownership without hidden geometry.
+// ---------------------------------------------------------------------------
+
+export function groupsOf(doc) {
+  if (!Array.isArray(doc.groups)) doc.groups = [];
+  return doc.groups;
+}
+
+export function findGroup(doc, id) {
+  return groupsOf(doc).find((group) => group.id === id) ?? null;
+}
+
+function normalizeMembers(members, what = 'group members') {
+  if (!Array.isArray(members) || !members.length) throw new RangeError(`${what} must name at least one element`);
+  const unique = [...new Set(members.map(String))];
+  if (unique.length !== members.length) throw new Error(`${what} contain a duplicate id`);
+  return unique;
+}
+
+function assertMembersAvailable(doc, members, owner = null) {
+  for (const id of members) {
+    if (!findElement(doc, id)) throw new Error(`no element "${id}" to group`);
+    const occupied = groupsOf(doc).find((group) => group.id !== owner && group.members.includes(id));
+    if (occupied) throw new Error(`element "${id}" already belongs to group "${occupied.id}" — groups are flat, so remove it there first`);
+  }
+}
+
+export function createGroup(doc, { id, members, label = null }) {
+  assertElementId(id);
+  assertFreeId(doc, id);
+  const normalized = normalizeMembers(members);
+  assertMembersAvailable(doc, normalized);
+  const group = { id, label: label == null ? id : String(label), members: normalized };
+  groupsOf(doc).push(group);
+  return group;
+}
+
+export function addGroupMembers(doc, id, members) {
+  const group = findGroup(doc, id);
+  if (!group) throw new Error(`no group "${id}" — create it first`);
+  const normalized = normalizeMembers(members);
+  assertMembersAvailable(doc, normalized, id);
+  for (const member of normalized) if (!group.members.includes(member)) group.members.push(member);
+  return group;
+}
+
+export function removeGroupMembers(doc, id, members) {
+  const group = findGroup(doc, id);
+  if (!group) throw new Error(`no group "${id}"`);
+  const normalized = normalizeMembers(members);
+  for (const member of normalized) {
+    if (!group.members.includes(member)) throw new Error(`element "${member}" is not in group "${id}"`);
+  }
+  group.members = group.members.filter((member) => !normalized.includes(member));
+  return group;
+}
+
+export function deleteGroup(doc, id) {
+  const group = findGroup(doc, id);
+  if (!group) throw new Error(`no group "${id}"`);
+  groupsOf(doc).splice(groupsOf(doc).indexOf(group), 1);
+  return group;
+}
+
+export function groupBounds(doc, id) {
+  const group = findGroup(doc, id);
+  if (!group) throw new Error(`no group "${id}"`);
+  const members = group.members.map((member) => findElement(doc, member)).filter(Boolean);
+  return boundsOf(members.flatMap(({ element }) => elementRects(element)));
+}
+
+export function moveGroup(doc, id, dx, dy) {
+  if (!Number.isInteger(dx) || !Number.isInteger(dy)) {
+    throw new RangeError(`group movement must use whole quadrants — got ${JSON.stringify({ dx, dy })}`);
+  }
+  const group = findGroup(doc, id);
+  if (!group) throw new Error(`no group "${id}"`);
+  if (!group.members.length) throw new Error(`group "${id}" is empty — add members before moving it`);
+  const members = group.members.map((member) => {
+    const found = findElement(doc, member);
+    if (!found) throw new Error(`group "${id}" refers to missing element "${member}"`);
+    return found;
+  });
+  for (const { element } of members) moveElementRaw(element, dx, dy);
+  reconcileMovedElements(doc, new Set(members.map(({ element }) => element.id)));
+  return group;
+}
+
+// A constraint is a durable relationship, not a second geometry model. The
+// source of truth remains the elements; these records only say which anchor of
+// one element follows which anchor of another and by what exact offset.
+export function constraintsOf(doc) {
+  if (!Array.isArray(doc.constraints)) doc.constraints = [];
+  return doc.constraints;
+}
+
+export function findConstraint(doc, id) {
+  return constraintsOf(doc).find((constraint) => constraint.id === id) ?? null;
+}
+
+function elementBoundsForAnchor(element) {
+  return boundsOf(elementRects(element));
+}
+
+export function elementAnchor(doc, id, anchor = 'C') {
+  const found = findElement(doc, id);
+  if (!found) throw new Error(`no element "${id}" to anchor`);
+  const spec = String(anchor).toUpperCase();
+  parsePortSpec(spec);
+  const bounds = elementBoundsForAnchor(found.element);
+  if (!bounds) throw new Error(`element "${id}" has no footprint to anchor`);
+  return portPoint(bounds, spec);
+}
+
+function currentConstraintOffset(doc, constraint) {
+  const dependent = elementAnchor(doc, constraint.dependent, constraint.dependentAnchor);
+  const target = elementAnchor(doc, constraint.target, constraint.targetAnchor);
+  return { x: dependent.x - target.x, y: dependent.y - target.y };
+}
+
+function syncConstraintRaw(doc, constraint) {
+  const dependent = elementAnchor(doc, constraint.dependent, constraint.dependentAnchor);
+  const target = elementAnchor(doc, constraint.target, constraint.targetAnchor);
+  const dx = target.x + constraint.offset.x - dependent.x;
+  const dy = target.y + constraint.offset.y - dependent.y;
+  if (dx || dy) moveElementRaw(findElement(doc, constraint.dependent).element, dx, dy);
+}
+
+function propagateConstraints(doc, roots, alreadyMoved = new Set()) {
+  const queue = [...roots];
+  while (queue.length) {
+    const target = queue.shift();
+    for (const constraint of constraintsOf(doc).filter((entry) => entry.target === target)) {
+      if (alreadyMoved.has(constraint.dependent)) continue;
+      syncConstraintRaw(doc, constraint);
+      alreadyMoved.add(constraint.dependent);
+      queue.push(constraint.dependent);
+    }
+  }
+}
+
+function reconcileMovedElements(doc, moved) {
+  for (const constraint of constraintsOf(doc)) {
+    if (moved.has(constraint.dependent) && !moved.has(constraint.target)) {
+      constraint.offset = currentConstraintOffset(doc, constraint);
+    }
+  }
+  propagateConstraints(doc, moved, new Set(moved));
+}
+
+/** Reconcile a resize or redraw that changed an element's anchor without using move. */
+export function reconcileElementChange(doc, id) {
+  if (!findElement(doc, id)) throw new Error(`no element "${id}" to reconcile`);
+  const incoming = constraintsOf(doc).find((constraint) => constraint.dependent === id);
+  if (incoming) incoming.offset = currentConstraintOffset(doc, incoming);
+  propagateConstraints(doc, [id], new Set([id]));
+}
+
+export function createConstraint(doc, {
+  id, dependent, target, dependentAnchor = 'C', targetAnchor = 'C', offset = null,
+}) {
+  assertElementId(id);
+  assertFreeId(doc, id);
+  if (dependent === target) throw new Error('a constraint cannot make an element follow itself');
+  if (!findElement(doc, dependent)) throw new Error(`no dependent element "${dependent}"`);
+  if (!findElement(doc, target)) throw new Error(`no target element "${target}"`);
+  if (constraintsOf(doc).some((constraint) => constraint.dependent === dependent)) {
+    throw new Error(`element "${dependent}" already has a follow constraint — delete it before assigning another parent`);
+  }
+
+  const depAnchor = String(dependentAnchor).toUpperCase();
+  const targetAnchor_ = String(targetAnchor).toUpperCase();
+  parsePortSpec(depAnchor);
+  parsePortSpec(targetAnchor_);
+  // Syntax alone is insufficient for indexed anchors: E#9 may parse but still
+  // be outside a short face. Resolve both before changing the document so a
+  // rejected explicit-offset constraint cannot leave a partial record behind.
+  elementAnchor(doc, dependent, depAnchor);
+  elementAnchor(doc, target, targetAnchor_);
+
+  let cursor = target;
+  while (cursor) {
+    if (cursor === dependent) throw new Error(`constraint "${id}" would create a cycle through "${dependent}"`);
+    cursor = constraintsOf(doc).find((constraint) => constraint.dependent === cursor)?.target ?? null;
+  }
+
+  const constraint = {
+    id,
+    dependent,
+    target,
+    dependentAnchor: depAnchor,
+    targetAnchor: targetAnchor_,
+    offset: offset == null ? { x: 0, y: 0 } : { x: offset.x, y: offset.y },
+  };
+  if (offset != null && (!Number.isInteger(offset.x) || !Number.isInteger(offset.y))) {
+    throw new RangeError(`constraint offset must use whole quadrants — got ${JSON.stringify(offset)}`);
+  }
+  if (offset == null) constraint.offset = currentConstraintOffset(doc, constraint);
+  constraintsOf(doc).push(constraint);
+  if (offset != null) {
+    syncConstraintRaw(doc, constraint);
+    propagateConstraints(doc, [dependent], new Set([dependent]));
+  }
+  return constraint;
+}
+
+export function deleteConstraint(doc, id) {
+  const constraint = findConstraint(doc, id);
+  if (!constraint) throw new Error(`no constraint "${id}"`);
+  constraintsOf(doc).splice(constraintsOf(doc).indexOf(constraint), 1);
+  return constraint;
+}
+
+export function syncConstraints(doc, id = null) {
+  if (id) {
+    const constraint = findConstraint(doc, id);
+    if (!constraint) throw new Error(`no constraint "${id}"`);
+    syncConstraintRaw(doc, constraint);
+    propagateConstraints(doc, [constraint.dependent], new Set([constraint.dependent]));
+    return 1;
+  }
+  const dependents = new Set(constraintsOf(doc).map((constraint) => constraint.dependent));
+  const roots = [...new Set(constraintsOf(doc).map((constraint) => constraint.target).filter((target) => !dependents.has(target)))];
+  propagateConstraints(doc, roots);
+  return constraintsOf(doc).length;
+}
+
+function validateLoadedRelationships(doc) {
+  const elementCounts = new Map();
+  for (const { id } of allElements(doc)) elementCounts.set(id, (elementCounts.get(id) ?? 0) + 1);
+  const claimedIds = new Set(elementCounts.keys());
+  const groupOwner = new Map();
+
+  for (const group of groupsOf(doc)) {
+    if (!group || typeof group !== 'object') throw new TypeError('saved group must be an object');
+    assertElementId(group.id);
+    if (claimedIds.has(group.id)) throw new Error(`saved group id "${group.id}" collides with another document id`);
+    claimedIds.add(group.id);
+    if (!Array.isArray(group.members)) throw new TypeError(`saved group "${group.id}" members must be an array`);
+    if (new Set(group.members).size !== group.members.length) throw new Error(`saved group "${group.id}" contains a duplicate member`);
+    for (const member of group.members) {
+      if (elementCounts.get(member) !== 1) {
+        throw new Error(`saved group "${group.id}" member "${member}" must resolve to exactly one element`);
+      }
+      if (groupOwner.has(member)) {
+        throw new Error(`saved element "${member}" belongs to both group "${groupOwner.get(member)}" and "${group.id}"`);
+      }
+      groupOwner.set(member, group.id);
+    }
+  }
+
+  const parentOf = new Map();
+  for (const constraint of constraintsOf(doc)) {
+    if (!constraint || typeof constraint !== 'object') throw new TypeError('saved constraint must be an object');
+    assertElementId(constraint.id);
+    if (claimedIds.has(constraint.id)) throw new Error(`saved constraint id "${constraint.id}" collides with another document id`);
+    claimedIds.add(constraint.id);
+    if (constraint.dependent === constraint.target) throw new Error(`saved constraint "${constraint.id}" makes an element follow itself`);
+    for (const [role, id] of [['dependent', constraint.dependent], ['target', constraint.target]]) {
+      if (elementCounts.get(id) !== 1) {
+        throw new Error(`saved constraint "${constraint.id}" ${role} "${id}" must resolve to exactly one element`);
+      }
+    }
+    if (parentOf.has(constraint.dependent)) {
+      throw new Error(`saved element "${constraint.dependent}" has more than one follow constraint`);
+    }
+    if (!constraint.offset || !Number.isInteger(constraint.offset.x) || !Number.isInteger(constraint.offset.y)) {
+      throw new RangeError(`saved constraint "${constraint.id}" offset must use whole quadrants`);
+    }
+    elementAnchor(doc, constraint.dependent, constraint.dependentAnchor);
+    elementAnchor(doc, constraint.target, constraint.targetAnchor);
+    parentOf.set(constraint.dependent, constraint.target);
+  }
+
+  for (const start of parentOf.keys()) {
+    const seen = new Set();
+    let cursor = start;
+    while (parentOf.has(cursor)) {
+      if (seen.has(cursor)) throw new Error(`saved follow constraints contain a cycle through "${cursor}"`);
+      seen.add(cursor);
+      cursor = parentOf.get(cursor);
+    }
+  }
+  return doc;
 }
 
 // ---------------------------------------------------------------------------
@@ -381,7 +693,20 @@ export function serialize(doc) {
       createdAt: doc.createdAt,
       pages: [...doc.pages].sort((a, b) => a.z - b.z),
       elements: Object.fromEntries(doc.pages.map((p) => [p.id, elementsOf(doc, p.id)])),
+      ...(groupsOf(doc).length ? {
+        groups: groupsOf(doc)
+          .map((group) => ({ ...group, members: [...group.members].sort() }))
+          .sort((a, b) => a.id.localeCompare(b.id)),
+      } : {}),
+      ...(constraintsOf(doc).length ? {
+        constraints: [...constraintsOf(doc)].sort((a, b) => a.id.localeCompare(b.id)),
+      } : {}),
       acceptances: [...doc.acceptances].sort((a, b) => a.fingerprint.localeCompare(b.fingerprint)),
+      // Composition source is operational data, not a renderer cache. Tools
+      // such as export_prompt need it after the document is reopened, and the
+      // perspective receipt is the only durable record of real-world inputs.
+      ...(doc.wireframe ? { wireframe: doc.wireframe } : {}),
+      ...(doc.perspective_scene ? { perspective_scene: doc.perspective_scene } : {}),
       // Present only when the adjudication gate was overridden. Its absence is
       // the normal case and says the document was written clean.
       ...(doc.forcedSave ? { forcedSave: doc.forcedSave } : {}),
@@ -396,15 +721,40 @@ export function deserialize(json) {
   if (raw.schema !== SCHEMA_VERSION) {
     throw new Error(`document schema ${raw.schema} is not supported by this build (expected ${SCHEMA_VERSION})`);
   }
-  return {
+  if (raw.groups != null && !Array.isArray(raw.groups)) throw new TypeError('document groups must be an array');
+  if (raw.constraints != null && !Array.isArray(raw.constraints)) throw new TypeError('document constraints must be an array');
+  const doc = {
     schema: raw.schema,
     name: raw.name,
     canvas: raw.canvas,
     font: { ...DEFAULT_FONT, ...raw.font },
     pages: raw.pages,
     elements: raw.elements,
+    groups: (raw.groups ?? []).map((group) => ({ ...group, members: [...(group.members ?? [])] })),
+    constraints: (raw.constraints ?? []).map((constraint) => ({
+      ...constraint,
+      dependentAnchor: constraint.dependentAnchor ?? 'C',
+      targetAnchor: constraint.targetAnchor ?? 'C',
+      offset: { ...constraint.offset },
+    })),
     acceptances: raw.acceptances ?? [],
     createdAt: raw.createdAt,
+    ...(raw.wireframe ? { wireframe: raw.wireframe } : {}),
+    ...(raw.perspective_scene ? { perspective_scene: raw.perspective_scene } : {}),
     ...(raw.forcedSave ? { forcedSave: raw.forcedSave } : {}),
   };
+  for (const [page, elements] of Object.entries(doc.elements ?? {})) {
+    if (!Array.isArray(elements)) throw new TypeError(`document elements for page "${page}" must be an array`);
+    for (const element of elements) {
+      if (element?.kind !== 'image') continue;
+      assertImageMode(element.mode ?? 'embed');
+      assertImageFit(element.fit ?? 'contain');
+      if (element.mode === 'dither') {
+        if (!Array.isArray(element.runs)) throw new TypeError(`dithered image "${element.id}" must carry deterministic runs`);
+      } else {
+        assertEmbeddedSource(element.source);
+      }
+    }
+  }
+  return validateLoadedRelationships(doc);
 }

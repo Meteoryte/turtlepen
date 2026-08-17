@@ -23,7 +23,7 @@ import * as pattern_ from './pattern.js';
 import * as wireframe_ from './wireframe.js';
 import * as perspective_ from './perspective.js';
 
-import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
+import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
 import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL } from './collide.js';
 import { renderAscii } from './ascii.js';
@@ -36,7 +36,9 @@ export { wireframe_ as wireframe };
 export { perspective_ as perspective };
 export {
   createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, findElement,
-  elementsOf, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
+  elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
+  groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup,
+  constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints,
   runPen, validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL,
   renderAscii, renderSvg,
   MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign,
@@ -188,6 +190,7 @@ export function extendPath(doc, id, program) {
   path.end = { x: result.cursor.x, y: result.cursor.y, facing: result.facing };
   if (result.notes.length) path.penNotes = [...(path.penNotes ?? []), ...result.notes];
   if (result.targets.length) path.targets = [...(path.targets ?? []), ...result.targets];
+  reconcileElementChange(doc, id);
 
   return { path, page: found.page, trace: result.trace, notes: result.notes, cursor: result.cursor, facing: result.facing };
 }
@@ -214,6 +217,7 @@ export function replacePath(doc, id, program) {
   committedList.splice(index, 0, result.path);
   doc.pages = draft.pages;
   doc.elements = draft.elements;
+  reconcileElementChange(doc, id);
 
   return { path: result.path, page: found.page, trace: result.trace, notes: result.notes };
 }
@@ -240,6 +244,7 @@ export function resizeBox(doc, id, { cellsW = null, cellsH = null, anchor = 'tl'
     `resized "${id}"`,
   );
   el.rect = r;
+  reconcileElementChange(doc, id);
   return { element: el, page: found.page, fit: el.label ? text.fitReport(el.label, r, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
 }
 
@@ -304,6 +309,9 @@ function nextId(doc, prefix, offset) {
  */
 export function normalizeSpan(span, what = 'span') {
   if (span && typeof span === 'object' && Number.isFinite(span.w) && Number.isFinite(span.h)) {
+    if (!Number.isInteger(span.w) || !Number.isInteger(span.h)) {
+      throw new TypeError(`${what} must use whole-cell counts, got ${span.w}x${span.h}`);
+    }
     if (span.w < 1 || span.h < 1) throw new RangeError(`${what} must be at least 1x1 cells, got ${span.w}x${span.h}`);
     return { w: span.w, h: span.h };
   }
@@ -338,8 +346,9 @@ export function placeBox(doc, pageId, { id, at, span, label = '', corner = 'squa
  * from a guess, and the drift that whole cells impose is on the record.
  */
 export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', fit = 'contain', opacity = null }) {
-  if (!source) throw new SyntaxError(`image "${id}" needs a source — a data: URI or a path already read into one`);
+  if (!source) throw new SyntaxError(`image "${id}" needs a source — a base64 data URI prepared by the tool layer`);
   image.assertMode(mode);
+  const embedded = image.assertEmbeddedSource(source);
   const cells = normalizeSpan(span, `span for "${id}"`);
   const a = address.parseAddress(at);
   const p = address.pinPoint(a);
@@ -351,12 +360,13 @@ export function placeImage(doc, pageId, { id, at, span, source, mode = 'embed', 
   // what its author saw — the same reason measurement precedes placement.
   let runs = null;
   if (mode === 'dither') {
-    const inline = image.bytesOfDataUri(source);
-    if (!inline) throw new SyntaxError(`image "${id}" cannot be dithered from "${String(source).slice(0, 40)}" — dithering needs the bytes, so pass a data: URI`);
-    const grid = dither.ditherToQuadrants(png.decode(inline.bytes), r.w, r.h);
+    if (embedded.format !== 'png') throw new SyntaxError(`image "${id}" cannot be dithered from ${embedded.format.toUpperCase()} — dithering decodes PNG only; use mode "embed" or convert it to PNG`);
+    const grid = dither.ditherToQuadrants(png.decode(embedded.bytes), r.w, r.h);
     runs = dither.runsOf(grid);
   }
-  return addImage(doc, pageId, { id, rect: r, source, mode, fit, opacity, runs });
+  // Dither runs are the durable render source. Keeping the original bitmap as
+  // well would duplicate megabytes in the document and every history snapshot.
+  return addImage(doc, pageId, { id, rect: r, source: mode === 'dither' ? null : source, mode, fit, opacity, runs });
 }
 
 /**
@@ -384,17 +394,38 @@ export function placeReference(doc, { id = 'reference', source, at = 'A1.tl', sp
   return page;
 }
 
-export function acceptFinding(doc, fingerprint, reason) {
+function recordFindingAcceptance(doc, finding, reason) {
   if (!reason || !String(reason).trim()) throw new Error('accepting a finding requires a reason — an unexplained acceptance is indistinguishable from a missed defect');
+  const { fingerprint } = finding;
   const existing = doc.acceptances.find((a) => a.fingerprint === fingerprint);
   if (existing) {
-    existing.reason = reason;
+    existing.rule = finding.rule;
+    existing.page = finding.page;
+    existing.title = finding.title;
+    existing.reason = String(reason).trim();
     existing.acceptedAt = new Date().toISOString();
     return existing;
   }
-  const entry = { fingerprint, reason, acceptedAt: new Date().toISOString() };
+  const entry = {
+    fingerprint,
+    rule: finding.rule,
+    page: finding.page,
+    title: finding.title,
+    reason: String(reason).trim(),
+    acceptedAt: new Date().toISOString(),
+  };
   doc.acceptances.push(entry);
   return entry;
+}
+
+export function acceptFinding(doc, fingerprint, reason) {
+  if (!reason || !String(reason).trim()) throw new Error('accepting a finding requires a reason — an unexplained acceptance is indistinguishable from a missed defect');
+  const validation = validate(doc);
+  const finding = [...validation.open, ...validation.accepted].find((entry) => entry.fingerprint === fingerprint);
+  if (!finding) {
+    throw new Error(`cannot accept #${fingerprint}: it is not a current finding; validate again and use an open fingerprint`);
+  }
+  return recordFindingAcceptance(doc, finding, reason);
 }
 
 export function unacceptFinding(doc, fingerprint) {
@@ -431,7 +462,14 @@ export const OPERATIONS = Object.freeze({
   replace_path: (doc, a) => replacePath(doc, a.id, a.program),
   resize: (doc, a) => resizeBox(doc, a.id, a),
   restyle: (doc, a) => restyleBox(doc, a.id, a),
-  move: (doc, a) => (a.at ? moveElementTo(doc, a.id, a.at, a.pin ?? 'tl') : moveElement(doc, a.id, a.dx ?? 0, a.dy ?? 0)),
+  move: (doc, a) => {
+    if (a.at) return moveElementTo(doc, a.id, a.at, a.pin ?? 'tl');
+    const usesCells = a.cellsX != null || a.cellsY != null;
+    const dx = usesCells ? (a.cellsX ?? 0) * 2 : (a.dx ?? 0);
+    const dy = usesCells ? (a.cellsY ?? 0) * 2 : (a.dy ?? 0);
+    if (!dx && !dy) throw new Error('move needs either `at` or a non-zero `cellsX`/`cellsY`');
+    return moveElement(doc, a.id, dx, dy);
+  },
   rename: (doc, a) => renameElement(doc, a.id, a.to),
   remove: (doc, a) => removeElement(doc, a.id, a.page ?? null),
   set_canvas: (doc, a) => setCanvas(doc, a.cols, a.rows),
@@ -439,12 +477,67 @@ export const OPERATIONS = Object.freeze({
   perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
   accept_finding: (doc, a) => acceptFinding(doc, a.fingerprint, a.reason),
   unaccept_finding: (doc, a) => unacceptFinding(doc, a.fingerprint),
+  group: (doc, a) => {
+    switch (a.action) {
+      case 'create': return createGroup(doc, a);
+      case 'add': return addGroupMembers(doc, a.id, a.members);
+      case 'remove': return removeGroupMembers(doc, a.id, a.members);
+      case 'delete': return deleteGroup(doc, a.id);
+      case 'move': return moveGroup(doc, a.id, (a.cellsX ?? 0) * 2, (a.cellsY ?? 0) * 2);
+      default: throw new SyntaxError(`group action must be create, add, remove, delete, or move — got ${JSON.stringify(a.action)}`);
+    }
+  },
+  constraint: (doc, a) => {
+    switch (a.action) {
+      case 'create': {
+        const hasX = a.offsetX != null;
+        const hasY = a.offsetY != null;
+        if (hasX !== hasY) throw new Error('constraint create needs both offsetX and offsetY, or neither');
+        const offset = a.offset ?? (hasX ? { x: a.offsetX, y: a.offsetY } : null);
+        return createConstraint(doc, { ...a, offset });
+      }
+      case 'delete': return deleteConstraint(doc, a.id);
+      case 'sync': return syncConstraints(doc, a.id ?? null);
+      default: throw new SyntaxError(`constraint action must be create, delete, or sync — got ${JSON.stringify(a.action)}`);
+    }
+  },
 });
 
 export function applyOperation(doc, op) {
   const fn = OPERATIONS[op.op];
   if (!fn) throw new SyntaxError(`unknown operation "${op.op}" — expected one of ${Object.keys(OPERATIONS).join(', ')}`);
   return fn(doc, op);
+}
+
+function applyOperationBatch(doc, ops) {
+  let currentFindings = null;
+  let applied = 0;
+  for (const op of ops) {
+    try {
+      if (op.op === 'accept_finding') {
+        if (!op.reason || !String(op.reason).trim()) {
+          throw new Error('accepting a finding requires a reason — an unexplained acceptance is indistinguishable from a missed defect');
+        }
+        if (!currentFindings) {
+          const validation = validate(doc);
+          currentFindings = new Map([...validation.open, ...validation.accepted].map((finding) => [finding.fingerprint, finding]));
+        }
+        const finding = currentFindings.get(op.fingerprint);
+        if (!finding) {
+          throw new Error(`cannot accept #${op.fingerprint}: it is not a current finding; validate again and use an open fingerprint`);
+        }
+        recordFindingAcceptance(doc, finding, op.reason);
+      } else {
+        applyOperation(doc, op);
+        currentFindings = null;
+      }
+    } catch (err) {
+      err.applied = applied;
+      throw err;
+    }
+    applied++;
+  }
+  return applied;
 }
 
 /**
@@ -459,14 +552,12 @@ export function applyOperation(doc, op) {
  */
 export function planOperations(doc, ops) {
   const draft = structuredClone(doc);
-  let applied = 0;
+  let applied;
   try {
-    for (const op of ops) {
-      applyOperation(draft, op);
-      applied++;
-    }
+    applied = applyOperationBatch(draft, ops);
   } catch (err) {
-    return { ok: false, failedAt: applied, error: err.message, applied, validation: null, preview: null };
+    const failedAt = applied ?? Number(err.applied ?? 0);
+    return { ok: false, failedAt, error: err.message, applied: failedAt, validation: null, preview: null };
   }
   return { ok: true, failedAt: null, error: null, applied, validation: validate(draft), preview: draft };
 }
@@ -478,7 +569,7 @@ export function planOperations(doc, ops) {
 export function commitOperations(doc, ops) {
   const rehearsal = planOperations(doc, ops);
   if (!rehearsal.ok) return rehearsal;
-  for (const op of ops) applyOperation(doc, op);
+  applyOperationBatch(doc, ops);
   return { ...rehearsal, validation: validate(doc), preview: null, committed: true };
 }
 
@@ -615,6 +706,8 @@ export function applyWireframe(doc, {
     items,
     { scale, view, ...(origin ? { origin } : {}) },
   );
+  plan.page = page;
+  plan.clearanceDrawn = clearance;
   const drawn = [];
   for (const b of wireframe_.boxes(plan, { includeClearance: clearance })) {
     drawn.push(addBox(doc, page, {

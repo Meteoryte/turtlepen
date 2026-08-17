@@ -39,7 +39,9 @@ of placement and makes every defect a ranked, numeric finding.
 - **Acceptance is fingerprinted, never blanket.** A finding is accepted by a
   hash of rule + page + actors + exact quadrants. Never add an
   accept-by-rule or accept-by-element escape hatch; an acceptance that survives
-  a geometry change is indistinguishable from a missed defect.
+  a geometry change is indistinguishable from a missed defect. Only a current
+  fingerprint may be accepted; retain rule/page metadata so a lapsed acceptance
+  remains auditable, visible, and withdrawable.
 - **A green `validate` is not evidence of a good diagram.** It is evidence of an
   undefective one. `summary.clean` considers only `S0` and `S1`; composition
   findings are `S3` and deliberately do not affect it. Adjudicate them like any
@@ -54,8 +56,9 @@ of placement and makes every defect a ranked, numeric finding.
   `review` and `leaves` overlays while their base pages were richly composed.
 - **Composition rules C002–C004 are deferred, not forgotten.** Primitive-heaviness,
   repetition, and absolute addressing cannot be measured from a saved document:
-  it stores rasterized `line`/`corner` pieces and no program, and anchors are
-  declarative inputs that are never persisted. Geometric proxies for them
+  it stores rasterized `line`/`corner` pieces and no program, and placement
+  anchor provenance is not persisted. Durable `constraint` records are a
+  separate explicit relationship graph. Geometric proxies for program usage
   false-flag real diagrams — `branching-tree` and `home-lab-network` are 100%
   straight runs because a network diagram legitimately is. They are unblocked by
   a negative corpus under `diagrams/negative/`, not by a cleverer heuristic. See
@@ -83,10 +86,40 @@ of placement and makes every defect a ranked, numeric finding.
 - **A batch is all-or-nothing.** `commitOperations` rehearses first and applies
   only if every operation succeeds. A partially applied batch leaves the
   document in a state the caller never asked for.
-- **Anchors resolve at execution time.** `at shell.N` derives a coordinate from
-  the target's current footprint when the pen program runs. It does not create
-  a stored constraint graph; later moving `shell` will not move elements that
-  already exist. Rerun the declarative program to recompute them.
+- **Every core mutation inherits recovery.** The MCP history boundary is derived
+  from `core.OPERATIONS`, not a second hand-maintained list. It snapshots the
+  complete serialized document before a mutation, records only a successful
+  state change, restores partial failures in memory and on disk, bounds history
+  at a configurable 1–1000 entries (100 by default), and clears redo after a
+  divergent edit. A versioned sidecar is bound to the exact serialized document
+  hash, so open and process restart restore history while outside edits invalidate
+  it. Force-save provenance is not an
+  undoable edit because undo must never hide that an external gate was bypassed.
+- **Composition source is durable document state.** `wireframe` and
+  `perspective_scene` metadata must survive serialization. The former powers
+  `export_prompt` after reopen; the latter is the durable receipt for the
+  real-world dimensions and camera that produced projected geometry. Before
+  export, every generated wireframe box and routed path must still match that
+  source; stale source is refused by element name rather than emitted as fact.
+- **Free-space scope is explicit.** The MCP default is `scope: "stack"`, which
+  merges every non-reference page, including hidden pages because validation
+  still checks them. `scope: "page"` is the deliberate override for intended
+  cross-page overlap. Responses must expose the target and searched page ids;
+  tracing references are excluded because overlap is their declared purpose.
+- **Regional description is exact, not bounding-box approximate.** `describe`
+  may filter by a cell range, optionally with a page. Rectangular elements use
+  their claimed rectangles; paths test every stored quadrant piece so an empty
+  part of an L-shaped path's bounds is not a match. The response exposes the
+  normalized effective filter without changing its per-page array shape.
+- **Placement anchors resolve at execution time; follow constraints are
+  explicit.** `at shell.N` derives a coordinate when a pen program runs and does
+  not create a relationship by accident. `constraint` deliberately stores one
+  parent per dependent with exact anchor offsets. Chains cascade; cycles,
+  duplicate parents, dangling ids, and invalid indexed anchors are refused.
+- **Groups are flat ownership, not nested geometry.** An element belongs to at
+  most one group. Group movement is one exact batch across pages; rename/removal
+  maintain membership, and constraints reconcile the moved set once so a member
+  cannot move twice.
 - **Artwork styling is presentation-only.** An artwork path may use a colour,
   thin width, and cap, and the SVG may simplify the painted polyline. Its stored
   integer pieces remain the sole collision and selection geometry.
@@ -129,6 +162,12 @@ Take the room the drawing needs, and no more.
 - The MCP server holds one active document and applies requests through a serial
   promise chain. Keep that ordering — tools mutate shared state, so concurrent
   application would make the saved file depend on scheduling.
+- The viewer owns one active document too. Browser mutations run through the
+  tested MCP handlers on a serial queue, then broadcast over a local-origin
+  WebSocket. Browser selection, hidden pages, zoom, and unsubmitted drafts are
+  view state; document/history truth stays server-side. Keep the explicit tool
+  and static-asset allowlists, masking/frame/protocol checks, CSP, and
+  outside-file reload behavior.
 - Zero runtime dependencies is a design choice, not an accident. The MCP
   transport is hand-rolled because newline-delimited JSON-RPC is small enough to
   own, and owning it removes install risk and SDK drift. Do not add a dependency
@@ -146,6 +185,11 @@ geometry:
   outward. The faces are not symmetric — south and east are already outside the
   rect, north and west are its own first row and column — which is exactly why
   hand-computed start addresses go wrong.
+- **`<face>#<slot>` fans out competing connectors without hidden routing.**
+  `#1` is the midpoint, `#2` moves one cell left/up, `#3` one cell right/down,
+  then slots alternate outward by whole cells. The slot is bounded by the
+  face's cell length and never clamped. Unindexed faces remain exact aliases of
+  `#1`, including one-quadrant artwork anchors.
 - **An omitted `align` continues on the cursor's current track.** The earlier
   fixed default silently shifted a seated cursor one quadrant off the port it
   was aiming at. Never restore a constant default.
@@ -166,9 +210,10 @@ exact quadrant footprint, not just that it parses.
 
 ## Testing
 
-`pnpm run check` — 229 tests plus the examples, canonical logo, and tree study. No framework. Assert exact cell
-sets and exact pixel counts. The whole point of integer geometry is that tests
-can be exact; an approximate assertion here is a smell.
+`pnpm run check` — the full regression suite plus the examples, real-MCP
+constraint stress, canonical logo, and tree study. No framework. Assert exact
+cell sets and exact pixel counts. The whole point of integer geometry is that
+tests can be exact; an approximate assertion here is a smell.
 
 `examples/agent-session.js` is a verification tool, not a demo: it authors a
 real diagram over the MCP server the way an agent would, and exits non-zero if
@@ -176,6 +221,11 @@ the documented path produces any finding above INFO. Run it after changing the
 pen grammar or the tool surface — the friction it reports is friction a real
 agent will hit. Every test in `test/connectors.test.js` came from a mistake it
 surfaced.
+
+`examples/constraint-stress.js` is the crowded counterpart: it must reproduce
+the midpoint-seat overlap in rehearsal, prove rehearsal isolation, rework five
+same-face routes onto indexed seats, exhaust a bounded free-space query, commit,
+validate, and render over the real MCP server.
 
 `test/mcp.test.js` spawns the real server as a child process and talks JSON-RPC
 over a pipe. Keep it that way: the core tests never import the server modules,

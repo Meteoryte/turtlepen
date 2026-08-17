@@ -1,0 +1,1302 @@
+{
+  "schema": 1,
+  "name": "Condenser replacement field workflow",
+  "canvas": {
+    "cols": 100,
+    "rows": 102
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-17T00:00:00.000Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "title",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 2,
+          "w": 188,
+          "h": 8
+        },
+        "label": "CONDENSER REPLACEMENT | FIELD WORKFLOW",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": "#dce9ee",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "safety-boundary",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 12,
+          "w": 188,
+          "h": 12
+        },
+        "label": "QUALIFIED HVAC PERSONNEL ONLY | Use the equipment instructions, adopted codes, electrical safe-work practices, refrigerant rules, and site policy. Stop when a hold point is not proven. Do not substitute this sequence for required procedures or values.",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": "#f5edce",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "confirm",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 28,
+          "w": 108,
+          "h": 14
+        },
+        "label": "0 | CONFIRM SCOPE AND EQUIPMENT\nMatch model, voltage, phase, MCA/MOCP, refrigerant, capacity, and approved indoor-system compatibility. Read OEM instructions. Record nameplates and existing condition. Photos P01-P03.",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": "#e8edf0",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "isolate",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 48,
+          "w": 108,
+          "h": 14
+        },
+        "label": "1 | ISOLATE ALL ENERGY\nIdentify every electrical source, controls, and stored energy. Open disconnect and breaker, apply lockout/tagout, and prove absence of voltage with a rated meter using the required verification method. Photo P04.",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": "#f4e3df",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "recover",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 68,
+          "w": 108,
+          "h": 14
+        },
+        "label": "2 | RECOVER REFRIGERANT\nIdentify the refrigerant. Use compatible recovery equipment and the correct rated cylinder. Track cylinder limits and record recovered weight. Do not vent. Confirm safe system pressure before opening the circuit. Photos P05-P06.",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": "#e3edf4",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "remove-old",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 88,
+          "w": 108,
+          "h": 14
+        },
+        "label": "3 | DOCUMENT AND REMOVE OLD UNIT\nLabel conductors and controls before disconnecting. Protect the circuit from contamination. Disconnect piping using the approved method, cap open ends, release anchors, and move the unit with a planned lift. Photos P07-P09.",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": "#f3eadf",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "prepare",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 108,
+          "w": 108,
+          "h": 14
+        },
+        "label": "4 | PREPARE SITE AND NEW EQUIPMENT\nVerify pad, drainage, service access, airflow clearances, line-set condition and sizing, electrical components, overcurrent protection, disconnect, and approved accessories. Correct defects before setting the unit. Photos P10-P11.",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": "#e9ece5",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "install",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 128,
+          "w": 108,
+          "h": 14
+        },
+        "label": "5 | SET, CONNECT, AND BRAZE\nLevel and secure the condenser. Route tubing without strain or rub points. Flow nitrogen while brazing where required. Make electrical and control connections to the diagram; torque and protect conductors as specified. Photos P12-P14.",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": "#e3efe8",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "test-charge",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 148,
+          "w": 108,
+          "h": 14
+        },
+        "label": "6 | PRESSURE TEST, EVACUATE, AND CHARGE\nPressure-test and leak-check using approved gas, equipment, limits, and hold time. Evacuate with clean tools and verify the required standing/decay result. Open service valves and establish charge by the approved method. Photos P15-P16.",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": "#e4e9f3",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "commission",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 168,
+          "w": 108,
+          "h": 18
+        },
+        "label": "7 | START, VERIFY, AND HAND OFF\nRemove lockout/tagout under the authorized process and energize. Verify rotation where applicable, voltage, current, temperatures, pressures, airflow, drainage, controls, and abnormal sound/vibration. Label, clean, document, and brief the customer. Photos P17-P20.",
+        "fontSize": 10,
+        "corner": "rounded",
+        "align": "left",
+        "fill": "#ece6f0",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "work-rule",
+        "kind": "box",
+        "rect": {
+          "x": 124,
+          "y": 28,
+          "w": 64,
+          "h": 14
+        },
+        "label": "WORK RULE\nRead one numbered stage. Complete it. Capture its photos. Prove its hold point. Then continue. Never rely on remembering a later step.",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": "#eef0ed",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "hold-electrical",
+        "kind": "box",
+        "rect": {
+          "x": 124,
+          "y": 48,
+          "w": 64,
+          "h": 14
+        },
+        "label": "HOLD A | ELECTRICAL\nPROCEED only when all applicable line terminals are proven de-energized and the energy-control boundary is secure. If not proven: STOP.",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": "#f7ddd8",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "hold-recovery",
+        "kind": "box",
+        "rect": {
+          "x": 124,
+          "y": 68,
+          "w": 64,
+          "h": 18
+        },
+        "label": "HOLD B | REFRIGERANT\nPROCEED only when recovery is complete, cylinder status and weight are documented, and circuit pressure is safe for the planned opening. If not: CONTINUE RECOVERY.",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": "#f7e8d2",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "hold-leak",
+        "kind": "box",
+        "rect": {
+          "x": 124,
+          "y": 128,
+          "w": 64,
+          "h": 14
+        },
+        "label": "HOLD C | LEAK TEST\nPROCEED only when the specified pressure test and leak inspection pass. If pressure changes or a leak is found: LOCATE, REPAIR, AND REPEAT.",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": "#f7e8d2",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "hold-vacuum",
+        "kind": "box",
+        "rect": {
+          "x": 124,
+          "y": 148,
+          "w": 64,
+          "h": 14
+        },
+        "label": "HOLD D | EVACUATION\nPROCEED only when the required evacuation and standing/decay result are met. If not: DIAGNOSE LEAKS, MOISTURE, OR TOOL SETUP, THEN REPEAT.",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": "#f7e8d2",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "footer",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 188,
+          "w": 188,
+          "h": 14
+        },
+        "label": "SPECIAL REFRIGERANT CHECK | When the equipment or refrigerant has flammability or other special handling requirements, identify that condition before work, control ignition sources, ventilate as required, and use listed compatible service equipment. Record final readings, charge basis, recovered/added weight, model/serial, and all P01-P20 images.",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": "#e8edf0",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "flow-0-1",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 58,
+            "y": 42,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 43,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 47,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#34444d",
+          "width": 3,
+          "cap": "square"
+        },
+        "note": null,
+        "end": {
+          "x": 58,
+          "y": 48,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "isolate",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "flow-1-2",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 58,
+            "y": 62,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 63,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 64,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 65,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 66,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 67,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#34444d",
+          "width": 3,
+          "cap": "square"
+        },
+        "note": null,
+        "end": {
+          "x": 58,
+          "y": 68,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "recover",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "flow-2-3",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 58,
+            "y": 82,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 83,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 84,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 85,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 86,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 87,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#34444d",
+          "width": 3,
+          "cap": "square"
+        },
+        "note": null,
+        "end": {
+          "x": 58,
+          "y": 88,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "remove-old",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "flow-3-4",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 58,
+            "y": 102,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 103,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 104,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 105,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 106,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 107,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#34444d",
+          "width": 3,
+          "cap": "square"
+        },
+        "note": null,
+        "end": {
+          "x": 58,
+          "y": 108,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "prepare",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "flow-4-5",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 58,
+            "y": 122,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 123,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 124,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 125,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 126,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 127,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#34444d",
+          "width": 3,
+          "cap": "square"
+        },
+        "note": null,
+        "end": {
+          "x": 58,
+          "y": 128,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "install",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "flow-5-6",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 58,
+            "y": 142,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 143,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 144,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 145,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 146,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 147,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#34444d",
+          "width": 3,
+          "cap": "square"
+        },
+        "note": null,
+        "end": {
+          "x": 58,
+          "y": 148,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "test-charge",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "flow-6-7",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 58,
+            "y": 162,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 163,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 164,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 165,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 166,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 167,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#34444d",
+          "width": 3,
+          "cap": "square"
+        },
+        "note": null,
+        "end": {
+          "x": 58,
+          "y": 168,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "commission",
+            "port": "N",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "hold-a-link",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 112,
+            "y": 55,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 113,
+            "y": 55,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 114,
+            "y": 55,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 115,
+            "y": 55,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 116,
+            "y": 55,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 117,
+            "y": 55,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 118,
+            "y": 55,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 119,
+            "y": 55,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 55,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 55,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 55,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 55,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#a33e32",
+          "width": 3,
+          "cap": "square"
+        },
+        "note": null,
+        "end": {
+          "x": 124,
+          "y": 55,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "hold-electrical",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "hold-b-link",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 112,
+            "y": 75,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 113,
+            "y": 75,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 114,
+            "y": 75,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 115,
+            "y": 75,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 116,
+            "y": 75,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 117,
+            "y": 75,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 118,
+            "y": 75,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 119,
+            "y": 75,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 75,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 75,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 75,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 75,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#9a642e",
+          "width": 3,
+          "cap": "square"
+        },
+        "note": null,
+        "end": {
+          "x": 124,
+          "y": 75,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "hold-recovery",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "hold-c-link",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 112,
+            "y": 135,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 113,
+            "y": 135,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 114,
+            "y": 135,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 115,
+            "y": 135,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 116,
+            "y": 135,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 117,
+            "y": 135,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 118,
+            "y": 135,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 119,
+            "y": 135,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 135,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 135,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 135,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 135,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#9a642e",
+          "width": 3,
+          "cap": "square"
+        },
+        "note": null,
+        "end": {
+          "x": 124,
+          "y": 135,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "hold-leak",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "hold-d-link",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 112,
+            "y": 155,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 113,
+            "y": 155,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 114,
+            "y": 155,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 115,
+            "y": 155,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 116,
+            "y": 155,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 117,
+            "y": 155,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 118,
+            "y": 155,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 119,
+            "y": 155,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 155,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 155,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 155,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 155,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#9a642e",
+          "width": 3,
+          "cap": "square"
+        },
+        "note": null,
+        "end": {
+          "x": 124,
+          "y": 155,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "hold-vacuum",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      }
+    ]
+  },
+  "acceptances": []
+}

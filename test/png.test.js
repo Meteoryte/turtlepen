@@ -90,3 +90,21 @@ test('an interlaced PNG is refused by name, not decoded into garbage', () => {
 test('a non-PNG is refused', () => {
   assert.throws(() => decode(Buffer.from('GIF89a and then some')), /PNG/i);
 });
+
+test('declared PNG dimensions are bounded before pixel allocation', () => {
+  const png = solidPng(1, 1, [0, 0, 0]);
+  png.writeUInt32BE(20_000, 16);
+  assert.throws(() => decode(png), /safety limit|too large/i);
+});
+
+test('a PNG chunk that extends beyond the file is refused by location', () => {
+  const png = solidPng(1, 1, [0, 0, 0]);
+  png.writeUInt32BE(10_000, 8);
+  assert.throws(() => decode(png), /chunk at byte 8.*beyond the end/);
+});
+
+test('a PNG stream cannot inflate past its declared dimensions', () => {
+  const png = solidPng(2, 1, [0, 0, 0]);
+  png.writeUInt32BE(1, 16);
+  assert.throws(() => decode(png), /declared 1x1 extent|exactly 4/);
+});

@@ -14,7 +14,7 @@
 
 import { PX_PER_QUAD, toPx, right, bottom } from './geometry.js';
 import { elementsOf, contentBounds } from './document.js';
-import { measureText } from './text.js';
+import { layoutTextRuns } from './text.js';
 
 const CUT = PX_PER_QUAD; // corner cuts are one quadrant
 
@@ -98,10 +98,12 @@ export function renderSvg(doc, { pages = null, findings = null, showGrid = true,
     const opacity = page.opacity ?? (page.intent === 'overlay' ? 0.92 : 1);
     parts.push(`<g data-page="${escapeAttr(page.id)}" data-z="${page.z}" opacity="${opacity}">`);
     for (const el of elementsOf(doc, page.id)) {
+      parts.push(`<g data-element="${escapeAttr(el.id)}">`);
       if (el.kind === 'box') parts.push(box(el, doc));
       else if (el.kind === 'path') parts.push(path(el));
       else if (el.kind === 'text') parts.push(textBlock(el, doc));
       else if (el.kind === 'image') parts.push(imageEl(el));
+      parts.push('</g>');
     }
     parts.push('</g>');
   }
@@ -230,39 +232,21 @@ function box(el, doc) {
  * the drawing physically unable to disagree with the fit report.
  */
 function label(el, doc) {
-  const pad = doc.font.paddingQuads * PX_PER_QUAD;
-  const { x, y, w, h } = toPx(el.rect);
-  const innerW = w - pad * 2;
-  const m = measureText(el.label, { fontSize: el.fontSize, availableWidthPx: innerW });
-  const blockH = m.lines.length * m.lineHeight;
-  // Baselines are typography, not lattice geometry — but they are rounded to
-  // whole pixels so text renders crisply and every emitted coordinate is an
-  // integer, matching the rest of the document.
-  const startY = Math.round(y + pad + Math.max(0, (h - pad * 2 - blockH) / 2) + m.lineHeight * 0.75);
-
-  return m.lines
-    .map((line, i) => {
-      if (!line) return '';
-      const runW = line.length * m.advance;
-      // floor, not round: the leftover pixel of an odd centring goes to the left,
-      // every time, and `fitReport.centerBiasPx` says so. Rounding here made the
-      // drawing disagree with the measurement by a pixel without either saying it.
-      const tx = el.align === 'center' ? x + Math.floor((w - runW) / 2) : el.align === 'right' ? x + w - pad - runW : x + pad;
-      return `<text class="box-label" x="${tx}" y="${startY + i * m.lineHeight}" font-size="${el.fontSize}" textLength="${runW}" lengthAdjust="spacingAndGlyphs" xml:space="preserve">${escapeText(line)}</text>`;
-    })
+  const layout = layoutTextRuns(el.label, el.rect, {
+    fontSize: el.fontSize,
+    paddingQuads: doc.font.paddingQuads,
+    align: el.align,
+    verticalAlign: 'center',
+  });
+  return layout.runs
+    .map((run) => `<text class="box-label" x="${run.x}" y="${run.baseline}" font-size="${el.fontSize}" textLength="${run.width}" lengthAdjust="spacingAndGlyphs" xml:space="preserve">${escapeText(run.text)}</text>`)
     .join('');
 }
 
 function textBlock(el, doc) {
-  const { x, y, w } = toPx(el.rect);
-  const m = measureText(el.text, { fontSize: el.fontSize, availableWidthPx: w });
-  return m.lines
-    .map((line, i) => {
-      if (!line) return '';
-      const runW = line.length * m.advance;
-      const tx = el.align === 'center' ? x + Math.floor((w - runW) / 2) : el.align === 'right' ? x + w - runW : x;
-      return `<text class="free-text" x="${tx}" y="${Math.round(y + m.lineHeight * (i + 0.75))}" font-size="${el.fontSize}" font-weight="${el.weight ?? 400}" textLength="${runW}" lengthAdjust="spacingAndGlyphs"${el.color ? ` style="fill:${escapeAttr(el.color)}"` : ''} xml:space="preserve">${escapeText(line)}</text>`;
-    })
+  const layout = layoutTextRuns(el.text, el.rect, { fontSize: el.fontSize, align: el.align });
+  return layout.runs
+    .map((run) => `<text class="free-text" x="${run.x}" y="${run.baseline}" font-size="${el.fontSize}" font-weight="${el.weight ?? 400}" textLength="${run.width}" lengthAdjust="spacingAndGlyphs"${el.color ? ` style="fill:${escapeAttr(el.color)}"` : ''} xml:space="preserve">${escapeText(run.text)}</text>`)
     .join('');
 }
 

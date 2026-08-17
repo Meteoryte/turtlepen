@@ -8,13 +8,18 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "test": "node --test \"test/**/*.test.js\"",
+    "test:endpoints": "node --test test/endpoints.test.js test/mcp.test.js test/viewer.test.js",
     "viewer": "node src/viewer/server.js",
     "mcp": "node src/mcp/server.js",
     "example": "node examples/build-example.js",
     "session": "node examples/agent-session.js",
+    "stress": "node examples/constraint-stress.js",
+    "rework": "node examples/rework-session.js",
+    "field-guide": "node examples/build-condenser-field-guide.js",
+    "image-session": "node examples/image-session.js",
     "logo": "node brand/build-logo.mjs",
     "tree": "node examples/branching-tree.js",
-    "check": "node --test \"test/**/*.test.js\" && node examples/build-example.js && node examples/agent-session.js --quiet && node brand/build-logo.mjs && node examples/branching-tree.js"
+    "check": "node --test \"test/**/*.test.js\" && node examples/build-example.js && node examples/agent-session.js --quiet && node examples/constraint-stress.js --quiet && node examples/rework-session.js --quiet && node brand/build-logo.mjs && node examples/branching-tree.js && node examples/build-condenser-field-guide.js && node examples/image-session.js"
   },
   "dependencies": {},
   "devDependencies": {}

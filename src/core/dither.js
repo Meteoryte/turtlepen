@@ -30,6 +30,7 @@ export const BAYER_4 = Object.freeze([
 
 const BAYER_N = 4;
 const BAYER_LEVELS = BAYER_N * BAYER_N;
+export const MAX_DITHER_QUADRANTS = 1_000_000;
 
 /** Rec. 709 luminance — the weighting that matches how a viewer reads brightness. */
 function luminance(r, g, b) {
@@ -50,7 +51,12 @@ function luminance(r, g, b) {
  * @returns {{width:number, height:number, on:Uint8Array}}
  */
 export function ditherToQuadrants(img, qw, qh) {
-  if (qw <= 0 || qh <= 0) throw new RangeError(`a dithered image needs a positive footprint — got ${qw}x${qh} quadrants`);
+  if (!Number.isInteger(qw) || !Number.isInteger(qh) || qw <= 0 || qh <= 0) {
+    throw new RangeError(`a dithered image needs a positive whole-quadrant footprint — got ${qw}x${qh} quadrants`);
+  }
+  if (qw * qh > MAX_DITHER_QUADRANTS) {
+    throw new RangeError(`dither footprint ${qw}x${qh} exceeds the ${MAX_DITHER_QUADRANTS}-quadrant safety limit`);
+  }
   const { width, height, pixels } = img;
   const on = new Uint8Array(qw * qh);
 

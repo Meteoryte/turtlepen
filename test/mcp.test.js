@@ -11,7 +11,7 @@ import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 
 import { createSession, createTools } from '../src/mcp/tools.js';
@@ -26,7 +26,7 @@ const SERVER = resolve(here, '../src/mcp/server.js');
 
 test('the tool module loads and every tool is well formed', () => {
   const tools = createTools(createSession());
-  assert.equal(tools.length, 32, `the documented tool count drifted: got ${tools.length}`);
+  assert.equal(tools.length, 35, `the documented tool count drifted: got ${tools.length}`);
   for (const t of tools) {
     assert.match(t.name, /^[a-z_]+$/, `bad tool name "${t.name}"`);
     assert.ok(t.description.length > 30, `${t.name} needs a real description`);
@@ -77,7 +77,7 @@ test('the validate tool surfaces composition findings to the agent', async () =>
 test('help documents the lattice, the grammar and every rule', () => {
   const tools = createTools(createSession());
   const help = tools.find((t) => t.name === 'turtlepen_help').handler({});
-  for (const needle of ['PEN GRAMMAR', 'align', 'hop', 'arrow', 'EVERY FIX HAS A TOOL', 'L001', 'L015']) {
+  for (const needle of ['PEN GRAMMAR', 'scope="stack"', 'searched_pages', 'REGIONAL DESCRIPTION', 'exact claimed', 'DIMENSIONED COMPOSITIONS', 'stale geometry is refused by name', 'HISTORY AND RECOVERY', 'exact document hash', 'new edit after undo clears redo', 'GROUPS AND FOLLOW RELATIONSHIPS', 'cycles are refused', 'explicit constraint', 'S#2', 'align', 'hop', 'arrow', 'EVERY FIX HAS A TOOL', 'L001', 'L015', 'L021']) {
     assert.ok(help.includes(needle), `help is missing "${needle}"`);
   }
 });
@@ -87,9 +87,13 @@ test('help documents the lattice, the grammar and every rule', () => {
 // ---------------------------------------------------------------------------
 
 /** Drive the real server over stdio and collect its replies. */
-function rpc(messages, cwd) {
+function rpc(messages, cwd, { env = {} } = {}) {
   return new Promise((resolvePromise, reject) => {
-    const child = spawn(process.execPath, [SERVER], { cwd, stdio: ['pipe', 'pipe', 'pipe'] });
+    const child = spawn(process.execPath, [SERVER], {
+      cwd,
+      env: { ...process.env, ...env },
+      stdio: ['pipe', 'pipe', 'pipe'],
+    });
     let out = '';
     let err = '';
     child.stdout.on('data', (d) => (out += d));
@@ -103,13 +107,62 @@ function rpc(messages, cwd) {
         reject(new Error(`unparseable output: ${e.message}\n${out}`));
       }
     });
-    for (const m of messages) child.stdin.write(`${JSON.stringify(m)}\n`);
+    for (const m of messages) child.stdin.write(`${typeof m === 'string' ? m : JSON.stringify(m)}\n`);
     child.stdin.end();
   });
 }
 
 const call = (id, name, args = {}) => ({ jsonrpc: '2.0', id, method: 'tools/call', params: { name, arguments: args } });
 const textOf = (replies, id) => replies.find((r) => r.id === id).result.content[0].text;
+
+test('the JSON-RPC method and notification contract is complete over stdio', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-protocol-'));
+  try {
+    const replies = await rpc([
+      '{not valid json',
+      { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: 'unsupported-version', capabilities: {} } },
+      { jsonrpc: '2.0', method: 'notifications/initialized' },
+      { jsonrpc: '2.0', method: 'notifications/cancelled', params: { requestId: 91 } },
+      { jsonrpc: '2.0', id: 2, method: 'ping' },
+      { jsonrpc: '2.0', id: 3, method: 'tools/list' },
+      { jsonrpc: '2.0', method: 'unknown/notification' },
+      { jsonrpc: '2.0', id: 4, method: 'unknown/request' },
+    ], dir);
+
+    assert.equal(replies.length, 5, 'notifications must not receive JSON-RPC replies');
+    assert.equal(replies.find((reply) => reply.id === null).error.code, -32700);
+    assert.equal(replies.find((reply) => reply.id === 1).result.protocolVersion, '2025-06-18',
+      'an unsupported protocol version falls back to the current supported version');
+    assert.deepEqual(replies.find((reply) => reply.id === 2).result, {});
+
+    const liveNames = createTools(createSession()).map((tool) => tool.name).sort();
+    const listedNames = replies.find((reply) => reply.id === 3).result.tools.map((tool) => tool.name).sort();
+    assert.deepEqual(listedNames, liveNames);
+    assert.equal(replies.find((reply) => reply.id === 4).error.code, -32601);
+    for (const reply of replies) assert.equal(reply.jsonrpc, '2.0');
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('the server accepts an injected creation time for reproducible builds', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  const createdAt = '2026-08-10T13:29:24.372Z';
+  try {
+    await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'reproducible', path: 'd.turtlepen.json' }),
+      ],
+      dir,
+      { env: { TURTLEPEN_CREATED_AT: createdAt } },
+    );
+    const saved = JSON.parse(await readFile(resolve(dir, 'd.turtlepen.json'), 'utf8'));
+    assert.equal(saved.createdAt, createdAt);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
 
 test('the server initializes, lists tools, and answers calls in order', async () => {
   const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
@@ -135,6 +188,498 @@ test('the server initializes, lists tools, and answers calls in order', async ()
     assert.match(textOf(replies, 4), /path "demo": 7 quadrant\(s\)/);
     assert.match(textOf(replies, 5), /collision log/);
     assert.equal(replies.find((r) => r.id === 6).error.code, -32602, 'unknown tool is a protocol error');
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('overlay text occlusion reaches the agent over the real wire', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const replies = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'occlusion', path: 'd.turtlepen.json' }),
+        call(3, 'place_box', { id: 'checkout', at: 'C4.tl', span: { w: 16, h: 3 }, label: 'Checkout Orchestrator' }),
+        call(4, 'add_page', { id: 'review', z: 1, intent: 'overlay' }),
+        call(5, 'place_box', { id: 'slow', page: 'review', at: 'E4.tl', span: { w: 10, h: 3 }, label: 'p95 4.2s' }),
+        call(6, 'validate', {}),
+      ],
+      dir,
+    );
+    assert.match(textOf(replies, 6), /L021 overlay obscures text/);
+    assert.match(textOf(replies, 6), /status: NOT CLEAN/);
+    assert.match(textOf(replies, 6), /move "slow" clear of the text in "checkout"/);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('free_space defaults to the whole stack and exposes a page-only override over the real wire', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const replies = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'stack space', path: 'd.turtlepen.json', cols: 40, rows: 20 }),
+        call(3, 'place_box', { id: 'base-blocker', at: 'C4.tl', span: { w: 6, h: 3 } }),
+        call(4, 'add_page', { id: 'future', z: 1, intent: 'exclusive' }),
+        call(5, 'free_space', { page: 'future', cellsW: 6, cellsH: 3, region: 'C4:H6' }),
+        call(6, 'free_space', { page: 'future', scope: 'page', cellsW: 6, cellsH: 3, region: 'C4:H6' }),
+        call(7, 'free_space', { page: 'future', cellsW: 6 }),
+      ],
+      dir,
+    );
+    const stack = JSON.parse(textOf(replies, 5));
+    const page = JSON.parse(textOf(replies, 6));
+
+    assert.equal(stack.fits, false, 'the lower exclusive page blocks the default stack search');
+    assert.equal(stack.scope, 'stack');
+    assert.deepEqual(stack.searched_pages, ['base', 'future']);
+    assert.equal(page.fits, true, 'page scope preserves the intentional single-page search');
+    assert.equal(page.scope, 'page');
+    assert.deepEqual(page.searched_pages, ['future']);
+    const incomplete = replies.find((reply) => reply.id === 7).result;
+    assert.equal(incomplete.isError, true);
+    assert.match(incomplete.content[0].text, /needs cellsW and cellsH together/);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('describe filters by exact region over the real wire without path bounding-box false positives', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const replies = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'regional describe', path: 'd.turtlepen.json', cols: 40, rows: 30 }),
+        call(3, 'place_box', { id: 'near', at: 'C4.tl', span: { w: 4, h: 2 } }),
+        call(4, 'place_box', { id: 'far', at: 'W4.tl', span: { w: 4, h: 2 } }),
+        call(5, 'pen', { id: 'elbow', role: 'artwork', program: 'pen C10.q1\nright 10 line\nright corner align left bottom\ndown 10 line' }),
+        call(6, 'describe', { region: 'C4:F5' }),
+        call(7, 'describe', { region: 'C15:F17' }),
+        call(8, 'describe', { page: 'missing', region: 'C4:F5' }),
+        call(9, 'describe', { region: 'F5:C4' }),
+      ],
+      dir,
+    );
+    const near = JSON.parse(textOf(replies, 6));
+    const emptyInsideElbowBounds = JSON.parse(textOf(replies, 7));
+
+    assert.deepEqual(near[0].elements.map((element) => element.id), ['near']);
+    assert.deepEqual(near[0].filter, { region: 'C4:F5', cells: { w: 4, h: 2 } });
+    assert.deepEqual(emptyInsideElbowBounds[0].elements, [], 'an empty part of an L-path bounding box is not a hit');
+    const missing = replies.find((reply) => reply.id === 8).result;
+    assert.equal(missing.isError, true);
+    assert.match(missing.content[0].text, /no such page "missing"/);
+    assert.deepEqual(JSON.parse(textOf(replies, 9))[0].filter, near[0].filter, 'reversed corners normalize to one effective region');
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a saved wireframe can still export its composition prompt after reopen', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const replies = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'persistent wireframe', path: 'd.turtlepen.json', cols: 60, rows: 40 }),
+        call(3, 'wireframe', {
+          widthIn: 120,
+          depthIn: 96,
+          scale: 2,
+          clearance: false,
+          items: [{
+            id: 'condenser', widthIn: 30, depthIn: 30, atXIn: 48, atYIn: 36,
+            describe: 'outdoor condensing unit',
+          }],
+          runs: [{
+            id: 'lineset', kind: 'lineset',
+            waypoints: [{ xIn: 0, yIn: 12 }, { xIn: 48, yIn: 12 }, { xIn: 48, yIn: 36 }],
+          }],
+        }),
+        call(4, 'open_diagram', { path: 'd.turtlepen.json' }),
+        call(5, 'export_prompt', { subject: 'HVAC equipment layout' }),
+        call(6, 'move', { id: 'condenser', cellsX: 1 }),
+        call(7, 'export_prompt', { subject: 'stale layout' }),
+        call(8, 'history', { action: 'undo' }),
+        call(9, 'export_prompt', { subject: 'restored layout' }),
+      ],
+      dir,
+    );
+
+    assert.equal(replies.find((reply) => reply.id === 5).result.isError, undefined, textOf(replies, 5));
+    assert.match(textOf(replies, 5), /HVAC equipment layout/);
+    assert.match(textOf(replies, 5), /outdoor condensing unit/);
+    assert.match(textOf(replies, 5), /RUNS[\s\S]*lineset/);
+    assert.equal(replies.find((reply) => reply.id === 7).result.isError, true);
+    assert.match(textOf(replies, 7), /wireframe source is stale at "condenser"/);
+    assert.match(textOf(replies, 9), /restored layout/, 'undo restores source and generated geometry together');
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('history undoes and redoes successful edits over the real wire', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const replies = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'recoverable edits', path: 'd.turtlepen.json' }),
+        call(3, 'place_box', { id: 'unit', at: 'C4.tl', span: { w: 6, h: 3 } }),
+        call(4, 'move', { id: 'unit', at: 'M20.tl' }),
+        call(5, 'history', { action: 'status' }),
+        call(6, 'history', { action: 'undo' }),
+        call(7, 'describe', {}),
+        call(8, 'history', { action: 'redo' }),
+        call(9, 'describe', {}),
+      ],
+      dir,
+    );
+
+    const status = JSON.parse(textOf(replies, 5));
+    assert.equal(status.undo_available, 2);
+    assert.equal(status.next_undo, 'move "unit"');
+    assert.equal(JSON.parse(textOf(replies, 7))[0].elements[0].at, 'C4.q1');
+    assert.equal(JSON.parse(textOf(replies, 9))[0].elements[0].at, 'M20.q1');
+
+    const saved = JSON.parse(await readFile(resolve(dir, 'd.turtlepen.json'), 'utf8'));
+    assert.equal(saved.elements.base[0].rect.x, 24, 'redo is checkpointed, not only changed in memory');
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('failed and no-op mutations do not consume history or destroy redo', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const replies = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'honest history', path: 'd.turtlepen.json' }),
+        call(3, 'place_box', { id: 'unit', at: 'C4.tl', span: { w: 6, h: 3 } }),
+        call(4, 'history', { action: 'undo' }),
+        call(5, 'move', { id: 'missing', cellsX: 2 }),
+        call(6, 'unaccept_finding', { fingerprint: 'not-recorded' }),
+        call(7, 'history', { action: 'status' }),
+        call(8, 'history', { action: 'redo' }),
+        call(9, 'place_box', { id: 'other', at: 'M4.tl', span: { w: 4, h: 2 } }),
+        call(10, 'history', { action: 'status' }),
+      ],
+      dir,
+    );
+
+    assert.equal(replies.find((reply) => reply.id === 5).result.isError, true);
+    const beforeRedo = JSON.parse(textOf(replies, 7));
+    assert.equal(beforeRedo.undo_available, 0);
+    assert.equal(beforeRedo.redo_available, 1, 'a rejected edit must preserve the recovery route');
+    const afterDivergence = JSON.parse(textOf(replies, 10));
+    assert.equal(afterDivergence.redo_available, 0, 'a new successful edit invalidates the old future');
+    assert.equal(afterDivergence.undo_available, 2);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('history rolls back a partially applied composite mutation in memory and on disk', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const replies = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'composite rollback', path: 'd.turtlepen.json', cols: 80, rows: 50 }),
+        call(3, 'place_box', { id: 'seed', at: 'C4.tl', span: { w: 6, h: 3 } }),
+        call(4, 'perspective_scene', {
+          roomIn: { widthIn: 120, depthIn: 96, heightIn: 96 },
+          eyeIn: { x: 60, y: 66, z: -48 },
+          targetIn: { x: 60, y: 48, z: 48 },
+          items: [
+            { id: 'duplicate', xIn: 24, yIn: 0, zIn: 24, widthIn: 24, heightIn: 36, depthIn: 18 },
+            { id: 'duplicate', xIn: 72, yIn: 0, zIn: 24, widthIn: 24, heightIn: 36, depthIn: 18 },
+          ],
+        }),
+        call(5, 'describe', {}),
+        call(6, 'history', { action: 'status' }),
+        call(7, 'history', { action: 'sideways' }),
+      ],
+      dir,
+    );
+
+    assert.equal(replies.find((reply) => reply.id === 4).result.isError, true);
+    assert.deepEqual(JSON.parse(textOf(replies, 5))[0].elements.map((element) => element.id), ['seed']);
+    assert.equal(JSON.parse(textOf(replies, 6)).undo_available, 1);
+    assert.equal(replies.find((reply) => reply.id === 7).result.isError, true);
+    assert.match(textOf(replies, 7), /status, undo, redo, or clear/);
+
+    const saved = JSON.parse(await readFile(resolve(dir, 'd.turtlepen.json'), 'utf8'));
+    assert.deepEqual(saved.elements.base.map((element) => element.id), ['seed'], 'the autosave matches the rolled-back live document');
+    assert.equal(saved.perspective_scene, undefined);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('history honors a configured retention bound and reports exhaustion honestly', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const messages = [
+      { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+      call(2, 'new_diagram', { name: 'bounded history', path: 'd.turtlepen.json' }),
+      call(3, 'place_box', { id: 'unit', at: 'C4.tl', span: { w: 4, h: 2 } }),
+      ...Array.from({ length: 22 }, (_, index) => call(4 + index, 'move', { id: 'unit', cellsX: 1 })),
+      call(26, 'history', { action: 'status' }),
+      ...Array.from({ length: 20 }, (_, index) => call(27 + index, 'history', { action: 'undo' })),
+      call(47, 'history', { action: 'undo' }),
+      call(48, 'describe', {}),
+    ];
+    const replies = await rpc(messages, dir, { env: { TURTLEPEN_HISTORY_LIMIT: '20' } });
+
+    assert.equal(JSON.parse(textOf(replies, 26)).undo_available, 20);
+    assert.equal(replies.find((reply) => reply.id === 47).result.isError, true);
+    assert.match(textOf(replies, 47), /nothing to undo/);
+    assert.equal(JSON.parse(textOf(replies, 48))[0].elements[0].at, 'E4.q1', 'the two evicted oldest moves remain applied');
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('undo and redo history survive reopen and separate MCP server processes', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'restart history', path: 'd.turtlepen.json' }),
+        call(3, 'place_box', { id: 'unit', at: 'C4.tl', span: { w: 4, h: 2 } }),
+        call(4, 'move', { id: 'unit', cellsX: 5, cellsY: 2 }),
+      ],
+      dir,
+    );
+
+    const afterRestart = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'open_diagram', { path: 'd.turtlepen.json' }),
+        call(3, 'history', { action: 'status' }),
+        call(4, 'history', { action: 'undo' }),
+        call(5, 'describe', {}),
+      ],
+      dir,
+    );
+    const restored = JSON.parse(textOf(afterRestart, 3));
+    assert.equal(restored.undo_available, 2);
+    assert.equal(restored.limit, 100);
+    assert.match(restored.persistence, /restored 2 undo/);
+    assert.equal(JSON.parse(textOf(afterRestart, 5))[0].elements[0].at, 'C4.q1');
+
+    const afterSecondRestart = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'open_diagram', { path: 'd.turtlepen.json' }),
+        call(3, 'history', { action: 'status' }),
+        call(4, 'history', { action: 'redo' }),
+        call(5, 'describe', {}),
+      ],
+      dir,
+    );
+    assert.equal(JSON.parse(textOf(afterSecondRestart, 3)).redo_available, 1);
+    assert.equal(JSON.parse(textOf(afterSecondRestart, 5))[0].elements[0].at, 'H6.q1');
+
+    const sidecar = JSON.parse(await readFile(resolve(dir, 'd.turtlepen.json.history.json'), 'utf8'));
+    assert.equal(sidecar.schema, 1);
+    assert.match(sidecar.currentHash, /^[a-f0-9]{64}$/);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('an externally changed document invalidates its stale history sidecar without applying it', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'before external edit', path: 'd.turtlepen.json' }),
+        call(3, 'place_box', { id: 'unit', at: 'C4.tl', span: { w: 4, h: 2 } }),
+      ],
+      dir,
+    );
+    const path = resolve(dir, 'd.turtlepen.json');
+    const external = JSON.parse(await readFile(path, 'utf8'));
+    external.name = 'changed outside TurtlePen';
+    await writeFile(path, JSON.stringify(external, null, 2), 'utf8');
+
+    const replies = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'open_diagram', { path: 'd.turtlepen.json' }),
+        call(3, 'history', { action: 'status' }),
+        call(4, 'history', { action: 'undo' }),
+      ],
+      dir,
+    );
+    const status = JSON.parse(textOf(replies, 3));
+    assert.equal(status.undo_available, 0);
+    assert.equal(status.redo_available, 0);
+    assert.match(status.persistence, /document content changed outside this history/);
+    assert.equal(replies.find((reply) => reply.id === 4).result.isError, true);
+    assert.match(textOf(replies, 4), /nothing to undo/);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a subsystem group moves atomically, survives reopen, and participates in history over the real wire', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const replies = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'grouped subsystem', path: 'd.turtlepen.json' }),
+        call(3, 'plan', {
+          commit: true,
+          operations: [
+            { op: 'place_box', id: 'unit', at: 'C4.tl', span: { w: 4, h: 2 } },
+            { op: 'place_box', id: 'disconnect', at: 'M4.tl', span: { w: 4, h: 2 } },
+            { op: 'group', action: 'create', id: 'outdoor', label: 'Outdoor assembly', members: ['unit', 'disconnect'] },
+          ],
+        }),
+        call(4, 'group', { action: 'move', id: 'outdoor', cellsX: 3, cellsY: 2 }),
+        call(5, 'describe', {}),
+        call(6, 'history', { action: 'undo' }),
+        call(7, 'describe', {}),
+        call(8, 'group', { action: 'add', id: 'outdoor', members: ['missing'] }),
+        call(9, 'open_diagram', { path: 'd.turtlepen.json' }),
+        call(10, 'group', { action: 'list' }),
+      ],
+      dir,
+    );
+
+    const moved = JSON.parse(textOf(replies, 5))[0];
+    assert.equal(moved.elements.find((element) => element.id === 'unit').at, 'F6.q1');
+    assert.equal(moved.elements.find((element) => element.id === 'disconnect').at, 'P6.q1');
+    assert.deepEqual(moved.groups[0].members, ['unit', 'disconnect']);
+
+    const restored = JSON.parse(textOf(replies, 7))[0];
+    assert.equal(restored.elements.find((element) => element.id === 'unit').at, 'C4.q1');
+    assert.equal(restored.elements.find((element) => element.id === 'disconnect').at, 'M4.q1');
+    assert.equal(replies.find((reply) => reply.id === 8).result.isError, true);
+    assert.deepEqual(JSON.parse(textOf(replies, 10))[0].members, ['disconnect', 'unit'], 'serialized members are deterministic');
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('durable follow constraints cascade, describe themselves, reject cycles, and survive reopen over the real wire', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const replies = await rpc(
+      [
+        { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+        call(2, 'new_diagram', { name: 'constrained subsystem', path: 'd.turtlepen.json' }),
+        call(3, 'plan', {
+          commit: true,
+          operations: [
+            { op: 'place_box', id: 'unit', at: 'C4.tl', span: { w: 4, h: 2 } },
+            { op: 'place_box', id: 'tag', at: 'M4.tl', span: { w: 2, h: 1 } },
+            { op: 'constraint', action: 'create', id: 'tag-follows-unit', dependent: 'tag', target: 'unit' },
+          ],
+        }),
+        call(4, 'move', { id: 'unit', cellsX: 3, cellsY: 2 }),
+        call(5, 'describe', {}),
+        call(6, 'constraint', { action: 'list' }),
+        call(7, 'history', { action: 'undo' }),
+        call(8, 'describe', {}),
+        call(9, 'constraint', { action: 'create', id: 'cycle', dependent: 'unit', target: 'tag' }),
+        call(10, 'open_diagram', { path: 'd.turtlepen.json' }),
+        call(11, 'move', { id: 'unit', cellsX: 1 }),
+        call(12, 'describe', {}),
+        call(13, 'constraint', { action: 'create', id: 'bad-offset', dependent: 'unit', target: 'tag', offsetX: 2 }),
+      ],
+      dir,
+    );
+
+    const moved = JSON.parse(textOf(replies, 5))[0];
+    assert.equal(moved.elements.find((element) => element.id === 'unit').at, 'F6.q1');
+    assert.equal(moved.elements.find((element) => element.id === 'tag').at, 'P6.q1');
+    assert.deepEqual(moved.elements.find((element) => element.id === 'unit').constraints.followedBy, ['tag-follows-unit']);
+    assert.deepEqual(moved.elements.find((element) => element.id === 'tag').constraints.follows, ['tag-follows-unit']);
+    assert.equal(moved.constraints[0].target.id, 'unit');
+
+    const listed = JSON.parse(textOf(replies, 6));
+    assert.equal(listed[0].id, 'tag-follows-unit');
+    assert.deepEqual(listed[0].offset.quadrants, { x: 18, y: -1 });
+
+    const restored = JSON.parse(textOf(replies, 8))[0];
+    assert.equal(restored.elements.find((element) => element.id === 'unit').at, 'C4.q1');
+    assert.equal(restored.elements.find((element) => element.id === 'tag').at, 'M4.q1');
+    assert.equal(replies.find((reply) => reply.id === 9).result.isError, true);
+    assert.match(textOf(replies, 9), /cycle/);
+
+    const reopenedAndMoved = JSON.parse(textOf(replies, 12))[0];
+    assert.equal(reopenedAndMoved.elements.find((element) => element.id === 'unit').at, 'D4.q1');
+    assert.equal(reopenedAndMoved.elements.find((element) => element.id === 'tag').at, 'N4.q1');
+    assert.equal(replies.find((reply) => reply.id === 13).result.isError, true);
+    assert.match(textOf(replies, 13), /both offsetX and offsetY/);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('five indexed seats on one face survive a dense real MCP session', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
+  try {
+    const boxes = [
+      ['worker-a', 'C28.tl'],
+      ['worker-b', 'Q28.tl'],
+      ['worker-c', 'AE28.tl'],
+      ['worker-d', 'AS28.tl'],
+      ['worker-e', 'BG28.tl'],
+    ];
+    const routes = [
+      ['route-a', 'hub.S#4', 2, 'left', 'worker-a'],
+      ['route-b', 'hub.S#2', 4, 'left', 'worker-b'],
+      ['route-e', 'hub.S#5', 6, 'right', 'worker-e'],
+      ['route-d', 'hub.S#3', 8, 'right', 'worker-d'],
+      ['route-c', 'hub.S#1', 10, 'right', 'worker-c'],
+    ];
+    const messages = [
+      { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } },
+      call(2, 'new_diagram', { name: 'constraint stress', path: 'd.turtlepen.json', cols: 80, rows: 40 }),
+      call(3, 'place_box', { id: 'hub', at: 'U4.tl', span: { w: 24, h: 5 }, label: 'Dispatch Hub' }),
+      ...boxes.map(([id, at], index) => call(4 + index, 'place_box', { id, at, span: { w: 10, h: 3 }, label: id })),
+      ...routes.map(([id, from, depth, dirName, target], index) => {
+        const firstCorner = dirName === 'left' ? 'top left' : 'top right';
+        const secondCorner = dirName === 'left' ? 'right bottom' : 'left bottom';
+        const program = [
+          `pen from ${from}`,
+          `down ${depth} line`,
+          `down corner align ${firstCorner}`,
+          `${dirName} line to ${target}.N`,
+          `${dirName} corner align ${secondCorner}`,
+          `down line to ${target}.N arrow`,
+        ].join('\n');
+        return call(9 + index, 'pen', { id, program });
+      }),
+      call(14, 'validate', { format: 'json' }),
+      call(15, 'describe', {}),
+    ];
+    const replies = await rpc(messages, dir);
+    for (let id = 9; id <= 13; id++) {
+      const reply = replies.find((candidate) => candidate.id === id);
+      assert.equal(reply.result.isError, undefined, reply.result.content[0].text);
+    }
+    const validation = JSON.parse(textOf(replies, 14));
+    const blockingRules = new Set(['L001', 'L004', 'L006', 'L008', 'L014', 'L015', 'L016']);
+    const blocking = validation.open.filter((finding) => blockingRules.has(finding.rule));
+
+    assert.deepEqual(blocking, [], core.formatLog(validation));
+    const described = JSON.parse(textOf(replies, 15));
+    const hub = described[0].elements.find((element) => element.id === 'hub');
+    assert.ok(hub.seatSlots.S >= 5, 'the agent can discover at least five distinct seats on the south face');
   } finally {
     await rm(dir, { recursive: true, force: true });
   }

@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="1060" viewBox="0 0 1040 1060" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace">
+<style>
+  .bg { fill: #f4f3ef; }
+  .grid { stroke: #dedbd3; stroke-width: 0.5; }
+  .grid-major { stroke: #cbc7bd; stroke-width: 0.5; }
+  .box { fill: #e9e7e1; stroke: #2b2a26; stroke-width: 1; }
+  .box-label { fill: #2b2a26; }
+  .stroke { fill: #2b2a26; }
+  .hop { stroke: #2b2a26; }
+  .free-text { fill: #6b6862; }
+  .hit-S0 { fill: #8a5b56; opacity: 0.30; }
+  .hit-S1 { fill: #96755c; opacity: 0.28; }
+  .hit-S2 { fill: #87805a; opacity: 0.24; }
+  .hit-S3 { fill: #4a6572; opacity: 0.20; }
+  .dimmed { fill: url(#tp-stipple); }
+  .dither-run { fill: #2b2a26; }
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #1a1917; }
+    .grid { stroke: #2e2c28; }
+    .grid-major { stroke: #3d3a35; }
+    .box { fill: #232220; stroke: #dedbd3; }
+    .box-label { fill: #dedbd3; }
+    .free-text { fill: #9a968d; }
+    .stroke { fill: #dedbd3; }
+    .hop { stroke: #dedbd3; }
+  }
+</style>
+<defs>
+  <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
+       5px quadrant so a dimmed element is made of the same units as every
+       other mark on the page. -->
+  <pattern id="tp-stipple" width="10" height="10" patternUnits="userSpaceOnUse">
+    <rect width="5" height="5" fill="#2b2a26"/>
+    <rect x="5" y="5" width="5" height="5" fill="#2b2a26"/>
+  </pattern>
+</defs>
+<rect class="bg" x="0" y="0" width="1040" height="1060"/>
+<g transform="translate(20,20)">
+<g data-page="base" data-z="0" opacity="1">
+<g data-element="title">
+<path class="box" d="M25,10 H955 L960,15 V45 L955,50 H25 L20,45 V15 Z" data-id="title" style="fill:#dce9ee"/><text class="box-label" x="25" y="34" font-size="10" textLength="228" lengthAdjust="spacingAndGlyphs" xml:space="preserve">CONDENSER REPLACEMENT | FIELD WORKFLOW</text>
+</g>
+<g data-element="safety-boundary">
+<path class="box" d="M20,60 H960 V120 H20 Z" data-id="safety-boundary" style="fill:#f5edce"/><text class="box-label" x="25" y="86" font-size="10" textLength="906" lengthAdjust="spacingAndGlyphs" xml:space="preserve">QUALIFIED HVAC PERSONNEL ONLY | Use the equipment instructions, adopted codes, electrical safe-work practices, refrigerant rules, and site policy. Stop</text><text class="box-label" x="25" y="101" font-size="10" textLength="594" lengthAdjust="spacingAndGlyphs" xml:space="preserve">when a hold point is not proven. Do not substitute this sequence for required procedures or values.</text>
+</g>
+<g data-element="confirm">
+<path class="box" d="M25,140 H555 A5,5 0 0 1 560,145 V205 A5,5 0 0 1 555,210 H25 A5,5 0 0 1 20,205 V145 A5,5 0 0 1 25,140 Z" data-id="confirm" style="fill:#e8edf0"/><text class="box-label" x="25" y="156" font-size="10" textLength="186" lengthAdjust="spacingAndGlyphs" xml:space="preserve">0 | CONFIRM SCOPE AND EQUIPMENT</text><text class="box-label" x="25" y="171" font-size="10" textLength="528" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Match model, voltage, phase, MCA/MOCP, refrigerant, capacity, and approved indoor-system</text><text class="box-label" x="25" y="186" font-size="10" textLength="516" lengthAdjust="spacingAndGlyphs" xml:space="preserve">compatibility. Read OEM instructions. Record nameplates and existing condition. Photos</text><text class="box-label" x="25" y="201" font-size="10" textLength="48" lengthAdjust="spacingAndGlyphs" xml:space="preserve">P01-P03.</text>
+</g>
+<g data-element="isolate">
+<path class="box" d="M25,240 H555 A5,5 0 0 1 560,245 V305 A5,5 0 0 1 555,310 H25 A5,5 0 0 1 20,305 V245 A5,5 0 0 1 25,240 Z" data-id="isolate" style="fill:#f4e3df"/><text class="box-label" x="25" y="256" font-size="10" textLength="132" lengthAdjust="spacingAndGlyphs" xml:space="preserve">1 | ISOLATE ALL ENERGY</text><text class="box-label" x="25" y="271" font-size="10" textLength="492" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Identify every electrical source, controls, and stored energy. Open disconnect and</text><text class="box-label" x="25" y="286" font-size="10" textLength="528" lengthAdjust="spacingAndGlyphs" xml:space="preserve">breaker, apply lockout/tagout, and prove absence of voltage with a rated meter using the</text><text class="box-label" x="25" y="301" font-size="10" textLength="240" lengthAdjust="spacingAndGlyphs" xml:space="preserve">required verification method. Photo P04.</text>
+</g>
+<g data-element="recover">
+<path class="box" d="M25,340 H555 A5,5 0 0 1 560,345 V405 A5,5 0 0 1 555,410 H25 A5,5 0 0 1 20,405 V345 A5,5 0 0 1 25,340 Z" data-id="recover" style="fill:#e3edf4"/><text class="box-label" x="25" y="356" font-size="10" textLength="138" lengthAdjust="spacingAndGlyphs" xml:space="preserve">2 | RECOVER REFRIGERANT</text><text class="box-label" x="25" y="371" font-size="10" textLength="486" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Identify the refrigerant. Use compatible recovery equipment and the correct rated</text><text class="box-label" x="25" y="386" font-size="10" textLength="516" lengthAdjust="spacingAndGlyphs" xml:space="preserve">cylinder. Track cylinder limits and record recovered weight. Do not vent. Confirm safe</text><text class="box-label" x="25" y="401" font-size="10" textLength="354" lengthAdjust="spacingAndGlyphs" xml:space="preserve">system pressure before opening the circuit. Photos P05-P06.</text>
+</g>
+<g data-element="remove-old">
+<path class="box" d="M25,440 H555 A5,5 0 0 1 560,445 V505 A5,5 0 0 1 555,510 H25 A5,5 0 0 1 20,505 V445 A5,5 0 0 1 25,440 Z" data-id="remove-old" style="fill:#f3eadf"/><text class="box-label" x="25" y="456" font-size="10" textLength="192" lengthAdjust="spacingAndGlyphs" xml:space="preserve">3 | DOCUMENT AND REMOVE OLD UNIT</text><text class="box-label" x="25" y="471" font-size="10" textLength="456" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Label conductors and controls before disconnecting. Protect the circuit from</text><text class="box-label" x="25" y="486" font-size="10" textLength="492" lengthAdjust="spacingAndGlyphs" xml:space="preserve">contamination. Disconnect piping using the approved method, cap open ends, release</text><text class="box-label" x="25" y="501" font-size="10" textLength="378" lengthAdjust="spacingAndGlyphs" xml:space="preserve">anchors, and move the unit with a planned lift. Photos P07-P09.</text>
+</g>
+<g data-element="prepare">
+<path class="box" d="M25,540 H555 A5,5 0 0 1 560,545 V605 A5,5 0 0 1 555,610 H25 A5,5 0 0 1 20,605 V545 A5,5 0 0 1 25,540 Z" data-id="prepare" style="fill:#e9ece5"/><text class="box-label" x="25" y="556" font-size="10" textLength="204" lengthAdjust="spacingAndGlyphs" xml:space="preserve">4 | PREPARE SITE AND NEW EQUIPMENT</text><text class="box-label" x="25" y="571" font-size="10" textLength="528" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Verify pad, drainage, service access, airflow clearances, line-set condition and sizing,</text><text class="box-label" x="25" y="586" font-size="10" textLength="504" lengthAdjust="spacingAndGlyphs" xml:space="preserve">electrical components, overcurrent protection, disconnect, and approved accessories.</text><text class="box-label" x="25" y="601" font-size="10" textLength="336" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Correct defects before setting the unit. Photos P10-P11.</text>
+</g>
+<g data-element="install">
+<path class="box" d="M25,640 H555 A5,5 0 0 1 560,645 V705 A5,5 0 0 1 555,710 H25 A5,5 0 0 1 20,705 V645 A5,5 0 0 1 25,640 Z" data-id="install" style="fill:#e3efe8"/><text class="box-label" x="25" y="656" font-size="10" textLength="162" lengthAdjust="spacingAndGlyphs" xml:space="preserve">5 | SET, CONNECT, AND BRAZE</text><text class="box-label" x="25" y="671" font-size="10" textLength="528" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Level and secure the condenser. Route tubing without strain or rub points. Flow nitrogen</text><text class="box-label" x="25" y="686" font-size="10" textLength="510" lengthAdjust="spacingAndGlyphs" xml:space="preserve">while brazing where required. Make electrical and control connections to the diagram;</text><text class="box-label" x="25" y="701" font-size="10" textLength="354" lengthAdjust="spacingAndGlyphs" xml:space="preserve">torque and protect conductors as specified. Photos P12-P14.</text>
+</g>
+<g data-element="test-charge">
+<path class="box" d="M25,740 H555 A5,5 0 0 1 560,745 V805 A5,5 0 0 1 555,810 H25 A5,5 0 0 1 20,805 V745 A5,5 0 0 1 25,740 Z" data-id="test-charge" style="fill:#e4e9f3"/><text class="box-label" x="25" y="756" font-size="10" textLength="234" lengthAdjust="spacingAndGlyphs" xml:space="preserve">6 | PRESSURE TEST, EVACUATE, AND CHARGE</text><text class="box-label" x="25" y="771" font-size="10" textLength="492" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Pressure-test and leak-check using approved gas, equipment, limits, and hold time.</text><text class="box-label" x="25" y="786" font-size="10" textLength="510" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Evacuate with clean tools and verify the required standing/decay result. Open service</text><text class="box-label" x="25" y="801" font-size="10" textLength="402" lengthAdjust="spacingAndGlyphs" xml:space="preserve">valves and establish charge by the approved method. Photos P15-P16.</text>
+</g>
+<g data-element="commission">
+<path class="box" d="M25,840 H555 A5,5 0 0 1 560,845 V925 A5,5 0 0 1 555,930 H25 A5,5 0 0 1 20,925 V845 A5,5 0 0 1 25,840 Z" data-id="commission" style="fill:#ece6f0"/><text class="box-label" x="25" y="859" font-size="10" textLength="186" lengthAdjust="spacingAndGlyphs" xml:space="preserve">7 | START, VERIFY, AND HAND OFF</text><text class="box-label" x="25" y="874" font-size="10" textLength="516" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Remove lockout/tagout under the authorized process and energize. Verify rotation where</text><text class="box-label" x="25" y="889" font-size="10" textLength="522" lengthAdjust="spacingAndGlyphs" xml:space="preserve">applicable, voltage, current, temperatures, pressures, airflow, drainage, controls, and</text><text class="box-label" x="25" y="904" font-size="10" textLength="480" lengthAdjust="spacingAndGlyphs" xml:space="preserve">abnormal sound/vibration. Label, clean, document, and brief the customer. Photos</text><text class="box-label" x="25" y="919" font-size="10" textLength="48" lengthAdjust="spacingAndGlyphs" xml:space="preserve">P17-P20.</text>
+</g>
+<g data-element="work-rule">
+<path class="box" d="M625,140 H935 L940,145 V205 L935,210 H625 L620,205 V145 Z" data-id="work-rule" style="fill:#eef0ed"/><text class="box-label" x="625" y="156" font-size="10" textLength="54" lengthAdjust="spacingAndGlyphs" xml:space="preserve">WORK RULE</text><text class="box-label" x="625" y="171" font-size="10" textLength="294" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Read one numbered stage. Complete it. Capture its</text><text class="box-label" x="625" y="186" font-size="10" textLength="300" lengthAdjust="spacingAndGlyphs" xml:space="preserve">photos. Prove its hold point. Then continue. Never</text><text class="box-label" x="625" y="201" font-size="10" textLength="198" lengthAdjust="spacingAndGlyphs" xml:space="preserve">rely on remembering a later step.</text>
+</g>
+<g data-element="hold-electrical">
+<path class="box" d="M625,240 H935 L940,245 V305 L935,310 H625 L620,305 V245 Z" data-id="hold-electrical" style="fill:#f7ddd8"/><text class="box-label" x="625" y="256" font-size="10" textLength="114" lengthAdjust="spacingAndGlyphs" xml:space="preserve">HOLD A | ELECTRICAL</text><text class="box-label" x="625" y="271" font-size="10" textLength="306" lengthAdjust="spacingAndGlyphs" xml:space="preserve">PROCEED only when all applicable line terminals are</text><text class="box-label" x="625" y="286" font-size="10" textLength="306" lengthAdjust="spacingAndGlyphs" xml:space="preserve">proven de-energized and the energy-control boundary</text><text class="box-label" x="625" y="301" font-size="10" textLength="186" lengthAdjust="spacingAndGlyphs" xml:space="preserve">is secure. If not proven: STOP.</text>
+</g>
+<g data-element="hold-recovery">
+<path class="box" d="M625,340 H935 L940,345 V425 L935,430 H625 L620,425 V345 Z" data-id="hold-recovery" style="fill:#f7e8d2"/><text class="box-label" x="625" y="359" font-size="10" textLength="120" lengthAdjust="spacingAndGlyphs" xml:space="preserve">HOLD B | REFRIGERANT</text><text class="box-label" x="625" y="374" font-size="10" textLength="288" lengthAdjust="spacingAndGlyphs" xml:space="preserve">PROCEED only when recovery is complete, cylinder</text><text class="box-label" x="625" y="389" font-size="10" textLength="270" lengthAdjust="spacingAndGlyphs" xml:space="preserve">status and weight are documented, and circuit</text><text class="box-label" x="625" y="404" font-size="10" textLength="294" lengthAdjust="spacingAndGlyphs" xml:space="preserve">pressure is safe for the planned opening. If not:</text><text class="box-label" x="625" y="419" font-size="10" textLength="108" lengthAdjust="spacingAndGlyphs" xml:space="preserve">CONTINUE RECOVERY.</text>
+</g>
+<g data-element="hold-leak">
+<path class="box" d="M625,640 H935 L940,645 V705 L935,710 H625 L620,705 V645 Z" data-id="hold-leak" style="fill:#f7e8d2"/><text class="box-label" x="625" y="656" font-size="10" textLength="108" lengthAdjust="spacingAndGlyphs" xml:space="preserve">HOLD C | LEAK TEST</text><text class="box-label" x="625" y="671" font-size="10" textLength="294" lengthAdjust="spacingAndGlyphs" xml:space="preserve">PROCEED only when the specified pressure test and</text><text class="box-label" x="625" y="686" font-size="10" textLength="306" lengthAdjust="spacingAndGlyphs" xml:space="preserve">leak inspection pass. If pressure changes or a leak</text><text class="box-label" x="625" y="701" font-size="10" textLength="222" lengthAdjust="spacingAndGlyphs" xml:space="preserve">is found: LOCATE, REPAIR, AND REPEAT.</text>
+</g>
+<g data-element="hold-vacuum">
+<path class="box" d="M625,740 H935 L940,745 V805 L935,810 H625 L620,805 V745 Z" data-id="hold-vacuum" style="fill:#f7e8d2"/><text class="box-label" x="625" y="756" font-size="10" textLength="114" lengthAdjust="spacingAndGlyphs" xml:space="preserve">HOLD D | EVACUATION</text><text class="box-label" x="625" y="771" font-size="10" textLength="270" lengthAdjust="spacingAndGlyphs" xml:space="preserve">PROCEED only when the required evacuation and</text><text class="box-label" x="625" y="786" font-size="10" textLength="282" lengthAdjust="spacingAndGlyphs" xml:space="preserve">standing/decay result are met. If not: DIAGNOSE</text><text class="box-label" x="625" y="801" font-size="10" textLength="264" lengthAdjust="spacingAndGlyphs" xml:space="preserve">LEAKS, MOISTURE, OR TOOL SETUP, THEN REPEAT.</text>
+</g>
+<g data-element="footer">
+<path class="box" d="M20,940 H960 V1010 H20 Z" data-id="footer" style="fill:#e8edf0"/><text class="box-label" x="25" y="964" font-size="10" textLength="930" lengthAdjust="spacingAndGlyphs" xml:space="preserve">SPECIAL REFRIGERANT CHECK | When the equipment or refrigerant has flammability or other special handling requirements, identify that condition before work,</text><text class="box-label" x="25" y="979" font-size="10" textLength="924" lengthAdjust="spacingAndGlyphs" xml:space="preserve">control ignition sources, ventilate as required, and use listed compatible service equipment. Record final readings, charge basis, recovered/added weight,</text><text class="box-label" x="25" y="994" font-size="10" textLength="222" lengthAdjust="spacingAndGlyphs" xml:space="preserve">model/serial, and all P01-P20 images.</text>
+</g>
+<g data-element="flow-0-1">
+<g data-id="flow-0-1" data-kind="path" data-role="connector"><polyline points="292,212 292,237" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+</g>
+<g data-element="flow-1-2">
+<g data-id="flow-1-2" data-kind="path" data-role="connector"><polyline points="292,312 292,337" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+</g>
+<g data-element="flow-2-3">
+<g data-id="flow-2-3" data-kind="path" data-role="connector"><polyline points="292,412 292,437" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+</g>
+<g data-element="flow-3-4">
+<g data-id="flow-3-4" data-kind="path" data-role="connector"><polyline points="292,512 292,537" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+</g>
+<g data-element="flow-4-5">
+<g data-id="flow-4-5" data-kind="path" data-role="connector"><polyline points="292,612 292,637" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+</g>
+<g data-element="flow-5-6">
+<g data-id="flow-5-6" data-kind="path" data-role="connector"><polyline points="292,712 292,737" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+</g>
+<g data-element="flow-6-7">
+<g data-id="flow-6-7" data-kind="path" data-role="connector"><polyline points="292,812 292,837" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hold-a-link">
+<g data-id="hold-a-link" data-kind="path" data-role="connector"><polyline points="562,277 617,277" fill="none" stroke="#a33e32" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hold-b-link">
+<g data-id="hold-b-link" data-kind="path" data-role="connector"><polyline points="562,377 617,377" fill="none" stroke="#9a642e" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hold-c-link">
+<g data-id="hold-c-link" data-kind="path" data-role="connector"><polyline points="562,677 617,677" fill="none" stroke="#9a642e" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hold-d-link">
+<g data-id="hold-d-link" data-kind="path" data-role="connector"><polyline points="562,777 617,777" fill="none" stroke="#9a642e" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+</g>
+</g>
+</g></svg>

@@ -7,14 +7,31 @@
  * guessing at rendered sizes.
  */
 
-import { readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
+import { readFile, stat, writeFile } from 'node:fs/promises';
+import { dirname, resolve } from 'node:path';
 import * as core from '../core/index.js';
 
 const REQUIRE_DOC = 'no diagram is open — call new_diagram or open_diagram first';
+const HISTORY_SCHEMA = 1;
+const DEFAULT_HISTORY_LIMIT = 100;
+const MAX_HISTORY_LIMIT = 1000;
+// Core owns the mutation vocabulary. Deriving this set means a future
+// operation cannot silently bypass recovery because this file forgot a name.
+const MUTATING_TOOLS = new Set(Object.keys(core.OPERATIONS));
+MUTATING_TOOLS.add('plan');
 
-export function createSession({ cwd = process.cwd() } = {}) {
-  return { doc: null, path: null, cwd };
+export function createSession({ cwd = process.cwd(), createdAt = null, historyLimit = DEFAULT_HISTORY_LIMIT } = {}) {
+  if (createdAt != null && Number.isNaN(Date.parse(createdAt))) {
+    throw new TypeError(`session createdAt must be an ISO timestamp — got ${JSON.stringify(createdAt)}`);
+  }
+  if (!Number.isInteger(historyLimit) || historyLimit < 1 || historyLimit > MAX_HISTORY_LIMIT) {
+    throw new RangeError(`historyLimit must be a whole number from 1 to ${MAX_HISTORY_LIMIT} — got ${JSON.stringify(historyLimit)}`);
+  }
+  return {
+    doc: null, path: null, cwd, createdAt, historyLimit,
+    history: [], future: [], historyNotice: 'no diagram is open',
+  };
 }
 
 const need = (s) => {
@@ -22,13 +39,22 @@ const need = (s) => {
   return s.doc;
 };
 
-const MIME = Object.freeze({ png: 'image/png', jpeg: 'image/jpeg', gif: 'image/gif' });
-
-/** Read an image from a data: URI or from disk, relative to the session cwd. */
-async function imageBytes(session, source) {
-  const inline = core.image.bytesOfDataUri(source);
-  if (inline) return inline.bytes;
-  return readFile(resolve(session.cwd, source));
+/** Read and canonicalise an image relative to the active diagram. */
+async function readImage(session, source) {
+  if (String(source).startsWith('data:')) {
+    const info = core.image.assertEmbeddedSource(source);
+    return { bytes: info.bytes, info, dataUri: source };
+  }
+  const base = session.path ? dirname(session.path) : session.cwd;
+  const path = resolve(base, source);
+  const file = await stat(path);
+  if (!file.isFile()) throw new Error(`image source is not a file: ${path}`);
+  if (file.size > core.image.MAX_IMAGE_BYTES) {
+    throw new RangeError(`image is ${file.size} bytes; the embedded-image limit is ${core.image.MAX_IMAGE_BYTES} bytes`);
+  }
+  const bytes = await readFile(path);
+  const info = core.image.probe(bytes);
+  return { bytes, info, dataUri: `data:${core.image.MIME_BY_FORMAT[info.format]};base64,${bytes.toString('base64')}` };
 }
 
 /**
@@ -44,10 +70,9 @@ async function imageBytes(session, source) {
 async function resolveSources(session, operations) {
   const out = [];
   for (const op of operations) {
-    if (['place_image', 'place_reference'].includes(op?.op) && op.source && !String(op.source).startsWith('data:')) {
-      const bytes = await imageBytes(session, op.source);
-      const probed = core.image.probe(bytes);
-      out.push({ ...op, source: `data:${MIME[probed.format]};base64,${bytes.toString('base64')}` });
+    if (['place_image', 'place_reference'].includes(op?.op) && op.source) {
+      const resolved = await readImage(session, op.source);
+      out.push({ ...op, source: resolved.dataUri });
     } else {
       out.push(op);
     }
@@ -61,10 +86,128 @@ async function persist(session) {
   if (session.doc && session.path) await core.checkpointDocument(session.doc, session.path);
 }
 
+function resetHistory(session, notice = 'history reset') {
+  session.history = [];
+  session.future = [];
+  session.historyNotice = notice;
+}
+
+const stateHash = (state) => createHash('sha256').update(state).digest('hex');
+const historyPath = (session) => (session.path ? `${session.path}.history.json` : null);
+
+function trimHistory(session, entries) {
+  return entries.slice(-session.historyLimit);
+}
+
+function validateHistoryEntries(entries, name) {
+  if (!Array.isArray(entries)) throw new TypeError(`saved ${name} must be an array`);
+  return entries.map((entry, index) => {
+    if (!entry || typeof entry.label !== 'string' || typeof entry.state !== 'string') {
+      throw new TypeError(`saved ${name} entry ${index + 1} is malformed`);
+    }
+    // Refuse an unusable recovery point at open time, not halfway through undo.
+    core.deserialize(entry.state);
+    return { label: entry.label, state: entry.state };
+  });
+}
+
+async function persistHistory(session) {
+  if (!session.doc || !session.path) return;
+  const state = core.serialize(session.doc);
+  await writeFile(historyPath(session), JSON.stringify({
+    schema: HISTORY_SCHEMA,
+    currentHash: stateHash(state),
+    limit: session.historyLimit,
+    history: trimHistory(session, session.history),
+    future: trimHistory(session, session.future),
+  }, null, 2), 'utf8');
+  session.historyNotice = `saved to ${historyPath(session)}`;
+}
+
+async function restoreHistory(session) {
+  resetHistory(session, 'no saved history');
+  let raw;
+  try {
+    raw = JSON.parse(await readFile(historyPath(session), 'utf8'));
+  } catch (err) {
+    if (err.code === 'ENOENT') return;
+    session.historyNotice = `ignored unreadable history sidecar: ${err.message}`;
+    return;
+  }
+
+  try {
+    if (raw.schema !== HISTORY_SCHEMA) throw new Error(`unsupported history schema ${JSON.stringify(raw.schema)}`);
+    const currentHash = stateHash(core.serialize(session.doc));
+    if (raw.currentHash !== currentHash) throw new Error('document content changed outside this history');
+    session.history = trimHistory(session, validateHistoryEntries(raw.history, 'history'));
+    session.future = trimHistory(session, validateHistoryEntries(raw.future, 'future'));
+    session.historyNotice = `restored ${session.history.length} undo and ${session.future.length} redo entries from ${historyPath(session)}`;
+  } catch (err) {
+    resetHistory(session, `ignored stale or invalid history sidecar: ${err.message}`);
+  }
+}
+
+function historyLabel(name, args) {
+  if (name === 'plan') return `plan (${args.operations?.length ?? 0} operations)`;
+  const subject = args.id ?? args.to ?? null;
+  return subject == null ? name : `${name} "${subject}"`;
+}
+
+function historyReceipt(session) {
+  return {
+    undo_available: session.history.length,
+    redo_available: session.future.length,
+    limit: session.historyLimit,
+    next_undo: session.history.at(-1)?.label ?? null,
+    next_redo: session.future.at(-1)?.label ?? null,
+    sidecar: historyPath(session),
+    persistence: session.historyNotice,
+  };
+}
+
+/**
+ * One recovery boundary around every document mutation.
+ *
+ * A successful no-op records nothing. A thrown mutation is restored in memory
+ * even if a lower layer ever loses its own transaction guard. Successful edits
+ * invalidate redo, exactly like a desktop editor.
+ */
+async function withHistory(session, name, args, handler) {
+  const before = core.serialize(need(session));
+  const historyBefore = [...session.history];
+  const futureBefore = [...session.future];
+  const noticeBefore = session.historyNotice;
+  try {
+    const result = await handler(args);
+    const after = core.serialize(session.doc);
+    if (after !== before) {
+      session.history.push({ label: historyLabel(name, args), state: before });
+      session.history = trimHistory(session, session.history);
+      session.future = [];
+      await persistHistory(session);
+    }
+    return result;
+  } catch (err) {
+    session.history = historyBefore;
+    session.future = futureBefore;
+    session.historyNotice = noticeBefore;
+    if (session.doc && core.serialize(session.doc) !== before) {
+      session.doc = core.deserialize(before);
+      try {
+        await persist(session);
+        await persistHistory(session);
+      } catch (rollbackError) {
+        throw new Error(`${err.message}; rollback checkpoint also failed: ${rollbackError.message}`, { cause: err });
+      }
+    }
+    throw err;
+  }
+}
+
 const json = (o) => JSON.stringify(o, null, 2);
 
 export function createTools(session) {
-  return [
+  const tools = [
     {
       name: 'turtlepen_help',
       description:
@@ -90,8 +233,11 @@ export function createTools(session) {
       },
       handler: async ({ name, path, cols = 160, rows = 100, fontSize = 10 }) => {
         session.doc = core.createDocument({ name, canvas: { cols, rows }, font: { size: fontSize } });
+        if (session.createdAt) session.doc.createdAt = session.createdAt;
         session.path = path ? resolve(session.cwd, path) : resolve(session.cwd, `diagrams/${name.replace(/\W+/g, '-').toLowerCase()}.turtlepen.json`);
+        resetHistory(session, 'new diagram starts with empty history');
         await persist(session);
+        await persistHistory(session);
         return `created "${name}" (${cols}x${rows} cells) at ${session.path}\npages: base (z:0, exclusive)\n\n${json(core.latticeInfo(session.doc))}`;
       },
     },
@@ -101,10 +247,13 @@ export function createTools(session) {
       description: 'Open an existing diagram file and make it active.',
       inputSchema: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'], additionalProperties: false },
       handler: async ({ path }) => {
-        session.path = resolve(session.cwd, path);
-        session.doc = await core.loadDocument(session.path);
+        const target = resolve(session.cwd, path);
+        const opened = await core.loadDocument(target);
+        session.path = target;
+        session.doc = opened;
+        await restoreHistory(session);
         const v = core.validate(session.doc);
-        return `opened "${session.doc.name}" from ${session.path}\npages: ${session.doc.pages.map((p) => `${p.id} (z:${p.z}, ${p.intent})`).join(', ')}\n\n${core.formatLog(v)}`;
+        return `opened "${session.doc.name}" from ${session.path}\npages: ${session.doc.pages.map((p) => `${p.id} (z:${p.z}, ${p.intent})`).join(', ')}\nhistory: ${session.historyNotice}\n\n${core.formatLog(v)}`;
       },
     },
 
@@ -278,7 +427,7 @@ export function createTools(session) {
     {
       name: 'accept_finding',
       description:
-        'Record a finding as deliberate rather than an error — this is where intent is declared. Keyed to the finding fingerprint, which encodes the exact geometry, so the acceptance lapses automatically if anything moves.',
+        'Record a current finding as deliberate rather than an error — this is where intent is declared. Unknown or expired fingerprints are refused. The exact fingerprint and finding metadata remain auditable when geometry changes, and unaccept_finding withdraws the record.',
       inputSchema: {
         type: 'object',
         properties: { fingerprint: { type: 'string' }, reason: { type: 'string', description: 'why this overlap is intended' } },
@@ -316,46 +465,150 @@ export function createTools(session) {
     {
       name: 'free_space',
       description:
-        'Where is there room? Returns maximal empty rectangles, largest first, with addresses and cell sizes — or the first rectangle that fits a given cell span. This is the solver input for deciding placement.',
+        'Where is there room? Returns maximal empty rectangles, largest first, with addresses and cell sizes — or the first rectangle that fits a given cell span. Defaults to scope="stack", where every non-reference page constrains placement, including hidden pages because they are still validated. Use scope="page" only when cross-page overlap is intentional.',
       inputSchema: {
         type: 'object',
         properties: {
           page: { type: 'string' },
-          cellsW: { type: 'integer', description: 'if given with cellsH, returns the first spot that fits' },
-          cellsH: { type: 'integer' },
-          limit: { type: 'integer' },
+          scope: { type: 'string', enum: ['stack', 'page'], description: 'stack (default) searches against all non-reference pages; page searches only the named page' },
+          cellsW: { type: 'integer', minimum: 1, description: 'if given with cellsH, returns the first spot that fits' },
+          cellsH: { type: 'integer', minimum: 1 },
+          limit: { type: 'integer', minimum: 1 },
           region: { type: 'string', description: 'search area as a cell range, e.g. "A1:AZ40". Defaults to the content plus a 4-cell margin, so pass this to find space further out.' },
         },
         additionalProperties: false,
       },
-      handler: ({ page = 'base', cellsW = null, cellsH = null, limit = 12, region = null }) => {
+      handler: ({ page = 'base', scope = 'stack', cellsW = null, cellsH = null, limit = 12, region = null }) => {
         const doc = need(session);
-        const area = region ? parseRegion(region) : null;
-        if (cellsW && cellsH) {
-          const spot = core.occupancy.firstFitting(doc, page, cellsW, cellsH, { region: area });
-          return spot
-            ? json({ fits: true, place_at: spot.at, cell: spot.cell, within: { at: spot.within.at, cells: spot.within.cells } })
-            : json({ fits: false, note: `no free ${cellsW}x${cellsH} cell region in the searched area; widen the region or move something` });
+        if ((cellsW == null) !== (cellsH == null)) {
+          throw new SyntaxError('free_space needs cellsW and cellsH together, or neither when listing free rectangles');
         }
-        return json({ stats: core.occupancy.stats(doc, page), free: core.occupancy.freeRects(doc, page, { limit, region: area }) });
+        const area = region ? parseRegion(region) : null;
+        const context = core.occupancy.freeSpaceContext(doc, page, scope);
+        const receipt = {
+          scope: context.scope,
+          target_page: context.targetPage,
+          searched_pages: context.pageIds,
+          ignored_reference_pages: context.ignoredReferencePages,
+        };
+        if (cellsW && cellsH) {
+          const spot = core.occupancy.firstFitting(doc, page, cellsW, cellsH, { region: area, scope });
+          return spot
+            ? json({ ...receipt, fits: true, place_at: spot.at, cell: spot.cell, within: { at: spot.within.at, cells: spot.within.cells } })
+            : json({ ...receipt, fits: false, note: `no free ${cellsW}x${cellsH} cell region across ${context.pageIds.join(', ')}; widen the region, move something, or use scope="page" only when cross-page overlap is intentional` });
+        }
+        return json({
+          ...receipt,
+          stats: core.occupancy.stats(doc, page, { scope }),
+          free: core.occupancy.freeRects(doc, page, { limit, region: area, scope }),
+        });
       },
     },
 
     {
       name: 'describe',
-      description: 'List every element with its computed geometry, so the AI can reason over exact positions rather than remembering them.',
-      inputSchema: { type: 'object', properties: { page: { type: 'string' } }, additionalProperties: false },
-      handler: ({ page = null }) => {
+      description: 'List elements with their computed geometry, optionally narrowed to a page and/or cell region. Region filtering tests exact claimed rectangles, including each path quadrant, so an empty part of a path bounding box is not returned.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          page: { type: 'string' },
+          region: { type: 'string', description: 'optional cell range, e.g. "C4:AZ40"' },
+        },
+        additionalProperties: false,
+      },
+      handler: ({ page = null, region = null }) => {
         const doc = need(session);
-        const pages = page ? doc.pages.filter((p) => p.id === page) : doc.pages;
+        const pages = page ? [core.getPage(doc, page)] : doc.pages;
+        const area = region ? parseRegion(region) : null;
+        const filter = area ? formatRegionFilter(area) : null;
         return json(
           pages.map((p) => ({
             page: p.id,
             z: p.z,
             intent: p.intent,
-            elements: core.elementsOf(doc, p.id).map((el) => describeElement(doc, el)),
+            ...(filter ? { filter } : {}),
+            groups: core.groupsOf(doc)
+              .filter((group) => group.members.some((member) => core.findElement(doc, member)?.page === p.id))
+              .map((group) => formatGroup(doc, group)),
+            constraints: core.constraintsOf(doc)
+              .filter((constraint) => [constraint.dependent, constraint.target]
+                .some((id) => core.findElement(doc, id)?.page === p.id))
+              .map((constraint) => formatConstraint(doc, constraint)),
+            elements: core.elementsOf(doc, p.id)
+              .filter((el) => !area || core.elementRects(el).some((footprint) => core.geometry.rectsOverlap(footprint, area)))
+              .map((el) => describeElement(doc, el)),
           })),
         );
+      },
+    },
+
+    {
+      name: 'group',
+      description:
+        'Create and maintain a flat subsystem group, or move every member atomically by a relative whole-cell delta. An element belongs to at most one group. action="list" is read-only; create/add/remove/delete/move are persistent and participate in plan, history, save/open, and describe.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action: { type: 'string', enum: ['list', 'create', 'add', 'remove', 'delete', 'move'] },
+          id: { type: 'string', description: 'group id; required except for list' },
+          label: { type: 'string', description: 'human-readable label when creating' },
+          members: { type: 'array', items: { type: 'string' }, description: 'element ids for create, add, or remove' },
+          cellsX: { type: 'integer', description: 'relative horizontal movement in cells' },
+          cellsY: { type: 'integer', description: 'relative vertical movement in cells' },
+        },
+        required: ['action'],
+        additionalProperties: false,
+      },
+      handler: async ({ action, id = null, label = null, members = null, cellsX = 0, cellsY = 0 }) => {
+        const doc = need(session);
+        if (action === 'list') return json(core.groupsOf(doc).map((entry) => formatGroup(doc, entry)));
+        if (!id) throw new Error(`group action "${action}" needs id`);
+        if (action === 'move' && !cellsX && !cellsY) throw new Error('group move needs a non-zero cellsX or cellsY');
+        const result = core.applyOperation(doc, { op: 'group', action, id, label, members, cellsX, cellsY });
+        await persist(session);
+        if (action === 'delete') return `deleted group "${id}"; its elements remain unchanged`;
+        return json(formatGroup(doc, result));
+      },
+    },
+
+    {
+      name: 'constraint',
+      description:
+        'Create, inspect, delete, or re-sync a durable follow relationship. One anchor on a dependent element follows one anchor on a target element with an exact quadrant offset. Each dependent has one parent; cycles are refused. Relationships persist, cascade through chains, participate in plan/history, and update when elements move, resize, or are redrawn.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action: { type: 'string', enum: ['list', 'create', 'delete', 'sync'] },
+          id: { type: 'string', description: 'constraint id; optional only for list and sync-all' },
+          dependent: { type: 'string', description: 'element that follows the target; required for create' },
+          target: { type: 'string', description: 'element being followed; required for create' },
+          dependentAnchor: { type: 'string', description: 'dependent anchor: N, S, E, W, C, or an indexed face such as E#2 (default C)' },
+          targetAnchor: { type: 'string', description: 'target anchor: N, S, E, W, C, or an indexed face such as S#3 (default C)' },
+          offsetX: { type: 'integer', description: 'optional exact horizontal offset in quadrants; provide with offsetY' },
+          offsetY: { type: 'integer', description: 'optional exact vertical offset in quadrants; provide with offsetX' },
+        },
+        required: ['action'],
+        additionalProperties: false,
+      },
+      handler: async ({ action, id = null, dependent = null, target = null, dependentAnchor = 'C', targetAnchor = 'C', offsetX = null, offsetY = null }) => {
+        const doc = need(session);
+        if (action === 'list') return json(core.constraintsOf(doc).map((entry) => formatConstraint(doc, entry)));
+        if (action === 'create') {
+          if (!id || !dependent || !target) throw new Error('constraint create needs id, dependent, and target');
+          if ((offsetX == null) !== (offsetY == null)) throw new Error('constraint create needs both offsetX and offsetY, or neither');
+        } else if (action === 'delete' && !id) {
+          throw new Error('constraint delete needs id');
+        } else if (!['sync', 'delete'].includes(action)) {
+          throw new SyntaxError(`constraint action must be list, create, delete, or sync — got ${JSON.stringify(action)}`);
+        }
+        const result = core.applyOperation(doc, {
+          op: 'constraint', action, id, dependent, target, dependentAnchor, targetAnchor,
+          offset: offsetX == null ? null : { x: offsetX, y: offsetY },
+        });
+        await persist(session);
+        if (action === 'delete') return `deleted constraint "${id}"; element geometry remains unchanged`;
+        if (action === 'sync') return `synchronized ${result} constraint(s)\n${json(core.constraintsOf(doc).map((entry) => formatConstraint(doc, entry)))}`;
+        return json(formatConstraint(doc, result));
       },
     },
 
@@ -546,7 +799,7 @@ export function createTools(session) {
         properties: {
           operations: {
             type: 'array',
-            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image place_reference pen extend_path replace_path resize restyle move rename remove set_canvas accept_finding unaccept_finding. Args match the same-named tool, including pen role/color/width/cap.',
+            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image place_reference pen extend_path replace_path resize restyle move rename remove set_canvas accept_finding unaccept_finding group constraint. Args match the same-named tool, including pen role/color/width/cap.',
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
@@ -614,8 +867,8 @@ export function createTools(session) {
         additionalProperties: false,
       },
       handler: async ({ source, maxWidthCells = null, maxHeightCells = null }) => {
-        const bytes = await imageBytes(session, source);
-        const probed = core.image.probe(bytes);
+        const resolved = await readImage(session, source);
+        const probed = resolved.info;
         const m = core.image.measure(probed, { maxWidthCells, maxHeightCells });
         return JSON.stringify({ ...probed, ...m }, null, 2);
       },
@@ -788,6 +1041,7 @@ export function createTools(session) {
       handler: ({ subject = null, style = null, view = 'plan' }) => {
         const doc = need(session);
         if (!doc.wireframe) throw new Error('no wireframe on this document — call wireframe first');
+        assertWireframeCurrent(doc);
         return core.wireframe.toPrompt(doc.wireframe, { subject, style, view });
       },
     },
@@ -801,7 +1055,7 @@ export function createTools(session) {
           id: { type: 'string' },
           at: { type: 'string' },
           span: { type: ['string', 'object'] },
-          source: { type: 'string' },
+          source: { type: 'string', description: 'a supported image data URI, or a path relative to the active diagram' },
           mode: { type: 'string', enum: ['embed', 'dither'] },
           fit: { type: 'string', enum: ['contain', 'cover'] },
           opacity: { type: 'number' },
@@ -812,12 +1066,11 @@ export function createTools(session) {
       },
       handler: async ({ id, at, span, source, mode = 'embed', fit = 'contain', opacity = null, page = 'base' }) => {
         const doc = need(session);
-        const bytes = await imageBytes(session, source);
-        const probed = core.image.probe(bytes);
+        const resolved = await readImage(session, source);
+        const probed = resolved.info;
         const cells = core.normalizeSpan(span, `span for "${id}"`);
         const m = core.image.measure(probed, { maxWidthCells: cells.w });
-        const dataUri = source.startsWith('data:') ? source : `data:${MIME[probed.format]};base64,${bytes.toString('base64')}`;
-        const el = core.placeImage(doc, page, { id, at, span, source: dataUri, mode, fit, opacity });
+        const el = core.placeImage(doc, page, { id, at, span, source: resolved.dataUri, mode, fit, opacity });
         await persist(session);
         return `placed image "${id}" on page "${page}" at ${core.address.quadToAddress(el.rect.x, el.rect.y)}, ${cells.w}x${cells.h} cells
 `
@@ -846,11 +1099,11 @@ export function createTools(session) {
       },
       handler: async ({ id = 'reference', source, at = 'A1.tl', span, opacity = undefined }) => {
         const doc = need(session);
-        const bytes = await imageBytes(session, source);
-        const probed = core.image.probe(bytes);
+        const resolved = await readImage(session, source);
+        const probed = resolved.info;
         const page = core.placeReference(doc, {
           id, at, span, opacity,
-          source: source.startsWith('data:') ? source : `data:${MIME[probed.format]};base64,${bytes.toString('base64')}`,
+          source: resolved.dataUri,
         });
         await persist(session);
         const cells = core.normalizeSpan(span, 'reference span');
@@ -862,6 +1115,64 @@ export function createTools(session) {
           + `draw on top, then remove_page { id: "${page.id}" } — L020 will remind you until you do`;
       },
     },
+    {
+      name: 'history',
+      description:
+        'Inspect, clear, or navigate the active diagram\'s durable bounded edit history. Undo/redo survives open_diagram and MCP restarts through a hash-bound sidecar. Stale or corrupt sidecars are ignored. Failed and no-op calls create no entry, and a new edit clears redo.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action: { type: 'string', enum: ['status', 'undo', 'redo', 'clear'], description: 'defaults to status' },
+        },
+        additionalProperties: false,
+      },
+      handler: async ({ action = 'status' }) => {
+        need(session);
+        if (!['status', 'undo', 'redo', 'clear'].includes(action)) {
+          throw new SyntaxError(`history action must be status, undo, redo, or clear — got ${JSON.stringify(action)}`);
+        }
+        if (action === 'status') return json(historyReceipt(session));
+        if (action === 'clear') {
+          resetHistory(session, 'history cleared explicitly');
+          await persistHistory(session);
+          return `cleared undo and redo history\n${json(historyReceipt(session))}`;
+        }
+
+        const before = core.serialize(session.doc);
+        const historyBefore = [...session.history];
+        const futureBefore = [...session.future];
+        const noticeBefore = session.historyNotice;
+        const source = action === 'undo' ? session.history : session.future;
+        if (!source.length) throw new Error(`nothing to ${action}`);
+        const entry = source.at(-1);
+        try {
+          if (action === 'undo') {
+            session.history = session.history.slice(0, -1);
+            session.future = trimHistory(session, [...session.future, { label: entry.label, state: before }]);
+          } else {
+            session.future = session.future.slice(0, -1);
+            session.history = trimHistory(session, [...session.history, { label: entry.label, state: before }]);
+          }
+          session.doc = core.deserialize(entry.state);
+          await persist(session);
+          await persistHistory(session);
+          return `${action === 'undo' ? 'undid' : 'redid'} ${entry.label}\n${json(historyReceipt(session))}`;
+        } catch (err) {
+          session.doc = core.deserialize(before);
+          session.history = historyBefore;
+          session.future = futureBefore;
+          session.historyNotice = noticeBefore;
+          try {
+            await persist(session);
+            await persistHistory(session);
+          } catch (rollbackError) {
+            throw new Error(`${err.message}; history rollback checkpoint also failed: ${rollbackError.message}`, { cause: err });
+          }
+          throw err;
+        }
+      },
+    },
+
     {
       name: 'save',
       description: 'Save the active diagram, optionally to a new path.',
@@ -877,12 +1188,17 @@ export function createTools(session) {
         const doc = need(session);
         if (path) session.path = resolve(session.cwd, path);
         await core.saveDocument(doc, session.path, { force });
+        await persistHistory(session);
         return force && doc.forcedSave
           ? `saved ${session.path} — FORCED past ${doc.forcedSave.findingCount} outstanding finding(s); the document records this`
           : `saved ${session.path}`;
       },
     },
   ];
+
+  return tools.map((tool) => (MUTATING_TOOLS.has(tool.name)
+    ? { ...tool, handler: (args) => withHistory(session, tool.name, args, tool.handler) }
+    : tool));
 }
 
 /** Element geometry plus, for anything carrying a label, its live fit status —
@@ -897,6 +1213,8 @@ function describeElement(doc, el) {
       to: core.address.quadToAddress(el.pieces.at(-1).x, el.pieces.at(-1).y),
       end: el.end ? { at: core.address.quadToAddress(el.end.x, el.end.y), facing: el.end.facing } : null,
       pieces: countBy(el.pieces.map((p) => p.type)),
+      groups: core.groupsOf(doc).filter((group) => group.members.includes(el.id)).map((group) => group.id),
+      constraints: constraintRefs(doc, el.id),
     };
   }
   const content = el.kind === 'text' ? el.text : el.label;
@@ -910,9 +1228,61 @@ function describeElement(doc, el) {
     corner: el.corner,
     fontSize: el.fontSize,
     fit: fit ? { fits: fit.fits, charsPerLine: fit.charsPerLine, lines: fit.lineCount, visibleLines: fit.visibleLines } : null,
+    groups: core.groupsOf(doc).filter((group) => group.members.includes(el.id)).map((group) => group.id),
+    constraints: constraintRefs(doc, el.id),
     // Where a connector should start to leave this box on each face. Reported
     // because deriving it by hand is a reliable source of off-by-one errors.
     seats: el.kind === 'box' ? portSeats(el) : null,
+    seatSlots: el.kind === 'box' ? portSlotCapacities(el) : null,
+  };
+}
+
+function formatGroup(doc, group) {
+  const bounds = core.groupBounds(doc, group.id);
+  return {
+    id: group.id,
+    label: group.label,
+    members: [...group.members],
+    pages: [...new Set(group.members.map((member) => core.findElement(doc, member)?.page).filter(Boolean))],
+    bounds: bounds ? {
+      at: core.address.quadToAddress(bounds.x, bounds.y),
+      cells: { w: bounds.w / 2, h: bounds.h / 2 },
+    } : null,
+  };
+}
+
+function constraintRefs(doc, id) {
+  return {
+    follows: core.constraintsOf(doc).filter((constraint) => constraint.dependent === id).map((constraint) => constraint.id),
+    followedBy: core.constraintsOf(doc).filter((constraint) => constraint.target === id).map((constraint) => constraint.id),
+  };
+}
+
+function formatConstraint(doc, constraint) {
+  const dependentAt = core.elementAnchor(doc, constraint.dependent, constraint.dependentAnchor);
+  const targetAt = core.elementAnchor(doc, constraint.target, constraint.targetAnchor);
+  const actualOffset = { x: dependentAt.x - targetAt.x, y: dependentAt.y - targetAt.y };
+  return {
+    id: constraint.id,
+    dependent: {
+      id: constraint.dependent,
+      anchor: constraint.dependentAnchor,
+      at: core.address.quadToAddress(dependentAt.x, dependentAt.y),
+    },
+    target: {
+      id: constraint.target,
+      anchor: constraint.targetAnchor,
+      at: core.address.quadToAddress(targetAt.x, targetAt.y),
+    },
+    offset: {
+      quadrants: { ...constraint.offset },
+      cells: { x: constraint.offset.x / 2, y: constraint.offset.y / 2 },
+    },
+    synchronized: actualOffset.x === constraint.offset.x && actualOffset.y === constraint.offset.y,
+    actualOffset: {
+      quadrants: actualOffset,
+      cells: { x: actualOffset.x / 2, y: actualOffset.y / 2 },
+    },
   };
 }
 
@@ -925,9 +1295,18 @@ function portSeats(el) {
   return out;
 }
 
+function portSlotCapacities(el) {
+  return Object.fromEntries(
+    ['N', 'S', 'E', 'W'].map((face) => [face, core.shapes.portSlotCapacity(el.rect, face)]),
+  );
+}
+
 function formatPorts(el) {
   const seats = portSeats(el);
-  return Object.entries(seats).map(([k, v]) => `${k} ${v}`).join('  ');
+  const capacities = portSlotCapacities(el);
+  const defaults = Object.entries(seats).map(([k, v]) => `${k} ${v}`).join('  ');
+  const slots = Object.entries(capacities).map(([face, max]) => `${face}#1..#${max}`).join('  ');
+  return `${defaults}; indexed tracks ${slots}`;
 }
 
 /** "A1:AZ40" -> a quadrant rect covering both cells inclusive. */
@@ -939,6 +1318,42 @@ function parseRegion(text) {
   const x0 = Math.min(a.col, b.col) * 2, y0 = Math.min(a.row, b.row) * 2;
   const x1 = (Math.max(a.col, b.col) + 1) * 2, y1 = (Math.max(a.row, b.row) + 1) * 2;
   return core.geometry.rect(x0, y0, x1 - x0, y1 - y0);
+}
+
+function formatRegionFilter(region) {
+  const from = core.address.quadToCell(region.x, region.y);
+  const to = core.address.quadToCell(core.geometry.right(region) - 1, core.geometry.bottom(region) - 1);
+  return { region: `${from}:${to}`, cells: { w: region.w / 2, h: region.h / 2 } };
+}
+
+function assertWireframeCurrent(doc) {
+  const plan = doc.wireframe;
+  const page = plan.page ?? 'base';
+  const sameRect = (a, b) => a && b
+    && a.x === b.x && a.y === b.y && a.w === b.w && a.h === b.h;
+
+  for (const expected of core.wireframe.boxes(plan, { includeClearance: plan.clearanceDrawn ?? true })) {
+    const found = core.findElement(doc, expected.id, page)?.element;
+    if (!found || !sameRect(found.rect, expected.rect)) {
+      throw new Error(`wireframe source is stale at "${expected.id}" — its generated geometry was moved, resized, renamed, or removed; undo that edit or rerun wireframe before export_prompt`);
+    }
+  }
+
+  for (const run of plan.runs ?? []) {
+    const found = core.findElement(doc, run.id, page)?.element;
+    if (!found || found.kind !== 'path') {
+      throw new Error(`wireframe source is stale at run "${run.id}" — undo that edit or rerun wireframe before export_prompt`);
+    }
+    const scratch = core.createDocument({ name: 'wireframe-integrity', canvas: doc.canvas, font: doc.font });
+    const expected = core.applyPen(scratch, 'base', core.wireframe.runProgram(run), {
+      id: run.id, role: 'artwork', pattern: run.pattern,
+    }).path;
+    const actualPieces = found.pieces.map(({ x, y, type }) => ({ x, y, type }));
+    const expectedPieces = expected.pieces.map(({ x, y, type }) => ({ x, y, type }));
+    if (JSON.stringify(actualPieces) !== JSON.stringify(expectedPieces)) {
+      throw new Error(`wireframe source is stale at run "${run.id}" — its route no longer matches the measured source; undo that edit or rerun wireframe before export_prompt`);
+    }
+  }
 }
 
 function countBy(list) {
@@ -971,15 +1386,64 @@ ADDRESSING (Excel)
   C4.q2     quadrant (q1..q4)     origin A1 top-left, unbounded right and down
   Start at an inset origin such as T20 if the drawing may grow up or left.
 
+FREE SPACE
+  free_space defaults to scope="stack": all non-reference pages constrain the
+  answer, including hidden pages because validation still checks them. Every
+  response names searched_pages. Use scope="page" only when cross-page overlap
+  is intentional. Supply cellsW and cellsH together, or neither to list regions.
+
+REGIONAL DESCRIPTION
+  describe { region: "C4:AZ40" } returns only elements whose exact claimed
+  rectangles touch that range. Paths are tested piece by piece, not by a loose
+  bounding box. Add page to narrow both page and region; the response repeats
+  the normalized effective filter.
+
+DIMENSIONED COMPOSITIONS
+  wireframe authors a plan/elevation in real inches and measures routed runs;
+  export_prompt turns that stored composition into a normalized image brief.
+  The source survives save/open. Before export, TurtlePen verifies every
+  generated box and route still matches it; stale geometry is refused by name.
+  Undo the manual edit or rerun wireframe rather than exporting old facts.
+  perspective_scene projects real room inches through a declared camera and
+  preserves those inputs as provenance with the document.
+
+HISTORY AND RECOVERY
+  history { action: "status" }                  inspect the recovery boundary
+  history { action: "undo" }                    reverse the newest mutation
+  history { action: "redo" }                    reapply the newest undone edit
+  history { action: "clear" }                   discard undo and redo entries
+
+  The newest 100 successful document mutations are recoverable by default
+  (TURTLEPEN_HISTORY_LIMIT accepts 1..1000). Failed and no-op calls do not consume
+  history; a new edit after undo clears redo. A versioned sidecar is bound to the
+  exact document hash, so undo/redo survives open and process restart. Outside
+  edits invalidate stale history rather than replaying it against the wrong file.
+
+GROUPS AND FOLLOW RELATIONSHIPS
+  group { action: "create", id, members }        own a flat subsystem
+  group { action: "move", id, cellsX, cellsY }  move every member exactly once
+  constraint { action: "create", id,
+               dependent, target }              keep current anchor relationship
+  constraint { action: "sync", id }             restore the stored offset
+
+  An element belongs to at most one group. A dependent has at most one parent;
+  chains cascade and cycles are refused. Named and indexed anchors work, offsets
+  are whole quadrants, and describe reports groups plus relationship sync state.
+
 PEN GRAMMAR
   pen from <id>.<N|S|E|W>                      START HERE for connectors: seats
                                                the cursor just outside a box's
                                                face, already facing away from it
+  pen from <id>.<face>#<slot>                  fan out competing connectors;
+                                               #1 is the midpoint, #2 left/up,
+                                               #3 right/down, then alternate by
+                                               one cell (example: gateway.S#2)
   pen <address> [<pin>]                        place the cursor by address
   face <dir>                                   turn without drawing
   <dir> [n] [align <side>] [<style>] line      draw n cells of 5px stroke
   <dir> [<style>] corner align <sideA> <sideB> place a junction and turn
-  <dir> ... line to <address|id.port>          draw until it reaches a target
+  <dir> ... line to <address|id.port>          draw until it reaches a target;
+                                               indexed target faces also work
 
 SHAPES — anything that is not a rectangle
   ray to <address>                             a straight line at ANY angle
@@ -1000,9 +1464,9 @@ ANCHORS — position as a relationship, not a coordinate
 
   "from" gives the SEAT, one step OUTSIDE the element, where a connector starts.
   "at" gives the anchor itself, on the element, where a shape belongs. Anchoring
-  avoids hand-computed placement drift when the program runs. It is not a live
-  stored constraint: moving the target later does not move existing dependents;
-  rerun the declarative program to recompute them.
+  avoids hand-computed placement drift when the program runs. This grammar alone
+  does not store a relationship: rerun the declarative program to recompute it,
+  or create an explicit constraint when the dependent must follow later edits.
 
   These are integer algorithms — Bresenham for lines, midpoint for circles — so
   the same command always covers the same quadrants. A stepped diagonal is not
@@ -1100,6 +1564,9 @@ THE CANVAS IS NOT A BUDGET
 WORKFLOW
   measure -> plan -> commit -> validate -> render -> LOOK AT IT
                                         -> accept_finding for anything deliberate.
+  Only a fingerprint in the current validation may be accepted. Geometry changes
+  make the old acceptance visibly stale; unaccept_finding withdraws that record.
+  A committed edit that proves wrong is recoverable with history action="undo".
 
   Rendering and looking is part of the loop, not an optional last step. A clean
   log is evidence the drawing is undefective, never that it is finished — a

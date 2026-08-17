@@ -17,7 +17,15 @@ const SERVER_INFO = { name: 'turtlepen', version: '0.1.0' };
 const DEFAULT_PROTOCOL = '2025-06-18';
 const SUPPORTED_PROTOCOLS = new Set([DEFAULT_PROTOCOL, '2025-03-26', '2024-11-05']);
 
-const session = createSession({ cwd: process.cwd() });
+const session = createSession({
+  cwd: process.cwd(),
+  // Canonical example builds inject this value so their checked-in document is
+  // byte-reproducible. Normal interactive sessions still use the real clock.
+  createdAt: process.env.TURTLEPEN_CREATED_AT ?? null,
+  historyLimit: process.env.TURTLEPEN_HISTORY_LIMIT == null
+    ? undefined
+    : Number(process.env.TURTLEPEN_HISTORY_LIMIT),
+});
 const tools = createTools(session);
 const byName = new Map(tools.map((t) => [t.name, t]));
 

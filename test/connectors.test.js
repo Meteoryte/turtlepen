@@ -12,7 +12,7 @@ import assert from 'node:assert/strict';
 
 import * as core from '../src/core/index.js';
 import { runPen } from '../src/core/pen.js';
-import { approachPoint, portPoint } from '../src/core/shapes.js';
+import { approachPoint, portPoint, portSlotCapacity } from '../src/core/shapes.js';
 import { quadToAddress } from '../src/core/address.js';
 import { rect } from '../src/core/geometry.js';
 
@@ -43,6 +43,48 @@ test('pen from <id>.<face> seats the cursor and faces it outward', () => {
   const r = runPen('pen from gateway.S', { resolveElement: (id) => core.findElement(d, id)?.element ?? null });
   assert.equal(quadToAddress(r.cursor.x, r.cursor.y), 'K7.q1');
   assert.equal(r.facing, 'down');
+});
+
+test('indexed face seats alternate by one cell around the midpoint', () => {
+  const r = rect(4, 6, 32, 10); // 16x5 cells
+  assert.equal(portSlotCapacity(r, 'S'), 16);
+  assert.equal(portSlotCapacity(r, 'E'), 5);
+  assert.deepEqual(approachPoint(r, 'S#1'), { x: 20, y: 16, facing: 'down' });
+  assert.deepEqual(approachPoint(r, 'S#2'), { x: 18, y: 16, facing: 'down' });
+  assert.deepEqual(approachPoint(r, 'S#3'), { x: 22, y: 16, facing: 'down' });
+  assert.deepEqual(approachPoint(r, 'S#4'), { x: 16, y: 16, facing: 'down' });
+  assert.deepEqual(approachPoint(r, 'E#2'), { x: 36, y: 9, facing: 'right' });
+  assert.deepEqual(approachPoint(r, 'E#3'), { x: 36, y: 13, facing: 'right' });
+});
+
+test('indexed seats preserve the seat-to-port invariant and reject overflow', () => {
+  const r = rect(4, 6, 32, 6); // 16x3 cells
+  for (const face of ['N', 'S', 'E', 'W']) {
+    const max = portSlotCapacity(r, face);
+    for (let slot = 1; slot <= max; slot++) {
+      const port = portPoint(r, `${face}#${slot}`);
+      const seat = approachPoint(r, `${face}#${slot}`);
+      const [dx, dy] = face === 'N' ? [0, -1] : face === 'S' ? [0, 1] : face === 'W' ? [-1, 0] : [1, 0];
+      assert.deepEqual({ x: seat.x, y: seat.y }, { x: port.x + dx, y: port.y + dy });
+    }
+    assert.throws(() => approachPoint(r, `${face}#${max + 1}`), new RegExp(`supports #1 through #${max}`));
+  }
+  assert.throws(() => approachPoint(r, 'S#0'), /positive integer/);
+  assert.throws(() => portPoint(r, 'NE#2'), /cannot be indexed/);
+  assert.deepEqual(portPoint(rect(4, 6, 1, 1), 'N'), { x: 4, y: 6 }, 'a one-quadrant anchor keeps its midpoint port');
+  assert.equal(portSlotCapacity(rect(4, 6, 1, 1), 'N'), 1);
+});
+
+test('an indexed source and target produce a clean dedicated track', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 16, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'C12.tl', span: { w: 16, h: 3 } });
+  core.applyPen(d, 'base', 'pen from a.S#2\ndown line to b.N#2 arrow', { id: 'wire' });
+
+  const v = core.validate(d);
+  assert.equal(byRule(v, 'L008').length, 0, 'nothing dangles');
+  assert.equal(byRule(v, 'L016').length, 0, 'the indexed target is reached');
+  assert.equal(byRule(v, 'L004').length, 0, 'the path remains outside both boxes');
 });
 
 test('a connector seated at a port and left to its defaults lands on the port', () => {

@@ -60,6 +60,57 @@ export function visualQuads(r, style = 'square') {
  * Compass names; each resolves to a lattice point on the box perimeter.
  */
 export const PORT_NAMES = Object.freeze(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'C']);
+const CARDINAL_PORTS = Object.freeze(['N', 'E', 'S', 'W']);
+
+/**
+ * Parse a named port, optionally followed by a one-based face slot (`S#2`).
+ *
+ * Slot 1 is the existing midpoint. Further slots alternate one whole cell
+ * toward the negative and positive axis: on N/S, #2 is left and #3 is right;
+ * on E/W, #2 is up and #3 is down. A whole-cell stride keeps adjacent
+ * connectors on separate lattice tracks instead of merely changing which half
+ * of one cell they occupy.
+ */
+export function parsePortSpec(port) {
+  const source = String(port);
+  const match = /^([A-Za-z]{1,2})(?:#(\d+))?$/.exec(source);
+  if (!match) {
+    throw new SyntaxError(`unknown port "${port}" — expected one of ${PORT_NAMES.join(', ')}, optionally N#2, E#2, S#2 or W#2`);
+  }
+  const name = match[1].toUpperCase();
+  if (!PORT_NAMES.includes(name)) {
+    throw new SyntaxError(`unknown port "${port}" — expected one of ${PORT_NAMES.join(', ')}`);
+  }
+  const slot = match[2] == null ? 1 : Number(match[2]);
+  if (!Number.isSafeInteger(slot) || slot < 1) {
+    throw new RangeError(`port slot in "${port}" must be a positive integer starting at #1`);
+  }
+  if (match[2] != null && !CARDINAL_PORTS.includes(name)) {
+    throw new SyntaxError(`"${port}" cannot be indexed — only cardinal faces N, E, S and W have connector slots`);
+  }
+  return { name, slot, indexed: match[2] != null };
+}
+
+/** Number of one-cell-spaced connector tracks available on a cardinal face. */
+export function portSlotCapacity(r, port) {
+  const { name } = parsePortSpec(port);
+  if (!CARDINAL_PORTS.includes(name)) {
+    throw new SyntaxError(`"${port}" is not a cardinal face — slot capacity exists only for N, E, S and W`);
+  }
+  return Math.max(1, Math.floor((name === 'N' || name === 'S' ? r.w : r.h) / 2));
+}
+
+function slottedAxisPoint(start, length, slot, port) {
+  // A one-quadrant artwork/path footprint still has its historical midpoint
+  // anchor. It cannot fan out, but unindexed N/E/S/W must continue to resolve.
+  const capacity = Math.max(1, Math.floor(length / 2));
+  if (slot > capacity) {
+    throw new RangeError(`port "${port}" is outside this face — it supports #1 through #${capacity}`);
+  }
+  if (slot === 1) return start + Math.floor(length / 2);
+  const distance = Math.ceil((slot - 1) / 2) * 2;
+  return start + Math.floor(length / 2) + (slot % 2 === 0 ? -distance : distance);
+}
 
 /**
  * The quadrant just OUTSIDE a box's cardinal face, and the direction leading
@@ -71,14 +122,14 @@ export const PORT_NAMES = Object.freeze(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', '
  * means starting one quadrant above it, while the south face is already outside.
  */
 export function approachPoint(r, port) {
-  const name = String(port).toUpperCase();
-  const midX = r.x + Math.floor(r.w / 2);
-  const midY = r.y + Math.floor(r.h / 2);
+  const { name, slot } = parsePortSpec(port);
+  const slotX = () => slottedAxisPoint(r.x, r.w, slot, port);
+  const slotY = () => slottedAxisPoint(r.y, r.h, slot, port);
   switch (name) {
-    case 'N': return { x: midX, y: r.y - 1, facing: 'up' };
-    case 'S': return { x: midX, y: bottom(r), facing: 'down' };
-    case 'W': return { x: r.x - 1, y: midY, facing: 'left' };
-    case 'E': return { x: right(r), y: midY, facing: 'right' };
+    case 'N': return { x: slotX(), y: r.y - 1, facing: 'up' };
+    case 'S': return { x: slotX(), y: bottom(r), facing: 'down' };
+    case 'W': return { x: r.x - 1, y: slotY(), facing: 'left' };
+    case 'E': return { x: right(r), y: slotY(), facing: 'right' };
     default:
       throw new SyntaxError(
         `"${port}" is not a cardinal face. Starting a path from a box uses N, S, E or W — a corner does not say which way the path should leave.`,
@@ -100,15 +151,17 @@ export function approachPoint(r, port) {
  * the drawing could work around.
  */
 export function portPoint(r, port) {
-  const name = String(port).toUpperCase();
+  const { name, slot } = parsePortSpec(port);
   const midX = r.x + Math.floor(r.w / 2);
   const midY = r.y + Math.floor(r.h / 2);
   const x2 = right(r) - 1, y2 = bottom(r) - 1;
+  const slotX = () => slottedAxisPoint(r.x, r.w, slot, port);
+  const slotY = () => slottedAxisPoint(r.y, r.h, slot, port);
   switch (name) {
-    case 'N': return { x: midX, y: r.y };
-    case 'S': return { x: midX, y: y2 };
-    case 'W': return { x: r.x, y: midY };
-    case 'E': return { x: x2, y: midY };
+    case 'N': return { x: slotX(), y: r.y };
+    case 'S': return { x: slotX(), y: y2 };
+    case 'W': return { x: r.x, y: slotY() };
+    case 'E': return { x: x2, y: slotY() };
     case 'NW': return { x: r.x, y: r.y };
     case 'NE': return { x: x2, y: r.y };
     case 'SW': return { x: r.x, y: y2 };

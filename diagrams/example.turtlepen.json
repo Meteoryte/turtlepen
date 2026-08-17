@@ -364,14 +364,32 @@
         "id": "note-1",
         "kind": "box",
         "rect": {
-          "x": 8,
-          "y": 8,
+          "x": 4,
+          "y": 0,
           "w": 16,
           "h": 6
         },
         "label": "p95 4.2s",
         "fontSize": 10,
         "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "note-marker",
+        "kind": "box",
+        "rect": {
+          "x": 30,
+          "y": 6,
+          "w": 2,
+          "h": 2
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
         "align": "left",
         "fill": null,
         "note": null,
@@ -384,14 +402,32 @@
         "id": "cache",
         "kind": "box",
         "rect": {
-          "x": 8,
-          "y": 24,
+          "x": 66,
+          "y": 22,
           "w": 16,
           "h": 6
         },
         "label": "Redis",
         "fontSize": 10,
         "corner": "rounded",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "cache-marker",
+        "kind": "box",
+        "rect": {
+          "x": 30,
+          "y": 22,
+          "w": 2,
+          "h": 2
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
         "align": "left",
         "fill": null,
         "note": null,

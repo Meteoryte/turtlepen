@@ -14,6 +14,7 @@
  */
 
 import { inflateSync } from 'node:zlib';
+import { MAX_IMAGE_PIXELS, probe } from './image.js';
 
 const SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
@@ -39,8 +40,11 @@ function paeth(a, b, c) {
 function readChunks(b) {
   const out = { idat: [], plte: null, trns: null, ihdr: null };
   let i = 8;
-  while (i + 8 <= b.length) {
+  while (i + 12 <= b.length) {
     const length = b.readUInt32BE(i);
+    if (length > b.length - i - 12) {
+      throw new Error(`PNG chunk at byte ${i} declares ${length} data bytes beyond the end of the file`);
+    }
     const type = b.toString('ascii', i + 4, i + 8);
     const data = b.subarray(i + 8, i + 8 + length);
     if (type === 'IHDR') out.ihdr = data;
@@ -65,9 +69,11 @@ export function decode(bytes) {
 
   const { ihdr, idat, plte } = readChunks(b);
   if (!ihdr) throw new Error('this PNG has no IHDR chunk');
+  if (ihdr.length !== 13) throw new Error(`this PNG has an ${ihdr.length}-byte IHDR chunk; the PNG format requires 13`);
 
   const width = ihdr.readUInt32BE(0);
   const height = ihdr.readUInt32BE(4);
+  probe(b); // Applies byte, dimension and pixel-count safety limits.
   const bitDepth = ihdr[8];
   const colourType = ihdr[9];
   const interlace = ihdr[12];
@@ -83,11 +89,19 @@ export function decode(bytes) {
   if (colourType === 3 && !plte) throw new Error('this PNG declares a palette but carries no PLTE chunk');
   if (!idat.length) throw new Error('this PNG has no IDAT data');
 
-  const raw = inflateSync(Buffer.concat(idat));
   const stride = width * channels;
   const expected = height * (stride + 1);
-  if (raw.length < expected) {
-    throw new Error(`this PNG decompressed to ${raw.length} bytes but ${expected} were needed for ${width}x${height} ${COLOUR_NAME[colourType]} — the stream is truncated`);
+  if (width * height > MAX_IMAGE_PIXELS || !Number.isSafeInteger(expected)) {
+    throw new RangeError(`PNG ${width}x${height} is too large to decode safely`);
+  }
+  let raw;
+  try {
+    raw = inflateSync(Buffer.concat(idat), { maxOutputLength: expected });
+  } catch (error) {
+    throw new Error(`PNG pixel stream could not be decoded within its declared ${width}x${height} extent: ${error.message}`);
+  }
+  if (raw.length !== expected) {
+    throw new Error(`this PNG decompressed to ${raw.length} bytes but exactly ${expected} were required for ${width}x${height} ${COLOUR_NAME[colourType]}`);
   }
 
   // Un-filter in place, row by row. Each scanline is prefixed by its filter type
