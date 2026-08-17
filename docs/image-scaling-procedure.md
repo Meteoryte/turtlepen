@@ -111,11 +111,13 @@ before deterministic reduction to that final lattice:
 
 1. Sample the source onto a `1x`, `2x`, or `4x` linear working canvas.
 2. Simplify on that canvas using one of the strategies below.
-3. Box-reduce each working block to one final quadrant using the resolved detail
-   coverage threshold, close isolated gaps, and remove final fragments.
+3. Clean disconnected fragments on the working canvas, then box-average each
+   working block into the exact ink-coverage fraction of one final quadrant.
 
 At `4x`, the working canvas has four times the final width and height. Each
-final quadrant is therefore decided from a `4x4` block of 16 working samples.
+final quadrant therefore receives the average of a `4x4` block of 16 working
+samples: one of 17 exact coverage levels from 0/16 through 16/16. No second
+binary threshold discards that coverage.
 For a final `96x64` lattice, processing occurs at `384x256` and then returns to
 `96x64`; document geometry and rendered footprint never change.
 
@@ -137,9 +139,15 @@ new pixels; it provides more intermediate positions for thresholding, contour
 joining, and cleanup, which can retain a thin connected feature that direct
 final-size processing would discard.
 
+The coverage values are stored on deterministic horizontal runs and emitted as
+SVG fill opacity, while every run coordinate and the image's claimed footprint
+remain on the integer quadrant lattice. Save/reopen recomputes weighted metrics
+from those runs and rejects missing, zero, non-numeric, or greater-than-one
+coverage.
+
 The receipt records the requested/resolved factor, working dimensions, source
-scale into that canvas, reduction method, samples per output, strategy, and
-parameters. Simplify refuses a target with fewer than
+scale into that canvas, box-average method, samples per output, partial final
+quadrants, strategy, and parameters. Simplify refuses a target with fewer than
 24 quadrants (12 cells) on its short side; below that, use a larger footprint or
 purpose-built icon artwork. It also caps semantic analysis at 250,000 quadrants;
 the internal working canvas is capped at 1,000,000 quadrants. Larger evidence
@@ -155,7 +163,8 @@ the correct recovery and does not need to match every source pixel.
 ## Readability gate
 
 `L022` measures how often neighboring quadrants switch between ink and ground
-for both dither and simplify.
+for dither. For simplify, it measures the weighted coverage difference between
+neighbors, so a 1/16-to-2/16 edge counts less than a solid-to-empty switch.
 A result above **45%** is classified `BUSY` and blocks publication at S2 because
 the Bayer checker pattern is likely to obscure the subject.
 
@@ -171,14 +180,14 @@ Both P01 sources are `1536x1024` and are placed at `48x32` cells:
 |---|---:|---:|---|
 | Field-style photo, `embed` | `480x320` px, 31.25% | `480x320` display samples | Retains photographic evidence. |
 | Prepared line art, `dither` | `480x320` px | `96x64` quadrants, 6.25%; 16x16 source px per sample | 12.94% ink, 17.40% transitions, 458 runs: `PASS`. |
-| Prepared line art, `simplify auto`, `supersample 4` | `480x320` px | `384x256` working quadrants -> `96x64` final, threshold strategy, medium detail | 23.68% ink, 13.06% transitions, 369 runs: `PASS`; bolder non-fidelity result. |
+| Prepared line art, `simplify auto`, `supersample 4` | `480x320` px | `384x256` working quadrants -> `96x64` final, 16-sample box average, medium detail | 15.56% effective ink, 12.72% weighted transitions, 1,458 partial quadrants across 17 levels: `PASS`; softer non-fidelity result. |
 | Raw photo, `dither` (rejected) | `480x320` px | `96x64` quadrants, 6.25%; 16x16 source px per sample | 59.08% ink, 69.24% transitions, 2,119 runs: `BUSY`. |
 | Raw photo, `simplify auto` (review gate) | `480x320` px | `96x64` quadrants, adaptive contour strategy | Low-frequency output, but `L023` blocks it because identity is not machine-verifiable. |
 
 The raw-photo conversion was also blind-guessed as a teapot rather than an
 outdoor condenser. That is a semantic failure even though the file rendered.
 The corrected workflow keeps the photo embedded and uses the reviewed generated
-derivative for both source-like dither and a bolder simplified approximation.
+derivative for both source-like dither and a softer simplified approximation.
 
 ## Five-case seeded-random exercise
 
@@ -186,6 +195,7 @@ derivative for both source-like dither and a bolder simplified approximation.
 portrait/landscape, contain/cover, and every explicit detail level. Each is
 placed as source evidence, direct `1x` simplify, and `4x -> 1x` simplify through
 real MCP. The exercise asserts identical final geometry, the requested working
-factor, near-binary provenance, readable output, and clean save/reopen/render.
+factor, near-binary provenance, durable partial coverage, lower weighted edge
+transitions without effective-ink inflation, and clean save/reopen/render.
 See the [contact sheet](../diagrams/supersample-random-five.svg) and
 [hash-backed evidence ledger](supersample-random-five-report.md).

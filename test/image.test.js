@@ -253,13 +253,32 @@ test('simplify stores an auditable approximation without retaining duplicate sou
   assert.equal(image.processing.resolvedSupersample, 4);
   assert.deepEqual(image.processing.workingCanvas, { width: 192, height: 128, unit: 'quadrants' });
   assert.equal(image.processing.workingSamplesPerOutput, 16);
+  assert.equal(image.processing.downsampleMethod, 'box-average');
+  assert.equal(image.processing.possibleCoverageLevels, 17);
+  assert.ok(image.processing.partialCoverageSamples > 0);
+  assert.ok(image.runs.some((run) => run.opacity > 0 && run.opacity < 1));
+  assert.ok(image.ditherStats.partialCoverageSamples > 0);
   assert.equal(image.ditherStats.readability, 'pass');
-  assert.match(core.renderSvg(doc), /class="simplify"/);
+  assert.match(core.renderSvg(doc), /class="simplify"[^>]+shape-rendering="geometricPrecision"/);
+  assert.match(core.renderSvg(doc), /class="simplify-run"[^>]+fill-opacity="0\.[0-9]+"/);
   assert.doesNotMatch(core.serialize(doc), /data:image/);
   const reopened = core.deserialize(core.serialize(doc));
   const reopenedImage = core.findElement(reopened, 'simplified').element;
   assert.equal(reopenedImage.supersample, 'auto');
   assert.equal(reopenedImage.processing.resolvedSupersample, 4);
+  assert.deepEqual(reopenedImage.ditherStats, image.ditherStats);
+});
+
+test('saved coverage runs reject malformed opacity instead of rendering ambiguous ink', () => {
+  const doc = core.createDocument({ name: 'invalid coverage' });
+  core.placeImage(doc, 'base', {
+    id: 'simplified', at: 'C4.tl', span: '24x16', source: dataUri(lineArtPng()), mode: 'simplify', supersample: 4,
+  });
+  const raw = JSON.parse(core.serialize(doc));
+  const run = raw.elements.base[0].runs.find((entry) => entry.opacity != null);
+  assert.ok(run, 'fixture must exercise a partial-coverage run');
+  run.opacity = 0;
+  assert.throws(() => core.deserialize(raw), /run opacity.*greater than 0/i);
 });
 
 test('embed resize recomputes scale while rasterized image resize refuses without mutation', () => {

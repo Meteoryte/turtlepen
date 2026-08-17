@@ -13,7 +13,7 @@ import assert from 'node:assert/strict';
 
 import * as core from '../src/core/index.js';
 import {
-  analyse, analyseRuns, ditherToQuadrants, simplifyToQuadrants, BAYER_4,
+  analyse, analyseRuns, ditherToQuadrants, downsampleCoverage, runsOf, simplifyToQuadrants, BAYER_4,
   resolveSupersample, MAX_READABLE_TRANSITION_RATIO, MIN_SIMPLIFY_SHORT_SIDE,
   MAX_SIMPLIFY_QUADRANTS, MAX_SIMPLIFY_WORKING_QUADRANTS,
 } from '../src/core/dither.js';
@@ -170,6 +170,25 @@ test('readability analysis identifies checkerboard noise and accepts sparse stru
   assert.throws(() => analyseRuns([{ x: 7, y: 1, w: 2 }], 8, 8), /outside/);
 });
 
+test('supersample resolve preserves weighted coverage through runs and analysis', () => {
+  const working = new Uint8Array(16);
+  working.set([1, 1, 1, 1]);
+  const resolved = downsampleCoverage(working, 1, 1, 4);
+  assert.deepEqual([...resolved.on], [1]);
+  assert.deepEqual([...resolved.coverage], [0.25]);
+  assert.equal(resolved.method, 'box-average');
+  assert.equal(resolved.workingSamplesPerOutput, 16);
+  assert.equal(resolved.possibleCoverageLevels, 17);
+  assert.equal(resolved.partialCoverageSamples, 1);
+
+  const runs = runsOf({ width: 1, height: 1, on: resolved.on, coverage: resolved.coverage });
+  assert.deepEqual(runs, [{ x: 0, y: 0, w: 1, opacity: 0.25 }]);
+  assert.deepEqual(analyseRuns(runs, 1, 1), analyse({ width: 1, height: 1, ...resolved }));
+  assert.throws(() => analyseRuns([{ x: 0, y: 0, w: 1, opacity: 0 }], 1, 1), /opacity.*greater than 0/i);
+  assert.throws(() => analyseRuns([{ x: 0, y: 0, w: 1, opacity: 1.1 }], 1, 1), /opacity.*no greater than 1/i);
+  assert.throws(() => downsampleCoverage(working, 1, 1, 3), /expected 9 working samples/);
+});
+
 test('simplify preserves near-binary structure without reproducing Bayer checker tone', () => {
   const decoded = decode(unitLineArt());
   const first = simplifyToQuadrants(decoded, 48, 32);
@@ -196,13 +215,16 @@ test('simplify can process at 4x linear resolution and reduce to the unchanged 1
   assert.equal(supersampled.processing.resolvedSupersample, 4);
   assert.deepEqual(supersampled.processing.workingCanvas, { width: 192, height: 128, unit: 'quadrants' });
   assert.equal(supersampled.processing.workingSamplesPerOutput, 16);
-  assert.equal(supersampled.processing.downsampleMethod, 'box-coverage');
+  assert.equal(supersampled.processing.downsampleMethod, 'box-average');
+  assert.equal(supersampled.processing.possibleCoverageLevels, 17);
+  assert.ok(supersampled.processing.partialCoverageSamples > 0);
   assert.equal(supersampled.processing.scaleDirection, 'downscale');
   assert.deepEqual([...supersampled.on], [...repeated.on], '4x processing remains deterministic');
+  assert.deepEqual([...supersampled.coverage], [...repeated.coverage], 'weighted resolve remains deterministic');
 
-  const upperBand = (grid) => grid.on.slice(0, 8 * grid.width).filter(Boolean).length;
+  const upperBand = (grid) => grid.coverage.slice(0, 8 * grid.width).reduce((sum, value) => sum + value, 0);
   assert.equal(upperBand(direct), 0, 'direct reduction loses the sub-quadrant antenna');
-  assert.equal(upperBand(supersampled), 4, '4x processing retains the thin connected feature');
+  assert.ok(upperBand(supersampled) > 0, '4x processing retains weighted evidence of the thin connected feature');
 });
 
 test('simplify supersampling is bounded and auto resolves without silent explicit fallback', () => {

@@ -181,9 +181,9 @@ function imageEl(el) {
 function rasterEl(el, x, y) {
   const q = PX_PER_QUAD;
   const parts = (el.runs ?? []).map(
-    (r) => `<rect class="${el.mode}-run" x="${x + r.x * q}" y="${y + r.y * q}" width="${r.w * q}" height="${q}"/>`,
+    (r) => `<rect class="${el.mode}-run" x="${x + r.x * q}" y="${y + r.y * q}" width="${r.w * q}" height="${q}"${r.opacity != null ? ` fill-opacity="${r.opacity}"` : ''}/>`,
   );
-  return `<g class="${el.mode}" data-id="${escapeAttr(el.id)}"${el.opacity != null ? ` opacity="${el.opacity}"` : ''}>${parts.join('')}</g>`;
+  return `<g class="${el.mode}" data-id="${escapeAttr(el.id)}"${el.mode === 'simplify' ? ' shape-rendering="geometricPrecision"' : ''}${el.opacity != null ? ` opacity="${el.opacity}"` : ''}>${parts.join('')}</g>`;
 }
 
 function gridPattern(b, ox, oy) {

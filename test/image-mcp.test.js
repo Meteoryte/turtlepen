@@ -92,7 +92,7 @@ test('real MCP image workflow rejects unsafe input and recovers through publicat
       id: 'simplified', source: 'trace.png', at: 'V4.tl', span: '16x12', mode: 'simplify', detail: 'auto', supersample: 4,
     });
     assert.match(simplifiedReceipt, /simplification: LOW detail.*near-binary threshold/i);
-    assert.match(simplifiedReceipt, /4:1 working canvas 128x96 -> 1:1 final lattice.*16 working samples\/output/i);
+    assert.match(simplifiedReceipt, /4:1 working canvas 128x96 -> 1:1 final lattice.*16 weighted samples\/output.*partially covered final quadrants/i);
     assert.match(simplifiedReceipt, /perceptual approximation, not a 1:1 copy/);
 
     const refusedResize = await client.call('resize', { id: 'dithered', cellsW: 10, cellsH: 5 });

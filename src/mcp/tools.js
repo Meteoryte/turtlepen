@@ -1081,7 +1081,7 @@ export function createTools(session) {
 
     {
       name: 'place_image',
-      description: 'Place an image at an exact footprint. Embed preserves verified source bytes; dither reproduces tone with deterministic ordered ink; simplify intentionally discards low-salience texture and may process on a 1x, 2x, or 4x working canvas before reducing to the final lattice. Rasterized modes report readability and must be removed/re-placed to change sampling size. All modes preserve aspect through contain or cover.',
+      description: 'Place an image at an exact footprint. Embed preserves verified source bytes; dither reproduces tone with deterministic ordered ink; simplify intentionally discards low-salience texture and may process on a 1x, 2x, or 4x working canvas before box-averaging weighted coverage onto the final lattice. Rasterized modes report readability and must be removed/re-placed to change sampling size. All modes preserve aspect through contain or cover.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -1092,7 +1092,7 @@ export function createTools(session) {
           mode: { type: 'string', enum: ['embed', 'dither', 'simplify'] },
           fit: { type: 'string', enum: ['contain', 'cover'] },
           detail: { type: 'string', enum: ['auto', 'low', 'medium', 'high'], description: 'simplify only; auto resolves from output size and scale severity' },
-          supersample: { enum: ['auto', 1, 2, 4], description: 'simplify only; linear working-canvas factor. 4 means 4x width and height, then deterministic reduction to the final 1x lattice' },
+          supersample: { enum: ['auto', 1, 2, 4], description: 'simplify only; linear working-canvas factor. 4 means 4x width and height, then deterministic 16-sample coverage averaging onto the final 1x lattice' },
           opacity: { type: 'number' },
           page: { type: 'string' },
         },
@@ -1121,8 +1121,8 @@ export function createTools(session) {
             : '')
           + (mode === 'simplify'
             ? el.processing.strategy === 'threshold-simplify'
-              ? `\nsimplification: ${el.processing.resolvedDetail.toUpperCase()} detail (${el.processing.requestedDetail} requested), ${el.processing.resolvedSupersample}:1 working canvas ${el.processing.workingCanvas.width}x${el.processing.workingCanvas.height} -> 1:1 final lattice by ${el.processing.downsampleMethod} (${el.processing.workingSamplesPerOutput} working samples/output), near-binary threshold at ${el.processing.contrastFloor} background contrast, removed ${el.processing.removedSamples} final samples in ${el.processing.removedComponents} small fragments; perceptual approximation, not a 1:1 copy`
-              : `\nsimplification: ${el.processing.resolvedDetail.toUpperCase()} detail (${el.processing.requestedDetail} requested), ${el.processing.resolvedSupersample}:1 working canvas ${el.processing.workingCanvas.width}x${el.processing.workingCanvas.height} -> 1:1 final lattice by ${el.processing.downsampleMethod} (${el.processing.workingSamplesPerOutput} working samples/output), ${el.processing.blurRadius}-working-quadrant smoothing, ${el.processing.inkBudget}-working-quadrant strong-feature budget plus ${el.processing.expandedSamples} contour extensions, removed ${el.processing.removedSamples} final samples in ${el.processing.removedComponents} small fragments; perceptual approximation, not a 1:1 copy`
+              ? `\nsimplification: ${el.processing.resolvedDetail.toUpperCase()} detail (${el.processing.requestedDetail} requested), ${el.processing.resolvedSupersample}:1 working canvas ${el.processing.workingCanvas.width}x${el.processing.workingCanvas.height} -> 1:1 final lattice by ${el.processing.downsampleMethod} (${el.processing.workingSamplesPerOutput} weighted samples/output; ${el.processing.partialCoverageSamples} partially covered final quadrants), near-binary threshold at ${el.processing.contrastFloor} background contrast, removed ${el.processing.removedSamples} working samples in ${el.processing.removedComponents} small fragments; perceptual approximation, not a 1:1 copy`
+              : `\nsimplification: ${el.processing.resolvedDetail.toUpperCase()} detail (${el.processing.requestedDetail} requested), ${el.processing.resolvedSupersample}:1 working canvas ${el.processing.workingCanvas.width}x${el.processing.workingCanvas.height} -> 1:1 final lattice by ${el.processing.downsampleMethod} (${el.processing.workingSamplesPerOutput} weighted samples/output; ${el.processing.partialCoverageSamples} partially covered final quadrants), ${el.processing.blurRadius}-working-quadrant smoothing, ${el.processing.inkBudget}-working-quadrant strong-feature budget plus ${el.processing.expandedSamples} contour extensions, removed ${el.processing.removedSamples} working samples in ${el.processing.removedComponents} small fragments; perceptual approximation, not a 1:1 copy`
             : '');
       },
     },
@@ -1577,8 +1577,9 @@ DRAWING FROM A SOURCE — reach for this BEFORE deriving geometry by hand
                    auto|low|medium|high. Fewer than 24 quadrants on the short side
                    is refused; use a larger span or purpose-built icon artwork.
                    supersample is auto|1|2|4. A factor of 4 builds a working canvas
-                   at 4x width and height (16 samples/output), then box-downscales
-                   it to the unchanged 1x lattice. auto prefers 4x within limits.
+                   at 4x width and height, then box-averages each 16-sample block
+                   into one of 17 exact final coverage levels. Runs retain that
+                   coverage through save/reopen. auto prefers 4x within limits.
     mode "dither"  quantises the image ONTO the lattice through a 4x4 Bayer
                    matrix. Real quadrants, merged into runs, byte-identical
                    every run. Downscale area-averages; upscale repeats nearest

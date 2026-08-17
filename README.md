@@ -397,8 +397,9 @@ The [real-image MCP exercise](diagrams/condenser-image-workflow.svg) embeds a
 generated 1536 x 1024 condenser photo as evidence and uses a separate generated
 line-art derivative for tonal dither, non-fidelity simplify, and the temporary
 reference gate. Simplify may use a bounded 4x-linear working canvas and
-box-reduce it to the unchanged final lattice, preserving fine connected
-structure without claiming new source detail. The workflow reports every
+box-average each 4x4 block into weighted final-quadrant coverage, preserving
+fine connected structure and smoother edges without claiming new source detail.
+The workflow reports every
 up/downscale stage, blocks checkerboard output through `L022`, and blocks
 semantically unverified continuous-tone approximations through `L023`. Prompts,
 hashes, metrics, and usage boundaries are recorded in
@@ -408,8 +409,9 @@ is [the image scaling procedure](docs/image-scaling-procedure.md).
 The [five-case random contact sheet](diagrams/supersample-random-five.svg)
 repeats the supersampling path across seeded RGB/RGBA, portrait/landscape,
 contain/cover, and low/medium/high-detail sources. All five cases preserve the
-same final `48x32`-quadrant geometry, pass save/reopen/render over real MCP, and
-record source plus run hashes in the
+same final `48x32`-quadrant geometry, preserve partial coverage through
+save/reopen/render over real MCP, reduce weighted edge transitions without
+inflating effective ink, and record source plus run hashes in the
 [evidence ledger](docs/supersample-random-five-report.md).
 
 | Group | Tools |

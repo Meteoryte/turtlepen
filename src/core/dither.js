@@ -343,21 +343,23 @@ function simplifyPass(on, width, height) {
   return next;
 }
 
-const DOWNSAMPLE_COVERAGE = Object.freeze({ low: 0.32, medium: 0.2, high: 0.12 });
-
-/** Reduce a supersampled binary canvas to the exact requested lattice. */
-function downsampleInk(on, outputWidth, outputHeight, factor, detail) {
-  if (factor === 1) {
-    return {
-      on: Uint8Array.from(on),
-      method: 'identity',
-      coverageThreshold: 1,
-      workingSamplesPerOutput: 1,
-    };
-  }
+/**
+ * Resolve a supersampled binary canvas to weighted final-quadrant coverage.
+ *
+ * A threshold here would throw away the information supersampling exists to
+ * collect. The box resolve instead preserves the exact fraction of working
+ * samples covered by ink. Geometry remains on the integer lattice; coverage is
+ * presentation data carried by the durable runs.
+ */
+export function downsampleCoverage(on, outputWidth, outputHeight, factor) {
+  if (!Number.isInteger(factor) || factor < 1) throw new RangeError('supersample resolve factor must be a positive whole number');
   const workingWidth = outputWidth * factor;
+  const workingHeight = outputHeight * factor;
+  if (!on || on.length !== workingWidth * workingHeight) {
+    throw new RangeError(`supersample resolve expected ${workingWidth * workingHeight} working samples`);
+  }
   const blockArea = factor * factor;
-  const coverageThreshold = DOWNSAMPLE_COVERAGE[detail];
+  const coverage = new Float64Array(outputWidth * outputHeight);
   const reduced = new Uint8Array(outputWidth * outputHeight);
   for (let y = 0; y < outputHeight; y++) {
     for (let x = 0; x < outputWidth; x++) {
@@ -366,14 +368,20 @@ function downsampleInk(on, outputWidth, outputHeight, factor, detail) {
         const row = wy * workingWidth;
         for (let wx = x * factor; wx < (x + 1) * factor; wx++) ink += on[row + wx];
       }
-      if (ink / blockArea >= coverageThreshold) reduced[y * outputWidth + x] = 1;
+      const index = y * outputWidth + x;
+      coverage[index] = ink / blockArea;
+      if (ink > 0) reduced[index] = 1;
     }
   }
+  const distinctLevels = new Set(coverage).size;
   return {
-    on: simplifyPass(reduced, outputWidth, outputHeight),
-    method: 'box-coverage',
-    coverageThreshold,
+    on: reduced,
+    coverage,
+    method: factor === 1 ? 'identity' : 'box-average',
     workingSamplesPerOutput: blockArea,
+    possibleCoverageLevels: blockArea + 1,
+    resolvedCoverageLevels: distinctLevels,
+    partialCoverageSamples: coverage.filter((value) => value > 0 && value < 1).length,
   };
 }
 
@@ -383,16 +391,13 @@ const DETAIL = Object.freeze({
   high: { coverage: 0.20, blur: 0, componentDivisor: 1800 },
 });
 
-function finalizeSimplification(workingOn, qw, qh, factor, resolvedDetail, workingContentSamples, componentDivisor) {
-  const reduced = downsampleInk(workingOn, qw, qh, factor, resolvedDetail);
-  const finalContentSamples = Math.max(1, Math.round(workingContentSamples / (factor * factor)));
-  const minimumComponent = Math.max(2, Math.floor(finalContentSamples / componentDivisor));
-  const cleanup = cleanIslands(reduced.on, qw, qh, minimumComponent);
-  const stats = analyse({ width: qw, height: qh, on: reduced.on });
+function finalizeSimplification(workingOn, qw, qh, factor) {
+  const reduced = downsampleCoverage(workingOn, qw, qh, factor);
+  const stats = analyse({ width: qw, height: qh, on: reduced.on, coverage: reduced.coverage });
   if (stats.ink < 4) {
     throw new Error('adaptive simplification removed all stable features; use embed mode, choose higher detail, lower supersampling, or provide a clearer source');
   }
-  return { ...reduced, cleanup, minimumComponent, stats };
+  return { ...reduced, stats };
 }
 
 function resolveDetail(detail, width, height, scale) {
@@ -450,13 +455,12 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
     const workingContentSamples = sampled.content.filter(Boolean).length;
     const workingMinimumComponent = Math.max(2, Math.floor(workingContentSamples / (preset.componentDivisor * 1.5)));
     const workingCleanup = cleanIslands(on, workingWidth, workingHeight, workingMinimumComponent);
-    const final = finalizeSimplification(
-      on, qw, qh, workingScale, resolvedDetail, workingContentSamples, preset.componentDivisor * 1.5,
-    );
+    const final = finalizeSimplification(on, qw, qh, workingScale);
     return {
       width: qw,
       height: qh,
       on: final.on,
+      coverage: final.coverage,
       processing: {
         strategy: 'threshold-simplify',
         requestedDetail: detail,
@@ -468,7 +472,9 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
         workingScaleDirection: sampled.scale < 1 ? 'downscale' : sampled.scale > 1 ? 'upscale' : 'exact',
         workingSourcePixelsPerSample: Number((1 / sampled.scale).toFixed(4)),
         downsampleMethod: final.method,
-        downsampleCoverageThreshold: final.coverageThreshold,
+        possibleCoverageLevels: final.possibleCoverageLevels,
+        resolvedCoverageLevels: final.resolvedCoverageLevels,
+        partialCoverageSamples: final.partialCoverageSamples,
         scaleDirection: finalSampleScale < 1 ? 'downscale' : finalSampleScale > 1 ? 'upscale' : 'exact',
         sourcePixelsPerSample: Number((1 / finalSampleScale).toFixed(4)),
         nearBinary: true,
@@ -477,9 +483,9 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
         workingMinimumComponent,
         workingRemovedComponents: workingCleanup.removedComponents,
         workingRemovedSamples: workingCleanup.removedSamples,
-        minimumComponent: final.minimumComponent,
-        removedComponents: final.cleanup.removedComponents,
-        removedSamples: final.cleanup.removedSamples,
+        minimumComponent: workingMinimumComponent,
+        removedComponents: workingCleanup.removedComponents,
+        removedSamples: workingCleanup.removedSamples,
       },
     };
   }
@@ -571,12 +577,13 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
   on = simplifyPass(on, workingWidth, workingHeight);
   const workingMinimumComponent = Math.max(2, Math.floor(contentSamples / preset.componentDivisor));
   const workingCleanup = cleanIslands(on, workingWidth, workingHeight, workingMinimumComponent);
-  const final = finalizeSimplification(on, qw, qh, workingScale, resolvedDetail, contentSamples, preset.componentDivisor);
+  const final = finalizeSimplification(on, qw, qh, workingScale);
 
   return {
     width: qw,
     height: qh,
     on: final.on,
+    coverage: final.coverage,
     processing: {
       strategy: 'adaptive-simplify',
       requestedDetail: detail,
@@ -588,7 +595,9 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
       workingScaleDirection: sampled.scale < 1 ? 'downscale' : sampled.scale > 1 ? 'upscale' : 'exact',
       workingSourcePixelsPerSample: Number((1 / sampled.scale).toFixed(4)),
       downsampleMethod: final.method,
-      downsampleCoverageThreshold: final.coverageThreshold,
+      possibleCoverageLevels: final.possibleCoverageLevels,
+      resolvedCoverageLevels: final.resolvedCoverageLevels,
+      partialCoverageSamples: final.partialCoverageSamples,
       scaleDirection: finalSampleScale < 1 ? 'downscale' : finalSampleScale > 1 ? 'upscale' : 'exact',
       sourcePixelsPerSample: Number((1 / finalSampleScale).toFixed(4)),
       blurRadius: workingBlur,
@@ -604,9 +613,9 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
       workingMinimumComponent,
       workingRemovedComponents: workingCleanup.removedComponents,
       workingRemovedSamples: workingCleanup.removedSamples,
-      minimumComponent: final.minimumComponent,
-      removedComponents: final.cleanup.removedComponents,
-      removedSamples: final.cleanup.removedSamples,
+      minimumComponent: workingMinimumComponent,
+      removedComponents: workingCleanup.removedComponents,
+      removedSamples: workingCleanup.removedSamples,
     },
   };
 }
@@ -619,42 +628,62 @@ export function simplifyToQuadrants(img, qw, qh, { fit = 'contain', detail = 'au
  * solid area into one rect and leaves dithered texture as short runs, which is
  * both smaller and closer to how the shape actually reads.
  *
- * @returns {Array<{x:number,y:number,w:number}>} in quadrant units
+ * Adjacent samples merge only when their coverage is identical. Full-coverage
+ * binary runs omit opacity so existing dither documents stay byte-identical.
+ *
+ * @returns {Array<{x:number,y:number,w:number,opacity?:number}>} in quadrant units
  */
-export function runsOf({ width, height, on }) {
+export function runsOf({ width, height, on, coverage = null }) {
+  const values = coverage ?? on;
+  if (!values || values.length !== width * height) throw new RangeError(`raster runs expected ${width * height} samples`);
   const runs = [];
   for (let y = 0; y < height; y++) {
-    let start = -1;
+    let start = -1, active = 0;
+    const emit = (end) => {
+      const run = { x: start, y, w: end - start };
+      if (active < 1) run.opacity = active;
+      runs.push(run);
+    };
     for (let x = 0; x <= width; x++) {
-      const set = x < width && on[y * width + x];
-      if (set && start < 0) start = x;
-      else if (!set && start >= 0) {
-        runs.push({ x: start, y, w: x - start });
-        start = -1;
+      const value = x < width ? Number(values[y * width + x]) : 0;
+      if (!Number.isFinite(value) || value < 0 || value > 1) throw new RangeError('raster coverage samples must be finite numbers from 0 through 1');
+      if (value > 0 && start < 0) {
+        start = x;
+        active = value;
+      } else if (start >= 0 && value !== active) {
+        emit(x);
+        start = value > 0 ? x : -1;
+        active = value;
       }
     }
   }
   return runs;
 }
 
-/** Quantify whether a 1-bit result reads as structure or checkerboard noise. */
-export function analyse({ width, height, on }) {
+/** Quantify whether binary or coverage-weighted output reads as structure. */
+export function analyse({ width, height, on, coverage = null }) {
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width * height > MAX_DITHER_QUADRANTS) {
     throw new RangeError(`dither analysis needs a positive grid within ${MAX_DITHER_QUADRANTS} quadrants`);
   }
-  if (!on || on.length !== width * height) throw new RangeError(`dither analysis expected ${width * height} samples`);
-  let ink = 0, transitions = 0, neighbourPairs = 0;
+  const values = coverage ?? on;
+  if (!values || values.length !== width * height) throw new RangeError(`dither analysis expected ${width * height} samples`);
+  let ink = 0, transitions = 0, neighbourPairs = 0, partialCoverageSamples = 0, solidCoverageSamples = 0;
+  const coverageLevels = new Set();
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      const value = on[y * width + x];
-      ink += value ? 1 : 0;
+      const value = Number(values[y * width + x]);
+      if (!Number.isFinite(value) || value < 0 || value > 1) throw new RangeError('dither analysis samples must be finite numbers from 0 through 1');
+      ink += value;
+      coverageLevels.add(value);
+      if (value > 0 && value < 1) partialCoverageSamples += 1;
+      else if (value === 1) solidCoverageSamples += 1;
       if (x + 1 < width) {
         neighbourPairs += 1;
-        if (value !== on[y * width + x + 1]) transitions += 1;
+        transitions += Math.abs(value - Number(values[y * width + x + 1]));
       }
       if (y + 1 < height) {
         neighbourPairs += 1;
-        if (value !== on[(y + 1) * width + x]) transitions += 1;
+        transitions += Math.abs(value - Number(values[(y + 1) * width + x]));
       }
     }
   }
@@ -662,10 +691,14 @@ export function analyse({ width, height, on }) {
   const transitionRatio = neighbourPairs ? transitions / neighbourPairs : 0;
   return {
     samples: width * height,
-    ink,
+    ink: Number(ink.toFixed(4)),
     coverageRatio: Number(coverageRatio.toFixed(4)),
     transitionRatio: Number(transitionRatio.toFixed(4)),
-    runCount: runsOf({ width, height, on }).length,
+    runCount: runsOf({ width, height, on, coverage }).length,
+    partialCoverageSamples,
+    partialCoverageRatio: Number((partialCoverageSamples / (width * height)).toFixed(4)),
+    solidCoverageSamples,
+    coverageLevels: coverageLevels.size,
     readability: transitionRatio > MAX_READABLE_TRANSITION_RATIO ? 'busy' : 'pass',
   };
 }
@@ -676,16 +709,22 @@ export function analyseRuns(runs, width, height) {
     throw new RangeError(`dither analysis needs a positive grid within ${MAX_DITHER_QUADRANTS} quadrants`);
   }
   const on = new Uint8Array(width * height);
+  const coverage = new Float64Array(width * height);
   for (const run of runs) {
     if (!Number.isInteger(run.x) || !Number.isInteger(run.y) || !Number.isInteger(run.w) || run.w < 1 ||
         run.x < 0 || run.y < 0 || run.y >= height || run.x + run.w > width) {
       throw new RangeError(`dither run is outside its ${width}x${height} quadrant grid`);
     }
+    const opacity = run.opacity ?? 1;
+    if (typeof opacity !== 'number' || !Number.isFinite(opacity) || opacity <= 0 || opacity > 1) {
+      throw new RangeError('dither run opacity must be a finite number greater than 0 and no greater than 1');
+    }
     for (let x = run.x; x < run.x + run.w; x++) {
       const index = run.y * width + x;
       if (on[index]) throw new RangeError(`dither runs overlap at ${x},${run.y}`);
       on[index] = 1;
+      coverage[index] = opacity;
     }
   }
-  return analyse({ width, height, on });
+  return analyse({ width, height, on, coverage });
 }

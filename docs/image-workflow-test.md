@@ -93,9 +93,10 @@ The line-art derivative in `dither` produces 12.94% ink coverage, 17.40%
 neighboring transitions, and 458 runs. The same derivative in `simplify auto`
 with explicit `supersample: 4` resolves to the near-binary threshold strategy at
 medium detail, processes at `384x256` quadrants, then reduces to the `96x64`
-final lattice. It produces 23.68% ink, 13.06% transitions, and 369 runs. It is
-intentionally bolder and does not attempt a 1:1 copy. Both pass the deterministic
-noise gate.
+final lattice by averaging each 4x4 working block. It produces 15.56% effective
+ink and 12.72% weighted transitions, with 1,458 partially covered quadrants
+across all 17 possible coverage levels. It is intentionally simplified and does
+not attempt a 1:1 copy. Both pass the deterministic noise gate.
 
 The raw photo is also exercised through `simplify auto`; TurtlePen raises
 `L023` because continuous-tone contour selection has no semantic understanding.

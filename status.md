@@ -1,13 +1,13 @@
 # TurtlePen — status
 
-**As of 2026-08-17.** Prototype, working end to end, 316/316 tests green,
+**As of 2026-08-17.** Prototype, working end to end, 318/318 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **316/316 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **318/318 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
 - **Every external surface has a drift-proof contract.** All 35 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC
@@ -29,21 +29,23 @@ Verified by running it, not by inspection:
   simplification.** `pnpm run image-session` measures a 1536 x 1024 condenser
   photo and a separate generated line-art derivative, proves the `L020`
   temporary-reference gate, embeds the photo, then renders the derivative as
-  both source-like dither and a bolder non-fidelity simplify before
+  both source-like dither and a coverage-smoothed non-fidelity simplify before
   save/reopen/render over real MCP stdio. Every placement stores exact viewport,
   render, semantic sample, fit, and up/downscale reports. Dither downscales by
   area and upscales by nearest sample. Simplify selects a deterministic
   near-binary threshold or colour-aware contour strategy, resolves an explicit
   detail budget, and may process at 1x, 2x, or 4x linear resolution before
-  box-reducing to the unchanged final lattice. Auto prefers 4x; explicit factors
-  never silently fall back. It refuses fewer than 24 final quadrants on the
+  box-averaging to weighted coverage on the unchanged final lattice. Auto
+  prefers 4x; explicit factors never silently fall back. It refuses fewer than
+  24 final quadrants on the
   short side, caps final analysis at 250,000 and working analysis at 1,000,000
   quadrants with linear contour growth, and records what it discarded. `L022`
   blocks high-frequency output; `L023` blocks
   continuous-tone heuristic results because geometry cannot know the subject.
   The rejected raw-photo dither measured 69.24% transitions and was guessed as a
-  teapot. The published line-art dither measures 17.40%; 4x-to-1x simplify
-  measures 13.06% and reads as a heavier condenser pictogram. Rasterized modes refuse
+  teapot. The published line-art dither measures 17.40%; coverage-resolved
+  4x-to-1x simplify measures 12.72%, uses all 17 possible 4x coverage levels,
+  and reads as a softer condenser pictogram. Rasterized modes refuse
   stale-grid resizing. Image bytes are verified, allocations are bounded, and
   deterministic runs do not duplicate the multi-megabyte source in history.
 - **A diagram can be judged on composition, not just correctness.** `C001`
@@ -155,9 +157,12 @@ Verified by running it, not by inspection:
   preserves contrast-defined structure without Bayer checker tone and is
   explicitly allowed to thicken, omit, and merge source features. A bounded
   `supersample: 4` pass builds four times the width and height, performs the
-  cleanup there, and deterministically reduces each 4x4 working block to one
-  final quadrant; it can retain thin connected structure without inventing
-  source information or changing the placed footprint. Continuous
+  cleanup there, and deterministically box-averages each 4x4 working block into
+  one final quadrant with 17 possible coverage levels. Coverage is durable
+  through save/reopen and renders as per-run opacity, so partial edge evidence is
+  no longer collapsed into a bold binary block. It can retain thin connected
+  structure without inventing source information or changing the placed
+  footprint. Continuous
   photographs take a colour-aware contour path but always raise `L023` until a
   blind identity review is recorded or a purpose-built derivative replaces the
   result. This keeps “cleaner” from being mistaken for “semantically correct.”
@@ -166,8 +171,10 @@ Verified by running it, not by inspection:
   portrait/landscape, contain/cover, and low/medium/high detail. Every case keeps
   its final `48x32`-quadrant footprint, takes the near-binary path, passes the
   readability gate, survives save/reopen/render, and records source/run hashes.
-  All 5/5 produced different 4x final runs from direct 1x processing; the visual
-  comparison lives in `diagrams/supersample-random-five.svg`.
+  All 5/5 preserve partial coverage, reduce weighted edge transitions, avoid
+  effective-ink inflation, and produce different 4x runs from direct 1x
+  processing; the visual comparison lives in
+  `diagrams/supersample-random-five.svg`.
 - **Drawn artwork has density, not just presence.** `tone` (0.0625–1, or
   `quarter`/`half`/`three-quarter`/`solid`), `feather`, and `texture` on a pen
   path filter its pieces through that same ordered matrix. Because a piece IS

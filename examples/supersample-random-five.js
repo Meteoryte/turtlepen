@@ -240,6 +240,16 @@ try {
     if (direct.ditherStats.readability !== 'pass' || supersampled.ditherStats.readability !== 'pass') {
       throw new Error(`case ${trial.index} produced busy output`);
     }
+    if (supersampled.processing.downsampleMethod !== 'box-average' ||
+        supersampled.ditherStats.partialCoverageSamples < 1 || supersampled.ditherStats.coverageLevels <= 2) {
+      throw new Error(`case ${trial.index} discarded weighted supersample coverage`);
+    }
+    if (supersampled.ditherStats.transitionRatio >= direct.ditherStats.transitionRatio) {
+      throw new Error(`case ${trial.index} did not reduce weighted edge transitions`);
+    }
+    if (supersampled.ditherStats.coverageRatio > direct.ditherStats.coverageRatio) {
+      throw new Error(`case ${trial.index} inflated effective ink instead of resolving coverage`);
+    }
     const directHash = createHash('sha256').update(JSON.stringify(direct.runs)).digest('hex');
     const supersampledHash = createHash('sha256').update(JSON.stringify(supersampled.runs)).digest('hex');
     return { ...trial, direct, supersampled, directHash, supersampledHash, changed: directHash !== supersampledHash };
@@ -253,10 +263,10 @@ try {
         `CASE ${result.index} SOURCE | seed ${result.seed.toString(16).padStart(8, '0')} | ${result.width}x${result.height} | ${result.fit}`,
         '#e8edf0'),
       box(`direct-caption-${result.index}`, address(29, row), '24x5',
-        `DIRECT 1x | ${result.detail} | ${Math.round(result.direct.ditherStats.coverageRatio * 1000) / 10}% ink | ${Math.round(result.direct.ditherStats.transitionRatio * 1000) / 10}% transitions`,
+        `DIRECT 1x | ${result.detail} | ${Math.round(result.direct.ditherStats.coverageRatio * 1000) / 10}% ink | ${Math.round(result.direct.ditherStats.transitionRatio * 1000) / 10}% edges`,
         '#ece6f0'),
       box(`super-caption-${result.index}`, address(55, row), '24x5',
-        `4x -> 1x | 192x128 working | ${Math.round(result.supersampled.ditherStats.coverageRatio * 1000) / 10}% ink | ${Math.round(result.supersampled.ditherStats.transitionRatio * 1000) / 10}% transitions`,
+        `4x BOX AVG | ${Math.round(result.supersampled.ditherStats.coverageRatio * 1000) / 10}% ink | ${Math.round(result.supersampled.ditherStats.transitionRatio * 1000) / 10}% edges | ${result.supersampled.ditherStats.partialCoverageSamples} partial`,
         '#e4eee6'),
     );
   }
@@ -277,7 +287,7 @@ try {
   const rows = ledger.map((entry) => {
     const direct = entry.direct.ditherStats;
     const supersampled = entry.supersampled.ditherStats;
-    return `| ${entry.index} | \`${entry.seed.toString(16).padStart(8, '0')}\` | ${entry.width}x${entry.height} | ${entry.transparent ? 'RGBA' : 'RGB'} | ${entry.fit} | ${entry.detail} | ${direct.ink} / ${(direct.transitionRatio * 100).toFixed(2)}% / ${direct.runCount} | ${supersampled.ink} / ${(supersampled.transitionRatio * 100).toFixed(2)}% / ${supersampled.runCount} | ${entry.changed ? 'yes' : 'no'} |`;
+    return `| ${entry.index} | \`${entry.seed.toString(16).padStart(8, '0')}\` | ${entry.width}x${entry.height} | ${entry.transparent ? 'RGBA' : 'RGB'} | ${entry.fit} | ${entry.detail} | ${direct.ink} / ${(direct.transitionRatio * 100).toFixed(2)}% | ${supersampled.ink} / ${(supersampled.transitionRatio * 100).toFixed(2)}% | ${supersampled.partialCoverageSamples} / ${supersampled.coverageLevels} | ${entry.changed ? 'yes' : 'no'} |`;
   }).join('\n');
   const report = `# Five seeded-random supersampling trials
 
@@ -287,17 +297,21 @@ The inputs are random but reproducible; their SHA-256 hashes and saved run hashe
 ## Loop contract
 
 - Loop: \`SWE-05 Edge Case Expansion\`, five attempts total.
-- Success: requested factor honored; final output remains 48x32 quadrants; near-binary strategy; readable output; clean save/reopen/render.
+- Success: requested factor honored; final output remains 48x32 quadrants; near-binary strategy; weighted coverage survives; 4x has lower effective edge transitions without inflating effective ink; clean save/reopen/render.
 - Mutation between attempts: source seed, dimensions, alpha mode, fit, detail, and generated structure.
 - Stop: all five pass, or stop immediately on geometry drift, busy output, semantic ambiguity, persistence failure, or MCP error.
 
 ## Evidence ledger
 
-| Attempt | Seed | Source | Pixels | Fit | Detail | Direct 1x: ink / transitions / runs | 4x->1x: ink / transitions / runs | Output changed |
-|---:|---|---:|---|---|---|---|---|---|
+| Attempt | Seed | Source | Pixels | Fit | Detail | Direct 1x: effective ink / transitions | 4x->1x: effective ink / transitions | Partial samples / levels | Output changed |
+|---:|---|---:|---|---|---|---|---|---|---|
 ${rows}
 
-All five attempts passed. ${changed}/5 produced different final run geometry at 4x; unchanged cases still verified a distinct 192x128 working canvas and 16-to-1 box reduction. The full document validated without S0-S2 findings after save and reopen.
+All five structural attempts passed. ${changed}/5 produced different final run geometry at 4x. Every 4x result retained more than two coverage levels, reduced weighted neighbor transitions, and avoided the earlier bold/blocky ink inflation. The full document validated without S0-S2 findings after save and reopen.
+
+## Visual review boundary
+
+The checked-in contact sheet is the review surface, not an automated claim of identity. Browser inspection on 2026-08-17 at 1440x900 and 390x844 confirmed that the coverage-resolved 4x column has softer edges at intended reading size, remains recognizable beside its source, creates no horizontal overflow, and logs no console error or warning. At 200% the integer lattice is deliberately visible; supersampling improves the normal-size resolve but does not turn a 48x32-quadrant drawing into source-resolution evidence.
 
 ## Source receipts
 
