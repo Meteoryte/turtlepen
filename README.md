@@ -358,6 +358,7 @@ node examples/constraint-stress.js      # crowded same-face rehearsal and rework
 node examples/rework-session.js         # commit, detect, undo, redo, reopen over MCP
 pnpm run field-guide                    # build the condenser replacement field workflow over MCP
 pnpm run image-session                  # exercise embed, dither, simplify, and review/reference gates over MCP
+pnpm run random-images                  # compare direct 1x and 4x->1x simplify across five seeded-random sources
 pnpm run logo                          # regenerate the canonical 1200x1200 logo
 pnpm run tree                          # regenerate the 540x960 branching-tree study
 node src/viewer/server.js --doc diagrams/example.turtlepen.json
@@ -403,6 +404,13 @@ semantically unverified continuous-tone approximations through `L023`. Prompts,
 hashes, metrics, and usage boundaries are recorded in
 [the image workflow test](docs/image-workflow-test.md); the operational contract
 is [the image scaling procedure](docs/image-scaling-procedure.md).
+
+The [five-case random contact sheet](diagrams/supersample-random-five.svg)
+repeats the supersampling path across seeded RGB/RGBA, portrait/landscape,
+contain/cover, and low/medium/high-detail sources. All five cases preserve the
+same final `48x32`-quadrant geometry, pass save/reopen/render over real MCP, and
+record source plus run hashes in the
+[evidence ledger](docs/supersample-random-five-report.md).
 
 | Group | Tools |
 |---|---|

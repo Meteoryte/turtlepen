@@ -161,6 +161,13 @@ Verified by running it, not by inspection:
   photographs take a colour-aware contour path but always raise `L023` until a
   blind identity review is recorded or a purpose-built derivative replaces the
   result. This keeps “cleaner” from being mistaken for “semantically correct.”
+- **Five seeded-random supersampling cases pass over real MCP.** The permanent
+  `pnpm run random-images` exercise covers RGB and transparent RGBA,
+  portrait/landscape, contain/cover, and low/medium/high detail. Every case keeps
+  its final `48x32`-quadrant footprint, takes the near-binary path, passes the
+  readability gate, survives save/reopen/render, and records source/run hashes.
+  All 5/5 produced different 4x final runs from direct 1x processing; the visual
+  comparison lives in `diagrams/supersample-random-five.svg`.
 - **Drawn artwork has density, not just presence.** `tone` (0.0625–1, or
   `quarter`/`half`/`three-quarter`/`solid`), `feather`, and `texture` on a pen
   path filter its pieces through that same ordered matrix. Because a piece IS

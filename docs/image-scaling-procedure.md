@@ -179,3 +179,13 @@ The raw-photo conversion was also blind-guessed as a teapot rather than an
 outdoor condenser. That is a semantic failure even though the file rendered.
 The corrected workflow keeps the photo embedded and uses the reviewed generated
 derivative for both source-like dither and a bolder simplified approximation.
+
+## Five-case seeded-random exercise
+
+`pnpm run random-images` generates five reproducible sources across RGB/RGBA,
+portrait/landscape, contain/cover, and every explicit detail level. Each is
+placed as source evidence, direct `1x` simplify, and `4x -> 1x` simplify through
+real MCP. The exercise asserts identical final geometry, the requested working
+factor, near-binary provenance, readable output, and clean save/reopen/render.
+See the [contact sheet](../diagrams/supersample-random-five.svg) and
+[hash-backed evidence ledger](supersample-random-five-report.md).

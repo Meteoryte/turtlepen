@@ -108,7 +108,7 @@ The frame matrix proves:
 | path authoring, anchors, ports, arrows, hops | `test/pen.test.js`, `test/connectors.test.js` |
 | groups and durable follow constraints | `test/edit.test.js`, `test/mcp.test.js`, `test/viewer.test.js` |
 | finding adjudication and publication gate | `test/gate.test.js`, `test/viewer.test.js` |
-| image measurement, up/downscale, contain/cover, embedding, tonal dither, 1x/2x/4x supersampled non-fidelity simplification, exact final reduction, minimum semantic size, working-memory limit, continuous-tone review gate, tracing, hostile-input refusal, resize/re-place, save/reopen | `examples/image-session.js`, `test/image-mcp.test.js`, `test/image.test.js`, `test/png.test.js`, `test/dither.test.js`, `test/endpoints.test.js`, `test/viewer.test.js` |
+| image measurement, up/downscale, contain/cover, embedding, tonal dither, 1x/2x/4x supersampled non-fidelity simplification, five seeded-random RGB/RGBA and fit/detail trials, exact final reduction, minimum semantic size, working-memory limit, continuous-tone review gate, tracing, hostile-input refusal, resize/re-place, save/reopen | `examples/image-session.js`, `examples/supersample-random-five.js`, `test/image-mcp.test.js`, `test/image.test.js`, `test/png.test.js`, `test/dither.test.js`, `test/endpoints.test.js`, `test/viewer.test.js` |
 | dimensioned plan/elevation and prompt export | `test/composition.test.js`, `test/mcp.test.js` |
 | 3D perspective provenance | `test/render.test.js`, `test/endpoints.test.js` |
 | exact SVG, ASCII, PNG, and raster output | `test/render.test.js`, `test/png.test.js`, `test/raster.test.js` |
