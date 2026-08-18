@@ -850,7 +850,66 @@ export function createTools(session) {
         const target = resolve(session.cwd, path ?? (session.path ? session.path.replace(/\.turtlepen\.json$/, '.svg') : 'diagram.svg'));
         const findings = markFindings ? core.validate(doc).open : null;
         await core.exportSvg(doc, target, { showGrid, findings, force, bounds, margin });
-        return `wrote ${target}`;
+        // The hash of the bytes actually written. A perceptual review binds to
+        // it, so a review of an older render is visibly stale rather than
+        // quietly wrong. Returning it here is what makes that loop closeable.
+        const { readFile } = await import('node:fs/promises');
+        const hash = core.renderHash(await readFile(target, 'utf8'));
+        return `wrote ${target}\nrenderHash: ${hash}\n\nNow LOOK at it. When you have, record what you saw with perceptual_review — validate cannot tell you whether the drawing depicts what was asked for.`;
+      },
+    },
+
+    {
+      name: 'perceptual_review',
+      description:
+        'Record what a drawing LOOKS like, after rendering and looking at it. validate proves a drawing is structurally undefective; it cannot prove the drawing depicts what was asked for — a corpus once validated CLEAN while a sheep read as a stegosaurus and half-tone spots dithered into plus-signs. Nothing recorded here reaches collision geometry, and the structural and perceptual verdicts are returned side by side, never merged into one flag. A review binds to the renderHash that "render" returned, so editing the drawing afterwards marks the review stale instead of leaving a stale opinion looking current.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action: { description: 'record (default) attaches a review; status returns both verdicts without changing anything', type: 'string', enum: ['record', 'status'] },
+          renderHash: { description: 'the renderHash "render" reported for the bytes you actually looked at', type: 'string' },
+          reviewer: { description: 'who or what looked at it', type: 'string' },
+          note: { type: 'string' },
+          findings: {
+            description: 'what you SAW. Each finding needs a symptom (what it looks like) and a consequence (what a reader would get wrong).',
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                severity: { type: 'string', enum: ['P0', 'P1', 'P2', 'P3'] },
+                category: { type: 'string', enum: [...core.PERCEPTUAL_CATEGORIES] },
+                elements: { type: 'array', items: { type: 'string' } },
+                region: { type: 'string' },
+                symptom: { description: 'what it LOOKS like, not what is wrong with it', type: 'string' },
+                consequence: { description: 'what a reader would conclude because of it', type: 'string' },
+                confidence: { type: 'number' },
+                repair: { type: 'string', enum: [...core.REPAIR_CLASSES] },
+              },
+              required: ['id', 'severity', 'category', 'symptom', 'consequence'],
+              additionalProperties: false,
+            },
+          },
+        },
+        additionalProperties: false,
+      },
+      handler: async ({ action = 'record', renderHash = null, reviewer = null, findings = [], note = null }) => {
+        const doc = need(session);
+        if (action === 'record') {
+          core.OPERATIONS.perceptual_review(doc, { renderHash, reviewer, findings, note });
+        }
+        const current = core.renderHash(core.renderSvg(doc, {}));
+        const v = core.perceptualVerdicts(doc, { structural: core.validate(doc), currentRenderHash: current });
+        const p = v.perceptual;
+        const lines = [
+          `structural: ${v.structural.clean ? 'CLEAN' : 'NOT CLEAN'} (${v.structural.open} open finding(s))`,
+          p.reviewed
+            ? `perceptual: ${p.clean ? 'no blocking findings' : `${p.blocking} blocking`} of ${p.findings} recorded by ${p.reviewer}${p.stale ? ' — STALE: the drawing changed since this review, so it describes bytes nobody is looking at now' : ''}`
+            : 'perceptual: NOT REVIEWED — render it, look at it, and record what you saw. Absence of a review is not a pass.',
+          '',
+          'These are two answers to two different questions and are deliberately not combined. A clean log over the wrong picture is the case that matters.',
+        ];
+        return lines.join('\n');
       },
     },
 
@@ -1481,6 +1540,33 @@ WORKFLOW
 
   Findings are ranked S0 critical, S1 error, S2 warn, S3 info. Accepting a
   finding records intent; it lapses automatically if the geometry changes.
+
+PERCEPTUAL REVIEW — the half validate cannot see
+  render  ->  LOOK  ->  perceptual_review
+
+  validate proves the drawing is UNDEFECTIVE. It cannot prove the drawing
+  depicts what you were asked for. This corpus validated CLEAN while a sheep
+  read as a stegosaurus, two ears rendered as flags, and half-tone spots
+  dithered into plus-signs. Every coordinate was legal. Every one was wrong.
+
+  "render" returns a renderHash. Look at the image, then record what you SAW:
+
+    perceptual_review { renderHash, reviewer, findings: [{
+      id, severity: P0..P3, category, symptom, consequence,
+      elements: [...], repair }] }
+
+  symptom is what it LOOKS like. consequence is what a reader would get wrong.
+  Categories are a closed set: semantic-identity-mismatch, ambiguous-silhouette,
+  misleading-structure, symbol-collision, accidental-glyph, poor-hierarchy,
+  illegible-density, grouping-error, perspective-implausible,
+  annotation-ambiguity.
+
+  Nothing recorded here touches collision geometry — an opinion must never
+  silently become an engine fact. The two verdicts come back SIDE BY SIDE and
+  are never merged, because a clean log over the wrong picture is the case that
+  matters. Editing the drawing marks an existing review STALE rather than
+  leaving a stale opinion looking current, and a document with no review is
+  NOT REVIEWED, never clean: absence of a review is not a pass.
 
 THE LATTICE
   1 cell = 10x10 px.  1 quadrant = 5x5 px.  Strokes are 5px = 1 quadrant thick.

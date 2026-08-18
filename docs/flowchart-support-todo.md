@@ -231,7 +231,7 @@ everything else because F2, F3, F6 and F9 all compile onto it.
 
 ---
 
-## F10 — Perceptual review layer — **BUILT (core), MCP surface pending**
+## F10 — Perceptual review layer — **DONE**
 
 Added 2026-08-18 from the Forge-authored *TurtlePen Evaluation, Perceptual QA
 and Benchmarking Prompt Pack v1.0*, which independently reached this session's
@@ -251,6 +251,14 @@ conclusion and cited the farm-animal failures as its calibration examples.
 - an unreviewed document is `reviewed: false`, never `clean: true`. Absence of
   review must not read as a pass.
 
-**Still to do:** an MCP tool surface. A capability the help does not name is
-invisible to an agent, so until `perceptual_review` exists as a tool this is
-reachable from `src/core` only. That is the next step, not a shipped one.
+**Reachable.** `perceptual_review` is tool 36, `render` now returns the
+`renderHash` a review binds to, and `HELP` carries a PERCEPTUAL REVIEW section —
+so the loop `render -> LOOK -> perceptual_review` is one an agent can actually
+follow. Recording a review goes through `core.OPERATIONS`, so `plan` can rehearse
+it and history can undo it; a mutation only the tool layer could perform would be
+invisible to rehearsal.
+
+Two existing contract tests caught the addition and both were right to: the
+documented tool count is asserted, and `endpoints.test.js` requires every
+advertised tool to complete a representative use case over real stdio. The
+perceptual loop is now exercised there end to end.

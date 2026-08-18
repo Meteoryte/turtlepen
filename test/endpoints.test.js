@@ -92,7 +92,25 @@ test('every advertised MCP tool completes a representative use case over stdio',
     assert.match(await invoke('plan', { operations, commit: true }), /committed 1 operation/);
     await invoke('set_canvas', { cols: 100, rows: 60 });
     await invoke('remove', { id: 'obstacle' });
-    await invoke('render', { path: 'endpoint.svg', showGrid: false, force: true, bounds: 'canvas' });
+    const rendered = await invoke('render', { path: 'endpoint.svg', showGrid: false, force: true, bounds: 'canvas' });
+    // render must hand back the hash a perceptual review binds to, and the
+    // review must come back with BOTH verdicts rather than one merged flag.
+    const renderHash = /renderHash: ([0-9a-f]{16})/.exec(rendered)[1];
+    const reviewed = await invoke('perceptual_review', {
+      renderHash,
+      reviewer: 'endpoint-matrix',
+      findings: [{
+        id: 'p1',
+        severity: 'P2',
+        category: 'annotation-ambiguity',
+        elements: ['tag'],
+        symptom: 'the disconnect label sits nearer the condenser than the run it names',
+        consequence: 'a reader attaches the label to the wrong element',
+        repair: 'move',
+      }],
+    });
+    assert.match(reviewed, /structural:/);
+    assert.match(reviewed, /perceptual:/);
     await invoke('save', { path: 'endpoint-copy.turtlepen.json', force: true });
 
     await invoke('new_diagram', { name: 'wireframe endpoint', path: 'wireframe.turtlepen.json', cols: 80, rows: 50 });

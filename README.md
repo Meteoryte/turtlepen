@@ -611,6 +611,36 @@ Z-page stacked *beneath* the pen, so the nib genuinely overlaps the artwork it i
 drawing. Nothing was hand-plotted — the recursion is the image-placement
 pipeline pointed at the mark it belongs to.
 
+### Perceptual review — the half `validate` cannot see
+
+`validate` proves a drawing is structurally **undefective**. It cannot prove the
+drawing depicts what was asked for. This repository has the evidence twice over:
+a farm-animal session validated CLEAN while a sheep read as a stegosaurus, two
+ears rendered as flags, and half-tone spots dithered into plus-signs. Every
+coordinate was legal; every one of those was wrong.
+
+So the loop is `render -> LOOK -> perceptual_review`, and `render` returns a
+`renderHash` to bind a review to:
+
+```
+perceptual_review { renderHash, reviewer, findings: [{
+  id, severity: P0..P3, category, symptom, consequence, elements, repair }] }
+```
+
+`symptom` is what it **looks like**; `consequence` is what a reader would get
+wrong. Four properties make it safe to have opinions in a deterministic engine:
+
+- **Nothing here reaches collision geometry.** A test asserts that attaching a
+  review leaves the collision log byte-identical. An opinion must never silently
+  become an engine fact.
+- **The two verdicts are never merged.** Structural and perceptual come back side
+  by side, because a clean log over the wrong picture is the case that matters.
+- **A review goes stale when the drawing changes**, since it is bound to the
+  hash of the bytes the critic actually saw — the acceptance-fingerprint
+  discipline applied to opinions.
+- **An unreviewed document is `NOT REVIEWED`, never clean.** Absence of a review
+  is not a pass.
+
 Roadmap for the imaging gaps — raster **out** and filling a closed path — is in
 [`docs/imaging-capability-roadmap.md`](docs/imaging-capability-roadmap.md), with
 paste-ready prompts in

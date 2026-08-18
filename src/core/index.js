@@ -522,6 +522,10 @@ export const OPERATIONS = Object.freeze({
   set_canvas: (doc, a) => setCanvas(doc, a.cols, a.rows),
   wireframe: (doc, a) => applyWireframe(doc, a),
   perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
+  // A review is document state, so it goes through OPERATIONS like every other
+  // mutation: rehearsable in plan, undoable in history. A mutation only the
+  // tool layer could perform would be invisible to rehearsal.
+  perceptual_review: (doc, a) => perceptual.attachPerceptualReview(doc, a),
   accept_finding: (doc, a) => acceptFinding(doc, a.fingerprint, a.reason),
   unaccept_finding: (doc, a) => unacceptFinding(doc, a.fingerprint),
   group: (doc, a) => {
