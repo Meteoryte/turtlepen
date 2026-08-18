@@ -525,3 +525,51 @@ The following sample diagrams and visual scenes were authored using TurtlePen MC
 
 Authoring script: `build_gemini_3.1_diagrams.js`  
 Model used: **Gemini 3.1 Pro (High)**
+
+---
+
+The following were authored using TurtlePen MCP tools by **Claude Opus 5**:
+
+### Five Farm Animals — with a full working record
+
+- **Composition**: [Five Farm Animals](diagrams/farm-animals.svg) ([JSON](diagrams/farm-animals.turtlepen.json))
+- **📄 Working record (PDF)**: [**TurtlePen — Five Farm Animals**](docs/TurtlePen-Five-Farm-Animals.pdf) · 14 pages
+
+The PDF is the interesting artifact, not the drawing. It documents the whole
+authoring loop end to end: how each silhouette is constructed, every pen program
+as committed, which collision findings were **real defects** and which were
+**declared anatomy** via `accept_finding`, what the session taught, the complete
+`turtlepen_help` text, and a gallery of every SVG in this repository.
+
+Cow, pig, sheep, rooster and horse each fold **head, body and all four legs into
+a single closed polygon**. The obvious alternative — a body outline plus four
+vertical leg strokes — T-junctions every leg into the belly and raises an `L006`
+per leg; folding them into the outline gives exact geometry *and* better line
+art, because that is how a silhouette is genuinely drawn.
+
+The session is also a worked example of why a green log is not a finished
+drawing. `validate` returned CLEAN while the sheep read as a stegosaurus, two
+"ears" rendered as flags, and half-tone spots dithered into plus-signs. All of
+it was caught by rasterising and looking — the reason `WORKFLOW` and `THE CANVAS
+IS NOT A BUDGET` now open `turtlepen_help` instead of sitting 200 lines down.
+
+### Logo v2 — the mark drawing itself
+
+![TurtlePen logo v2 — the turtle drawing the old logo](brand/logo-v2.svg)
+
+[SVG](brand/logo-v2.svg) · ([JSON](brand/logo-v2.turtlepen.json))
+
+The squiggle on the easel is replaced by the **previous logo**, placed with
+`place_image mode:"simplify"` from a raster of `brand/logo-mark.svg` and resolved
+onto the lattice through a 4× working canvas. It sits on its own `drawing`
+Z-page stacked *beneath* the pen, so the nib genuinely overlaps the artwork it is
+drawing. Nothing was hand-plotted — the recursion is the image-placement
+pipeline pointed at the mark it belongs to.
+
+Roadmap for the imaging gaps this exercise exposed — raster **out** and filling a
+closed path — is in
+[`docs/imaging-capability-roadmap.md`](docs/imaging-capability-roadmap.md), with
+paste-ready prompts in
+[`docs/imaging-capability-prompts.md`](docs/imaging-capability-prompts.md).
+
+Model used: **Claude Opus 5**

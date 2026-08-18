@@ -1431,6 +1431,42 @@ WHY IT EXISTS
   before placement, every coordinate is an integer, and every defect is reported
   with a severity and a numeric fix. Nothing is ever silently resized.
 
+THE CANVAS IS NOT A BUDGET
+  The grid is unbounded right and down. 160x100 is a starting size, not a limit,
+  and set_canvas grows it. If a shape is cramped, MAKE IT BIGGER — an author who
+  fights for room inside a size they picked early has mistaken their own first
+  guess for a constraint.
+
+  Two more things that are easy to forget you have:
+    - A feature can be MORE THAN ONE STROKE. If detail would damage a shape by
+      being carved out of it, draw a second mark beside it instead. Additive
+      beats subtractive: subtracting from a stroke that carries the meaning
+      destroys the thing you are annotating.
+    - Layers. add_page with intent "overlay" puts marks ON TOP without an L001,
+      so annotation, texture, and construction can live apart from the artwork
+      instead of competing with it for the same quadrants.
+
+WORKFLOW
+  measure -> plan -> commit -> validate -> render -> LOOK AT IT
+                                        -> accept_finding for anything deliberate.
+  Only a fingerprint in the current validation may be accepted. Geometry changes
+  make the old acceptance visibly stale; unaccept_finding withdraws that record.
+  A committed edit that proves wrong is recoverable with history action="undo".
+
+  Rendering and looking is part of the loop, not an optional last step. A clean
+  log is evidence the drawing is undefective, never that it is finished — a
+  corpus once validated clean while a rug sat 60 cells from the sofa and an
+  apple's stem floated clear of the fruit. Use "ascii" to read the actual
+  quadrants; it is cheaper than a render and catches a malformed shape fastest.
+
+  "plan" is the important one: send the whole composition as a batch of
+  operations and read the collision log BEFORE anything is committed. The
+  document is untouched until you re-send with commit:true, and a batch that
+  fails part-way applies nothing at all.
+
+  Findings are ranked S0 critical, S1 error, S2 warn, S3 info. Accepting a
+  finding records intent; it lapses automatically if the geometry changes.
+
 THE LATTICE
   1 cell = 10x10 px.  1 quadrant = 5x5 px.  Strokes are 5px = 1 quadrant thick.
   Every legal position is a whole number of quadrants, so results are exact.
@@ -1618,42 +1654,6 @@ CONNECTORS: THE TWO MISTAKES WORTH KNOWING
   2. Assuming "to <id>.<port>" arrives. It only sets the DISTANCE along the way
      you are travelling. If the run is on a different row or column from the
      target, it stops level with it and never touches it — reported as L016.
-
-THE CANVAS IS NOT A BUDGET
-  The grid is unbounded right and down. 160x100 is a starting size, not a limit,
-  and set_canvas grows it. If a shape is cramped, MAKE IT BIGGER — an author who
-  fights for room inside a size they picked early has mistaken their own first
-  guess for a constraint.
-
-  Two more things that are easy to forget you have:
-    - A feature can be MORE THAN ONE STROKE. If detail would damage a shape by
-      being carved out of it, draw a second mark beside it instead. Additive
-      beats subtractive: subtracting from a stroke that carries the meaning
-      destroys the thing you are annotating.
-    - Layers. add_page with intent "overlay" puts marks ON TOP without an L001,
-      so annotation, texture, and construction can live apart from the artwork
-      instead of competing with it for the same quadrants.
-
-WORKFLOW
-  measure -> plan -> commit -> validate -> render -> LOOK AT IT
-                                        -> accept_finding for anything deliberate.
-  Only a fingerprint in the current validation may be accepted. Geometry changes
-  make the old acceptance visibly stale; unaccept_finding withdraws that record.
-  A committed edit that proves wrong is recoverable with history action="undo".
-
-  Rendering and looking is part of the loop, not an optional last step. A clean
-  log is evidence the drawing is undefective, never that it is finished — a
-  corpus once validated clean while a rug sat 60 cells from the sofa and an
-  apple's stem floated clear of the fruit. Use "ascii" to read the actual
-  quadrants; it is cheaper than a render and catches a malformed shape fastest.
-
-  "plan" is the important one: send the whole composition as a batch of
-  operations and read the collision log BEFORE anything is committed. The
-  document is untouched until you re-send with commit:true, and a batch that
-  fails part-way applies nothing at all.
-
-  Findings are ranked S0 critical, S1 error, S2 warn, S3 info. Accepting a
-  finding records intent; it lapses automatically if the geometry changes.
 
 EVERY FIX HAS A TOOL
   widen / heighten -> resize        shorten / font -> restyle

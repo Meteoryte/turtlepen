@@ -1,0 +1,415 @@
+TurtlePen — an integer-exact grid for AI-authored diagrams.
+
+WHY IT EXISTS
+  Diagram tools measure text at render time, long after a layout was chosen, so
+  labels overflow their boxes and nothing notices. Here measurement happens
+  before placement, every coordinate is an integer, and every defect is reported
+  with a severity and a numeric fix. Nothing is ever silently resized.
+
+THE CANVAS IS NOT A BUDGET
+  The grid is unbounded right and down. 160x100 is a starting size, not a limit,
+  and set_canvas grows it. If a shape is cramped, MAKE IT BIGGER — an author who
+  fights for room inside a size they picked early has mistaken their own first
+  guess for a constraint.
+
+  Two more things that are easy to forget you have:
+    - A feature can be MORE THAN ONE STROKE. If detail would damage a shape by
+      being carved out of it, draw a second mark beside it instead. Additive
+      beats subtractive: subtracting from a stroke that carries the meaning
+      destroys the thing you are annotating.
+    - Layers. add_page with intent "overlay" puts marks ON TOP without an L001,
+      so annotation, texture, and construction can live apart from the artwork
+      instead of competing with it for the same quadrants.
+
+WORKFLOW
+  measure -> plan -> commit -> validate -> render -> LOOK AT IT
+                                        -> accept_finding for anything deliberate.
+  Only a fingerprint in the current validation may be accepted. Geometry changes
+  make the old acceptance visibly stale; unaccept_finding withdraws that record.
+  A committed edit that proves wrong is recoverable with history action="undo".
+
+  Rendering and looking is part of the loop, not an optional last step. A clean
+  log is evidence the drawing is undefective, never that it is finished — a
+  corpus once validated clean while a rug sat 60 cells from the sofa and an
+  apple's stem floated clear of the fruit. Use "ascii" to read the actual
+  quadrants; it is cheaper than a render and catches a malformed shape fastest.
+
+  "plan" is the important one: send the whole composition as a batch of
+  operations and read the collision log BEFORE anything is committed. The
+  document is untouched until you re-send with commit:true, and a batch that
+  fails part-way applies nothing at all.
+
+  Findings are ranked S0 critical, S1 error, S2 warn, S3 info. Accepting a
+  finding records intent; it lapses automatically if the geometry changes.
+
+THE LATTICE
+  1 cell = 10x10 px.  1 quadrant = 5x5 px.  Strokes are 5px = 1 quadrant thick.
+  Every legal position is a whole number of quadrants, so results are exact.
+
+ADDRESSING (Excel)
+  C4        whole cell            C4.tl     pin point (tl t tr l c r bl b br)
+  C4.q2     quadrant (q1..q4)     origin A1 top-left, unbounded right and down
+  Start at an inset origin such as T20 if the drawing may grow up or left.
+
+FREE SPACE
+  free_space defaults to scope="stack": all non-reference pages constrain the
+  answer, including hidden pages because validation still checks them. Every
+  response names searched_pages. Use scope="page" only when cross-page overlap
+  is intentional. Supply cellsW and cellsH together, or neither to list regions.
+
+REGIONAL DESCRIPTION
+  describe { region: "C4:AZ40" } returns only elements whose exact claimed
+  rectangles touch that range. Paths are tested piece by piece, not by a loose
+  bounding box. Add page to narrow both page and region; the response repeats
+  the normalized effective filter.
+
+DIMENSIONED COMPOSITIONS
+  wireframe authors a plan/elevation in real inches and measures routed runs;
+  export_prompt turns that stored composition into a normalized image brief.
+  The source survives save/open. Before export, TurtlePen verifies every
+  generated box and route still matches it; stale geometry is refused by name.
+  Undo the manual edit or rerun wireframe rather than exporting old facts.
+  perspective_scene projects real room inches through a declared camera and
+  preserves those inputs as provenance with the document.
+
+HISTORY AND RECOVERY
+  history { action: "status" }                  inspect the recovery boundary
+  history { action: "undo" }                    reverse the newest mutation
+  history { action: "redo" }                    reapply the newest undone edit
+  history { action: "clear" }                   discard undo and redo entries
+
+  The newest 100 successful document mutations are recoverable by default
+  (TURTLEPEN_HISTORY_LIMIT accepts 1..1000). Failed and no-op calls do not consume
+  history; a new edit after undo clears redo. A versioned sidecar is bound to the
+  exact document hash, so undo/redo survives open and process restart. Outside
+  edits invalidate stale history rather than replaying it against the wrong file.
+
+GROUPS AND FOLLOW RELATIONSHIPS
+  group { action: "create", id, members }        own a flat subsystem
+  group { action: "move", id, cellsX, cellsY }  move every member exactly once
+  constraint { action: "create", id,
+               dependent, target }              keep current anchor relationship
+  constraint { action: "sync", id }             restore the stored offset
+
+  An element belongs to at most one group. A dependent has at most one parent;
+  chains cascade and cycles are refused. Named and indexed anchors work, offsets
+  are whole quadrants, and describe reports groups plus relationship sync state.
+
+PEN GRAMMAR
+  pen from <id>.<N|S|E|W>                      START HERE for connectors: seats
+                                               the cursor just outside a box's
+                                               face, already facing away from it
+  pen from <id>.<face>#<slot>                  fan out competing connectors;
+                                               #1 is the midpoint, #2 left/up,
+                                               #3 right/down, then alternate by
+                                               one cell (example: gateway.S#2)
+  pen <address> [<pin>]                        place the cursor by address
+  face <dir>                                   turn without drawing
+  <dir> [n] [align <side>] [<style>] line      draw n cells of 5px stroke
+  <dir> [<style>] corner align <sideA> <sideB> place a junction and turn
+  <dir> ... line to <address|id.port>          draw until it reaches a target;
+                                               indexed target faces also work
+
+SHAPES — anything that is not a rectangle
+  ray to <address>                             a straight line at ANY angle
+  circle <r>                                   outline; radius in quadrants
+  disc <r>                                     the same circle, filled
+  arc <r> <startDeg> <endDeg>                  clockwise from east
+  polygon <addr> <addr> <addr> ...             closed
+  triangle <addr> <addr> <addr>                exactly three points
+  dot [<dir8>]                                 one quadrant
+  dash <n> <dir8>                              n quadrants, any of eight ways
+  dir8 = n ne e se s sw w nw  (up/down/left/right also accepted)
+
+ANCHORS — position as a relationship, not a coordinate
+  pen at <id>.<anchor>                         put the cursor ON an element
+  <shape> ... at <id>.<anchor>                 anchor a shape to one
+  <shape> ... at <id>.<anchor> offset <dx> <dy>   nudge in whole quadrants
+  anchors: N NE E SE S SW W NW C
+
+  "from" gives the SEAT, one step OUTSIDE the element, where a connector starts.
+  "at" gives the anchor itself, on the element, where a shape belongs. Anchoring
+  avoids hand-computed placement drift when the program runs. This grammar alone
+  does not store a relationship: rerun the declarative program to recompute it,
+  or create an explicit constraint when the dependent must follow later edits.
+
+  These are integer algorithms — Bresenham for lines, midpoint for circles — so
+  the same command always covers the same quadrants. A stepped diagonal is not
+  an approximation of a line; on a lattice it IS the line.
+  <dir> arrow                                  arrowhead pointing that way
+  <dir> hop                                    deliberate crossing (exempt from L006)
+  box span <W>x<H> at <address> label "..." [style <s>] [id <name>]
+  text "..." at <address> [span <W>x<H>] [id <name>]
+       [font <px>] [fill <#hex>] [weight <100..900>] [align left|center|right]
+
+ARTWORK PRESENTATION (arguments on the pen tool or plan operation)
+  role: "artwork"                              open marks are not connectors
+  color: "#rrggbb", width: 1..5, cap: "round" continuous presentation ink
+  paint: "cells"                               colour every exact claimed quadrant
+
+TONE — density, and why it is not opacity
+  tone: 0.0625..1                              or "quarter" "half"
+                                               "three-quarter" "solid"
+  feather: <n>                                 quadrants of falloff inward
+                                               from the region boundary
+  texture: "eroded"                            seeded rough edge, deterministic
+
+  tone changes WHAT IS INKED. A half-tone shape inks half its quadrants through
+  the same ordered matrix that dithers images, so it CLAIMS half — collision
+  stays honest and the result survives into a font as real contours.
+  opacity changes how the SAME geometry is painted; the element still claims
+  every quadrant it did at full strength, which is what L019 exists to catch.
+  They are separate controls on purpose. Do not reach for opacity to make an
+  overlap go away.
+
+  pattern: "dashed" | "dotted"                rhythm ALONG the path
+
+  A dash is keyed to DISTANCE TRAVELLED, not to the lattice, so it keeps its
+  rhythm around a corner and reads as one broken line. Keying it to the lattice
+  the way tone is keyed would restart the cycle at every turn and produce a line
+  that looks damaged rather than dashed. Use it for a projected trendline, a
+  leader, or any boundary the reader should understand as inferred.
+
+  The threshold keys off absolute lattice position, so two toned shapes tile
+  seamlessly where they meet and the same command always inks the same
+  quadrants. Below 0.0625 nothing inks at all, so it is rejected rather than
+  drawn as an invisible element that still occupies space.
+
+DRAWING FROM A SOURCE — reach for this BEFORE deriving geometry by hand
+  measure_image source [maxWidthCells|maxHeightCells] [fit]
+    Reports the measured whole-cell footprint plus separate embedded-pixel and
+    dither/simplify quadrant scales. Read UPSCALE, DOWNSCALE, or EXACT before placement.
+    Upscaling repeats/interpolates existing information; it creates no detail.
+  place_image  id at span source [mode] [fit] [detail] [supersample] [opacity] [page]
+    mode "simplify" intentionally makes a perceptual approximation rather than
+                   a 1:1 copy. Near-binary sources use clean contrast thresholding;
+                   continuous-tone sources use colour-aware contour selection and
+                   raise L023 because geometry cannot know the subject. detail is
+                   auto|low|medium|high. Fewer than 24 quadrants on the short side
+                   is refused; use a larger span or purpose-built icon artwork.
+                   supersample is auto|1|2|4. A factor of 4 builds a working canvas
+                   at 4x width and height, then box-averages each 16-sample block
+                   into one of 17 exact final coverage levels. Runs retain that
+                   coverage through save/reopen. auto prefers 4x within limits.
+    mode "dither"  quantises the image ONTO the lattice through a 4x4 Bayer
+                   matrix. Real quadrants, merged into runs, byte-identical
+                   every run. Downscale area-averages; upscale repeats nearest
+                   samples. PNG decodes on node:zlib alone. L022 blocks a busy
+                   checker result. Remove and re-place to change its span.
+    mode "embed"   (default) keeps a picture as a picture; it still claims an
+                   exact footprint and collides like any other element. Use it
+                   for photos and evidence. Resize recomputes its scale report.
+    fit  "contain" (default) preserves every edge with possible padding;
+         "cover" fills the footprint by cropping overflow. Both preserve aspect.
+  place_reference source span [at] [opacity] [id] [mode] [fit] [detail] [supersample]
+    Lays a dithered or simplified copy UNDER the drawing to trace over, flagged
+    L020 until remove_page takes it out, so scaffolding cannot ship.
+
+  If a shape has to LOOK like something real — a brain, a leaf, a face — a
+  formula will not get there. Sine waves are not cortex. Simplify prepared
+  source art, dither it, or trace a reference. Hand-computing a bitmap is the long way round, and the
+  usual reason an author reaches for it is that they did not know these exist.
+
+  dir     up down left right          n counts whole 10px cells
+  align   vertical strokes: left|right    horizontal strokes: top|bottom
+          (no centre — a 5px stroke centred in a 10px cell starts at 2.5px)
+  style   square rounded indented chamfered
+  sides   top bottom left right — a corner names the two sides it connects;
+          one of them must be the side the path arrives on
+
+EXAMPLE — a connector between two boxes, with no address arithmetic
+  pen from gateway.S
+  down align right line to checkout.N arrow
+
+CONNECTORS: THE TWO MISTAKES WORTH KNOWING
+  1. Starting at an address you worked out yourself. A box's south face is
+     already outside it, but its north face is its own top row — so leaving
+     northward starts one quadrant higher. Use "pen from <id>.<face>" instead;
+     place_box and describe also report the seat address for every face.
+  2. Assuming "to <id>.<port>" arrives. It only sets the DISTANCE along the way
+     you are travelling. If the run is on a different row or column from the
+     target, it stops level with it and never touches it — reported as L016.
+
+EVERY FIX HAS A TOOL
+  widen / heighten -> resize        shorten / font -> restyle
+  move             -> move          rename         -> rename
+  intent           -> update_page   canvas         -> set_canvas
+  extend           -> extend_path   reroute        -> replace_path
+  offset / hop     -> replace_path with a hop piece or the other alignment
+
+lattice:
+{
+  "pxPerCell": 10,
+  "pxPerQuadrant": 5,
+  "quadrantsPerCell": 2,
+  "strokeWidthPx": 5,
+  "addressing": "Excel: columns A..Z, AA.., rows 1.. ; origin A1 top-left; unbounded right and down",
+  "precisions": {
+    "cell": "C4",
+    "pin": "C4.tl (9 per cell)",
+    "quadrant": "C4.q2 (4 per cell)"
+  },
+  "pins": [
+    "tl",
+    "t",
+    "tr",
+    "l",
+    "c",
+    "r",
+    "bl",
+    "b",
+    "br"
+  ],
+  "font": {
+    "size": 10,
+    "advancePx": 6,
+    "lineHeightPx": 15,
+    "paddingQuads": 1
+  },
+  "capacity": {
+    "charsPerCellWidth": 1.6666666666666667,
+    "formula": "chars per line = floor((cellsWide * 10 - 10) / 6)"
+  },
+  "strokeAlignments": {
+    "vertical": [
+      "left",
+      "right"
+    ],
+    "horizontal": [
+      "top",
+      "bottom"
+    ],
+    "note": "no centre: a 5px stroke centred in a 10px cell would start at 2.5px, off the lattice"
+  },
+  "cornerStyles": [
+    "square",
+    "rounded",
+    "indented",
+    "chamfered"
+  ],
+  "legibilityFloorPx": 8
+}
+
+rules:
+{
+  "L001": {
+    "severity": "S0",
+    "title": "node overlap",
+    "blurb": "two elements claim the same quadrants on one page"
+  },
+  "L002": {
+    "severity": "S1",
+    "title": "label too wide",
+    "blurb": "measured text is wider than the box interior"
+  },
+  "L003": {
+    "severity": "S1",
+    "title": "label too tall",
+    "blurb": "wrapped text needs more lines than the box can show"
+  },
+  "L004": {
+    "severity": "S1",
+    "title": "stroke crosses node",
+    "blurb": "a path runs through the inked body of a box"
+  },
+  "L005": {
+    "severity": "S1",
+    "title": "exclusive page overlap",
+    "blurb": "a page declared exclusive overlaps content below it"
+  },
+  "L006": {
+    "severity": "S2",
+    "title": "stroke overlap",
+    "blurb": "two paths claim the same quadrant with no junction"
+  },
+  "L007": {
+    "severity": "S2",
+    "title": "no gutter",
+    "blurb": "two boxes touch with no separating quadrant"
+  },
+  "L008": {
+    "severity": "S2",
+    "title": "dangling path end",
+    "blurb": "a path ends without meeting a box or another path"
+  },
+  "L009": {
+    "severity": "S2",
+    "title": "below legibility floor",
+    "blurb": "font size under 8px"
+  },
+  "L010": {
+    "severity": "S3",
+    "title": "overlay overlap",
+    "blurb": "expected overlap from a page declared as an overlay"
+  },
+  "L011": {
+    "severity": "S2",
+    "title": "outside canvas",
+    "blurb": "an element extends past the declared canvas bounds"
+  },
+  "L012": {
+    "severity": "S0",
+    "title": "duplicate id",
+    "blurb": "the same element id appears more than once"
+  },
+  "L013": {
+    "severity": "S3",
+    "title": "passes through corner cut",
+    "blurb": "a path crosses a claimed but un-inked corner quadrant"
+  },
+  "L014": {
+    "severity": "S2",
+    "title": "path discontinuity",
+    "blurb": "a stroke was drawn on a track the cursor was not on"
+  },
+  "L015": {
+    "severity": "S2",
+    "title": "path self-overlap",
+    "blurb": "a path re-draws a quadrant it already covered"
+  },
+  "L016": {
+    "severity": "S2",
+    "title": "target not reached",
+    "blurb": "a path named a destination but stops short of touching it"
+  },
+  "L017": {
+    "severity": "S3",
+    "title": "centring bias",
+    "blurb": "centred text could not be split evenly, so a pixel went left"
+  },
+  "L018": {
+    "severity": "S3",
+    "title": "centring bias",
+    "blurb": "a stroke centred in an even corridor could not sit exactly in the middle"
+  },
+  "L019": {
+    "severity": "S2",
+    "title": "invisible but claiming",
+    "blurb": "an element faded past legibility still occupies its quadrants"
+  },
+  "L020": {
+    "severity": "S2",
+    "title": "reference still present",
+    "blurb": "a tracing underlay is still in the document"
+  },
+  "L021": {
+    "severity": "S1",
+    "title": "overlay obscures text",
+    "blurb": "opaque overlay content crosses a lower text run"
+  },
+  "L022": {
+    "severity": "S2",
+    "title": "busy raster image",
+    "blurb": "high-frequency black/white transitions obscure image identity"
+  },
+  "L023": {
+    "severity": "S2",
+    "title": "heuristic image approximation",
+    "blurb": "continuous-tone source was simplified without semantic understanding"
+  },
+  "C001": {
+    "severity": "S3",
+    "title": "sparse canvas",
+    "blurb": "the page has so little ink that nothing was really composed"
+  }
+}

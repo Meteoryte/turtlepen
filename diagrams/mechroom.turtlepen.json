@@ -1,0 +1,363 @@
+{
+  "schema": 1,
+  "name": "m",
+  "canvas": {
+    "cols": 80,
+    "rows": 60
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-12T22:02:20.193Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "wall_n",
+        "kind": "box",
+        "rect": {
+          "x": 1,
+          "y": 1,
+          "w": 122,
+          "h": 1
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "wall_s",
+        "kind": "box",
+        "rect": {
+          "x": 1,
+          "y": 82,
+          "w": 122,
+          "h": 1
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "wall_w",
+        "kind": "box",
+        "rect": {
+          "x": 1,
+          "y": 2,
+          "w": 1,
+          "h": 80
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "wall_e",
+        "kind": "box",
+        "rect": {
+          "x": 122,
+          "y": 2,
+          "w": 1,
+          "h": 80
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "RTU1",
+        "kind": "box",
+        "rect": {
+          "x": 18,
+          "y": 18,
+          "w": 30,
+          "h": 16
+        },
+        "label": "RTU1",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "RTU1_clr_n",
+        "kind": "box",
+        "rect": {
+          "x": 6,
+          "y": 6,
+          "w": 54,
+          "h": 12
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "RTU1_clr_s",
+        "kind": "box",
+        "rect": {
+          "x": 6,
+          "y": 34,
+          "w": 54,
+          "h": 12
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "RTU1_clr_w",
+        "kind": "box",
+        "rect": {
+          "x": 6,
+          "y": 18,
+          "w": 12,
+          "h": 16
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "RTU1_clr_e",
+        "kind": "box",
+        "rect": {
+          "x": 48,
+          "y": 18,
+          "w": 12,
+          "h": 16
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "AHU2",
+        "kind": "box",
+        "rect": {
+          "x": 54,
+          "y": 18,
+          "w": 16,
+          "h": 10
+        },
+        "label": "AHU2",
+        "fontSize": 10,
+        "corner": "square",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "AHU2_clr_n",
+        "kind": "box",
+        "rect": {
+          "x": 44,
+          "y": 8,
+          "w": 36,
+          "h": 10
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "AHU2_clr_s",
+        "kind": "box",
+        "rect": {
+          "x": 44,
+          "y": 28,
+          "w": 36,
+          "h": 10
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "AHU2_clr_w",
+        "kind": "box",
+        "rect": {
+          "x": 44,
+          "y": 18,
+          "w": 10,
+          "h": 10
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "AHU2_clr_e",
+        "kind": "box",
+        "rect": {
+          "x": 70,
+          "y": 18,
+          "w": 10,
+          "h": 10
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      }
+    ]
+  },
+  "acceptances": [
+    {
+      "fingerprint": "061bb80d83f5",
+      "reason": "Clearance bands of RTU1 meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "0e81ad1a11f0",
+      "reason": "Clearance bands of AHU2 meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "20d5a199a2c0",
+      "reason": "A clearance band sits against AHU2 by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "2c8dc9f71241",
+      "reason": "Clearance bands of RTU1 meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "534e3ccc478d",
+      "reason": "Clearance bands of RTU1 meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "6da0d67579bb",
+      "reason": "Clearance bands of AHU2 meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "7aae0f858983",
+      "reason": "Clearance bands of AHU2 meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "81f20a547f32",
+      "reason": "Clearance bands of RTU1 meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "8f9468d114e6",
+      "reason": "A clearance band sits against RTU1 by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "9469c17760f3",
+      "reason": "A clearance band sits against RTU1 by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "9aa6776591c1",
+      "reason": "A clearance band sits against AHU2 by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "a7ba400a1d5b",
+      "reason": "A clearance band sits against AHU2 by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "b402b932cfd8",
+      "reason": "A clearance band sits against RTU1 by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "bfdd180397dc",
+      "reason": "A clearance band sits against AHU2 by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "c47a6c7d23d4",
+      "reason": "A clearance band sits against RTU1 by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    },
+    {
+      "fingerprint": "cb6206e8ada6",
+      "reason": "Clearance bands of AHU2 meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-12T22:02:20.247Z"
+    }
+  ]
+}
