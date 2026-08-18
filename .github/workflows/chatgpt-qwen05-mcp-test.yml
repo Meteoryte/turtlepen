@@ -1,0 +1,46 @@
+name: ChatGPT Qwen 0.5B TurtlePen MCP Test
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  qwen05-mcp-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install CPU model runtime
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install 'transformers>=4.48,<5' sentencepiece safetensors
+
+      - name: Confirm TurtlePen regression suite first
+        run: npm test
+
+      - name: Run Qwen 0.5B as TurtlePen MCP author
+        env:
+          HF_HUB_DISABLE_TELEMETRY: '1'
+          TOKENIZERS_PARALLELISM: 'false'
+        run: python tools/chatgpt_qwen05_mcp_experiment.py
+
+      - name: Upload experiment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen05-turtlepen-mcp-results
+          path: qwen05_results/
+          if-no-files-found: warn
+          retention-days: 7
