@@ -344,3 +344,24 @@ thing and the caller should not have to assume.
 Still open from that list: no-progress detection, unique-id maintenance, and
 resisting premature "done" — the last of which `HELP` now addresses in prose but
 nothing enforces.
+
+## F12 — No-progress detection — **DONE**
+
+`src/core/progress.js`, surfaced through `validate`. The second of the Qwen
+gaps: "recognizing no-progress loops" is something a stronger model does by
+noticing and a weaker one does not do at all, and nothing told either.
+
+Three consecutive checks with edits between them and the **same finding set**
+appends a NO PROGRESS note. The digest hashes finding identities rather than
+counting them, because fixing one finding while introducing another leaves the
+count unchanged and is not standing still.
+
+It watches the sequence of attempts, never the drawing — so it advises, never
+blocks, and never becomes a collision rule. Validating twice without editing is
+not stagnation, a clean document is never nagged, and swapping one finding for
+another reads as movement. A guard that cries wolf teaches you to ignore it,
+which is worse than not having one, so the quiet cases are tested as carefully
+as the loud one.
+
+Remaining from the Qwen list: unique-id maintenance, and resisting premature
+"done" — which `HELP` now addresses in prose but nothing enforces.

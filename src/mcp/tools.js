@@ -29,7 +29,7 @@ export function createSession({ cwd = process.cwd(), createdAt = null, historyLi
     throw new RangeError(`historyLimit must be a whole number from 1 to ${MAX_HISTORY_LIMIT} — got ${JSON.stringify(historyLimit)}`);
   }
   return {
-    doc: null, path: null, cwd, createdAt, historyLimit,
+    doc: null, path: null, cwd, createdAt, historyLimit, progress: core.createProgressLog(),
     history: [], future: [], historyNotice: 'no diagram is open',
   };
 }
@@ -420,8 +420,18 @@ export function createTools(session) {
         additionalProperties: false,
       },
       handler: ({ page = null, format = 'log' }) => {
-        const result = core.validate(need(session), { page });
-        return format === 'json' ? json(result) : core.formatLog(result);
+        const doc = need(session);
+        const result = core.validate(doc, { page });
+        // Watch the SEQUENCE of checks, not the drawing. Editing repeatedly
+        // without changing what is reported is the loop a weaker author cannot
+        // see itself in, and nothing else here would ever mention it.
+        session.progress ??= core.createProgressLog();
+        core.recordCheck(session.progress, result, session.doc?.history?.undo?.length ?? 0);
+        const stalled = core.stagnationNote(session.progress);
+        if (format === 'json') return json(stalled ? { ...result, progress: stalled } : result);
+        return stalled ? `${core.formatLog(result)}
+
+${stalled}` : core.formatLog(result);
       },
     },
 
@@ -1931,6 +1941,17 @@ CONNECTORS: THE TWO MISTAKES WORTH KNOWING
   2. Assuming "to <id>.<port>" arrives. It only sets the DISTANCE along the way
      you are travelling. If the run is on a different row or column from the
      target, it stops level with it and never touches it — reported as L016.
+
+IF YOU ARE GOING ROUND IN CIRCLES, validate WILL SAY SO
+  Three checks in a row with edits between them and the SAME findings still
+  open — not merely the same count, the same findings — and validate appends a
+  NO PROGRESS note. It means what is being changed is not what is being
+  reported. Read one finding, use "repair" to see whether any of its fixes is a
+  single call, and if none is, change the approach rather than the edit.
+
+  It watches the sequence of attempts, never the drawing, so it advises and
+  never blocks. Validating twice without editing is not stagnation, and a clean
+  document checked repeatedly is never nagged.
 
 EVERY FIX IS ALSO A CALL
   repair { fingerprint }          list the fixes for a current finding

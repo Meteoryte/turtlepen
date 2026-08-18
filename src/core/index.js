@@ -37,6 +37,7 @@ export { mermaidToOperations, parseMermaid } from './mermaid.js';
 export { NODE_SHAPES, CONTAINER_SHAPES, isContainer } from './shapes.js';
 export { routeProgram } from './route.js';
 export { repairPlan, applyFix } from './repair.js';
+export { createProgressLog, recordCheck, stagnationNote, digestOf, STAGNATION_AFTER } from './progress.js';
 export {
   PERCEPTUAL_CATEGORIES, PERCEPTUAL_SEVERITIES, REPAIR_CLASSES,
   normalizePerceptualFinding, attachPerceptualReview, renderHash,
