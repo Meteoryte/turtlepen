@@ -34,6 +34,7 @@ export { mermaidToOperations, parseMermaid } from './mermaid.js';
 
 // Perceptual review is a sibling of validate, not a part of it: same document,
 // separate verdict, and nothing here is consulted by the collision engine.
+export { NODE_SHAPES, CONTAINER_SHAPES, isContainer } from './shapes.js';
 export {
   PERCEPTUAL_CATEGORIES, PERCEPTUAL_SEVERITIES, REPAIR_CLASSES,
   normalizePerceptualFinding, attachPerceptualReview, renderHash,

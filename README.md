@@ -553,7 +553,21 @@ place_box { id: "spelling", at: "AT53", span: "30x9",
 ```
 
 Shapes: `process` `decision` `terminator` `subprocess` `io` `prep` `manual`
-`data` `document` `bar`.
+`data` `document` `bar` — plus two containers, `lane` and `group`.
+
+![Swimlane flowchart](diagrams/swimlane-order-handling.svg)
+
+**Containers are the one exception to claiming.** A lane reserves only its title
+band and border ring and leaves its hole free, so members placed inside collide
+with nothing — while a node straddling the frame still reports `L001`, because
+it really does cross the border. Flow crossing a lane boundary is a genuine
+`L004` and is what `accept_finding` is for: handing over between lanes is what a
+swimlane depicts, not a defect.
+
+Building that exposed a latent bug worth naming: `L001` had been gating on
+bounding-box overlap and only then computing the claimed intersection. For solid
+boxes those are the same thing, so it had never mattered. It now tests the
+claimed intersection itself.
 
 Two of the standard drawing conventions are **checked rather than advised**, and
 wake up on their own as soon as a document uses a decision or a terminator:

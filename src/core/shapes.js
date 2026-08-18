@@ -74,7 +74,48 @@ export function cornerCutQuads(r, style = 'square') {
 export const NODE_SHAPES = Object.freeze([
   'process', 'decision', 'terminator', 'subprocess',
   'io', 'prep', 'manual', 'data', 'document', 'bar',
+  'lane', 'group',
 ]);
+
+/**
+ * Containers hold other nodes, so unlike every other shape they do NOT reserve
+ * their interior — only a titled band across the top and a border ring around
+ * the hole. A member sitting inside therefore collides with nothing, while a
+ * node straddling the border still reports `L001`, which is correct: it really
+ * does cross the frame.
+ *
+ * This is not a weakening of `L001`. The rule still compares claimed sets; a
+ * container simply claims a ring instead of a slab. That is the same kind of
+ * per-element fact that a corner cut already is, one level up.
+ */
+export const CONTAINER_SHAPES = Object.freeze(['lane', 'group']);
+
+/** Quadrants of title band, sized so a 10px label fits with padding. */
+const TITLE_BAND = 6;
+
+export function isContainer(shape) {
+  return CONTAINER_SHAPES.includes(shape);
+}
+
+/** The band height a container actually gets, given the room it has. */
+export function containerBand(r) {
+  return Math.min(TITLE_BAND, Math.max(1, r.h - 2));
+}
+
+/** A container reserves its title band and its border ring — never its hole. */
+export function containerClaimQuads(r) {
+  const out = new Set();
+  const band = containerBand(r);
+  for (let y = r.y; y < r.y + band; y++) {
+    for (let x = r.x; x < right(r); x++) out.add(quadKey(x, y));
+  }
+  for (let y = r.y + band; y < bottom(r); y++) {
+    for (let x = r.x; x < right(r); x++) {
+      if (x === r.x || x === right(r) - 1 || y === bottom(r) - 1) out.add(quadKey(x, y));
+    }
+  }
+  return out;
+}
 
 /** Shapes whose slant or curve is a fixed fraction of the bounding box. */
 const SKEW = 0.25;
@@ -148,6 +189,18 @@ export function shapeCutQuads(r, shape = 'process', style = 'square') {
   }
   assertNodeShape(shape);
   if (r.w < 3 || r.h < 3) return cornerCutQuads(r, style);
+  if (isContainer(shape)) {
+    // The hole is everything the container does not claim.
+    const claimed = containerClaimQuads(r);
+    const out = new Set();
+    for (let y = r.y; y < bottom(r); y++) {
+      for (let x = r.x; x < right(r); x++) {
+        const k = quadKey(x, y);
+        if (!claimed.has(k)) out.add(k);
+      }
+    }
+    return out;
+  }
   const out = new Set();
   for (let j = 0; j < r.h; j++) {
     for (let i = 0; i < r.w; i++) {
@@ -172,6 +225,11 @@ export function shapeTextRect(r, shape = 'process') {
     Math.max(1, r.w - dx * 2), Math.max(1, r.h - dy * 2),
   );
   switch (shape) {
+    case 'lane':
+    case 'group':
+      // A container's label belongs in its title band, not floating in the
+      // middle of the hole where its members live.
+      return rect(r.x + 1, r.y, Math.max(1, r.w - 2), containerBand(r));
     case 'decision':
       return inset(Math.floor(r.w / 4), Math.floor(r.h / 4));
     case 'terminator':

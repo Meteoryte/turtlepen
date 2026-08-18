@@ -19,7 +19,7 @@ import { createHash } from 'node:crypto';
 import { rect, rectsOverlap, intersection, expand, right, bottom, quadKey, parseQuadKey } from './geometry.js';
 import { quadToAddress, quadToCell, describeRegion } from './address.js';
 import { elementsOf, elementClaimed, elementVisual, elementRects, findElement } from './document.js';
-import { shapeCutQuads, shapeTextRect } from './shapes.js';
+import { shapeCutQuads, shapeTextRect, isContainer } from './shapes.js';
 import { fitReport, layoutTextRuns, MIN_LEGIBLE_FONT_PX } from './text.js';
 // Cycle with composition.js is deliberate and safe: every use on both sides is inside a
 // function body, so neither module reads the other's bindings during initialisation.
@@ -262,15 +262,22 @@ function withinPage(doc, p) {
   for (let i = 0; i < solids.length; i++) {
     for (let j = i + 1; j < solids.length; j++) {
       const a = solids[i], b = solids[j];
+      // Bounding-box overlap is only a cheap pre-filter. What actually counts is
+      // whether the two elements CLAIM any of the same quadrants — which for a
+      // solid box is the same thing, but for a container is not: a lane claims
+      // a ring and leaves its hole free, so a member sitting inside overlaps
+      // its bounding box and collides with nothing.
       if (!rectsOverlap(a.rect, b.rect)) continue;
+      const shared = new Set([...elementClaimed(a)].filter((k) => elementClaimed(b).has(k)));
+      if (!shared.size) continue;
       const region = intersection(a.rect, b.rect);
-      const cells = addrList(new Set([...elementClaimed(a)].filter((k) => elementClaimed(b).has(k))));
+      const cells = addrList(shared);
       out.push(
         finding('L001', p.id, {
-          message: `"${a.id}" and "${b.id}" overlap over ${region.w * region.h} quadrants at ${describeRegion(region)}`,
+          message: `"${a.id}" and "${b.id}" overlap over ${shared.size} quadrants at ${describeRegion(region)}`,
           actors: [a.id, b.id],
           cells,
-          metrics: { overlapQuadrants: region.w * region.h, overlapCells: { w: region.w / 2, h: region.h / 2 } },
+          metrics: { overlapQuadrants: shared.size, overlapCells: { w: region.w / 2, h: region.h / 2 } },
           fixes: [
             { kind: 'move', description: `move "${b.id}" right by ${Math.ceil(region.w / 2)} cells to clear`, params: { id: b.id, dCellsX: Math.ceil(region.w / 2) } },
             { kind: 'move', description: `or move "${b.id}" down by ${Math.ceil(region.h / 2)} cells to clear`, params: { id: b.id, dCellsY: Math.ceil(region.h / 2) } },
@@ -403,7 +410,9 @@ function withinPage(doc, p) {
       if (hitsCut.length && !hitsBody.length) {
         out.push(
           finding('L013', p.id, {
-            message: `path "${path.id}" passes through the ${b.corner} corner cut of "${b.id}" — claimed but not inked, so nothing visibly touches`,
+            message: isContainer(b.shape)
+              ? `path "${path.id}" runs through the interior of "${b.id}" — a container leaves its hole free, so nothing visibly touches`
+              : `path "${path.id}" passes through the ${b.corner} corner cut of "${b.id}" — claimed but not inked, so nothing visibly touches`,
             actors: [path.id, b.id],
             cells: addrList(hitsCut),
             metrics: { quadrants: hitsCut.length, cornerStyle: b.corner },

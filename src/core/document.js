@@ -13,7 +13,7 @@
  */
 
 import { rect, rectsOverlap, boundsOf } from './geometry.js';
-import { claimedQuads, visualQuads, assertCornerStyle, assertNodeShape, parsePortSpec, portPoint } from './shapes.js';
+import { claimedQuads, visualQuads, containerClaimQuads, isContainer, assertCornerStyle, assertNodeShape, parsePortSpec, portPoint } from './shapes.js';
 import { DEFAULT_FONT, resolveFontSize } from './text.js';
 import { normalizeTone, normalizeFeather, normalizeTexture } from './tone.js';
 import { normalizePattern } from './pattern.js';
@@ -660,6 +660,13 @@ export function elementClaimed(el) {
     const s = new Set();
     for (const p of el.pieces) s.add(`${p.x},${p.y}`);
     return s;
+  }
+  // A container exists to hold other nodes, so it reserves its title band and
+  // its border ring and leaves the hole free. Its members then collide with
+  // nothing, while anything straddling the frame still reports L001 — which is
+  // right, because it really does cross the border.
+  if (el.kind === 'box' && isContainer(el.shape) && el.rect.w >= 3 && el.rect.h >= 3) {
+    return containerClaimQuads(el.rect);
   }
   return claimedQuads(el.rect);
 }

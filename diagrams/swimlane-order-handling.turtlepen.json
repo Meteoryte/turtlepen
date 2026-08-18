@@ -1,0 +1,1359 @@
+{
+  "schema": 1,
+  "name": "Order handling — swimlanes",
+  "canvas": {
+    "cols": 122,
+    "rows": 66
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-18T21:16:29.961Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "text-1",
+        "kind": "text",
+        "rect": {
+          "x": 6,
+          "y": 4,
+          "w": 60,
+          "h": 6
+        },
+        "text": "ORDER HANDLING",
+        "fontSize": 16,
+        "align": "left",
+        "color": null,
+        "weight": 700
+      },
+      {
+        "id": "lane_customer",
+        "kind": "box",
+        "rect": {
+          "x": 6,
+          "y": 14,
+          "w": 224,
+          "h": 34
+        },
+        "label": "Customer",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "lane",
+        "align": "left",
+        "fill": "#eef2ee",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "lane_sales",
+        "kind": "box",
+        "rect": {
+          "x": 6,
+          "y": 52,
+          "w": 224,
+          "h": 34
+        },
+        "label": "Sales",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "lane",
+        "align": "left",
+        "fill": "#eef2ee",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "lane_warehouse",
+        "kind": "box",
+        "rect": {
+          "x": 6,
+          "y": 90,
+          "w": 224,
+          "h": 34
+        },
+        "label": "Warehouse",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "lane",
+        "align": "left",
+        "fill": "#eef2ee",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "place",
+        "kind": "box",
+        "rect": {
+          "x": 14,
+          "y": 26,
+          "w": 44,
+          "h": 16
+        },
+        "label": "Place order",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "terminator",
+        "align": "center",
+        "fill": "#0f766e",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "receive",
+        "kind": "box",
+        "rect": {
+          "x": 14,
+          "y": 64,
+          "w": 44,
+          "h": 16
+        },
+        "label": "Receive order",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "center",
+        "fill": "#2ea685",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "stock",
+        "kind": "box",
+        "rect": {
+          "x": 74,
+          "y": 64,
+          "w": 44,
+          "h": 16
+        },
+        "label": "In stock?",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "decision",
+        "align": "center",
+        "fill": "#2ea685",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "backorder",
+        "kind": "box",
+        "rect": {
+          "x": 158,
+          "y": 64,
+          "w": 44,
+          "h": 16
+        },
+        "label": "Back-order it",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "center",
+        "fill": "#2ea685",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "pick",
+        "kind": "box",
+        "rect": {
+          "x": 74,
+          "y": 102,
+          "w": 44,
+          "h": 16
+        },
+        "label": "Pick and pack",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "center",
+        "fill": "#2ea685",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "ship",
+        "kind": "box",
+        "rect": {
+          "x": 138,
+          "y": 102,
+          "w": 40,
+          "h": 16
+        },
+        "label": "Shipped",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "terminator",
+        "align": "center",
+        "fill": "#c2ed98",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "e_place_receive",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 36,
+            "y": 42,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 43,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 48,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 49,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 50,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 51,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 52,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 53,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 54,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 55,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 56,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 57,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 58,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 59,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 60,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 61,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 62,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 63,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 36,
+          "y": 64,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "receive",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "place",
+          "port": "S"
+        }
+      },
+      {
+        "id": "e_receive_stock",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 58,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 72,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 74,
+          "y": 72,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "stock",
+            "port": "W",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "receive",
+          "port": "E"
+        }
+      },
+      {
+        "id": "e_stock_backorder",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 118,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 119,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 124,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 125,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 126,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 127,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 128,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 129,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 130,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 131,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 138,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 139,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 140,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 141,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 142,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 144,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 145,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 146,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 147,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 148,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 149,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 152,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 153,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 154,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 155,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 156,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 157,
+            "y": 72,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 158,
+          "y": 72,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "backorder",
+            "port": "W",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "stock",
+          "port": "E"
+        }
+      },
+      {
+        "id": "e_stock_pick",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 96,
+            "y": 80,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 81,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 82,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 83,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 84,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 85,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 86,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 87,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 88,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 89,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 90,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 91,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 92,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 93,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 94,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 95,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 96,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 97,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 98,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 99,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 100,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 101,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 96,
+          "y": 102,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "pick",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "stock",
+          "port": "S"
+        }
+      },
+      {
+        "id": "e_pick_ship",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 118,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 119,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 124,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 125,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 126,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 127,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 128,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 129,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 130,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 131,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 110,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 110,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 138,
+          "y": 110,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "ship",
+            "port": "W",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "pick",
+          "port": "E"
+        }
+      },
+      {
+        "id": "text-2",
+        "kind": "text",
+        "rect": {
+          "x": 128,
+          "y": 66,
+          "w": 10,
+          "h": 4
+        },
+        "text": "NO",
+        "fontSize": 10,
+        "align": "center",
+        "color": null,
+        "weight": 400
+      },
+      {
+        "id": "text-3",
+        "kind": "text",
+        "rect": {
+          "x": 100,
+          "y": 86,
+          "w": 10,
+          "h": 4
+        },
+        "text": "YES",
+        "fontSize": 10,
+        "align": "center",
+        "color": null,
+        "weight": 400
+      }
+    ]
+  },
+  "acceptances": [
+    {
+      "fingerprint": "155995cbffa5",
+      "rule": "L004",
+      "page": "base",
+      "title": "stroke crosses node",
+      "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
+      "acceptedAt": "2026-08-18T21:16:31.772Z"
+    },
+    {
+      "fingerprint": "2b000c28ce08",
+      "rule": "L004",
+      "page": "base",
+      "title": "stroke crosses node",
+      "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
+      "acceptedAt": "2026-08-18T21:16:31.192Z"
+    },
+    {
+      "fingerprint": "807a53ce8158",
+      "rule": "L004",
+      "page": "base",
+      "title": "stroke crosses node",
+      "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
+      "acceptedAt": "2026-08-18T21:16:33.074Z"
+    },
+    {
+      "fingerprint": "f61146bb58fa",
+      "rule": "L004",
+      "page": "base",
+      "title": "stroke crosses node",
+      "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
+      "acceptedAt": "2026-08-18T21:16:32.410Z"
+    }
+  ]
+}

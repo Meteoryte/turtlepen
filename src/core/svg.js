@@ -14,7 +14,7 @@
 
 import { PX_PER_QUAD, toPx, right, bottom } from './geometry.js';
 import { elementsOf, contentBounds } from './document.js';
-import { shapeTextRect } from './shapes.js';
+import { shapeTextRect, isContainer, containerBand } from './shapes.js';
 import { layoutTextRuns } from './text.js';
 
 const CUT = PX_PER_QUAD; // corner cuts are one quadrant
@@ -251,6 +251,11 @@ export function shapeOutline(r, shape) {
       return `M${x},${y + cap} A${w / 2},${cap} 0 0 1 ${x2},${y + cap} V${y2 - cap} A${w / 2},${cap} 0 0 1 ${x},${y2 - cap} Z`;
     case 'document':
       return `M${x},${y} H${x2} V${y2 - cap} Q${mx},${y2 - cap * 2.4} ${x},${y2 - cap} Z`;
+    case 'lane':
+    case 'group':
+      // The frame only. The hole is left empty because the container does not
+      // claim it — members are drawn there by their own elements.
+      return `M${x},${y} H${x2} V${y2} H${x} Z`;
     default:
       return null;
   }
@@ -261,6 +266,13 @@ function box(el, doc) {
   const shape = el.shape ?? 'process';
   const d = shapeOutline(el.rect, shape) ?? boxOutline(el.rect, el.corner);
   const out = [`<path class="box${el.state === 'dimmed' ? ' dimmed' : ''}" d="${d}" data-id="${escapeAttr(el.id)}"${el.opacity != null ? ` opacity="${el.opacity}"` : ''}${el.fill ? ` style="fill:${escapeAttr(el.fill)}"` : ''}/>`];
+  if (isContainer(shape)) {
+    // A rule under the title band, so the band reads as a heading rather than
+    // as empty space at the top of a big rectangle.
+    const { x, y, w } = toPx(el.rect);
+    const bandPx = containerBand(el.rect) * PX_PER_QUAD;
+    out.push(`<path class="box" d="M${x},${y + bandPx} H${x + w}" fill="none"/>`);
+  }
   if (shape === 'subprocess') {
     // Double side bars — the mark that says "this step is another process".
     const { x, y, w, h } = toPx(el.rect);

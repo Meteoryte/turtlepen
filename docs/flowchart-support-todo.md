@@ -1,8 +1,8 @@
 # Flowchart support — plan of record
 
 **Raised:** 2026-08-18, from a failed authoring attempt plus two ProcessOn sources.
-**Status:** F0, F1, F2, F4, F6, F8, F9, F10 built and green. F3 and F5 not built.
-F7 stands as shipped.
+**Status:** F0–F4, F6, F8, F9, F10 built and green. Only F5 (auto-routing) is
+unbuilt. F7 stands as shipped.
 This line was originally written claiming more than had been done; it is
 corrected here rather than quietly, because a plan that overstates itself is
 the same defect as a validation log read before the last edit.
@@ -161,15 +161,39 @@ Not built, and deliberately:
 A rule that guesses is worse than no rule: it teaches the author to ignore the
 log, which is the exact failure this engine exists to design out.
 
-### F3 — Swimlanes and grouping containers — **NOT BUILT**
+### F3 — Swimlanes and grouping containers — **DONE**
 
 `lane` and `group` container shapes: a titled band that claims its region but
 carves an interior so member nodes sit inside without an `L001`.
 
-Deliberately left out of the shape release. Every other shape keeps claiming
-its full bounding box, which is what makes F1 safe. A container must claim
-only its frame, and that is a change to the claimed model itself — the one
-thing L001 rests on. It deserves its own pass, not a ride-along.
+Built, and the deferral reason above turned out to be overstated. A container
+claiming a ring instead of a slab is **not** a change to the claimed model:
+`L001` still compares claimed sets. It is a per-element fact, the same kind that
+a corner cut already is, one level up.
+
+What it did expose was a real latent bug. `L001` gated on **bounding-box**
+overlap and only then computed the claimed intersection for its cell list — so
+for solid boxes, where the two are identical, it had never mattered. It now
+tests the claimed intersection itself and reports the true shared quadrant
+count rather than the bounding-box area. All 369 existing tests passed
+unchanged, which is the evidence that it was a strict correction.
+
+Semantics, pinned by test:
+
+- a container reserves its title band and border ring, never its hole;
+- a member inside collides with nothing — the whole point;
+- a node **straddling the frame still reports `L001`**, because it does cross
+  the border;
+- nesting a group inside a lane is legitimate and silent;
+- flow crossing a lane border is a real `L004`, and is what `accept_finding`
+  exists for: handing over is what a swimlane depicts.
+
+`L013`'s message was corrected too — a path through a lane's hole was being
+described as passing through a "corner cut", which is the mechanism but not the
+truth.
+
+Proof: `build_swimlane.js` → `diagrams/swimlane-order-handling.svg`, 17
+elements, 0 findings above INFO, 4 lane-crossings accepted with a reason.
 
 ### F6 — Rebuild `important-process` properly — **DONE**
 

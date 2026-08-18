@@ -332,7 +332,7 @@ export function createTools(session) {
           label: { type: 'string' },
           page: { type: 'string' },
           corner: { type: 'string', enum: ['square', 'rounded', 'indented', 'chamfered'] },
-          shape: { description: 'flowchart symbol: process (default), decision, terminator, subprocess, io, prep, manual, data, document, bar', type: 'string', enum: ['process', 'decision', 'terminator', 'subprocess', 'io', 'prep', 'manual', 'data', 'document', 'bar'] },
+          shape: { description: 'flowchart symbol: process (default), decision, terminator, subprocess, io, prep, manual, data, document, bar; or a container — lane, group — which reserves only its title band and border ring so members sit inside without colliding', type: 'string', enum: [...core.NODE_SHAPES] },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
           fontSize: { type: 'integer' },
           fill: { type: 'string' },
@@ -1693,6 +1693,16 @@ FLOWCHART NODES — the symbol carries the meaning
   data        stored data                                    cylinder
   document    a printed or written artifact                  wavy foot
   bar         fork or join                                   solid bar
+
+  lane        a swimlane: who performs these steps          titled band + frame
+  group       a named container around a sub-process         titled band + frame
+
+  CONTAINERS ARE THE EXCEPTION. lane and group reserve only their title band
+  and border ring and leave their hole FREE, so members placed inside collide
+  with nothing. A node straddling the frame still reports L001, because it
+  really does cross the border. Flow crossing a lane border is a real L004 and
+  is exactly what accept_finding is for — handing over between lanes is what a
+  swimlane depicts, not a defect.
 
   A shape still CLAIMS its whole bounding box, so gutters, free_space and
   layout are unchanged; it only INKS the symbol. A stroke clipping a diamond's
