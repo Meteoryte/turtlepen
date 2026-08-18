@@ -318,3 +318,29 @@ Two existing contract tests caught the addition and both were right to: the
 documented tool count is asserted, and `endpoints.test.js` requires every
 advertised tool to complete a representative use case over real stdio. The
 perceptual loop is now exercised there end to end.
+
+---
+
+## F11 — Executable repairs — **DONE**
+
+`src/core/repair.js` + `repair` (tool 39). From the Qwen 0.5B runs, which named
+"translating finding fixes into mutation calls" as something the interface
+assumes the caller can do unaided. It is the most mechanical of those gaps,
+which is why it was worth closing first.
+
+A finding's fixes become calls: `widen`/`heighten` → `resize`, `font`/`shape` →
+`restyle`, `move` → `move`, `canvas` → `set_canvas`, `intent` → `update_page`,
+`remove`/`remove_page` → their own. Everything goes through `OPERATIONS`, so a
+repair is rehearsable, undoable, and can do nothing a caller could not have done
+by hand.
+
+**It refuses to guess.** `reroute`, `offset`, `hop`, `extend`, `rename` and
+`shorten` are advice by nature — where a path should go instead, or which words
+to cut, is a design decision — and each is refused by name with what is missing
+and which tool takes it. A repair also reports whether the finding count
+actually fell, because applying a fix and making progress are not the same
+thing and the caller should not have to assume.
+
+Still open from that list: no-progress detection, unique-id maintenance, and
+resisting premature "done" — the last of which `HELP` now addresses in prose but
+nothing enforces.

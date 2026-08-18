@@ -972,6 +972,39 @@ ${r.program}`;
     },
 
     {
+      name: 'repair',
+      description:
+        'Turn a finding\'s fix into the call that performs it. With no index it LISTS the fixes, saying which are one call away and which need a decision from you first. With an index it performs that fix through the same operations as any other mutation — rehearsable, undoable, and nothing it could not have done by hand. It does NOT guess: a fix that lacks the information to be performed (reroute, offset, hop, extend, rename, shorten) is refused by name with what is missing and which tool takes it, because inventing a plausible mutation you did not ask for is the failure this engine exists to prevent.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          fingerprint: { description: 'the fingerprint of a CURRENT open finding', type: 'string' },
+          index: { description: 'which fix to apply; omit to list them', type: 'integer' },
+        },
+        required: ['fingerprint'],
+        additionalProperties: false,
+      },
+      handler: async ({ fingerprint, index = null }) => {
+        const doc = need(session);
+        if (index == null) {
+          const plan = core.repairPlan(doc, fingerprint);
+          const lines = [`${plan.rule} [${plan.severity}] ${plan.actors.join(', ')}`];
+          for (const f of plan.fixes) {
+            lines.push(f.executable
+              ? `  [${f.index}] ${f.kind} — one call: ${f.op} ${JSON.stringify(f.args)}`
+              : `  [${f.index}] ${f.kind} — needs you: ${f.why}`);
+          }
+          lines.push('', 'Apply one with repair { fingerprint, index }.');
+          return lines.join('\n');
+        }
+        const r = core.applyFix(doc, fingerprint, index, core.OPERATIONS);
+        return `applied ${r.applied.kind} via ${r.applied.op} ${JSON.stringify(r.applied.args)}\n`
+          + `findings ${r.findingsBefore} -> ${r.findingsAfter}`
+          + (r.improved ? '' : ' — no reduction; this repair traded one finding for another, or the log is unchanged');
+      },
+    },
+
+    {
       name: 'measure_image',
       description: 'Read real image dimensions and report the measured whole-cell footprint, aspect rounding, rendered-pixel scale, and dither/simplify quadrant-sampling scales. Call this BEFORE place_image. Reports say exactly whether each stage upscales, downscales, or stays exact; upscaling never creates detail.',
       inputSchema: {
@@ -1898,6 +1931,20 @@ CONNECTORS: THE TWO MISTAKES WORTH KNOWING
   2. Assuming "to <id>.<port>" arrives. It only sets the DISTANCE along the way
      you are travelling. If the run is on a different row or column from the
      target, it stops level with it and never touches it — reported as L016.
+
+EVERY FIX IS ALSO A CALL
+  repair { fingerprint }          list the fixes for a current finding
+  repair { fingerprint, index }   perform that one
+
+  Listing says which fixes are one call away and which need a decision from you
+  first. Performing goes through the ordinary operations — rehearsable,
+  undoable, nothing it could not have done by hand; it only saves you working
+  out the arguments.
+
+  It does NOT guess. reroute, offset, hop, extend, rename and shorten are
+  refused by name, because where a path should go instead, or which words to
+  cut, is yours to decide. Inventing a plausible mutation you did not ask for
+  is the failure this engine exists to prevent.
 
 EVERY FIX HAS A TOOL
   widen / heighten -> resize        shorten / font -> restyle

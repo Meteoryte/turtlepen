@@ -82,6 +82,9 @@ test('every advertised MCP tool completes a representative use case over stdio',
     const validation = JSON.parse(await invoke('validate', { format: 'json' }));
     assert.ok(validation.open.length > 0, 'the acceptance workflow needs a current finding');
     const fingerprint = validation.open[0].fingerprint;
+    // A finding's fix must be reachable as a call, not just as prose.
+    assert.match(await invoke('repair', { fingerprint }), /\[0\]/);
+
     await invoke('accept_finding', { fingerprint, reason: 'endpoint contract verifies the audit workflow' });
     await invoke('unaccept_finding', { fingerprint });
 

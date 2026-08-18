@@ -36,6 +36,7 @@ export { mermaidToOperations, parseMermaid } from './mermaid.js';
 // separate verdict, and nothing here is consulted by the collision engine.
 export { NODE_SHAPES, CONTAINER_SHAPES, isContainer } from './shapes.js';
 export { routeProgram } from './route.js';
+export { repairPlan, applyFix } from './repair.js';
 export {
   PERCEPTUAL_CATEGORIES, PERCEPTUAL_SEVERITIES, REPAIR_CLASSES,
   normalizePerceptualFinding, attachPerceptualReview, renderHash,
