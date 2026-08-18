@@ -100,6 +100,11 @@ test('every advertised MCP tool completes a representative use case over stdio',
     assert.equal(imported.nodes, 3);
     assert.ok(imported.operations.length >= 5);
 
+    // Routing must be exercised over the transport too: it returns a program
+    // and changes nothing, so running what it emits has to validate.
+    const routed = await invoke('route', { from: 'unit.S', to: 'tag.N' });
+    assert.match(routed, /turn\(s\)|no clear route/);
+
     const rendered = await invoke('render', { path: 'endpoint.svg', showGrid: false, force: true, bounds: 'canvas' });
     // render must hand back the hash a perceptual review binds to, and the
     // review must come back with BOTH verdicts rather than one merged flag.

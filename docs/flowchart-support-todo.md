@@ -1,8 +1,8 @@
 # Flowchart support — plan of record
 
 **Raised:** 2026-08-18, from a failed authoring attempt plus two ProcessOn sources.
-**Status:** F0–F4, F6, F8, F9, F10 built and green. Only F5 (auto-routing) is
-unbuilt. F7 stands as shipped.
+**Status:** F0–F6 and F8–F10 built and green. F7 stands as shipped. Nothing
+from the ProcessOn scope remains unbuilt.
 This line was originally written claiming more than had been done; it is
 corrected here rather than quietly, because a plan that overstates itself is
 the same defect as a validation log read before the last edit.
@@ -234,12 +234,23 @@ better than the silent-wrong behaviour and forecloses nothing: implementing
 hop-to-target routing later remains open, and is the larger design question that
 belongs with F5.
 
-### F5 — Auto-routing lanes — **DEFERRED**
+### F5 — Auto-routing — **DONE (as a proposal)**
 
-Gemini's "traffic jam" — every NO branch returning to one node — is the strongest
-case for routing help. But `llm.md` is explicit that auto-routing, if added, must
-emit pen commands so the path stays inspectable. That is a design task, not an
-afternoon, and it should not be rushed in behind a shape release.
+`src/core/route.js` + `route` (tool 38). The condition `llm.md` attached is the
+whole design: it **emits a pen program and changes nothing**. The author reads
+it and runs it through `pen` like anything they wrote, so it validates
+identically and no path exists in a document that nobody can account for.
+
+Deliberately not a general router. It tries the three shapes a person would draw
+— straight, one turn, two turns — against everything already claimed on the
+page, and when none is clear it says so and **names the obstacle**. A twelve-turn
+path that technically avoids everything is not a connector anyone can follow.
+
+One thing had to be derived rather than reasoned: a `line` leaves the cursor ON
+its last quadrant, so a following `corner` can re-ink it and raise `L015`. Which
+`align` pair avoids that depends on the turn and is not guessable, so every pair
+was run through the pen and the clean ones kept as a table. Emitting a program
+that trips a rule the moment it runs would make the router worse than useless.
 
 ### F9 — Mermaid `flowchart` import — **DONE**
 

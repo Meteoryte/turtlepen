@@ -941,6 +941,37 @@ export function createTools(session) {
     },
 
     {
+      name: 'route',
+      description:
+        'Propose a connector between two faces. Returns a PEN PROGRAM and changes nothing — you read it, then run it through "pen" like anything you wrote yourself, and it validates identically. There is no hidden router: the path stays inspectable, which is the condition auto-routing was deferred on. It tries the three shapes a person would draw (straight, one turn, two turns) against everything already on the page. If none is clear it says so and NAMES what is in the way, because a twelve-turn path that avoids everything is not a connector anyone can follow.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          from: { description: 'source face, e.g. "gateway.S"', type: 'string' },
+          to: { description: 'target face, e.g. "checkout.N"', type: 'string' },
+          page: { type: 'string' },
+        },
+        required: ['from', 'to'],
+        additionalProperties: false,
+      },
+      handler: async ({ from, to, page = 'base' }) => {
+        const doc = need(session);
+        const r = core.routeProgram(doc, page, from, to);
+        if (!r.clear) {
+          return `no clear route from ${from} to ${to}.
+`
+            + (r.blockedBy ? `blocked by "${r.blockedBy.by}" at ${r.blockedBy.at}
+` : '')
+            + `${r.note}
+tried: ${r.tried.map((t) => `${t.turns} turn(s)`).join(', ') || 'nothing applicable'}`;
+        }
+        return `${r.turns} turn(s), clear. Run this with "pen" — nothing has changed yet:
+
+${r.program}`;
+      },
+    },
+
+    {
       name: 'measure_image',
       description: 'Read real image dimensions and report the measured whole-cell footprint, aspect rounding, rendered-pixel scale, and dither/simplify quadrant-sampling scales. Call this BEFORE place_image. Reports say exactly whether each stage upscales, downscales, or stays exact; upscaling never creates detail.',
       inputSchema: {
@@ -1845,6 +1876,19 @@ DRAWING FROM A SOURCE — reach for this BEFORE deriving geometry by hand
 EXAMPLE — a connector between two boxes, with no address arithmetic
   pen from gateway.S
   down align right line to checkout.N arrow
+
+ROUTING — a proposal, never a change
+  route { from: "gateway.S", to: "checkout.N" }  ->  a pen program
+
+  It hands back a program and changes NOTHING. Read it, then run it with "pen"
+  like anything you wrote; it validates identically. That is the condition
+  auto-routing was deferred on — the path stays inspectable, and there is no
+  router hiding inside the kernel producing geometry nobody can account for.
+
+  It tries the three shapes a person would draw — straight, one turn, two turns
+  — against everything already on the page. If none is clear it SAYS SO and
+  names what is in the way. A twelve-turn path that technically avoids every
+  obstacle is not a connector anyone can follow, so it is not offered.
 
 CONNECTORS: THE TWO MISTAKES WORTH KNOWING
   1. Starting at an address you worked out yourself. A box's south face is
