@@ -1,0 +1,16 @@
+name: Sandbox source export
+on:
+  push:
+    branches:
+      - sandbox-mcp-export-20260817
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: turtlepen-sandbox-source
+          path: .
+          include-hidden-files: true
+          retention-days: 1
