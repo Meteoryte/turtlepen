@@ -1582,6 +1582,19 @@ FLOWCHART NODES — the symbol carries the meaning
     3. one arrow per path, and no bend without a reason
     4. avoid crossings; where one is unavoidable, say so with a "hop"
 
+  Rules 2 and part of 3 are CHECKED, not merely advised:
+    F001  more than one terminator with nothing leading into it
+    F002  a decision with fewer than two ways out
+
+  They wake up on their own as soon as a document uses a decision or a
+  terminator, so nothing you drew before is reclassified. An edge is read from
+  what you stated — "pen from <id>.<face>" records the source and "line to
+  <id>.<port>" the target — never from which strokes happen to sit near which
+  box. Rules about branch labels and verb phrases are deliberately NOT checked:
+  deciding that a floating "NO" belongs to one edge, or that a label is not a
+  verb phrase, means guessing, and a rule that guesses teaches you to ignore
+  the log.
+
 SHAPES — anything that is not a rectangle
   ray to <address>                             a straight line at ANY angle
   circle <r>                                   outline; radius in quadrants

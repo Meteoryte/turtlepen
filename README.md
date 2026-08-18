@@ -553,7 +553,23 @@ place_box { id: "spelling", at: "AT53", span: "30x9",
 ```
 
 Shapes: `process` `decision` `terminator` `subprocess` `io` `prep` `manual`
-`data` `document` `bar`. The plan, the sources, and what was deliberately *not*
+`data` `document` `bar`.
+
+Two of the standard drawing conventions are **checked rather than advised**, and
+wake up on their own as soon as a document uses a decision or a terminator:
+
+| | |
+|---|---|
+| `F001` | more than one terminator with nothing leading into it — a flowchart has one beginning |
+| `F002` | a decision with fewer than two ways out — a judgement that does not branch is a process step wearing a diamond |
+
+An edge is read from what the author stated (`pen from <id>.<face>` records the
+source, `line to <id>.<port>` the target), never from which strokes happen to sit
+near which box. Conventions that *would* require guessing — which floating label
+belongs to which branch, whether a label is a verb phrase — are deliberately not
+checked, because a rule that guesses teaches you to ignore the log.
+
+The plan, the sources, and what was deliberately *not*
 built are in [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md).
 
 ### Five Farm Animals — with a full working record

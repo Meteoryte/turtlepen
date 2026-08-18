@@ -223,6 +223,7 @@ export function runPen(program, ctx = {}) {
   // extending an existing path possible without redrawing it.
   const state = { x: ctx.start?.x ?? 0, y: ctx.start?.y ?? 0, facing: ctx.start?.facing ?? 'right' };
   const pieces = [];
+  let origin = null;   // the node this path leaves, when the author named one
   const boxes = [];
   const texts = [];
   const trace = [];
@@ -247,6 +248,14 @@ export function runPen(program, ctx = {}) {
         const port = cmd.from ?? (cmd.at ? null : cmd.to);
         if (port) {
           const seat = seatAtPort(port, ctx, cmd.source);
+          // `pen from <id>.<face>` is the author stating where this connector
+          // leaves. Recording it costs nothing and turns "which edges leave
+          // this node" from an inference into a fact — which is the difference
+          // between a rule that reports and a rule that guesses.
+          if (cmd.from && origin == null) {
+            const dot = String(cmd.from).indexOf('.');
+            if (dot > 0) origin = { id: String(cmd.from).slice(0, dot), port: String(cmd.from).slice(dot + 1) };
+          }
           state.x = seat.x;
           state.y = seat.y;
           state.facing = cmd.dir ?? seat.facing;
@@ -461,7 +470,7 @@ export function runPen(program, ctx = {}) {
     }
   });
 
-  return { pieces, boxes, texts, cursor: { x: state.x, y: state.y }, facing: state.facing, trace, notes, targets };
+  return { pieces, boxes, texts, cursor: { x: state.x, y: state.y }, facing: state.facing, trace, notes, targets, origin };
 }
 
 /**

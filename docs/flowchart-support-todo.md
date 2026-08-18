@@ -1,7 +1,7 @@
 # Flowchart support — plan of record
 
 **Raised:** 2026-08-18, from a failed authoring attempt plus two ProcessOn sources.
-**Status:** F0, F1, F6, F8 built and green. F2, F3 not built. F7 stands as shipped.
+**Status:** F0, F1, F2, F6, F8 built and green. F3 not built. F7 stands as shipped.
 This line was originally written claiming more than had been done; it is
 corrected here rather than quietly, because a plan that overstates itself is
 the same defect as a validation log read before the last edit.
@@ -130,18 +130,35 @@ centre is about half its bounding box. Reporting a label as fitting because the
 *bounding box* is wide enough would reintroduce exactly the overflow bug this
 project exists to eliminate.
 
-### F2 — Flowchart rules as findings — **NOT BUILT**
+### F2 — Flowchart rules as findings — **PARTLY BUILT**
 
-- `F001` **S1** — more than one start terminator with no inbound edge.
-- `F002` **S1** — a decision node with fewer than two outgoing branches.
-- `F003` **S2** — an unlabelled branch leaving a decision.
-- `F004` **S2** — a process node whose label does not begin with a verb phrase.
+Built, in `src/core/flowchart.js`:
 
-Opt-in per document via page intent `flowchart`, so existing diagrams are not
-retroactively reclassified — the `C001` calibration lesson applied.
+- `F001` **S1** — more than one terminator with nothing leading into it.
+- `F002` **S1** — a decision with fewer than two ways out.
 
-Designed, not implemented. `F004` in particular needs a verb list, and a rule
-that guesses at English grammar is worse than no rule.
+**Self-activating.** The rules wake up as soon as a document contains a
+`decision` or `terminator`. No flag was needed, and nothing in the existing
+corpus is reclassified, because every node in it is a plain `process`. This is
+better than the page-intent gate originally sketched here: `intent` means
+overlap semantics, and overloading it with a document genre would have muddied
+a field that already has a job.
+
+**Edges are authored fact, not proximity.** `pen from <id>.<face>` now records
+its origin alongside the target `line to <id>.<port>` already recorded, so
+"which edges leave this node" is something the author wrote down. A test asserts
+that strokes merely passing beside a decision are not counted as its branches.
+
+Not built, and deliberately:
+
+- `F003` unlabelled branch — deciding that a floating "NO" belongs to one edge
+  rather than another means reading intent out of proximity. The honest route is
+  to let an author *name* a branch, and check the recorded name; that is a
+  grammar addition, not a rule.
+- `F004` verb-phrase process labels — would mean shipping an English grammar.
+
+A rule that guesses is worse than no rule: it teaches the author to ignore the
+log, which is the exact failure this engine exists to design out.
 
 ### F3 — Swimlanes and grouping containers — **NOT BUILT**
 
@@ -175,7 +192,7 @@ reverted. Recorded because the lesson generalises: **the shape vocabulary is a
 diagram substrate, and reaching for it to do illustration produces geometry, not
 character.** The revert is in git history if the direction is ever wanted.
 
-### F8 — Repo page shows its work — **IN PROGRESS**
+### F8 — Repo page shows its work — **DONE**
 
 The README links a PDF but shows none of it. Embed real rendered examples.
 

@@ -160,6 +160,7 @@ function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', 
     path.end = { x: result.cursor.x, y: result.cursor.y, facing: result.facing };
     // What the path was aiming at, so validation can check it actually arrived.
     if (result.targets.length) path.targets = result.targets;
+    if (result.origin) path.source = result.origin;
   }
 
   const notes = role === 'artwork' ? result.notes.filter((n) => n.code !== 'L015') : result.notes;
@@ -191,6 +192,7 @@ export function extendPath(doc, id, program) {
   path.end = { x: result.cursor.x, y: result.cursor.y, facing: result.facing };
   if (result.notes.length) path.penNotes = [...(path.penNotes ?? []), ...result.notes];
   if (result.targets.length) path.targets = [...(path.targets ?? []), ...result.targets];
+  if (result.origin && !path.source) path.source = result.origin;
   reconcileElementChange(doc, id);
 
   return { path, page: found.page, trace: result.trace, notes: result.notes, cursor: result.cursor, facing: result.facing };

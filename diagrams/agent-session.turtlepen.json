@@ -263,7 +263,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "client",
+          "port": "S"
+        }
       },
       {
         "id": "gateway-checkout",
@@ -363,7 +367,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "gateway",
+          "port": "S"
+        }
       },
       {
         "id": "checkout-events",
@@ -463,7 +471,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "checkout",
+          "port": "S"
+        }
       },
       {
         "id": "checkout-payments",
@@ -686,7 +698,11 @@
             "port": "W",
             "step": 6
           }
-        ]
+        ],
+        "source": {
+          "id": "checkout",
+          "port": "E"
+        }
       },
       {
         "id": "payments-inventory",
@@ -786,7 +802,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "payments",
+          "port": "S"
+        }
       },
       {
         "id": "inventory-ledger",
@@ -886,7 +906,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "inventory",
+          "port": "S"
+        }
       }
     ],
     "review": [

@@ -24,6 +24,7 @@ import { fitReport, layoutTextRuns, MIN_LEGIBLE_FONT_PX } from './text.js';
 // Cycle with composition.js is deliberate and safe: every use on both sides is inside a
 // function body, so neither module reads the other's bindings during initialisation.
 import { compositionFindings } from './composition.js';
+import { flowchartFindings, FLOWCHART_RULES } from './flowchart.js';
 import { analyseRuns, MAX_READABLE_TRANSITION_RATIO } from './dither.js';
 
 export const SEVERITIES = Object.freeze(['S0', 'S1', 'S2', 'S3']);
@@ -56,6 +57,7 @@ export const RULES = Object.freeze({
   L023: { severity: 'S2', title: 'heuristic image approximation', blurb: 'continuous-tone source was simplified without semantic understanding' },
   // Composition rules. S3 by design: a taste heuristic must never outrank a real defect.
   C001: { severity: 'S3', title: 'sparse canvas', blurb: 'the page has so little ink that nothing was really composed' },
+  ...FLOWCHART_RULES,
 });
 
 /**
@@ -166,6 +168,7 @@ export function validate(doc, { page = null } = {}) {
   found.push(...documentWide(doc, pages));
   // Document-wide, not per page: a sparse annotation overlay is part of a good diagram.
   found.push(...compositionFindings(doc, pages));
+  found.push(...flowchartFindings(doc, pages));
 
   found.sort(
     (a, b) =>

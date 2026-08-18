@@ -11,7 +11,7 @@
     "advanceRatio": 0.6,
     "paddingQuads": 1
   },
-  "createdAt": "2026-08-18T04:55:36.708Z",
+  "createdAt": "2026-08-18T05:09:37.306Z",
   "pages": [
     {
       "id": "base",
@@ -352,7 +352,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "start",
+          "port": "S"
+        }
       },
       {
         "id": "e_others_yes",
@@ -436,7 +440,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "others",
+          "port": "S"
+        }
       },
       {
         "id": "e_impressive_yes",
@@ -520,7 +528,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "impressive",
+          "port": "S"
+        }
       },
       {
         "id": "e_reading_yes",
@@ -604,7 +616,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "reading",
+          "port": "S"
+        }
       },
       {
         "id": "e_spelling_yes",
@@ -688,7 +704,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "spelling",
+          "port": "S"
+        }
       },
       {
         "id": "e_fonts_yes",
@@ -772,7 +792,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "fonts",
+          "port": "S"
+        }
       },
       {
         "id": "e_lines_yes",
@@ -856,7 +880,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "lines",
+          "port": "S"
+        }
       },
       {
         "id": "e_color_yes",
@@ -940,7 +968,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "color",
+          "port": "S"
+        }
       },
       {
         "id": "e_good_yes",
@@ -1024,7 +1056,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "good",
+          "port": "S"
+        }
       },
       {
         "id": "e_contrast_yes",
@@ -1124,7 +1160,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "contrast",
+          "port": "S"
+        }
       },
       {
         "id": "e_reading_no",
@@ -1352,7 +1392,11 @@
             "port": "E",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "reading",
+          "port": "W"
+        }
       },
       {
         "id": "e_spelling_no",
@@ -1580,7 +1624,11 @@
             "port": "E",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "spelling",
+          "port": "W"
+        }
       },
       {
         "id": "e_fonts_no",
@@ -1808,7 +1856,11 @@
             "port": "E",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "fonts",
+          "port": "W"
+        }
       },
       {
         "id": "e_lines_no",
@@ -2036,7 +2088,11 @@
             "port": "E",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "lines",
+          "port": "W"
+        }
       },
       {
         "id": "e_color_no",
@@ -2264,7 +2320,11 @@
             "port": "E",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "color",
+          "port": "W"
+        }
       },
       {
         "id": "e_good_no",
@@ -2492,7 +2552,11 @@
             "port": "E",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "good",
+          "port": "W"
+        }
       },
       {
         "id": "e_contrast_no",
@@ -2720,7 +2784,11 @@
             "port": "E",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "contrast",
+          "port": "W"
+        }
       },
       {
         "id": "e_others_no",
@@ -3095,7 +3163,11 @@
             "port": "N",
             "step": 4
           }
-        ]
+        ],
+        "source": {
+          "id": "others",
+          "port": "E"
+        }
       },
       {
         "id": "e_imp_no",
@@ -3302,7 +3374,11 @@
             "port": "S",
             "step": 4
           }
-        ]
+        ],
+        "source": {
+          "id": "impressive",
+          "port": "E"
+        }
       },
       {
         "id": "text-2",

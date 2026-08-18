@@ -398,7 +398,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "confirm",
+          "port": "S"
+        }
       },
       {
         "id": "flow-1-2",
@@ -470,7 +474,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "isolate",
+          "port": "S"
+        }
       },
       {
         "id": "flow-2-3",
@@ -542,7 +550,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "recover",
+          "port": "S"
+        }
       },
       {
         "id": "flow-3-4",
@@ -614,7 +626,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "remove-old",
+          "port": "S"
+        }
       },
       {
         "id": "flow-4-5",
@@ -686,7 +702,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "prepare",
+          "port": "S"
+        }
       },
       {
         "id": "flow-5-6",
@@ -758,7 +778,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "install",
+          "port": "S"
+        }
       },
       {
         "id": "flow-6-7",
@@ -830,7 +854,11 @@
             "port": "N",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "test-charge",
+          "port": "S"
+        }
       },
       {
         "id": "hold-a-link",
@@ -950,7 +978,11 @@
             "port": "W",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "isolate",
+          "port": "E"
+        }
       },
       {
         "id": "hold-b-link",
@@ -1070,7 +1102,11 @@
             "port": "W",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "recover",
+          "port": "E"
+        }
       },
       {
         "id": "hold-c-link",
@@ -1190,7 +1226,11 @@
             "port": "W",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "install",
+          "port": "E"
+        }
       },
       {
         "id": "hold-d-link",
@@ -1310,7 +1350,11 @@
             "port": "W",
             "step": 2
           }
-        ]
+        ],
+        "source": {
+          "id": "test-charge",
+          "port": "E"
+        }
       }
     ]
   },

@@ -839,7 +839,11 @@
             "port": "N",
             "step": 6
           }
-        ]
+        ],
+        "source": {
+          "id": "hub",
+          "port": "S#4"
+        }
       },
       {
         "id": "route-b",
@@ -1334,7 +1338,11 @@
             "port": "N",
             "step": 6
           }
-        ]
+        ],
+        "source": {
+          "id": "hub",
+          "port": "S#2"
+        }
       },
       {
         "id": "route-e",
@@ -2133,7 +2141,11 @@
             "port": "N",
             "step": 6
           }
-        ]
+        ],
+        "source": {
+          "id": "hub",
+          "port": "S#5"
+        }
       },
       {
         "id": "route-d",
@@ -2724,7 +2736,11 @@
             "port": "N",
             "step": 6
           }
-        ]
+        ],
+        "source": {
+          "id": "hub",
+          "port": "S#3"
+        }
       },
       {
         "id": "route-c",
@@ -3107,7 +3123,11 @@
             "port": "N",
             "step": 6
           }
-        ]
+        ],
+        "source": {
+          "id": "hub",
+          "port": "S#1"
+        }
       }
     ]
   },

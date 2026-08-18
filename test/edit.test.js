@@ -32,7 +32,7 @@ test('every fix kind the engine emits is covered by an operation', () => {
     widen: 'resize', heighten: 'resize', shorten: 'restyle', font: 'restyle',
     move: 'move', rename: 'rename', intent: 'update_page', canvas: 'set_canvas',
     extend: 'extend_path', reroute: 'replace_path', offset: 'replace_path', hop: 'replace_path',
-    remove: 'remove', remove_page: 'remove_page',
+    remove: 'remove', remove_page: 'remove_page', shape: 'restyle',
   };
   for (const kind of kinds) {
     assert.ok(routes[kind], `fix kind "${kind}" has no documented repair route`);
