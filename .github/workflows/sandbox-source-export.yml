@@ -1,8 +1,8 @@
 name: Sandbox source export
 on:
-  push:
+  pull_request:
     branches:
-      - sandbox-mcp-export-20260817
+      - main
 jobs:
   export:
     runs-on: ubuntu-latest
