@@ -241,11 +241,30 @@ export function findElement(doc, id, pageId = null) {
 
 /** Ids must be unique across the whole document, not just per page — a
  *  connector targeting `db` must resolve without the AI naming a page. */
+export function suggestFreeId(doc, id) {
+  // A refusal that does not offer a next step is a dead end. Maintaining unique
+  // ids was one of the things a small model could not do unaided, and handing
+  // back a concrete free name costs nothing and removes the guesswork.
+  const base = String(id).replace(/-\d+$/, '');
+  for (let n = 2; n < 1000; n++) {
+    const candidate = `${base}-${n}`;
+    if (!findElement(doc, candidate) && !findGroup(doc, candidate) && !findConstraint(doc, candidate)) {
+      return candidate;
+    }
+  }
+  return `${base}-${Date.now()}`;
+}
+
 export function assertFreeId(doc, id) {
   const existing = findElement(doc, id);
-  if (existing) throw new Error(`element id "${id}" already exists on page "${existing.page}"`);
-  if (findGroup(doc, id)) throw new Error(`id "${id}" already belongs to group "${id}"`);
-  if (findConstraint(doc, id)) throw new Error(`id "${id}" already belongs to constraint "${id}"`);
+  if (existing) {
+    throw new Error(
+      `element id "${id}" already exists on page "${existing.page}" — ids are unique across the whole `
+      + `document so a connector can target one without naming a page. "${suggestFreeId(doc, id)}" is free.`,
+    );
+  }
+  if (findGroup(doc, id)) throw new Error(`id "${id}" already belongs to group "${id}" — "${suggestFreeId(doc, id)}" is free`);
+  if (findConstraint(doc, id)) throw new Error(`id "${id}" already belongs to constraint "${id}" — "${suggestFreeId(doc, id)}" is free`);
 }
 
 export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, corner = 'square', shape = 'process', align = 'left', fill = null, note = null, opacity = null, state = null }) {

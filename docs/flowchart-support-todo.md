@@ -365,3 +365,21 @@ as the loud one.
 
 Remaining from the Qwen list: unique-id maintenance, and resisting premature
 "done" — which `HELP` now addresses in prose but nothing enforces.
+
+## F13 — Unique-id help — **DONE**
+
+Third Qwen gap: "maintaining unique IDs". The engine always refused duplicates;
+what it did not do was say what to use instead, which leaves a weak author
+guessing at exactly the moment it has already demonstrated it cannot.
+
+`assertFreeId` now names a free id in the refusal — skipping ones that are also
+taken, and not stacking suffixes on an already-numbered id, so `step-2` suggests
+`step-3` rather than `step-2-2`. A test asserts the suggestion is actually
+usable, because a suggestion that fails when taken would be worse than none.
+
+That closes the mechanical items from the Qwen runs. The one left, **resisting
+premature "done"**, is not mechanical: `HELP` and `llm.md` now define done as
+validated-after-the-last-edit, adjudicated, rendered and looked at, and the
+build scripts exit non-zero on any finding above INFO — but nothing can stop an
+author declaring victory in prose, and a gate that tried would be guessing at
+intent.
