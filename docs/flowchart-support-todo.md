@@ -1,7 +1,7 @@
 # Flowchart support — plan of record
 
 **Raised:** 2026-08-18, from a failed authoring attempt plus two ProcessOn sources.
-**Status:** F0, F1, F6 built and green. F2, F3, F7, F8 not built — see each.
+**Status:** F0, F1, F6, F8 built and green. F2, F3 not built. F7 stands as shipped.
 This line was originally written claiming more than had been done; it is
 corrected here rather than quietly, because a plan that overstates itself is
 the same defect as a validation log read before the last edit.
@@ -162,10 +162,18 @@ chart cannot be committed in the state the previous attempt was left in.
 The reference flowchart, redrawn with real diamonds and terminators, as proof
 the vocabulary works. Replaces the rectangles-only attempt.
 
-### F7 — Logo v2, done correctly — **IN PROGRESS**
+### F7 — Logo v2 — **DONE, and left alone**
 
-The previous attempt was backwards: it put the old mark on the old mark's easel.
-V2 must be a **new** mark drawing the **old** one.
+The mark on the easel draws the previous mark, via `place_image
+mode:"simplify"` on a `drawing` Z-page stacked beneath the pen. That version
+stands.
+
+A second attempt rebuilt the turtle itself out of this release's shape
+vocabulary — hexagon shell, terminator head — on the reading that a "v2 mark"
+should be new artwork. It was mechanically clean and visually dead, and was
+reverted. Recorded because the lesson generalises: **the shape vocabulary is a
+diagram substrate, and reaching for it to do illustration produces geometry, not
+character.** The revert is in git history if the direction is ever wanted.
 
 ### F8 — Repo page shows its work — **IN PROGRESS**
 
@@ -198,8 +206,7 @@ compile straight onto them.
 ```
 F0 (contracts)  ──▶ F1 (shapes) ──▶ F2 (rules) ──▶ F3 (lanes) ──▶ F6 (rebuild)
                                                                       │
-F7 (logo v2, correct) ─────────────────────────────────────────────┐  │
-F8 (README examples)  ─────────────────────────────────────────────┴──┴──▶ commit
+F8 (README examples)  ────────────────────────────────────────────────┴──▶ commit
 ```
 
 F0 first because it is cheap and it is the behaviour that failed. F1 before

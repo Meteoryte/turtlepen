@@ -582,20 +582,18 @@ drawing. `validate` returned CLEAN while the sheep read as a stegosaurus, two
 it was caught by rasterising and looking — the reason `WORKFLOW` and `THE CANVAS
 IS NOT A BUDGET` now open `turtlepen_help` instead of sitting 200 lines down.
 
-### Logo v2 — a new mark, drawing the old one
+### Logo v2 — the mark drawing itself
 
-![TurtlePen logo v2](brand/logo-v2.svg)
+![TurtlePen logo v2 — the turtle drawing the old logo](brand/logo-v2.svg)
 
-[SVG](brand/logo-v2.svg) · ([JSON](brand/logo-v2.turtlepen.json)) · built by [`build_logo_v2.js`](build_logo_v2.js)
+[SVG](brand/logo-v2.svg) · ([JSON](brand/logo-v2.turtlepen.json))
 
-The turtle is built from the shape vocabulary this release added — a `prep`
-hexagon shell, `terminator` head and feet — so the mark is made of the thing it
-is advertising. On its easel sits the **previous** mark, placed with
-`place_image mode:"simplify"` on an overlay page *beneath* the pen, so the nib
-overlaps the artwork it is drawing. Nothing is hand-plotted.
-
-It is a **direction, not a finished replacement**: the geometry and the recursion
-are right, the character work is not there yet. v1 remains the mark in use.
+The squiggle on the easel is replaced by the **previous logo**, placed with
+`place_image mode:"simplify"` from a raster of `brand/logo-mark.svg` and resolved
+onto the lattice through a 4x working canvas. It sits on its own `drawing`
+Z-page stacked *beneath* the pen, so the nib genuinely overlaps the artwork it is
+drawing. Nothing was hand-plotted — the recursion is the image-placement
+pipeline pointed at the mark it belongs to.
 
 Roadmap for the imaging gaps — raster **out** and filling a closed path — is in
 [`docs/imaging-capability-roadmap.md`](docs/imaging-capability-roadmap.md), with
