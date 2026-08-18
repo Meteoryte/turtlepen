@@ -228,3 +228,29 @@ F8 (README examples)  ───────────────────�
 
 F0 first because it is cheap and it is the behaviour that failed. F1 before
 everything else because F2, F3, F6 and F9 all compile onto it.
+
+---
+
+## F10 — Perceptual review layer — **BUILT (core), MCP surface pending**
+
+Added 2026-08-18 from the Forge-authored *TurtlePen Evaluation, Perceptual QA
+and Benchmarking Prompt Pack v1.0*, which independently reached this session's
+conclusion and cited the farm-animal failures as its calibration examples.
+
+`src/core/perceptual.js`. The containment argument is the design:
+
+- probabilistic judgement never enters collision geometry — a test asserts that
+  attaching a review leaves the collision log byte-identical;
+- structural and perceptual verdicts are returned side by side and there is
+  **no combined boolean**, because collapsing them loses the only case that
+  matters: a clean log over the wrong picture;
+- a review is bound to the `renderHash` of the bytes the critic actually saw, so
+  editing the drawing makes the review visibly **stale** — the acceptance
+  fingerprint discipline applied to opinions;
+- categories, severities and repair classes are closed sets, refused by name;
+- an unreviewed document is `reviewed: false`, never `clean: true`. Absence of
+  review must not read as a pass.
+
+**Still to do:** an MCP tool surface. A capability the help does not name is
+invisible to an agent, so until `perceptual_review` exists as a tool this is
+reachable from `src/core` only. That is the next step, not a shipped one.

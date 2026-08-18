@@ -28,6 +28,15 @@ import { runPen } from './pen.js';
 import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL } from './collide.js';
 import { renderAscii } from './ascii.js';
 import { renderSvg } from './svg.js';
+import * as perceptual from './perceptual.js';
+
+// Perceptual review is a sibling of validate, not a part of it: same document,
+// separate verdict, and nothing here is consulted by the collision engine.
+export {
+  PERCEPTUAL_CATEGORIES, PERCEPTUAL_SEVERITIES, REPAIR_CLASSES,
+  normalizePerceptualFinding, attachPerceptualReview, renderHash,
+  verdicts as perceptualVerdicts,
+} from './perceptual.js';
 
 export { geometry, address, text, shapes, occupancy, image, png, dither };
 export { tone_ as tone };
@@ -41,6 +50,7 @@ export {
   constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints,
   runPen, validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL,
   renderAscii, renderSvg,
+  perceptual,
   MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign,
 };
 export { PALETTE, PALETTE_DARK, SEVERITY_CUE } from './svg.js';
