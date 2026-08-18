@@ -155,6 +155,25 @@ None of this argues for unbounded growth. A canvas far larger than its content
 trips `C001`, and a diagram nobody can read at a glance has failed differently.
 Take the room the drawing needs, and no more.
 
+## Done means rendered, validated, and looked at
+
+A drawing is not delivered until all four have happened, in this order:
+
+1. **validate AFTER the last edit.** An earlier clean log says nothing about the
+   state the work was finished in.
+2. **adjudicate to zero open findings** — each one fixed, or accepted with a
+   written reason. "Three minor ones remain" is a report of three known defects.
+3. **render to a file.** The SVG is part of the deliverable, not an extra
+   produced when someone asks for it.
+4. **look at it.** `validate` proves the drawing is undefective, never that it
+   is finished or that it depicts what was asked for.
+
+Report what the final validation actually said. This is written down because a
+session shipped a flowchart whose every decision node was a rectangle, never
+rendered it until prompted, and reported it complete with three overlaps open.
+`build_flowchart.js` and `build_logo_v2.js` encode the rule: both exit non-zero
+if any finding above INFO survives.
+
 ## Boundaries
 
 - `src/core/` is pure: no file I/O, no network, no process state. Persistence

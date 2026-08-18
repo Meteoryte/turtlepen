@@ -11,7 +11,7 @@
 import { rect, right, bottom, quadKey } from './geometry.js';
 import { indexToCol, quadToAddress } from './address.js';
 import { elementsOf, elementClaimed, elementVisual, contentBounds } from './document.js';
-import { cornerCutQuads } from './shapes.js';
+import { shapeCutQuads, shapeTextRect } from './shapes.js';
 
 const EMPTY = '·';
 const COLLISION = '✗';
@@ -46,7 +46,7 @@ export function renderAscii(doc, { page = null, region = null, maxCells = 90, fi
         continue;
       }
       const key = keyFor(keyIndex++);
-      const cuts = el.kind === 'box' ? cornerCutQuads(el.rect, el.corner) : new Set();
+      const cuts = el.kind === 'box' ? shapeCutQuads(el.rect, el.shape ?? 'process', el.corner) : new Set();
       for (const k of elementClaimed(el)) {
         const [x, y] = k.split(',').map(Number);
         put(grid, r, x, y, cuts.has(k) ? key.toLowerCase() : key);

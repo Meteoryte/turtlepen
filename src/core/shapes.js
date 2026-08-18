@@ -48,10 +48,153 @@ export function cornerCutQuads(r, style = 'square') {
   return out;
 }
 
-/** Claimed minus corner cuts — where ink actually lands. */
-export function visualQuads(r, style = 'square') {
+/**
+ * Flowchart node shapes.
+ *
+ * A shape is the SAME idea as a corner style, scaled up. A decision diamond is
+ * a box whose corners are carved away in bulk: it still CLAIMS its bounding box,
+ * so layout, gutters and free-space reasoning are unchanged, but it only INKS
+ * the diamond. The collision engine already distinguishes the two, so a stroke
+ * clipping a diamond's empty corner is reported as information (L013) while one
+ * through its body stays an error (L004) — with no special case anywhere.
+ *
+ * Meanings follow the standard flowchart vocabulary, because a reader who knows
+ * flowcharts should not have to learn ours:
+ *   process      the basic step, named with a verb phrase        rectangle
+ *   decision     branches the process on a test                  diamond
+ *   terminator   start or end of the process                     stadium
+ *   subprocess   enters another process and returns              double side bars
+ *   io           input or output                                 parallelogram
+ *   prep         preparation or setup                            hexagon
+ *   manual       a step a person performs                        trapezoid
+ *   data         stored data                                     cylinder
+ *   document     a printed or written artifact                   wavy foot
+ *   bar          fork or join                                    solid bar
+ */
+export const NODE_SHAPES = Object.freeze([
+  'process', 'decision', 'terminator', 'subprocess',
+  'io', 'prep', 'manual', 'data', 'document', 'bar',
+]);
+
+/** Shapes whose slant or curve is a fixed fraction of the bounding box. */
+const SKEW = 0.25;
+const CAP = 0.18;
+
+export function assertNodeShape(shape) {
+  if (!NODE_SHAPES.includes(shape)) {
+    throw new SyntaxError(`unknown node shape "${shape}" — expected one of ${NODE_SHAPES.join(', ')}`);
+  }
+  return shape;
+}
+
+/**
+ * Is this quadrant inside the shape's outline?
+ *
+ * Quadrant centres are tested, so the result is an exact integer set: the same
+ * rect and shape always ink the same quadrants, which is what lets tests assert
+ * cell sets rather than approximate coverage.
+ */
+function insideShape(i, j, w, h, shape) {
+  const r_h_small = h < 6;
+  const u = (i + 0.5) / w;          // 0..1 across
+  const v = (j + 0.5) / h;          // 0..1 down
+  const du = Math.abs(2 * u - 1);   // 0 at centre, 1 at either edge
+  const dv = Math.abs(2 * v - 1);
+  switch (shape) {
+    case 'decision':
+      return du + dv <= 1;
+    case 'terminator': {
+      const rad = Math.min(0.5, (h / 2) / w);   // cap radius as a fraction of width
+      if (u >= rad && u <= 1 - rad) return true;
+      const cu = u < 0.5 ? rad : 1 - rad;
+      return ((u - cu) / rad) ** 2 + dv ** 2 <= 1;
+    }
+    case 'io':
+      return u >= SKEW * (1 - v) && u <= 1 - SKEW * v;
+    case 'prep':
+      // Flat through the middle, slanted only at the two ends — a hexagon,
+      // not a diamond that happens to have been clipped.
+      return u >= SKEW * dv && u <= 1 - SKEW * dv;
+    case 'manual':
+      return u >= SKEW * v && u <= 1 - SKEW * v;
+    case 'data': {
+      if (v > CAP && v < 1 - CAP) return true;
+      const cv = v <= CAP ? CAP : 1 - CAP;
+      return du ** 2 + ((v - cv) / CAP) ** 2 <= 1;
+    }
+    case 'document': {
+      // A symmetric foot rather than a true S-wave. At the amplitude a lattice
+      // actually affords — two quadrants on a typical node — an S reads as a
+      // chewed edge, because one half of the cycle cuts and the other does not.
+      // A symmetric dip stays legible at every size the engine can draw.
+      if (r_h_small) return true;
+      return v <= 1 - CAP * (0.5 - 0.5 * Math.cos(u * Math.PI * 2));
+    }
+    default:
+      return true;
+  }
+}
+
+/**
+ * Everything a shape carves out of its claimed rectangle.
+ *
+ * Below 3x3 quadrants a shape has no room to read as itself, so it keeps its
+ * rectangle and its corner style rather than degrading into an unrecognisable
+ * blob — the engine refuses to pretend, the same way it refuses elsewhere.
+ */
+export function shapeCutQuads(r, shape = 'process', style = 'square') {
+  if (shape === 'process' || shape === 'subprocess' || shape === 'bar') {
+    return cornerCutQuads(r, style);
+  }
+  assertNodeShape(shape);
+  if (r.w < 3 || r.h < 3) return cornerCutQuads(r, style);
+  const out = new Set();
+  for (let j = 0; j < r.h; j++) {
+    for (let i = 0; i < r.w; i++) {
+      if (!insideShape(i, j, r.w, r.h, shape)) out.add(quadKey(r.x + i, r.y + j));
+    }
+  }
+  return out;
+}
+
+/**
+ * The rectangle a label may actually use inside a shape.
+ *
+ * This is the whole reason shapes are more than decoration. A diamond's
+ * bounding box is twice the width its text can use at the vertical centre;
+ * reporting a label as fitting because the BOUNDING BOX was wide enough would
+ * reintroduce the precise overflow bug this project exists to eliminate.
+ */
+export function shapeTextRect(r, shape = 'process') {
+  if (r.w < 3 || r.h < 3) return r;
+  const inset = (dx, dy) => rect(
+    r.x + dx, r.y + dy,
+    Math.max(1, r.w - dx * 2), Math.max(1, r.h - dy * 2),
+  );
+  switch (shape) {
+    case 'decision':
+      return inset(Math.floor(r.w / 4), Math.floor(r.h / 4));
+    case 'terminator':
+      return inset(Math.min(Math.floor(r.w / 4), Math.floor(r.h / 4)), 0);
+    case 'io':
+    case 'manual':
+    case 'prep':
+      return inset(Math.ceil(r.w * SKEW), 0);
+    case 'data':
+      return inset(0, Math.ceil(r.h * CAP));
+    case 'document':
+      return rect(r.x, r.y, r.w, Math.max(1, r.h - Math.ceil(r.h * CAP)));
+    case 'subprocess':
+      return inset(1, 0);
+    default:
+      return r;
+  }
+}
+
+/** Claimed minus whatever the shape and corner style carve away. */
+export function visualQuads(r, style = 'square', shape = 'process') {
   const claimed = claimedQuads(r);
-  for (const k of cornerCutQuads(r, style)) claimed.delete(k);
+  for (const k of shapeCutQuads(r, shape, style)) claimed.delete(k);
   return claimed;
 }
 

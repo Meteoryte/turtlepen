@@ -14,6 +14,7 @@
 
 import { PX_PER_QUAD, toPx, right, bottom } from './geometry.js';
 import { elementsOf, contentBounds } from './document.js';
+import { shapeTextRect } from './shapes.js';
 import { layoutTextRuns } from './text.js';
 
 const CUT = PX_PER_QUAD; // corner cuts are one quadrant
@@ -221,9 +222,51 @@ export function boxOutline(r, style) {
   ].join(' ');
 }
 
+/**
+ * Outline for a flowchart node shape.
+ *
+ * The path traces the same boundary the collision engine carved in
+ * `shapeCutQuads`, so what a reader sees and what the log reasons about are the
+ * same shape. Returns null for shapes that are plain rectangles.
+ */
+export function shapeOutline(r, shape) {
+  const { x, y, w, h } = toPx(r);
+  const x2 = x + w, y2 = y + h;
+  const mx = x + w / 2, my = y + h / 2;
+  const sk = w * 0.25, cap = h * 0.18;
+  switch (shape) {
+    case 'decision':
+      return `M${mx},${y} L${x2},${my} L${mx},${y2} L${x},${my} Z`;
+    case 'terminator': {
+      const rad = Math.min(h / 2, w / 2);
+      return `M${x + rad},${y} H${x2 - rad} A${rad},${h / 2} 0 0 1 ${x2 - rad},${y2} H${x + rad} A${rad},${h / 2} 0 0 1 ${x + rad},${y} Z`;
+    }
+    case 'io':
+      return `M${x + sk},${y} H${x2} L${x2 - sk},${y2} H${x} Z`;
+    case 'manual':
+      return `M${x},${y} H${x2} L${x2 - sk},${y2} H${x + sk} Z`;
+    case 'prep':
+      return `M${x + sk},${y} H${x2 - sk} L${x2},${my} L${x2 - sk},${y2} H${x + sk} L${x},${my} Z`;
+    case 'data':
+      return `M${x},${y + cap} A${w / 2},${cap} 0 0 1 ${x2},${y + cap} V${y2 - cap} A${w / 2},${cap} 0 0 1 ${x},${y2 - cap} Z`;
+    case 'document':
+      return `M${x},${y} H${x2} V${y2 - cap} Q${mx},${y2 - cap * 2.4} ${x},${y2 - cap} Z`;
+    default:
+      return null;
+  }
+}
+
 function box(el, doc) {
   // Element opacity multiplies with its page's; geometry is untouched either way.
-  const out = [`<path class="box${el.state === 'dimmed' ? ' dimmed' : ''}" d="${boxOutline(el.rect, el.corner)}" data-id="${escapeAttr(el.id)}"${el.opacity != null ? ` opacity="${el.opacity}"` : ''}${el.fill ? ` style="fill:${escapeAttr(el.fill)}"` : ''}/>`];
+  const shape = el.shape ?? 'process';
+  const d = shapeOutline(el.rect, shape) ?? boxOutline(el.rect, el.corner);
+  const out = [`<path class="box${el.state === 'dimmed' ? ' dimmed' : ''}" d="${d}" data-id="${escapeAttr(el.id)}"${el.opacity != null ? ` opacity="${el.opacity}"` : ''}${el.fill ? ` style="fill:${escapeAttr(el.fill)}"` : ''}/>`];
+  if (shape === 'subprocess') {
+    // Double side bars — the mark that says "this step is another process".
+    const { x, y, w, h } = toPx(el.rect);
+    out.push(`<path class="box" d="M${x + 10},${y} V${y + h}" fill="none"/>`);
+    out.push(`<path class="box" d="M${x + w - 10},${y} V${y + h}" fill="none"/>`);
+  }
   if (el.label) out.push(label(el, doc));
   return out.join('');
 }
@@ -233,7 +276,7 @@ function box(el, doc) {
  * the drawing physically unable to disagree with the fit report.
  */
 function label(el, doc) {
-  const layout = layoutTextRuns(el.label, el.rect, {
+  const layout = layoutTextRuns(el.label, shapeTextRect(el.rect, el.shape ?? 'process'), {
     fontSize: el.fontSize,
     paddingQuads: doc.font.paddingQuads,
     align: el.align,

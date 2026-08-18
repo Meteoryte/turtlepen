@@ -332,6 +332,7 @@ export function createTools(session) {
           label: { type: 'string' },
           page: { type: 'string' },
           corner: { type: 'string', enum: ['square', 'rounded', 'indented', 'chamfered'] },
+          shape: { description: 'flowchart symbol: process (default), decision, terminator, subprocess, io, prep, manual, data, document, bar', type: 'string', enum: ['process', 'decision', 'terminator', 'subprocess', 'io', 'prep', 'manual', 'data', 'document', 'bar'] },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
           fontSize: { type: 'integer' },
           fill: { type: 'string' },
@@ -339,9 +340,9 @@ export function createTools(session) {
         required: ['id', 'at', 'span'],
         additionalProperties: false,
       },
-      handler: async ({ id, at, span, label = '', page = 'base', corner = 'square', align = 'left', fontSize = null, fill = null }) => {
+      handler: async ({ id, at, span, label = '', page = 'base', corner = 'square', shape = 'process', align = 'left', fontSize = null, fill = null }) => {
         const doc = need(session);
-        const el = core.placeBox(doc, page, { id, at, span, label, corner, align, fontSize, fill });
+        const el = core.placeBox(doc, page, { id, at, span, label, corner, shape, align, fontSize, fill });
         await persist(session);
         const fit = label ? core.text.fitReport(label, el.rect, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null;
         return [
@@ -1449,6 +1450,20 @@ THE CANVAS IS NOT A BUDGET
 WORKFLOW
   measure -> plan -> commit -> validate -> render -> LOOK AT IT
                                         -> accept_finding for anything deliberate.
+
+  DONE MEANS ALL FOUR. A drawing is not delivered until it has been:
+    1. validated AFTER the last edit, not before it. An earlier clean log says
+       nothing about the state you finished in.
+    2. adjudicated to zero open findings — every one either fixed or accepted
+       with a reason. "Only three minor ones left" is not done; it is a report
+       of three known defects.
+    3. rendered to a file. The SVG is PART OF THE DELIVERABLE, not an extra
+       produced when someone asks. Nobody asked you to keep it to yourself.
+    4. looked at. An author who has not seen the drawing does not know what
+       they made.
+  Report what the final validation actually said. Three sessions have announced
+  finished work whose last real check was several edits old.
+
   Only a fingerprint in the current validation may be accepted. Geometry changes
   make the old acceptance visibly stale; unaccept_finding withdraws that record.
   A committed edit that proves wrong is recoverable with history action="undo".
@@ -1534,6 +1549,38 @@ PEN GRAMMAR
   <dir> [<style>] corner align <sideA> <sideB> place a junction and turn
   <dir> ... line to <address|id.port>          draw until it reaches a target;
                                                indexed target faces also work
+
+FLOWCHART NODES — the symbol carries the meaning
+  place_box ... shape <name>        or  box ... shape decision  in a pen program
+
+  process     the basic step, named with a verb phrase       rectangle
+  decision    branches the process on a test                 diamond
+  terminator  start or end of the process                    stadium
+  subprocess  enters another process and returns             double side bars
+  io          input or output                                parallelogram
+  prep        preparation or setup                           hexagon
+  manual      a step a person performs                       trapezoid
+  data        stored data                                    cylinder
+  document    a printed or written artifact                  wavy foot
+  bar         fork or join                                   solid bar
+
+  A shape still CLAIMS its whole bounding box, so gutters, free_space and
+  layout are unchanged; it only INKS the symbol. A stroke clipping a diamond's
+  empty corner is therefore L013 information, not an L004 error.
+
+  TEXT IS MEASURED AGAINST THE SYMBOL, NOT THE BOX. A diamond gives a label
+  about half its bounding width and half its height; a parallelogram gives
+  three quarters of its width. A label that fits the rectangle can still
+  overflow the diamond, and the log says so. Measure, then choose the span.
+
+  Below 3x3 quadrants a shape has no room to read as itself, so it stays a
+  rectangle rather than degrading into a blob.
+
+  The four rules the symbols exist to serve:
+    1. order runs left-to-right and top-to-bottom unless you mean otherwise
+    2. exactly ONE start; zero or many ends
+    3. one arrow per path, and no bend without a reason
+    4. avoid crossings; where one is unavoidable, say so with a "hop"
 
 SHAPES — anything that is not a rectangle
   ray to <address>                             a straight line at ANY angle

@@ -95,7 +95,7 @@ export function splitProgram(program) {
 
 export function parseCommand(source) {
   const toks = tokenize(source);
-  const cmd = { source, dir: null, n: null, align: [], style: null, element: null, at: null, from: null, to: null, label: null, span: null, id: null, font: null, weight: null, fill: null, arrowEnd: false, args: [] };
+  const cmd = { source, dir: null, n: null, align: [], style: null, element: null, at: null, from: null, to: null, label: null, span: null, id: null, font: null, weight: null, fill: null, shape: null, arrowEnd: false, args: [] };
   const seen = [];
 
   // Shapes read their own arguments positionally.
@@ -134,6 +134,7 @@ export function parseCommand(source) {
     if (low === 'label') { cmd.label = requireNext(toks, ++i, 'label', source); continue; }
     if (low === 'id') { cmd.id = requireNext(toks, ++i, 'id', source); continue; }
     if (low === 'fill') { cmd.fill = requireNext(toks, ++i, 'fill', source); continue; }
+    if (low === 'shape') { cmd.shape = requireNext(toks, ++i, 'shape', source); continue; }
     if (low === 'span') { cmd.span = parseSpan(requireNext(toks, ++i, 'span', source), source); continue; }
     if (low === 'font') { cmd.font = Number(requireNext(toks, ++i, 'font', source)); continue; }
     if (low === 'weight') { cmd.weight = Number(requireNext(toks, ++i, 'weight', source)); continue; }
@@ -271,7 +272,7 @@ export function runPen(program, ctx = {}) {
         const w = cmd.span.w * 2, h = cmd.span.h * 2;
         const { dx, dy } = pinOffset(a.kind === 'pin' ? a.part : 'tl', w, h);
         const r = assertOnGrid(rect(p.x + dx, p.y + dy, w, h), `box "${cmd.id ?? cmd.label ?? 'unnamed'}" pinned at ${cmd.at}`);
-        boxes.push({ id: cmd.id, rect: r, label: cmd.label ?? '', corner: cmd.style ?? 'square', fontSize: cmd.font, fill: cmd.fill });
+        boxes.push({ id: cmd.id, rect: r, label: cmd.label ?? '', corner: cmd.style ?? 'square', shape: cmd.shape ?? 'process', fontSize: cmd.font, fill: cmd.fill });
         trace.push({ step: step + 1, source: cmd.source, action: 'box', at: quadToAddress(r.x, r.y), span: `${cmd.span.w}x${cmd.span.h}` });
         return;
       }

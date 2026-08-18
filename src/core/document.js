@@ -13,7 +13,7 @@
  */
 
 import { rect, rectsOverlap, boundsOf } from './geometry.js';
-import { claimedQuads, visualQuads, assertCornerStyle, parsePortSpec, portPoint } from './shapes.js';
+import { claimedQuads, visualQuads, assertCornerStyle, assertNodeShape, parsePortSpec, portPoint } from './shapes.js';
 import { DEFAULT_FONT, resolveFontSize } from './text.js';
 import { normalizeTone, normalizeFeather, normalizeTexture } from './tone.js';
 import { normalizePattern } from './pattern.js';
@@ -248,11 +248,12 @@ export function assertFreeId(doc, id) {
   if (findConstraint(doc, id)) throw new Error(`id "${id}" already belongs to constraint "${id}"`);
 }
 
-export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, corner = 'square', align = 'left', fill = null, note = null, opacity = null, state = null }) {
+export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, corner = 'square', shape = 'process', align = 'left', fill = null, note = null, opacity = null, state = null }) {
   getPage(doc, pageId);
   assertElementId(id);
   assertFreeId(doc, id);
   assertCornerStyle(corner);
+  assertNodeShape(shape);
   const el = {
     id,
     kind: 'box',
@@ -260,6 +261,7 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
     label,
     fontSize: fontSize == null ? doc.font.size : resolveFontSize(fontSize),
     corner,
+    shape,
     align: assertTextAlign(align),
     fill: normalizeColor(fill, 'box fill'),
     note,
@@ -665,7 +667,7 @@ export function elementClaimed(el) {
 /** Quadrants an element actually inks — boxes lose their cut corners. */
 export function elementVisual(el) {
   if (el.kind === 'path') return elementClaimed(el);
-  if (el.kind === 'box') return visualQuads(el.rect, el.corner);
+  if (el.kind === 'box') return visualQuads(el.rect, el.corner, el.shape ?? 'process');
   return claimedQuads(el.rect);
 }
 

@@ -109,6 +109,7 @@ function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', 
       rect: b.rect,
       label: b.label,
       corner: b.corner,
+      shape: b.shape ?? 'process',
       fontSize: b.fontSize ?? doc.font.size,
       fill: b.fill,
     }),
@@ -255,7 +256,7 @@ export function resizeBox(doc, id, { cellsW = null, cellsH = null, anchor = 'tl'
     el.scale = image.scaleReport(source, { cellsWide: r.w / 2, cellsTall: r.h / 2, mode: 'embed', fit: el.fit });
   }
   reconcileElementChange(doc, id);
-  return { element: el, page: found.page, fit: el.label ? text.fitReport(el.label, r, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
+  return { element: el, page: found.page, fit: el.label ? text.fitReport(el.label, shapes.shapeTextRect(r, el.shape ?? 'process'), { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
 }
 
 /** Move an element so the named pin of its bounding box lands on an address. */
@@ -273,7 +274,7 @@ export function moveElementTo(doc, id, at, pin = 'tl') {
 }
 
 /** Change a box's label or styling, re-measuring the label as it goes. */
-export function restyleBox(doc, id, { label = null, corner = null, align = null, fontSize = null, fill = null } = {}) {
+export function restyleBox(doc, id, { label = null, corner = null, shape = null, align = null, fontSize = null, fill = null } = {}) {
   const found = findElement(doc, id);
   if (!found) throw new Error(`no element "${id}" to restyle`);
   const el = found.element;
@@ -283,16 +284,18 @@ export function restyleBox(doc, id, { label = null, corner = null, align = null,
   // Validate the whole request before touching the element. A repair operation
   // is as atomic as a plan even when called directly.
   const nextCorner = corner != null ? shapes.assertCornerStyle(corner) : null;
+  const nextShape = shape != null ? shapes.assertNodeShape(shape) : null;
   const nextAlign = align != null ? assertTextAlign(align) : null;
   const nextFontSize = fontSize != null ? text.resolveFontSize(fontSize) : null;
   const nextFill = fill != null ? normalizeColor(fill, 'box fill') : null;
   if (label != null) el.kind === 'text' ? (el.text = label) : (el.label = label);
   if (nextCorner != null) el.corner = nextCorner;
+  if (nextShape != null) el.shape = nextShape;
   if (nextAlign != null) el.align = nextAlign;
   if (nextFontSize != null) el.fontSize = nextFontSize;
   if (nextFill != null) el.fill = nextFill;
   const content = el.kind === 'text' ? el.text : el.label;
-  return { element: el, page: found.page, fit: content ? text.fitReport(content, el.rect, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
+  return { element: el, page: found.page, fit: content ? text.fitReport(content, shapes.shapeTextRect(el.rect, el.shape ?? 'process'), { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
 }
 
 export function setCanvas(doc, cols, rows) {
@@ -333,14 +336,14 @@ export function normalizeSpan(span, what = 'span') {
 }
 
 /** Place a single box by address and cell span — the non-pen path to a node. */
-export function placeBox(doc, pageId, { id, at, span, label = '', corner = 'square', align = 'left', fontSize = null, fill = null, opacity = null, state = null }) {
+export function placeBox(doc, pageId, { id, at, span, label = '', corner = 'square', shape = 'process', align = 'left', fontSize = null, fill = null, opacity = null, state = null }) {
   const cells = normalizeSpan(span, `span for "${id}"`);
   const a = address.parseAddress(at);
   const p = address.pinPoint(a);
   const w = cells.w * 2, h = cells.h * 2;
   const [px, py] = a.kind === 'pin' ? address.PINS[a.part] : [0, 0];
   const r = address.assertOnGrid(geometry.rect(p.x - (px * w) / 2, p.y - (py * h) / 2, w, h), `box "${id}" pinned at ${at}`);
-  return addBox(doc, pageId, { id, rect: r, label, corner, align, fontSize, fill, opacity, state });
+  return addBox(doc, pageId, { id, rect: r, label, corner, shape, align, fontSize, fill, opacity, state });
 }
 
 /**
@@ -716,6 +719,7 @@ export function latticeInfo(doc = null) {
     },
     strokeAlignments: { vertical: shapes.VERTICAL_ALIGNMENTS, horizontal: shapes.HORIZONTAL_ALIGNMENTS, note: 'no centre: a 5px stroke centred in a 10px cell would start at 2.5px, off the lattice' },
     cornerStyles: shapes.BOX_CORNER_STYLES,
+    nodeShapes: shapes.NODE_SHAPES,
     legibilityFloorPx: text.MIN_LEGIBLE_FONT_PX,
   };
 }

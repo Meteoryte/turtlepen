@@ -530,16 +530,45 @@ Model used: **Gemini 3.1 Pro (High)**
 
 The following were authored using TurtlePen MCP tools by **Claude Opus 5**:
 
+### Flowcharts — real symbols, not rectangles with labels
+
+![Important Process flowchart](diagrams/flowchart-important-process.svg)
+
+[SVG](diagrams/flowchart-important-process.svg) · ([JSON](diagrams/flowchart-important-process.turtlepen.json)) · built by [`build_flowchart.js`](build_flowchart.js)
+
+Decisions are **diamonds**, terminators are **stadiums**, and that distinction is
+load-bearing rather than cosmetic. A node still *claims* its bounding box — so
+layout, gutters and `free_space` are unchanged — but only *inks* its symbol, so
+a stroke clipping a diamond's empty corner is `L013` information while one
+through its body stays an `L004` error.
+
+The consequence that matters: **text is measured against the symbol, not the
+box.** A diamond gives a label about half its bounding width. The same label in
+the same span fits a rectangle and overflows the diamond, and the log says so —
+which is the overflow bug this project exists to eliminate, extended to shapes.
+
+```
+place_box { id: "spelling", at: "AT53", span: "30x9",
+            label: "Free of spelling and logic errors?", shape: "decision" }
+```
+
+Shapes: `process` `decision` `terminator` `subprocess` `io` `prep` `manual`
+`data` `document` `bar`. The plan, the sources, and what was deliberately *not*
+built are in [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md).
+
 ### Five Farm Animals — with a full working record
 
-- **Composition**: [Five Farm Animals](diagrams/farm-animals.svg) ([JSON](diagrams/farm-animals.turtlepen.json))
-- **📄 Working record (PDF)**: [**TurtlePen — Five Farm Animals**](docs/TurtlePen-Five-Farm-Animals.pdf) · 14 pages
+![Five Farm Animals](diagrams/farm-animals.svg)
 
-The PDF is the interesting artifact, not the drawing. It documents the whole
-authoring loop end to end: how each silhouette is constructed, every pen program
-as committed, which collision findings were **real defects** and which were
-**declared anatomy** via `accept_finding`, what the session taught, the complete
-`turtlepen_help` text, and a gallery of every SVG in this repository.
+- **Composition**: [Five Farm Animals](diagrams/farm-animals.svg) ([JSON](diagrams/farm-animals.turtlepen.json))
+- **Working record (PDF)**: [**TurtlePen — Five Farm Animals**](docs/TurtlePen-Five-Farm-Animals.pdf) · 14 pages
+
+| | | |
+|:--:|:--:|:--:|
+| [![cover](docs/preview/pdf-01-cover.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | [![method](docs/preview/pdf-02-method.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | [![animals](docs/preview/pdf-03-animals.png)](docs/TurtlePen-Five-Farm-Animals.pdf) |
+| the composition | how each silhouette is built | every committed pen program |
+| [![findings](docs/preview/pdf-05-findings.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | [![learned](docs/preview/pdf-06-learned.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | |
+| real defects vs. declared anatomy | what the session taught | |
 
 Cow, pig, sheep, rooster and horse each fold **head, body and all four legs into
 a single closed polygon**. The obvious alternative — a body outline plus four
@@ -553,21 +582,22 @@ drawing. `validate` returned CLEAN while the sheep read as a stegosaurus, two
 it was caught by rasterising and looking — the reason `WORKFLOW` and `THE CANVAS
 IS NOT A BUDGET` now open `turtlepen_help` instead of sitting 200 lines down.
 
-### Logo v2 — the mark drawing itself
+### Logo v2 — a new mark, drawing the old one
 
-![TurtlePen logo v2 — the turtle drawing the old logo](brand/logo-v2.svg)
+![TurtlePen logo v2](brand/logo-v2.svg)
 
-[SVG](brand/logo-v2.svg) · ([JSON](brand/logo-v2.turtlepen.json))
+[SVG](brand/logo-v2.svg) · ([JSON](brand/logo-v2.turtlepen.json)) · built by [`build_logo_v2.js`](build_logo_v2.js)
 
-The squiggle on the easel is replaced by the **previous logo**, placed with
-`place_image mode:"simplify"` from a raster of `brand/logo-mark.svg` and resolved
-onto the lattice through a 4× working canvas. It sits on its own `drawing`
-Z-page stacked *beneath* the pen, so the nib genuinely overlaps the artwork it is
-drawing. Nothing was hand-plotted — the recursion is the image-placement
-pipeline pointed at the mark it belongs to.
+The turtle is built from the shape vocabulary this release added — a `prep`
+hexagon shell, `terminator` head and feet — so the mark is made of the thing it
+is advertising. On its easel sits the **previous** mark, placed with
+`place_image mode:"simplify"` on an overlay page *beneath* the pen, so the nib
+overlaps the artwork it is drawing. Nothing is hand-plotted.
 
-Roadmap for the imaging gaps this exercise exposed — raster **out** and filling a
-closed path — is in
+It is a **direction, not a finished replacement**: the geometry and the recursion
+are right, the character work is not there yet. v1 remains the mark in use.
+
+Roadmap for the imaging gaps — raster **out** and filling a closed path — is in
 [`docs/imaging-capability-roadmap.md`](docs/imaging-capability-roadmap.md), with
 paste-ready prompts in
 [`docs/imaging-capability-prompts.md`](docs/imaging-capability-prompts.md).
