@@ -29,17 +29,17 @@ jobs:
       - name: Confirm TurtlePen regression suite first
         run: npm test
 
-      - name: Run Qwen 0.5B as TurtlePen MCP author
+      - name: Run Qwen 0.5B fault-response experiment
         env:
           HF_HUB_DISABLE_TELEMETRY: '1'
           TOKENIZERS_PARALLELISM: 'false'
-        run: python tools/chatgpt_qwen05_mcp_experiment.py
+        run: python tools/chatgpt_qwen05_fault_response.py
 
       - name: Upload experiment evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: qwen05-turtlepen-mcp-results
-          path: qwen05_results/
+          name: qwen05-turtlepen-fault-response
+          path: qwen05_fault_response_results/
           if-no-files-found: warn
           retention-days: 7
