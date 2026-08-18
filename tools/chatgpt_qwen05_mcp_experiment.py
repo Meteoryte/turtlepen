@@ -1,3 +1,4 @@
+# Temporary isolated Qwen 0.5B MCP experiment; never merge this harness.
 import json
 import os
 import re
@@ -233,11 +234,9 @@ def run_condition(condition, model, tokenizer):
         feedback = ("TOOL ERROR:\n" if err else "TOOL RESULT:\n") + trimmed
         messages.append({"role": "user", "content": feedback})
 
-        # Keep the model context bounded while preserving the task and recent interaction.
         if len(messages) > 12:
             messages = messages[:2] + messages[-10:]
 
-    # Controller-side evaluation: the model cannot fake this.
     eval_result = {
         "condition": condition,
         "model": MODEL_ID,
@@ -255,7 +254,6 @@ def run_condition(condition, model, tokenizer):
         "mcp_initialize": init,
     }
 
-    # Find final structural state.
     try:
         vr = mcp.call("validate", {"format": "json"})
         vtext = mcp.text(vr)
@@ -267,7 +265,6 @@ def run_condition(condition, model, tokenizer):
     eval_result["premature_done"] = bool(declared_final and not clean)
     eval_result["max_turn_exhausted"] = not declared_final
 
-    # Always force an evaluator render/save if a diagram exists, so failed runs can still be inspected.
     try:
         rr = mcp.call("render", {"path": f"{condition}-controller-final.svg", "force": True, "bounds": "canvas"})
         eval_result["controller_render"] = mcp.text(rr)
@@ -286,37 +283,21 @@ def run_condition(condition, model, tokenizer):
 
 def md_summary(results, elapsed, model_load_seconds):
     lines = [
-        "# TurtlePen Qwen2.5-0.5B MCP Experiment",
-        "",
-        f"Model: `{MODEL_ID}`",
-        f"Model load seconds: {model_load_seconds:.1f}",
-        f"Total experiment seconds: {elapsed:.1f}",
-        f"Max agent turns per condition: {MAX_TURNS}",
-        "",
-        "## Conditions",
-        "",
+        "# TurtlePen Qwen2.5-0.5B MCP Experiment", "", f"Model: `{MODEL_ID}`",
+        f"Model load seconds: {model_load_seconds:.1f}", f"Total experiment seconds: {elapsed:.1f}",
+        f"Max agent turns per condition: {MAX_TURNS}", "", "## Conditions", "",
         "- `self_assured`: validation optional; trust own geometry.",
         "- `validator_strict`: cannot finish until CLEAN, no explicit anti-loop repair strategy.",
         "- `fault_aware`: validator authoritative; repair findings, do not repeat failed calls, inspect/change strategy.",
-        "",
-        "## Results",
-        "",
+        "", "## Results", "",
         "| condition | turns | model tool calls | validate calls | malformed | repeats | declared final | controller clean | premature done | exhausted |",
         "|---|---:|---:|---:|---:|---:|---|---|---|---|",
     ]
     for r in results:
-        lines.append(
-            f"| {r['condition']} | {r['turns_used']} | {r['model_tool_calls']} | {r['validation_calls']} | "
-            f"{r['malformed_responses']} | {r['repeated_identical_calls']} | {r['declared_final']} | "
-            f"{r['controller_validate'].get('clean', False)} | {r['premature_done']} | {r['max_turn_exhausted']} |"
-        )
+        lines.append(f"| {r['condition']} | {r['turns_used']} | {r['model_tool_calls']} | {r['validation_calls']} | {r['malformed_responses']} | {r['repeated_identical_calls']} | {r['declared_final']} | {r['controller_validate'].get('clean', False)} | {r['premature_done']} | {r['max_turn_exhausted']} |")
     lines += ["", "## Structural findings at controller evaluation", ""]
     for r in results:
-        lines.append(f"### {r['condition']}")
-        lines.append("```json")
-        lines.append(json.dumps(r["controller_validate"], indent=2)[:12000])
-        lines.append("```")
-        lines.append("")
+        lines += [f"### {r['condition']}", "```json", json.dumps(r["controller_validate"], indent=2)[:12000], "```", ""]
     lines += ["## Notes", "", "The controller-side validate/render/save calls happen after the model stops and are not visible to the model. They prevent the model from declaring success without an independent final check."]
     return "\n".join(lines)
 
