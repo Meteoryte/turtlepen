@@ -92,6 +92,14 @@ test('every advertised MCP tool completes a representative use case over stdio',
     assert.match(await invoke('plan', { operations, commit: true }), /committed 1 operation/);
     await invoke('set_canvas', { cols: 100, rows: 60 });
     await invoke('remove', { id: 'obstacle' });
+    // An import is a compiler onto ordinary operations, so exercise it over the
+    // real transport too: it must return operations and change nothing.
+    const imported = JSON.parse(await invoke('import_mermaid', {
+      source: ['flowchart TD', '  M1([Begin]) --> M2[Work]', '  M2 --> M3([End])'].join('\n'),
+    }));
+    assert.equal(imported.nodes, 3);
+    assert.ok(imported.operations.length >= 5);
+
     const rendered = await invoke('render', { path: 'endpoint.svg', showGrid: false, force: true, bounds: 'canvas' });
     // render must hand back the hash a perceptual review binds to, and the
     // review must come back with BOTH verdicts rather than one merged flag.

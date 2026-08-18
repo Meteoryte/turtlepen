@@ -308,6 +308,20 @@ export function runPen(program, ctx = {}) {
       case 'hop': {
         // A deliberate crossing. Marking it exempts the quadrant from the
         // stroke-overlap rule, so an intended hop is not reported as a defect.
+        //
+        // A hop is ONE quadrant, so it has no destination. `hop to <address>`
+        // used to parse and then silently ignore the target, which is the
+        // "named but not built, so quietly do something adjacent" failure this
+        // engine refuses everywhere else. An authoring session lost real time
+        // to it: the hop appeared to work, travelled one cell, and the overlap
+        // it was meant to clear was still reported.
+        if (cmd.to != null) {
+          throw new SyntaxError(
+            `"hop" marks a single crossing quadrant and takes a direction, not a destination — got: ${cmd.source}. `
+            + 'To cross another path on the way somewhere, draw the run and hop only at the crossing: '
+            + '"right 3 line" then "right hop" then "right line to <id>.<port> arrow".',
+          );
+        }
         const dir = cmd.dir ?? state.facing;
         recordPiece(pieces, occupied, notes, { x: state.x, y: state.y, type: 'hop', dir, style: cmd.style ?? 'rounded' }, step + 1);
         trace.push({ step: step + 1, source: cmd.source, action: 'hop', at: quadToAddress(state.x, state.y), dir });

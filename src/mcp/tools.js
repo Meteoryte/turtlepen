@@ -914,6 +914,33 @@ export function createTools(session) {
     },
 
     {
+      name: 'import_mermaid',
+      description:
+        'Compile a Mermaid flowchart into TurtlePen operations. Returns the operations; it does NOT change the document. Feed them to "plan" to rehearse, read the collision log, then commit — so an import is subject to exactly the same validation as anything drawn by hand, and cannot produce geometry the normal path could not. Node brackets map onto the symbol vocabulary: ([x]) terminator, {x} decision, [/x/] io, {{x}} prep, [(x)] data, [[x]] subprocess, backslash-delimited manual, [x] process. It lays out a top-to-bottom spine; it does NOT route, and says so when an edge is not a straight drop. Unsupported syntax (subgraph, classDef, style, click) is refused by name rather than silently dropped.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          source: { description: 'the mermaid flowchart text, including its "flowchart TD" header', type: 'string' },
+          page: { type: 'string' },
+          nodeWidth: { type: 'integer' },
+          nodeHeight: { type: 'integer' },
+        },
+        required: ['source'],
+        additionalProperties: false,
+      },
+      handler: async ({ source, page = 'base', nodeWidth = 26, nodeHeight = 8 }) => {
+        const result = core.mermaidToOperations(source, { page, nodeWidth, nodeHeight });
+        return JSON.stringify({
+          nodes: result.nodes,
+          edges: result.edges,
+          notes: result.notes,
+          next: 'Pass these to plan (commit:false) and read the log before committing.',
+          operations: result.operations,
+        }, null, 2);
+      },
+    },
+
+    {
       name: 'measure_image',
       description: 'Read real image dimensions and report the measured whole-cell footprint, aspect rounding, rendered-pixel scale, and dither/simplify quadrant-sampling scales. Call this BEFORE place_image. Reports say exactly whether each stage upscales, downscales, or stays exact; upscaling never creates detail.',
       inputSchema: {
@@ -1540,6 +1567,23 @@ WORKFLOW
 
   Findings are ranked S0 critical, S1 error, S2 warn, S3 info. Accepting a
   finding records intent; it lapses automatically if the geometry changes.
+
+IMPORTING A MERMAID FLOWCHART
+  import_mermaid { source: "flowchart TD ..." }  ->  operations, NOT a change
+
+  It compiles onto operations you already have and hands them back. Feed them
+  to plan, read the log, then commit — so an import faces exactly the same
+  validation as anything you draw, and cannot make geometry the normal path
+  could not. F001 and F002 apply to it too: a decision imported from Mermaid
+  still has to branch.
+
+  ([x]) terminator   {x} decision    [/x/] io      {{x}} prep
+  [(x)] data         [[x]] subprocess              [x] process
+
+  It lays out a top-to-bottom spine. It does NOT route, and it tells you which
+  edges are not a straight drop so you can reroute them yourself. subgraph,
+  classDef, style and click are refused by name rather than silently dropped —
+  half a diagram reported as a success is worse than an error.
 
 PERCEPTUAL REVIEW — the half validate cannot see
   render  ->  LOOK  ->  perceptual_review

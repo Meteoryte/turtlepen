@@ -194,3 +194,16 @@ test('a compass word used as a movement verb names the primitives that do it', (
     'the recommended command steps one quadrant diagonally per step',
   );
 });
+
+test('hop refuses a destination instead of silently ignoring it', () => {
+  // Reported from a real authoring session: `hop to <address>` parsed, hopped a
+  // single quadrant, discarded the target, and left the overlap it was meant to
+  // clear still reported. A mode that is named but not built must refuse by
+  // name rather than quietly do something adjacent.
+  assert.throws(
+    () => runPen('pen C5\nright 3 line\nright hop to R5\nright line'),
+    /takes a direction, not a destination/,
+  );
+  // The legitimate single-quadrant crossing is untouched.
+  assert.doesNotThrow(() => runPen('pen C10\nright 3 line\nright hop\nright 3 line'));
+});

@@ -29,6 +29,8 @@ import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL }
 import { renderAscii } from './ascii.js';
 import { renderSvg } from './svg.js';
 import * as perceptual from './perceptual.js';
+import { mermaidToOperations, parseMermaid } from './mermaid.js';
+export { mermaidToOperations, parseMermaid } from './mermaid.js';
 
 // Perceptual review is a sibling of validate, not a part of it: same document,
 // separate verdict, and nothing here is consulted by the collision engine.

@@ -1,7 +1,8 @@
 # Flowchart support — plan of record
 
 **Raised:** 2026-08-18, from a failed authoring attempt plus two ProcessOn sources.
-**Status:** F0, F1, F2, F6, F8 built and green. F3 not built. F7 stands as shipped.
+**Status:** F0, F1, F2, F4, F6, F8, F9, F10 built and green. F3 and F5 not built.
+F7 stands as shipped.
 This line was originally written claiming more than had been done; it is
 corrected here rather than quietly, because a plan that overstates itself is
 the same defect as a validation log read before the last edit.
@@ -196,13 +197,18 @@ character.** The revert is in git history if the direction is ever wanted.
 
 The README links a PDF but shows none of it. Embed real rendered examples.
 
-### F4 — `hop to <address>` — **DEFERRED**
+### F4 — `hop to <address>` — **DONE (refused by name)**
 
-Gemini reported `hop to [coord]` parsing but ignoring the destination. Real, but
-the honest fix may be to **reject** the form rather than implement it: the engine
-refuses by name rather than quietly doing something adjacent, and a hop that
-silently travels one cell is exactly that failure. Needs a decision on which,
-and that decision is Chuck's.
+Confirmed in source: the `hop` case never read `cmd.to`, so `hop to <address>`
+parsed, hopped one quadrant, discarded the target, and left the overlap it was
+meant to clear still reported.
+
+Resolved by **refusing it by name**, which the engine's own rule already
+required — a mode that is named but not built must refuse rather than quietly do
+something adjacent. The error names the working form instead. This is strictly
+better than the silent-wrong behaviour and forecloses nothing: implementing
+hop-to-target routing later remains open, and is the larger design question that
+belongs with F5.
 
 ### F5 — Auto-routing lanes — **DEFERRED**
 
@@ -211,10 +217,25 @@ case for routing help. But `llm.md` is explicit that auto-routing, if added, mus
 emit pen commands so the path stays inspectable. That is a design task, not an
 afternoon, and it should not be rushed in behind a shape release.
 
-### F9 — Mermaid `flowchart` import — **DEFERRED**
+### F9 — Mermaid `flowchart` import — **DONE**
 
-The one import worth having. Blocked on F1/F2 landing first, since it would
-compile straight onto them.
+`src/core/mermaid.js` + `import_mermaid` (tool 37).
+
+It is a **compiler, not a second way to build a document**: it returns
+operations and changes nothing, so the caller rehearses with `plan`, reads the
+log, and commits. An import therefore faces the same validation as hand-drawn
+work and cannot produce geometry the normal path could not. A test asserts every
+emitted operation is one the engine already has, and another asserts that a
+decision imported from Mermaid still trips `F002` if it does not branch.
+
+Node brackets map onto the symbol vocabulary; longer delimiters are tried first,
+because `([x])` matching the `[x]` rule would silently turn a terminator into a
+process box — a wrong diagram that validates perfectly.
+
+**It lays out a spine; it does not route**, and it says so, naming the edges that
+are not a straight drop. Routing stays with F5 and with the author.
+`subgraph`, `classDef`, `style` and `click` are refused by name; dropping half a
+diagram and reporting success is the failure this project treats as a defect.
 
 ---
 
