@@ -365,6 +365,32 @@ export function moveElement(doc, id, dx, dy, pageId = null) {
   return found;
 }
 
+/**
+ * Move an element to another page, keeping its x and y exactly.
+ *
+ * This lattice has no z-buffer, so "in front of" is not a property an element
+ * can hold — it is which page the element sits on. That makes page membership
+ * the third axis of movement rather than a filing decision, and it is the only
+ * way to express one thing passing behind another.
+ *
+ * Geometry is untouched on purpose. An element that changes depth has not
+ * changed where it is in the picture, and silently nudging it would break the
+ * one thing the caller is relying on.
+ */
+export function moveElementToPage(doc, id, toPage) {
+  const target = doc.pages.find((p) => p.id === toPage);
+  if (!target) throw new Error(`no page "${toPage}" to move "${id}" onto`);
+  const found = findElement(doc, id);
+  if (!found) throw new Error(`no element "${id}" to move`);
+  if (found.page === toPage) return found;
+
+  const from = doc.elements[found.page];
+  from.splice(from.indexOf(found.element), 1);
+  (doc.elements[toPage] ??= []).push(found.element);
+  reconcileMovedElements(doc, new Set([id]));
+  return { element: found.element, page: toPage };
+}
+
 function moveElementRaw(el, dx, dy) {
   if (el.kind === 'path') {
     for (const p of el.pieces) { p.x += dx; p.y += dy; }

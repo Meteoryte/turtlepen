@@ -87,7 +87,17 @@ function firstBlocker(points, taken) {
  */
 function candidates(a, b, fromId, fromPort, toId, toPort) {
   const out = [];
-  const cellsBetween = (n) => Math.abs(n) / 2;
+
+  // Intermediate legs are addressed, never counted.
+  //
+  // Distances live in quadrants but a counted leg is written in CELLS, and the
+  // grammar takes whole numbers only — so a run of an odd number of quadrants
+  // came out as `left 0.5 line`, which the pen itself refuses. Two boxes of
+  // different widths have their port midpoints an odd quadrant apart, which
+  // makes that the common case rather than the exotic one.
+  //
+  // `line to <quadrant address>` carries no number, so it says any run exactly.
+  // Counting was the only thing that ever needed the parity to work out.
 
   // 1. Straight: already on the same track, travelling the right way.
   if (a.x === b.x || a.y === b.y) {
@@ -115,10 +125,11 @@ function candidates(a, b, fromId, fromPort, toId, toPort) {
       if (run1 > 0 && run2 > 0 && goesOut === outDir) {
         const first = leg(a, goesOut, run1);
         const second = leg(corner, goesIn, run2);
+        const turn = first[first.length - 1] ?? a;
         out.push({
           turns: 1,
           quads: [...first, ...second],
-          program: `pen from ${fromId}.${fromPort}\n${goesOut} ${cellsBetween(run1)} line\n`
+          program: `pen from ${fromId}.${fromPort}\n${goesOut} line to ${quadToAddress(turn.x, turn.y)}\n`
             + `${goesIn} corner align ${cornerFor(goesOut, goesIn)}\n`
             + `${goesIn} line to ${toId}.${toPort} arrow`,
         });
@@ -147,9 +158,9 @@ function candidates(a, b, fromId, fromPort, toId, toPort) {
         out.push({
           turns: 2,
           quads: [...p1, ...p2, ...p3],
-          program: `pen from ${fromId}.${fromPort}\n${d1} ${cellsBetween(run1)} line\n`
+          program: `pen from ${fromId}.${fromPort}\n${d1} line to ${quadToAddress(corner1.x, corner1.y)}\n`
             + `${d2} corner align ${cornerFor(d1, d2)}\n`
-            + `${d2} ${cellsBetween(across)} line\n`
+            + `${d2} line to ${quadToAddress(corner2.x, corner2.y)}\n`
             + `${d1} corner align ${cornerFor(d2, d1)}\n`
             + `${d1} line to ${toId}.${toPort} arrow`,
         });

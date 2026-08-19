@@ -282,6 +282,8 @@ Within a single page, overlap is always an error regardless of intent.
 | `L020` | S2 warn | a temporary tracing-reference page is still present |
 | `L022` | S2 warn | a rasterized image has enough neighboring ink changes to obscure its identity |
 | `L023` | S2 warn | continuous-tone source was simplified without semantic understanding |
+| `L024` | S2 warn | a shape is stretched until its silhouette no longer distinguishes it |
+| `L025` | S1 error | things at different depths share a page, so neither can pass behind the other |
 | `L010` | S3 info | expected overlap from an overlay page |
 | `L013` | S3 info | a path crosses a claimed but un-inked corner cut |
 | `C001` | S3 info | sparse canvas — too little ink to have been composed; compose it, or declare the page `schematic` |

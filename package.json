@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/Meteoryte/turtlepen.git"
   },
-  "description": "TurtlePen \u2014 an integer-exact grid substrate for AI-authored diagrams: a turtle/pen command language, measurement before placement, severity-ranked collision reporting, and Z-page overlays.",
+  "description": "TurtlePen — an integer-exact grid substrate for AI-authored diagrams: a turtle/pen command language, measurement before placement, severity-ranked collision reporting, and Z-page overlays.",
   "engines": {
     "node": ">=20"
   },
@@ -25,8 +25,9 @@
     "random-images": "node examples/supersample-random-five.js",
     "logo": "node brand/build-logo.mjs",
     "tree": "node examples/branching-tree.js",
-    "check": "node --test \"test/**/*.test.js\" && node examples/build-example.js && node examples/agent-session.js --quiet && node examples/constraint-stress.js --quiet && node examples/rework-session.js --quiet && node brand/build-logo.mjs && node examples/branching-tree.js && node examples/build-condenser-field-guide.js && node examples/image-session.js && node examples/supersample-random-five.js",
-    "quickstart": "node examples/build-example.js"
+    "check": "node --test \"test/**/*.test.js\" && node examples/build-example.js && node examples/agent-session.js --quiet && node examples/constraint-stress.js --quiet && node examples/rework-session.js --quiet && node examples/crt-desk-scene.js --quiet && node brand/build-logo.mjs && node examples/branching-tree.js && node examples/build-condenser-field-guide.js && node examples/image-session.js && node examples/supersample-random-five.js",
+    "quickstart": "node examples/build-example.js",
+    "crt": "node examples/crt-desk-scene.js"
   },
   "dependencies": {},
   "devDependencies": {},

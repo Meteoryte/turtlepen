@@ -224,3 +224,139 @@ test('the log renders with severity, fingerprint and fixes', () => {
   assert.match(log, /status: NOT CLEAN/);
   assert.match(log, /fix:/);
 });
+
+// ---------------------------------------------------------------------------
+// Reason quality — a fingerprint proves a finding is real, never that it was
+// considered. These came from a session that accepted 145 findings in `for`
+// loops with `reason: `${label}: ${f.rule}``, producing four diagrams that
+// reported CLEAN while carrying 26 broken strokes.
+// ---------------------------------------------------------------------------
+
+test('a reason that only restates the finding rule is refused', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'F4.tl', span: { w: 6, h: 3 } });
+  const f = byRule(core.validate(d), 'L001')[0];
+
+  for (const empty of ['L001', 'overlay composition: L001', 'informational: L001', 'pipeline: L001']) {
+    assert.throws(() => core.acceptFinding(d, f.fingerprint, empty), /restates/, `should refuse "${empty}"`);
+  }
+  assert.deepEqual(d.acceptances, [], 'a refused acceptance leaves no record');
+});
+
+test('citing the rule is fine when the reason also explains it', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'F4.tl', span: { w: 6, h: 3 } });
+  const f = byRule(core.validate(d), 'L001')[0];
+
+  core.acceptFinding(d, f.fingerprint, 'L001 here is deliberate — the sky band is meant to run under the tower to the canvas edge');
+  assert.equal(d.acceptances.length, 1);
+});
+
+test('a reason naming a different rule than the one accepted is not a restatement', () => {
+  // The wireframe tool accepts an L007 with a reason that mentions L001 to draw
+  // the contrast. Keying the check to any rule code instead of the finding's
+  // own rule would break the engine's own acceptances.
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 4, h: 2 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'G4.tl', span: { w: 4, h: 2 } });
+  const f = byRule(core.validate(d), 'L007')[0];
+
+  core.acceptFinding(d, f.fingerprint, 'touching is the limit case, not an encroachment — an encroachment would report as L001');
+  assert.equal(d.acceptances.length, 1);
+});
+
+test('one reason cannot be spread verbatim across an unlimited number of findings', () => {
+  const d = doc();
+  // 24 overlapping pairs — the shape of the server-room batch that accepted
+  // 24 L001s under the single string "server room: L001".
+  for (let i = 0; i < 24; i++) {
+    const row = 4 + i * 4;
+    core.placeBox(d, 'base', { id: `a${i}`, at: `C${row}.tl`, span: { w: 6, h: 3 } });
+    core.placeBox(d, 'base', { id: `b${i}`, at: `F${row}.tl`, span: { w: 6, h: 3 } });
+  }
+  const reason = 'these panes deliberately share a border for the exploded view';
+  const prints = byRule(core.validate(d), 'L001').map((f) => f.fingerprint);
+  assert.ok(prints.length >= 16, `fixture needs >15 findings, got ${prints.length}`);
+
+  // Fifteen is the corpus-calibrated limit: art-deco-hero honestly repeats one
+  // rationale across fourteen frame members, so that has to keep working.
+  for (let i = 0; i < 15; i++) core.acceptFinding(d, prints[i], reason);
+  assert.equal(d.acceptances.length, 15, 'fifteen identical reasons are allowed');
+
+  assert.throws(() => core.acceptFinding(d, prints[15], reason), /already explains 15/);
+  assert.equal(d.acceptances.length, 15, 'the refused sixteenth leaves no record');
+
+  // A distinct reason for the same finding still lands.
+  core.acceptFinding(d, prints[15], 'this pair is the cutaway seam, judged separately from the others');
+  assert.equal(d.acceptances.length, 16);
+});
+
+test('re-accepting the same fingerprint with the same reason is an update, not a repeat', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'F4.tl', span: { w: 6, h: 3 } });
+  const f = byRule(core.validate(d), 'L001')[0];
+  const reason = 'the two panes deliberately share a border for the exploded view';
+
+  core.acceptFinding(d, f.fingerprint, reason);
+  core.acceptFinding(d, f.fingerprint, reason);
+  assert.equal(d.acceptances.length, 1);
+});
+
+// ---------------------------------------------------------------------------
+// L025 — depth flattened onto one page.
+//
+// The lattice has no z-buffer, so "in front of" is not a property an element
+// holds; it is which page the element sits on. A projected scene that puts
+// everything on one page has thrown its depth away, and the symptom is a pile
+// of L006 "will render as a merged line" findings — which is exactly what
+// showcase-perspective accepted ten of.
+// ---------------------------------------------------------------------------
+
+test('two things at different depths sharing a page cannot occlude each other', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'monitor', at: 'C4.tl', span: { w: 10, h: 6 } });
+  core.placeBox(d, 'base', { id: 'cable', at: 'F6.tl', span: { w: 10, h: 3 } });
+  core.findElement(d, 'monitor').element.depth = 90;
+  core.findElement(d, 'cable').element.depth = 30;
+
+  const hit = byRule(core.validate(d), 'L025');
+  assert.equal(hit.length, 1, 'the overlap is a depth conflict, not just an overlap');
+  assert.deepEqual(hit[0].actors.sort(), ['cable', 'monitor']);
+  assert.match(hit[0].message, /page/i);
+
+  const fix = hit[0].fixes.find((f) => f.kind === 'move');
+  assert.ok(fix, `expected a move fix, got ${hit[0].fixes.map((f) => f.kind).join(', ')}`);
+  assert.equal(fix.params.id, 'cable', 'the NEARER thing is the one that moves up');
+  assert.ok(fix.params.toPage, 'and the fix names a destination page');
+});
+
+test('the same overlap on separate pages is depth working, not a finding', () => {
+  const d = doc();
+  core.addPage(d, { id: 'near', z: 1, intent: 'overlay' });
+  core.placeBox(d, 'base', { id: 'monitor', at: 'C4.tl', span: { w: 10, h: 6 } });
+  core.placeBox(d, 'near', { id: 'cable', at: 'F6.tl', span: { w: 10, h: 3 } });
+  core.findElement(d, 'monitor').element.depth = 90;
+  core.findElement(d, 'cable').element.depth = 30;
+
+  assert.equal(byRule(core.validate(d), 'L025').length, 0);
+});
+
+test('things at the same depth sharing a page are not a depth conflict', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 10, h: 6 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'F6.tl', span: { w: 10, h: 3 } });
+  core.findElement(d, 'a').element.depth = 90;
+  core.findElement(d, 'b').element.depth = 92;
+
+  assert.equal(byRule(core.validate(d), 'L025').length, 0, 'a flat scene is a legitimate drawing');
+});
+
+test('elements with no depth recorded are never judged on depth', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 10, h: 6 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'F6.tl', span: { w: 10, h: 3 } });
+  assert.equal(byRule(core.validate(d), 'L025').length, 0, 'a flowchart has no depth to get wrong');
+});

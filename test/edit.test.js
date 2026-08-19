@@ -476,3 +476,49 @@ test('acceptance batches keep exact failure indexes and invalidate their finding
   assert.match(result.error, /not a current finding/);
   assert.equal(core.serialize(d), before, 'a failed optimized batch still leaves the live document untouched');
 });
+
+// ---------------------------------------------------------------------------
+// Moving between pages.
+//
+// A Z-page is how this lattice expresses depth: there is no z-buffer, so a
+// thing in front is a thing on a higher page. Until now an element could move
+// in x and y but never in z, which left the one axis occlusion needs
+// unreachable — and left L025 with advice no tool could carry out.
+// ---------------------------------------------------------------------------
+
+test('an element can move to another page without changing its geometry', () => {
+  const d = doc();
+  core.addPage(d, { id: 'front', z: 1, intent: 'overlay' });
+  core.placeBox(d, 'base', { id: 'plug', at: 'C4.tl', span: { w: 4, h: 2 } });
+  const before = { ...core.findElement(d, 'plug').element.rect };
+
+  core.moveElementToPage(d, 'plug', 'front');
+
+  const found = core.findElement(d, 'plug');
+  assert.equal(found.page, 'front', 'the element now lives on the front page');
+  assert.deepEqual(found.element.rect, before, 'moving in z leaves x and y alone');
+  assert.equal(core.elementsOf(d, 'base').length, 0, 'and it left the page it came from');
+});
+
+test('moving to a page that does not exist is refused before anything changes', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'plug', at: 'C4.tl', span: { w: 4, h: 2 } });
+  assert.throws(() => core.moveElementToPage(d, 'plug', 'nope'), /no page "nope"/);
+  assert.equal(core.findElement(d, 'plug').page, 'base', 'the element stayed put');
+});
+
+test('moving an element to the page it is already on is a no-op, not an error', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'plug', at: 'C4.tl', span: { w: 4, h: 2 } });
+  core.moveElementToPage(d, 'plug', 'base');
+  assert.equal(core.findElement(d, 'plug').page, 'base');
+});
+
+test('the move operation carries the page change, so plan and tools share it', () => {
+  const d = doc();
+  core.addPage(d, { id: 'front', z: 1, intent: 'overlay' });
+  core.placeBox(d, 'base', { id: 'plug', at: 'C4.tl', span: { w: 4, h: 2 } });
+
+  core.OPERATIONS.move(d, { id: 'plug', toPage: 'front' });
+  assert.equal(core.findElement(d, 'plug').page, 'front');
+});

@@ -328,3 +328,32 @@ test('an even corridor has no exact middle, and says so rather than absorbing it
   assert.ok(hit, 'the half-quadrant it could not use is reported');
   assert.equal(hit.severity, 'S3', 'as information — it never blocks a save');
 });
+
+// ---------------------------------------------------------------------------
+// A pattern styles the LINE, never the joinery.
+//
+// `patternMask` filtered pieces by index alone, so whether a connector kept its
+// arrowhead depended on how many quadrants it happened to be long. Two dashed
+// runs in the showcase pipeline lost their tips that way and reported L008 and
+// L016 — drawn correctly, then quietly truncated by a style.
+// ---------------------------------------------------------------------------
+
+test('a dashed connector keeps its arrowhead and still reaches its target', () => {
+  for (const pattern of ['dashed', 'dotted']) {
+    for (let gap = 4; gap < 14; gap++) {
+      const d = core.createDocument({ name: 'pattern-tip', canvas: { cols: 60, rows: 20 } });
+      core.placeBox(d, 'base', { id: 'a', at: 'C4', span: '6x3' });
+      core.placeBox(d, 'base', { id: 'b', at: `${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[8 + gap]}4`, span: '6x3' });
+      core.applyPen(d, 'base', 'pen from a.E\nright line to b.W arrow', { id: 'wire', pattern });
+
+      const wire = core.findElement(d, 'wire').element;
+      assert.ok(
+        wire.pieces.some((p) => p.type === 'arrow'),
+        `${pattern} at gap ${gap} lost its arrowhead`,
+      );
+      const v = core.validate(d);
+      const missed = v.open.filter((f) => (f.rule === 'L016' || f.rule === 'L008') && f.actors.includes('wire'));
+      assert.equal(missed.length, 0, `${pattern} at gap ${gap}: ${missed.map((f) => f.rule).join(', ')}`);
+    }
+  }
+});

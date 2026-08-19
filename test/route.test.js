@@ -94,3 +94,41 @@ test('an unknown element is refused by name', () => {
   const doc = board();
   assert.throws(() => routeProgram(doc, 'base', 'nope.S', 'b.N'), /no element "nope"/);
 });
+
+// ---------------------------------------------------------------------------
+// A proposal the parser rejects is worse than no proposal.
+//
+// `route` converts a quadrant distance to cells by halving it. An odd run
+// therefore came out as "left 0.5 line", which the pen grammar refuses — the
+// router was handing back a program it could not itself run. Found while
+// rebuilding the showcase flowchart, where two ports happened to land an odd
+// number of quadrants apart.
+// ---------------------------------------------------------------------------
+
+test('every route the engine proposes is a program the pen can actually run', () => {
+  // Sweep offsets so some port pairs land an odd number of quadrants apart.
+  let proposed = 0;
+  for (let dy = 0; dy < 6; dy++) {
+    for (let dx = 0; dx < 6; dx++) {
+      const d = createDocument({ name: 'route-parse', canvas: { cols: 90, rows: 50 } });
+      placeBox(d, 'base', { id: 'a', at: 'D4', span: '5x3' });
+      placeBox(d, 'base', { id: 'b', at: `${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[12 + dx]}${12 + dy}`, span: '5x3' });
+
+      for (const [from, to] of [['a.S', 'b.N'], ['a.E', 'b.W'], ['a.S', 'b.W']]) {
+        const r = routeProgram(d, 'base', from, to);
+        if (!r.clear) continue;
+        proposed += 1;
+        assert.doesNotMatch(r.program, /\d+\.\d+/, `fractional distance in: ${r.program}`);
+        // The real proof is that it runs.
+        const fresh = createDocument({ name: 'x', canvas: { cols: 90, rows: 50 } });
+        placeBox(fresh, 'base', { id: 'a', at: 'D4', span: '5x3' });
+        placeBox(fresh, 'base', { id: 'b', at: `${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[12 + dx]}${12 + dy}`, span: '5x3' });
+        assert.doesNotThrow(
+          () => applyPen(fresh, 'base', r.program, { id: 'wire' }),
+          `route proposed an unparseable program: ${r.program}`,
+        );
+      }
+    }
+  }
+  assert.ok(proposed > 10, `expected the sweep to produce routes, got ${proposed}`);
+});

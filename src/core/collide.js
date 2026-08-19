@@ -19,7 +19,7 @@ import { createHash } from 'node:crypto';
 import { rect, rectsOverlap, intersection, expand, right, bottom, quadKey, parseQuadKey } from './geometry.js';
 import { quadToAddress, quadToCell, describeRegion } from './address.js';
 import { elementsOf, elementClaimed, elementVisual, elementRects, findElement } from './document.js';
-import { shapeCutQuads, shapeTextRect, isContainer } from './shapes.js';
+import { shapeCutQuads, shapeTextRect, isContainer, SHAPE_PROPORTION, aspectOf } from './shapes.js';
 import { fitReport, layoutTextRuns, MIN_LEGIBLE_FONT_PX } from './text.js';
 // Cycle with composition.js is deliberate and safe: every use on both sides is inside a
 // function body, so neither module reads the other's bindings during initialisation.
@@ -55,6 +55,8 @@ export const RULES = Object.freeze({
   L021: { severity: 'S1', title: 'overlay obscures text', blurb: 'opaque overlay content crosses a lower text run' },
   L022: { severity: 'S2', title: 'busy raster image', blurb: 'high-frequency black/white transitions obscure image identity' },
   L023: { severity: 'S2', title: 'heuristic image approximation', blurb: 'continuous-tone source was simplified without semantic understanding' },
+  L024: { severity: 'S2', title: 'symbol out of proportion', blurb: 'a shape is stretched until its silhouette no longer distinguishes it' },
+  L025: { severity: 'S1', title: 'depth flattened onto one page', blurb: 'things at different depths share a page, so neither can pass behind the other' },
   // Composition rules. S3 by design: a taste heuristic must never outrank a real defect.
   C001: { severity: 'S3', title: 'sparse canvas', blurb: 'the page has so little ink that nothing was really composed' },
   ...FLOWCHART_RULES,
@@ -67,6 +69,17 @@ export const RULES = Object.freeze({
  * nothing. Opacity is presentation; geometry is truth.
  */
 export const INVISIBLE_OPACITY = 0.15;
+
+/**
+ * How far apart two things must be, in room inches, before their overlap is a
+ * question of occlusion rather than of a flat drawing.
+ *
+ * Six inches is roughly the point where a viewer expects one object to pass in
+ * front of another rather than to sit alongside it. Below that, a projected
+ * scene is entitled to be flat — two cabinets against the same wall genuinely
+ * are coplanar, and flagging them would make every elevation unbuildable.
+ */
+export const DEPTH_TOLERANCE_IN = 6;
 
 /**
  * `extra` carries material for findings that name no actors and no quadrants.
@@ -303,6 +316,79 @@ function withinPage(doc, p) {
         }),
       );
     }
+  }
+
+  // L025 — depth flattened onto one page.
+  //
+  // Only elements that KNOW their depth are judged. A flowchart has no depth to
+  // get wrong, and inventing one for it would make the rule an opinion. Depth
+  // arrives from a projection, so this fires on exactly the scenes where
+  // occlusion is a real question.
+  const deep = els.filter((e) => Number.isFinite(e.depth));
+  for (let i = 0; i < deep.length; i++) {
+    for (let j = i + 1; j < deep.length; j++) {
+      const a = deep[i], b = deep[j];
+      const gap = Math.abs(a.depth - b.depth);
+      if (gap < DEPTH_TOLERANCE_IN) continue;
+      const shared = new Set([...elementClaimed(a)].filter((k) => elementClaimed(b).has(k)));
+      if (!shared.size) continue;
+
+      const [near, far] = a.depth < b.depth ? [a, b] : [b, a];
+      const above = doc.pages.filter((q) => q.z > p.z).sort((x, y) => x.z - y.z)[0];
+      const toPage = above?.id ?? `${p.id}-near`;
+      out.push(
+        finding('L025', p.id, {
+          message: `"${near.id}" (${near.depth}in from the camera) and "${far.id}" (${far.depth}in) `
+            + `overlap on page "${p.id}", ${gap}in apart in depth. This lattice has no z-buffer, so nothing here `
+            + `can pass behind anything else — put "${near.id}" on a page above "${far.id}" and the occlusion becomes real.`,
+          actors: [a.id, b.id],
+          cells: addrList(shared),
+          metrics: { near: near.id, far: far.id, gapIn: gap },
+          fixes: [
+            {
+              kind: 'move',
+              description: above
+                ? `move "${near.id}" onto the existing page "${toPage}", which already sits in front`
+                : `add an overlay page "${toPage}" above "${p.id}", then move "${near.id}" onto it`,
+              params: { id: near.id, toPage },
+            },
+          ],
+        }),
+      );
+    }
+  }
+
+  // L024 — proportion. A symbol stretched past its limit is drawn exactly as
+  // asked and still fails at the only job a shape has, which is to be
+  // recognisable. Reported rather than corrected: the engine never resizes a
+  // box the author placed.
+  for (const b of boxes) {
+    const spec = SHAPE_PROPORTION[b.shape];
+    if (!spec) continue;
+    const aspect = aspectOf(b.rect);
+    if (aspect <= spec.maxAspect) continue;
+    const wantH = Math.ceil(b.rect.w / spec.ideal);
+    out.push(
+      finding('L024', p.id, {
+        message: `"${b.id}" is ${/^[aeiou]/.test(b.shape) ? 'an' : 'a'} ${b.shape} at ${aspect}:1, past the ${spec.maxAspect}:1 limit — `
+          + `at this width its silhouette reads as a plain box. ${spec.ideal}:1 is the shape's natural proportion.`,
+        actors: [b.id],
+        cells: [quadToCell(b.rect.x, b.rect.y)],
+        metrics: { shape: b.shape, aspect, maxAspect: spec.maxAspect, ideal: spec.ideal },
+        fixes: [
+          {
+            kind: 'heighten',
+            description: `grow "${b.id}" to ${b.rect.w / 2}x${Math.ceil(wantH / 2)} cells`,
+            params: { id: b.id, span: { w: b.rect.w / 2, h: Math.ceil(wantH / 2) } },
+          },
+          {
+            kind: 'shape',
+            description: `or restyle "${b.id}" to a process box if the symbol is not carrying meaning`,
+            params: { id: b.id, shape: 'process' },
+          },
+        ],
+      }),
+    );
   }
 
   // L002 / L003 / L009 — text fit

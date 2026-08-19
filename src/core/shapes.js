@@ -123,6 +123,77 @@ const CAP = 0.18;
 /** How much of a bar's height the bar itself occupies. */
 const BAR_THICKNESS = 0.34;
 
+/**
+ * How wide a symbol may get before its silhouette stops carrying meaning.
+ *
+ * A shape is only worth drawing if it can be told apart from a plain process
+ * box at a glance, and what distinguishes it is a fixed FRACTION of its
+ * bounding box: a cylinder's cap is `CAP * h`, a parallelogram's slant is
+ * `SKEW * w`, a diamond tapers to its own midpoints. Stretch the box wide and
+ * that feature shrinks against the width until every shape reads as the same
+ * bar. In the showcase batch a cylinder came out 28x8 quadrants, putting its
+ * cap at 5% of the width — drawn correctly, and unrecognisable.
+ *
+ * The cap-bearing shapes derive their limit: `CAP * h >= FEATURE_FLOOR * w`
+ * gives `w/h <= CAP / FEATURE_FLOOR`. The rest are craft defaults chosen so a
+ * conventional flowchart passes unchanged — a stadium is legitimately long, a
+ * diamond legitimately is not. Tune them here; they are not measurements of
+ * anything external.
+ *
+ * `process` and `subprocess` are absent on purpose: a rectangle has no
+ * silhouette to lose. Containers are absent because their size is dictated by
+ * what they hold, and `bar` because a bar is a bar.
+ */
+const FEATURE_FLOOR = 0.08;
+
+export const SHAPE_PROPORTION = Object.freeze({
+  decision: { ideal: 1.4, maxAspect: 2 },
+  data: { ideal: 1.2, maxAspect: round2(CAP / FEATURE_FLOOR) },
+  document: { ideal: 1.6, maxAspect: round2(CAP / FEATURE_FLOOR) },
+  io: { ideal: 2, maxAspect: 3 },
+  manual: { ideal: 2, maxAspect: 3 },
+  prep: { ideal: 2, maxAspect: 3 },
+  terminator: { ideal: 2.5, maxAspect: 4 },
+});
+
+function round2(n) {
+  return Math.round(n * 100) / 100;
+}
+
+/** Visual aspect of a rect. Quadrants are square, so this is w:h as drawn. */
+export function aspectOf(r) {
+  return r.h === 0 ? Infinity : round2(r.w / r.h);
+}
+
+/**
+ * The cell span a labelled symbol needs: wide enough for the text once the
+ * SHAPE has taken its inset, and tall enough to stay in proportion.
+ *
+ * This exists because `measure` alone is a trap for symbolic shapes. It reports
+ * what the text needs in a plain box; `shapeTextRect` then hands a diamond only
+ * half of that. An author who measures, places, sees `L003`, and widens is
+ * chasing the overflow in the one direction that makes the symbol worse.
+ */
+export function spanForShape(shape, measured) {
+  const w = Math.max(1, measured.cellsWide);
+  const h = Math.max(1, measured.cellsTall);
+  const spec = SHAPE_PROPORTION[shape];
+  if (!spec) return { w, h };
+
+  // Give the text back the room the symbol will carve out of it. The inset is
+  // symmetric, so recovering it means scaling by the fraction that survives.
+  const grow = shape === 'decision' ? 2 : 1 / (1 - SKEW * 2);
+  let outW = Math.max(w, Math.ceil(w * grow));
+  let outH = Math.max(h, shape === 'decision' ? Math.ceil(h * 2) : h);
+
+  // Then hold the proportion. Growing height is what keeps a wide label from
+  // flattening the symbol; the engine never silently does this to a placed box,
+  // which is exactly why it has to be offered before placement.
+  const minH = Math.ceil(outW / spec.maxAspect);
+  if (outH < minH) outH = minH;
+  return { w: outW, h: outH };
+}
+
 export function assertNodeShape(shape) {
   if (!NODE_SHAPES.includes(shape)) {
     throw new SyntaxError(`unknown node shape "${shape}" — expected one of ${NODE_SHAPES.join(', ')}`);

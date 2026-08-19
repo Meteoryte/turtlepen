@@ -299,24 +299,41 @@ export function createTools(session) {
     {
       name: 'measure',
       description:
-        'Measure text BEFORE placing a box. Returns advance width, characters per line, wrapped line count, and the cell span the label actually needs. Use this to size boxes rather than estimating.',
+        'Measure text BEFORE placing a box. Returns advance width, characters per line, wrapped line count, and the cell span the label actually needs. Use this to size boxes rather than estimating. Pass the shape you intend to draw: a symbol carves its label area out of the box, so the span a diamond or a cylinder needs is not the span the raw text needs.',
       inputSchema: {
         type: 'object',
         properties: {
           text: { type: 'string' },
           fontSize: { type: 'integer' },
           maxWidthCells: { type: 'integer', description: 'if given, wraps to this width and reports the height needed' },
+          shape: { type: 'string', description: 'the node shape this label will sit in; returns a span that fits the SYMBOL and holds its proportion' },
         },
         required: ['text'],
         additionalProperties: false,
       },
-      handler: ({ text, fontSize = session.doc?.font?.size ?? 10, maxWidthCells = null }) =>
-        json({
+      handler: ({ text, fontSize = session.doc?.font?.size ?? 10, maxWidthCells = null, shape = null }) => {
+        const measured = core.text.requiredCellsFor(text, { fontSize, maxWidthCells });
+        const note = `advance ${core.text.advanceWidth(fontSize)}px per character; a box of N cells holds floor((N*10 - 10) / ${core.text.advanceWidth(fontSize)}) characters per line`;
+        if (!shape) return json({ text, fontSize, ...measured, note });
+
+        core.shapes.assertNodeShape(shape);
+        const span = core.shapes.spanForShape(shape, measured);
+        const spec = core.shapes.SHAPE_PROPORTION[shape];
+        return json({
           text,
           fontSize,
-          ...core.text.requiredCellsFor(text, { fontSize, maxWidthCells }),
-          note: `advance ${core.text.advanceWidth(fontSize)}px per character; a box of N cells holds floor((N*10 - 10) / ${core.text.advanceWidth(fontSize)}) characters per line`,
-        }),
+          ...measured,
+          shape,
+          span,
+          // Reporting both is the point: the gap between them is the trap. An
+          // author who sizes from cellsWide alone gets L003 the moment a symbol
+          // is applied, and widening — the obvious response — makes it worse.
+          shapeNote: spec
+            ? `a ${shape} inks only part of its box, so this span is larger than the raw text needs; it holds the shape at or under ${spec.maxAspect}:1 (natural proportion ${spec.ideal}:1). Past that limit the symbol reads as a plain box and reports L024.`
+            : `a ${shape} has no proportion constraint — its span is the text's own`,
+          note,
+        });
+      },
     },
 
     {
@@ -693,7 +710,7 @@ ${stalled}` : core.formatLog(result);
     {
       name: 'move',
       description:
-        'Move an element, either to an address (its pin corner lands there) or by a delta in cells. This is the tool behind the "move" fix.',
+        'Move an element: to an address (its pin corner lands there), by a delta in cells, or onto another page. Moving to a page is a move in DEPTH — with no z-buffer, "in front of" is which page a thing sits on, so this is how one element passes behind another. This is the tool behind the "move" fix.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -702,15 +719,17 @@ ${stalled}` : core.formatLog(result);
           pin: { type: 'string', description: 'which corner of the element lands on `at` (default tl)' },
           cellsX: { type: 'integer', description: 'relative move instead, in cells' },
           cellsY: { type: 'integer' },
+          toPage: { type: 'string', description: 'move onto this page, keeping x and y exactly; a higher-z page puts the element in front' },
         },
         required: ['id'],
         additionalProperties: false,
       },
-      handler: async ({ id, at = null, pin = 'tl', cellsX = 0, cellsY = 0 }) => {
+      // Routed through the shared operation rather than reimplemented: this
+      // handler once duplicated the move logic, so a `toPage` added to core was
+      // invisible here and `plan` and the tool disagreed about what move meant.
+      handler: async ({ id, at = null, pin = 'tl', cellsX = 0, cellsY = 0, toPage = null }) => {
         const doc = need(session);
-        if (at) core.moveElementTo(doc, id, at, pin);
-        else if (cellsX || cellsY) core.moveElement(doc, id, cellsX * 2, cellsY * 2);
-        else throw new Error('move needs either `at` or a non-zero `cellsX`/`cellsY`');
+        core.OPERATIONS.move(doc, { id, at, pin, cellsX: cellsX || null, cellsY: cellsY || null, toPage });
         await persist(session);
         const found = core.findElement(doc, id);
         const b = found.element.kind === 'path' ? found.element.pieces[0] : found.element.rect;

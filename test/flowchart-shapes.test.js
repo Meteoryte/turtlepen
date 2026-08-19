@@ -122,3 +122,77 @@ test('every shape emits an outline the renderer can draw', () => {
     }
   }
 });
+
+// ---------------------------------------------------------------------------
+// Proportion.
+//
+// Every symbolic shape in the showcase batch landed between 3.0:1 and 3.5:1 —
+// a diamond at 2.0:1, a cylinder at 3.5:1 — because `measure` reported the span
+// the TEXT needed and knew nothing about the symbol that would be drawn in it.
+// At that width a cylinder's cap is 5% of the box and every shape reads as the
+// same wide bar. Proportion is measurable, so it is a finding, not taste.
+// ---------------------------------------------------------------------------
+
+import { SHAPE_PROPORTION, aspectOf, spanForShape } from '../src/core/shapes.js';
+import { requiredCellsFor } from '../src/core/text.js';
+
+test('a shape whose silhouette carries meaning declares a maximum aspect', () => {
+  for (const shape of ['decision', 'data', 'document', 'io', 'manual', 'prep', 'terminator']) {
+    assert.ok(SHAPE_PROPORTION[shape], `${shape} should declare a proportion`);
+    assert.ok(SHAPE_PROPORTION[shape].maxAspect >= 1, `${shape} maxAspect must be >= 1`);
+  }
+  // A rectangle has no silhouette to lose, and a container is sized by what it
+  // holds. Constraining either would be inventing a rule.
+  for (const shape of ['process', 'subprocess', 'lane', 'group', 'bar']) {
+    assert.equal(SHAPE_PROPORTION[shape], undefined, `${shape} should be unconstrained`);
+  }
+});
+
+test('aspect is measured in quadrants, which are square', () => {
+  assert.equal(aspectOf(rect(0, 0, 28, 14)), 2);
+  assert.equal(aspectOf(rect(0, 0, 28, 8)), 3.5);
+});
+
+test('spanForShape fits the label inside the SYMBOL, not the bounding box', () => {
+  // The exact trap: a diamond's text rect is inset by w/4 and h/4, so a label
+  // measured against the full box overflows the moment a shape is applied.
+  const label = 'Tests pass?';
+  const flat = requiredCellsFor(label, { fontSize: 10 });
+  const span = spanForShape('decision', flat);
+
+  assert.ok(span.w >= flat.cellsWide, 'never narrower than the raw text needs');
+  const r = rect(0, 0, span.w * 2, span.h * 2);
+  assert.ok(aspectOf(r) <= SHAPE_PROPORTION.decision.maxAspect, `diamond came out at ${aspectOf(r)}:1`);
+
+  // And the label actually fits the diamond it will be drawn in.
+  const inner = shapeTextRect(r, 'decision');
+  const fit = requiredCellsFor(label, { fontSize: 10, maxWidthCells: Math.floor(inner.w / 2) });
+  assert.ok(fit.cellsTall * 2 <= inner.h, `label needs ${fit.cellsTall * 2}q, diamond offers ${inner.h}q`);
+});
+
+test('a squashed symbol is reported with a fix that names a proportionate span', () => {
+  const d = createDocument({ name: 'proportion' });
+  // 28x8 quadrants = the exact geometry of showcase-pipeline's `db-source`.
+  placeBox(d, 'base', { id: 'db', at: 'C4.tl', span: { w: 14, h: 4 }, shape: 'data', label: 'db' });
+
+  const v = validate(d);
+  const hit = v.open.filter((f) => f.rule === 'L024');
+  assert.equal(hit.length, 1, `expected one L024, got rules ${v.open.map((f) => f.rule).join(', ')}`);
+  assert.deepEqual(hit[0].actors, ['db']);
+  assert.match(hit[0].detail ?? hit[0].title, /data|aspect|proportion/i);
+
+  const fix = hit[0].fixes.find((f) => f.kind === 'heighten' || f.kind === 'widen');
+  assert.ok(fix, `expected a resize-routed fix, got ${hit[0].fixes.map((f) => f.kind).join(', ')}`);
+});
+
+test('a well-proportioned symbol raises nothing', () => {
+  const d = createDocument({ name: 'proportion' });
+  placeBox(d, 'base', { id: 'db', at: 'C4.tl', span: { w: 8, h: 5 }, shape: 'data', label: 'db' });
+  assert.equal(validate(d).open.filter((f) => f.rule === 'L024').length, 0);
+});
+
+test('a plain process box is never judged on proportion', () => {
+  const d = createDocument({ name: 'proportion' });
+  placeBox(d, 'base', { id: 'wide', at: 'C4.tl', span: { w: 40, h: 3 }, shape: 'process', label: 'wide' });
+  assert.equal(validate(d).open.filter((f) => f.rule === 'L024').length, 0);
+});

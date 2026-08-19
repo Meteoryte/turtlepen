@@ -23,7 +23,7 @@ import * as pattern_ from './pattern.js';
 import * as wireframe_ from './wireframe.js';
 import * as perspective_ from './perspective.js';
 
-import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
+import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, moveElementToPage, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
 import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL } from './collide.js';
 import { renderAscii } from './ascii.js';
@@ -50,7 +50,7 @@ export { pattern_ as pattern };
 export { wireframe_ as wireframe };
 export { perspective_ as perspective };
 export {
-  createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, findElement,
+  createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, moveElementToPage, findElement,
   elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
   groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup,
   constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints,
@@ -447,8 +447,68 @@ export function placeReference(doc, { id = 'reference', source, at = 'A1.tl', sp
   return page;
 }
 
+/**
+ * How many findings one identical reason may explain before it stops being an
+ * explanation.
+ *
+ * Calibrated against `diagrams/`, the same way the composition thresholds are:
+ * the largest honest repeat in the corpus is `art-deco-hero`, where fourteen
+ * frame members legitimately terminate in open space under one rationale. The
+ * engine's own wireframe clearance reasons never exceed four, because they name
+ * their unit. Fifteen clears both.
+ *
+ * Do not raise this to fit a diagram in front of you. Bulk reuse is a weak
+ * signal on its own — every acceptance this limit catches in the showcase batch
+ * was already refused as a restatement — so it is a backstop against a future
+ * batch that loops one plausible sentence, not the primary check.
+ */
+const REASON_REUSE_LIMIT = 15;
+
+/**
+ * A fingerprint proves a finding is real and current. It cannot prove anybody
+ * looked at it. These two checks catch the ways a batch launders findings it
+ * never judged — both taken from a real session that accepted 145 of them.
+ *
+ * Neither check can read intent, and neither tries to. They test the only
+ * machine-verifiable property a non-reason has: it carries no information the
+ * finding did not already carry.
+ */
+function assertReasonWasConsidered(doc, finding, reason) {
+  // 1. Restatement. "overlay composition: L014" tells the reader the rule id
+  //    they already have. Keyed to the finding's OWN rule, because a reason
+  //    that names a different rule is usually drawing a contrast — the
+  //    wireframe tool accepts an L007 by explaining that an encroachment
+  //    would instead report as L001, and that is a real explanation.
+  const own = new RegExp(`\\b${finding.rule}\\b`, 'ig');
+  if (own.test(reason)) {
+    const rest = reason.replace(own, ' ').match(/[\p{L}\p{N}]+/gu) ?? [];
+    if (rest.length < 5) {
+      throw new Error(
+        `this reason restates the rule instead of explaining it: "${reason}". ` +
+        `${finding.rule} is what the engine already reported — say why THIS instance is intended, ` +
+        'or fix the finding instead of accepting it.',
+      );
+    }
+  }
+
+  // 2. Bulk reuse. One string spread across a whole batch is a loop, not a
+  //    judgement. Re-accepting the same fingerprint is an update and does not
+  //    count against the limit.
+  const shared = doc.acceptances.filter(
+    (a) => a.reason === reason && a.fingerprint !== finding.fingerprint,
+  ).length;
+  if (shared >= REASON_REUSE_LIMIT) {
+    throw new Error(
+      `this reason already explains ${shared} other findings: "${reason}". ` +
+      `One rationale can cover a class of findings, but past ${REASON_REUSE_LIMIT} it is a loop rather than a judgement — ` +
+      'accept these individually, or fix the shared cause.',
+    );
+  }
+}
+
 function recordFindingAcceptance(doc, finding, reason) {
   if (!reason || !String(reason).trim()) throw new Error('accepting a finding requires a reason — an unexplained acceptance is indistinguishable from a missed defect');
+  assertReasonWasConsidered(doc, finding, String(reason).trim());
   const { fingerprint } = finding;
   const existing = doc.acceptances.find((a) => a.fingerprint === fingerprint);
   if (existing) {
@@ -516,11 +576,19 @@ export const OPERATIONS = Object.freeze({
   resize: (doc, a) => resizeBox(doc, a.id, a),
   restyle: (doc, a) => restyleBox(doc, a.id, a),
   move: (doc, a) => {
+    // Depth is the third axis a move can travel on: with no z-buffer, "in
+    // front" is a page, so changing page IS a move. It composes with an x/y
+    // move in one operation because an element that changes layer usually
+    // changes position too, and two operations would validate in between.
+    const moved = a.toPage ? moveElementToPage(doc, a.id, a.toPage) : null;
     if (a.at) return moveElementTo(doc, a.id, a.at, a.pin ?? 'tl');
     const usesCells = a.cellsX != null || a.cellsY != null;
     const dx = usesCells ? (a.cellsX ?? 0) * 2 : (a.dx ?? 0);
     const dy = usesCells ? (a.cellsY ?? 0) * 2 : (a.dy ?? 0);
-    if (!dx && !dy) throw new Error('move needs either `at` or a non-zero `cellsX`/`cellsY`');
+    if (!dx && !dy) {
+      if (moved) return moved;
+      throw new Error('move needs either `at`, a non-zero `cellsX`/`cellsY`, or a `toPage`');
+    }
     return moveElement(doc, a.id, dx, dy);
   },
   rename: (doc, a) => renameElement(doc, a.id, a.to),
@@ -848,6 +916,12 @@ export function applyWireframe(doc, {
  * Boxes are drawn FAR TO NEAR. The lattice has no z-buffer, so draw order is
  * the only thing that makes an occlusion read correctly.
  */
+/** Record how far from the camera an element sits, in room inches. */
+function tagDepth(doc, id, depth) {
+  const found = findElement(doc, id);
+  if (found && Number.isFinite(depth)) found.element.depth = Math.round(depth);
+}
+
 export function applyPerspectiveScene(doc, {
   page = 'base', roomIn, eyeIn, targetIn, fovDeg = 60, items = [], runs = [],
   widthQ = null, heightQ = null,
@@ -867,6 +941,11 @@ export function applyPerspectiveScene(doc, {
     const prog = perspective_.segmentProgram(b.segments, { widthQ: W, heightQ: H });
     if (!prog) continue;
     applyPen(doc, page, prog, { id: b.id, role: 'artwork' });
+    // Depth rides on the ELEMENT, not just the scene receipt. A receipt says
+    // what the camera saw; the collision engine needs to know, per element,
+    // which of two overlapping things is in front — and that question outlives
+    // the call that generated them.
+    tagDepth(doc, b.id, b.depth);
     drawn.push({ id: b.id, dropped: b.dropped, depth: Math.round(b.depth) });
   }
 
@@ -883,7 +962,8 @@ export function applyPerspectiveScene(doc, {
       const a = r.waypoints[i - 1], b = r.waypoints[i];
       lengthIn += Math.hypot(b.x - a.x, b.y - a.y, b.z - a.z);
     }
-    paths.push({ id: r.id, lengthIn: Math.round(lengthIn * 10) / 10, dropped: pr.dropped });
+    tagDepth(doc, r.id, pr.depth);
+    paths.push({ id: r.id, lengthIn: Math.round(lengthIn * 10) / 10, dropped: pr.dropped, depth: Math.round(pr.depth) });
   }
 
   doc.perspective_scene = { roomIn, eyeIn, targetIn, fovDeg, boxes: drawn, runs: paths };
