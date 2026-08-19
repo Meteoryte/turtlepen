@@ -2486,7 +2486,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against ups by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.540Z"
+      "acceptedAt": "2026-08-19T23:47:28.201Z"
     },
     {
       "fingerprint": "0ec0f54968fa",
@@ -2494,7 +2494,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against switch by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.372Z"
+      "acceptedAt": "2026-08-19T23:47:28.073Z"
     },
     {
       "fingerprint": "130fb6a210e5",
@@ -2502,7 +2502,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of ups meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.584Z"
+      "acceptedAt": "2026-08-19T23:47:28.236Z"
     },
     {
       "fingerprint": "146cd7143885",
@@ -2510,7 +2510,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of rack-b meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.446Z"
+      "acceptedAt": "2026-08-19T23:47:28.126Z"
     },
     {
       "fingerprint": "158ae377b34a",
@@ -2518,7 +2518,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of switch meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.394Z"
+      "acceptedAt": "2026-08-19T23:47:28.089Z"
     },
     {
       "fingerprint": "2018e47dccf2",
@@ -2526,7 +2526,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "a clearance band starts at the face of the unit it belongs to, so band and unit touch by definition. An encroachment would be an overlap and would report as a critical.",
-      "acceptedAt": "2026-08-19T18:08:52.742Z"
+      "acceptedAt": "2026-08-19T23:47:28.354Z"
     },
     {
       "fingerprint": "2057c8cb6a60",
@@ -2534,7 +2534,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of switch meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.477Z"
+      "acceptedAt": "2026-08-19T23:47:28.152Z"
     },
     {
       "fingerprint": "2f407b87f104",
@@ -2542,7 +2542,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of rack-b meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.337Z"
+      "acceptedAt": "2026-08-19T23:47:28.050Z"
     },
     {
       "fingerprint": "30bfaeef18ed",
@@ -2550,7 +2550,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of rack-a meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.620Z"
+      "acceptedAt": "2026-08-19T23:47:28.262Z"
     },
     {
       "fingerprint": "418c0cffc487",
@@ -2558,7 +2558,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against rack-a by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.485Z"
+      "acceptedAt": "2026-08-19T23:47:28.159Z"
     },
     {
       "fingerprint": "478766d6bc2e",
@@ -2566,7 +2566,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of rack-a meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.612Z"
+      "acceptedAt": "2026-08-19T23:47:28.256Z"
     },
     {
       "fingerprint": "4d861849a63f",
@@ -2574,7 +2574,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against rack-b by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.425Z"
+      "acceptedAt": "2026-08-19T23:47:28.111Z"
     },
     {
       "fingerprint": "5fcd637091eb",
@@ -2582,7 +2582,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against rack-a by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.513Z"
+      "acceptedAt": "2026-08-19T23:47:28.180Z"
     },
     {
       "fingerprint": "60990c6489d3",
@@ -2590,7 +2590,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of rack-a meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.504Z"
+      "acceptedAt": "2026-08-19T23:47:28.173Z"
     },
     {
       "fingerprint": "65a20d686e88",
@@ -2598,7 +2598,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of switch meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.465Z"
+      "acceptedAt": "2026-08-19T23:47:28.140Z"
     },
     {
       "fingerprint": "6801d91f717e",
@@ -2606,7 +2606,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against rack-a by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.533Z"
+      "acceptedAt": "2026-08-19T23:47:28.195Z"
     },
     {
       "fingerprint": "6af9be353370",
@@ -2614,7 +2614,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against switch by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.417Z"
+      "acceptedAt": "2026-08-19T23:47:28.104Z"
     },
     {
       "fingerprint": "7b01cc235360",
@@ -2622,7 +2622,7 @@
       "page": "overhead",
       "title": "stroke overlap",
       "reason": "the clearance bands of one unit meet at its corners: together they form a single ring of access space around it, which is the geometry a service clearance actually describes.",
-      "acceptedAt": "2026-08-19T18:08:52.684Z"
+      "acceptedAt": "2026-08-19T23:47:28.314Z"
     },
     {
       "fingerprint": "7e93c3aeb525",
@@ -2630,7 +2630,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against switch by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.456Z"
+      "acceptedAt": "2026-08-19T23:47:28.133Z"
     },
     {
       "fingerprint": "847ddf15e86c",
@@ -2638,7 +2638,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against ups by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.523Z"
+      "acceptedAt": "2026-08-19T23:47:28.188Z"
     },
     {
       "fingerprint": "8d282106f275",
@@ -2646,7 +2646,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against ups by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.565Z"
+      "acceptedAt": "2026-08-19T23:47:28.222Z"
     },
     {
       "fingerprint": "92cdf0d2e5b5",
@@ -2654,7 +2654,7 @@
       "page": "overhead",
       "title": "stroke overlap",
       "reason": "the clearance bands of one unit meet at its corners: together they form a single ring of access space around it, which is the geometry a service clearance actually describes.",
-      "acceptedAt": "2026-08-19T18:08:52.706Z"
+      "acceptedAt": "2026-08-19T23:47:28.328Z"
     },
     {
       "fingerprint": "93313d46afd1",
@@ -2662,7 +2662,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of switch meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.406Z"
+      "acceptedAt": "2026-08-19T23:47:28.096Z"
     },
     {
       "fingerprint": "947c5520afe5",
@@ -2670,7 +2670,7 @@
       "page": "overhead",
       "title": "stroke overlap",
       "reason": "the clearance bands of one unit meet at its corners: together they form a single ring of access space around it, which is the geometry a service clearance actually describes.",
-      "acceptedAt": "2026-08-19T18:08:52.677Z"
+      "acceptedAt": "2026-08-19T23:47:28.307Z"
     },
     {
       "fingerprint": "973393e8276b",
@@ -2678,7 +2678,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of ups meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.548Z"
+      "acceptedAt": "2026-08-19T23:47:28.209Z"
     },
     {
       "fingerprint": "9ae3fad771a6",
@@ -2686,7 +2686,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against rack-b by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.347Z"
+      "acceptedAt": "2026-08-19T23:47:28.057Z"
     },
     {
       "fingerprint": "9e5b807a2a8c",
@@ -2694,7 +2694,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of ups meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.557Z"
+      "acceptedAt": "2026-08-19T23:47:28.215Z"
     },
     {
       "fingerprint": "a4baf6ced387",
@@ -2702,7 +2702,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of rack-b meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.325Z"
+      "acceptedAt": "2026-08-19T23:47:28.041Z"
     },
     {
       "fingerprint": "a68d9e7854e4",
@@ -2710,7 +2710,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of ups meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.593Z"
+      "acceptedAt": "2026-08-19T23:47:28.242Z"
     },
     {
       "fingerprint": "af5bb0f614f9",
@@ -2718,7 +2718,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "a clearance band starts at the face of the unit it belongs to, so band and unit touch by definition. An encroachment would be an overlap and would report as a critical.",
-      "acceptedAt": "2026-08-19T18:08:52.731Z"
+      "acceptedAt": "2026-08-19T23:47:28.347Z"
     },
     {
       "fingerprint": "b0ed1fdcb72c",
@@ -2726,7 +2726,7 @@
       "page": "overhead",
       "title": "stroke overlap",
       "reason": "the clearance bands of one unit meet at its corners: together they form a single ring of access space around it, which is the geometry a service clearance actually describes.",
-      "acceptedAt": "2026-08-19T18:08:52.694Z"
+      "acceptedAt": "2026-08-19T23:47:28.321Z"
     },
     {
       "fingerprint": "c5cf88fc8ac9",
@@ -2734,7 +2734,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "a clearance band starts at the face of the unit it belongs to, so band and unit touch by definition. An encroachment would be an overlap and would report as a critical.",
-      "acceptedAt": "2026-08-19T18:08:52.722Z"
+      "acceptedAt": "2026-08-19T23:47:28.341Z"
     },
     {
       "fingerprint": "c89dd8acde37",
@@ -2742,7 +2742,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "a clearance band starts at the face of the unit it belongs to, so band and unit touch by definition. An encroachment would be an overlap and would report as a critical.",
-      "acceptedAt": "2026-08-19T18:08:52.714Z"
+      "acceptedAt": "2026-08-19T23:47:28.335Z"
     },
     {
       "fingerprint": "cc524aa0404d",
@@ -2750,7 +2750,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of rack-b meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.437Z"
+      "acceptedAt": "2026-08-19T23:47:28.118Z"
     },
     {
       "fingerprint": "d6a61da9cef4",
@@ -2758,7 +2758,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against ups by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.576Z"
+      "acceptedAt": "2026-08-19T23:47:28.229Z"
     },
     {
       "fingerprint": "e8bf7296f6db",
@@ -2766,7 +2766,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against rack-a by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.602Z"
+      "acceptedAt": "2026-08-19T23:47:28.249Z"
     },
     {
       "fingerprint": "f54e585c39d1",
@@ -2774,7 +2774,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against rack-b by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.360Z"
+      "acceptedAt": "2026-08-19T23:47:28.065Z"
     },
     {
       "fingerprint": "f556f4e3750c",
@@ -2782,7 +2782,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against rack-b by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.314Z"
+      "acceptedAt": "2026-08-19T23:47:28.032Z"
     },
     {
       "fingerprint": "f93a421146f5",
@@ -2790,7 +2790,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "Clearance bands of rack-a meet at a corner: they form one ring around the unit, which is the intended geometry.",
-      "acceptedAt": "2026-08-19T18:08:52.496Z"
+      "acceptedAt": "2026-08-19T23:47:28.166Z"
     },
     {
       "fingerprint": "fbb6db3c62c3",
@@ -2798,7 +2798,7 @@
       "page": "base",
       "title": "no gutter",
       "reason": "A clearance band sits against switch by definition — the band starts at the unit's face.",
-      "acceptedAt": "2026-08-19T18:08:52.381Z"
+      "acceptedAt": "2026-08-19T23:47:28.081Z"
     }
   ],
   "wireframe": {

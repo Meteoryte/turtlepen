@@ -196,3 +196,28 @@ test('a plain process box is never judged on proportion', () => {
   placeBox(d, 'base', { id: 'wide', at: 'C4.tl', span: { w: 40, h: 3 }, shape: 'process', label: 'wide' });
   assert.equal(validate(d).open.filter((f) => f.rule === 'L024').length, 0);
 });
+
+test('a document outline scoops the same edge its mask cuts', () => {
+  // The mask inks FULL height at the left and right edges and cuts upward in
+  // the middle. The outline did the opposite — both edges raised to the mask's
+  // mid-depth, and a control point 0.8px from them — so a document rendered as
+  // a plain rectangle. Two showcase diagrams shipped one nobody could tell
+  // from a process box.
+  const R2 = rect(0, 0, 24, 12);
+  const path = shapeOutline(R2, 'document');
+  const bottom = R2.h * 5;                        // quadrants are 5px
+
+  const vTo = Number(/V(-?[\d.]+)/.exec(path)[1]);
+  const ctrlY = Number(/Q[\d.]+,(-?[\d.]+)/.exec(path)[1]);
+  const endY = Number(/Q[\d.]+,[\d.]+ [\d.]+,(-?[\d.]+)/.exec(path)[1]);
+
+  assert.equal(vTo, bottom, 'the right edge must reach the bottom, where the mask inks');
+  assert.equal(endY, bottom, 'and so must the left edge');
+
+  // A quadratic sits halfway to its control at t=0.5.
+  const midY = (vTo + 2 * ctrlY + endY) / 4;
+  assert.ok(
+    bottom - midY >= bottom * 0.15,
+    `scoop is only ${(bottom - midY).toFixed(1)}px on a ${bottom}px box — invisible: ${path}`,
+  );
+});

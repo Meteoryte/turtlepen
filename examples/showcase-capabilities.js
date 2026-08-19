@@ -205,6 +205,7 @@ async function diagram1_flowchart() {
   };
 
   const GAP = 3;
+  const LAYOUT_MAX_ASPECT = 3;   // how flat an unconstrained box may look here
   const TOP = 7;                       // clear of the lane's 3-cell title band
   const at = {};
   for (const lane of Object.values(LANES)) {
@@ -212,11 +213,17 @@ async function diagram1_flowchart() {
     let row = TOP;
     for (const id of lane.ids) {
       const n = NODES[id];
+      // Rhythm, not silhouette. The engine deliberately has no opinion about a
+      // rectangle's proportions — there is no shape to lose — but in a uniform
+      // column an unconstrained box keeps its text height while its neighbours
+      // grow, and "Run Pipeline" came out a 6.7:1 sliver beside a 2:1 diamond.
+      // Only looking at the render shows that; it is a layout choice, so it
+      // lives here rather than in a rule.
       const spec = core.shapes.SHAPE_PROPORTION[n.shape];
-      const height = spec ? Math.max(n.span.h, Math.ceil(width / spec.maxAspect)) : n.span.h;
-      n.span = { w: width, h: height };
+      const cap = spec ? spec.maxAspect : LAYOUT_MAX_ASPECT;
+      n.span = { w: width, h: Math.max(n.span.h, Math.ceil(width / cap)) };
       at[id] = `${lane.col}${row}`;
-      row += height + GAP;
+      row += n.span.h + GAP;
     }
     lane.bottom = row;
   }
@@ -859,9 +866,13 @@ async function diagram5_pipeline() {
     let row = 4;
     for (const id of ids) {
       const n = PIPE_NODES[id];
+      // Same rhythm floor as the flowchart: an unconstrained box in a uniform
+      // column otherwise keeps its text height while its neighbours grow, and
+      // the transform stages came out slivers beside the cylinders.
       const spec = core.shapes.SHAPE_PROPORTION[n.shape];
       const base = core.shapes.spanForShape(n.shape, core.text.requiredCellsFor(n.label, { fontSize: 10 }));
-      n.span = { w: width, h: spec ? Math.max(base.h, Math.ceil(width / spec.maxAspect)) : base.h };
+      const cap = spec ? spec.maxAspect : 3;
+      n.span = { w: width, h: Math.max(base.h, Math.ceil(width / cap)) };
       pipeAt[id] = `${col}${row}`;
       row += n.span.h + 3;
     }

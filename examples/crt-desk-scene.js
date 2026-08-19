@@ -55,10 +55,15 @@ await call('add_page', { id: 'front', z: 1, intent: 'overlay' });
 // The CRT is deep on purpose — that depth is what the cable disappears into.
 const scene = await call('perspective_scene', {
   page: 'base',
-  roomIn: { widthIn: 96, depthIn: 84, heightIn: 90 },
-  eyeIn: { x: 46, y: 58, z: -34 },
-  targetIn: { x: 46, y: 32, z: 52 },
-  fovDeg: 62,
+  // Framed on the desk, not the room.
+  //
+  // The first version put the eye 34" outside a 96x84 room, so the shell filled
+  // the frame and the objects it exists to show were a few strokes in the
+  // middle. A clean collision log said nothing about that — only looking did.
+  roomIn: { widthIn: 84, depthIn: 72, heightIn: 66 },
+  eyeIn: { x: 44, y: 46, z: 2 },
+  targetIn: { x: 44, y: 33, z: 58 },
+  fovDeg: 52,
   items: [
     { id: 'desk', xIn: 8, yIn: 28, zIn: 26, widthIn: 80, heightIn: 2, depthIn: 44 },
     { id: 'monitor', xIn: 32, yIn: 30, zIn: 46, widthIn: 26, heightIn: 22, depthIn: 24 },
@@ -71,16 +76,22 @@ const scene = await call('perspective_scene', {
       id: 'cable-front',
       color: '#c2410c',
       waypoints: [
-        { x: 34, y: 31, z: 30 },
-        { x: 42, y: 31, z: 33 },
-        { x: 46, y: 31, z: 41 },
+        { x: 26, y: 32, z: 30 },
+        { x: 40, y: 32, z: 31 },
+        { x: 48, y: 32, z: 40 },
       ],
     },
-    // The far half: emerging behind the CRT and climbing the back wall to the
-    // outlet. Every point here is deeper than the monitor's back face.
+    // The far half: emerging behind the CRT and running down to the outlet.
+    // Every point here is deeper than the monitor's back face.
+    //
+    // Dashed, because that is what a hidden run is drawn as. Occlusion alone
+    // makes the far half simply absent, which is truthful and tells the reader
+    // nothing — the whole point of the drawing is that the cable CONTINUES
+    // behind the monitor.
     {
       id: 'cable-behind',
       color: '#c2410c',
+      pattern: 'dashed',
       waypoints: [
         { x: 46, y: 31, z: 72 },
         { x: 52, y: 26, z: 80 },

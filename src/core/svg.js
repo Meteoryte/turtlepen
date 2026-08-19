@@ -250,10 +250,17 @@ export function shapeOutline(r, shape) {
     case 'data':
       return `M${x},${y + cap} A${w / 2},${cap} 0 0 1 ${x2},${y + cap} V${y2 - cap} A${w / 2},${cap} 0 0 1 ${x},${y2 - cap} Z`;
     case 'document':
-      // The control point was 2.4x the cap, which drew a bite far deeper than
-      // the quadrant mask it is meant to depict. Matching the mask keeps the
-      // outline honest about what is actually inked.
-      return `M${x},${y} H${x2} V${y2 - cap} Q${mx},${y2 - cap * 1.15} ${x},${y2 - cap} Z`;
+      // The mask inks FULL height at the left and right edges and cuts upward
+      // in the middle by `cap`. This outline had it inverted — both edges
+      // raised to `y2 - cap` with a control point 0.15 of a cap from them —
+      // which drew a rectangle with an 0.8px ripple and made a document
+      // indistinguishable from a process box in two shipped diagrams.
+      //
+      // A quadratic sits halfway to its control at the midpoint, so a control
+      // at `y2 - 2 * cap` puts the deepest point of the scoop exactly on the
+      // `y2 - cap` the mask cuts to. Edges and middle now both say what is
+      // actually inked.
+      return `M${x},${y} H${x2} V${y2} Q${mx},${y2 - cap * 2} ${x},${y2} Z`;
     case 'bar': {
       const t = h * 0.34;
       const top = y + h / 2 - t;
