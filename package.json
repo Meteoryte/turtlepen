@@ -1,6 +1,6 @@
 {
   "name": "turtlepen",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -41,6 +41,7 @@
   "files": [
     "src",
     "README.md",
+    "CHANGELOG.md",
     "llm.md",
     "status.md",
     "docs/QUICKSTART.md",
