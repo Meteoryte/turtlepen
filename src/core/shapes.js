@@ -120,6 +120,8 @@ export function containerClaimQuads(r) {
 /** Shapes whose slant or curve is a fixed fraction of the bounding box. */
 const SKEW = 0.25;
 const CAP = 0.18;
+/** How much of a bar's height the bar itself occupies. */
+const BAR_THICKNESS = 0.34;
 
 export function assertNodeShape(shape) {
   if (!NODE_SHAPES.includes(shape)) {
@@ -163,6 +165,11 @@ function insideShape(i, j, w, h, shape) {
       const cv = v <= CAP ? CAP : 1 - CAP;
       return du ** 2 + ((v - cv) / CAP) ** 2 <= 1;
     }
+    case 'bar':
+      // A fork/join bar is a THIN solid bar, not a box. Drawn as a full
+      // rectangle it was indistinguishable from `process` — a shape that looks
+      // like another shape carries no meaning, which is the one job it has.
+      return dv <= BAR_THICKNESS;
     case 'document': {
       // A symmetric foot rather than a true S-wave. At the amplitude a lattice
       // actually affords — two quadrants on a typical node — an S reads as a
@@ -184,7 +191,7 @@ function insideShape(i, j, w, h, shape) {
  * blob — the engine refuses to pretend, the same way it refuses elsewhere.
  */
 export function shapeCutQuads(r, shape = 'process', style = 'square') {
-  if (shape === 'process' || shape === 'subprocess' || shape === 'bar') {
+  if (shape === 'process' || shape === 'subprocess') {
     return cornerCutQuads(r, style);
   }
   assertNodeShape(shape);
@@ -244,6 +251,8 @@ export function shapeTextRect(r, shape = 'process') {
       return rect(r.x, r.y, r.w, Math.max(1, r.h - Math.ceil(r.h * CAP)));
     case 'subprocess':
       return inset(1, 0);
+    case 'bar':
+      return rect(r.x, r.y, r.w, Math.max(1, Math.round(r.h * BAR_THICKNESS * 2)));
     default:
       return r;
   }

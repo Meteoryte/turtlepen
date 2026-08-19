@@ -250,7 +250,15 @@ export function shapeOutline(r, shape) {
     case 'data':
       return `M${x},${y + cap} A${w / 2},${cap} 0 0 1 ${x2},${y + cap} V${y2 - cap} A${w / 2},${cap} 0 0 1 ${x},${y2 - cap} Z`;
     case 'document':
-      return `M${x},${y} H${x2} V${y2 - cap} Q${mx},${y2 - cap * 2.4} ${x},${y2 - cap} Z`;
+      // The control point was 2.4x the cap, which drew a bite far deeper than
+      // the quadrant mask it is meant to depict. Matching the mask keeps the
+      // outline honest about what is actually inked.
+      return `M${x},${y} H${x2} V${y2 - cap} Q${mx},${y2 - cap * 1.15} ${x},${y2 - cap} Z`;
+    case 'bar': {
+      const t = h * 0.34;
+      const top = y + h / 2 - t;
+      return `M${x},${top} H${x2} V${top + t * 2} H${x} Z`;
+    }
     case 'lane':
     case 'group':
       // The frame only. The hole is left empty because the container does not
@@ -272,6 +280,14 @@ function box(el, doc) {
     const { x, y, w } = toPx(el.rect);
     const bandPx = containerBand(el.rect) * PX_PER_QUAD;
     out.push(`<path class="box" d="M${x},${y + bandPx} H${x + w}" fill="none"/>`);
+  }
+  if (shape === 'data') {
+    // The back edge of the top ellipse. Without it the outline is a drum: both
+    // ends bulge outward and it reads as a barrel rather than stored data. The
+    // mask is unchanged — this is a second mark, not a different footprint.
+    const { x, y, w } = toPx(el.rect);
+    const capPx = toPx(el.rect).h * 0.18;
+    out.push(`<path class="box" d="M${x},${y + capPx} A${w / 2},${capPx} 0 0 0 ${x + w},${y + capPx}" fill="none"/>`);
   }
   if (shape === 'subprocess') {
     // Double side bars — the mark that says "this step is another process".
@@ -353,7 +369,12 @@ function styledPath(el) {
       PX_PER_QUAD / 2,
     );
     if (points.length === 1) {
-      return `<line x1="${points[0].x}" y1="${points[0].y}" x2="${points[0].x}" y2="${points[0].y}" stroke="${color}" stroke-width="${width}" stroke-linecap="${cap}"/>`;
+      // A zero-length line renders NOTHING with a butt cap — that is the SVG
+      // spec, not a quirk — so `pattern: "dotted"` drew a whole row of nothing
+      // while validating perfectly. A single point is a dot, and a dot needs a
+      // cap that has area. Found by rendering the pattern and looking at it.
+      const dotCap = cap === 'butt' ? 'round' : cap;
+      return `<line x1="${points[0].x}" y1="${points[0].y}" x2="${points[0].x}" y2="${points[0].y}" stroke="${color}" stroke-width="${width}" stroke-linecap="${dotCap}"/>`;
     }
     const encoded = points.map((p) => `${p.x},${p.y}`).join(' ');
     return `<polyline points="${encoded}" fill="none" stroke="${color}" stroke-width="${width}" stroke-linecap="${cap}" stroke-linejoin="round"/>`;

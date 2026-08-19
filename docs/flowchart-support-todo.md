@@ -436,3 +436,24 @@ measuring; publishing a rubric next to results produced by the same hand is how
 a benchmark becomes advocacy. That leaves the pack's P0 genuinely open — the
 claim that a model using TurtlePen is measurably better remains untested, and
 should keep being described that way until someone runs it.
+
+## F16 — Capability audit: draw the claims and look — **DONE**
+
+`examples/capability-audit.js` draws every node shape, both containers, the tone
+steps, both path patterns and an overlay page, then renders it to be inspected.
+
+Six of the ten node shapes had never been rendered — only unit-tested. All the
+masks were provably correct and **four things on screen were wrong**: `dotted`
+drew nothing (zero-length lines with a butt cap render no pixels), `bar` was
+indistinguishable from `process`, `document`'s foot overshot its own mask, and
+`data` read as a drum rather than stored data.
+
+This is the project's own thesis landing on the project. A test asserting an
+exact quadrant set proves the mask is what the code says; it says nothing about
+whether a reader sees a cylinder. `test/rendered-shapes.test.js` now asserts
+against the emitted SVG.
+
+One design question surfaced and was answered by declaring rather than
+weakening: a shape *catalogue* trips `F002`, because it contains a decision with
+no branches. The rule is right — the document does contain one — so the example
+accepts the finding with a reason instead of making the rule less eager.

@@ -71,6 +71,26 @@ author could not make unaided. 318 → 419 tests.
   deliberately absent: the corpus must be fixed before measuring.
 - `HELP` reordered so `THE CANVAS IS NOT A BUDGET` and `WORKFLOW` come first.
 
+### Found by looking (0.2.1)
+
+A shape catalogue was rendered and inspected — six of the ten node shapes had
+never been drawn at all, only unit-tested. Every mask was provably correct and
+four things on screen were still wrong:
+
+- **`pattern: "dotted"` drew nothing.** It emitted zero-length lines with a butt
+  cap, which by SVG spec render no pixels. A documented feature produced an
+  empty row and validated perfectly.
+- **`bar` was identical to `process`** — it fell through to the rectangle
+  outline, so a fork/join bar was indistinguishable from a process step, which
+  is the one job the symbol has.
+- **`document`'s foot** used a control point 2.4× its cap, drawing a bite far
+  deeper than the quadrants actually carved.
+- **`data` read as a drum**, not stored data, because nothing drew the back edge
+  of its top ellipse.
+
+`test/rendered-shapes.test.js` now asserts each of these against the emitted
+SVG rather than the mask.
+
 ### Known and deliberately unbuilt
 
 `F003`/`F004` (branch labels and verb phrases) would require guessing. The

@@ -114,7 +114,7 @@ test('a stroke clipping a carved corner is information, not an error', () => {
 test('every shape emits an outline the renderer can draw', () => {
   for (const s of NODE_SHAPES) {
     const d = shapeOutline(R, s);
-    if (['process', 'subprocess', 'bar'].includes(s)) {
+    if (['process', 'subprocess'].includes(s)) {
       assert.equal(d, null, `${s} falls back to the rectangle outline`);
     } else {
       assert.match(d, /^M[-\d.]/, `${s} outline must start with a move`);
