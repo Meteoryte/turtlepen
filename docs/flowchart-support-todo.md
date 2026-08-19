@@ -410,3 +410,29 @@ A full documentation split (PROMPT 07's nine files) is **not** done. The README
 is long but coherent, and cutting it into nine pieces is a restructure that
 risks losing material for a gain that the index table already delivers most of.
 Worth doing when someone is actually lost in it, not before.
+
+## F15 — Frozen benchmark corpus — **DONE (corpus only)**
+
+The pack's P1. `benchmark/corpus-v1.json`: 16 tasks, 12 dev and 4 holdout,
+across architecture, flowchart, swimlane, annotation, routing, revision, scale,
+illustration and perspective — including **four negative cases**.
+
+**The freeze is enforced, not promised.** `test/benchmark-corpus.test.js`
+asserts a digest of the task list, so editing an existing task fails the build.
+A benchmark you can adjust after seeing your score measures nothing except your
+willingness to adjust it, and the temptation is strongest exactly when the
+result disappoints. Adding a task is allowed with a new id and a lock bump in
+the same commit — visible in review rather than invisible in a number.
+
+Two negative cases are calibration drawn from this repository's own failures:
+`T11` the sheep that read as a stegosaurus, `T12` the half-tone spots that
+dithered into plus-signs. `T09` (clean but empty) and `T10` (valid nonsense)
+exist to catch a scorer that collapses the four dimensions into one — which is
+the failure the whole project is about.
+
+**Not built: the harness, the runners, and any results.** Nothing has been run,
+and the README says so. The corpus is the part that must be fixed *before*
+measuring; publishing a rubric next to results produced by the same hand is how
+a benchmark becomes advocacy. That leaves the pack's P0 genuinely open — the
+claim that a model using TurtlePen is measurably better remains untested, and
+should keep being described that way until someone runs it.
