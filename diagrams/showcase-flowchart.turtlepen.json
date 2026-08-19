@@ -1,0 +1,1921 @@
+{
+  "schema": 1,
+  "name": "Deployment Pipeline",
+  "canvas": {
+    "cols": 100,
+    "rows": 60
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-19T12:00:00.000Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "lane-dev",
+        "kind": "box",
+        "rect": {
+          "x": 2,
+          "y": 2,
+          "w": 84,
+          "h": 84
+        },
+        "label": "Developer",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "lane",
+        "align": "left",
+        "fill": "#e8f4fd",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "lane-cicd",
+        "kind": "box",
+        "rect": {
+          "x": 94,
+          "y": 2,
+          "w": 84,
+          "h": 84
+        },
+        "label": "CI/CD Platform",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "lane",
+        "align": "left",
+        "fill": "#fef3e2",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "start",
+        "kind": "box",
+        "rect": {
+          "x": 14,
+          "y": 12,
+          "w": 36,
+          "h": 10
+        },
+        "label": "Start",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "terminator",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "write-code",
+        "kind": "box",
+        "rect": {
+          "x": 14,
+          "y": 28,
+          "w": 36,
+          "h": 6
+        },
+        "label": "Write Code",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "tests-pass",
+        "kind": "box",
+        "rect": {
+          "x": 14,
+          "y": 40,
+          "w": 36,
+          "h": 18
+        },
+        "label": "Tests Pass?",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "decision",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "push-repo",
+        "kind": "box",
+        "rect": {
+          "x": 14,
+          "y": 64,
+          "w": 36,
+          "h": 12
+        },
+        "label": "Push to Repo",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "io",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "run-pipeline",
+        "kind": "box",
+        "rect": {
+          "x": 100,
+          "y": 12,
+          "w": 40,
+          "h": 6
+        },
+        "label": "Run Pipeline",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "subprocess",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "build",
+        "kind": "box",
+        "rect": {
+          "x": 100,
+          "y": 24,
+          "w": 40,
+          "h": 14
+        },
+        "label": "Build Artifact",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "prep",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "report",
+        "kind": "box",
+        "rect": {
+          "x": 100,
+          "y": 44,
+          "w": 40,
+          "h": 18
+        },
+        "label": "Deploy Report",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "document",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "end",
+        "kind": "box",
+        "rect": {
+          "x": 100,
+          "y": 68,
+          "w": 40,
+          "h": 10
+        },
+        "label": "Done",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "terminator",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "start-to-write",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 32,
+            "y": 22,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 23,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 24,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 25,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 26,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 27,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 32,
+          "y": 28,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "write-code",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "start",
+          "port": "S"
+        }
+      },
+      {
+        "id": "write-to-tests",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 32,
+            "y": 34,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 35,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 36,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 37,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 38,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 39,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 32,
+          "y": 40,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "tests-pass",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "write-code",
+          "port": "S"
+        }
+      },
+      {
+        "id": "tests-to-push-yes",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 32,
+            "y": 58,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 59,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 60,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 61,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 62,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 63,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 32,
+          "y": 64,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "push-repo",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "tests-pass",
+          "port": "S"
+        }
+      },
+      {
+        "id": "pipeline-to-build",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 120,
+            "y": 18,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 19,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 20,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 21,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 22,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 23,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 120,
+          "y": 24,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "build",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "run-pipeline",
+          "port": "S"
+        }
+      },
+      {
+        "id": "build-to-report",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 120,
+            "y": 38,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 39,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 40,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 41,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 42,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 43,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 120,
+          "y": 44,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "report",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "build",
+          "port": "S"
+        }
+      },
+      {
+        "id": "report-to-end",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 120,
+            "y": 62,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 63,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 64,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 65,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 66,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 67,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 120,
+          "y": 68,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "end",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "report",
+          "port": "S"
+        }
+      },
+      {
+        "id": "tests-to-write-no",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 13,
+            "y": 49,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 12,
+            "y": 49,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 11,
+            "y": 49,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 10,
+            "y": 49,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 9,
+            "y": 49,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 8,
+            "y": 49,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 7,
+            "y": 49,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 6,
+            "y": 49,
+            "type": "corner",
+            "sides": [
+              "bottom",
+              "left"
+            ],
+            "style": "square",
+            "dir": "left"
+          },
+          {
+            "x": 5,
+            "y": 49,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 48,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 47,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 46,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 45,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 44,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 43,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 42,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 41,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 40,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 39,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 38,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 37,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 36,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 35,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 34,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 33,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 32,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 31,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 30,
+            "type": "corner",
+            "sides": [
+              "left",
+              "right"
+            ],
+            "style": "square",
+            "dir": "right"
+          },
+          {
+            "x": 6,
+            "y": 30,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 7,
+            "y": 30,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 8,
+            "y": 30,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 9,
+            "y": 30,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 10,
+            "y": 30,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 11,
+            "y": 30,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 12,
+            "y": 30,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 13,
+            "y": 30,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 14,
+          "y": 30,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "write-code",
+            "port": "W",
+            "step": 6
+          }
+        ],
+        "source": {
+          "id": "tests-pass",
+          "port": "W"
+        }
+      },
+      {
+        "id": "push-to-pipeline",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 50,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 51,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 52,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 53,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 54,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 55,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 56,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 77,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 78,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 79,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 80,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 83,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 84,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 86,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 87,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 88,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 90,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 91,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 92,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 70,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 70,
+            "type": "corner",
+            "sides": [
+              "bottom",
+              "right"
+            ],
+            "style": "square",
+            "dir": "right"
+          },
+          {
+            "x": 97,
+            "y": 70,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 69,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 68,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 67,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 66,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 65,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 64,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 63,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 62,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 61,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 60,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 59,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 58,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 57,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 56,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 55,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 54,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 53,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 52,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 51,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 50,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 49,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 48,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 47,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 46,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 45,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 44,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 43,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 42,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 41,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 40,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 39,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 38,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 37,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 36,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 35,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 34,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 33,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 32,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 31,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 30,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 29,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 28,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 27,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 26,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 25,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 24,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 23,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 22,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 21,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 20,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 19,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 18,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 17,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 16,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 15,
+            "type": "line",
+            "dir": "up",
+            "align": "right",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 14,
+            "type": "corner",
+            "sides": [
+              "left",
+              "right"
+            ],
+            "style": "square",
+            "dir": "right"
+          },
+          {
+            "x": 98,
+            "y": 14,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 99,
+            "y": 14,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 100,
+          "y": 14,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "run-pipeline",
+            "port": "W",
+            "step": 6
+          }
+        ],
+        "source": {
+          "id": "push-repo",
+          "port": "E"
+        }
+      }
+    ]
+  },
+  "acceptances": [
+    {
+      "fingerprint": "62d285f77508",
+      "rule": "L013",
+      "page": "base",
+      "title": "passes through corner cut",
+      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
+      "acceptedAt": "2026-08-19T18:08:49.674Z"
+    },
+    {
+      "fingerprint": "79f369215592",
+      "rule": "L013",
+      "page": "base",
+      "title": "passes through corner cut",
+      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
+      "acceptedAt": "2026-08-19T18:08:51.257Z"
+    },
+    {
+      "fingerprint": "9938d8316aef",
+      "rule": "L004",
+      "page": "base",
+      "title": "stroke crosses node",
+      "reason": "the handoff from Developer to CI/CD is the one connector that must leave its lane, and a swimlane diagram exists to show exactly that crossing. It clips each lane border where it passes through and runs in open space either side — no node is obscured.",
+      "acceptedAt": "2026-08-19T18:08:49.146Z"
+    },
+    {
+      "fingerprint": "9f1e7317017b",
+      "rule": "L013",
+      "page": "base",
+      "title": "passes through corner cut",
+      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
+      "acceptedAt": "2026-08-19T18:08:50.697Z"
+    },
+    {
+      "fingerprint": "b04bb645f07d",
+      "rule": "L013",
+      "page": "base",
+      "title": "passes through corner cut",
+      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
+      "acceptedAt": "2026-08-19T18:08:50.441Z"
+    },
+    {
+      "fingerprint": "b426283f8f7f",
+      "rule": "L013",
+      "page": "base",
+      "title": "passes through corner cut",
+      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
+      "acceptedAt": "2026-08-19T18:08:49.932Z"
+    },
+    {
+      "fingerprint": "cf1d743beea1",
+      "rule": "L004",
+      "page": "base",
+      "title": "stroke crosses node",
+      "reason": "the handoff from Developer to CI/CD is the one connector that must leave its lane, and a swimlane diagram exists to show exactly that crossing. It clips each lane border where it passes through and runs in open space either side — no node is obscured.",
+      "acceptedAt": "2026-08-19T18:08:49.425Z"
+    },
+    {
+      "fingerprint": "e6bf50e64dbc",
+      "rule": "L013",
+      "page": "base",
+      "title": "passes through corner cut",
+      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
+      "acceptedAt": "2026-08-19T18:08:50.190Z"
+    },
+    {
+      "fingerprint": "ecea7f078937",
+      "rule": "L013",
+      "page": "base",
+      "title": "passes through corner cut",
+      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
+      "acceptedAt": "2026-08-19T18:08:50.941Z"
+    }
+  ]
+}
