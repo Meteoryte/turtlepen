@@ -6,7 +6,23 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype**, full automated suite green, zero runtime dependencies.
+Status: **prototype** — 413 tests green, zero runtime dependencies, 39 MCP tools.
+
+**[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
+
+| If you want to… | Read |
+|---|---|
+| get from clone to a validated drawing | [`docs/QUICKSTART.md`](docs/QUICKSTART.md) |
+| understand the lattice, pen grammar and rules | this file, below |
+| change anything in `src/core/` | [`llm.md`](llm.md) — the invariants, first |
+| know what is proven and what is deferred | [`status.md`](status.md) |
+| see the flowchart work and what was deliberately not built | [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md) |
+| know the current tool surface, authoritatively | call `turtlepen_help` — it outranks every document here |
+
+The one thing worth knowing before anything else: **a clean validation means the
+drawing is undefective, never that it is finished, and never that it depicts what
+you asked for.** Render it and look at it. Everything below exists to make that
+loop cheap and honest.
 
 ## The problem it solves
 
