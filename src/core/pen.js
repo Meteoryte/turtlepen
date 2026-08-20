@@ -79,6 +79,37 @@ export function tokenize(line) {
   return out;
 }
 
+/**
+ * Split one line on `;`, but only where the semicolon is not inside quotes.
+ *
+ * The separator used to be applied to the raw line, so a label containing one
+ * was cut in half and its remainder parsed as a command — found writing the
+ * caption "clockwise from east; radii in quadrants". Punctuation inside a
+ * quoted string is text, and text is the one thing this grammar must not
+ * reinterpret.
+ */
+function splitOutsideQuotes(line) {
+  const out = [];
+  let buf = '';
+  let quote = null;
+  for (const ch of line) {
+    if (quote) {
+      if (ch === quote) quote = null;
+      buf += ch;
+    } else if (ch === '"' || ch === "'") {
+      quote = ch;
+      buf += ch;
+    } else if (ch === ';') {
+      out.push(buf);
+      buf = '';
+    } else {
+      buf += ch;
+    }
+  }
+  out.push(buf);
+  return out;
+}
+
 /** Strip comments and blank lines; `;` also separates commands on one line. */
 export function splitProgram(program) {
   return String(program)
@@ -87,7 +118,7 @@ export function splitProgram(program) {
     // A compact hash token is a hex colour (`fill #001b35`) and must survive.
     .map((l) => (l.trimStart().startsWith('#') ? '' : l.replace(/\s+#(?=\s|$).*$/, '')).trim())
     .filter(Boolean)
-    .flatMap((l) => l.split(';').map((s) => s.trim()).filter(Boolean));
+    .flatMap((l) => splitOutsideQuotes(l).map((s) => s.trim()).filter(Boolean));
 }
 
 // ---------------------------------------------------------------------------

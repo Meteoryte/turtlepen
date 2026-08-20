@@ -274,3 +274,19 @@ test('a single-quadrant run has one end, not two', () => {
     /both ends/,
   );
 });
+
+test('a semicolon inside quotes is text, not a command separator', () => {
+  // `;` separates commands on one line, and the split ran over the raw line
+  // before tokenising — so any label containing one was cut in half and the
+  // remainder parsed as a command. Found writing a caption that read
+  // "clockwise from east; radii in quadrants".
+  const r = runPen('text "clockwise from east; radii in quadrants" at C4 span 40x2 font 8');
+  assert.equal(r.texts.length, 1);
+  assert.equal(r.texts[0].text, 'clockwise from east; radii in quadrants');
+});
+
+test('a semicolon outside quotes still separates commands', () => {
+  const r = runPen('pen C4.q1; right 3 line; down 2 line');
+  assert.ok(r.pieces.length > 0);
+  assert.equal(r.trace.filter((t) => t.action === 'line').length, 2);
+});
