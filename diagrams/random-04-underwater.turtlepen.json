@@ -1,0 +1,5069 @@
+{
+  "schema": 1,
+  "name": "Underwater Scene",
+  "canvas": {
+    "cols": 92,
+    "rows": 60
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-20T12:00:00.000Z",
+  "pages": [
+    {
+      "id": "deep",
+      "z": -1,
+      "intent": "overlay",
+      "title": "deep",
+      "visible": true,
+      "opacity": 0.92
+    },
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "overlay",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    },
+    {
+      "id": "fish",
+      "z": 1,
+      "intent": "overlay",
+      "title": "fish",
+      "visible": true,
+      "opacity": 0.92
+    },
+    {
+      "id": "bubbles",
+      "z": 2,
+      "intent": "overlay",
+      "title": "bubbles",
+      "visible": true,
+      "opacity": 0.92
+    }
+  ],
+  "elements": {
+    "deep": [
+      {
+        "id": "weed-1a",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 21,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 108,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 107,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 106,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 105,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 104,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 103,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 102,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 101,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 100,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 99,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 98,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#228844",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 21,
+          "y": 98,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "weed-1b",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 23,
+            "y": 99,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 98,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 97,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 96,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 95,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 94,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#33aa55",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 18,
+          "y": 94,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "weed-2a",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 39,
+            "y": 111,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 110,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 108,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 107,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 106,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 105,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 104,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 103,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 102,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 101,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 100,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 99,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 98,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#228844",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 39,
+          "y": 98,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "weed-2b",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 37,
+            "y": 99,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 98,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 97,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 96,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 95,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 94,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#33aa55",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 42,
+          "y": 94,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "weed-3a",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 143,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 108,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 107,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 106,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 105,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 104,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 103,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 102,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 101,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 100,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#228844",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 143,
+          "y": 100,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "weed-3b",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 145,
+            "y": 95,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 144,
+            "y": 94,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 93,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 142,
+            "y": 92,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 141,
+            "y": 91,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#33aa55",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 141,
+          "y": 91,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "floor",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 1,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 2,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 3,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 4,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 6,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 7,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 8,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 9,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 10,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 11,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 12,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 13,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 18,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 21,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 22,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 23,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 24,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 35,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 47,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 48,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 49,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 51,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 52,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 53,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 54,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 55,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 56,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 77,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 78,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 79,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 80,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 83,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 84,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 86,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 87,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 88,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 90,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 91,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 92,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 99,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 100,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 101,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 102,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 103,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 104,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 105,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 107,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 109,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 110,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 111,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 112,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 113,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 114,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 115,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 116,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 117,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 118,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 119,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 124,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 125,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 126,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 127,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 128,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 129,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 130,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 131,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 138,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 139,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 140,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 141,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 142,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 144,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 145,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 146,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 147,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 148,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 149,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 152,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 153,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 154,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 155,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 156,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 157,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 158,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 159,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 160,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 161,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 162,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 163,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 164,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 165,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 166,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 167,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 168,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 169,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 170,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 171,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 172,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 173,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 174,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 175,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 176,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 177,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 178,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 179,
+            "y": 115,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ccaa66",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 179,
+          "y": 115,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "starfish",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 95,
+            "y": 107,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 108,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 108,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 108,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 110,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 110,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 110,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 111,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ee6644",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 95,
+          "y": 111,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "starfish-arm1",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 95,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 108,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 107,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ee6644",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 95,
+          "y": 107,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "starfish-arm2",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 95,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 110,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 111,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ee6644",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 97,
+          "y": 111,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "starfish-arm3",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 95,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 110,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 111,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ee6644",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 93,
+          "y": 111,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "starfish-arm4",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 95,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 108,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ee6644",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 96,
+          "y": 108,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "starfish-arm5",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 95,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 108,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ee6644",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 94,
+          "y": 108,
+          "facing": "right"
+        }
+      }
+    ],
+    "base": [
+      {
+        "id": "wave-1",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 9,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 9,
+            "y": 10,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 9,
+            "y": 11,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 8,
+            "y": 12,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 8,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 7,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 6,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 5,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 4,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 3,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 2,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 1,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 0,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": -1,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": -2,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": -3,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": -4,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": -5,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": -6,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": -6,
+            "y": 12,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": -7,
+            "y": 11,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": -7,
+            "y": 10,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": -7,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#4488bb",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": -7,
+          "y": 9,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "wave-2",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 25,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 8,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 25,
+            "y": 7,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 6,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 26,
+            "y": 5,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 27,
+            "y": 4,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 3,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 2,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 2,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 1,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 1,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 1,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 1,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 35,
+            "y": 1,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 2,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 2,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 3,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 4,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 5,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 6,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 7,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 8,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#5599cc",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 41,
+          "y": 9,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "wave-3",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 73,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 10,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 11,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 12,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 12,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 11,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 10,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#4488bb",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 57,
+          "y": 9,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "wave-4",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 89,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 8,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 7,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 90,
+            "y": 6,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 90,
+            "y": 5,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 91,
+            "y": 4,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 92,
+            "y": 3,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 2,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 2,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 1,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 1,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 1,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 1,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 99,
+            "y": 1,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 100,
+            "y": 2,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 101,
+            "y": 2,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 102,
+            "y": 3,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 103,
+            "y": 4,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 104,
+            "y": 5,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 104,
+            "y": 6,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 105,
+            "y": 7,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 105,
+            "y": 8,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 105,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#5599cc",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 105,
+          "y": 9,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "wave-5",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 137,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 10,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 11,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 12,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 131,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 130,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 129,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 128,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 127,
+            "y": 17,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 126,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 125,
+            "y": 16,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 124,
+            "y": 15,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 14,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 13,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 12,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 11,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 10,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 9,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#4488bb",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 121,
+          "y": 9,
+          "facing": "right"
+        }
+      }
+    ],
+    "fish": [
+      {
+        "id": "fish1-body",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 71,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 77,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 55,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ff8833",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 71,
+          "y": 55,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "fish1-tail",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 85,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 86,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 87,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 88,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 90,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 91,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 92,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 45,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 55,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 92,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 91,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 90,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 88,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 87,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 86,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ff6622",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 86,
+          "y": 50,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "fish1-eye",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 67,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ffffff",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 67,
+          "y": 48,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "fish1-pupil",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 65,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#111111",
+          "width": 5,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 65,
+          "y": 47,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "fish2-body",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 135,
+            "y": 71,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 138,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 138,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 131,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 138,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 139,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 138,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 138,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 78,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 78,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 78,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 78,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 78,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 79,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#4488dd",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 135,
+          "y": 79,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "fish2-tail",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 145,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 146,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 147,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 148,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 149,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 71,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 78,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 79,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 78,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 149,
+            "y": 78,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 148,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 147,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 146,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#3366bb",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 146,
+          "y": 76,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "fish2-eye",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 133,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ffffff",
+          "width": 5,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 133,
+          "y": 73,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "fish3-body",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 43,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 28,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 28,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 28,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 28,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 28,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 29,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 29,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 29,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 29,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 29,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 29,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 29,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 30,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 30,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 30,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 30,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 30,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 31,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 31,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 31,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 31,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 31,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 32,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#55bb66",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 43,
+          "y": 32,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "fish3-tail",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 37,
+            "y": 29,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 28,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 35,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 28,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 29,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 30,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 31,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 32,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 33,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 32,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 35,
+            "y": 31,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 30,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#449955",
+          "width": 5,
+          "cap": "butt",
+          "paint": "cells"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 36,
+          "y": 30,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "fish3-eye",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 45,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ffffff",
+          "width": 5,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 45,
+          "y": 27,
+          "facing": "right"
+        }
+      }
+    ],
+    "bubbles": [
+      {
+        "id": "bub-1",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 81,
+            "y": 35,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 34,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 33,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 83,
+            "y": 33,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 84,
+            "y": 33,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 34,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 35,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 36,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 84,
+            "y": 37,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 83,
+            "y": 37,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 37,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 36,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#88ccee",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 81,
+          "y": 36,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "bub-2",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 76,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 77,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 78,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 79,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 80,
+            "y": 24,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 25,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 26,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 27,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 28,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 29,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 80,
+            "y": 30,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 79,
+            "y": 30,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 78,
+            "y": 30,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 77,
+            "y": 29,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 28,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#99ddff",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 76,
+          "y": 28,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "bub-3",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 74,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 18,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 19,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 20,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#aaddff",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 75,
+          "y": 20,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "bub-4",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 139,
+            "y": 63,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 139,
+            "y": 62,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 140,
+            "y": 61,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 141,
+            "y": 61,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 142,
+            "y": 61,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 62,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 63,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 64,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 142,
+            "y": 65,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 141,
+            "y": 65,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 140,
+            "y": 65,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 139,
+            "y": 64,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#88ccee",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 139,
+          "y": 64,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "bub-5",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 138,
+            "y": 55,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 139,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 140,
+            "y": 55,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 139,
+            "y": 56,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#99ddff",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 139,
+          "y": 56,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "bub-6",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 13,
+            "y": 39,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 13,
+            "y": 38,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 37,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 37,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 37,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 38,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 39,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 17,
+            "y": 40,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 16,
+            "y": 41,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 15,
+            "y": 41,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 14,
+            "y": 41,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 13,
+            "y": 40,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#88ccee",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 13,
+          "y": 40,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "bub-7",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 18,
+            "y": 31,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 30,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 20,
+            "y": 31,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 19,
+            "y": 32,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#aaddff",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 19,
+          "y": 32,
+          "facing": "right"
+        }
+      }
+    ]
+  },
+  "acceptances": [
+    {
+      "fingerprint": "05c28a3d27ac",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish-arm1 + starfish-arm3 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.178Z"
+    },
+    {
+      "fingerprint": "08a51a69d8bd",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish + starfish-arm4 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.173Z"
+    },
+    {
+      "fingerprint": "1b48ed13c41c",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish + starfish-arm3 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.171Z"
+    },
+    {
+      "fingerprint": "28030ef002ca",
+      "rule": "L006",
+      "page": "fish",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on fish3-body + fish3-eye is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.205Z"
+    },
+    {
+      "fingerprint": "2fb333588a9a",
+      "rule": "L011",
+      "page": "base",
+      "title": "outside canvas",
+      "reason": "Underwater Scene artwork: L011 on wave-1 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.208Z"
+    },
+    {
+      "fingerprint": "31262530a100",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish-arm2 + starfish-arm5 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.191Z"
+    },
+    {
+      "fingerprint": "5c9bfa8c7a87",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish-arm1 + starfish-arm5 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.182Z"
+    },
+    {
+      "fingerprint": "69f746f56faa",
+      "rule": "C001",
+      "page": "fish",
+      "title": "sparse canvas",
+      "reason": "Underwater Scene artwork: C001 on  is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.210Z"
+    },
+    {
+      "fingerprint": "7135ef6618a0",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish-arm1 + starfish-arm4 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.180Z"
+    },
+    {
+      "fingerprint": "75d988ca6a7f",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish-arm3 + starfish-arm4 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.193Z"
+    },
+    {
+      "fingerprint": "7d4d11156a6f",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish + starfish-arm5 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.167Z"
+    },
+    {
+      "fingerprint": "7e804562d505",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish-arm3 + starfish-arm5 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.195Z"
+    },
+    {
+      "fingerprint": "87ea03967db5",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish + starfish-arm1 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.165Z"
+    },
+    {
+      "fingerprint": "9f2183ccb151",
+      "rule": "L006",
+      "page": "fish",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on fish1-body + fish1-eye is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.200Z"
+    },
+    {
+      "fingerprint": "a0f25cf10f57",
+      "rule": "L006",
+      "page": "fish",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on fish2-body + fish2-eye is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.203Z"
+    },
+    {
+      "fingerprint": "aa34d7db707e",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish + starfish-arm2 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.169Z"
+    },
+    {
+      "fingerprint": "bb13a6872c78",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish-arm1 + starfish-arm2 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.176Z"
+    },
+    {
+      "fingerprint": "c2cb3fe2fa8e",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish-arm2 + starfish-arm3 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.184Z"
+    },
+    {
+      "fingerprint": "c2fd72ccfbb3",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish-arm4 + starfish-arm5 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.198Z"
+    },
+    {
+      "fingerprint": "f2d94fe60f6b",
+      "rule": "L006",
+      "page": "deep",
+      "title": "stroke overlap",
+      "reason": "Underwater Scene artwork: L006 on starfish-arm2 + starfish-arm4 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-20T15:22:42.187Z"
+    }
+  ]
+}
