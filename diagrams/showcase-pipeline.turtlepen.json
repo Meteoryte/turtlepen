@@ -200,6 +200,38 @@
         "kind": "path",
         "pieces": [
           {
+            "x": 28,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
             "x": 32,
             "y": 11,
             "type": "line",

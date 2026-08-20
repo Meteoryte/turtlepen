@@ -98,6 +98,16 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
   arrowhead**, rather than adding one after it — so `line to db.W arrow` points
   at a box without overlapping it. Standing alone, `<dir> arrow` places a head
   at the cursor.
+- **`arrow both` heads each end; `arrow start` heads only the origin.** The head
+  at the origin points back the way the run came, because a double-headed arrow
+  points outward at both ends. The run itself is unchanged — no quadrant is
+  added or moved, the first and last simply become heads. A run one quadrant
+  long has one end and is refused.
+- **A port belongs to the shape, not to its bounding box.** `pen from x.E` and
+  `line to x.W` both seat against the quadrant the SYMBOL actually inks, so a
+  connector meets a diamond at its vertex and a parallelogram at its slant. The
+  span between the ink and the claimed rectangle is claimed-but-uninked, which
+  the engine reports as information exactly like a corner cut.
 - **An omitted `align` continues on the track the cursor is already on.** A
   fixed default would fight a deliberately seated cursor.
 

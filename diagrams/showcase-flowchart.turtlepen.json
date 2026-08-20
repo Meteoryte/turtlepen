@@ -580,6 +580,30 @@
         "pieces": [
           {
             "x": 120,
+            "y": 67,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 68,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 69,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 120,
             "y": 70,
             "type": "line",
             "dir": "down",
@@ -650,6 +674,14 @@
         "id": "tests-to-write-no",
         "kind": "path",
         "pieces": [
+          {
+            "x": 14,
+            "y": 55,
+            "type": "line",
+            "dir": "left",
+            "align": "bottom",
+            "style": "square"
+          },
           {
             "x": 13,
             "y": 55,
@@ -1016,6 +1048,46 @@
         "id": "push-to-pipeline",
         "kind": "path",
         "pieces": [
+          {
+            "x": 45,
+            "y": 76,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 76,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 47,
+            "y": 76,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 48,
+            "y": 76,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 49,
+            "y": 76,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
           {
             "x": 50,
             "y": 76,
@@ -1947,7 +2019,15 @@
       "page": "base",
       "title": "stroke crosses node",
       "reason": "the handoff from Developer to CI/CD is the one connector that must leave its lane, and a swimlane diagram exists to show exactly that crossing. It clips each lane border where it passes through and runs in open space either side — no node is obscured.",
-      "acceptedAt": "2026-08-19T23:47:25.328Z"
+      "acceptedAt": "2026-08-20T00:18:41.536Z"
+    },
+    {
+      "fingerprint": "6147a9784144",
+      "rule": "L013",
+      "page": "base",
+      "title": "passes through corner cut",
+      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
+      "acceptedAt": "2026-08-20T00:18:42.588Z"
     },
     {
       "fingerprint": "6654194a805c",
@@ -1955,7 +2035,15 @@
       "page": "base",
       "title": "passes through corner cut",
       "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
-      "acceptedAt": "2026-08-19T23:47:26.859Z"
+      "acceptedAt": "2026-08-20T00:18:43.655Z"
+    },
+    {
+      "fingerprint": "7c4fddd0bc28",
+      "rule": "L013",
+      "page": "base",
+      "title": "passes through corner cut",
+      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
+      "acceptedAt": "2026-08-20T00:18:44.174Z"
     },
     {
       "fingerprint": "7f5363e475a8",
@@ -1963,7 +2051,15 @@
       "page": "base",
       "title": "passes through corner cut",
       "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
-      "acceptedAt": "2026-08-19T23:47:27.122Z"
+      "acceptedAt": "2026-08-20T00:18:43.915Z"
+    },
+    {
+      "fingerprint": "8a42bf3fdf8e",
+      "rule": "L013",
+      "page": "base",
+      "title": "passes through corner cut",
+      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
+      "acceptedAt": "2026-08-20T00:18:42.327Z"
     },
     {
       "fingerprint": "9cd3ff276a2e",
@@ -1971,7 +2067,7 @@
       "page": "base",
       "title": "passes through corner cut",
       "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
-      "acceptedAt": "2026-08-19T23:47:26.346Z"
+      "acceptedAt": "2026-08-20T00:18:42.848Z"
     },
     {
       "fingerprint": "9f1e7317017b",
@@ -1979,7 +2075,15 @@
       "page": "base",
       "title": "passes through corner cut",
       "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
-      "acceptedAt": "2026-08-19T23:47:26.597Z"
+      "acceptedAt": "2026-08-20T00:18:43.396Z"
+    },
+    {
+      "fingerprint": "a6978b1b849d",
+      "rule": "L013",
+      "page": "base",
+      "title": "passes through corner cut",
+      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
+      "acceptedAt": "2026-08-20T00:18:43.119Z"
     },
     {
       "fingerprint": "bffae9069086",
@@ -1987,7 +2091,7 @@
       "page": "base",
       "title": "passes through corner cut",
       "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
-      "acceptedAt": "2026-08-19T23:47:25.837Z"
+      "acceptedAt": "2026-08-20T00:18:42.072Z"
     },
     {
       "fingerprint": "ddf904a256f0",
@@ -1995,7 +2099,7 @@
       "page": "base",
       "title": "passes through corner cut",
       "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
-      "acceptedAt": "2026-08-19T23:47:25.580Z"
+      "acceptedAt": "2026-08-20T00:18:41.803Z"
     },
     {
       "fingerprint": "ec85d54300b5",
@@ -2003,15 +2107,7 @@
       "page": "base",
       "title": "stroke crosses node",
       "reason": "the handoff from Developer to CI/CD is the one connector that must leave its lane, and a swimlane diagram exists to show exactly that crossing. It clips each lane border where it passes through and runs in open space either side — no node is obscured.",
-      "acceptedAt": "2026-08-19T23:47:25.063Z"
-    },
-    {
-      "fingerprint": "ffad44035d89",
-      "rule": "L013",
-      "page": "base",
-      "title": "passes through corner cut",
-      "reason": "a connector clipping the un-inked corner of a lane crosses a quadrant the lane claims but never draws, so nothing overlaps visually.",
-      "acceptedAt": "2026-08-19T23:47:26.092Z"
+      "acceptedAt": "2026-08-20T00:18:41.270Z"
     }
   ]
 }

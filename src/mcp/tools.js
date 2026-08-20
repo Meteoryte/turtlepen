@@ -1523,7 +1523,7 @@ function formatConstraint(doc, constraint) {
 function portSeats(el) {
   const out = {};
   for (const face of ['N', 'S', 'E', 'W']) {
-    const p = core.shapes.approachPoint(el.rect, face);
+    const p = core.shapes.approachPoint(el.rect, face, el.shape, el.corner);
     out[face] = core.address.quadToAddress(p.x, p.y);
   }
   return out;

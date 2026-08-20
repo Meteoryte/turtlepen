@@ -357,3 +357,61 @@ test('a dashed connector keeps its arrowhead and still reaches its target', () =
     }
   }
 });
+
+// ---------------------------------------------------------------------------
+// A port belongs to the SHAPE, not to its bounding box.
+//
+// `approachPoint` returned `right(r)` and `r.x - 1` — the claimed rectangle —
+// so a connector to a diamond or a parallelogram was told to meet a place the
+// symbol does not reach. Measured on a 20x8 box: `io` and `manual` left three
+// empty quadrants, `decision` and `prep` one. Because the skew is a FRACTION
+// of the width, the gap grows with the node.
+// ---------------------------------------------------------------------------
+
+import { visualQuads } from '../src/core/shapes.js';
+
+const SHAPES = ['process', 'decision', 'terminator', 'subprocess', 'io', 'prep', 'manual', 'data', 'document'];
+
+/** How many empty quadrants sit between a seated cursor and the ink it faces. */
+function gapAt(r, shape, face) {
+  const ink = visualQuads(r, 'square', shape);
+  const p = approachPoint(r, face, shape);
+  const step = { N: [0, 1], S: [0, -1], W: [1, 0], E: [-1, 0] }[face];
+  let { x, y } = p;
+  for (let i = 0; i < Math.max(r.w, r.h) + 2; i++) {
+    x += step[0]; y += step[1];
+    if (ink.has(`${x},${y}`)) return i;
+  }
+  return Infinity;
+}
+
+test('every face of every shape seats a connector against its ink', () => {
+  for (const span of [rect(0, 0, 20, 8), rect(0, 0, 12, 12), rect(0, 0, 30, 10)]) {
+    for (const shape of SHAPES) {
+      for (const face of ['N', 'S', 'E', 'W']) {
+        const gap = gapAt(span, shape, face);
+        assert.equal(
+          gap, 0,
+          `${shape} ${span.w}x${span.h} face ${face}: ${gap} empty quadrant(s) before the ink`,
+        );
+      }
+    }
+  }
+});
+
+test('a shape-aware port still faces outward, so a path leaves the way it should', () => {
+  const r = rect(0, 0, 20, 8);
+  assert.equal(approachPoint(r, 'N', 'decision').facing, 'up');
+  assert.equal(approachPoint(r, 'S', 'io').facing, 'down');
+  assert.equal(approachPoint(r, 'W', 'manual').facing, 'left');
+  assert.equal(approachPoint(r, 'E', 'prep').facing, 'right');
+});
+
+test('a shape that fills its box is seated exactly where it always was', () => {
+  // The bounding box IS the ink for a plain rectangle, so this must not move —
+  // every existing connector in `diagrams/` depends on it.
+  const r = rect(0, 0, 20, 8);
+  for (const face of ['N', 'S', 'E', 'W']) {
+    assert.deepEqual(approachPoint(r, face, 'process'), approachPoint(r, face));
+  }
+});

@@ -402,15 +402,43 @@ function slottedAxisPoint(start, length, slot, port) {
  * wrong — the north face sits on the box's own top row, so leaving northward
  * means starting one quadrant above it, while the south face is already outside.
  */
-export function approachPoint(r, port) {
+/**
+ * Walk in from a bounding-box face until the SHAPE is actually there.
+ *
+ * A port used to be a property of the claimed rectangle, so a connector into a
+ * diamond or a parallelogram was sent to a place the symbol does not reach.
+ * Measured on a 20x8 box, `io` and `manual` left three empty quadrants and
+ * `decision` and `prep` one — and because the skew is a fraction of the width,
+ * the gap grows with the node rather than staying a rounding error.
+ *
+ * The extra length lands in claimed-but-uninked space, which the engine already
+ * treats as information rather than error: that is the same ground a corner cut
+ * occupies, and `L004` tests the inked body precisely so this distinction can
+ * exist. A shape that fills its box is unchanged, so every connector already
+ * drawn against a rectangle stays exactly where it is.
+ */
+function inkwardOffset(r, shape, style, name, along) {
+  if (!shape || shape === 'process') return 0;
+  const ink = visualQuads(r, style ?? 'square', shape);
+  const limit = name === 'N' || name === 'S' ? r.h : r.w;
+  for (let i = 0; i < limit; i++) {
+    const x = name === 'W' ? r.x + i : name === 'E' ? right(r) - 1 - i : along;
+    const y = name === 'N' ? r.y + i : name === 'S' ? bottom(r) - 1 - i : along;
+    if (ink.has(`${x},${y}`)) return i;
+  }
+  return 0;
+}
+
+export function approachPoint(r, port, shape = null, style = 'square') {
   const { name, slot } = parsePortSpec(port);
   const slotX = () => slottedAxisPoint(r.x, r.w, slot, port);
   const slotY = () => slottedAxisPoint(r.y, r.h, slot, port);
+  const inset = (along) => inkwardOffset(r, shape, style, name, along);
   switch (name) {
-    case 'N': return { x: slotX(), y: r.y - 1, facing: 'up' };
-    case 'S': return { x: slotX(), y: bottom(r), facing: 'down' };
-    case 'W': return { x: r.x - 1, y: slotY(), facing: 'left' };
-    case 'E': return { x: right(r), y: slotY(), facing: 'right' };
+    case 'N': { const x = slotX(); return { x, y: r.y - 1 + inset(x), facing: 'up' }; }
+    case 'S': { const x = slotX(); return { x, y: bottom(r) - inset(x), facing: 'down' }; }
+    case 'W': { const y = slotY(); return { x: r.x - 1 + inset(y), y, facing: 'left' }; }
+    case 'E': { const y = slotY(); return { x: right(r) - inset(y), y, facing: 'right' }; }
     default:
       throw new SyntaxError(
         `"${port}" is not a cardinal face. Starting a path from a box uses N, S, E or W — a corner does not say which way the path should leave.`,
@@ -431,18 +459,22 @@ export function approachPoint(r, port) {
  * while their mirror images landed correctly — an asymmetry no amount of care in
  * the drawing could work around.
  */
-export function portPoint(r, port) {
+export function portPoint(r, port, shape = null, style = 'square') {
   const { name, slot } = parsePortSpec(port);
   const midX = r.x + Math.floor(r.w / 2);
   const midY = r.y + Math.floor(r.h / 2);
   const x2 = right(r) - 1, y2 = bottom(r) - 1;
   const slotX = () => slottedAxisPoint(r.x, r.w, slot, port);
   const slotY = () => slottedAxisPoint(r.y, r.h, slot, port);
+  // The arrival half of the same problem: a path aimed `to db.W` measures its
+  // distance to this point, so a bounding-box answer stops the arrowhead short
+  // of a diamond by exactly the amount the symbol is inset there.
+  const inset = (along) => inkwardOffset(r, shape, style, name, along);
   switch (name) {
-    case 'N': return { x: slotX(), y: r.y };
-    case 'S': return { x: slotX(), y: y2 };
-    case 'W': return { x: r.x, y: slotY() };
-    case 'E': return { x: x2, y: slotY() };
+    case 'N': { const x = slotX(); return { x, y: r.y + inset(x) }; }
+    case 'S': { const x = slotX(); return { x, y: y2 - inset(x) }; }
+    case 'W': { const y = slotY(); return { x: r.x + inset(y), y }; }
+    case 'E': { const y = slotY(); return { x: x2 - inset(y), y }; }
     case 'NW': return { x: r.x, y: r.y };
     case 'NE': return { x: x2, y: r.y };
     case 'SW': return { x: r.x, y: y2 };

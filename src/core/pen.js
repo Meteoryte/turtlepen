@@ -16,6 +16,7 @@
  *   <dir> [n] [align <side>] [<style>] line        draw n cells of stroke
  *   <dir> [align <sideA> <sideB>] [<style>] corner  place a junction, turn
  *   <dir> ... line to <address|id.port[#slot]>     draw until it reaches a target
+ *   <dir> ... line arrow [both|start|end]          head the end, both ends, or the origin
  *   pen from <id>.<face>[#slot]                    leave a box on a dedicated track
  *   box span <W>x<H> at <address> label "..." [style <s>] [id <name>]
  *   text "..." at <address> [span <W>x<H>] [id <name>]
@@ -95,7 +96,7 @@ export function splitProgram(program) {
 
 export function parseCommand(source) {
   const toks = tokenize(source);
-  const cmd = { source, dir: null, n: null, align: [], style: null, element: null, at: null, from: null, to: null, label: null, span: null, id: null, font: null, weight: null, fill: null, shape: null, arrowEnd: false, args: [] };
+  const cmd = { source, dir: null, n: null, align: [], style: null, element: null, at: null, from: null, to: null, label: null, span: null, id: null, font: null, weight: null, fill: null, shape: null, arrowEnd: false, arrowStart: false, arrowWhere: null, args: [] };
   const seen = [];
 
   // Shapes read their own arguments positionally.
@@ -139,6 +140,10 @@ export function parseCommand(source) {
     if (low === 'font') { cmd.font = Number(requireNext(toks, ++i, 'font', source)); continue; }
     if (low === 'weight') { cmd.weight = Number(requireNext(toks, ++i, 'weight', source)); continue; }
 
+    // Where the heads go. Read as a modifier of `arrow`, and like every other
+    // token it may appear anywhere in the command.
+    if (low === 'both' || low === 'start' || low === 'end') { cmd.arrowWhere = low; continue; }
+
     if (/^\d+$/.test(low)) { cmd.n = Number(low); continue; }
     if (/^\d+x\d+$/i.test(low)) { cmd.span = parseSpan(low, source); continue; }
 
@@ -181,7 +186,8 @@ export function parseCommand(source) {
   // point at a box without overlapping it.
   if (seen.includes('line') && seen.includes('arrow')) {
     cmd.element = 'line';
-    cmd.arrowEnd = true;
+    cmd.arrowEnd = cmd.arrowWhere !== 'start';
+    cmd.arrowStart = cmd.arrowWhere === 'start' || cmd.arrowWhere === 'both';
   }
   if (!cmd.element) cmd.element = cmd.dir ? 'line' : null;
   if (!cmd.element) throw new SyntaxError(`command states no element and no direction: ${source}`);
@@ -452,13 +458,29 @@ export function runPen(program, ctx = {}) {
 
         const { dx, dy } = DIRECTIONS[dir];
         const start = { x: state.x, y: state.y };
+        if (cmd.arrowStart && quads < 2) {
+          throw new RangeError(
+            `"${cmd.source}" travels one quadrant, which is one end and not two — a run needs at least two quadrants to carry heads at both ends`,
+          );
+        }
         for (let k = 0; k < quads; k++) {
           const terminal = cmd.arrowEnd && k === quads - 1;
+          // A head at the origin points AWAY from travel. Two heads on one run
+          // mean "either direction", so they disagree about direction on
+          // purpose — pointing both the same way would read as one long arrow.
+          const leading = cmd.arrowStart && k === 0;
           recordPiece(
             pieces,
             occupied,
             notes,
-            { x: state.x + dx * k, y: state.y + dy * k, type: terminal ? 'arrow' : 'line', dir, align, style: cmd.style ?? 'square' },
+            {
+              x: state.x + dx * k,
+              y: state.y + dy * k,
+              type: terminal || leading ? 'arrow' : 'line',
+              dir: leading ? OPPOSITE[dir] : dir,
+              align,
+              style: cmd.style ?? 'square',
+            },
             step + 1,
           );
         }
@@ -682,7 +704,7 @@ function seatAtPort(target, ctx, source) {
   const el = ctx.resolveElement(m[1]);
   if (!el) throw new Error(`"pen from ${target}" — no element named "${m[1]}" in: ${source}`);
   if (el.kind !== 'box') throw new Error(`"pen from ${target}" — "${m[1]}" is a ${el.kind}; ports exist on boxes only`);
-  return approachPoint(el.rect, m[2]);
+  return approachPoint(el.rect, m[2], el.shape, el.corner);
 }
 
 function resolveTargetPoint(target, ctx, source) {
@@ -695,7 +717,7 @@ function resolveTargetPoint(target, ctx, source) {
     const el = ctx.resolveElement(m[1]);
     if (!el) throw new Error(`"to ${target}" — no element named "${m[1]}" in: ${source}`);
     if (el.kind !== 'box') throw new Error(`"to ${target}" — element "${m[1]}" is a ${el.kind}; ports exist on boxes only`);
-    return portPoint(el.rect, m[2]);
+    return portPoint(el.rect, m[2], el.shape, el.corner);
   }
   throw new SyntaxError(`cannot resolve target "${target}" in: ${source} (expected an address like C4.q2 or a port like db.W)`);
 }

@@ -192,8 +192,8 @@ export function routeProgram(doc, pageId, from, to) {
   if (!a) throw new Error(`route: no element "${fromId}"`);
   if (!b) throw new Error(`route: no element "${toId}"`);
 
-  const seatA = approachPoint(a.element.rect, fromPort);
-  const seatB = approachPoint(b.element.rect, toPort);
+  const seatA = approachPoint(a.element.rect, fromPort, a.element.shape, a.element.corner);
+  const seatB = approachPoint(b.element.rect, toPort, b.element.shape, b.element.corner);
   const taken = blockedQuads(doc, pageId, new Set([fromId, toId]));
 
   const tried = [];
