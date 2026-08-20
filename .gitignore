@@ -5,3 +5,4 @@ diagrams/_probe*
 .playwright-cli/
 output/playwright/
 *.turtlepen.json.history.json
+*.gdoc

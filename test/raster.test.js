@@ -126,3 +126,104 @@ test('an unknown direction is named in the error, with the legal set', () => {
 test('a dash of zero length is refused rather than silently drawing nothing', () => {
   assert.throws(() => dashQuads(0, 0, 'right', 0), /length/i);
 });
+
+// ---------------------------------------------------------------------------
+// curve — a smooth line through points
+//
+// The shape vocabulary had `ray` (straight) and `arc` (circular) and nothing
+// between them, so every organic line in a drawing — hair, drapery, a lip, a
+// ridge — had to be sampled outside the engine and fed back in as a chain of
+// rays. Four of the five Mona Lisa sheets carried a hand-rolled Catmull-Rom
+// sampler for exactly this.
+// ---------------------------------------------------------------------------
+
+test('a curve passes through every control point it is given', () => {
+  const pts = [{ x: 0, y: 0 }, { x: 10, y: 20 }, { x: 30, y: 10 }, { x: 40, y: 30 }];
+  const quads = curveQuads(pts);
+  const key = (p) => `${p.x},${p.y}`;
+  const drawn = new Set(quads.map(key));
+  for (const p of pts) assert.ok(drawn.has(key(p)), `curve misses its control point ${key(p)}`);
+});
+
+test('a curve is contiguous — every quadrant touches the one before it', () => {
+  const quads = curveQuads([{ x: 0, y: 0 }, { x: 14, y: 22 }, { x: 36, y: 6 }, { x: 50, y: 28 }]);
+  for (let i = 1; i < quads.length; i += 1) {
+    const a = quads[i - 1];
+    const b = quads[i];
+    const step = Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y));
+    assert.ok(step <= 1, `gap between ${a.x},${a.y} and ${b.x},${b.y}`);
+  }
+});
+
+test('a curve is deterministic and lands on whole quadrants', () => {
+  const pts = [{ x: 2, y: 3 }, { x: 18, y: 25 }, { x: 40, y: 9 }];
+  const a = curveQuads(pts);
+  const b = curveQuads(pts);
+  assert.deepEqual(a, b);
+  for (const p of a) {
+    assert.ok(Number.isInteger(p.x) && Number.isInteger(p.y), `${p.x},${p.y} is not on the lattice`);
+  }
+});
+
+test('two points is a ray, and curve says so rather than drawing one badly', () => {
+  assert.throws(() => curveQuads([{ x: 0, y: 0 }, { x: 8, y: 8 }]), /three points.*ray/s);
+});
+
+test('a curve bends — it is not the straight line between its ends', () => {
+  const straight = new Set(rayQuads(0, 0, 40, 0).map((p) => `${p.x},${p.y}`));
+  const bent = curveQuads([{ x: 0, y: 0 }, { x: 20, y: 16 }, { x: 40, y: 0 }]);
+  assert.ok(
+    bent.some((p) => !straight.has(`${p.x},${p.y}`)),
+    'a curve through an offset middle control point must leave the chord',
+  );
+});
+
+// ---------------------------------------------------------------------------
+// ellipse — the circle family, finished
+//
+// `circle` and `disc` existed; a face, an eye and a rotated plane are none of
+// them. Every portrait sheet in the set carried its own ellipse sampler.
+// ---------------------------------------------------------------------------
+
+test('an ellipse with equal radii is exactly the circle of that radius', () => {
+  const key = (p) => `${p.x},${p.y}`;
+  const circle = new Set(circleQuads(0, 0, 12).map(key));
+  const ell = new Set(ellipseQuads(0, 0, 12, 12).map(key));
+  assert.deepEqual([...ell].sort(), [...circle].sort());
+});
+
+test('an ellipse spans its own radii on both axes', () => {
+  const quads = ellipseQuads(50, 40, 20, 9);
+  const xs = quads.map((p) => p.x);
+  const ys = quads.map((p) => p.y);
+  assert.equal(Math.min(...xs), 30);
+  assert.equal(Math.max(...xs), 70);
+  assert.equal(Math.min(...ys), 31);
+  assert.equal(Math.max(...ys), 49);
+});
+
+test('a rotated ellipse keeps its area but not its bounding box', () => {
+  const flat = ellipseQuads(60, 60, 24, 8);
+  const tilted = ellipseQuads(60, 60, 24, 8, 40);
+  const width = (q) => Math.max(...q.map((p) => p.x)) - Math.min(...q.map((p) => p.x));
+  const height = (q) => Math.max(...q.map((p) => p.y)) - Math.min(...q.map((p) => p.y));
+  assert.ok(width(tilted) < width(flat), 'a tilted ellipse is narrower than a flat one');
+  assert.ok(height(tilted) > height(flat), 'and taller');
+});
+
+test('an ellipse is closed and contiguous', () => {
+  const quads = ellipseQuads(40, 40, 18, 11);
+  for (let i = 1; i < quads.length; i += 1) {
+    const a = quads[i - 1];
+    const b = quads[i];
+    assert.ok(Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y)) <= 1, `gap at ${i}`);
+  }
+  const first = quads[0];
+  const last = quads[quads.length - 1];
+  assert.ok(Math.max(Math.abs(first.x - last.x), Math.abs(first.y - last.y)) <= 1, 'ellipse does not close');
+});
+
+test('a degenerate ellipse is refused by name', () => {
+  assert.throws(() => ellipseQuads(0, 0, 0, 10), /whole radius/);
+  assert.throws(() => ellipseQuads(0, 0, 10, 0), /whole radius/);
+});

@@ -1,0 +1,407 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1880" height="1915" viewBox="0 0 1880 1915" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace">
+<style>
+  .bg { fill: #f4f3ef; }
+  .grid { stroke: #dedbd3; stroke-width: 0.5; }
+  .grid-major { stroke: #cbc7bd; stroke-width: 0.5; }
+  .box { fill: #e9e7e1; stroke: #2b2a26; stroke-width: 1; }
+  .box-label { fill: #2b2a26; }
+  .stroke { fill: #2b2a26; }
+  .hop { stroke: #2b2a26; }
+  .free-text { fill: #6b6862; }
+  .hit-S0 { fill: #8a5b56; opacity: 0.30; }
+  .hit-S1 { fill: #96755c; opacity: 0.28; }
+  .hit-S2 { fill: #87805a; opacity: 0.24; }
+  .hit-S3 { fill: #4a6572; opacity: 0.20; }
+  .dimmed { fill: url(#tp-stipple); }
+  .dither-run { fill: #2b2a26; }
+  .simplify-run { fill: #2b2a26; }
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #1a1917; }
+    .grid { stroke: #2e2c28; }
+    .grid-major { stroke: #3d3a35; }
+    .box { fill: #232220; stroke: #dedbd3; }
+    .box-label { fill: #dedbd3; }
+    .free-text { fill: #9a968d; }
+    .stroke { fill: #dedbd3; }
+    .hop { stroke: #dedbd3; }
+  }
+</style>
+<defs>
+  <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
+       5px quadrant so a dimmed element is made of the same units as every
+       other mark on the page. -->
+  <pattern id="tp-stipple" width="10" height="10" patternUnits="userSpaceOnUse">
+    <rect width="5" height="5" fill="#2b2a26"/>
+    <rect x="5" y="5" width="5" height="5" fill="#2b2a26"/>
+  </pattern>
+</defs>
+<rect class="bg" x="0" y="0" width="1880" height="1915"/>
+<g transform="translate(-60,-50)">
+<g data-page="base" data-z="0" opacity="1">
+<g data-element="iris-0">
+<g data-id="iris-0" data-kind="path" data-role="artwork" data-paint="cells"><rect x="830" y="690" width="45" height="5" fill="#1b1b1b"/><rect x="825" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="835" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="845" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="855" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="865" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="875" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="820" y="700" width="65" height="5" fill="#1b1b1b"/><rect x="815" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="825" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="835" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="845" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="855" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="865" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="875" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="885" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="810" y="710" width="85" height="5" fill="#1b1b1b"/><rect x="815" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="825" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="835" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="845" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="855" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="865" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="875" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="885" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="810" y="720" width="85" height="5" fill="#1b1b1b"/><rect x="815" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="825" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="835" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="845" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="855" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="865" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="875" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="885" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="805" y="730" width="95" height="5" fill="#1b1b1b"/><rect x="815" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="825" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="835" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="845" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="855" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="865" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="875" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="885" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="810" y="740" width="85" height="5" fill="#1b1b1b"/><rect x="815" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="825" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="835" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="845" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="855" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="865" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="875" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="885" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="810" y="750" width="85" height="5" fill="#1b1b1b"/><rect x="815" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="825" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="835" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="845" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="855" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="865" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="875" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="885" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="820" y="760" width="65" height="5" fill="#1b1b1b"/><rect x="825" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="835" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="845" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="855" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="865" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="875" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="830" y="770" width="45" height="5" fill="#1b1b1b"/></g>
+</g>
+<g data-element="iris-1">
+<g data-id="iris-1" data-kind="path" data-role="artwork" data-paint="cells"><rect x="1130" y="690" width="45" height="5" fill="#1b1b1b"/><rect x="1125" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="1135" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="1145" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="1155" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="1165" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="1175" y="695" width="5" height="5" fill="#1b1b1b"/><rect x="1120" y="700" width="65" height="5" fill="#1b1b1b"/><rect x="1115" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="1125" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="1135" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="1145" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="1155" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="1165" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="1175" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="1185" y="705" width="5" height="5" fill="#1b1b1b"/><rect x="1110" y="710" width="85" height="5" fill="#1b1b1b"/><rect x="1115" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="1125" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="1135" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="1145" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="1155" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="1165" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="1175" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="1185" y="715" width="5" height="5" fill="#1b1b1b"/><rect x="1110" y="720" width="85" height="5" fill="#1b1b1b"/><rect x="1115" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="1125" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="1135" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="1145" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="1155" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="1165" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="1175" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="1185" y="725" width="5" height="5" fill="#1b1b1b"/><rect x="1105" y="730" width="95" height="5" fill="#1b1b1b"/><rect x="1115" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="1125" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="1135" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="1145" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="1155" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="1165" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="1175" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="1185" y="735" width="5" height="5" fill="#1b1b1b"/><rect x="1110" y="740" width="85" height="5" fill="#1b1b1b"/><rect x="1115" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="1125" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="1135" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="1145" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="1155" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="1165" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="1175" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="1185" y="745" width="5" height="5" fill="#1b1b1b"/><rect x="1110" y="750" width="85" height="5" fill="#1b1b1b"/><rect x="1115" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="1125" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="1135" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="1145" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="1155" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="1165" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="1175" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="1185" y="755" width="5" height="5" fill="#1b1b1b"/><rect x="1120" y="760" width="65" height="5" fill="#1b1b1b"/><rect x="1125" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="1135" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="1145" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="1155" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="1165" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="1175" y="765" width="5" height="5" fill="#1b1b1b"/><rect x="1130" y="770" width="45" height="5" fill="#1b1b1b"/></g>
+</g>
+<g data-element="band-40-0">
+<g data-id="band-40-0" data-kind="path" data-role="artwork"><polyline points="392,192 1917,192" fill="none" stroke="#6b7f8f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-40-1">
+<g data-id="band-40-1" data-kind="path" data-role="artwork"><polyline points="82,242 1917,242" fill="none" stroke="#6b7f8f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-40-2">
+<g data-id="band-40-2" data-kind="path" data-role="artwork"><polyline points="82,292 1917,292" fill="none" stroke="#6b7f8f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-40-3">
+<g data-id="band-40-3" data-kind="path" data-role="artwork"><polyline points="82,342 1917,342" fill="none" stroke="#6b7f8f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-40-4">
+<g data-id="band-40-4" data-kind="path" data-role="artwork"><polyline points="82,392 1917,392" fill="none" stroke="#6b7f8f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-40-5">
+<g data-id="band-40-5" data-kind="path" data-role="artwork"><polyline points="82,442 1917,442" fill="none" stroke="#6b7f8f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-40-6">
+<g data-id="band-40-6" data-kind="path" data-role="artwork"><polyline points="82,492 1552,492" fill="none" stroke="#6b7f8f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-318-0">
+<g data-id="band-318-0" data-kind="path" data-role="artwork"><polyline points="82,1592 1917,1592" fill="none" stroke="#7a6f5f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-318-1">
+<g data-id="band-318-1" data-kind="path" data-role="artwork"><polyline points="82,1652 1917,1652" fill="none" stroke="#7a6f5f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-318-2">
+<g data-id="band-318-2" data-kind="path" data-role="artwork"><polyline points="82,1712 1917,1712" fill="none" stroke="#7a6f5f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-318-3">
+<g data-id="band-318-3" data-kind="path" data-role="artwork"><polyline points="82,1772 1917,1772" fill="none" stroke="#7a6f5f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-318-4">
+<g data-id="band-318-4" data-kind="path" data-role="artwork"><polyline points="82,1832 1917,1832" fill="none" stroke="#7a6f5f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="band-318-5">
+<g data-id="band-318-5" data-kind="path" data-role="artwork"><polyline points="82,1892 1917,1892" fill="none" stroke="#7a6f5f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-0-0">
+<g data-id="head-0-0" data-kind="path" data-role="artwork"><polyline points="507,462 892,462" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-0-1">
+<g data-id="head-0-1" data-kind="path" data-role="artwork"><polyline points="457,542 982,542" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-0-2">
+<g data-id="head-0-2" data-kind="path" data-role="artwork"><polyline points="442,622 1042,622" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-0-3">
+<g data-id="head-0-3" data-kind="path" data-role="artwork"><polyline points="447,702 1077,702" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-0-4">
+<g data-id="head-0-4" data-kind="path" data-role="artwork"><polyline points="462,782 1102,782" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-0-5">
+<g data-id="head-0-5" data-kind="path" data-role="artwork"><polyline points="492,862 1107,862" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-0-6">
+<g data-id="head-0-6" data-kind="path" data-role="artwork"><polyline points="537,942 1102,942" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-0-7">
+<g data-id="head-0-7" data-kind="path" data-role="artwork"><polyline points="612,1022 1072,1022" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-0-8">
+<g data-id="head-0-8" data-kind="path" data-role="artwork"><polyline points="727,1102 997,1102" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-0">
+<g data-id="head-1-0" data-kind="path" data-role="artwork"><polyline points="757,462 1027,462" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-1">
+<g data-id="head-1-1" data-kind="path" data-role="artwork"><polyline points="707,507 1082,507" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-2">
+<g data-id="head-1-2" data-kind="path" data-role="artwork"><polyline points="677,552 1122,552" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-3">
+<g data-id="head-1-3" data-kind="path" data-role="artwork"><polyline points="657,597 1157,597" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-4">
+<g data-id="head-1-4" data-kind="path" data-role="artwork"><polyline points="637,642 1177,642" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-5">
+<g data-id="head-1-5" data-kind="path" data-role="artwork"><polyline points="632,687 1197,687" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-6">
+<g data-id="head-1-6" data-kind="path" data-role="artwork"><polyline points="622,732 1212,732" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-7">
+<g data-id="head-1-7" data-kind="path" data-role="artwork"><polyline points="622,777 1222,777" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-8">
+<g data-id="head-1-8" data-kind="path" data-role="artwork"><polyline points="627,822 1227,822" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-9">
+<g data-id="head-1-9" data-kind="path" data-role="artwork"><polyline points="632,867 1227,867" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-10">
+<g data-id="head-1-10" data-kind="path" data-role="artwork"><polyline points="642,912 1227,912" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-11">
+<g data-id="head-1-11" data-kind="path" data-role="artwork"><polyline points="657,957 1222,957" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-12">
+<g data-id="head-1-12" data-kind="path" data-role="artwork"><polyline points="677,1002 1217,1002" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-13">
+<g data-id="head-1-13" data-kind="path" data-role="artwork"><polyline points="697,1047 1197,1047" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-14">
+<g data-id="head-1-14" data-kind="path" data-role="artwork"><polyline points="732,1092 1172,1092" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-15">
+<g data-id="head-1-15" data-kind="path" data-role="artwork"><polyline points="772,1137 1142,1137" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-1-16">
+<g data-id="head-1-16" data-kind="path" data-role="artwork"><polyline points="822,1182 1092,1182" fill="none" stroke="#4a3f34" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-0">
+<g data-id="head-2-0" data-kind="path" data-role="artwork"><polyline points="972,522 1242,522" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-1">
+<g data-id="head-2-1" data-kind="path" data-role="artwork"><polyline points="922,567 1292,567" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-2">
+<g data-id="head-2-2" data-kind="path" data-role="artwork"><polyline points="882,612 1322,612" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-3">
+<g data-id="head-2-3" data-kind="path" data-role="artwork"><polyline points="847,657 1347,657" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-4">
+<g data-id="head-2-4" data-kind="path" data-role="artwork"><polyline points="827,702 1367,702" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-5">
+<g data-id="head-2-5" data-kind="path" data-role="artwork"><polyline points="807,747 1372,747" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-6">
+<g data-id="head-2-6" data-kind="path" data-role="artwork"><polyline points="792,792 1377,792" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-7">
+<g data-id="head-2-7" data-kind="path" data-role="artwork"><polyline points="782,837 1377,837" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-8">
+<g data-id="head-2-8" data-kind="path" data-role="artwork"><polyline points="777,882 1377,882" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-9">
+<g data-id="head-2-9" data-kind="path" data-role="artwork"><polyline points="772,927 1372,927" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-10">
+<g data-id="head-2-10" data-kind="path" data-role="artwork"><polyline points="772,972 1362,972" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-11">
+<g data-id="head-2-11" data-kind="path" data-role="artwork"><polyline points="782,1017 1347,1017" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-12">
+<g data-id="head-2-12" data-kind="path" data-role="artwork"><polyline points="787,1062 1327,1062" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-13">
+<g data-id="head-2-13" data-kind="path" data-role="artwork"><polyline points="807,1107 1307,1107" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-14">
+<g data-id="head-2-14" data-kind="path" data-role="artwork"><polyline points="827,1152 1272,1152" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-15">
+<g data-id="head-2-15" data-kind="path" data-role="artwork"><polyline points="857,1197 1232,1197" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-2-16">
+<g data-id="head-2-16" data-kind="path" data-role="artwork"><polyline points="907,1242 1177,1242" fill="none" stroke="#6b4f3f" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-3-0">
+<g data-id="head-3-0" data-kind="path" data-role="artwork"><polyline points="1112,642 1497,642" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-3-1">
+<g data-id="head-3-1" data-kind="path" data-role="artwork"><polyline points="1022,722 1542,722" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-3-2">
+<g data-id="head-3-2" data-kind="path" data-role="artwork"><polyline points="962,802 1557,802" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-3-3">
+<g data-id="head-3-3" data-kind="path" data-role="artwork"><polyline points="927,882 1557,882" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-3-4">
+<g data-id="head-3-4" data-kind="path" data-role="artwork"><polyline points="902,962 1542,962" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-3-5">
+<g data-id="head-3-5" data-kind="path" data-role="artwork"><polyline points="892,1042 1512,1042" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-3-6">
+<g data-id="head-3-6" data-kind="path" data-role="artwork"><polyline points="902,1122 1467,1122" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-3-7">
+<g data-id="head-3-7" data-kind="path" data-role="artwork"><polyline points="927,1202 1392,1202" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-3-8">
+<g data-id="head-3-8" data-kind="path" data-role="artwork"><polyline points="1007,1282 1277,1282" fill="none" stroke="#2f3b47" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-0">
+<g data-id="shoulder-l-0" data-kind="path" data-role="artwork"><polyline points="907,1372 982,1372" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-1">
+<g data-id="shoulder-l-1" data-kind="path" data-role="artwork"><polyline points="807,1402 962,1402" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-2">
+<g data-id="shoulder-l-2" data-kind="path" data-role="artwork"><polyline points="712,1432 942,1432" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-3">
+<g data-id="shoulder-l-3" data-kind="path" data-role="artwork"><polyline points="612,1462 922,1462" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-4">
+<g data-id="shoulder-l-4" data-kind="path" data-role="artwork"><polyline points="517,1492 907,1492" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-5">
+<g data-id="shoulder-l-5" data-kind="path" data-role="artwork"><polyline points="487,1522 887,1522" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-6">
+<g data-id="shoulder-l-6" data-kind="path" data-role="artwork"><polyline points="497,1552 867,1552" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-7">
+<g data-id="shoulder-l-7" data-kind="path" data-role="artwork"><polyline points="502,1582 847,1582" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-8">
+<g data-id="shoulder-l-8" data-kind="path" data-role="artwork"><polyline points="512,1612 832,1612" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-9">
+<g data-id="shoulder-l-9" data-kind="path" data-role="artwork"><polyline points="517,1642 812,1642" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-10">
+<g data-id="shoulder-l-10" data-kind="path" data-role="artwork"><polyline points="527,1672 792,1672" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-11">
+<g data-id="shoulder-l-11" data-kind="path" data-role="artwork"><polyline points="532,1702 772,1702" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-12">
+<g data-id="shoulder-l-12" data-kind="path" data-role="artwork"><polyline points="542,1732 757,1732" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-13">
+<g data-id="shoulder-l-13" data-kind="path" data-role="artwork"><polyline points="547,1762 737,1762" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-14">
+<g data-id="shoulder-l-14" data-kind="path" data-role="artwork"><polyline points="557,1792 717,1792" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-15">
+<g data-id="shoulder-l-15" data-kind="path" data-role="artwork"><polyline points="562,1822 697,1822" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-16">
+<g data-id="shoulder-l-16" data-kind="path" data-role="artwork"><polyline points="572,1852 682,1852" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-17">
+<g data-id="shoulder-l-17" data-kind="path" data-role="artwork"><polyline points="577,1882 662,1882" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-18">
+<g data-id="shoulder-l-18" data-kind="path" data-role="artwork"><polyline points="587,1912 642,1912" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-l-19">
+<g data-id="shoulder-l-19" data-kind="path" data-role="artwork"><polyline points="592,1942 622,1942" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-0">
+<g data-id="shoulder-r-0" data-kind="path" data-role="artwork"><polyline points="1022,1372 1097,1372" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-1">
+<g data-id="shoulder-r-1" data-kind="path" data-role="artwork"><polyline points="1042,1402 1192,1402" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-2">
+<g data-id="shoulder-r-2" data-kind="path" data-role="artwork"><polyline points="1062,1432 1292,1432" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-3">
+<g data-id="shoulder-r-3" data-kind="path" data-role="artwork"><polyline points="1077,1462 1387,1462" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-4">
+<g data-id="shoulder-r-4" data-kind="path" data-role="artwork"><polyline points="1097,1492 1487,1492" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-5">
+<g data-id="shoulder-r-5" data-kind="path" data-role="artwork"><polyline points="1117,1522 1512,1522" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-6">
+<g data-id="shoulder-r-6" data-kind="path" data-role="artwork"><polyline points="1137,1552 1507,1552" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-7">
+<g data-id="shoulder-r-7" data-kind="path" data-role="artwork"><polyline points="1152,1582 1497,1582" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-8">
+<g data-id="shoulder-r-8" data-kind="path" data-role="artwork"><polyline points="1172,1612 1492,1612" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-9">
+<g data-id="shoulder-r-9" data-kind="path" data-role="artwork"><polyline points="1192,1642 1482,1642" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-10">
+<g data-id="shoulder-r-10" data-kind="path" data-role="artwork"><polyline points="1212,1672 1477,1672" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-11">
+<g data-id="shoulder-r-11" data-kind="path" data-role="artwork"><polyline points="1227,1702 1467,1702" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-12">
+<g data-id="shoulder-r-12" data-kind="path" data-role="artwork"><polyline points="1247,1732 1462,1732" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-13">
+<g data-id="shoulder-r-13" data-kind="path" data-role="artwork"><polyline points="1267,1762 1452,1762" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-14">
+<g data-id="shoulder-r-14" data-kind="path" data-role="artwork"><polyline points="1287,1792 1447,1792" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-15">
+<g data-id="shoulder-r-15" data-kind="path" data-role="artwork"><polyline points="1302,1822 1437,1822" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-16">
+<g data-id="shoulder-r-16" data-kind="path" data-role="artwork"><polyline points="1322,1852 1432,1852" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-17">
+<g data-id="shoulder-r-17" data-kind="path" data-role="artwork"><polyline points="1342,1882 1422,1882" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-18">
+<g data-id="shoulder-r-18" data-kind="path" data-role="artwork"><polyline points="1362,1912 1417,1912" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulder-r-19">
+<g data-id="shoulder-r-19" data-kind="path" data-role="artwork"><polyline points="1377,1942 1407,1942" fill="none" stroke="#3b3027" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+</g>
+<g data-page="over" data-z="1" opacity="0.92">
+<g data-element="head-edge-0">
+<g data-id="head-edge-0" data-kind="path" data-role="artwork"><polyline points="1027,592 1077,687 1082,712 1097,742 1102,782 1107,787 1107,812 1112,817 1112,917 1107,922 1107,952 1102,957 1102,972 1072,1032 1042,1067 1042,1072 1012,1097 997,1102 987,1112 967,1122 957,1122 952,1127 942,1127 922,1137 842,1142 837,1137 822,1137 817,1132 777,1127 752,1112 742,1112 702,1092 677,1072 647,1057 567,982 567,977 522,927 477,837 472,812 457,782 452,742 447,737 447,712 442,707 442,607 447,602 447,572 452,567 452,552 482,492 527,437 532,437 542,427 557,422 567,412 587,402 597,402 602,397 612,397 632,387 712,382 717,387 732,387 737,392 777,397 802,412 812,412 852,432 877,452 907,467 987,542 987,547 1022,587" fill="none" stroke="#1b1b1b" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-edge-1">
+<g data-id="head-edge-1" data-kind="path" data-role="artwork"><polyline points="1222,762 1222,777 1227,782 1227,817 1232,822 1232,937 1227,942 1227,962 1222,967 1222,992 1217,997 1217,1012 1202,1037 1202,1047 1182,1087 1172,1097 1152,1132 1122,1162 1117,1162 1092,1187 1032,1217 1017,1217 1012,1222 997,1222 992,1227 912,1222 892,1212 877,1212 872,1207 862,1207 842,1197 832,1187 797,1167 732,1097 732,1092 692,1042 657,972 652,942 647,937 647,927 637,907 637,892 632,887 632,867 627,862 627,827 622,822 622,707 627,702 627,682 632,677 632,652 637,647 637,632 652,607 652,597 672,557 682,547 702,512 762,457 822,427 837,427 842,422 857,422 862,417 942,422 962,432 977,432 982,437 992,437 1012,447 1022,457 1057,477 1122,547 1122,552 1162,602 1197,672 1202,702 1207,707 1207,717 1217,737 1217,752 1222,757" fill="none" stroke="#1b1b1b" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-edge-2">
+<g data-id="head-edge-2" data-kind="path" data-role="artwork"><polyline points="1372,942 1367,952 1367,967 1362,972 1362,982 1352,1002 1347,1032 1312,1102 1272,1152 1272,1157 1237,1192 1237,1197 1207,1227 1202,1227 1192,1237 1187,1237 1177,1247 1142,1267 1112,1272 1092,1282 1057,1282 1052,1287 1017,1287 1012,1282 997,1282 992,1277 962,1272 912,1247 852,1192 852,1187 822,1147 802,1107 802,1097 787,1072 782,1032 777,1027 777,1002 772,997 772,887 777,882 777,847 782,842 782,817 787,812 787,797 792,792 792,782 802,762 807,732 842,662 882,612 882,607 947,537 952,537 992,507 1012,497 1042,492 1062,482 1097,482 1102,477 1137,477 1142,482 1177,487 1242,517 1302,572 1302,577 1332,617 1352,657 1352,667 1367,692 1372,732 1377,737 1377,762 1382,767 1382,877 1377,882 1377,917 1372,922 1372,937" fill="none" stroke="#1b1b1b" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head-edge-3">
+<g data-id="head-edge-3" data-kind="path" data-role="artwork"><polyline points="1477,1112 1437,1157 1437,1162 1357,1237 1352,1237 1327,1257 1312,1262 1302,1272 1262,1292 1252,1292 1227,1307 1212,1307 1207,1312 1192,1312 1187,1317 1167,1317 1162,1322 1082,1317 1077,1312 1037,1302 1017,1292 1007,1282 992,1277 962,1252 962,1247 927,1207 902,1157 902,1137 897,1132 897,1102 892,1097 892,997 897,992 897,972 902,967 902,942 907,937 907,922 917,907 922,882 932,867 932,857 972,777 1017,727 1017,722 1097,647 1102,647 1127,627 1142,622 1152,612 1192,592 1202,592 1227,577 1242,577 1247,572 1262,572 1267,567 1287,567 1292,562 1372,567 1377,572 1417,582 1437,592 1447,602 1462,607 1492,632 1492,637 1527,677 1552,727 1552,747 1557,752 1557,782 1562,787 1562,887 1557,892 1557,912 1552,917 1552,942 1547,947 1547,962 1537,977 1532,1002 1522,1017 1522,1027 1482,1107" fill="none" stroke="#1b1b1b" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="gaze-0">
+<g data-id="gaze-0" data-kind="path" data-role="artwork"><polyline points="922,622 952,647 952,652 972,677 972,687 982,707 982,757 977,762 972,787 952,812 952,817 917,847 897,852 892,857 882,857 877,862" fill="none" stroke="#c2410c" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="gaze-1">
+<g data-id="gaze-1" data-kind="path" data-role="artwork"><polyline points="1032,687 1037,667 1067,632 1072,632 1087,617 1107,612 1112,607 1122,607 1127,602 1177,602 1182,607 1192,607 1197,612 1217,617 1252,647 1252,652 1267,667 1272,687" fill="none" stroke="#c2410c" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="smile">
+<g data-id="smile" data-kind="path" data-role="artwork"><polyline points="202,1702 367,1532 367,1527 497,1397 497,1392 662,1227 667,1227 727,1172 732,1172 757,1147 762,1147 792,1122 817,1112 827,1102 847,1092 857,1092 862,1087 882,1087 887,1082 922,1082 927,1087 962,1087 967,1092 1032,1092 1037,1087 1112,1082 1117,1087 1137,1087 1142,1092 1152,1092 1192,1112 1232,1142 1247,1147 1312,1202 1317,1202 1342,1227 1347,1227 1457,1332 1462,1332 1597,1467 1602,1467 1842,1702" fill="none" stroke="#c2410c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="ray-0">
+<g data-id="ray-0" data-kind="path" data-role="artwork"><polyline points="1002,852 1882,1207" fill="none" stroke="#1b1b1b" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="ray-1">
+<g data-id="ray-1" data-kind="path" data-role="artwork"><polyline points="1002,852 1662,1537" fill="none" stroke="#1b1b1b" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="ray-2">
+<g data-id="ray-2" data-kind="path" data-role="artwork"><polyline points="1002,852 1327,1747" fill="none" stroke="#1b1b1b" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="ray-3">
+<g data-id="ray-3" data-kind="path" data-role="artwork"><polyline points="1002,852 647,1732" fill="none" stroke="#1b1b1b" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="ray-4">
+<g data-id="ray-4" data-kind="path" data-role="artwork"><polyline points="1002,852 317,1512" fill="none" stroke="#1b1b1b" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="ray-5">
+<g data-id="ray-5" data-kind="path" data-role="artwork"><polyline points="1002,852 122,1207" fill="none" stroke="#1b1b1b" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="text-1">
+<text class="free-text" x="80" y="89" font-size="16" font-weight="700" textLength="250" lengthAdjust="spacingAndGlyphs" xml:space="preserve">LA GIOCONDA, DISASSEMBLED</text>
+</g>
+</g>
+</g></svg>
