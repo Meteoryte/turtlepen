@@ -568,3 +568,81 @@ test('every fix the engine emits is either executable or declared advisory', () 
   }
   assert.ok(kinds.size >= 6, `expected a broad set of fix kinds, got ${[...kinds].join(', ')}`);
 });
+
+// ---------------------------------------------------------------------------
+// align and distribute
+//
+// Every diagram in this repo hand-computes its own layout: a GAP constant, a
+// TOP constant, a uniform column width worked out with Math.max, and a running
+// row counter. That arithmetic is the same in every file and wrong in a new way
+// each time — which is most of why a generated diagram looks generated.
+//
+// Nothing here invents a position. Both operations take the elements NAMED by
+// the caller and move them to a rule the caller chose; the engine still never
+// decides where anything goes.
+// ---------------------------------------------------------------------------
+
+test('align moves the named elements onto one edge and leaves the others alone', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 10, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'H10.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'c', at: 'M16.tl', span: { w: 8, h: 3 } });
+  const untouched = { ...core.findElement(d, 'c').element.rect };
+
+  core.alignElements(d, ['a', 'b'], 'left');
+  const a = core.findElement(d, 'a').element.rect;
+  const b = core.findElement(d, 'b').element.rect;
+  assert.equal(a.x, b.x, 'both left edges land on the same column');
+  assert.equal(a.x, 4, 'and it is the leftmost of the two, not a new position');
+  assert.deepEqual(core.findElement(d, 'c').element.rect, untouched, 'c was not named');
+});
+
+test('centring aligns the middles, not the edges', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'wide', at: 'C4.tl', span: { w: 20, h: 3 } });
+  core.placeBox(d, 'base', { id: 'narrow', at: 'C10.tl', span: { w: 6, h: 3 } });
+  core.alignElements(d, ['wide', 'narrow'], 'centerX');
+  const w = core.findElement(d, 'wide').element.rect;
+  const n = core.findElement(d, 'narrow').element.rect;
+  assert.equal(w.x + w.w / 2, n.x + n.w / 2);
+});
+
+test('distribute gives equal gaps and never moves the two end elements', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'K4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'c', at: 'AH4.tl', span: { w: 6, h: 3 } });
+  const first = { ...core.findElement(d, 'a').element.rect };
+  const last = { ...core.findElement(d, 'c').element.rect };
+
+  core.distributeElements(d, ['a', 'b', 'c'], 'horizontal');
+
+  assert.deepEqual(core.findElement(d, 'a').element.rect, first, 'the ends anchor the span');
+  assert.deepEqual(core.findElement(d, 'c').element.rect, last);
+  const [ra, rb, rc] = ['a', 'b', 'c'].map((id) => core.findElement(d, id).element.rect);
+  const gap1 = rb.x - (ra.x + ra.w);
+  const gap2 = rc.x - (rb.x + rb.w);
+  assert.ok(Math.abs(gap1 - gap2) <= 1, `gaps ${gap1} and ${gap2} should match within a quadrant`);
+});
+
+test('distribute needs three elements to have a middle to move', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'K4.tl', span: { w: 6, h: 3 } });
+  assert.throws(() => core.distributeElements(d, ['a', 'b'], 'horizontal'), /at least three/);
+});
+
+test('align refuses an unknown element by name rather than skipping it', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  assert.throws(() => core.alignElements(d, ['a', 'ghost'], 'left'), /no element "ghost"/);
+});
+
+test('align and distribute are operations, so plan and the tools share them', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'K9.tl', span: { w: 6, h: 3 } });
+  core.OPERATIONS.align(d, { ids: ['a', 'b'], edge: 'top' });
+  const [ra, rb] = ['a', 'b'].map((id) => core.findElement(d, id).element.rect);
+  assert.equal(ra.y, rb.y);
+});

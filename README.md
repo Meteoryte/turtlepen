@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 424 tests green, zero runtime dependencies, 39 MCP tools.
+Status: **prototype** — 494 tests green, zero runtime dependencies, 42 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -98,6 +98,35 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
   arrowhead**, rather than adding one after it — so `line to db.W arrow` points
   at a box without overlapping it. Standing alone, `<dir> arrow` places a head
   at the cursor.
+- **`curve <addr> <addr> <addr> …` draws a smooth line through its points.**
+  `ray` is straight and `arc` is circular; a curve is neither, and hair, drapery
+  and coastlines are all curves. Sampled Catmull-Rom, then connected with rays,
+  so the run is contiguous by construction rather than by a lucky sample rate.
+- **`ellipse <rx> <ry> [rotDeg]` finishes the circle family.** With equal radii
+  and no rotation it delegates to `circle`, so the two commands can never
+  disagree about the same shape.
+- **`fill` turns a closed outline into a region that CLAIMS its interior.** That
+  is the point, not a side effect: a filled shape genuinely occupies its inside,
+  so it hides what is behind it and the collision engine knows. `fillColor`
+  colours the region independently of the outline, and given `{ from, to }` it
+  gradates ACROSS the region — tone, without hatching. An open outline is
+  refused rather than flooded: a shape that silently fills the page is much
+  worse than one that fills nothing.
+- **A stroke may change colour along its own length.** `color: { from, to }`
+  spreads a ramp over the pieces. Colour lives on the piece, not the element —
+  it never reached the collision engine, so where it was stored was only ever a
+  presentation decision.
+- **`align` and `distribute` do the layout arithmetic.** Every diagram in this
+  repo used to hand-write a gap constant, a running row counter and a uniform
+  width worked out with `Math.max`; that is what makes a generated diagram look
+  generated. Neither invents a position — the target comes from the elements you
+  name, and anything unnamed is left alone.
+- **Paper is document state.** `set_background <hex>` colours the sheet, and it
+  is saved with the drawing — a composition made against dark paper is a
+  different composition, and re-rendering it light would misreport it.
+- **A box fill is a hex OR a gradient.** `fill: { from, to, angle }` emits a
+  linear gradient keyed to the box. Both are presentation: no fill of any kind
+  reaches the collision engine.
 - **`arrow both` heads each end; `arrow start` heads only the origin.** The head
   at the origin points back the way the run came, because a double-headed arrow
   points outward at both ends. The run itself is unchanged — no quadrant is
@@ -129,7 +158,10 @@ for one primitive and stops will typically ink under 1%.
 
 ```
 ray to AF20.q1        a straight line at ANY angle (Bresenham)
+curve C4 K10 S6 AB14  a smooth line through the points, contiguous by construction
 circle 12             outline (midpoint); radius in QUADRANTS, not cells
+ellipse 24 10 30      the same family, two radii and an optional rotation
+circle 18 fill        any closed shape may be filled; the region claims its inside
 disc 12               the same circle, filled
 arc 12 0 90           part of it, clockwise from east
 triangle M4.q1 T9.q1  three points; polygon takes more

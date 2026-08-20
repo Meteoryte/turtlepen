@@ -23,7 +23,7 @@ import * as pattern_ from './pattern.js';
 import * as wireframe_ from './wireframe.js';
 import * as perspective_ from './perspective.js';
 
-import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, moveElementToPage, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
+import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
 import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL } from './collide.js';
 import { renderAscii } from './ascii.js';
@@ -50,7 +50,7 @@ export { pattern_ as pattern };
 export { wireframe_ as wireframe };
 export { perspective_ as perspective };
 export {
-  createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, moveElementToPage, findElement,
+  createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement,
   elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
   groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup,
   constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints,
@@ -112,7 +112,7 @@ export function applyPen(doc, pageId, program, options = {}) {
   return result;
 }
 
-function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', stroke = null, color = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null } = {}) {
+function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', stroke = null, color = null, fillColor = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null } = {}) {
   getPage(doc, pageId);
   const result = runPen(program, {
     resolveElement: (name) => findElement(doc, name)?.element ?? null,
@@ -148,6 +148,21 @@ function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', 
       }
       : null);
     const pathId = id ?? nextId(doc, 'path', 0);
+    /**
+     * Spread a two-stop ramp across the pieces by position along the run.
+     * Only written when a ramp was asked for — a flat stroke must not carry a
+     * colour on every quadrant just because the field exists.
+     */
+    const applyRamp = (list, ramp) => {
+      if (!ramp || list.length === 0) return list;
+      const mix = (a, b, t) => {
+        const ch = (h, i) => parseInt(h.slice(1 + i * 2, 3 + i * 2), 16);
+        const hex = (n) => n.toString(16).padStart(2, '0');
+        return `#${[0, 1, 2].map((i) => hex(Math.round(ch(a, i) + (ch(b, i) - ch(a, i)) * t))).join('')}`;
+      };
+      const last = Math.max(1, list.length - 1);
+      return list.map((piece, i) => ({ ...piece, color: mix(ramp.from, ramp.to, i / last) }));
+    };
     // Tone filters the PIECES, and a piece is one quadrant. Everything
     // downstream — elementClaimed, elementRects, the SVG emitter, the ASCII
     // view — derives from this array, so a 50% shape claims exactly its 50%
@@ -160,12 +175,40 @@ function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', 
         seed: pathId,
       }), presentation.pattern ?? null)
       : result.pieces;
-    if (!pieces.length) {
+    // The ramp is spread AFTER tone and pattern have removed quadrants, so the
+    // colour runs end to end across what actually survives rather than across
+    // what was originally asked for.
+    // Read off the RAW colour: `presentation` is the argument object, and the
+    // ramp only exists once `normalizeStroke` has seen it inside `addPath`.
+    const rawRamp = presentation?.color && typeof presentation.color === 'object' ? presentation.color : null;
+    let painted = rawRamp ? applyRamp(pieces, rawRamp) : pieces;
+
+    /**
+     * A fill colour is independent of the outline's, because a drawn shape has
+     * an edge and an inside and they are not the same mark. Given two stops it
+     * gradates ACROSS the region rather than along a path — which is tone
+     * without hatching, and the thing hatching was standing in for.
+     */
+    if (fillColor) {
+      const flat = typeof fillColor === 'string';
+      const from = flat ? fillColor : fillColor.from;
+      const to = flat ? fillColor : fillColor.to;
+      const ys = painted.map((p) => p.y);
+      const lo = Math.min(...ys);
+      const span = Math.max(1, Math.max(...ys) - lo);
+      const mix = (a, b, t) => {
+        const ch = (h, i) => parseInt(h.slice(1 + i * 2, 3 + i * 2), 16);
+        const hex = (n) => n.toString(16).padStart(2, '0');
+        return `#${[0, 1, 2].map((i) => hex(Math.round(ch(a, i) + (ch(b, i) - ch(a, i)) * t))).join('')}`;
+      };
+      painted = painted.map((p) => ({ ...p, color: flat ? from : mix(from, to, (p.y - lo) / span) }));
+    }
+    if (!painted.length) {
       throw new RangeError(
         `tone or pattern left "${pathId}" with no inked quadrants — raise the tone, reduce the feather, or drop the texture or pattern`,
       );
     }
-    path = addPath(doc, pageId, { id: pathId, pieces, role, stroke: presentation });
+    path = addPath(doc, pageId, { id: pathId, pieces: painted, role, stroke: presentation });
     // A shape is not a connector. If the trace comes back to where it started,
     // say so — the rules about loose ends and retraced quadrants are about
     // connectors, and applying them to an outline is how a rule cries wolf.
@@ -594,6 +637,9 @@ export const OPERATIONS = Object.freeze({
   rename: (doc, a) => renameElement(doc, a.id, a.to),
   remove: (doc, a) => removeElement(doc, a.id, a.page ?? null),
   set_canvas: (doc, a) => setCanvas(doc, a.cols, a.rows),
+  set_background: (doc, a) => setBackground(doc, a.color ?? null),
+  align: (doc, a) => alignElements(doc, a.ids, a.edge),
+  distribute: (doc, a) => distributeElements(doc, a.ids, a.axis),
   wireframe: (doc, a) => applyWireframe(doc, a),
   perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
   // A review is document state, so it goes through OPERATIONS like every other
@@ -968,4 +1014,106 @@ export function applyPerspectiveScene(doc, {
 
   doc.perspective_scene = { roomIn, eyeIn, targetIn, fovDeg, boxes: drawn, runs: paths };
   return { boxes: drawn, runs: paths };
+}
+
+/**
+ * Edges an alignment can name. `centerX`/`centerY` align middles, which is a
+ * different operation from aligning an edge and is the one people actually mean
+ * when a row of boxes of different widths has to look deliberate.
+ */
+export const ALIGN_EDGES = Object.freeze(['left', 'right', 'top', 'bottom', 'centerX', 'centerY']);
+export const DISTRIBUTE_AXES = Object.freeze(['horizontal', 'vertical']);
+
+const rectOfElement = (el) => (el.kind === 'path'
+  ? geometry.boundsOf(el.pieces.map((p) => geometry.rect(p.x, p.y, 1, 1)))
+  : el.rect);
+
+/**
+ * Move the NAMED elements onto one shared edge.
+ *
+ * Every diagram in this repo hand-computed its own layout — a gap constant, a
+ * running row counter, a uniform width worked out with `Math.max`. That
+ * arithmetic is identical in every file and wrong in a new way each time, which
+ * is a large part of why a generated diagram looks generated.
+ *
+ * The engine still decides nothing: the caller names the elements and the edge,
+ * and the target is taken from those elements rather than invented.
+ */
+export function alignElements(doc, ids, edge) {
+  if (!ALIGN_EDGES.includes(edge)) {
+    throw new SyntaxError(`align edge must be one of ${ALIGN_EDGES.join(', ')} — got ${JSON.stringify(edge)}`);
+  }
+  const found = ids.map((id) => {
+    const hit = findElement(doc, id);
+    if (!hit) throw new Error(`no element "${id}" to align`);
+    return { id, el: hit.element, rect: rectOfElement(hit.element) };
+  });
+  if (found.length < 2) throw new Error('aligning needs at least two elements to have anything to agree on');
+
+  const target = {
+    left: Math.min(...found.map((f) => f.rect.x)),
+    right: Math.max(...found.map((f) => f.rect.x + f.rect.w)),
+    top: Math.min(...found.map((f) => f.rect.y)),
+    bottom: Math.max(...found.map((f) => f.rect.y + f.rect.h)),
+    centerX: Math.round(found.reduce((s, f) => s + f.rect.x + f.rect.w / 2, 0) / found.length),
+    centerY: Math.round(found.reduce((s, f) => s + f.rect.y + f.rect.h / 2, 0) / found.length),
+  }[edge];
+
+  for (const f of found) {
+    const dx = {
+      left: target - f.rect.x,
+      right: target - (f.rect.x + f.rect.w),
+      centerX: target - Math.round(f.rect.x + f.rect.w / 2),
+    }[edge] ?? 0;
+    const dy = {
+      top: target - f.rect.y,
+      bottom: target - (f.rect.y + f.rect.h),
+      centerY: target - Math.round(f.rect.y + f.rect.h / 2),
+    }[edge] ?? 0;
+    // Whole quadrants, not whole cells. Snapping these to even numbers was a
+    // habit borrowed from cell arithmetic; it cost up to a quadrant per element
+    // and left centred boxes visibly off from each other.
+    if (dx || dy) moveElement(doc, f.id, dx, dy);
+  }
+  return found.length;
+}
+
+/**
+ * Space the NAMED elements evenly between the two that already sit furthest
+ * apart. The ends anchor the span and never move, so distributing is a
+ * tightening of what the author already laid out rather than a re-layout.
+ */
+export function distributeElements(doc, ids, axis) {
+  if (!DISTRIBUTE_AXES.includes(axis)) {
+    throw new SyntaxError(`distribute axis must be ${DISTRIBUTE_AXES.join(' or ')} — got ${JSON.stringify(axis)}`);
+  }
+  const found = ids.map((id) => {
+    const hit = findElement(doc, id);
+    if (!hit) throw new Error(`no element "${id}" to distribute`);
+    return { id, rect: rectOfElement(hit.element) };
+  });
+  if (found.length < 3) {
+    throw new Error('distributing needs at least three elements — with two there is no middle to move');
+  }
+
+  const horizontal = axis === 'horizontal';
+  const pos = (r) => (horizontal ? r.x : r.y);
+  const size = (r) => (horizontal ? r.w : r.h);
+  found.sort((a, b) => pos(a.rect) - pos(b.rect));
+
+  const first = found[0];
+  const last = found[found.length - 1];
+  const span = pos(last.rect) - (pos(first.rect) + size(first.rect));
+  const occupied = found.slice(1, -1).reduce((s, f) => s + size(f.rect), 0);
+  const gap = (span - occupied) / (found.length - 1);
+
+  let cursor = pos(first.rect) + size(first.rect);
+  for (const f of found.slice(1, -1)) {
+    cursor += gap;
+    const want = Math.round(cursor);
+    const delta = want - pos(f.rect);
+    if (delta) moveElement(doc, f.id, horizontal ? delta : 0, horizontal ? 0 : delta);
+    cursor += size(f.rect);
+  }
+  return found.length;
 }

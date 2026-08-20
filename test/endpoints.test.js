@@ -39,6 +39,10 @@ test('every advertised MCP tool completes a representative use case over stdio',
     await invoke('place_box', { id: 'unit', at: 'C4.tl', span: { w: 6, h: 3 }, label: 'Condenser' });
     await invoke('place_box', { id: 'tag', at: 'M4.tl', span: { w: 4, h: 2 }, label: 'Disconnect' });
     await invoke('place_box', { id: 'overlap', at: 'F4.tl', span: { w: 6, h: 3 }, label: 'Conflict' });
+    // Layout operations: the arithmetic every diagram in this repo used to do
+    // by hand, done once and named.
+    await invoke('align', { ids: ['unit', 'tag'], edge: 'top' });
+    await invoke('distribute', { ids: ['unit', 'overlap', 'tag'], axis: 'horizontal' });
     await invoke('pen', { id: 'run', role: 'artwork', program: 'pen C15.q1\nright 4 line' });
 
     const image = pngDataUri(20, 10);
@@ -94,6 +98,9 @@ test('every advertised MCP tool completes a representative use case over stdio',
     assert.match(await invoke('plan', { operations }), /rehearsed 1 operation/);
     assert.match(await invoke('plan', { operations, commit: true }), /committed 1 operation/);
     await invoke('set_canvas', { cols: 100, rows: 60 });
+    // Paper is document state, so it has to survive the same round trip as the
+    // geometry does.
+    await invoke('set_background', { color: '#0b1020' });
     await invoke('remove', { id: 'obstacle' });
     // An import is a compiler onto ordinary operations, so exercise it over the
     // real transport too: it must return operations and change nothing.

@@ -352,7 +352,21 @@ export function createTools(session) {
           shape: { description: 'flowchart symbol: process (default), decision, terminator, subprocess, io, prep, manual, data, document, bar; or a container — lane, group — which reserves only its title band and border ring so members sit inside without colliding', type: 'string', enum: [...core.NODE_SHAPES] },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
           fontSize: { type: 'integer' },
-          fill: { type: 'string' },
+          fill: {
+            oneOf: [
+              { type: 'string', description: '3- or 6-digit hex colour' },
+              {
+                type: 'object',
+                properties: {
+                  from: { type: 'string' }, to: { type: 'string' },
+                  angle: { type: 'number', description: 'degrees; 0 runs left to right' },
+                },
+                required: ['from', 'to'],
+                additionalProperties: false,
+              },
+            ],
+            description: 'a flat hex colour, or { from, to, angle } for a linear gradient',
+          },
         },
         required: ['id', 'at', 'span'],
         additionalProperties: false,
@@ -382,7 +396,8 @@ export function createTools(session) {
           page: { type: 'string' },
           id: { type: 'string', description: 'id for the path this program creates' },
           role: { type: 'string', enum: ['connector', 'artwork'], description: 'connector (default) is checked for loose ends; artwork may be intentionally open' },
-          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$', description: 'optional 3- or 6-digit hex ink colour' },
+          color: { oneOf: [ { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' }, { type: 'object', properties: { from: { type: 'string' }, to: { type: 'string' } }, required: ['from', 'to'], additionalProperties: false } ], description: 'ink colour: one hex, or { from, to } for a stroke that gradates along its own length' },
+          fillColor: { oneOf: [ { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' }, { type: 'object', properties: { from: { type: 'string' }, to: { type: 'string' } }, required: ['from', 'to'], additionalProperties: false } ], description: 'colour for a region drawn with the "fill" modifier; { from, to } gradates ACROSS the region, which is tone without hatching' },
           width: { type: 'integer', minimum: 1, maximum: 5, description: 'presentation width in px; collision geometry remains quadrant-exact' },
           cap: { type: 'string', enum: ['butt', 'round', 'square'] },
           paint: { type: 'string', enum: ['line', 'cells'], description: 'line paints continuous ink; cells paints every exact 5px claimed quadrant' },
@@ -394,9 +409,9 @@ export function createTools(session) {
         required: ['program'],
         additionalProperties: false,
       },
-      handler: async ({ program, page = 'base', id = null, role = 'connector', color = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null }) => {
+      handler: async ({ program, page = 'base', id = null, role = 'connector', color = null, fillColor = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null }) => {
         const doc = need(session);
-        const r = core.applyPen(doc, page, program, { id, role, color, width, cap, paint, tone, feather, texture, pattern });
+        const r = core.applyPen(doc, page, program, { id, role, color, fillColor, width, cap, paint, tone, feather, texture, pattern });
         await persist(session);
         const lines = [`pen program applied to page "${page}" as ${role}`];
         if (r.path) {
@@ -695,7 +710,21 @@ ${stalled}` : core.formatLog(result);
           corner: { type: 'string', enum: ['square', 'rounded', 'indented', 'chamfered'] },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
           fontSize: { type: 'integer' },
-          fill: { type: 'string' },
+          fill: {
+            oneOf: [
+              { type: 'string', description: '3- or 6-digit hex colour' },
+              {
+                type: 'object',
+                properties: {
+                  from: { type: 'string' }, to: { type: 'string' },
+                  angle: { type: 'number', description: 'degrees; 0 runs left to right' },
+                },
+                required: ['from', 'to'],
+                additionalProperties: false,
+              },
+            ],
+            description: 'a flat hex colour, or { from, to, angle } for a linear gradient',
+          },
         },
         required: ['id'],
         additionalProperties: false,
@@ -771,6 +800,71 @@ ${stalled}` : core.formatLog(result);
         const page = core.updatePage(need(session), id, changes);
         await persist(session);
         return `page "${page.id}" is now z:${page.z}, ${page.intent}, ${page.visible ? 'visible' : 'hidden'}\n\n${core.formatLog(core.validate(session.doc))}`;
+      },
+    },
+
+    {
+      name: 'align',
+      description:
+        'Move the named elements onto one shared edge: left, right, top, bottom, centerX or centerY. '
+        + 'The target is taken from the elements you name rather than invented, and anything you do not '
+        + 'name is left alone. Use this instead of hand-computing a column of x values.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          ids: { type: 'array', items: { type: 'string' }, minItems: 2 },
+          edge: { type: 'string', enum: ['left', 'right', 'top', 'bottom', 'centerX', 'centerY'] },
+        },
+        required: ['ids', 'edge'],
+        additionalProperties: false,
+      },
+      handler: async ({ ids, edge }) => {
+        const doc = need(session);
+        const n = core.OPERATIONS.align(doc, { ids, edge });
+        await persist(session);
+        return `aligned ${n} element(s) to ${edge}`;
+      },
+    },
+
+    {
+      name: 'distribute',
+      description:
+        'Space the named elements evenly along an axis. The two furthest apart anchor the span and never '
+        + 'move, so this tightens a layout you already made rather than replacing it. Needs at least three '
+        + 'elements — with two there is no middle to move.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          ids: { type: 'array', items: { type: 'string' }, minItems: 3 },
+          axis: { type: 'string', enum: ['horizontal', 'vertical'] },
+        },
+        required: ['ids', 'axis'],
+        additionalProperties: false,
+      },
+      handler: async ({ ids, axis }) => {
+        const doc = need(session);
+        const n = core.OPERATIONS.distribute(doc, { ids, axis });
+        await persist(session);
+        return `distributed ${n} element(s) ${axis}ly with equal gaps`;
+      },
+    },
+
+    {
+      name: 'set_background',
+      description:
+        'Set the paper colour for the whole drawing, or pass no colour to go back to the palette. '
+        + 'Paper is document state rather than a render option: a drawing composed against dark '
+        + 'paper is a different drawing, and re-rendering it light would misreport it.',
+      inputSchema: {
+        type: 'object',
+        properties: { color: { type: 'string', description: '3- or 6-digit hex; omit to clear' } },
+        additionalProperties: false,
+      },
+      handler: async ({ color = null }) => {
+        const doc = need(session);
+        core.OPERATIONS.set_background(doc, { color });
+        await persist(session);
+        return color ? `paper is now ${color}` : 'paper is back to the palette';
       },
     },
 

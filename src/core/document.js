@@ -34,6 +34,10 @@ export function createDocument({ name = 'untitled', canvas = { cols: 160, rows: 
     schema: SCHEMA_VERSION,
     name,
     canvas: { cols: canvas.cols, rows: canvas.rows },
+    // Null means "use the palette". Paper is document state rather than a
+    // render option because a drawing composed against dark paper is a
+    // different drawing, and re-rendering it light would be a lie about it.
+    background: null,
     font: { ...DEFAULT_FONT, ...font },
     pages: [],
     elements: {},
@@ -73,7 +77,15 @@ export function normalizeStroke(stroke) {
   if (!stroke || typeof stroke !== 'object' || Array.isArray(stroke)) {
     throw new TypeError('path stroke must be an object with color, width, and cap');
   }
-  const color = normalizeColor(stroke.color ?? '#2b2a26', 'path color');
+  // One hex, or { from, to } for a stroke that changes colour along its length.
+  // Colour has never reached the collision engine, so where it is stored is a
+  // presentation decision — and storing it per PIECE is what makes a gradient
+  // stroke, and later a colour field over a region, ordinary rather than special.
+  const rawColor = stroke.color ?? '#2b2a26';
+  const ramp = rawColor && typeof rawColor === 'object'
+    ? { from: normalizeColor(rawColor.from, 'path colour ramp start'), to: normalizeColor(rawColor.to, 'path colour ramp end') }
+    : null;
+  const color = ramp ? ramp.from : normalizeColor(rawColor, 'path color');
   const width = stroke.width ?? 5;
   if (!Number.isInteger(width) || width < 1 || width > 5) {
     throw new RangeError(`path width must be a whole pixel count between 1 and 5 — got ${JSON.stringify(width)}`);
@@ -96,6 +108,7 @@ export function normalizeStroke(stroke) {
   const pattern = normalizePattern(stroke.pattern, 'path pattern');
   return {
     color,
+    ...(ramp ? { ramp } : {}),
     width,
     cap,
     ...(paint === 'cells' ? { paint } : {}),
@@ -104,6 +117,36 @@ export function normalizeStroke(stroke) {
     ...(texture ? { texture } : {}),
     ...(pattern ? { pattern } : {}),
   };
+}
+
+/**
+ * A fill: one flat hex, or a linear gradient between two.
+ *
+ * `{ from, to, angle }` — angle in degrees, 0 running left to right. Kept as an
+ * object rather than a packed string so it round-trips through JSON without a
+ * parser, and so a bad stop is refused as a colour rather than as syntax.
+ */
+export function normalizeFill(value, what = 'fill') {
+  if (value == null) return null;
+  if (typeof value === 'string') return normalizeColor(value, what);
+  if (typeof value !== 'object') {
+    throw new SyntaxError(`${what} must be a hex colour or { from, to, angle } — got ${JSON.stringify(value)}`);
+  }
+  const angle = value.angle ?? 0;
+  if (!Number.isFinite(angle)) {
+    throw new SyntaxError(`${what} gradient angle must be a number of degrees — got ${JSON.stringify(value.angle)}`);
+  }
+  return {
+    from: normalizeColor(value.from, `${what} gradient start`),
+    to: normalizeColor(value.to, `${what} gradient end`),
+    angle: Math.round(angle),
+  };
+}
+
+/** Set the paper colour, or clear it back to the palette with null. */
+export function setBackground(doc, color) {
+  doc.background = color == null ? null : normalizeColor(color, 'background');
+  return doc.background;
 }
 
 export function normalizeColor(value, what = 'color') {
@@ -282,7 +325,7 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
     corner,
     shape,
     align: assertTextAlign(align),
-    fill: normalizeColor(fill, 'box fill'),
+    fill: normalizeFill(fill, 'box fill'),
     note,
     opacity: assertOpacity(opacity, 'element opacity'),
     state,
@@ -749,6 +792,7 @@ export function serialize(doc) {
       schema: doc.schema,
       name: doc.name,
       canvas: doc.canvas,
+      ...(doc.background ? { background: doc.background } : {}),
       font: doc.font,
       createdAt: doc.createdAt,
       pages: [...doc.pages].sort((a, b) => a.z - b.z),
@@ -787,6 +831,9 @@ export function deserialize(json) {
     schema: raw.schema,
     name: raw.name,
     canvas: raw.canvas,
+    // Absent means the palette, which is what every document written before
+    // paper became settable will say.
+    background: raw.background ?? null,
     font: { ...DEFAULT_FONT, ...raw.font },
     pages: raw.pages,
     elements: raw.elements,

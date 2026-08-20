@@ -27,6 +27,7 @@
   }
 </style>
 <defs>
+
   <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
        5px quadrant so a dimmed element is made of the same units as every
        other mark on the page. -->

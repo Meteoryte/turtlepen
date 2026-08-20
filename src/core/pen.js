@@ -17,6 +17,9 @@
  *   <dir> [align <sideA> <sideB>] [<style>] corner  place a junction, turn
  *   <dir> ... line to <address|id.port[#slot]>     draw until it reaches a target
  *   <dir> ... line arrow [both|start|end]          head the end, both ends, or the origin
+ *   curve <addr> <addr> <addr> ...                 a smooth line through the points
+ *   ellipse <rx> <ry> [rotDeg]                     the circle family, finished
+ *   <closed shape> ... fill                        the region claims its interior
  *   pen from <id>.<face>[#slot]                    leave a box on a dedicated track
  *   box span <W>x<H> at <address> label "..." [style <s>] [id <name>]
  *   text "..." at <address> [span <W>x<H>] [id <name>]
@@ -30,12 +33,12 @@
 import { DIRECTIONS, OPPOSITE, isDirection, rect } from './geometry.js';
 import { parseAddress, addressRect, pinPoint, looksLikeAddress, quadToAddress, assertOnGrid, PIN_NAMES, PINS } from './address.js';
 import { alignmentFor, alignTrack, BOX_CORNER_STYLES, JUNCTION_STYLES, portPoint, approachPoint } from './shapes.js';
-import { rayQuads, circleQuads, arcQuads, polygonQuads, dashQuads, discQuads, resolveDir8, DIR8, DIR8_ALIAS } from './raster.js';
+import { rayQuads, curveQuads, circleQuads, ellipseQuads, arcQuads, polygonQuads, dashQuads, discQuads, fillInterior, resolveDir8, DIR8, DIR8_ALIAS } from './raster.js';
 
 const SIDES = Object.freeze(['top', 'bottom', 'left', 'right']);
 const SIDE_TO_DIR = Object.freeze({ top: 'up', bottom: 'down', left: 'left', right: 'right' });
 const DIR_TO_INCOMING_SIDE = Object.freeze({ up: 'bottom', down: 'top', left: 'right', right: 'left' });
-const ELEMENTS = Object.freeze(['line', 'corner', 'box', 'text', 'arrow', 'hop', 'ray', 'circle', 'disc', 'arc', 'polygon', 'triangle', 'dot', 'dash']);
+const ELEMENTS = Object.freeze(['line', 'corner', 'box', 'text', 'arrow', 'hop', 'ray', 'curve', 'circle', 'ellipse', 'disc', 'arc', 'polygon', 'triangle', 'dot', 'dash']);
 
 /**
  * Shapes that are not rectangles.
@@ -46,7 +49,7 @@ const ELEMENTS = Object.freeze(['line', 'corner', 'box', 'text', 'arrow', 'hop',
  * a fixed order and guessing at them would make errors harder to read, not
  * easier.
  */
-const SHAPES = Object.freeze(['ray', 'circle', 'disc', 'arc', 'polygon', 'triangle', 'dot', 'dash']);
+const SHAPES = Object.freeze(['ray', 'curve', 'circle', 'ellipse', 'disc', 'arc', 'polygon', 'triangle', 'dot', 'dash']);
 const STYLES = Object.freeze([...new Set([...BOX_CORNER_STYLES, ...JUNCTION_STYLES])]);
 const ELEMENT_PORT_RE = /^([A-Za-z0-9_-]+)\.([A-Za-z]{1,2}(?:#\d+)?)$/;
 
@@ -127,7 +130,7 @@ export function splitProgram(program) {
 
 export function parseCommand(source) {
   const toks = tokenize(source);
-  const cmd = { source, dir: null, n: null, align: [], style: null, element: null, at: null, from: null, to: null, label: null, span: null, id: null, font: null, weight: null, fill: null, shape: null, arrowEnd: false, arrowStart: false, arrowWhere: null, args: [] };
+  const cmd = { source, dir: null, n: null, align: [], style: null, element: null, at: null, from: null, to: null, label: null, span: null, id: null, font: null, weight: null, fill: null, shape: null, arrowEnd: false, arrowStart: false, arrowWhere: null, fillRegion: false, args: [] };
   const seen = [];
 
   // Shapes read their own arguments positionally.
@@ -135,6 +138,12 @@ export function parseCommand(source) {
   if (SHAPES.includes(head)) {
     cmd.element = head;
     cmd.args = toks.slice(1).map((x) => x.t);
+    // `fill` turns a closed outline into a region that claims its interior.
+    const fillAt = cmd.args.findIndex((a) => String(a).toLowerCase() === 'fill');
+    if (fillAt >= 0) {
+      cmd.fillRegion = true;
+      cmd.args.splice(fillAt, 1);
+    }
     return cmd;
   }
 
@@ -368,8 +377,21 @@ export function runPen(program, ctx = {}) {
         return;
       }
       case 'ray': case 'circle': case 'disc': case 'arc':
-      case 'polygon': case 'triangle': case 'dot': case 'dash': {
-        const quads = shapeQuads(cmd, state, ctx);
+      case 'polygon': case 'triangle': case 'dot': case 'dash': case 'curve': case 'ellipse': {
+        const outline = shapeQuads(cmd, state, ctx);
+        // A filled shape occupies its inside. `fillInterior` returns nothing
+        // extra when the outline is open, and an open shape that silently
+        // filled the page would be much worse than one that refuses.
+        let quads = outline;
+        if (cmd.fillRegion) {
+          quads = fillInterior(outline);
+          if (quads.length <= outline.length) {
+            throw new RangeError(
+              `"${cmd.source}" cannot be filled: the outline is not closed, so there is no inside to fill. `
+              + 'Close the shape, or drop "fill" and draw the region you meant.',
+            );
+          }
+        }
         for (const q of quads) {
           recordPiece(pieces, occupied, notes, { x: q.x, y: q.y, type: 'mark', style: cmd.style ?? 'square' }, step + 1);
         }
@@ -602,6 +624,25 @@ function shapeQuads(cmd, state, ctx) {
     case 'arc': {
       if (cmd.args.length < 3) throw new SyntaxError(`arc needs a radius and two angles, e.g. "arc 12 0 90" — in: ${cmd.source}`);
       return arcQuads(state.x, state.y, num(cmd.args[0], 'radius'), num(cmd.args[1], 'start angle'), num(cmd.args[2], 'end angle'));
+    }
+    case 'curve': {
+      // Every point is an address, so a curve reads the same way a polygon
+      // does — the difference is that it is open and it bends.
+      const pts = cmd.args.filter((a) => looksLikeAddress(a)).map(at);
+      if (pts.length < 3) {
+        throw new SyntaxError(
+          `curve needs at least three addresses, e.g. "curve C4 K10 S6" — two points is a straight run, use "ray". In: ${cmd.source}`,
+        );
+      }
+      return curveQuads(pts);
+    }
+    case 'ellipse': {
+      // `ellipse <rx> <ry> [rotDeg]`, matching `circle <r>`.
+      const nums = cmd.args.filter((a) => /^-?\d+$/.test(String(a))).map(Number);
+      if (nums.length < 2) {
+        throw new SyntaxError(`ellipse needs two whole radii, e.g. "ellipse 24 10" — in: ${cmd.source}`);
+      }
+      return ellipseQuads(state.x, state.y, nums[0], nums[1], nums[2] ?? 0);
     }
     case 'polygon': case 'triangle': {
       const pts = cmd.args.filter((a) => looksLikeAddress(a)).map(at);

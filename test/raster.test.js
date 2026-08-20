@@ -11,7 +11,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { rayQuads, circleQuads, arcQuads, polygonQuads, dashQuads, DIR8 } from '../src/core/raster.js';
+import { rayQuads, circleQuads, arcQuads, polygonQuads, dashQuads, DIR8, curveQuads, ellipseQuads, fillInterior, discQuads } from '../src/core/raster.js';
 
 const key = (q) => `${q.x},${q.y}`;
 const keys = (qs) => qs.map(key);
@@ -226,4 +226,74 @@ test('an ellipse is closed and contiguous', () => {
 test('a degenerate ellipse is refused by name', () => {
   assert.throws(() => ellipseQuads(0, 0, 0, 10), /whole radius/);
   assert.throws(() => ellipseQuads(0, 0, 10, 0), /whole radius/);
+});
+
+// ---------------------------------------------------------------------------
+// fillInterior — the inside of a closed outline
+//
+// `polygon` claims the quadrants of its outline and nothing within, so a filled
+// region had to be hand-hatched into dozens of separate elements. Flood from
+// OUTSIDE and invert, rather than scanline parity: a rasterised curve produces
+// doubled crossings at every local extremum, and parity counting gets those
+// wrong in ways that depend on the shape.
+// ---------------------------------------------------------------------------
+
+test('a filled rectangle contains every quadrant inside its outline', () => {
+  const outline = polygonQuads([
+    { x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 6 }, { x: 0, y: 6 },
+  ]);
+  const filled = fillInterior(outline);
+  const key = (p) => `${p.x},${p.y}`;
+  const have = new Set(filled.map(key));
+
+  for (let y = 0; y <= 6; y += 1) {
+    for (let x = 0; x <= 10; x += 1) {
+      assert.ok(have.has(key({ x, y })), `missing ${x},${y}`);
+    }
+  }
+  assert.equal(filled.length, 11 * 7, 'and nothing outside it');
+});
+
+test('a filled circle is denser than its outline and stays inside its radius', () => {
+  const outline = circleQuads(0, 0, 12);
+  const filled = fillInterior(outline);
+  assert.ok(filled.length > outline.length * 4, 'a disc has far more quadrants than its ring');
+  for (const p of filled) {
+    assert.ok(Math.hypot(p.x, p.y) <= 13, `${p.x},${p.y} escaped the radius`);
+  }
+});
+
+test('filling a closed shape agrees with the disc the engine already draws', () => {
+  const key = (p) => `${p.x},${p.y}`;
+  const filled = new Set(fillInterior(circleQuads(30, 30, 9)).map(key));
+  for (const p of discQuads(30, 30, 9)) {
+    assert.ok(filled.has(key(p)), `disc quadrant ${key(p)} is not in the filled circle`);
+  }
+});
+
+test('a shape with a concavity fills the concavity but not the bay outside it', () => {
+  // A C-shape: the hollow is outside the form and must stay empty.
+  const outline = polygonQuads([
+    { x: 0, y: 0 }, { x: 12, y: 0 }, { x: 12, y: 3 }, { x: 4, y: 3 },
+    { x: 4, y: 7 }, { x: 12, y: 7 }, { x: 12, y: 10 }, { x: 0, y: 10 },
+  ]);
+  const have = new Set(fillInterior(outline).map((p) => `${p.x},${p.y}`));
+  assert.ok(have.has('2,5'), 'the spine of the C is inside');
+  assert.ok(!have.has('8,5'), 'the bay of the C is outside and must not fill');
+});
+
+test('an open path fills nothing rather than leaking across the sheet', () => {
+  // Three sides of a square: flooding from outside reaches everywhere, so the
+  // interior is empty. Leaking would be far worse than filling nothing.
+  const open = [
+    ...rayQuads(0, 0, 10, 0),
+    ...rayQuads(10, 0, 10, 6),
+    ...rayQuads(10, 6, 0, 6),
+  ];
+  const filled = fillInterior(open);
+  const outlineKeys = new Set(open.map((p) => `${p.x},${p.y}`));
+  assert.ok(
+    filled.every((p) => outlineKeys.has(`${p.x},${p.y}`)),
+    'an unclosed outline must not invent an interior',
+  );
 });

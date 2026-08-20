@@ -88,7 +88,7 @@ export function renderSvg(doc, { pages = null, findings = null, showGrid = true,
 
   const parts = [];
   parts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" font-family="${escapeAttr(doc.font.family)}">`);
-  parts.push(style());
+  parts.push(style(doc.background ?? null, gradients(doc)));
   parts.push(`<rect class="bg" x="0" y="0" width="${width}" height="${height}"/>`);
   if (showGrid) parts.push(gridPattern(b, ox, oy));
   parts.push(`<g transform="translate(${ox},${oy})">`);
@@ -116,9 +116,51 @@ export function renderSvg(doc, { pages = null, findings = null, showGrid = true,
 
 // ---------------------------------------------------------------------------
 
-function style() {
+/**
+ * One `<linearGradient>` per box that asked for one, keyed by element id.
+ *
+ * Emitted as defs rather than inline because SVG has nowhere else to put a
+ * gradient, and keyed by id so a box and its fill can never drift apart.
+ */
+/**
+ * A flat hex paints directly; a gradient points at the def built for this box.
+ *
+ * Emitted as an INLINE STYLE, not a `fill` attribute. The stylesheet carries
+ * `.box { fill: ... }`, and a CSS rule beats a presentation attribute — a
+ * gradient set as an attribute renders as the flat default and looks like the
+ * feature is broken.
+ */
+function fillAttr(el) {
+  if (!el.fill) return '';
+  const paint = typeof el.fill === 'string' ? el.fill : `url(#tp-grad-${el.id})`;
+  return ` style="fill:${escapeAttr(paint)}"`;
+}
+
+function gradients(doc) {
+  const out = [];
+  for (const page of doc.pages) {
+    for (const el of elementsOf(doc, page.id)) {
+      const f = el.fill;
+      if (!f || typeof f !== 'object') continue;
+      const a = ((f.angle ?? 0) * Math.PI) / 180;
+      const x2 = (Math.cos(a) * 0.5 + 0.5).toFixed(4);
+      const y2 = (Math.sin(a) * 0.5 + 0.5).toFixed(4);
+      const x1 = (0.5 - Math.cos(a) * 0.5).toFixed(4);
+      const y1 = (0.5 - Math.sin(a) * 0.5).toFixed(4);
+      out.push(
+        `  <linearGradient id="tp-grad-${escapeAttr(el.id)}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}">`
+        + `<stop offset="0" stop-color="${escapeAttr(f.from)}"/>`
+        + `<stop offset="1" stop-color="${escapeAttr(f.to)}"/>`
+        + '</linearGradient>',
+      );
+    }
+  }
+  return out.join('\n');
+}
+
+function style(background = null, gradientDefs = '') {
   return `<style>
-  .bg { fill: ${PALETTE.paper}; }
+  .bg { fill: ${background ?? PALETTE.paper}; }
   .grid { stroke: ${PALETTE.grid}; stroke-width: 0.5; }
   .grid-major { stroke: ${PALETTE.gridMajor}; stroke-width: 0.5; }
   .box { fill: ${PALETTE.paperAlt}; stroke: ${PALETTE.ink}; stroke-width: 1; }
@@ -134,7 +176,7 @@ function style() {
   .dither-run { fill: ${PALETTE.ink}; }
   .simplify-run { fill: ${PALETTE.ink}; }
   @media (prefers-color-scheme: dark) {
-    .bg { fill: ${PALETTE_DARK.paper}; }
+    .bg { fill: ${background ?? PALETTE_DARK.paper}; }
     .grid { stroke: ${PALETTE_DARK.grid}; }
     .grid-major { stroke: ${PALETTE_DARK.gridMajor}; }
     .box { fill: ${PALETTE_DARK.paperAlt}; stroke: ${PALETTE_DARK.ink}; }
@@ -145,6 +187,7 @@ function style() {
   }
 </style>
 <defs>
+${gradientDefs}
   <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
        5px quadrant so a dimmed element is made of the same units as every
        other mark on the page. -->
@@ -280,7 +323,7 @@ function box(el, doc) {
   // Element opacity multiplies with its page's; geometry is untouched either way.
   const shape = el.shape ?? 'process';
   const d = shapeOutline(el.rect, shape) ?? boxOutline(el.rect, el.corner);
-  const out = [`<path class="box${el.state === 'dimmed' ? ' dimmed' : ''}" d="${d}" data-id="${escapeAttr(el.id)}"${el.opacity != null ? ` opacity="${el.opacity}"` : ''}${el.fill ? ` style="fill:${escapeAttr(el.fill)}"` : ''}/>`];
+  const out = [`<path class="box${el.state === 'dimmed' ? ' dimmed' : ''}" d="${d}" data-id="${escapeAttr(el.id)}"${el.opacity != null ? ` opacity="${el.opacity}"` : ''}${fillAttr(el)}/>`];
   if (isContainer(shape)) {
     // A rule under the title band, so the band reads as a heading rather than
     // as empty space at the top of a big rectangle.
@@ -391,18 +434,22 @@ function styledPath(el) {
 
 /** Colour exact claimed quadrants, merging adjacent cells into compact runs. */
 function paintedCells(el) {
+  // Runs break on a colour change as well as on a gap. A run-length encoder
+  // that only watched position would paint a whole gradient in whichever
+  // colour happened to start the row.
   const rows = new Map();
   for (const piece of el.pieces) {
-    if (!rows.has(piece.y)) rows.set(piece.y, new Set());
-    rows.get(piece.y).add(piece.x);
+    if (!rows.has(piece.y)) rows.set(piece.y, new Map());
+    rows.get(piece.y).set(piece.x, piece.color ?? el.stroke.color);
   }
   const rects = [];
   for (const y of [...rows.keys()].sort((a, b) => a - b)) {
-    const xs = [...rows.get(y)].sort((a, b) => a - b);
+    const row = rows.get(y);
+    const xs = [...row.keys()].sort((a, b) => a - b);
     let start = xs[0], previous = xs[0];
-    const emit = () => rects.push(`<rect x="${start * PX_PER_QUAD}" y="${y * PX_PER_QUAD}" width="${(previous - start + 1) * PX_PER_QUAD}" height="${PX_PER_QUAD}" fill="${escapeAttr(el.stroke.color)}"/>`);
+    const emit = () => rects.push(`<rect x="${start * PX_PER_QUAD}" y="${y * PX_PER_QUAD}" width="${(previous - start + 1) * PX_PER_QUAD}" height="${PX_PER_QUAD}" fill="${escapeAttr(row.get(start))}"/>`);
     for (let i = 1; i < xs.length; i += 1) {
-      if (xs[i] !== previous + 1) { emit(); start = xs[i]; }
+      if (xs[i] !== previous + 1 || row.get(xs[i]) !== row.get(previous)) { emit(); start = xs[i]; }
       previous = xs[i];
     }
     emit();
