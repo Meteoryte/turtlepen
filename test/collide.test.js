@@ -327,8 +327,10 @@ test('two things at different depths sharing a page cannot occlude each other', 
   assert.deepEqual(hit[0].actors.sort(), ['cable', 'monitor']);
   assert.match(hit[0].message, /page/i);
 
-  const fix = hit[0].fixes.find((f) => f.kind === 'move');
-  assert.ok(fix, `expected a move fix, got ${hit[0].fixes.map((f) => f.kind).join(', ')}`);
+  // `layer`, not `move`: a move is a distance in cells, and changing which
+  // page a thing sits on is a different action with a different vocabulary.
+  const fix = hit[0].fixes.find((f) => f.kind === 'layer');
+  assert.ok(fix, `expected a layer fix, got ${hit[0].fixes.map((f) => f.kind).join(', ')}`);
   assert.equal(fix.params.id, 'cable', 'the NEARER thing is the one that moves up');
   assert.ok(fix.params.toPage, 'and the fix names a destination page');
 });

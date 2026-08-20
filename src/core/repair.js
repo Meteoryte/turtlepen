@@ -52,6 +52,14 @@ const EXECUTABLE = Object.freeze({
     },
     needs: 'a distance (`params.dCellsX` or `params.dCellsY`)',
   },
+  layer: {
+    op: 'move',
+    build: (fix) => {
+      const p = fix.params ?? {};
+      return p.id == null || p.toPage == null ? null : { id: p.id, toPage: p.toPage };
+    },
+    needs: 'an element and a destination page (`params.id`, `params.toPage`)',
+  },
   canvas: {
     op: 'set_canvas',
     build: (fix) => {
@@ -88,6 +96,7 @@ const ADVISORY = Object.freeze({
   extend: 'how far to extend, and to what, is a design decision — use `extend_path`',
   rename: 'the new name is yours to choose — use `rename`',
   shorten: 'which words to cut is yours to choose — use `restyle` with a shorter label',
+  reposition: 'which element to move, and how far, is a layout decision — use `move` with a distance or an address',
 });
 
 /**

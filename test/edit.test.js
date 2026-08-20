@@ -33,6 +33,7 @@ test('every fix kind the engine emits is covered by an operation', () => {
     move: 'move', rename: 'rename', intent: 'update_page', canvas: 'set_canvas',
     extend: 'extend_path', reroute: 'replace_path', offset: 'replace_path', hop: 'replace_path',
     remove: 'remove', remove_page: 'remove_page', shape: 'restyle',
+    layer: 'move', reposition: 'move',
   };
   for (const kind of kinds) {
     assert.ok(routes[kind], `fix kind "${kind}" has no documented repair route`);
@@ -521,4 +522,49 @@ test('the move operation carries the page change, so plan and tools share it', (
 
   core.OPERATIONS.move(d, { id: 'plug', toPage: 'front' });
   assert.equal(core.findElement(d, 'plug').page, 'front');
+});
+
+// ---------------------------------------------------------------------------
+// A fix must name changes its tool will actually accept.
+//
+// `llm.md` requires every emitted `fix.kind` to have a tool that applies it,
+// and the test above checks the ROUTE exists. It does not check the PARAMS,
+// so `L024` shipped a `shape` fix routed to `restyle` while `restyle` declared
+// `additionalProperties: false` and no `shape` — a diagnosis the AI can read
+// and cannot act on, which is the exact dead end the invariant exists to
+// prevent.
+// ---------------------------------------------------------------------------
+
+test('every fix the engine emits is either executable or declared advisory', () => {
+  // `repairPlan` is the contract: it turns a fix into the exact call that
+  // performs it, and refuses BY NAME anything it cannot build. A fix that is
+  // neither executable nor deliberately advisory is a diagnosis the AI can read
+  // and cannot act on — the dead end the closed-set invariant exists to prevent.
+  //
+  // Both rules added later failed this. L024 offered `shape` and `heighten`
+  // carrying `params`, while the repair table builds those from `to`; L025
+  // offered a `move` carrying `toPage`, which the move builder does not read.
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 }, label: 'Ingest & Normalize Payload' });
+  core.placeBox(d, 'base', { id: 'b', at: 'E4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'c', at: 'M4.tl', span: { w: 4, h: 2 }, fontSize: 6 });
+  core.placeBox(d, 'base', { id: 'flat', at: 'C20.tl', span: { w: 20, h: 2 }, shape: 'data', label: 'db' });
+  core.placeBox(d, 'base', { id: 'near', at: 'C30.tl', span: { w: 8, h: 4 } });
+  core.placeBox(d, 'base', { id: 'far', at: 'E30.tl', span: { w: 8, h: 4 } });
+  core.findElement(d, 'near').element.depth = 20;
+  core.findElement(d, 'far').element.depth = 90;
+  core.applyPen(d, 'base', 'pen C40.q1' + String.fromCharCode(10) + 'right 3 align top line', { id: 'wire' });
+
+  const BROKEN = /does not carry|no operation that performs it/;
+  const kinds = new Set();
+  for (const f of core.validate(d).open) {
+    for (const entry of core.repairPlan(d, f.fingerprint).fixes) {
+      kinds.add(entry.kind);
+      assert.ok(
+        entry.executable || !BROKEN.test(entry.why ?? ''),
+        `${f.rule} fix "${entry.kind}" cannot be acted on: ${entry.why}`,
+      );
+    }
+  }
+  assert.ok(kinds.size >= 6, `expected a broad set of fix kinds, got ${[...kinds].join(', ')}`);
 });

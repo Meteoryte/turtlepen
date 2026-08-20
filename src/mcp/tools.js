@@ -683,12 +683,15 @@ ${stalled}` : core.formatLog(result);
     {
       name: 'restyle',
       description:
-        'Change a box\'s label, corner style, text alignment, font size, or fill. This is the tool behind the "shorten" and "font" fixes; it re-measures the label.',
+        'Change a box\'s label, node shape, corner style, text alignment, font size, or fill. This is the tool behind the "shorten", "font" and "shape" fixes; it re-measures the label.',
       inputSchema: {
         type: 'object',
         properties: {
           id: { type: 'string' },
           label: { type: 'string' },
+          // `restyleBox` has always accepted a shape; the schema did not expose
+          // it, so the "shape" fix named a change this tool refused.
+          shape: { type: 'string', description: 'node shape — the symbol drawn inside the box' },
           corner: { type: 'string', enum: ['square', 'rounded', 'indented', 'chamfered'] },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
           fontSize: { type: 'integer' },

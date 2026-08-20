@@ -346,7 +346,9 @@ function withinPage(doc, p) {
           metrics: { near: near.id, far: far.id, gapIn: gap },
           fixes: [
             {
-              kind: 'move',
+              // Not `move`: that kind means a distance in cells, and the repair
+              // table builds it from one. Changing layer is its own action.
+              kind: 'layer',
               description: above
                 ? `move "${near.id}" onto the existing page "${toPage}", which already sits in front`
                 : `add an overlay page "${toPage}" above "${p.id}", then move "${near.id}" onto it`,
@@ -376,15 +378,18 @@ function withinPage(doc, p) {
         cells: [quadToCell(b.rect.x, b.rect.y)],
         metrics: { shape: b.shape, aspect, maxAspect: spec.maxAspect, ideal: spec.ideal },
         fixes: [
+          // `to` is the vocabulary the repair table builds from. Carrying the
+          // change in `params` instead made both of these unexecutable: the
+          // AI could read the advice and had no call to perform it.
           {
             kind: 'heighten',
+            to: Math.ceil(wantH / 2),
             description: `grow "${b.id}" to ${b.rect.w / 2}x${Math.ceil(wantH / 2)} cells`,
-            params: { id: b.id, span: { w: b.rect.w / 2, h: Math.ceil(wantH / 2) } },
           },
           {
             kind: 'shape',
+            to: 'process',
             description: `or restyle "${b.id}" to a process box if the symbol is not carrying meaning`,
-            params: { id: b.id, shape: 'process' },
           },
         ],
       }),
@@ -400,7 +405,7 @@ function withinPage(doc, p) {
           actors: [b.id],
           cells: [quadToCell(b.rect.x, b.rect.y)],
           metrics: { fontSize: b.fontSize, floor: MIN_LEGIBLE_FONT_PX },
-          fixes: [{ kind: 'font', description: `raise to ${MIN_LEGIBLE_FONT_PX}px and re-measure`, params: { id: b.id, fontSize: MIN_LEGIBLE_FONT_PX } }],
+          fixes: [{ kind: 'font', to: MIN_LEGIBLE_FONT_PX, description: `raise to ${MIN_LEGIBLE_FONT_PX}px and re-measure`, params: { id: b.id, fontSize: MIN_LEGIBLE_FONT_PX } }],
         }),
       );
     }
@@ -565,7 +570,10 @@ function withinPage(doc, p) {
         metrics: { looseEnds: loose.map((l) => l.which) },
         fixes: [
           { kind: 'extend', description: 'extend the path to a box port, e.g. "… line to <id>.W"', params: { id: path.id } },
-          { kind: 'move', description: 'or move the box it should meet so the path reaches it' },
+          // Advice, not an action: which box to move, and how far, is the
+          // author's decision. Calling it `move` made it look executable and
+          // then refused for want of a distance it was never going to have.
+          { kind: 'reposition', description: 'or move the box it should meet so the path reaches it' },
         ],
       }),
     );
