@@ -48,10 +48,16 @@ const cornerFor = (a, b) => CORNER_ALIGN[`${a}>${b}`] ?? 'right left';
 const AXIS = Object.freeze({ up: 'y', down: 'y', left: 'x', right: 'x' });
 
 /** Every quadrant already spoken for, minus the two elements being joined. */
-function blockedQuads(doc, pageId, exclude) {
+function blockedQuads(doc, pageId, exclude, avoid = 'all') {
   const taken = new Map();
   for (const el of elementsOf(doc, pageId)) {
     if (exclude.has(el.id)) continue;
+    // Running into a BOX is a failure — the connector would disappear behind
+    // something solid. Running into another CONNECTOR is a crossing, which
+    // flowcharts have always had and which `hop` exists to mark. Treating the
+    // two the same way made a router that refused to draw any diagram where two
+    // lines needed to meet, which is most of them.
+    if (avoid === 'boxes' && el.kind === 'path') continue;
     for (const k of elementClaimed(el)) taken.set(k, el.id);
   }
   return taken;
@@ -85,7 +91,7 @@ function firstBlocker(points, taken) {
  * the check and the emitted command can never disagree — they are built from
  * the same numbers.
  */
-function candidates(a, b, fromId, fromPort, toId, toPort) {
+function candidates(a, b, fromId, fromPort, toId, toPort, track = null) {
   const out = [];
 
   // Intermediate legs are addressed, never counted.
@@ -143,7 +149,12 @@ function candidates(a, b, fromId, fromPort, toId, toPort) {
     const inDir = OPPOSITE[b.facing];
     if (AXIS[outDir] === AXIS[inDir]) {
       const vertical = AXIS[outDir] === 'y';
-      const mid = vertical ? Math.round((a.y + b.y) / 4) * 2 : Math.round((a.x + b.x) / 4) * 2;
+      // The crossing track. Left to itself this is the midpoint, which is
+      // correct for one connector and wrong for the second: every edge running
+      // between the same pair of ranks lands on the same line and they overlap
+      // for their whole horizontal run. A caller that knows the whole graph
+      // knows how to space them, so it may name the track instead.
+      const mid = track ?? (vertical ? Math.round((a.y + b.y) / 4) * 2 : Math.round((a.x + b.x) / 4) * 2);
       const run1 = vertical ? Math.abs(mid - a.y) : Math.abs(mid - a.x);
       const run3 = vertical ? Math.abs(b.y - mid) : Math.abs(b.x - mid);
       const across = vertical ? Math.abs(b.x - a.x) : Math.abs(b.y - a.y);
@@ -154,15 +165,22 @@ function candidates(a, b, fromId, fromPort, toId, toPort) {
         const corner1 = p1[p1.length - 1] ?? a;
         const p2 = leg(corner1, d2, across);
         const corner2 = p2[p2.length - 1] ?? corner1;
-        const p3 = leg(corner2, d1, run3);
+        // The last leg travels toward the target, which is not always the way
+        // the first one went. For an ordinary S-to-N connector out and in are
+        // both "down" and reusing `d1` happens to be right; for a loop back up
+        // the page — out of one right face and into another — they are
+        // opposite, and reusing `d1` emitted a leg running away from the target.
+        const d3 = vertical ? (b.y > mid ? 'down' : 'up') : (b.x > mid ? 'right' : 'left');
+        if (d3 !== inDir) return out;
+        const p3 = leg(corner2, d3, run3);
         out.push({
           turns: 2,
           quads: [...p1, ...p2, ...p3],
           program: `pen from ${fromId}.${fromPort}\n${d1} line to ${quadToAddress(corner1.x, corner1.y)}\n`
             + `${d2} corner align ${cornerFor(d1, d2)}\n`
             + `${d2} line to ${quadToAddress(corner2.x, corner2.y)}\n`
-            + `${d1} corner align ${cornerFor(d2, d1)}\n`
-            + `${d1} line to ${toId}.${toPort} arrow`,
+            + `${d3} corner align ${cornerFor(d2, d3)}\n`
+            + `${d3} line to ${toId}.${toPort} arrow`,
         });
       }
     }
@@ -178,14 +196,21 @@ function candidates(a, b, fromId, fromPort, toId, toPort) {
  * document — running the program is the caller's decision, and the collision
  * log still has the last word on whatever they run.
  */
-export function routeProgram(doc, pageId, from, to) {
+export function routeProgram(doc, pageId, from, to, { track = null, avoid = 'all' } = {}) {
   const [fromId, fromPortRaw] = String(from).split('.');
   const [toId, toPortRaw] = String(to).split('.');
   if (!fromPortRaw || !toPortRaw) {
     throw new SyntaxError('route needs faces on both ends, e.g. from "a.S" to "b.N"');
   }
-  const fromPort = parsePortSpec(fromPortRaw).name;
-  const toPort = parsePortSpec(toPortRaw).name;
+  // Validate, but keep the WHOLE spec. This used to take `.name` and drop the
+  // slot, so `a.S#2` was accepted, silently routed from the middle of the face,
+  // and emitted as `pen from a.S` — three connectors leaving one box all began
+  // on the same quadrant and blocked each other. `approachPoint` has understood
+  // slots all along; only this line did not pass them on.
+  parsePortSpec(fromPortRaw);
+  parsePortSpec(toPortRaw);
+  const fromPort = fromPortRaw;
+  const toPort = toPortRaw;
 
   const a = findElement(doc, fromId);
   const b = findElement(doc, toId);
@@ -194,10 +219,10 @@ export function routeProgram(doc, pageId, from, to) {
 
   const seatA = approachPoint(a.element.rect, fromPort, a.element.shape, a.element.corner);
   const seatB = approachPoint(b.element.rect, toPort, b.element.shape, b.element.corner);
-  const taken = blockedQuads(doc, pageId, new Set([fromId, toId]));
+  const taken = blockedQuads(doc, pageId, new Set([fromId, toId]), avoid);
 
   const tried = [];
-  for (const c of candidates(seatA, seatB, fromId, fromPort, toId, toPort)
+  for (const c of candidates(seatA, seatB, fromId, fromPort, toId, toPort, track)
     .sort((x, y) => x.turns - y.turns)) {
     const blocker = firstBlocker(c.quads, taken);
     tried.push({ turns: c.turns, clear: !blocker, blockedBy: blocker ?? null });

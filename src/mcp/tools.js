@@ -850,6 +850,69 @@ ${stalled}` : core.formatLog(result);
     },
 
     {
+      name: 'layout',
+      description:
+        'Arrange the connected boxes on a page and redraw their connectors. align and distribute tidy an '
+        + 'arrangement you already chose; this chooses one — it ranks the graph so flow runs down the page, '
+        + 'gives every long edge a lane of its own, reorders each rank to remove crossings, and centres each '
+        + 'node over its neighbours. The graph comes from what your pen programs already recorded ("from a.S" '
+        + 'is an origin, "line to b.N" is a target), never from which boxes happen to sit near each other, so '
+        + 'draw the connections before calling this. Reports what moved, how many crossings went away, any '
+        + 'cycle it had to reverse to rank the graph, and any connector it could NOT redraw cleanly.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          page: { type: 'string', description: 'defaults to base' },
+          ids: {
+            type: 'array',
+            items: { type: 'string' },
+            minItems: 2,
+            description: 'box ids to arrange; omit to take every box on the page',
+          },
+          gapX: { type: 'integer', minimum: 0, description: 'quadrants between neighbours on a rank (default 8)' },
+          gapY: { type: 'integer', minimum: 0, description: 'quadrants between ranks (default 10)' },
+          reroute: { type: 'boolean', description: 'redraw the connectors after moving (default true)' },
+        },
+        additionalProperties: false,
+      },
+      handler: async ({ page = 'base', ids = null, gapX, gapY, reroute = true }) => {
+        const doc = need(session);
+        const r = core.OPERATIONS.layout(doc, {
+          page, ids, reroute, ...(gapX === undefined ? {} : { gapX }), ...(gapY === undefined ? {} : { gapY }),
+        });
+        await persist(session);
+
+        const lines = [
+          `laid out ${r.boxes} box(es) over ${r.ranks} rank(s) on "${r.page}" — ${r.moved} moved`,
+          r.crossingsBefore === r.crossings
+            ? `${r.crossings} edge crossing(s), unchanged`
+            : `edge crossings ${r.crossingsBefore} -> ${r.crossings}`,
+        ];
+        if (r.routed.length) lines.push(`redrew ${r.routed.length} connector(s)`);
+        for (const c of r.crowded) {
+          lines.push(
+            `"${c.id}" has ${c.edges} connector(s) meeting its ${c.face} face but only ${c.capacity} slot(s) `
+            + `to seat them on — widen it to about ${c.edges * 2} cells, or some of those lines share a track.`,
+          );
+        }
+        for (const rev of r.reversed) {
+          lines.push(
+            `reversed "${rev.id}" (${rev.from} -> ${rev.to}) to break a cycle — the arrangement now reads `
+            + 'as if that edge ran the other way. Check it says what you meant.',
+          );
+        }
+        for (const s of r.stranded) {
+          lines.push(
+            `could NOT redraw "${s.id}": ${s.blockedBy ? `blocked by ${s.blockedBy.by} at ${s.blockedBy.at}` : s.note ?? 'no clear route'}. `
+            + 'It still holds its old shape, which no longer matches where the boxes are.',
+          );
+        }
+        lines.push('Now render and look at it — a good arrangement is not the same as a finished drawing.');
+        return lines.join('\n');
+      },
+    },
+
+    {
       name: 'set_background',
       description:
         'Set the paper colour for the whole drawing, or pass no colour to go back to the palette. '

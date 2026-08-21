@@ -30,6 +30,8 @@ import { renderAscii } from './ascii.js';
 import { renderSvg } from './svg.js';
 import * as perceptual from './perceptual.js';
 import { mermaidToOperations, parseMermaid } from './mermaid.js';
+import { layoutGraph } from './layout.js';
+import { routeProgram as routeProgram_ } from './route.js';
 export { mermaidToOperations, parseMermaid } from './mermaid.js';
 
 // Perceptual review is a sibling of validate, not a part of it: same document,
@@ -640,6 +642,7 @@ export const OPERATIONS = Object.freeze({
   set_background: (doc, a) => setBackground(doc, a.color ?? null),
   align: (doc, a) => alignElements(doc, a.ids, a.edge),
   distribute: (doc, a) => distributeElements(doc, a.ids, a.axis),
+  layout: (doc, a) => layoutElements(doc, a),
   wireframe: (doc, a) => applyWireframe(doc, a),
   perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
   // A review is document state, so it goes through OPERATIONS like every other
@@ -1116,4 +1119,287 @@ export function distributeElements(doc, ids, axis) {
     cursor += size(f.rect);
   }
   return found.length;
+}
+
+/** Default separation between laid-out nodes, in quadrants — four cells across, five down. */
+export const LAYOUT_DEFAULTS = Object.freeze({ gapX: 8, gapY: 10 });
+
+/**
+ * Lay out the connected boxes on a page, then redraw their connectors.
+ *
+ * `align` and `distribute` tidy an arrangement the author already chose. This
+ * CHOOSES one: it ranks the graph, gives every long edge a lane of its own,
+ * reduces crossings, and centres each node over its neighbours. That is the
+ * arithmetic every diagram in this repo used to write by hand as a gap
+ * constant and a running row counter, and writing it by hand is most of why a
+ * generated diagram looks generated.
+ *
+ * THE GRAPH IS AUTHORED FACT, NEVER INFERRED. Edges come from what the pen
+ * programs already recorded — `pen from a.S` states an origin and `line to b.N`
+ * states a target. Nothing here decides that two boxes are related because
+ * they happen to sit near each other.
+ *
+ * NOTHING HAPPENS SILENTLY. The caller asks for this by name, the same way
+ * they would ask for `align`; the return says how many boxes moved, how many
+ * crossings went away, which cycles had to be broken to rank the graph, and —
+ * importantly — which connectors could NOT be redrawn cleanly. A route that
+ * cannot be made is reported, not faked.
+ */
+export function layoutElements(doc, {
+  page = 'base',
+  ids = null,
+  gapX = LAYOUT_DEFAULTS.gapX,
+  gapY = LAYOUT_DEFAULTS.gapY,
+  reroute = true,
+} = {}) {
+  getPage(doc, page);
+  if (!Number.isInteger(gapX) || !Number.isInteger(gapY) || gapX < 0 || gapY < 0) {
+    throw new SyntaxError('layout gaps are whole quadrants and cannot be negative');
+  }
+
+  const els = doc.elements[page] ?? [];
+  const wanted = ids ? new Set(ids) : null;
+  if (wanted) {
+    for (const id of wanted) {
+      const hit = findElement(doc, id, page);
+      if (!hit) throw new Error(`no element "${id}" on page "${page}" to lay out`);
+      if (hit.element.kind !== 'box') throw new Error(`"${id}" is a ${hit.element.kind} — layout arranges boxes, and moves the connectors between them`);
+    }
+  }
+  const boxes = els.filter((e) => e.kind === 'box' && (!wanted || wanted.has(e.id)));
+  if (boxes.length < 2) {
+    throw new Error('layout needs at least two boxes — with one there is no arrangement to choose');
+  }
+
+  const inSet = new Set(boxes.map((b) => b.id));
+  const connectors = els.filter((e) => e.kind === 'path'
+    && e.source && inSet.has(e.source.id)
+    && (e.targets ?? []).some((t) => inSet.has(t.id) && t.id !== e.source.id));
+
+  const edges = [];
+  for (const p of connectors) {
+    const t = [...p.targets].reverse().find((x) => inSet.has(x.id) && x.id !== p.source.id);
+    edges.push({ from: p.source.id, to: t.id, via: p.id, fromPort: p.source.port, toPort: t.port });
+  }
+  if (!edges.length) {
+    throw new Error(
+      'layout found no connectors joining these boxes, so there is no graph to rank. '
+      + 'Draw the connections first — a pen program that says "from a.S" and "line to b.N" '
+      + 'records the edge — or use align and distribute, which arrange boxes that are not joined.',
+    );
+  }
+
+  // Anchor the result where the drawing already is, rather than teleporting it
+  // to the origin and leaving whatever else is on the page behind.
+  const before = geometry.boundsOf(boxes.map((b) => b.rect));
+  const result = layoutGraph({
+    nodes: boxes.map((b) => ({ id: b.id, cellsW: b.rect.w, cellsH: b.rect.h })),
+    edges: edges.map((e) => ({ from: e.from, to: e.to })),
+    gapX,
+    gapY,
+    originCol: before.x,
+    originRow: before.y,
+  });
+
+  const moved = [];
+  for (const b of boxes) {
+    const want = result.positions.get(b.id);
+    const dx = want.col - b.rect.x;
+    const dy = want.row - b.rect.y;
+    if (dx || dy) { moveElement(doc, b.id, dx, dy); moved.push({ id: b.id, dx, dy }); }
+  }
+
+  const routed = [];
+  const stranded = [];
+  const crowded = [];
+  if (reroute) {
+    // EVERY connector comes off the page first.
+    //
+    // Routing them one at a time in place does not work, and fails in a way
+    // that looks like success: the router treats existing ink as an obstacle,
+    // so each connector is routed around the STALE shapes of the ones not
+    // redrawn yet. The first drawing of this made a well-arranged diagram with
+    // twice as many errors as the hand-laid spine it replaced. Moving the boxes
+    // invalidates all of the connectors at once, so all of them have to be
+    // taken down at once.
+    const list = doc.elements[page];
+    const original = new Map();
+    for (const e of edges) {
+      const el = list.find((x) => x.id === e.via);
+      if (el) original.set(e.via, { element: structuredClone(el), index: list.indexOf(el) });
+    }
+    for (const e of edges) if (original.has(e.via)) removeElement(doc, e.via, page);
+
+    // Fan-out gets its own slot on the face.
+    //
+    // Three edges leaving one box all seated on the middle of `.S` start on the
+    // same quadrant and block each other immediately, which no amount of
+    // rearranging fixes — it is a port problem, not a layout problem. Cardinal
+    // faces have had indexed slots all along (`a.S#2`), so the edges are spread
+    // across them in the order their far ends actually landed: left-most target
+    // takes the left-most slot, and the connectors stop crossing on the way out
+    // of the box.
+    const widthOf = (id) => boxes.find((b) => b.id === id).rect.w;
+    const centreOf = (id) => result.positions.get(id).col + widthOf(id) / 2;
+    const rankAt = (id) => result.positions.get(id).rank;
+
+    // The faces come from the NEW arrangement, not the old one. `.E` and `.W`
+    // were the right choice when two boxes sat side by side; after ranking they
+    // sit above and below, and honouring the old face asks the router for a
+    // connector that leaves leftward toward something on the right. Flow runs
+    // down the page, so a forward edge leaves the bottom and arrives at the top.
+    const facesFor = (e) => {
+      const a = rankAt(e.from);
+      const b = rankAt(e.to);
+      if (b > a) return ['S', 'N'];
+      if (b < a) return ['N', 'S'];
+      return centreOf(e.to) > centreOf(e.from) ? ['E', 'W'] : ['W', 'E'];
+    };
+
+    // Slot 1 is the middle of the face and the rest alternate outward, so the
+    // left-to-right reading order is not 1,2,3.
+    const offsetOfSlot = (s) => (s === 1 ? 0 : (s % 2 === 0 ? -1 : 1) * Math.ceil((s - 1) / 2) * 2);
+    const slotsLeftToRight = (k) => Array.from({ length: k }, (_, i) => i + 1)
+      .sort((a, b) => offsetOfSlot(a) - offsetOfSlot(b));
+
+    const portOf = new Map(); // `${via}|from` or `${via}|to` -> the spec to route with
+
+    for (const end of ['from', 'to']) {
+      const groups = new Map();
+      for (const e of edges) {
+        const face = facesFor(e)[end === 'from' ? 0 : 1];
+        // Only N and S fan out. Their slots run along the width, which is the
+        // axis the far ends are sorted on; an E or W face slots along the
+        // height, where that ordering means nothing.
+        if (face !== 'N' && face !== 'S') continue;
+        const key = `${e[end]}|${face}`;
+        if (!groups.has(key)) groups.set(key, { node: e[end], face, members: [] });
+        groups.get(key).members.push(e);
+      }
+      for (const { node, face, members } of groups.values()) {
+        if (members.length < 2) continue;
+        const far = end === 'from' ? 'to' : 'from';
+        members.sort((a, b) => centreOf(a[far]) - centreOf(b[far]) || a.via.localeCompare(b.via));
+        const rect = boxes.find((b) => b.id === node).rect;
+        const capacity = shapes.portSlotCapacity(rect, face);
+        if (members.length > capacity) {
+          // Said out loud rather than silently overlapping two connectors: the
+          // box is too narrow for the number of lines meeting this face, and
+          // the fix is to widen it, which is the author's call.
+          crowded.push({ id: node, face, edges: members.length, capacity });
+        }
+        const slots = slotsLeftToRight(Math.min(members.length, capacity));
+        members.forEach((e, i) => {
+          const slot = slots[i] ?? 1;
+          portOf.set(`${e.via}|${end}`, slot === 1 ? face : `${face}#${slot}`);
+        });
+      }
+    }
+    const specFor = (e, end) => portOf.get(`${e.via}|${end}`) ?? facesFor(e)[end === 'from' ? 0 : 1];
+
+    // Short edges first. A connector between adjacent ranks has exactly one
+    // sensible path and should get it; a long one has choices and can bend.
+    const rankOf = (id) => result.positions.get(id).rank;
+    const byReach = [...edges].sort((a, b) => {
+      const span = Math.abs(rankOf(a.to) - rankOf(a.from)) - Math.abs(rankOf(b.to) - rankOf(b.from));
+      return span || a.via.localeCompare(b.via);
+    });
+
+    // Every connector between the same two ranks gets its own crossing track
+    // inside the channel the layout already reserved between them. Without
+    // this they all take the midpoint and overlap along their whole horizontal
+    // run, which reads as one thick line going nowhere.
+    // Clear of everything on the page, so a loop-back never runs over a box.
+    const margin = Math.max(...boxes.map((b) => b.rect.x + b.rect.w)) + 4;
+
+    const channels = new Map();
+    for (const e of byReach) {
+      const key = `${rankOf(e.from)}->${rankOf(e.to)}`;
+      if (!channels.has(key)) channels.set(key, []);
+      channels.get(key).push(e.via);
+    }
+    const trackFor = (e) => {
+      const rFrom = rankOf(e.from);
+      const rTo = rankOf(e.to);
+      if (rTo !== rFrom + 1) return null;          // only an adjacent-rank channel is reserved
+      const top = result.rankRows[rFrom] + result.rankHeights[rFrom];
+      const peers = channels.get(`${rFrom}->${rTo}`);
+      const slot = peers.indexOf(e.via);
+      const track = top + 2 * (slot + 1);
+      // Stay inside the channel; past its far edge the track would run through
+      // the rank below.
+      return track < result.rankRows[rTo] ? track : null;
+    };
+
+    for (const e of byReach) {
+      const was = original.get(e.via);
+      if (!was) continue;
+      const from = `${e.from}.${specFor(e, 'from')}`;
+      const to = `${e.to}.${specFor(e, 'to')}`;
+      // Crossing another connector is a crossing, not a failure — flowcharts
+      // have always had them and `hop` exists to mark one. Crossing a BOX is a
+      // failure, and that is still refused.
+      let attempt = routeProgram_(doc, page, from, to, { track: trackFor(e), avoid: 'boxes' });
+      if (!attempt.program) attempt = routeProgram_(doc, page, from, to, { avoid: 'boxes' });
+      // A loop back up the page. Every flowchart has one — a retry, a rollback,
+      // a "no" branch returning to an earlier step — and it cannot be drawn
+      // between the ranks, because everything between them is full. It goes
+      // round the outside instead: out of the right face, up the margin clear
+      // of every box, and back in the right face of its target. The existing
+      // two-turn route already draws exactly that shape once it is told which
+      // vertical track to use.
+      if (!attempt.program && rankAt(e.to) < rankAt(e.from)) {
+        attempt = routeProgram_(doc, page, `${e.from}.E`, `${e.to}.E`, { track: margin, avoid: 'boxes' });
+      }
+      if (!attempt.program) attempt = routeProgram_(doc, page, from, to);
+      if (attempt.program) {
+        applyPen(doc, page, attempt.program, {
+          id: e.via,
+          role: was.element.role ?? 'connector',
+          stroke: was.element.stroke,
+        });
+        routed.push({ id: e.via, turns: attempt.turns });
+      } else {
+        // Put back exactly what was there. A connector that cannot be redrawn
+        // is a fact about the arrangement; deleting the author's line to make
+        // the log quieter would be the worse of the two failures.
+        addPath(doc, page, {
+          id: e.via,
+          pieces: was.element.pieces,
+          stroke: was.element.stroke,
+          note: was.element.note ?? null,
+          role: was.element.role ?? 'connector',
+        });
+        stranded.push({ id: e.via, blockedBy: attempt.blockedBy, note: attempt.note });
+      }
+    }
+
+    // Restore draw order. Boxes never moved within the list, so putting each
+    // connector back at the index it held reproduces the original stacking.
+    const after = doc.elements[page];
+    const restored = after.filter((x) => !original.has(x.id));
+    for (const [id, was] of [...original.entries()].sort((a, b) => a[1].index - b[1].index)) {
+      const el = after.find((x) => x.id === id);
+      if (el) restored.splice(Math.min(was.index, restored.length), 0, el);
+    }
+    doc.elements[page] = restored;
+  }
+
+  return {
+    page,
+    boxes: boxes.length,
+    moved: moved.length,
+    movedDetail: moved,
+    edges: edges.length,
+    crossings: result.crossings,
+    crossingsBefore: result.crossingsBefore,
+    ranks: result.depth,
+    routed,
+    crowded,
+    stranded,
+    // A cycle had to be broken to rank the graph at all. Which edge was
+    // reversed changes what the picture claims, so it is named rather than
+    // absorbed.
+    reversed: result.reversed.map((i) => ({ id: edges[i].via, from: edges[i].from, to: edges[i].to })),
+  };
 }

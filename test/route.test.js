@@ -10,7 +10,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { routeProgram } from '../src/core/route.js';
-import { createDocument, placeBox, applyPen, validate } from '../src/core/index.js';
+import { createDocument, placeBox, applyPen, validate, findElement } from '../src/core/index.js';
 
 function board() {
   const doc = createDocument({ name: 'route', canvas: { cols: 90, rows: 50 } });
@@ -131,4 +131,69 @@ test('every route the engine proposes is a program the pen can actually run', ()
     }
   }
   assert.ok(proposed > 10, `expected the sweep to produce routes, got ${proposed}`);
+});
+
+// --- what layout needs from the router --------------------------------------
+
+test('the port slot survives routing instead of being thrown away', () => {
+  const doc = board();
+  const plain = routeProgram(doc, 'base', 'a.S', 'c.N');
+  const slotted = routeProgram(doc, 'base', 'a.S#2', 'c.N');
+  assert.match(slotted.program, /^pen from a\.S#2\b/, 'the emitted program must keep the slot');
+  assert.notEqual(
+    /line to ([A-Z]+\d+\.q\d)/.exec(plain.program)[1],
+    /line to ([A-Z]+\d+\.q\d)/.exec(slotted.program)[1],
+    'a different slot must leave the box at a different quadrant',
+  );
+});
+
+test('a named track puts the crossing leg exactly where the caller asked', () => {
+  const doc = board();
+  const low = routeProgram(doc, 'base', 'a.S', 'c.N', { track: 20 });
+  const high = routeProgram(doc, 'base', 'a.S', 'c.N', { track: 24 });
+  assert.equal(low.turns, 2);
+  assert.equal(high.turns, 2);
+  const rowOf = (program) => /line to [A-Z]+(\d+)\.q\d/.exec(program)[1];
+  assert.notEqual(rowOf(low.program), rowOf(high.program));
+  // Two connectors between the same pair of ranks must be able to run on
+  // different lines; sharing the midpoint is what made them overlap.
+  assert.notEqual(low.program, high.program);
+});
+
+test('avoid "boxes" treats a connector as a crossing and a box as a wall', () => {
+  const doc = board();
+  // Fill the direct channel between a and b with a connector.
+  applyPen(doc, 'base', 'pen from a.S\ndown line to b.N arrow', { id: 'blocker' });
+
+  const strict = routeProgram(doc, 'base', 'a.S#2', 'b.N#2');
+  const lenient = routeProgram(doc, 'base', 'a.S#2', 'b.N#2', { avoid: 'boxes' });
+  assert.equal(lenient.clear, true, 'crossing another line is a crossing, not a failure');
+  assert.ok(strict.tried.length > 0);
+
+  // A box is still a wall either way.
+  placeBox(doc, 'base', { id: 'wall', at: 'D10', span: '12x3', label: 'Wall' });
+  const blocked = routeProgram(doc, 'base', 'a.S', 'b.N', { avoid: 'boxes' });
+  assert.equal(blocked.clear, false, 'a box in the channel still refuses the route');
+  assert.equal(blocked.blockedBy.by, 'wall');
+});
+
+test('a loop back up the page arrives travelling toward its target', () => {
+  // Out of one right face, up the margin, back in the other right face. The
+  // two faces point the same way, so the leg that arrives runs OPPOSITE to the
+  // leg that left — the case where reusing the first direction emitted a
+  // program the pen refused.
+  // Its own board: a loop-back runs up the outside, so anything parked out
+  // there is testing clearance rather than direction.
+  const doc = createDocument({ name: 'loop', canvas: { cols: 90, rows: 50 } });
+  placeBox(doc, 'base', { id: 'a', at: 'D4', span: '12x5', label: 'A' });
+  placeBox(doc, 'base', { id: 'b', at: 'D16', span: '12x5', label: 'B' });
+  const margin = Math.max(...['a', 'b'].map((id) => {
+    const { rect } = findElement(doc, id).element;
+    return rect.x + rect.w;
+  })) + 4;
+  const r = routeProgram(doc, 'base', 'b.E', 'a.E', { track: margin });
+  assert.ok(r.program, `a margin loop-back must be routable: ${r.note ?? ''}`);
+  assert.match(r.program, /left line to a\.E arrow$/, 'the final leg travels back toward the target');
+  // And it has to actually run: the program and the geometry cannot disagree.
+  assert.doesNotThrow(() => applyPen(doc, 'base', r.program, { id: 'loop' }));
 });

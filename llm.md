@@ -25,9 +25,13 @@ of placement and makes every defect a ranked, numeric finding.
   wrong, not the lattice.
 - **The engine never silently changes geometry.** It measures and reports; the
   AI decides. No auto-resize, no auto-shrink, no snapping a stroke onto a track
-  without emitting `L014`. Auto-fit and auto-routing are deferred features, and
-  when built they must produce visible, inspectable output rather than quiet
-  correction.
+  without emitting `L014`. Auto-fit is still a deferred feature, and when built
+  it must produce visible, inspectable output rather than quiet correction.
+  Auto-routing and auto-layout now exist and were built on those terms: `route`
+  returns a pen program and changes nothing, and `layout` is asked for by name,
+  reports every box it moved, every crossing it removed, every cycle it had to
+  reverse, and every connector it could not redraw. Neither happens on its own,
+  and neither can express geometry the ordinary path could not.
 - **Measurement and rendering share one code path.** `core/text.js` owns
   measurement; `core/svg.js` emits `textLength` + `lengthAdjust` on every run so
   the renderer cannot disagree. Do not add a rendering path that lays out text

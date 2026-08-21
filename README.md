@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 494 tests green, zero runtime dependencies, 42 MCP tools.
+Status: **prototype** — 515 tests green, zero runtime dependencies, 43 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -116,7 +116,17 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
   spreads a ramp over the pieces. Colour lives on the piece, not the element —
   it never reached the collision engine, so where it was stored was only ever a
   presentation decision.
-- **`align` and `distribute` do the layout arithmetic.** Every diagram in this
+- **`layout` chooses the arrangement; `align` and `distribute` tidy one you
+  already chose.** It ranks the graph so flow runs down the page, gives every
+  long edge a lane of its own, reorders each rank to remove crossings, centres
+  each node over its neighbours, spreads fan-out across indexed port slots, and
+  redraws the connectors — including a loop back up the outside margin, which
+  every real flowchart has. The graph is authored fact: `pen from a.S` states an
+  origin and `line to b.N` states a target, so nothing is inferred from which
+  boxes happen to sit near each other. It reports what moved, how many crossings
+  went away, any cycle it reversed to rank the graph, and any connector it could
+  NOT redraw — a route that cannot be made is reported, never faked.
+- **`align` and `distribute` do the smaller layout arithmetic.** Every diagram in this
   repo used to hand-write a gap constant, a running row counter and a uniform
   width worked out with `Math.max`; that is what makes a generated diagram look
   generated. Neither invents a position — the target comes from the elements you

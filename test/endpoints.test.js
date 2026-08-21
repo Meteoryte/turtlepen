@@ -136,6 +136,21 @@ test('every advertised MCP tool completes a representative use case over stdio',
     assert.match(reviewed, /perceptual:/);
     await invoke('save', { path: 'endpoint-copy.turtlepen.json', force: true });
 
+    // Layout gets its own document, because it MOVES things: the point of the
+    // tool is that it chooses the arrangement rather than tidying one. Two
+    // parents feeding the opposite child is the smallest graph where the order
+    // boxes were declared in is provably the wrong order to draw them in.
+    await invoke('new_diagram', { name: 'layout endpoint', path: 'layout.turtlepen.json', cols: 90, rows: 60 });
+    await invoke('place_box', { id: 'intake', at: 'C4.tl', span: { w: 6, h: 3 }, label: 'Intake' });
+    await invoke('place_box', { id: 'review', at: 'S4.tl', span: { w: 6, h: 3 }, label: 'Review' });
+    await invoke('place_box', { id: 'approve', at: 'C16.tl', span: { w: 6, h: 3 }, label: 'Approve' });
+    await invoke('place_box', { id: 'reject', at: 'S16.tl', span: { w: 6, h: 3 }, label: 'Reject' });
+    await invoke('pen', { id: 'intake-reject', program: 'pen from intake.S\ndown align right line to reject.N arrow' });
+    await invoke('pen', { id: 'review-approve', program: 'pen from review.S\ndown align right line to approve.N arrow' });
+    const arranged = await invoke('layout', {});
+    assert.match(arranged, /laid out 4 box\(es\) over 2 rank\(s\)/);
+    assert.match(arranged, /edge crossings 1 -> 0/, `layout must remove the crossing: ${arranged}`);
+
     await invoke('new_diagram', { name: 'wireframe endpoint', path: 'wireframe.turtlepen.json', cols: 80, rows: 50 });
     await invoke('wireframe', {
       widthIn: 120,
