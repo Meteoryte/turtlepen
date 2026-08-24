@@ -132,7 +132,14 @@ export const GLYPHS = Object.freeze({
   Z: [4, '0,6 4,6 0,0 4,0'],
 
   // --- lowercase Latin ------------------------------------------------------
-  a: [4, '1,4 3,4 4,3 4,0', '1,2 4,2', '1,2 0,1 1,0 4,0'],
+  // A shoulder over a full-height bowl. Nine candidates were rasterised and
+  // deduplicated BY INK before being looked at, because two stroke lists can
+  // differ in source and land on identical quadrants — the first attempt at
+  // this letter did exactly that and changed nothing. Of the nine: a raised
+  // stem reads as a d, a full upper counter reads as an e, and a deep narrow
+  // bowl reads as nothing at all. This one keeps the 4-wide advance, so the
+  // rhythm against o, c, e and n is unchanged.
+  a: [4, '1,4 3,4 4,3 4,0', '4,3 1,3 0,2 0,1 1,0 3,0 4,1'],
   b: [4, '0,6 0,0', '0,3 1,4 3,4 4,3 4,1 3,0 1,0 0,1'],
   c: [4, '4,3 3,4 1,4 0,3 0,1 1,0 3,0 4,1'],
   d: [4, '4,6 4,0', '4,3 3,4 1,4 0,3 0,1 1,0 3,0 4,1'],
