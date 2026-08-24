@@ -36,6 +36,17 @@ of placement and makes every defect a ranked, numeric finding.
   measurement; `core/svg.js` emits `textLength` + `lengthAdjust` on every run so
   the renderer cannot disagree. Do not add a rendering path that lays out text
   independently — that reintroduces the exact bug this project eliminates.
+  TurtleFont (`core/turtlefont.js`) holds the same line differently: it does not
+  predict a width at all, because `measureStrokeText` IS `renderStrokeText` with
+  the quadrants discarded. There is no second implementation to drift.
+- **Words can be ink.** `stroke_text` draws through TurtleFont, so a label is
+  quadrants the collision engine sees rather than an SVG `<text>` run laid out
+  by the viewer's font stack. It is a display face by arithmetic — cap height 6
+  quadrants — and scales by whole multiples only, because a fractional scale
+  would put glyph points between quadrants. Do not add fractional scaling, and
+  do not make a missing glyph render as blank: it is refused on purpose, since a
+  silently dropped character is a hole in a sentence that nothing downstream can
+  detect.
 - **Claimed vs visual footprint is load-bearing.** `elementClaimed` is what an
   element reserves, `elementVisual` is where ink lands. Corner styles carve the
   difference. Rules must use the right one: body crossings are errors, corner-cut

@@ -151,6 +151,14 @@ test('every advertised MCP tool completes a representative use case over stdio',
     assert.match(arranged, /laid out 4 box\(es\) over 2 rank\(s\)/);
     assert.match(arranged, /edge crossings 1 -> 0/, `layout must remove the crossing: ${arranged}`);
 
+    // TurtleFont: words as ink. Exercised over the transport because the
+    // refusal path matters as much as the drawing one.
+    const cover = JSON.parse(await invoke('font_coverage', { text: 'Ship it — Δx ≤ 5μm' }));
+    assert.equal(cover.drawable, true, 'the face covers accents, maths and arrows');
+    await invoke('stroke_text', { id: 'inked', at: 'C34.tl', text: 'RELEASE PIPELINE', scale: 2, align: 'center' });
+    const refused = await client.call('stroke_text', { id: 'nope', at: 'C46.tl', text: 'ok 字' });
+    assert.equal(refused.isError, true, 'a glyph the face lacks is refused, never skipped');
+
     await invoke('new_diagram', { name: 'wireframe endpoint', path: 'wireframe.turtlepen.json', cols: 80, rows: 50 });
     await invoke('wireframe', {
       widthIn: 120,

@@ -31,6 +31,8 @@ import { renderSvg } from './svg.js';
 import * as perceptual from './perceptual.js';
 import { mermaidToOperations, parseMermaid } from './mermaid.js';
 import { layoutGraph } from './layout.js';
+import * as turtlefont from './turtlefont.js';
+export { turtlefont };
 import { routeProgram as routeProgram_ } from './route.js';
 export { mermaidToOperations, parseMermaid } from './mermaid.js';
 
@@ -643,6 +645,7 @@ export const OPERATIONS = Object.freeze({
   align: (doc, a) => alignElements(doc, a.ids, a.edge),
   distribute: (doc, a) => distributeElements(doc, a.ids, a.axis),
   layout: (doc, a) => layoutElements(doc, a),
+  stroke_text: (doc, a) => placeStrokeText(doc, a.page ?? 'base', a),
   wireframe: (doc, a) => applyWireframe(doc, a),
   perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
   // A review is document state, so it goes through OPERATIONS like every other
@@ -1402,4 +1405,50 @@ export function layoutElements(doc, {
     // absorbed.
     reversed: result.reversed.map((i) => ({ id: edges[i].via, from: edges[i].from, to: edges[i].to })),
   };
+}
+
+/**
+ * Place text as INK.
+ *
+ * The one mark in this engine that used to escape the lattice was a letter.
+ * Everything else is quadrants the collision engine can see; a label was an
+ * SVG `<text>` run whose width `core/text.js` had to predict. This draws the
+ * words with TurtleFont instead, so they collide, they measure exactly, and
+ * they survive a plotter.
+ *
+ * It costs size: cap height is six quadrants, because a stroke glyph below
+ * that stops being legible once the lattice has quantised it. That is why this
+ * sits ALONGSIDE `place_box` labels rather than replacing them — titles,
+ * callouts and plotter work get real ink, and 11px body text stays as text.
+ */
+export function placeStrokeText(doc, pageId, {
+  id, at, text, scale = 1, tracking = 0, maxWidth = null, align = 'left',
+  color = null, width = null, role = 'artwork', note = null,
+}) {
+  getPage(doc, pageId);
+  if (typeof text !== 'string' || !text.length) {
+    throw new SyntaxError(`stroke text "${id}" needs something to say`);
+  }
+  const a = address.parseAddress(at);
+  const origin = address.pinPoint(a);
+
+  const drawn = turtlefont.renderStrokeText(text, {
+    at: origin, scale, tracking, maxWidth, align,
+  });
+  if (!drawn.pieces.length) {
+    throw new Error(`stroke text "${id}" drew nothing — ${JSON.stringify(text)} is all spaces`);
+  }
+
+  const path = addPath(doc, pageId, {
+    id,
+    pieces: drawn.pieces.map((p) => ({ ...p })),
+    stroke: normalizeStroke(color || width ? { color, width } : null),
+    // What it says, kept on the element. A path of 400 quadrants is unreadable
+    // in a describe listing; the sentence it spells is the useful fact.
+    note: note ?? `stroke text: ${text.replace(/\n/g, ' / ')}`,
+    role,
+  });
+  path.text = text;
+  path.font = { face: 'turtlefont', scale, tracking, align };
+  return { element: path, ...drawn, pieces: drawn.pieces.length };
 }

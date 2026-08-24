@@ -11,7 +11,7 @@
     "advanceRatio": 0.6,
     "paddingQuads": 1
   },
-  "createdAt": "2026-08-21T20:18:09.693Z",
+  "createdAt": "2026-08-24T19:42:03.312Z",
   "pages": [
     {
       "id": "behind",
@@ -9693,7 +9693,7 @@
       "page": "front",
       "title": "overlay overlap",
       "reason": "the plug lying across the keyboard is the subject of this drawing. The cable covering the keys is the occlusion working, not an overlay accident.",
-      "acceptedAt": "2026-08-21T20:18:10.187Z"
+      "acceptedAt": "2026-08-24T19:42:03.858Z"
     },
     {
       "fingerprint": "11c1004fd9ea",
@@ -9701,7 +9701,7 @@
       "page": "base",
       "title": "depth flattened onto one page",
       "reason": "the CRT is standing ON the desk, so the two interpenetrate at the contact surface by construction. Six inches apart is the depth of the monitor foot, not a layering mistake — neither object can occlude the other here because they are touching.",
-      "acceptedAt": "2026-08-21T20:18:09.960Z"
+      "acceptedAt": "2026-08-24T19:42:03.594Z"
     },
     {
       "fingerprint": "33779f4a2f3f",
@@ -9709,7 +9709,7 @@
       "page": "base",
       "title": "stroke overlap",
       "reason": "the monitor base and the desk surface are the same line in this projection. Drawing both would double the stroke; they share it because the CRT is resting on the desk.",
-      "acceptedAt": "2026-08-21T20:18:10.071Z"
+      "acceptedAt": "2026-08-24T19:42:03.737Z"
     }
   ],
   "perspective_scene": {

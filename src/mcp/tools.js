@@ -913,6 +913,93 @@ ${stalled}` : core.formatLog(result);
     },
 
     {
+      name: 'stroke_text',
+      description:
+        'Draw words as INK, in TurtleFont — quadrants on the lattice, not an SVG text run. Use it for '
+        + 'titles, callouts, plotter output, and anything where the words must collide, measure exactly, '
+        + 'and survive without a font file. It is a DISPLAY face: cap height is 6 quadrants (30px), '
+        + 'because a stroke glyph smaller than that stops being legible once the lattice has quantised '
+        + 'it — for 11px body text, keep using place_box labels. Scale is whole numbers only; there is no '
+        + 'half quadrant to interpolate onto. A character the face cannot draw is REFUSED, never skipped, '
+        + 'so a missing glyph can never become a silent hole in a sentence — call font_coverage first if '
+        + 'you are unsure.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          at: { type: 'string', description: 'top-left of the text block, e.g. "C4.tl"' },
+          text: { type: 'string', description: 'newlines start a new line' },
+          page: { type: 'string' },
+          scale: { type: 'integer', minimum: 1, description: 'whole multiples only (default 1)' },
+          tracking: { type: 'integer', description: 'extra quadrants between glyphs' },
+          maxWidth: { type: 'integer', description: 'wrap at this many quadrants, breaking between words' },
+          align: { type: 'string', enum: ['left', 'center', 'right'] },
+          color: { type: 'string', description: '3- or 6-digit hex' },
+          width: { type: 'integer', description: 'stroke width in px' },
+          role: { type: 'string', enum: ['connector', 'artwork'], description: 'defaults to artwork' },
+        },
+        required: ['id', 'at', 'text'],
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        const doc = need(session);
+        const r = core.OPERATIONS.stroke_text(doc, args);
+        await persist(session);
+        const lines = [
+          `drew "${args.id}" as ${r.pieces} quadrant(s) of ink — ${r.lines} line(s), `
+          + `${r.width}x${r.height} quadrants at scale ${r.scale}`,
+        ];
+        if (r.inked) {
+          lines.push(`ink lands in ${r.inked.w}x${r.inked.h} quadrants; the block reserves the full line box either way`);
+        }
+        if (r.overflowed) {
+          lines.push(
+            'a word is wider than maxWidth and overhangs — it was NOT hyphenated. Widen the block, '
+            + 'shorten the word, or accept the overhang.',
+          );
+        }
+        lines.push('This is ink: it collides like any other stroke. Validate, then render and look at it.');
+        return lines.join('\n');
+      },
+    },
+
+    {
+      name: 'font_coverage',
+      description:
+        'What TurtleFont can draw. With no argument it returns every glyph in the face grouped by block; '
+        + 'given text, it returns only the characters that face CANNOT draw, which is the check to run '
+        + 'before stroke_text on anything you did not type yourself.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          text: { type: 'string', description: 'check just these characters' },
+        },
+        additionalProperties: false,
+      },
+      handler: ({ text = null }) => {
+        if (text != null) {
+          const missing = core.turtlefont.missingFrom(text);
+          return json({
+            text,
+            drawable: missing.length === 0,
+            missing,
+            note: missing.length
+              ? 'stroke_text will refuse this string. Use place_box labels for it, or drop these characters.'
+              : 'every character in this string can be drawn as ink',
+          });
+        }
+        const all = core.turtlefont.coverage();
+        return json({
+          glyphs: all.length,
+          metrics: core.turtlefont.METRICS,
+          lineHeight: core.turtlefont.LINE_HEIGHT,
+          lineAdvance: core.turtlefont.LINE_ADVANCE,
+          characters: all.join(''),
+        });
+      },
+    },
+
+    {
       name: 'set_background',
       description:
         'Set the paper colour for the whole drawing, or pass no colour to go back to the palette. '
