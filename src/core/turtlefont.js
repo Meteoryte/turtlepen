@@ -30,7 +30,7 @@
 
 import { rayQuads } from './raster.js';
 import {
-  GLYPHS, MARKS, COMPOSED, LATIN_EXTRA, GREEK, GREEK_ALIAS, CYRILLIC, CYRILLIC_ALIAS,
+  GLYPHS, MARKS, COMPOSED, LATIN_EXTRA, GREEK, GREEK_ALIAS, CYRILLIC, CYRILLIC_ALIAS, MATH_ALIAS,
 } from './turtlefont-glyphs.js';
 
 /**
@@ -73,7 +73,11 @@ for (const table of [GLYPHS, LATIN_EXTRA, GREEK, CYRILLIC]) {
 }
 
 /** Characters that ARE another character's drawing. */
-const ALIAS = new Map([...Object.entries(GREEK_ALIAS), ...Object.entries(CYRILLIC_ALIAS)]);
+const ALIAS = new Map([
+  ...Object.entries(GREEK_ALIAS),
+  ...Object.entries(CYRILLIC_ALIAS),
+  ...Object.entries(MATH_ALIAS),
+]);
 
 /** Parse `"0,0 2,6 4,0"` into points. Done once per glyph, then cached. */
 function parseStroke(source) {

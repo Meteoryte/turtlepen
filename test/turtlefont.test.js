@@ -12,7 +12,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import * as font from '../src/core/turtlefont.js';
-import { GLYPHS, MARKS, COMPOSED } from '../src/core/turtlefont-glyphs.js';
+import {
+  GLYPHS, MARKS, COMPOSED, LATIN_EXTRA, GREEK, GREEK_ALIAS, CYRILLIC, CYRILLIC_ALIAS, MATH_ALIAS,
+} from '../src/core/turtlefont-glyphs.js';
 import { createDocument, OPERATIONS, validate, findElement } from '../src/core/index.js';
 
 const quadSet = (text, opts = {}) =>
@@ -214,4 +216,85 @@ test('the glyph table has no duplicate or empty entry', () => {
     const strokes = data.slice(1);
     assert.equal(new Set(strokes).size, strokes.length, `${ch} repeats a stroke`);
   }
+});
+
+// --- the data-hygiene guards ------------------------------------------------
+// Each of these caught a real defect that neither the tests nor the rendered
+// specimen would have shown on their own.
+
+test('no shape is drawn twice under two names', () => {
+  // Greek Alpha IS Latin A, and that is fine — but it must be an ALIAS, one
+  // drawing reached by two code points, not two drawings that happen to agree
+  // today. Cyrillic Ge, Pe, Ef and ka, the increment and summation signs, and
+  // the micro sign were all second copies until they were aliased.
+  const seen = new Map();
+  for (const [table, obj] of Object.entries({ GLYPHS, LATIN_EXTRA, GREEK, CYRILLIC })) {
+    for (const [ch, data] of Object.entries(obj)) {
+      const key = JSON.stringify(data);
+      assert.ok(
+        !seen.has(key),
+        `${table}:${ch} is drawn identically to ${seen.get(key)} — alias one to the other instead`,
+      );
+      seen.set(key, `${table}:${ch}`);
+    }
+  }
+});
+
+test('no character is drawn in two tables', () => {
+  const from = new Map();
+  for (const [table, obj] of Object.entries({ GLYPHS, LATIN_EXTRA, GREEK, CYRILLIC })) {
+    for (const ch of Object.keys(obj)) {
+      assert.ok(!from.has(ch), `${ch} is drawn in both ${from.get(ch)} and ${table}; only the first is reachable`);
+      from.set(ch, table);
+    }
+  }
+});
+
+test('an alias never points at a character that is also drawn', () => {
+  const drawn = new Set(Object.keys({ ...GLYPHS, ...LATIN_EXTRA, ...GREEK, ...CYRILLIC }));
+  for (const table of [GREEK_ALIAS, CYRILLIC_ALIAS, MATH_ALIAS]) {
+    for (const [alias, target] of Object.entries(table)) {
+      assert.ok(!drawn.has(alias), `${alias} is both aliased and drawn — the drawing is unreachable`);
+      assert.ok(font.glyph(target), `${alias} aliases ${target}, which must resolve`);
+    }
+  }
+});
+
+test('every mark is used, and no two marks are the same drawing', () => {
+  const used = new Set(Object.values(COMPOSED).map((c) => c.mark).filter(Boolean));
+  for (const name of Object.keys(MARKS)) {
+    assert.ok(used.has(name), `the "${name}" mark is defined but nothing is composed from it`);
+  }
+  const shapes = new Map();
+  for (const [name, data] of Object.entries(MARKS)) {
+    const key = JSON.stringify(data);
+    assert.ok(!shapes.has(key), `marks "${name}" and "${shapes.get(key)}" are the same drawing`);
+    shapes.set(key, name);
+  }
+});
+
+test('a composed letter always adds something to its base', () => {
+  for (const [ch, spec] of Object.entries(COMPOSED)) {
+    assert.ok(spec.mark, `${ch} composes with no mark, so it is just ${spec.base} under another name`);
+    assert.ok(MARKS[spec.mark], `${ch} names the mark "${spec.mark}", which does not exist`);
+  }
+});
+
+test('the pairs a render actually confused stay apart', () => {
+  // e was a closed ring plus a full crossbar, which is exactly theta. Cyrillic
+  // ze was drawn as an s. L-stroke had no stroke. A hyphen was as long as an
+  // en dash. All four looked fine in isolation and wrong in a word.
+  for (const [a, b] of [['e', 'θ'], ['s', 'з'], ['L', 'Ł'], ['l', 'ł'],
+    ['-', '–'], ['–', '—'], ['ß', 'B'], ['ª', 'º']]) {
+    assert.notDeepEqual(
+      quadSet(a), quadSet(b),
+      `${a} and ${b} render the same ink`,
+    );
+  }
+});
+
+test('the dashes get longer in the right order', () => {
+  const w = (ch) => font.glyph(ch).width;
+  assert.ok(w('-') < w('–'), 'a hyphen is shorter than an en dash');
+  assert.ok(w('–') < w('—'), 'an en dash is shorter than an em dash');
 });

@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 536 tests green, zero runtime dependencies, 45 MCP tools.
+Status: **prototype** — 543 tests green, zero runtime dependencies, 45 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -119,7 +119,7 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
 - **`stroke_text` draws words as INK.** Text used to be the one mark that escaped
   the lattice: a label was an SVG `<text>` run, rendered by whatever font the
   viewer had, and `core/text.js` had to PREDICT its width rather than know it.
-  TurtleFont is a stroke face of 397 glyphs — Latin with accents, Greek,
+  TurtleFont is a stroke face of 441 glyphs — Latin with accents, Greek,
   Cyrillic, maths, arrows, currency and marks — drawn as integer polylines on
   the quadrant grid. The words collide like any other stroke, measure exactly,
   and survive without a font file. It is honestly a DISPLAY face: cap height is
