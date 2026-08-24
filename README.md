@@ -119,7 +119,7 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
 - **`stroke_text` draws words as INK.** Text used to be the one mark that escaped
   the lattice: a label was an SVG `<text>` run, rendered by whatever font the
   viewer had, and `core/text.js` had to PREDICT its width rather than know it.
-  TurtleFont is a stroke face of 441 glyphs — Latin with accents, Greek,
+  TurtleFont is a stroke face of 442 glyphs — Latin with accents, Greek,
   Cyrillic, maths, arrows, currency and marks — drawn as integer polylines on
   the quadrant grid. The words collide like any other stroke, measure exactly,
   and survive without a font file. It is honestly a DISPLAY face: cap height is
