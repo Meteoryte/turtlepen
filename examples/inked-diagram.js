@@ -28,7 +28,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const project = resolve(here, '..');
 
 const doc = core.createDocument({
-  name: 'inked pipeline', cols: 150, rows: 96, createdAt: '2026-08-25T09:00:00.000Z',
+  name: 'inked pipeline', cols: 260, rows: 190, createdAt: '2026-08-25T09:00:00.000Z',
 });
 core.OPERATIONS.set_background(doc, { color: '#f7f4ec' });
 
@@ -36,24 +36,32 @@ core.OPERATIONS.set_background(doc, { color: '#f7f4ec' });
 // reports what the words need; the box is then built around that, which is the
 // same measure-before-placing rule the rest of the engine runs on.
 const NODES = [
-  ['intake', 'Intake', 'terminator', 'C4'],
-  ['build', 'Build', 'process', 'C22'],
-  ['test', 'Run tests', 'process', 'C40'],
-  ['ship', 'Ship it', 'terminator', 'C58'],
+  ['intake', 'Intake', 'terminator'],
+  ['build', 'Build', 'process'],
+  ['test', 'Run tests', 'process'],
+  ['ship', 'Ship it', 'terminator'],
 ];
 
-for (const [id, label, shape, at] of NODES) {
+// The row is carried, not written down: an inked node is as tall as its words
+// need, so a fixed address would only hold until a label changed.
+let row = 3;
+for (const [id, label, shape] of NODES) {
   const need = font.requiredCellsForStrokeText(label);
+  // A symbol carves its own label area out of its box, so the span comes from
+  // spanForShape rather than from a margin picked by hand — the same rule the
+  // engine already applies to <text> labels.
+  const span = core.shapes.spanForShape(shape, need);
+  const box = { w: span.w + 2, h: span.h + 2 };
   core.OPERATIONS.place_box(doc, {
     id,
-    at: `${at}.tl`,
-    // Room for the ink plus the margin the symbol carves out of it.
-    span: { w: need.cellsWide + 4, h: need.cellsTall + 2 },
+    at: `C${row}.tl`,
+    span: box,
     label: '',
     shape,
     corner: shape === 'process' ? 'rounded' : 'square',
   });
   core.OPERATIONS.stroke_label(doc, { id: `${id}-ink`, target: id, text: label, color: '#12202c' });
+  row += box.h + 8;
 }
 
 // Connectors, drawn by the router as usual — ink labels change nothing about
@@ -63,12 +71,21 @@ for (const [from, to] of [['intake', 'build'], ['build', 'test'], ['test', 'ship
   if (route.program) core.OPERATIONS.pen(doc, { id: `${from}-${to}`, program: route.program });
 }
 
-// The heading, and a caption turned a quarter turn — exact, so it loses nothing.
+// The heading, and a caption turned a quarter turn — exact, so it loses
+// nothing. Both are placed clear of the widest node rather than at a guessed
+// address, because an inked node is only as wide as its words require.
+const right = Math.max(...core.elementsOf(doc, 'base')
+  .filter((e) => e.kind === 'box')
+  .map((e) => e.rect.x + e.rect.w)) + 6;
 core.OPERATIONS.stroke_text(doc, {
-  id: 'title', at: 'AR1.tl', text: 'RELEASE', scale: 2, color: '#1b2733',
+  id: 'title', at: core.address.quadToAddress(right, 3), text: 'RELEASE', scale: 2, color: '#1b2733',
 });
 core.OPERATIONS.stroke_text(doc, {
-  id: 'side', at: 'BL14.tl', text: 'EVERY MARK IS A PATH', rotate: 90, color: '#a4551f',
+  id: 'side',
+  at: core.address.quadToAddress(right + 4, 3 + font.LINE_HEIGHT * 2 + 8),
+  text: 'EVERY MARK IS A PATH',
+  rotate: 90,
+  color: '#a4551f',
 });
 
 const findings = core.validate(doc);

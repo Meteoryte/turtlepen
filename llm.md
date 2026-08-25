@@ -45,6 +45,31 @@ of placement and makes every defect a ranked, numeric finding.
   ink sprawling across a node it does not label is exactly the defect that rule
   exists to catch. This is the same principle as a connector recording its
   origin rather than the engine guessing from proximity.
+- **If several unrelated glyphs are all "not quite right", the design grid is
+  too small — do not fix them one at a time.** TurtleFont shipped with an
+  x-height of 4 quadrants, which is five rows for a lowercase letter. In five
+  rows a double-storey `a` gets a counter one row deep and looks pinched, `s`
+  cannot curve so it comes out as a zigzag that reads as `8`, a fraction cannot
+  hold a numerator, a solidus and a denominator without all three colliding, and
+  a ring sign cannot hold both a ring and the letter inside it. Every one of
+  those was reported separately, and each was "fixed" separately, and they were
+  all the same defect. The grid was doubled — exact, because every coordinate is
+  already a whole number — and the letters had room to be drawn properly. Ask
+  whether the room exists BEFORE redrawing anything.
+- **A shape that is solid must say so and be filled at render time.** Solid
+  marks were once drawn as hand-spaced scan lines, one glyph unit apart. The
+  moment the grid doubled, every gap doubled with it and a filled square became
+  a striped one. A `*` prefix on a stroke means "closed and solid", and
+  `fillInterior` does the work at whatever scale is being drawn. Never hand-space
+  a fill: it encodes the grid into the glyph and breaks the first time the grid
+  moves.
+- **Prove an edit changed the INK, not the source.** Two different stroke lists
+  can rasterise to identical quadrants. A letter in this face was once
+  "redrawn", reviewed on a comparison sheet, declared improved and committed
+  without changing a single quadrant; the exported SVG being byte-identical to
+  the previous commit was the only thing that gave it away. `glyph` reports a
+  fingerprint of the ink, and `glyph --compare` answers whether two drawings are
+  the same drawing. Use it before believing a redraw.
 - **Rotation is quarter turns only.** A quarter turn maps every quadrant onto
   another quadrant exactly; any other angle needs coordinates between quadrants,
   which do not exist here. Rotate the finished SVG if you need 30 degrees.

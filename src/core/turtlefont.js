@@ -28,7 +28,7 @@
  * replacement.
  */
 
-import { rayQuads } from './raster.js';
+import { rayQuads, fillInterior } from './raster.js';
 import {
   GLYPHS, MARKS, COMPOSED, LATIN_EXTRA, GREEK, GREEK_ALIAS, CYRILLIC, CYRILLIC_ALIAS, MATH_ALIAS,
 } from './turtlefont-glyphs.js';
@@ -43,18 +43,18 @@ import {
  */
 export const METRICS = Object.freeze({
   baseline: 0,
-  xHeight: 4,
-  capHeight: 6,
-  ascender: 6,
-  descender: -2,
-  accentCeiling: 8,
+  xHeight: 8,
+  capHeight: 12,
+  ascender: 12,
+  descender: -4,
+  accentCeiling: 16,
   /** Above and below the baseline that a line of text always reserves. */
-  ascent: 8,
-  descent: 2,
+  ascent: 16,
+  descent: 4,
   /** Blank quadrants between one line's descent and the next line's ascent. */
-  lineGap: 2,
+  lineGap: 4,
   /** Added to each glyph's drawing width to get its advance. */
-  sideBearing: 2,
+  sideBearing: 4,
   /** Extra quadrants between glyphs, on top of the advance. */
   tracking: 0,
 });
@@ -79,9 +79,17 @@ const ALIAS = new Map([
   ...Object.entries(MATH_ALIAS),
 ]);
 
-/** Parse `"0,0 2,6 4,0"` into points. Done once per glyph, then cached. */
+/**
+ * Parse `"0,0 2,6 4,0"` into points. A leading `*` means the outline is closed
+ * and SOLID — filled at render time, at whatever scale is being drawn.
+ *
+ * Filling has to happen at render time. Solid marks used to be drawn as
+ * hand-spaced scan lines, and the moment the design grid changed, every gap
+ * between the lines doubled and a filled square became a striped one. A shape
+ * that is solid should say it is solid and let the rasteriser work it out.
+ */
 function parseStroke(source) {
-  return source.split(' ').filter(Boolean).map((pair) => {
+  return source.replace(/^\*/, '').split(' ').filter(Boolean).map((pair) => {
     const [x, y] = pair.split(',').map(Number);
     if (!Number.isInteger(x) || !Number.isInteger(y)) {
       throw new SyntaxError(`turtlefont: "${pair}" is not a whole-quadrant point`);
@@ -108,7 +116,13 @@ export function glyph(ch) {
 
   if (DRAWN.has(resolved)) {
     const [width, ...strokes] = DRAWN.get(resolved);
-    built = { ch, width, advance: width + METRICS.sideBearing, strokes: strokes.map(parseStroke) };
+    built = {
+      ch,
+      width,
+      advance: width + METRICS.sideBearing,
+      strokes: strokes.map(parseStroke),
+      solid: strokes.map((raw) => raw.startsWith('*')),
+    };
   } else if (COMPOSED[resolved]) {
     const { base, mark } = COMPOSED[resolved];
     const under = glyph(base);
@@ -128,7 +142,7 @@ export function glyph(ch) {
       // accent hangs off the left of its own advance and onto the letter before.
       width = Math.max(under.width, markWidth + dx);
     }
-    built = { ch, width, advance: width + METRICS.sideBearing, strokes };
+    built = { ch, width, advance: width + METRICS.sideBearing, strokes, solid: [...(under.solid ?? []), ...strokes.slice(under.strokes.length).map(() => false)] };
   }
 
   cache.set(ch, built);
@@ -262,7 +276,7 @@ export function renderStrokeText(text, {
 
     for (const ch of chars) {
       const g = glyph(ch);
-      for (const stroke of g.strokes) {
+      for (const [si, stroke] of g.strokes.entries()) {
         if (stroke.length === 1) {
           // A one-point stroke is a dot: a tittle, a full stop, a diaeresis.
           // It is one mark of the pen, exactly like the end of any other
@@ -273,16 +287,18 @@ export function renderStrokeText(text, {
           quads.add(`${penX + p.x * scale},${baseline - p.y * scale}`);
           continue;
         }
+        const drawn = [];
         for (let i = 0; i + 1 < stroke.length; i++) {
           const a = stroke[i];
           const b = stroke[i + 1];
           for (const q of rayQuads(
             penX + a.x * scale, baseline - a.y * scale,
             penX + b.x * scale, baseline - b.y * scale,
-          )) {
-            quads.add(`${q.x},${q.y}`);
-          }
+          )) drawn.push(q);
         }
+        // Fill AFTER scaling, so a solid mark is solid at every size.
+        const body = g.solid?.[si] ? fillInterior(drawn) : drawn;
+        for (const q of body) quads.add(`${q.x},${q.y}`);
       }
       penX += g.advance * scale + tracking;
     }

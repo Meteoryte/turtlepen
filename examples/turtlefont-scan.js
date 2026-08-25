@@ -26,9 +26,9 @@ const here = dirname(fileURLToPath(import.meta.url));
 const project = resolve(here, '..');
 
 const SCALE = 2;
-const COLS = 16;
-const CELL_W = 18;   // quadrants
-const CELL_H = 32;   // quadrants: glyph block, caption, breathing room
+const COLS = 12;
+const CELL_W = 34;   // quadrants
+const CELL_H = 56;   // quadrants: glyph block, caption, breathing room
 const LEFT = 3;
 const TOP = 3;
 

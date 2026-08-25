@@ -40,12 +40,12 @@ const GROUPS = [
 ];
 
 const doc = core.createDocument({
-  name: 'turtlefont specimen', cols: 200, rows: 240, createdAt: '2026-08-24T09:00:00.000Z',
+  name: 'turtlefont specimen', cols: 380, rows: 460, createdAt: '2026-08-24T09:00:00.000Z',
 });
 core.OPERATIONS.set_background(doc, { color: '#f7f4ec' });
 
 const LEFT = 4;          // quadrants
-const ROW_LIMIT = 26;    // glyphs per drawn row, so the sheet stays readable
+const ROW_LIMIT = 20;    // glyphs per drawn row, so the sheet stays readable
 let y = 4;               // quadrants down the page
 let serial = 0;
 
@@ -89,11 +89,11 @@ y += font.LINE_ADVANCE;
 const wrapped = write(
   'Measurement and rendering are the same call, so a wrapped block reports the '
   + 'exact quadrants it will occupy before anything is placed.',
-  LEFT + 2, y, { maxWidth: 150, align: 'center' },
+  LEFT + 2, y, { maxWidth: 300, align: 'center' },
 );
 y += wrapped.height + 6;
 
-core.OPERATIONS.set_canvas(doc, { cols: 200, rows: Math.ceil(y / 2) + 4 });
+core.OPERATIONS.set_canvas(doc, { cols: 380, rows: Math.ceil(y / 2) + 4 });
 
 const findings = core.validate(doc);
 await core.exportSvg(doc, resolve(project, 'diagrams/turtlefont-specimen.svg'), { force: true, margin: 20 });

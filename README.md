@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 556 tests green, zero runtime dependencies, 47 MCP tools.
+Status: **prototype** — 561 tests green, zero runtime dependencies, 47 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -123,8 +123,10 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
   Cyrillic, maths, arrows, currency and marks — drawn as integer polylines on
   the quadrant grid. The words collide like any other stroke, measure exactly,
   and survive without a font file. It is honestly a DISPLAY face: cap height is
-  6 quadrants (30px), because a stroke glyph below that stops being legible once
-  the lattice has quantised it, and it scales by whole multiples only, since
+  12 quadrants (60px). The first version used 6, and five rows of x-height was
+  too few to draw a lowercase letter properly — that one constraint was behind a
+  pinched `a`, an `s` that read as an `8`, and fractions that could not be read
+  at all, and it scales by whole multiples only, since
   there is no half quadrant to interpolate onto. A character the face cannot
   draw is refused rather than skipped — a missing glyph must never become a
   silent hole in a sentence. `font_coverage` says what it has.

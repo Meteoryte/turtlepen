@@ -69,7 +69,7 @@ test('an accented letter is its letter plus a mark, never a second drawing', () 
 test('the mark is centred over the letter it sits on', () => {
   // Ä: a 4-wide A under a 2-wide diaeresis leaves 1 quadrant either side.
   const dots = font.glyph('Ä').strokes.slice(font.glyph('A').strokes.length);
-  assert.deepEqual(dots.map((s) => s[0].x), [1, 3]);
+  assert.deepEqual(dots.map((s) => s[0].x), [2, 6]);
 });
 
 test('every composed glyph names a base that is actually drawn', () => {
@@ -131,14 +131,14 @@ test('a newline starts a line and the block grows by exactly one advance', () =>
 });
 
 test('wrapping breaks between words and admits when a word will not fit', () => {
-  const wrapped = font.measureStrokeText('alpha beta gamma delta', { maxWidth: 60 });
+  const wrapped = font.measureStrokeText('alpha beta gamma delta', { maxWidth: 120 });
   assert.ok(wrapped.lines > 1, 'it wrapped');
-  assert.ok(wrapped.lineWidths.every((w) => w <= 60), `no line exceeds the limit: ${wrapped.lineWidths}`);
+  assert.ok(wrapped.lineWidths.every((w) => w <= 120), `no line exceeds the limit: ${wrapped.lineWidths}`);
   assert.equal(wrapped.overflowed, false);
 
   // A single word longer than the limit overhangs and SAYS so, rather than
   // being hyphenated somewhere meaningless.
-  const long = font.measureStrokeText('supercalifragilistic', { maxWidth: 20 });
+  const long = font.measureStrokeText('supercalifragilistic', { maxWidth: 40 });
   assert.equal(long.overflowed, true);
 });
 
@@ -380,8 +380,8 @@ test('the picture shows the glyph against its own metrics', () => {
 // --- inked labels ------------------------------------------------------------
 
 test('a stroke label centres itself in the room the symbol leaves', () => {
-  const doc = createDocument({ name: 'inked', cols: 120, rows: 60 });
-  OPERATIONS.place_box(doc, { id: 'step', at: 'C4.tl', span: { w: 20, h: 8 }, label: '' });
+  const doc = createDocument({ name: 'inked', cols: 220, rows: 90 });
+  OPERATIONS.place_box(doc, { id: 'step', at: 'C4.tl', span: { w: 40, h: 16 }, label: '' });
   const r = OPERATIONS.stroke_label(doc, { id: 'lbl', target: 'step', text: 'Build' });
   const box = findElement(doc, 'step').element.rect;
   const ink = findElement(doc, 'lbl').element;
@@ -411,9 +411,9 @@ test('a label that does not fit is refused with the numbers to fix it', () => {
 test('a symbol gets less room than its bounding box', () => {
   // A diamond inks a quarter of its box, and an inked label has to live inside
   // the symbol rather than the rectangle around it.
-  const doc = createDocument({ name: 'inked', cols: 160, rows: 80 });
-  OPERATIONS.place_box(doc, { id: 'plain', at: 'C4.tl', span: { w: 30, h: 14 }, label: '' });
-  OPERATIONS.place_box(doc, { id: 'gate', at: 'C24.tl', span: { w: 30, h: 14 }, label: '', shape: 'decision' });
+  const doc = createDocument({ name: 'inked', cols: 260, rows: 120 });
+  OPERATIONS.place_box(doc, { id: 'plain', at: 'C4.tl', span: { w: 60, h: 28 }, label: '' });
+  OPERATIONS.place_box(doc, { id: 'gate', at: 'C40.tl', span: { w: 60, h: 28 }, label: '', shape: 'decision' });
   const flat = OPERATIONS.stroke_label(doc, { id: 'a1', target: 'plain', text: 'Ok' });
   const gate = OPERATIONS.stroke_label(doc, { id: 'a2', target: 'gate', text: 'Ok' });
   assert.ok(gate.area.w < flat.area.w, 'the diamond leaves less width for the same box');
@@ -432,9 +432,9 @@ test('a label does not trip the rule about strokes crossing nodes', () => {
   // An inked label lives inside its box by design. L004 catches a connector
   // ploughing through a node, which is a real defect; a label doing it is the
   // author's stated intent, recorded when they named the target.
-  const doc = createDocument({ name: 'inked', cols: 140, rows: 60 });
-  OPERATIONS.place_box(doc, { id: 'here', at: 'C4.tl', span: { w: 20, h: 8 }, label: '' });
-  OPERATIONS.place_box(doc, { id: 'elsewhere', at: 'AA4.tl', span: { w: 20, h: 8 }, label: '' });
+  const doc = createDocument({ name: 'inked', cols: 260, rows: 90 });
+  OPERATIONS.place_box(doc, { id: 'here', at: 'C4.tl', span: { w: 40, h: 16 }, label: '' });
+  OPERATIONS.place_box(doc, { id: 'elsewhere', at: 'BM4.tl', span: { w: 40, h: 16 }, label: '' });
   OPERATIONS.stroke_label(doc, { id: 'mine', target: 'here', text: 'Build' });
   const crossings = validate(doc).open.filter((f) => f.rule === 'L004');
   assert.equal(crossings.length, 0, `a label in its own box is not a crossing: ${JSON.stringify(crossings)}`);
@@ -442,7 +442,7 @@ test('a label does not trip the rule about strokes crossing nodes', () => {
   // But the exemption is for that ONE box. Ink sprawling over a different node
   // is exactly what the rule is for.
   const stray = OPERATIONS.stroke_text(doc, {
-    id: 'stray', at: 'AA5.tl', text: 'over the top', color: '#000',
+    id: 'stray', at: 'BM5.tl', text: 'over the top', color: '#000',
   });
   assert.ok(stray.pieces > 0);
   assert.ok(

@@ -161,7 +161,7 @@ test('every advertised MCP tool completes a representative use case over stdio',
     assert.match(picture, /baseline/, 'the picture is drawn against the metrics');
     assert.match(await invoke('glyph', { char: 'A', compare: 'Α' }), /SAME INK/, 'an alias is reported as one drawing');
     // An inked label, which is what makes a whole diagram font-free.
-    await invoke('place_box', { id: 'inkbox', at: 'C56.tl', span: { w: 22, h: 8 }, label: '' });
+    await invoke('place_box', { id: 'inkbox', at: 'C56.tl', span: { w: 44, h: 16 }, label: '' });
     await invoke('stroke_label', { id: 'inklbl', target: 'inkbox', text: 'Build' });
     const tooBig = await client.call('stroke_label', { id: 'nope2', target: 'inkbox', text: 'Far too long to fit in here at all' });
     assert.equal(tooBig.isError, true, 'a label that does not fit is refused, not shrunk');
