@@ -1501,11 +1501,11 @@ export function placeStrokeLabel(doc, pageId, {
   // Measure, report, refuse — never shrink the text or spill it. The numbers
   // are the useful part: an author can widen the box, drop the scale, or
   // shorten the words, and each of those is their decision to make.
-  if (measured.width > inner.w || measured.height > inner.h) {
+  if (measured.penWidth > inner.w || measured.penHeight > inner.h) {
     const fits = Math.max(1, Math.floor(inner.h / (turtlefont.LINE_HEIGHT * scale)));
     throw new Error(
       `"${text}" does not fit inside "${target}" at scale ${scale}: it needs `
-      + `${measured.width}x${measured.height} quadrants and the symbol leaves ${inner.w}x${inner.h}. `
+      + `${measured.penWidth}x${measured.penHeight} quadrants and the symbol leaves ${inner.w}x${inner.h}. `
       + `Widen "${target}" by ${Math.max(0, measured.width - inner.w)} and heighten it by `
       + `${Math.max(0, measured.height - inner.h)} quadrants, or drop to scale ${Math.max(1, scale - 1)}`
       + (measured.lines > fits ? `, or shorten it — only ${fits} line(s) of this size fit.` : '.'),

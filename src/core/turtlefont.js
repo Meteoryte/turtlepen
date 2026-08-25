@@ -222,9 +222,17 @@ export function renderStrokeText(text, {
   maxWidth = null,
   align = 'left',
   rotate = 0,
+  weight = null,
 } = {}) {
   assertScale(scale);
   assertRotation(rotate);
+  // The pen is as thick as the glyph is big, unless a caller says otherwise.
+  // Anything else scales the skeleton without scaling the mark that draws it,
+  // which is how a dot came to be a solid block beside a hairline stem.
+  const pen = weight ?? scale;
+  if (!Number.isInteger(pen) || pen < 1) {
+    throw new RangeError(`turtlefont weight must be a whole number of quadrants, 1 or more — got ${JSON.stringify(weight)}`);
+  }
   if (!['left', 'center', 'right'].includes(align)) {
     throw new SyntaxError(`turtlefont align must be left, center or right — got ${JSON.stringify(align)}`);
   }
@@ -257,8 +265,12 @@ export function renderStrokeText(text, {
       for (const stroke of g.strokes) {
         if (stroke.length === 1) {
           // A one-point stroke is a dot: a tittle, a full stop, a diaeresis.
+          // It is one mark of the pen, exactly like the end of any other
+          // stroke — it used to be special-cased into a filled square of the
+          // scale, which made it heavier than everything around it and hung it
+          // down and to the right of where it belonged.
           const p = stroke[0];
-          markQuad(quads, penX + p.x * scale, baseline - p.y * scale, scale);
+          quads.add(`${penX + p.x * scale},${baseline - p.y * scale}`);
           continue;
         }
         for (let i = 0; i + 1 < stroke.length; i++) {
@@ -276,8 +288,20 @@ export function renderStrokeText(text, {
     }
   });
 
+  // Ink the skeleton with a pen `pen` quadrants square. Every mark grows the
+  // same way, so a dot lands squarely on the stem it belongs to instead of
+  // beside it.
+  const inked = pen > 1 ? thicken(quads, pen) : quads;
+
+  // Two different true numbers, kept apart on purpose. The BLOCK is the advance
+  // box: where the next character would start, exactly proportional to the
+  // scale. The PEN box is what the drawing actually occupies, which is the
+  // block plus however far the pen overhangs the last skeleton point. Sizing a
+  // container against the advance box alone under-reserves by the pen width.
   const blockHeight = lines.length * LINE_HEIGHT * scale + (lines.length - 1) * METRICS.lineGap * scale;
-  const turned = rotate ? turnQuads(quads, rotate, blockWidth, blockHeight) : quads;
+  const penWidth = blockWidth + pen - 1;
+  const penHeight = blockHeight + pen - 1;
+  const turned = rotate ? turnQuads(inked, rotate, penWidth, penHeight) : inked;
 
   const pieces = [...turned].map((k) => {
     const [x, y] = k.split(',').map(Number);
@@ -296,11 +320,15 @@ export function renderStrokeText(text, {
     // does not shrink because a line happens to have no descender.
     width: quarter ? blockHeight : blockWidth,
     height: quarter ? blockWidth : blockHeight,
+    // What the ink needs. Size boxes against these.
+    penWidth: quarter ? penHeight : penWidth,
+    penHeight: quarter ? penWidth : penHeight,
     rotate,
     // Where the ink actually landed, which is usually smaller.
     inked: pieces.length ? bounds(pieces) : null,
     overflowed: maxWidth ? widths.some((w) => w > maxWidth) : false,
     scale,
+    weight: pen,
   };
 }
 
@@ -337,11 +365,23 @@ function turnQuads(quads, deg, w, h) {
   return out;
 }
 
-/** A dot at scale N is a square of N quadrants, so it keeps weight with the strokes. */
-function markQuad(quads, x, y, scale) {
-  for (let dy = 0; dy < scale; dy++) {
-    for (let dx = 0; dx < scale; dx++) quads.add(`${x + dx},${y + dy}`);
+/**
+ * Draw the skeleton with a square pen.
+ *
+ * Every mark grows down and right from its own point, which is the same
+ * direction the coordinate mapping already grows: glyph x maps to lattice
+ * x * scale, so a glyph cell occupies the quadrants from there. Growing marks
+ * consistently is what makes a tittle sit over its stem rather than beside it.
+ */
+function thicken(quads, pen) {
+  const out = new Set();
+  for (const key of quads) {
+    const [x, y] = key.split(',').map(Number);
+    for (let dy = 0; dy < pen; dy++) {
+      for (let dx = 0; dx < pen; dx++) out.add(`${x + dx},${y + dy}`);
+    }
   }
+  return out;
 }
 
 function bounds(pieces) {
@@ -368,10 +408,12 @@ export function requiredCellsForStrokeText(text, options = {}) {
   const m = measureStrokeText(text, options);
   const padding = 2; // one quadrant of breathing room each side
   return {
-    cellsWide: Math.ceil((m.width + padding * 2) / 2),
-    cellsTall: Math.ceil((m.height + padding * 2) / 2),
-    width: m.width,
-    height: m.height,
+    // Sized against the PEN box: the advance box does not include the width of
+    // the mark that draws the last stroke.
+    cellsWide: Math.ceil((m.penWidth + padding * 2) / 2),
+    cellsTall: Math.ceil((m.penHeight + padding * 2) / 2),
+    width: m.penWidth,
+    height: m.penHeight,
     lines: m.lines,
   };
 }

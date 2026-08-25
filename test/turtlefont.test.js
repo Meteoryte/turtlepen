@@ -450,3 +450,73 @@ test('a label does not trip the rule about strokes crossing nodes', () => {
     'ink over a node it does not label is still a crossing',
   );
 });
+
+test('the letters a full sweep found wrong stay fixed', () => {
+  // Each of these was legible in isolation and wrong in a word, which is why
+  // the sweep was done by reading every glyph's ink rather than by eye.
+  //   s was vertically symmetric, so it read as an 8
+  //   y differed from g in exactly ONE row — it was a u with a g's tail
+  //   a had a full-width shoulder, merging the arch into the bowl
+  for (const [a, b] of [['s', '8'], ['s', 'S'], ['y', 'g'], ['y', 'v'], ['a', 'o'], ['a', 'e'],
+    ['★', '☆'], ['▲', '▼'], ['¼', '½'], ['½', '¾']]) {
+    assert.notDeepEqual(quadSet(a), quadSet(b), `${a} and ${b} draw the same ink`);
+  }
+
+  // s is an asymmetric letter and 8 is a symmetric one; drawing s symmetrically
+  // is precisely how it came to look like an 8. Mirror the whole glyph about
+  // its own centre line — checking row by row proves nothing, because a single
+  // contiguous run is always symmetric about its own midpoint.
+  const mirrors = (ch) => {
+    const r = font.renderStrokeText(ch);
+    const ink = new Set(r.pieces.map((p) => `${p.x},${p.y}`));
+    const axis = r.inked.x * 2 + r.inked.w - 1;
+    return r.pieces.every((p) => ink.has(`${axis - p.x},${p.y}`));
+  };
+  assert.equal(mirrors('s'), false, 's must not mirror about its centre, or it is an 8');
+  assert.equal(mirrors('8'), true, '8 does mirror, which is the contrast that makes the check mean something');
+});
+
+test('a filled mark is filled and a hollow one is not', () => {
+  const solid = (ch) => {
+    const r = font.renderStrokeText(ch);
+    return r.pieces.length / (r.inked.w * r.inked.h);
+  };
+  assert.ok(solid('★') > solid('☆'), 'the black star is denser than the white one');
+  assert.ok(solid('●') > solid('○'), 'the black circle is denser than the white one');
+  assert.ok(solid('■') > solid('□'), 'the black square is denser than the white one');
+});
+
+test('the pen is as thick as the glyph is big', () => {
+  // The bug this replaced: strokes were drawn with a one-quadrant pen at every
+  // scale while dots were filled squares of the scale, so a tittle was three
+  // times heavier than the stem it belonged to and sat down and right of it.
+  for (const scale of [1, 2, 3, 4]) {
+    const dot = font.renderStrokeText('.', { scale });
+    const bar = font.renderStrokeText('|', { scale });
+    assert.equal(dot.inked.w, scale, `a dot is one pen mark at scale ${scale}`);
+    assert.equal(bar.inked.w, scale, `a stroke is one pen wide at scale ${scale}`);
+    assert.equal(dot.weight, scale, 'the pen defaults to the scale');
+  }
+  // And a caller may keep a hairline pen at a large size, which is what a
+  // plotter with one nib actually does.
+  const hairline = font.renderStrokeText('|', { scale: 4, weight: 1 });
+  assert.equal(hairline.inked.w, 1);
+});
+
+test('a tittle sits over its stem, not beside it', () => {
+  for (const scale of [1, 2, 3]) {
+    const r = font.renderStrokeText('i', { scale });
+    const top = r.pieces.filter((p) => p.y < r.inked.y + 3);
+    const stem = r.pieces.filter((p) => p.y > r.inked.y + r.inked.h - 4);
+    const span = (ps) => [Math.min(...ps.map((p) => p.x)), Math.max(...ps.map((p) => p.x))];
+    assert.deepEqual(span(top), span(stem), `the dot and the stem must share columns at scale ${scale}`);
+  }
+});
+
+test('the advance box scales exactly and the pen box says what the ink needs', () => {
+  const one = font.measureStrokeText('Hg');
+  const three = font.measureStrokeText('Hg', { scale: 3 });
+  assert.equal(three.width, one.width * 3, 'the advance box is exactly proportional');
+  assert.equal(three.penWidth, three.width + 2, 'the pen box adds the pen overhang');
+  assert.ok(three.penHeight > three.height);
+});
