@@ -919,8 +919,7 @@ ${stalled}` : core.formatLog(result);
         + 'titles, callouts, plotter output, and anything where the words must collide, measure exactly, '
         + 'and survive without a font file. It is a DISPLAY face: cap height is 6 quadrants (30px), '
         + 'because a stroke glyph smaller than that stops being legible once the lattice has quantised '
-        + 'it — for 11px body text, keep using place_box labels. Scale is whole numbers only; there is no '
-        + 'half quadrant to interpolate onto. A character the face cannot draw is REFUSED, never skipped, '
+        + 'it — for 11px body text, keep using place_box labels. SIZE is the cap height in quadrants: 6 is 30px and the smallest that keeps every letter distinct, 12 is what the glyphs are drawn at, and anything between rounds (the result says whether it did). weight sets pen thickness independently, so a size can be light or bold. A character the face cannot draw is REFUSED, never skipped, '
         + 'so a missing glyph can never become a silent hole in a sentence — call font_coverage first if '
         + 'you are unsure.',
       inputSchema: {
@@ -930,7 +929,8 @@ ${stalled}` : core.formatLog(result);
           at: { type: 'string', description: 'top-left of the text block, e.g. "C4.tl"' },
           text: { type: 'string', description: 'newlines start a new line' },
           page: { type: 'string' },
-          scale: { type: 'integer', minimum: 1, description: 'whole multiples only (default 1)' },
+          scale: { type: 'integer', minimum: 1, description: 'whole multiples of the design size; use size for anything else' },
+          size: { type: 'integer', minimum: 6, description: 'cap height in QUADRANTS — 6 is 30px and the smallest the face stays legible at; 12 is the size it is drawn at. Use this OR scale, not both.' },
           tracking: { type: 'integer', description: 'extra quadrants between glyphs' },
           maxWidth: { type: 'integer', description: 'wrap at this many quadrants, breaking between words' },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
@@ -948,8 +948,15 @@ ${stalled}` : core.formatLog(result);
         await persist(session);
         const lines = [
           `drew "${args.id}" as ${r.pieces} quadrant(s) of ink — ${r.lines} line(s), `
-          + `${r.width}x${r.height} quadrants at scale ${r.scale}`,
+          + `${r.width}x${r.height} quadrants at cap height ${r.size} (${r.size * 5}px), pen ${r.weight}`,
         ];
+        if (!r.exact) {
+          lines.push(
+            `${r.size} is not a whole multiple of the design's ${core.turtlefont.REFERENCE_CAP}, so glyph `
+            + 'points were rounded to the lattice. The letters are all still distinct at this size, but fine '
+            + 'detail is lost — use a multiple of 12 if you want the drawing exactly as designed.',
+          );
+        }
         if (r.inked) {
           lines.push(`ink lands in ${r.inked.w}x${r.inked.h} quadrants; the block reserves the full line box either way`);
         }
@@ -1023,6 +1030,8 @@ ${stalled}` : core.formatLog(result);
           text: { type: 'string' },
           page: { type: 'string' },
           scale: { type: 'integer', minimum: 1 },
+          size: { type: 'integer', minimum: 6, description: 'cap height in QUADRANTS — 6 is 30px and the smallest the face stays legible at; 12 is the size it is drawn at. Use this OR scale, not both.' },
+          weight: { type: 'integer', minimum: 1, description: 'pen thickness in quadrants; defaults to match the size' },
           tracking: { type: 'integer' },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
           rotate: { type: 'integer', enum: [0, 90, 180, 270], description: 'quarter turns only' },

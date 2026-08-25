@@ -70,6 +70,14 @@ of placement and makes every defect a ranked, numeric finding.
   the previous commit was the only thing that gave it away. `glyph` reports a
   fingerprint of the ink, and `glyph --compare` answers whether two drawings are
   the same drawing. Use it before believing a redraw.
+- **A size is a cap height, and the floor under it is measured.** The glyphs are
+  drawn at one cap height and rendered at any other, so most sizes round. That
+  is allowed — `rayQuads` already rounds every point BETWEEN two endpoints, and
+  rounding the endpoints too is the same kind of decision — but it must be
+  reported, which is what `exact` is for. `MIN_CAP` is not a preference: it is
+  whatever `examples/turtlefont-floor.js` says, and that script renders every
+  glyph at every candidate size looking for two letters landing on identical
+  quadrants. Change the glyph data and the answer moves, so run it again.
 - **Rotation is quarter turns only.** A quarter turn maps every quadrant onto
   another quadrant exactly; any other angle needs coordinates between quadrants,
   which do not exist here. Rotate the finished SVG if you need 30 degrees.

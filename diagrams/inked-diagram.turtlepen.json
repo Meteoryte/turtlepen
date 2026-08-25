@@ -12,7 +12,7 @@
     "advanceRatio": 0.6,
     "paddingQuads": 1
   },
-  "createdAt": "2026-08-25T21:43:48.015Z",
+  "createdAt": "2026-08-25T22:04:40.731Z",
   "pages": [
     {
       "id": "base",
@@ -647,7 +647,8 @@
         "text": "Intake",
         "font": {
           "face": "turtlefont",
-          "scale": 1,
+          "size": 12,
+          "weight": 1,
           "tracking": 0,
           "align": "center",
           "rotate": 0
@@ -1164,7 +1165,8 @@
         "text": "Build",
         "font": {
           "face": "turtlefont",
-          "scale": 1,
+          "size": 12,
+          "weight": 1,
           "tracking": 0,
           "align": "center",
           "rotate": 0
@@ -2029,7 +2031,8 @@
         "text": "Run tests",
         "font": {
           "face": "turtlefont",
-          "scale": 1,
+          "size": 12,
+          "weight": 1,
           "tracking": 0,
           "align": "center",
           "rotate": 0
@@ -2586,7 +2589,8 @@
         "text": "Ship it",
         "font": {
           "face": "turtlefont",
-          "scale": 1,
+          "size": 12,
+          "weight": 1,
           "tracking": 0,
           "align": "center",
           "rotate": 0
@@ -7510,7 +7514,8 @@
         "text": "RELEASE",
         "font": {
           "face": "turtlefont",
-          "scale": 2,
+          "size": 24,
+          "weight": 2,
           "tracking": 0,
           "align": "left",
           "rotate": 0
@@ -9411,7 +9416,8 @@
         "text": "EVERY MARK IS A PATH",
         "font": {
           "face": "turtlefont",
-          "scale": 1,
+          "size": 12,
+          "weight": 1,
           "tracking": 0,
           "align": "left",
           "rotate": 90
@@ -9421,7 +9427,7 @@
   },
   "acceptances": [],
   "forcedSave": {
-    "at": "2026-08-25T21:43:48.138Z",
+    "at": "2026-08-25T22:04:40.846Z",
     "findingCount": 1,
     "rules": [
       "L011"

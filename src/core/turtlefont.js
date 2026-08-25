@@ -170,21 +170,50 @@ export function missingFrom(text) {
   return out;
 }
 
-const assertScale = (scale) => {
-  if (!Number.isInteger(scale) || scale < 1) {
+/** The cap height the glyphs are actually drawn at. Every size is a ratio to this. */
+export const REFERENCE_CAP = METRICS.capHeight;
+
+/**
+ * The smallest cap height that still tells every letter apart.
+ *
+ * Not a guess: `npm run font:floor` renders all 442 glyphs at each candidate
+ * size and looks for two different characters landing on identical quadrants,
+ * or a glyph vanishing altogether. Below this the face stops being a face.
+ */
+export const MIN_CAP = 6;
+
+/**
+ * Resolve a requested size to a cap height in quadrants.
+ *
+ * `size` is the cap height directly, which is the honest unit — it is what a
+ * reader sees. `scale` stays as a whole-number multiple of the design size,
+ * because that is the one ratio guaranteed to reproduce the drawing exactly.
+ */
+function resolveSize({ size, scale }) {
+  if (size != null && scale != null) {
+    throw new SyntaxError('turtlefont takes size OR scale, not both — scale is a multiple of the design size, size is the cap height itself');
+  }
+  if (size == null) {
+    const n = scale ?? 1;
+    if (!Number.isInteger(n) || n < 1) {
+      throw new RangeError(`turtlefont scale must be a whole number of 1 or more — got ${JSON.stringify(scale)}`);
+    }
+    return REFERENCE_CAP * n;
+  }
+  if (!Number.isInteger(size) || size < MIN_CAP) {
     throw new RangeError(
-      `turtlefont scale must be a whole number of 1 or more — got ${JSON.stringify(scale)}. `
-      + 'Fractional scaling would put glyph points between quadrants, and this engine has no '
-      + 'coordinate there. Scale the drawing, or use SVG text for a size this face cannot hold.',
+      `turtlefont size is a cap height in whole quadrants, at least ${MIN_CAP} — got ${JSON.stringify(size)}. `
+      + `${MIN_CAP} quadrants is ${MIN_CAP * 5}px, and below it two different letters start landing on the `
+      + 'same quadrants. Use SVG text for anything smaller; that is what it is for.',
     );
   }
-  return scale;
-};
+  return size;
+}
 
 /** Advance width of one line of text, in quadrants, at a given scale. */
-function lineAdvanceWidth(chars, scale, tracking) {
+function lineAdvanceWidth(chars, tracking) {
   let w = 0;
-  for (const ch of chars) w += glyph(ch).advance * scale + tracking;
+  for (const ch of chars) w += glyph(ch).advance + tracking;
   return Math.max(0, w - tracking);
 }
 
@@ -195,7 +224,7 @@ function lineAdvanceWidth(chars, scale, tracking) {
  * limit is NOT broken mid-word — it overhangs, and the overhang is reported,
  * because silently hyphenating a part number is worse than a wide label.
  */
-function toLines(text, { scale, tracking, maxWidth }) {
+function toLines(text, { tracking, maxWidth }) {
   const expanded = String(text).replace(/\t/g, '    ');
   const paragraphs = expanded.split('\n');
   if (!maxWidth) return paragraphs.map((p) => [...p]);
@@ -206,7 +235,7 @@ function toLines(text, { scale, tracking, maxWidth }) {
     let current = [];
     for (const word of words) {
       const candidate = current.length ? [...current, ' ', ...word] : [...word];
-      if (current.length && lineAdvanceWidth(candidate, scale, tracking) > maxWidth) {
+      if (current.length && lineAdvanceWidth(candidate, tracking) > maxWidth) {
         lines.push(current);
         current = [...word];
       } else {
@@ -231,19 +260,28 @@ function toLines(text, { scale, tracking, maxWidth }) {
  */
 export function renderStrokeText(text, {
   at = { x: 0, y: 0 },
-  scale = 1,
+  scale = null,
+  size = null,
   tracking = METRICS.tracking,
   maxWidth = null,
   align = 'left',
   rotate = 0,
   weight = null,
 } = {}) {
-  assertScale(scale);
+  const cap = resolveSize({ size, scale });
   assertRotation(rotate);
-  // The pen is as thick as the glyph is big, unless a caller says otherwise.
-  // Anything else scales the skeleton without scaling the mark that draws it,
-  // which is how a dot came to be a solid block beside a hairline stem.
-  const pen = weight ?? scale;
+
+  // Design units to lattice quadrants. When the requested cap height is a whole
+  // multiple of the design's, this lands on integers with nothing to round —
+  // and it says which happened, because a rounded size loses detail and a
+  // caller is entitled to know that before they look.
+  const q = (v) => Math.round((v * cap) / REFERENCE_CAP);
+  const exact = cap % REFERENCE_CAP === 0;
+
+  // The pen keeps pace with the size, unless a caller says otherwise. Anything
+  // else scales the skeleton without scaling the mark that draws it, which is
+  // how a dot came to be a solid block beside a hairline stem.
+  const pen = weight ?? Math.max(1, Math.round(cap / REFERENCE_CAP));
   if (!Number.isInteger(pen) || pen < 1) {
     throw new RangeError(`turtlefont weight must be a whole number of quadrants, 1 or more — got ${JSON.stringify(weight)}`);
   }
@@ -259,20 +297,23 @@ export function renderStrokeText(text, {
     );
   }
 
-  const lines = toLines(text, { scale, tracking, maxWidth });
-  const widths = lines.map((chars) => lineAdvanceWidth(chars, scale, tracking));
+  // Wrapping is decided in design units, so the same string breaks the same way
+  // at every size, then the result is mapped to the lattice once.
+  const designWrap = maxWidth == null ? null : Math.floor((maxWidth * REFERENCE_CAP) / cap);
+  const lines = toLines(text, { tracking, maxWidth: designWrap });
+  const designWidths = lines.map((chars) => lineAdvanceWidth(chars, tracking));
+  const widths = designWidths.map(q);
   const blockWidth = Math.max(0, ...widths);
+  const designBlockWidth = Math.max(0, ...designWidths);
 
   const quads = new Set();
-  const lineAdvance = LINE_ADVANCE * scale;
-  const ascent = METRICS.ascent * scale;
 
   lines.forEach((chars, row) => {
     // The baseline for this line, in lattice quadrants, measured DOWN.
-    const baseline = row * lineAdvance + ascent;
-    const slack = blockWidth - widths[row];
+    const baselineDesign = row * LINE_ADVANCE + METRICS.ascent;
+    const slack = designBlockWidth - designWidths[row];
     const indent = align === 'center' ? Math.floor(slack / 2) : align === 'right' ? slack : 0;
-    let penX = indent;
+    let penDesign = indent;
 
     for (const ch of chars) {
       const g = glyph(ch);
@@ -284,23 +325,23 @@ export function renderStrokeText(text, {
           // scale, which made it heavier than everything around it and hung it
           // down and to the right of where it belonged.
           const p = stroke[0];
-          quads.add(`${penX + p.x * scale},${baseline - p.y * scale}`);
+          quads.add(`${q(penDesign + p.x)},${q(baselineDesign - p.y)}`);
           continue;
         }
         const drawn = [];
         for (let i = 0; i + 1 < stroke.length; i++) {
           const a = stroke[i];
           const b = stroke[i + 1];
-          for (const q of rayQuads(
-            penX + a.x * scale, baseline - a.y * scale,
-            penX + b.x * scale, baseline - b.y * scale,
-          )) drawn.push(q);
+          for (const point of rayQuads(
+            q(penDesign + a.x), q(baselineDesign - a.y),
+            q(penDesign + b.x), q(baselineDesign - b.y),
+          )) drawn.push(point);
         }
         // Fill AFTER scaling, so a solid mark is solid at every size.
         const body = g.solid?.[si] ? fillInterior(drawn) : drawn;
-        for (const q of body) quads.add(`${q.x},${q.y}`);
+        for (const point of body) quads.add(`${point.x},${point.y}`);
       }
-      penX += g.advance * scale + tracking;
+      penDesign += g.advance + tracking;
     }
   });
 
@@ -314,7 +355,7 @@ export function renderStrokeText(text, {
   // scale. The PEN box is what the drawing actually occupies, which is the
   // block plus however far the pen overhangs the last skeleton point. Sizing a
   // container against the advance box alone under-reserves by the pen width.
-  const blockHeight = lines.length * LINE_HEIGHT * scale + (lines.length - 1) * METRICS.lineGap * scale;
+  const blockHeight = q(lines.length * LINE_HEIGHT + (lines.length - 1) * METRICS.lineGap);
   const penWidth = blockWidth + pen - 1;
   const penHeight = blockHeight + pen - 1;
   const turned = rotate ? turnQuads(inked, rotate, penWidth, penHeight) : inked;
@@ -343,7 +384,10 @@ export function renderStrokeText(text, {
     // Where the ink actually landed, which is usually smaller.
     inked: pieces.length ? bounds(pieces) : null,
     overflowed: maxWidth ? widths.some((w) => w > maxWidth) : false,
-    scale,
+    // The cap height actually drawn, and whether getting there needed rounding.
+    size: cap,
+    scale: cap / REFERENCE_CAP,
+    exact,
     weight: pen,
   };
 }

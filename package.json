@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/Meteoryte/turtlepen.git"
   },
-  "description": "TurtlePen — an integer-exact grid substrate for AI-authored diagrams: a turtle/pen command language, measurement before placement, severity-ranked collision reporting, and Z-page overlays.",
+  "description": "TurtlePen \u2014 an integer-exact grid substrate for AI-authored diagrams: a turtle/pen command language, measurement before placement, severity-ranked collision reporting, and Z-page overlays.",
   "engines": {
     "node": ">=20"
   },
@@ -29,7 +29,8 @@
     "quickstart": "node examples/build-example.js",
     "crt": "node examples/crt-desk-scene.js",
     "revision": "node examples/showcase-revision.js",
-    "atlas": "node examples/showcase-atlas.js"
+    "atlas": "node examples/showcase-atlas.js",
+    "font:floor": "node examples/turtlefont-floor.js"
   },
   "dependencies": {},
   "devDependencies": {},

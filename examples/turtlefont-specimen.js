@@ -84,6 +84,28 @@ y += font.LINE_ADVANCE;
 write('Δx ≤ 5μm → tolerance ✓   ∑(a² + b²) ≠ ∞', LEFT + 2, y);
 y += font.LINE_ADVANCE + 3;
 
+// Sizes. The face is drawn at one cap height and rendered at any other, so a
+// size is asked for in quadrants rather than picked from a list of multiples.
+write('SIZES', LEFT, y, { color: '#a4551f' });
+y += font.LINE_ADVANCE;
+for (const size of [6, 8, 10, 12, 16, 24]) {
+  const shown = write(`${size * 5}px  Handgloves`, LEFT + 2, y, { size, color: '#12202c' });
+  // Past the line it annotates, not at a guessed column — the lines are
+  // different sizes, so any fixed column collides with one of them.
+  write(shown.exact ? 'exact' : 'rounded', LEFT + 6 + shown.penWidth, y, { size: 6, color: '#5b6b7a' });
+  y += shown.height + 3;
+}
+y += 3;
+
+// Weight is a separate axis: one size, four pens.
+write('WEIGHT AT ONE SIZE', LEFT, y, { color: '#a4551f' });
+y += font.LINE_ADVANCE;
+for (const weight of [1, 2, 3, 4]) {
+  const shown = write(`pen ${weight}  Handgloves`, LEFT + 2, y, { size: 12, weight, color: '#12202c' });
+  y += shown.height + 3;
+}
+y += 3;
+
 write('WRAPPED AND CENTRED', LEFT, y, { color: '#a4551f' });
 y += font.LINE_ADVANCE;
 const wrapped = write(

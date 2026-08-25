@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 561 tests green, zero runtime dependencies, 47 MCP tools.
+Status: **prototype** — 568 tests green, zero runtime dependencies, 47 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -139,6 +139,18 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
   something inferred from proximity. `examples/inked-diagram.js` renders a
   diagram containing zero `<text>` elements and checks that claim rather than
   making it.
+- **Ask for a size, not a multiple.** `size` is the cap height in quadrants —
+  6 is 30px, 12 is what the glyphs are drawn at, and every whole number between
+  and above works. A whole multiple of the design size reproduces the drawing
+  exactly; anything else rounds glyph points onto the lattice, and the result
+  SAYS which happened rather than leaving you to wonder. The floor is measured,
+  not chosen: `pnpm run font:floor` renders all 442 glyphs at each candidate
+  size and finds where two letters start landing on the same quadrants. Below
+  that it refuses, because an unreadable letter is the same hole in a sentence
+  that a missing one would be.
+- **`weight` is a separate axis.** Pen thickness in quadrants, independent of
+  size, so one size can be light or bold — and a plotter with a single nib can
+  draw a large size with a one-quadrant pen.
 - **Text turns in quarters.** `rotate: 90` gives a vertical axis label that
   loses nothing: on a square lattice a quarter turn maps every quadrant onto
   another quadrant exactly. Any other angle is refused, because it would need

@@ -1423,7 +1423,7 @@ export function layoutElements(doc, {
  * callouts and plotter work get real ink, and 11px body text stays as text.
  */
 export function placeStrokeText(doc, pageId, {
-  id, at, text, scale = 1, tracking = 0, maxWidth = null, align = 'left', rotate = 0,
+  id, at, text, scale = null, size = null, tracking = 0, maxWidth = null, align = 'left', rotate = 0, weight = null,
   color = null, width = null, role = 'artwork', note = null,
 }) {
   getPage(doc, pageId);
@@ -1434,7 +1434,7 @@ export function placeStrokeText(doc, pageId, {
   const origin = address.pinPoint(a);
 
   const drawn = turtlefont.renderStrokeText(text, {
-    at: origin, scale, tracking, maxWidth, align, rotate,
+    at: origin, scale, size, tracking, maxWidth, align, rotate, weight,
   });
   if (!drawn.pieces.length) {
     throw new Error(`stroke text "${id}" drew nothing — ${JSON.stringify(text)} is all spaces`);
@@ -1450,7 +1450,7 @@ export function placeStrokeText(doc, pageId, {
     role,
   });
   path.text = text;
-  path.font = { face: 'turtlefont', scale, tracking, align, rotate };
+  path.font = { face: 'turtlefont', size: drawn.size, weight: drawn.weight, tracking, align, rotate };
   return { element: path, ...drawn, pieces: drawn.pieces.length };
 }
 
@@ -1474,7 +1474,7 @@ export function placeStrokeText(doc, pageId, {
  * label already obeys.
  */
 export function placeStrokeLabel(doc, pageId, {
-  id, target, text, scale = 1, tracking = 0, align = 'center', rotate = 0,
+  id, target, text, scale = null, size = null, tracking = 0, align = 'center', rotate = 0, weight = null,
   color = null, width = null, padding = 1, role = 'artwork',
 }) {
   const found = findElement(doc, target, pageId);
@@ -1495,7 +1495,7 @@ export function placeStrokeLabel(doc, pageId, {
   };
 
   const measured = turtlefont.measureStrokeText(text, {
-    scale, tracking, align, rotate, maxWidth: inner.w,
+    scale, size, weight, tracking, align, rotate, maxWidth: inner.w,
   });
 
   // Measure, report, refuse — never shrink the text or spill it. The numbers
@@ -1507,7 +1507,7 @@ export function placeStrokeLabel(doc, pageId, {
       `"${text}" does not fit inside "${target}" at scale ${scale}: it needs `
       + `${measured.penWidth}x${measured.penHeight} quadrants and the symbol leaves ${inner.w}x${inner.h}. `
       + `Widen "${target}" by ${Math.max(0, measured.width - inner.w)} and heighten it by `
-      + `${Math.max(0, measured.height - inner.h)} quadrants, or drop to scale ${Math.max(1, scale - 1)}`
+      + `${Math.max(0, measured.penHeight - inner.h)} quadrants, or drop to size ${Math.max(turtlefont.MIN_CAP, measured.size - 2)}`
       + (measured.lines > fits ? `, or shorten it — only ${fits} line(s) of this size fit.` : '.'),
     );
   }
@@ -1518,14 +1518,14 @@ export function placeStrokeLabel(doc, pageId, {
   // correct and optically wrong, which is not a trade this engine makes
   // anywhere else.
   const draft = turtlefont.renderStrokeText(text, {
-    at: { x: 0, y: 0 }, scale, tracking, align, rotate, maxWidth: inner.w,
+    at: { x: 0, y: 0 }, scale, size, weight, tracking, align, rotate, maxWidth: inner.w,
   });
   const seen = draft.inked ?? { x: 0, y: 0, w: measured.width, h: measured.height };
   const at = {
     x: inner.x + Math.floor((inner.w - seen.w) / 2) - seen.x,
     y: inner.y + Math.floor((inner.h - seen.h) / 2) - seen.y,
   };
-  const drawn = turtlefont.renderStrokeText(text, { at, scale, tracking, align, rotate, maxWidth: inner.w });
+  const drawn = turtlefont.renderStrokeText(text, { at, scale, size, weight, tracking, align, rotate, maxWidth: inner.w });
 
   const path = addPath(doc, found.page, {
     id,
@@ -1535,7 +1535,7 @@ export function placeStrokeLabel(doc, pageId, {
     role,
   });
   path.text = text;
-  path.font = { face: 'turtlefont', scale, tracking, align, rotate };
+  path.font = { face: 'turtlefont', size: drawn.size, weight: drawn.weight, tracking, align, rotate };
   path.labels = target;
   return { element: path, target, ...drawn, pieces: drawn.pieces.length, area: inner };
 }

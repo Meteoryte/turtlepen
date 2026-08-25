@@ -87,11 +87,14 @@ test('an aliased letter IS its counterpart, quadrant for quadrant', () => {
   assert.notDeepEqual(quadSet('Δ'), quadSet('A'));
 });
 
-test('scale must be a whole number, because there is no half quadrant', () => {
-  for (const bad of [1.5, 0, -1, '2', null]) {
+test('scale must be a whole number, because it is a multiple of the design size', () => {
+  // null now means "not given" — size and scale are alternatives, so either may
+  // be absent. A fractional or negative multiple is still refused.
+  for (const bad of [1.5, 0, -1, '2']) {
     assert.throws(() => font.renderStrokeText('A', { scale: bad }), /whole number/);
   }
   assert.doesNotThrow(() => font.renderStrokeText('A', { scale: 3 }));
+  assert.equal(font.renderStrokeText('A', { scale: null }).size, font.REFERENCE_CAP, 'unspecified means the design size');
 });
 
 test('scaling multiplies the block exactly', () => {
@@ -519,4 +522,72 @@ test('the advance box scales exactly and the pen box says what the ink needs', (
   assert.equal(three.width, one.width * 3, 'the advance box is exactly proportional');
   assert.equal(three.penWidth, three.width + 2, 'the pen box adds the pen overhang');
   assert.ok(three.penHeight > three.height);
+});
+
+// --- asking for a size ------------------------------------------------------
+
+test('size is a cap height, and any whole number of quadrants works', () => {
+  for (const size of [6, 7, 9, 12, 13, 18, 24]) {
+    const r = font.renderStrokeText('Handgloves', { size });
+    assert.equal(r.size, size, `size ${size} is honoured`);
+    assert.ok(r.pieces.length > 0);
+    for (const p of r.pieces) assert.ok(Number.isInteger(p.x) && Number.isInteger(p.y));
+  }
+});
+
+test('a bigger size makes a bigger block, monotonically', () => {
+  let last = 0;
+  for (const size of [6, 8, 10, 12, 16, 24]) {
+    const w = font.measureStrokeText('Handgloves', { size }).width;
+    assert.ok(w > last, `${size} must be wider than the size below it`);
+    last = w;
+  }
+});
+
+test('rounding is reported rather than hidden', () => {
+  // A whole multiple of the design size reproduces the drawing exactly. Any
+  // other size rounds glyph points onto the lattice, and a caller is entitled
+  // to know that before they judge the result.
+  assert.equal(font.renderStrokeText('a', { size: font.REFERENCE_CAP }).exact, true);
+  assert.equal(font.renderStrokeText('a', { size: font.REFERENCE_CAP * 2 }).exact, true);
+  assert.equal(font.renderStrokeText('a', { size: font.REFERENCE_CAP + 1 }).exact, false);
+});
+
+test('below the measured floor a size is refused, not rendered badly', () => {
+  assert.throws(() => font.renderStrokeText('a', { size: font.MIN_CAP - 1 }), /cap height/);
+  assert.doesNotThrow(() => font.renderStrokeText('a', { size: font.MIN_CAP }));
+  // The floor is a measurement, not a preference: examples/turtlefont-floor.js
+  // renders every glyph at every candidate size and finds where two letters
+  // start landing on the same quadrants.
+  const seen = new Map();
+  for (const ch of font.coverage()) {
+    if (ch === ' ') continue;
+    const key = font.renderStrokeText(ch, { size: font.MIN_CAP, weight: 1 })
+      .pieces.map((p) => `${p.x},${p.y}`).sort().join('|');
+    const other = seen.get(key);
+    const same = other && JSON.stringify(font.glyph(other).strokes) === JSON.stringify(font.glyph(ch).strokes);
+    assert.ok(!other || same, `at the floor, ${other} and ${ch} must not collapse onto each other`);
+    if (!other) seen.set(key, ch);
+  }
+});
+
+test('size and scale are two ways to say one thing, and not both at once', () => {
+  const bySize = font.renderStrokeText('Wg', { size: font.REFERENCE_CAP * 2 });
+  const byScale = font.renderStrokeText('Wg', { scale: 2 });
+  assert.deepEqual(bySize.pieces, byScale.pieces, 'scale 2 IS size 24');
+  assert.throws(() => font.renderStrokeText('Wg', { size: 12, scale: 2 }), /not both/);
+});
+
+test('weight is independent of size', () => {
+  const light = font.renderStrokeText('Hamburg', { size: 24, weight: 1 });
+  const bold = font.renderStrokeText('Hamburg', { size: 24, weight: 4 });
+  assert.equal(light.size, bold.size, 'same size');
+  assert.ok(bold.pieces.length > light.pieces.length * 2, 'a heavier pen lays down more ink');
+});
+
+test('a document records the size it actually drew at', () => {
+  const doc = createDocument({ name: 'sizes', cols: 200, rows: 60 });
+  const r = OPERATIONS.stroke_text(doc, { id: 'small', at: 'C4.tl', text: 'Caption', size: 6 });
+  assert.equal(r.size, 6);
+  assert.equal(findElement(doc, 'small').element.font.size, 6, 'the element remembers the resolved size');
 });
