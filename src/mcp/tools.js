@@ -934,6 +934,7 @@ ${stalled}` : core.formatLog(result);
           tracking: { type: 'integer', description: 'extra quadrants between glyphs' },
           maxWidth: { type: 'integer', description: 'wrap at this many quadrants, breaking between words' },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
+          rotate: { type: 'integer', enum: [0, 90, 180, 270], description: 'quarter turns only — any other angle would need fractional quadrants' },
           color: { type: 'string', description: '3- or 6-digit hex' },
           width: { type: 'integer', description: 'stroke width in px' },
           role: { type: 'string', enum: ['connector', 'artwork'], description: 'defaults to artwork' },
@@ -960,6 +961,87 @@ ${stalled}` : core.formatLog(result);
         }
         lines.push('This is ink: it collides like any other stroke. Validate, then render and look at it.');
         return lines.join('\n');
+      },
+    },
+
+    {
+      name: 'glyph',
+      description:
+        'Look at ONE glyph: a picture of its ink, its metrics, and a fingerprint of exactly which '
+        + 'quadrants it covers. Use this when editing the face — two different stroke lists can rasterise '
+        + 'to identical quadrants, so a source change is not proof of a drawing change, and the '
+        + 'fingerprint is what tells the two apart. The picture reads in a terminal, so a glyph can be '
+        + 'judged without rendering, opening and screenshotting an SVG.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          char: { type: 'string', description: 'a single character', minLength: 1 },
+          compare: { type: 'string', description: 'a second character to show beside it', minLength: 1 },
+        },
+        required: ['char'],
+        additionalProperties: false,
+      },
+      handler: ({ char, compare = null }) => {
+        const show = (ch) => {
+          const g = core.turtlefont.inspectGlyph([...ch][0]);
+          if (!g) {
+            return `${JSON.stringify(ch)} is not in this face. font_coverage lists what is.`;
+          }
+          return [
+            `${JSON.stringify(g.char)}  ${g.codePoint}  ${g.source}`,
+            `width ${g.width}, advance ${g.advance}, ${g.strokes} stroke(s), `
+            + `${g.quadrants} quadrant(s), ink ${g.fingerprint}`,
+            g.picture,
+          ].join('\n');
+        };
+        if (!compare) return show(char);
+        const a = core.turtlefont.inspectGlyph([...char][0]);
+        const b = core.turtlefont.inspectGlyph([...compare][0]);
+        const verdict = a && b && a.fingerprint === b.fingerprint
+          ? `\nSAME INK: ${JSON.stringify(a.char)} and ${JSON.stringify(b.char)} are one drawing under two names. `
+            + 'If that is deliberate, alias one to the other; if not, one of them needs redrawing.'
+          : '\nDifferent ink.';
+        return `${show(char)}\n\n${show(compare)}${verdict}`;
+      },
+    },
+
+    {
+      name: 'stroke_label',
+      description:
+        'Label a box with INK rather than an SVG text run, so the whole drawing survives without a font '
+        + 'file and can go to a plotter. The label is its OWN element: it collides like any other stroke '
+        + 'and can be moved or removed on its own, and the box keeps whatever <text> label it already had '
+        + '(pass an empty label to place_box if you want only the ink). The text area comes from the '
+        + 'SYMBOL, so a diamond leaves far less room than its bounding box — and because cap height is 6 '
+        + 'quadrants, inked labels need much bigger nodes than <text> ones. It measures and REFUSES with '
+        + 'numbers rather than shrinking or spilling.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          target: { type: 'string', description: 'the box to label' },
+          text: { type: 'string' },
+          page: { type: 'string' },
+          scale: { type: 'integer', minimum: 1 },
+          tracking: { type: 'integer' },
+          align: { type: 'string', enum: ['left', 'center', 'right'] },
+          rotate: { type: 'integer', enum: [0, 90, 180, 270], description: 'quarter turns only' },
+          padding: { type: 'integer', minimum: 0, description: 'quadrants of breathing room (default 1)' },
+          color: { type: 'string' },
+          width: { type: 'integer' },
+        },
+        required: ['id', 'target', 'text'],
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        const doc = need(session);
+        const r = core.OPERATIONS.stroke_label(doc, args);
+        await persist(session);
+        return [
+          `inked "${args.id}" inside "${r.target}" — ${r.pieces} quadrant(s), `
+          + `${r.width}x${r.height} in an area of ${r.area.w}x${r.area.h}`,
+          'It is a separate path, so it collides on its own terms. Validate, then look at it.',
+        ].join('\n');
       },
     },
 

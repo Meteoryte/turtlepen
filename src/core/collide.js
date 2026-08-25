@@ -483,6 +483,13 @@ function withinPage(doc, p) {
   for (const path of paths) {
     const pq = elementClaimed(path);
     for (const b of boxes) {
+      // A stroke label lives INSIDE the box it labels, on purpose. The author
+      // said which box that is when they placed it, so this is authored fact —
+      // the same kind of fact as a connector naming its origin — and not a
+      // guess made from proximity. It exempts that ONE box: an inked label
+      // sprawling across a different node is still exactly the defect L004
+      // exists to catch.
+      if (path.labels === b.id) continue;
       const body = elementVisual(b);
       const cut = shapeCutQuads(b.rect, b.shape ?? 'process', b.corner);
       const hitsBody = intersect(pq, body);

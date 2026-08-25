@@ -298,3 +298,155 @@ test('the dashes get longer in the right order', () => {
   assert.ok(w('-') < w('–'), 'a hyphen is shorter than an en dash');
   assert.ok(w('–') < w('—'), 'an en dash is shorter than an em dash');
 });
+
+// --- quarter turns ----------------------------------------------------------
+
+test('a quarter turn is exact: nothing is gained or lost', () => {
+  const flat = font.renderStrokeText('Throughput');
+  for (const deg of [90, 180, 270]) {
+    const turned = font.renderStrokeText('Throughput', { rotate: deg });
+    assert.equal(turned.pieces.length, flat.pieces.length, `${deg}deg must keep every quadrant`);
+    for (const p of turned.pieces) {
+      assert.ok(Number.isInteger(p.x) && Number.isInteger(p.y), 'a turn cannot invent a coordinate');
+    }
+  }
+});
+
+test('a quarter turn swaps the block, a half turn does not', () => {
+  const flat = font.renderStrokeText('Axis');
+  const quarter = font.renderStrokeText('Axis', { rotate: 90 });
+  const half = font.renderStrokeText('Axis', { rotate: 180 });
+  assert.deepEqual([quarter.width, quarter.height], [flat.height, flat.width]);
+  assert.deepEqual([half.width, half.height], [flat.width, flat.height]);
+});
+
+test('four quarter turns come back to where they started', () => {
+  // Rotating the same block four times must be the identity, or the turn is
+  // losing something each time.
+  const once = font.renderStrokeText('Rr', { rotate: 90 });
+  const twice = font.renderStrokeText('Rr', { rotate: 180 });
+  const thrice = font.renderStrokeText('Rr', { rotate: 270 });
+  const flat = font.renderStrokeText('Rr');
+  for (const r of [once, twice, thrice]) assert.equal(r.pieces.length, flat.pieces.length);
+  // And a turn actually moves the ink, rather than quietly doing nothing.
+  const key = (r) => r.pieces.map((p) => `${p.x},${p.y}`).sort().join('|');
+  assert.notEqual(key(once), key(flat));
+  assert.notEqual(key(twice), key(flat));
+});
+
+test('any angle but a quarter turn is refused', () => {
+  for (const bad of [45, 1, -90, 360, 'ninety']) {
+    assert.throws(() => font.renderStrokeText('x', { rotate: bad }), /quarter turns/);
+  }
+});
+
+test('a rotated block still starts where it was placed', () => {
+  const r = font.renderStrokeText('Axis', { at: { x: 20, y: 12 }, rotate: 90 });
+  const minX = Math.min(...r.pieces.map((p) => p.x));
+  const minY = Math.min(...r.pieces.map((p) => p.y));
+  assert.ok(minX >= 20 && minY >= 12, `the turn must not push ink behind the origin: ${minX},${minY}`);
+});
+
+// --- looking at one glyph ----------------------------------------------------
+
+test('inspecting a glyph reports where its drawing came from', () => {
+  assert.equal(font.inspectGlyph('a').source, 'drawn');
+  assert.equal(font.inspectGlyph('Α').source, 'alias of "A"');
+  assert.equal(font.inspectGlyph('ä').source, 'composed: "a" + diaeresis');
+  assert.equal(font.inspectGlyph('字'), null, 'a glyph the face lacks inspects to nothing');
+});
+
+test('the fingerprint is what tells an edit from a no-op', () => {
+  // This is the whole reason the tool exists: a different stroke list can
+  // rasterise to identical quadrants, and reading the source will not say so.
+  assert.equal(font.inspectGlyph('Α').fingerprint, font.inspectGlyph('A').fingerprint,
+    'an alias has the ink of what it aliases');
+  assert.notEqual(font.inspectGlyph('a').fingerprint, font.inspectGlyph('o').fingerprint);
+  assert.match(font.inspectGlyph('a').fingerprint, /^[0-9a-f]{8}$/);
+});
+
+test('the picture shows the glyph against its own metrics', () => {
+  const p = font.inspectGlyph('g').picture;
+  const lines = p.split('\n');
+  assert.equal(lines.length, font.METRICS.accentCeiling + font.METRICS.descent + 1);
+  assert.match(p, /<- baseline/);
+  assert.match(p, /<- x-height/);
+  assert.match(p, /<- cap/);
+  // A descender must actually show below the baseline.
+  const below = lines.slice(lines.findIndex((l) => l.includes('baseline')) + 1);
+  assert.ok(below.some((l) => l.includes('#')), 'g descends, and the picture should show it');
+});
+
+// --- inked labels ------------------------------------------------------------
+
+test('a stroke label centres itself in the room the symbol leaves', () => {
+  const doc = createDocument({ name: 'inked', cols: 120, rows: 60 });
+  OPERATIONS.place_box(doc, { id: 'step', at: 'C4.tl', span: { w: 20, h: 8 }, label: '' });
+  const r = OPERATIONS.stroke_label(doc, { id: 'lbl', target: 'step', text: 'Build' });
+  const box = findElement(doc, 'step').element.rect;
+  const ink = findElement(doc, 'lbl').element;
+  assert.equal(ink.kind, 'path', 'the label is ink, not a text run');
+  assert.equal(ink.labels, 'step');
+  // Centred to within a quadrant. The right edge is INCLUSIVE: a box at x with
+  // width w covers x..x+w-1, and measuring to x+w instead is an off-by-one that
+  // makes correct centring look wrong by exactly one quadrant.
+  const inkMinX = Math.min(...ink.pieces.map((p) => p.x));
+  const inkMaxX = Math.max(...ink.pieces.map((p) => p.x));
+  const left = inkMinX - box.x;
+  const right = (box.x + box.w - 1) - inkMaxX;
+  assert.ok(Math.abs(left - right) <= 1, `margins should agree: left ${left}, right ${right}`);
+  assert.ok(r.width <= r.area.w && r.height <= r.area.h);
+});
+
+test('a label that does not fit is refused with the numbers to fix it', () => {
+  const doc = createDocument({ name: 'inked', cols: 60, rows: 30 });
+  OPERATIONS.place_box(doc, { id: 'tiny', at: 'C4.tl', span: { w: 4, h: 2 }, label: '' });
+  assert.throws(
+    () => OPERATIONS.stroke_label(doc, { id: 'no', target: 'tiny', text: 'Far too long for this' }),
+    /does not fit inside "tiny".*Widen/s,
+  );
+  assert.equal(findElement(doc, 'no'), null, 'and nothing is left behind');
+});
+
+test('a symbol gets less room than its bounding box', () => {
+  // A diamond inks a quarter of its box, and an inked label has to live inside
+  // the symbol rather than the rectangle around it.
+  const doc = createDocument({ name: 'inked', cols: 160, rows: 80 });
+  OPERATIONS.place_box(doc, { id: 'plain', at: 'C4.tl', span: { w: 30, h: 14 }, label: '' });
+  OPERATIONS.place_box(doc, { id: 'gate', at: 'C24.tl', span: { w: 30, h: 14 }, label: '', shape: 'decision' });
+  const flat = OPERATIONS.stroke_label(doc, { id: 'a1', target: 'plain', text: 'Ok' });
+  const gate = OPERATIONS.stroke_label(doc, { id: 'a2', target: 'gate', text: 'Ok' });
+  assert.ok(gate.area.w < flat.area.w, 'the diamond leaves less width for the same box');
+});
+
+test('a label refuses anything but a box', () => {
+  const doc = createDocument({ name: 'inked', cols: 60, rows: 30 });
+  OPERATIONS.pen(doc, { id: 'run', role: 'artwork', program: 'pen C6.q1\nright 4 line' });
+  assert.throws(
+    () => OPERATIONS.stroke_label(doc, { id: 'x', target: 'run', text: 'no' }),
+    /stroke labels go inside boxes/,
+  );
+});
+
+test('a label does not trip the rule about strokes crossing nodes', () => {
+  // An inked label lives inside its box by design. L004 catches a connector
+  // ploughing through a node, which is a real defect; a label doing it is the
+  // author's stated intent, recorded when they named the target.
+  const doc = createDocument({ name: 'inked', cols: 140, rows: 60 });
+  OPERATIONS.place_box(doc, { id: 'here', at: 'C4.tl', span: { w: 20, h: 8 }, label: '' });
+  OPERATIONS.place_box(doc, { id: 'elsewhere', at: 'AA4.tl', span: { w: 20, h: 8 }, label: '' });
+  OPERATIONS.stroke_label(doc, { id: 'mine', target: 'here', text: 'Build' });
+  const crossings = validate(doc).open.filter((f) => f.rule === 'L004');
+  assert.equal(crossings.length, 0, `a label in its own box is not a crossing: ${JSON.stringify(crossings)}`);
+
+  // But the exemption is for that ONE box. Ink sprawling over a different node
+  // is exactly what the rule is for.
+  const stray = OPERATIONS.stroke_text(doc, {
+    id: 'stray', at: 'AA5.tl', text: 'over the top', color: '#000',
+  });
+  assert.ok(stray.pieces > 0);
+  assert.ok(
+    validate(doc).open.some((f) => f.rule === 'L004' && f.actors.includes('elsewhere')),
+    'ink over a node it does not label is still a crossing',
+  );
+});

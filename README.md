@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 543 tests green, zero runtime dependencies, 45 MCP tools.
+Status: **prototype** — 556 tests green, zero runtime dependencies, 47 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -128,6 +128,25 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
   there is no half quadrant to interpolate onto. A character the face cannot
   draw is refused rather than skipped — a missing glyph must never become a
   silent hole in a sentence. `font_coverage` says what it has.
+- **`stroke_label` inks a box's label, so a whole drawing can be font-free.**
+  `place_box` writes its label as `<text>`, which is right at body sizes and
+  impossible to plot; this draws it with TurtleFont instead, centred in the room
+  the SYMBOL leaves rather than the bounding box. The label is its own element,
+  so it collides on its own terms — and the rule about strokes crossing nodes
+  exempts a label from the one box it names, which the author states, never
+  something inferred from proximity. `examples/inked-diagram.js` renders a
+  diagram containing zero `<text>` elements and checks that claim rather than
+  making it.
+- **Text turns in quarters.** `rotate: 90` gives a vertical axis label that
+  loses nothing: on a square lattice a quarter turn maps every quadrant onto
+  another quadrant exactly. Any other angle is refused, because it would need
+  coordinates between quadrants.
+- **`glyph` shows one letter's ink and fingerprints it.** Two different stroke
+  lists can rasterise to identical quadrants — this repo shipped a "redrawn"
+  letter that changed nothing before that was noticed — so a source change is
+  not proof of a drawing change. The fingerprint is what tells them apart, and
+  the picture reads in a terminal so a glyph can be judged without rendering an
+  SVG.
 - **`layout` chooses the arrangement; `align` and `distribute` tidy one you
   already chose.** It ranks the graph so flow runs down the page, gives every
   long edge a lane of its own, reorders each rank to remove crossings, centres

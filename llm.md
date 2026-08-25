@@ -39,6 +39,15 @@ of placement and makes every defect a ranked, numeric finding.
   TurtleFont (`core/turtlefont.js`) holds the same line differently: it does not
   predict a width at all, because `measureStrokeText` IS `renderStrokeText` with
   the quadrants discarded. There is no second implementation to drift.
+- **A label names its box, and that is authored fact.** `stroke_label` records
+  which box it belongs to, and `L004` exempts it from that ONE box. Do not widen
+  the exemption to all boxes, and do not infer the relationship from overlap:
+  ink sprawling across a node it does not label is exactly the defect that rule
+  exists to catch. This is the same principle as a connector recording its
+  origin rather than the engine guessing from proximity.
+- **Rotation is quarter turns only.** A quarter turn maps every quadrant onto
+  another quadrant exactly; any other angle needs coordinates between quadrants,
+  which do not exist here. Rotate the finished SVG if you need 30 degrees.
 - **Words can be ink.** `stroke_text` draws through TurtleFont, so a label is
   quadrants the collision engine sees rather than an SVG `<text>` run laid out
   by the viewer's font stack. It is a display face by arithmetic — cap height 6

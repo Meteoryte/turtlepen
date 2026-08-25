@@ -156,6 +156,16 @@ test('every advertised MCP tool completes a representative use case over stdio',
     const cover = JSON.parse(await invoke('font_coverage', { text: 'Ship it — Δx ≤ 5μm' }));
     assert.equal(cover.drawable, true, 'the face covers accents, maths and arrows');
     await invoke('stroke_text', { id: 'inked', at: 'C34.tl', text: 'RELEASE PIPELINE', scale: 2, align: 'center' });
+    // Looking at one glyph, and the fingerprint that tells an edit from a no-op.
+    const picture = await invoke('glyph', { char: 'a', compare: 'o' });
+    assert.match(picture, /baseline/, 'the picture is drawn against the metrics');
+    assert.match(await invoke('glyph', { char: 'A', compare: 'Α' }), /SAME INK/, 'an alias is reported as one drawing');
+    // An inked label, which is what makes a whole diagram font-free.
+    await invoke('place_box', { id: 'inkbox', at: 'C56.tl', span: { w: 22, h: 8 }, label: '' });
+    await invoke('stroke_label', { id: 'inklbl', target: 'inkbox', text: 'Build' });
+    const tooBig = await client.call('stroke_label', { id: 'nope2', target: 'inkbox', text: 'Far too long to fit in here at all' });
+    assert.equal(tooBig.isError, true, 'a label that does not fit is refused, not shrunk');
+
     const refused = await client.call('stroke_text', { id: 'nope', at: 'C46.tl', text: 'ok 字' });
     assert.equal(refused.isError, true, 'a glyph the face lacks is refused, never skipped');
 

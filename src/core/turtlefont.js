@@ -221,8 +221,10 @@ export function renderStrokeText(text, {
   tracking = METRICS.tracking,
   maxWidth = null,
   align = 'left',
+  rotate = 0,
 } = {}) {
   assertScale(scale);
+  assertRotation(rotate);
   if (!['left', 'center', 'right'].includes(align)) {
     throw new SyntaxError(`turtlefont align must be left, center or right — got ${JSON.stringify(align)}`);
   }
@@ -245,10 +247,10 @@ export function renderStrokeText(text, {
 
   lines.forEach((chars, row) => {
     // The baseline for this line, in lattice quadrants, measured DOWN.
-    const baseline = at.y + row * lineAdvance + ascent;
+    const baseline = row * lineAdvance + ascent;
     const slack = blockWidth - widths[row];
     const indent = align === 'center' ? Math.floor(slack / 2) : align === 'right' ? slack : 0;
-    let penX = at.x + indent;
+    let penX = indent;
 
     for (const ch of chars) {
       const g = glyph(ch);
@@ -274,10 +276,17 @@ export function renderStrokeText(text, {
     }
   });
 
-  const pieces = [...quads].map((k) => {
+  const blockHeight = lines.length * LINE_HEIGHT * scale + (lines.length - 1) * METRICS.lineGap * scale;
+  const turned = rotate ? turnQuads(quads, rotate, blockWidth, blockHeight) : quads;
+
+  const pieces = [...turned].map((k) => {
     const [x, y] = k.split(',').map(Number);
-    return { x, y };
+    return { x: x + at.x, y: y + at.y };
   }).sort((p, q) => p.y - q.y || p.x - q.x);
+
+  // A quarter turn swaps the block's two dimensions, which is the whole reason
+  // a caller asked for one.
+  const quarter = rotate === 90 || rotate === 270;
 
   return {
     pieces,
@@ -285,13 +294,47 @@ export function renderStrokeText(text, {
     lineWidths: widths,
     // The reserved block, which is what a caller should size a box against. It
     // does not shrink because a line happens to have no descender.
-    width: blockWidth,
-    height: lines.length * LINE_HEIGHT * scale + (lines.length - 1) * METRICS.lineGap * scale,
+    width: quarter ? blockHeight : blockWidth,
+    height: quarter ? blockWidth : blockHeight,
+    rotate,
     // Where the ink actually landed, which is usually smaller.
     inked: pieces.length ? bounds(pieces) : null,
     overflowed: maxWidth ? widths.some((w) => w > maxWidth) : false,
     scale,
   };
+}
+
+const ROTATIONS = Object.freeze([0, 90, 180, 270]);
+
+/**
+ * Only quarter turns.
+ *
+ * A quarter turn is exact on a square lattice: every quadrant maps onto another
+ * quadrant, and nothing has to be rounded. Any other angle sends the corners of
+ * a cell to points that are not cells, so it would have to invent coordinates —
+ * which is the one thing this engine does not do. Rotate the finished SVG if
+ * you need 30 degrees; do not ask the lattice to pretend.
+ */
+function assertRotation(deg) {
+  if (!ROTATIONS.includes(deg)) {
+    throw new RangeError(
+      `turtlefont rotate must be one of ${ROTATIONS.join(', ')} — got ${JSON.stringify(deg)}. `
+      + 'Only quarter turns land back on the lattice; any other angle would need fractional quadrants.',
+    );
+  }
+  return deg;
+}
+
+/** Turn a set of quadrant keys about the block's own top-left corner. */
+function turnQuads(quads, deg, w, h) {
+  const out = new Set();
+  for (const key of quads) {
+    const [x, y] = key.split(',').map(Number);
+    if (deg === 90) out.add(`${h - 1 - y},${x}`);
+    else if (deg === 180) out.add(`${w - 1 - x},${h - 1 - y}`);
+    else out.add(`${y},${w - 1 - x}`);
+  }
+  return out;
 }
 
 /** A dot at scale N is a square of N quadrants, so it keeps weight with the strokes. */
@@ -331,4 +374,83 @@ export function requiredCellsForStrokeText(text, options = {}) {
     height: m.height,
     lines: m.lines,
   };
+}
+
+/**
+ * Look at ONE glyph, without rendering a sheet of four hundred.
+ *
+ * This exists because of a mistake. Asked to redraw the lowercase `a`, I wrote
+ * a different stroke list, compared it on a variant sheet, picked a winner, and
+ * shipped nothing at all: the two lists rasterised to identical quadrants. The
+ * only reason it surfaced was that the exported SVG came out byte-for-byte
+ * identical to the previous commit.
+ *
+ * So this returns the INK — a picture of it, and a fingerprint of it. Two
+ * drawings with the same fingerprint are the same drawing, whatever the source
+ * says. `picture` is deliberately readable in a terminal: an agent editing a
+ * glyph can see the result without rendering, opening and screenshotting an
+ * SVG, which was the four-step loop this replaces.
+ */
+export function inspectGlyph(ch) {
+  const g = glyph(ch);
+  if (!g) return null;
+
+  const resolved = ALIAS.get(ch) ?? ch;
+  let source = 'drawn';
+  if (ALIAS.has(ch)) source = `alias of ${JSON.stringify(resolved)}`;
+  else if (COMPOSED[resolved]) {
+    const { base, mark } = COMPOSED[resolved];
+    source = `composed: ${JSON.stringify(base)} + ${mark}`;
+  }
+
+  // Glyph space is y-up from the baseline; the picture is drawn top-down, from
+  // the accent ceiling to the bottom of the descender, so it reads like type.
+  const top = METRICS.accentCeiling;
+  const bottom = -METRICS.descent;
+  const ink = new Set();
+  for (const stroke of g.strokes) {
+    if (stroke.length === 1) { ink.add(`${stroke[0].x},${stroke[0].y}`); continue; }
+    for (let i = 0; i + 1 < stroke.length; i++) {
+      for (const q of rayQuads(stroke[i].x, -stroke[i].y, stroke[i + 1].x, -stroke[i + 1].y)) {
+        ink.add(`${q.x},${-q.y}`);
+      }
+    }
+  }
+
+  const rows = [];
+  for (let y = top; y >= bottom; y--) {
+    let row = '';
+    for (let x = 0; x <= g.advance; x++) row += ink.has(`${x},${y}`) ? '#' : (x <= g.width ? '.' : ' ');
+    const rule = y === 0 ? ' <- baseline'
+      : y === METRICS.xHeight ? ' <- x-height'
+        : y === METRICS.capHeight ? ' <- cap'
+          : '';
+    rows.push(`${String(y).padStart(2)} |${row}|${rule}`);
+  }
+
+  return {
+    char: ch,
+    codePoint: `U+${ch.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')}`,
+    source,
+    width: g.width,
+    advance: g.advance,
+    strokes: g.strokes.length,
+    quadrants: ink.size,
+    // Two glyphs with one fingerprint ARE one drawing. This is the check that
+    // tells an edit apart from a no-op.
+    fingerprint: fingerprintOfInk(ink),
+    picture: rows.join('\n'),
+  };
+}
+
+/** A short, stable hash of an ink set. Order-independent by construction. */
+function fingerprintOfInk(ink) {
+  let h = 0x811c9dc5;
+  for (const key of [...ink].sort()) {
+    for (let i = 0; i < key.length; i++) {
+      h ^= key.charCodeAt(i);
+      h = Math.imul(h, 0x01000193) >>> 0;
+    }
+  }
+  return h.toString(16).padStart(8, '0');
 }

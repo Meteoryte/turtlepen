@@ -646,6 +646,7 @@ export const OPERATIONS = Object.freeze({
   distribute: (doc, a) => distributeElements(doc, a.ids, a.axis),
   layout: (doc, a) => layoutElements(doc, a),
   stroke_text: (doc, a) => placeStrokeText(doc, a.page ?? 'base', a),
+  stroke_label: (doc, a) => placeStrokeLabel(doc, a.page ?? null, a),
   wireframe: (doc, a) => applyWireframe(doc, a),
   perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
   // A review is document state, so it goes through OPERATIONS like every other
@@ -1422,7 +1423,7 @@ export function layoutElements(doc, {
  * callouts and plotter work get real ink, and 11px body text stays as text.
  */
 export function placeStrokeText(doc, pageId, {
-  id, at, text, scale = 1, tracking = 0, maxWidth = null, align = 'left',
+  id, at, text, scale = 1, tracking = 0, maxWidth = null, align = 'left', rotate = 0,
   color = null, width = null, role = 'artwork', note = null,
 }) {
   getPage(doc, pageId);
@@ -1433,7 +1434,7 @@ export function placeStrokeText(doc, pageId, {
   const origin = address.pinPoint(a);
 
   const drawn = turtlefont.renderStrokeText(text, {
-    at: origin, scale, tracking, maxWidth, align,
+    at: origin, scale, tracking, maxWidth, align, rotate,
   });
   if (!drawn.pieces.length) {
     throw new Error(`stroke text "${id}" drew nothing — ${JSON.stringify(text)} is all spaces`);
@@ -1449,6 +1450,92 @@ export function placeStrokeText(doc, pageId, {
     role,
   });
   path.text = text;
-  path.font = { face: 'turtlefont', scale, tracking, align };
+  path.font = { face: 'turtlefont', scale, tracking, align, rotate };
   return { element: path, ...drawn, pieces: drawn.pieces.length };
+}
+
+/**
+ * Label a box with INK instead of an SVG text run.
+ *
+ * `place_box` writes its label as `<text>`, which is right for body sizes and
+ * wrong for two cases this closes: a drawing that has to survive without a font
+ * file, and a drawing that has to go to a plotter, where a `<text>` element is
+ * not a path and simply does not exist.
+ *
+ * It is a SEPARATE element, deliberately. Folding stroke ink into the box would
+ * make a label part of the box's own visual footprint and change what every
+ * collision rule sees; a label that is its own path collides like anything else
+ * and can be moved, restyled or removed on its own. The box keeps whatever
+ * `<text>` label it already had — pass an empty label to `place_box` if you
+ * want only the ink.
+ *
+ * The text area comes from `shapeTextRect`, so a diamond or a cylinder gets the
+ * room its SYMBOL leaves rather than its bounding box — the same rule the SVG
+ * label already obeys.
+ */
+export function placeStrokeLabel(doc, pageId, {
+  id, target, text, scale = 1, tracking = 0, align = 'center', rotate = 0,
+  color = null, width = null, padding = 1, role = 'artwork',
+}) {
+  const found = findElement(doc, target, pageId);
+  if (!found) throw new Error(`no element "${target}" to label`);
+  if (found.element.kind !== 'box') {
+    throw new Error(`"${target}" is a ${found.element.kind} — stroke labels go inside boxes. Use stroke_text to place ink anywhere.`);
+  }
+  if (typeof text !== 'string' || !text.trim()) {
+    throw new SyntaxError(`stroke label "${id}" needs something to say`);
+  }
+
+  const area = shapes.shapeTextRect(found.element.rect, found.element.shape ?? 'process');
+  const inner = {
+    x: area.x + padding,
+    y: area.y + padding,
+    w: Math.max(1, area.w - padding * 2),
+    h: Math.max(1, area.h - padding * 2),
+  };
+
+  const measured = turtlefont.measureStrokeText(text, {
+    scale, tracking, align, rotate, maxWidth: inner.w,
+  });
+
+  // Measure, report, refuse — never shrink the text or spill it. The numbers
+  // are the useful part: an author can widen the box, drop the scale, or
+  // shorten the words, and each of those is their decision to make.
+  if (measured.width > inner.w || measured.height > inner.h) {
+    const fits = Math.max(1, Math.floor(inner.h / (turtlefont.LINE_HEIGHT * scale)));
+    throw new Error(
+      `"${text}" does not fit inside "${target}" at scale ${scale}: it needs `
+      + `${measured.width}x${measured.height} quadrants and the symbol leaves ${inner.w}x${inner.h}. `
+      + `Widen "${target}" by ${Math.max(0, measured.width - inner.w)} and heighten it by `
+      + `${Math.max(0, measured.height - inner.h)} quadrants, or drop to scale ${Math.max(1, scale - 1)}`
+      + (measured.lines > fits ? `, or shorten it — only ${fits} line(s) of this size fit.` : '.'),
+    );
+  }
+
+  // Centre the INK, not the advance block. Every glyph carries a trailing side
+  // bearing, so centring on the block leaves the last letter's empty margin
+  // inside the box and pushes the visible word off to the left — metrically
+  // correct and optically wrong, which is not a trade this engine makes
+  // anywhere else.
+  const draft = turtlefont.renderStrokeText(text, {
+    at: { x: 0, y: 0 }, scale, tracking, align, rotate, maxWidth: inner.w,
+  });
+  const seen = draft.inked ?? { x: 0, y: 0, w: measured.width, h: measured.height };
+  const at = {
+    x: inner.x + Math.floor((inner.w - seen.w) / 2) - seen.x,
+    y: inner.y + Math.floor((inner.h - seen.h) / 2) - seen.y,
+  };
+  const drawn = turtlefont.renderStrokeText(text, { at, scale, tracking, align, rotate, maxWidth: inner.w });
+
+  const path = addPath(doc, found.page, {
+    id,
+    pieces: drawn.pieces.map((p) => ({ ...p })),
+    stroke: normalizeStroke(color || width ? { color, width } : null),
+    note: `stroke label for "${target}": ${text.replace(/\n/g, ' / ')}`,
+    role,
+  });
+  path.text = text;
+  path.font = { face: 'turtlefont', scale, tracking, align, rotate };
+  path.labels = target;
+  return { element: path, target, ...drawn, pieces: drawn.pieces.length, area: inner };
 }
