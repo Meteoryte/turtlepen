@@ -7,7 +7,7 @@
  * will sit in, one uniform width per column so the connectors run straight,
  * and `route` proposing the paths instead of hand-computed pen programs.
  */
-import { driver, col, cell, finish, say } from './_lib.js';
+import { driver, col, cell, finish, say } from './figure-library.js';
 
 export default async function build() {
   const { call, asJson } = driver();

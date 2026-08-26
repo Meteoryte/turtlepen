@@ -80,6 +80,23 @@ export {
 export { PALETTE, PALETTE_DARK, SEVERITY_CUE } from './svg.js';
 
 /**
+ * Carry a perceptual review across a deterministic rebuild only when the newly
+ * rendered default SVG is byte-equivalent to the render the review names.
+ * The original reviewer and timestamp are restored verbatim; a changed image
+ * receives no review rather than a freshly dated opinion nobody made.
+ */
+export function preservePerceptualReview(doc, previous) {
+  const review = previous?.perceptual ?? null;
+  if (!review) return { preserved: false, reason: 'no prior review' };
+  const currentRenderHash = perceptual.renderHash(renderSvg(doc, {}));
+  if (review.renderHash !== currentRenderHash) {
+    return { preserved: false, reason: 'render changed', previousRenderHash: review.renderHash, currentRenderHash };
+  }
+  perceptual.restorePerceptualReview(doc, review);
+  return { preserved: true, renderHash: currentRenderHash, reviewer: review.reviewer, reviewedAt: review.reviewedAt };
+}
+
+/**
  * Apply a pen program to a page, creating a path element plus any boxes or
  * text the program declared.
  *

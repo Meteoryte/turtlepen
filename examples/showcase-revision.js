@@ -33,8 +33,9 @@ const project = resolve(here, '..');
 const quiet = process.argv.includes('--quiet');
 const say = (...a) => { if (!quiet) console.log(...a); };
 const step = (n, s) => say(`\n── ${n}. ${s}`);
+const FIXED_CREATED_AT = '2026-08-26T00:00:00.000Z';
 
-const session = createSession({ cwd: project });
+const session = createSession({ cwd: project, createdAt: FIXED_CREATED_AT });
 const tools = Object.fromEntries(createTools(session).map((t) => [t.name, t]));
 
 /** MCP tools report failure as TEXT, so a driver that ignores it sees success. */
@@ -218,6 +219,7 @@ const final = await openFindings();
 const blocking = final.filter((f) => f.severity === 'S0' || f.severity === 'S1');
 say(`\nfinal: ${final.length} open, ${blocking.length} blocking`);
 for (const f of blocking) say('   ' + f.rule + ' ' + f.message);
+for (const acceptance of session.doc.acceptances) acceptance.acceptedAt = FIXED_CREATED_AT;
 
 await call('save', { force: true });
 if (blocking.length) {

@@ -124,7 +124,7 @@ This table is updated with observed evidence during stabilization.
 | Plan approval | Browser and MCP rehearse on a copy, report exact object changes, then explicitly approve | Malformed operations and stale expected hashes are refused | Reject leaves the source byte-identical; failed composite plans remain atomic | Approved changes use the normal guarded document/history path | Rehearse again after any revision; undo/redo remain available | **Pass — high**; unit/WebSocket tests plus desktop browser rehearsal |
 | CLI/export/bundle | Doctor, validate, inspect, SVG/PNG/PDF, manifest, docs bundle, worksheet/run/score execute without MCP | Missing paths, bad formats, unsupported configs, and blocked publishes fail visibly | Unreviewed perceptual state remains unreviewed; `--enforce` does not manufacture clearance | Outputs use same-directory durable replacement; manifests use repository-relative paths | Deterministic rerun yields stable bytes for fixed inputs | **Pass — high** for native paths; external benchmark execution intentionally absent |
 | 1px eraser | Add/extend/replace/remove and continuous pointer drag mask exactly one design pixel per sampled point | Unknown targets, off-target points, excessive point counts, and invalid actions are refused | Full-target masking is reported explicitly instead of disappearing silently | Masks move with targets and survive plan/history/save/reopen | Restore removes mask; undo/redo and replacement allow correction | **Pass — high** core; **moderate-high** browser, exercised at desktop and mobile sizes |
-| Artifact/benchmark governance | 57 tracked documents classified across structural, semantic, perceptual, export, and publishable dimensions | Malformed corpus/run/adapter receipts are refused and holdout selection stays explicit | Missing review cannot pass; current corpus reports 0 publishable, 21 structurally blocked, 56 unreviewed, 1 missing SVG | Portable manifest and raw benchmark receipts are durable, reviewable files | Worksheet and adapter runner can resume with externally supplied same-model executions | **Pass — high** for governance boundary; comparative product claim remains untested |
+| Artifact/benchmark governance | 59 cataloged documents classified by authored role and generated structural, semantic, perceptual, export, and publishable evidence | Malformed catalogs/corpus/run/adapter receipts are refused and holdout selection stays explicit | Missing review cannot pass; the release slice reports 8/8 ready while non-release debt remains visible and nonblocking | Portable manifest and raw benchmark receipts are durable, reviewable files | Deterministic builders preserve a review only for byte-identical output; worksheet and adapter runs can resume from external receipts | **Pass — high** for governance and release boundary; comparative product claim remains untested |
 
 ## Final ACCP report
 
@@ -150,10 +150,12 @@ release or a claim of measured superiority over another tool.
    available through a zero-dependency CLI as well as MCP and the viewer.
 5. Continuous 1-design-pixel erasing is reversible document state with coverage
    truth and SVG/PNG parity, not an irreversible raster edit.
+6. Authored artifact roles, generated evidence, naming rules, runtime metadata,
+   and generated help now have explicit owners enforced by `pnpm run governance`.
 
 ### Stabilization evidence
 
-- `pnpm test`: **613 tests, 613 passed, 0 failed**.
+- `pnpm test`: **625 tests, 625 passed, 0 failed**.
 - `pnpm run check`: passed the same suite and rebuilt every canonical example,
   the TurtlePen logo, field guide, image workflow, and five-image supersampling
   corpus through their real authoring paths.
@@ -162,11 +164,14 @@ release or a claim of measured superiority over another tool.
   origin/frame rejection, history, outside edits, and stale revision hashes.
 - Playwright review covered desktop and 390×844 layouts, model/view/history/plan
   tabs, non-mutating plan rejection, approved-state readiness, and a continuous
-  eraser drag. No browser console errors or warnings were observed.
-- The generated manifest classifies **57** tracked documents: 36 structurally
-  clear, 21 structurally blocked, 56 without a current perceptual review, one
-  without an SVG, and therefore zero currently publishable under the stricter
-  contract. That is honest content/review debt, not converted into a green gate.
+  eraser drag. A separate full-canvas review inspected all 8 release artifacts
+  at their current render hashes. No browser console errors or warnings were
+  observed.
+- The generated manifest classifies **59** cataloged documents: 40 structurally
+  clear, 19 structurally blocked, 50 without a current perceptual review, and
+  one without an SVG. Role scoping keeps that non-release evidence visible while
+  reporting all **8/8 release artifacts ready**; 9 artifacts are publishable
+  across the full catalog.
 - Stabilization found and repaired three real integration defects: compact help
   split a required phrase, two examples still assumed full help by default, and
   Windows refused rename-over for an existing history sidecar.
@@ -178,12 +183,13 @@ release or a claim of measured superiority over another tool.
   so no competitive score or quality claim is recorded.
 - Provider icon packs and remote themes remain excluded until licensing,
   provenance, deterministic embedding, and SCANGATE intake are satisfied.
-- The dependency-free PNG/PDF raster path uses a deliberately small bitmap text
-  renderer; SVG is the highest-fidelity portable output for authored text and
-  accessibility semantics.
-- Existing shipped artifacts must be repaired and perceptually reviewed before
-  the new manifest can call them publishable. The implementation correctly
-  blocks that claim today.
+- The dependency-free PNG/PDF path intentionally uses deterministic bitmap
+  glyphs rather than platform fonts. It now shares measured run layout, sizing,
+  alignment, weight, silhouettes, gradients, styled paths, and image-fit rules
+  with SVG; SVG remains the accessible vector representation.
+- Release artifacts are repaired and currently reviewed. Example, fixture, and
+  study roles still contain structural and review debt by design, and the
+  manifest exposes it without misrepresenting it as release debt.
 - TurtlePen remains local-only and prototype-labelled; production distribution,
   installer/update operations, telemetry, signing, and external service
   administration are outside this sweep.
@@ -203,7 +209,7 @@ release or a claim of measured superiority over another tool.
 | I — Scope | Pass | Local compiler/workbench scope is complete; cloud/admin, remote assets, production release, and fabricated results remain excluded. |
 | J — Feature disposition | Pass | Every audit/adaptation area is marked complete, retained, rejected, or externally blocked in the disposition table. |
 | K — Evidence | Pass with product boundary | Implementation has automated/interactive evidence; comparative market/benchmark conclusions remain explicitly unproven. |
-| L — Regression | Pass | 613/613 tests and the full generated-example check pass after final mutations. |
+| L — Regression | Pass | 625/625 tests and the full generated-example check pass after final mutations. |
 | M — Rollback | Pass | Pre-sweep commit `5deeae6`, document `.bak` files, history, and same-directory recovery files provide layered rollback. |
 | N — Observability | Pass | Runtime version/schema/tool/fingerprint/hash, plan diffs, history state, mask coverage, model findings, and artifact contracts are inspectable. |
 | O — Accessibility | Pass | SVG title/description/roles/labels, semantic groups, keyboard-capable native controls, responsive layout, and reduced-motion handling are present. |
@@ -211,5 +217,5 @@ release or a claim of measured superiority over another tool.
 | Q — Security/privacy | Pass for local boundary | Local-only server, origin checks, CSP/security headers, bounded WebSocket frames, verified image bytes, and no remote asset fetches. |
 | R — Data compatibility | Pass | Schema 1/2→3 migration, stable geometry meaning, round-trip tests, relative resources, and portable manifest paths. |
 | S — Failure resilience | Pass | Invalid inputs, composite rollback, interruption, two-session conflict, external edits, stale plans, and Windows replacement are covered. |
-| T — Confidence | High implementation / moderate content | Code paths have broad evidence; perceptual publication and cross-system benchmark evidence intentionally remain incomplete. |
+| T — Confidence | High implementation and release-artifact confidence / moderate external comparison | Code paths and the 8 release artifacts have current evidence; a cross-system benchmark remains intentionally unclaimed. |
 | U — Stabilization | Pass | Final full suite and canonical rebuild are green; generated diffs and user-owned untracked files were separated before commit. |

@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.3.1 — 2026-08-26
+
+- Added an authored artifact catalog as the single owner of release, example,
+  fixture, and study roles. The generated manifest now reports role-scoped
+  quality and all 8 release artifacts are structurally clear, exported, and
+  bound to current perceptual reviews.
+- Added a naming and SSOT governance gate covering catalog completeness,
+  kebab-case filenames, generated help/manifest parity, runtime version,
+  registry uniqueness, artifact hashes, and the source-of-truth map.
+- Added CLI JSON render receipts and guarded `review` recording so visual
+  evidence can be bound to the exact rendered bytes outside an MCP host.
+- Repaired dependency-free PNG/PDF fidelity for flowchart silhouettes, measured
+  text size/alignment/weight, gradients, styled paths, view keys, and
+  aspect-preserving images.
+- Deterministic builders now preserve a perceptual review only when rebuilt SVG
+  bytes are identical; changed output lapses the review. Generated timestamps
+  are stable, so a verification run leaves canonical artifacts unchanged.
+- Normalized project filenames to the workspace naming protocol and documented
+  the authoritative owner for version, schema, tools, artifacts, commands, and
+  current verified state.
+- 625 tests and 61 MCP tools are covered through core, real stdio, CLI,
+  governance, quality, and WebSocket endpoint contracts.
+
 ## 0.3.0 — 2026-08-26
 
 - Schema 3 persists perceptual review plus one shared semantic model, static,

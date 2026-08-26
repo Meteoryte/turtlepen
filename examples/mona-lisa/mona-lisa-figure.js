@@ -11,7 +11,7 @@
  * 400 wide. Every part is a function of that so the whole thing can be drawn
  * larger for finer curves without re-deriving a single number.
  */
-import { ellipse, curveOf } from './_lib.js';
+import { ellipse, curveOf } from './figure-library.js';
 
 export function figure({ cx = 200, top = 40, unit = 1, bottom = 500, turn = 0.2 } = {}) {
   const u = (n) => Math.round(n * unit);

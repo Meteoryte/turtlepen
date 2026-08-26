@@ -25,8 +25,9 @@ const here = dirname(fileURLToPath(import.meta.url));
 const project = resolve(here, '..');
 const quiet = process.argv.includes('--quiet');
 const say = (...a) => { if (!quiet) console.log(...a); };
+const FIXED_CREATED_AT = '2026-08-26T00:00:00.000Z';
 
-const session = createSession({ cwd: project });
+const session = createSession({ cwd: project, createdAt: FIXED_CREATED_AT });
 const tools = Object.fromEntries(createTools(session).map((t) => [t.name, t]));
 
 /** MCP tools report failure as TEXT, so a driver that ignores it sees success. */
@@ -153,6 +154,7 @@ for (const entry of ADJUDICATED) {
 say('\n' + await call('validate', {}));
 say(await call('ascii', { maxCells: 96 }));
 
+for (const acceptance of session.doc.acceptances) acceptance.acceptedAt = FIXED_CREATED_AT;
 await call('save', {});
 say(await call('render', { path: 'diagrams/crt-desk-scene.svg' }));
 

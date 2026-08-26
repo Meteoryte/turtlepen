@@ -1,6 +1,8 @@
 # TurtlePen imaging capability roadmap — shading, colour, infill, rasterisation
 
-**Status:** proposal. Nothing here is built.
+**Status:** implemented baseline as of 2026-08-26. T1 and T2 are complete; the
+remaining inferred extensions require new authoring evidence. Historical
+proposal language is retained below as the decision record.
 **Raised:** 2026-08-17, out of the five-farm-animals authoring session.
 **Scope:** authoring-side imaging capability only. No change to the integer
 lattice, to acceptance fingerprinting, or to "the engine never silently changes
@@ -29,13 +31,14 @@ proposing them from scratch would duplicate working code.
 | Filled disc | **Built.** `disc <r>` — midpoint circle, filled. | `src/core/shapes.js` |
 | Raster **in** | **Built.** `place_image` (`embed` / `dither` / `simplify`), `place_reference`, `measure_image`, 4× supersampling, PNG decode on `node:zlib` alone. | `src/core/image.js`, `dither.js`, `png.js` |
 | Pattern along a path | **Built.** `pattern: "dashed" \| "dotted"`, keyed to distance travelled so it survives a corner. | `src/core/pattern.js` |
-| Raster **out** | **MISSING.** `png.js` exports `decode` only. `render` writes SVG and nothing else. | `src/core/png.js:64` |
-| Fill of an arbitrary closed path | **MISSING.** No flood fill, scanline fill, or polygon fill anywhere. `polygon` and `triangle` are outline-only; only `disc` is filled, and only because the midpoint algorithm fills it directly. | grep: no `fillPolygon`/`floodFill` |
+| Raster **out** | **Built.** Deterministic SVG/PNG/PDF output shares measured text layout and renders symbols, gradients, paths, views, images, and masks without a runtime dependency. | `src/core/output.js`, `src/core/index.js` |
+| Fill of an arbitrary closed path | **Built.** `fillInterior` applies an even-odd lattice fill; `pen ... fill` refuses open outlines and supports flat or across-region gradient colour. | `src/core/raster.js`, `src/core/pen.js` |
 | Hatching as an authoring control | **MISSING as authoring.** `hatch-dense` / `hatch-sparse` exist in `svg.js` but only as renderer-internal decoration for finding severity. An author cannot request a hatch. | `src/core/svg.js:67–68` |
 
-**The one-line summary:** colour and density shading are largely solved;
-**area** is not. TurtlePen can draw an outline and it can dither an imported
-image, but it cannot fill a shape the author just drew.
+**The one-line summary:** colour, density shading, closed-region area, and
+portable raster output are implemented. Hatching, named palettes, measured
+colour contrast, and colour-quantised image placement remain evidence-gated
+candidates rather than committed scope.
 
 ---
 
@@ -67,7 +70,13 @@ Recorded so the proposals below are traceable to something real.
 
 ## 3. Proposed work, highest value first
 
-### T1 — `render` gains PNG output — **EVIDENCED, highest value**
+### T1 — `render` gains PNG output — **COMPLETE**
+
+**Implementation update:** `render` and the CLI emit deterministic PNG and PDF
+in addition to SVG. Native raster uses `layoutTextRuns`, real symbol
+silhouettes, gradients, path styles, view keys, image fit, and micro-masks. The
+proposal below is retained to show why this capability was prioritized; the
+placeholder-text compromise was not required.
 
 **Why first:** it closes the loop the help now opens with. Every other item on
 this list is easier to verify once an agent can see its own output.
@@ -98,7 +107,12 @@ reports; byte-identical across runs; `pnpm run check` green.
 
 ---
 
-### T2 — `fill` for a closed path — **EVIDENCED**
+### T2 — `fill` for a closed path — **COMPLETE**
+
+**Implementation update:** closed outlines use an exact even-odd fill over
+quadrants, claim their interior, and support flat or across-region gradient
+colour. Open outlines are refused. Exact fill and rendering behavior is covered
+by raster, artwork, output, MCP, and persistence tests.
 
 `pen ... polygon A B C ... fill` (and `fill tone <t>`, `fill "#hex"`).
 
@@ -189,7 +203,7 @@ informed — so it must raise `L023` at least as loudly, not less.
 
 ---
 
-## 4. Sequencing
+## 4. Sequencing record
 
 ```
 T1 (PNG out) ──▶ T3 (tone legibility)      cheap, and T1 makes it checkable
@@ -201,9 +215,10 @@ T1 (PNG out) ──▶ T3 (tone legibility)      cheap, and T1 makes it checkabl
 T5 (palette) ──▶ T6 (contrast finding)     independent, do when convenient
 ```
 
-**T1 and T2 are the whole value.** T1 lets an agent complete the documented
-workflow without a browser; T2 closes the one real authoring gap the session
-actually exposed. Everything after them is polish.
+**T1 and T2 are complete.** The diagram above records the original dependency
+logic, not an active implementation order. T3–T7 remain candidates and must
+earn fresh evidence before construction; writing them down did not authorize
+them.
 
 ## 5. What must not change
 

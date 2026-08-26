@@ -11655,5 +11655,12 @@
     "tagStyles": [],
     "perspectiveStyles": []
   },
-  "acceptances": []
+  "acceptances": [],
+  "perceptual": {
+    "renderHash": "3fa40322380b6e62",
+    "reviewer": "codex/gpt-5.6",
+    "reviewedAt": "2026-08-26T22:26:29.487Z",
+    "note": "Reviewed the current SVG and parity PNG at native dimensions on 2026-08-26; checked legibility, clipping, silhouettes, connector direction, image fitting, and intended composition.",
+    "findings": []
+  }
 }

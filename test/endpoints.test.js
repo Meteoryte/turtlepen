@@ -9,6 +9,7 @@ import { resolve } from 'node:path';
 
 import { createMcpClient } from '../examples/mcp-client.js';
 import { createSession, createTools } from '../src/mcp/tools.js';
+import { VERSION } from '../src/version.js';
 
 test('every advertised MCP tool completes a representative use case over stdio', async () => {
   const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-endpoints-'));
@@ -28,14 +29,14 @@ test('every advertised MCP tool completes a representative use case over stdio',
   try {
     const initialized = await client.init();
     assert.equal(initialized.result.serverInfo.name, 'turtlepen');
-    assert.equal(initialized.result.serverInfo.version, '0.3.0');
+    assert.equal(initialized.result.serverInfo.version, VERSION);
     assert.equal(initialized.result.protocolVersion, '2025-06-18');
 
     await invoke('turtlepen_help');
     assert.match(await invoke('search_help', { query: 'views' }), /match\(es\)/);
     assert.match(await invoke('doctor'), /TurtlePen doctor: READY/);
     const runtime = JSON.parse(await invoke('runtime_info'));
-    assert.equal(runtime.version, '0.3.0');
+    assert.equal(runtime.version, VERSION);
     assert.equal(runtime.toolCount, advertised.length);
     await invoke('measure', { text: 'Outdoor condensing unit', fontSize: 10, maxWidthCells: 12 });
     await invoke('new_diagram', { name: 'endpoint matrix', path: 'endpoint.turtlepen.json', cols: 80, rows: 50 });

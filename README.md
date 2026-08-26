@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 613 tests green, zero runtime dependencies, 61 MCP tools.
+Status: **prototype** — 625 tests green, zero runtime dependencies, 61 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -16,6 +16,7 @@ Status: **prototype** — 613 tests green, zero runtime dependencies, 61 MCP too
 | understand the lattice, pen grammar and rules | this file, below |
 | change anything in `src/core/` | [`llm.md`](llm.md) — the invariants, first |
 | know what is proven and what is deferred | [`status.md`](status.md) |
+| find the owner of version, schema, tools, artifacts, or generated evidence | [`docs/source-of-truth-map.md`](docs/source-of-truth-map.md) |
 | see the flowchart work and what was deliberately not built | [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md) |
 | know the current tool surface, authoritatively | call `turtlepen_help` — it outranks every document here |
 | validate/render/bundle without an MCP host | run `node src/cli.js help` or the `turtlepen` bin |
@@ -500,6 +501,10 @@ cannot exit, so these are kept a closed set — and a test asserts it.
 pnpm run check                         # full test suite + examples, logo, and tree
 pnpm test                              # automated test suite
 pnpm run test:endpoints                # MCP, HTTP, and WebSocket surface contract
+pnpm run quality:manifest              # regenerate role-scoped artifact evidence
+pnpm run governance                    # enforce naming, catalog, SSOT, and generated-file parity
+node src/cli.js render diagrams/example.turtlepen.json --format svg --json --force
+node src/cli.js review diagrams/example.turtlepen.json --render-hash <hash> --reviewer <name>
 node examples/build-example.js         # the plan -> commit cycle, end to end
 node examples/agent-session.js         # an agent authoring a real diagram over MCP
 node examples/constraint-stress.js      # crowded same-face rehearsal and rework over MCP
@@ -599,6 +604,7 @@ src/core/     pure engine, no I/O — geometry, address, text, shapes,
               document, pen, occupancy, collide, ascii, svg
 src/mcp/      MCP stdio server (hand-rolled JSON-RPC 2.0) + tool definitions
 src/viewer/   local HTTP/WebSocket server + live browser editor and log
+src/quality/  artifact catalog, manifest, and naming/SSOT governance
 test/         node:test, no framework
 examples/     worked end-to-end demonstration
 ```
@@ -631,15 +637,18 @@ only the editor's explicit public assets and tool allowlist are reachable.
 ## Deferred, deliberately
 
 - **Auto-fit** — the engine reports the shortfall and the fix; it does not resize.
-- **Auto-routing** — the pen is the primitive. If auto-routing is built, it will
-  be a generator that emits pen commands, so paths stay inspectable.
 - **Proportional fonts** — the monospace model makes capacity countable
   (`chars/line = floor((cells × 10 − 10) / 6)` at 10px), which is arithmetic an
   AI can do reliably.
 - **Negative addressing** — the grid runs `A1` rightward and downward only.
   Start at an inset origin if a drawing may need to grow up or left.
 
-## AI Generated Examples
+## Experimental AI-generated studies
+
+These studies are retained as comparative authoring evidence, not presented as
+release-qualified artifacts. Their authoritative role and quality disposition
+live in [`artifacts/artifact-catalog.json`](artifacts/artifact-catalog.json);
+[`artifacts/manifest.json`](artifacts/manifest.json) is generated evidence.
 
 The following sample diagrams and visual scenes were authored using TurtlePen MCP tools by **Gemini 3.6 Flash (High)**:
 
@@ -655,7 +664,7 @@ The following sample diagrams and visual scenes were authored using TurtlePen MC
 - **Fence**: [Wooden Picket Fence Scene](diagrams/scene-fence.svg) ([JSON](diagrams/scene-fence.turtlepen.json))
 - **Living Room**: [Cozy Living Room & Stick Figure Family](diagrams/scene-living-room-family.svg) ([JSON](diagrams/scene-living-room-family.turtlepen.json))
 
-Authoring script: `build_all_diagrams.js`  
+Authoring script: `build-all-diagrams.js`
 Model used: **Gemini 3.6 Flash (High)**
 
 ---
@@ -674,7 +683,7 @@ The following sample diagrams and visual scenes were authored using TurtlePen MC
 - **Fence**: [White Picket Fence Scene](diagrams/gemini31-scene-fence.svg) ([JSON](diagrams/gemini31-scene-fence.turtlepen.json))
 - **Living Room**: [Living Room Family](diagrams/gemini31-scene-living-room-family.svg) ([JSON](diagrams/gemini31-scene-living-room-family.turtlepen.json))
 
-Authoring script: `build_gemini_3.1_diagrams.js`  
+Authoring script: `build-gemini-3-1-diagrams.js`
 Model used: **Gemini 3.1 Pro (High)**
 
 ---
@@ -685,7 +694,7 @@ The following were authored using TurtlePen MCP tools by **Claude Opus 5**:
 
 ![Important Process flowchart](diagrams/flowchart-important-process.svg)
 
-[SVG](diagrams/flowchart-important-process.svg) · ([JSON](diagrams/flowchart-important-process.turtlepen.json)) · built by [`build_flowchart.js`](build_flowchart.js)
+[SVG](diagrams/flowchart-important-process.svg) · ([JSON](diagrams/flowchart-important-process.turtlepen.json)) · built by [`build-flowchart.js`](build-flowchart.js)
 
 Decisions are **diamonds**, terminators are **stadiums**, and that distinction is
 load-bearing rather than cosmetic. A node still *claims* its bounding box — so
@@ -742,13 +751,13 @@ built are in [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md).
 ![Five Farm Animals](diagrams/farm-animals.svg)
 
 - **Composition**: [Five Farm Animals](diagrams/farm-animals.svg) ([JSON](diagrams/farm-animals.turtlepen.json))
-- **Working record (PDF)**: [**TurtlePen — Five Farm Animals**](docs/TurtlePen-Five-Farm-Animals.pdf) · 14 pages
+- **Working record (PDF)**: [**TurtlePen — Five Farm Animals**](docs/turtlepen-five-farm-animals.pdf) · 14 pages
 
 | | | |
 |:--:|:--:|:--:|
-| [![cover](docs/preview/pdf-01-cover.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | [![method](docs/preview/pdf-02-method.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | [![animals](docs/preview/pdf-03-animals.png)](docs/TurtlePen-Five-Farm-Animals.pdf) |
+| [![cover](docs/preview/pdf-01-cover.png)](docs/turtlepen-five-farm-animals.pdf) | [![method](docs/preview/pdf-02-method.png)](docs/turtlepen-five-farm-animals.pdf) | [![animals](docs/preview/pdf-03-animals.png)](docs/turtlepen-five-farm-animals.pdf) |
 | the composition | how each silhouette is built | every committed pen program |
-| [![findings](docs/preview/pdf-05-findings.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | [![learned](docs/preview/pdf-06-learned.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | |
+| [![findings](docs/preview/pdf-05-findings.png)](docs/turtlepen-five-farm-animals.pdf) | [![learned](docs/preview/pdf-06-learned.png)](docs/turtlepen-five-farm-animals.pdf) | |
 | real defects vs. declared anatomy | what the session taught | |
 
 Cow, pig, sheep, rooster and horse each fold **head, body and all four legs into
@@ -806,9 +815,10 @@ wrong. Four properties make it safe to have opinions in a deterministic engine:
 - **An unreviewed document is `NOT REVIEWED`, never clean.** Absence of a review
   is not a pass.
 
-Roadmap for the imaging gaps — raster **out** and filling a closed path — is in
-[`docs/imaging-capability-roadmap.md`](docs/imaging-capability-roadmap.md), with
-paste-ready prompts in
+Raster output and closed-path filling are implemented and regression-tested.
+Their evidence history and the still-inferred imaging candidates are retained in
+[`docs/imaging-capability-roadmap.md`](docs/imaging-capability-roadmap.md); the
+original implementation prompts are archived in
 [`docs/imaging-capability-prompts.md`](docs/imaging-capability-prompts.md).
 
 Model used: **Claude Opus 5**

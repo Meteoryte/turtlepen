@@ -13,7 +13,7 @@
  * Z-page, ordered by how far it sits from the camera, and the occlusion becomes
  * real. `L025` is the rule that refuses to let that be forgotten.
  */
-import { driver, q, polygonOf, hatchFill, finish, col } from './_lib.js';
+import { driver, q, polygonOf, hatchFill, finish, col } from './figure-library.js';
 
 export default async function build() {
   const { call, asJson, session } = driver();

@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 3,
   "name": "Order handling — swimlanes",
   "canvas": {
     "cols": 122,
@@ -11,7 +11,7 @@
     "advanceRatio": 0.6,
     "paddingQuads": 1
   },
-  "createdAt": "2026-08-18T21:16:29.961Z",
+  "createdAt": "2026-08-26T22:40:43.689Z",
   "pages": [
     {
       "id": "base",
@@ -138,9 +138,9 @@
         "id": "stock",
         "kind": "box",
         "rect": {
-          "x": 74,
+          "x": 80,
           "y": 64,
-          "w": 44,
+          "w": 32,
           "h": 16
         },
         "label": "In stock?",
@@ -537,6 +537,62 @@
           {
             "x": 73,
             "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 77,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 78,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 79,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 80,
+            "y": 72,
             "type": "arrow",
             "dir": "right",
             "align": "top",
@@ -546,7 +602,7 @@
         "stroke": null,
         "note": null,
         "end": {
-          "x": 74,
+          "x": 81,
           "y": 72,
           "facing": "right"
         },
@@ -566,6 +622,62 @@
         "id": "e_stock_backorder",
         "kind": "path",
         "pieces": [
+          {
+            "x": 111,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 112,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 113,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 114,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 115,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 116,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 117,
+            "y": 72,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
           {
             "x": 118,
             "y": 72,
@@ -1322,6 +1434,12 @@
       }
     ]
   },
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
+  },
   "acceptances": [
     {
       "fingerprint": "155995cbffa5",
@@ -1329,7 +1447,7 @@
       "page": "base",
       "title": "stroke crosses node",
       "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
-      "acceptedAt": "2026-08-18T21:16:31.772Z"
+      "acceptedAt": "2026-08-26T22:40:45.170Z"
     },
     {
       "fingerprint": "2b000c28ce08",
@@ -1337,7 +1455,7 @@
       "page": "base",
       "title": "stroke crosses node",
       "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
-      "acceptedAt": "2026-08-18T21:16:31.192Z"
+      "acceptedAt": "2026-08-26T22:40:44.675Z"
     },
     {
       "fingerprint": "807a53ce8158",
@@ -1345,7 +1463,7 @@
       "page": "base",
       "title": "stroke crosses node",
       "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
-      "acceptedAt": "2026-08-18T21:16:33.074Z"
+      "acceptedAt": "2026-08-26T22:40:46.090Z"
     },
     {
       "fingerprint": "f61146bb58fa",
@@ -1353,7 +1471,14 @@
       "page": "base",
       "title": "stroke crosses node",
       "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
-      "acceptedAt": "2026-08-18T21:16:32.410Z"
+      "acceptedAt": "2026-08-26T22:40:45.627Z"
     }
-  ]
+  ],
+  "perceptual": {
+    "renderHash": "d7dfbf5189d5f595",
+    "reviewer": "codex/gpt-5.6",
+    "reviewedAt": "2026-08-26T22:26:31.793Z",
+    "note": "Reviewed the current SVG and parity PNG at native dimensions on 2026-08-26; checked legibility, clipping, silhouettes, connector direction, image fitting, and intended composition.",
+    "findings": []
+  }
 }

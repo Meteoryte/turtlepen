@@ -1,13 +1,13 @@
 # TurtlePen — status
 
-**As of 2026-08-26.** Prototype, working end to end, 613/613 tests green,
+**As of 2026-08-26.** Prototype, working end to end, 625/625 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **613/613 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **625/625 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
 - **Every external surface has a drift-proof contract.** All 61 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC
@@ -33,7 +33,20 @@ Verified by running it, not by inspection:
   CLI validates and inspects, renders deterministic SVG/PNG/PDF, generates
   architecture documentation bundles and artifact contracts, and executes or
   scores same-model benchmark adapter receipts while keeping structural,
-  semantic, perceptual, and workflow dimensions separate.
+  semantic, perceptual, and workflow dimensions separate. `render --json`
+  returns the exact SVG hash a reviewer saw, and `review` records a guarded,
+  hash-bound perceptual verdict without opening an MCP host.
+- **Artifact scope has one owner and release evidence is complete.** The
+  authored catalog classifies 59 tracked documents as release, example,
+  fixture, or study; the generated manifest reports all 8 release artifacts
+  ready and keeps non-release evidence from blocking that claim. The governance
+  gate checks catalog coverage, filenames, hashes, help parity, runtime version,
+  tool-registry identity, and the source-of-truth map.
+- **Native raster output preserves the semantic renderer's geometry.** PNG/PDF
+  use symbol silhouettes, measured text size/alignment/weight, gradients,
+  path styling, view notation keys, and aspect-preserving images; regression
+  tests prevent a decision diamond or measured label from flattening into a
+  generic rectangle or fixed-size glyph run.
 - **The viewer is an approval workbench.** Named-view switching, semantic model
   review, bounded history, non-mutating JSON plan diffs, explicit approve/reject,
   revision hashes, lazy canvas payloads, and continuous pointer-based 1px
@@ -399,7 +412,7 @@ the one this project exists to make impossible, wearing a different coat:
   other 203; the unconditional `save` that followed then wrote a valid, empty
   document. The tool layer had returned each failure as readable text — the
   right shape for an agent that reads results, and a loaded gun for a script
-  that ignores them. `build_gemini_3.1_diagrams.js` now throws on a failed
+  that ignores them. `build-gemini-3-1-diagrams.js` now throws on a failed
   operation and refuses to save a document carrying an S0 or S1 finding.
   Transactional writes protect the document; they do not protect a caller from
   believing it succeeded.
@@ -491,8 +504,6 @@ added, it is not shipped until `HELP` names it at the moment of need.
 
 - **Auto-fit.** The engine reports the shortfall and the fixes; it does not
   resize. Chuck's call during design.
-- **Auto-routing.** The pen is the primitive. If auto-routing is added it must
-  emit pen commands so the path stays inspectable.
 - **Proportional fonts.** The monospace model is what makes capacity countable.
 - **Negative addressing.** The grid runs `A1` rightward and downward only.
 

@@ -11,7 +11,7 @@
     "advanceRatio": 0.6,
     "paddingQuads": 1
   },
-  "createdAt": "2026-08-26T16:29:34.861Z",
+  "createdAt": "2026-08-26T00:00:00.000Z",
   "pages": [
     {
       "id": "base",
@@ -2121,7 +2121,7 @@
       "page": "base",
       "title": "dangling path end",
       "reason": "these strokes are specimens, not connectors: they demonstrate a stroke style and are meant to end in open paper rather than meet anything.",
-      "acceptedAt": "2026-08-26T16:29:35.545Z"
+      "acceptedAt": "2026-08-26T00:00:00.000Z"
     },
     {
       "fingerprint": "5424b3b16baf",
@@ -2129,7 +2129,7 @@
       "page": "base",
       "title": "decision does not branch",
       "reason": "this diamond is a specimen of the decision SHAPE, not a decision in a process. It has no branches because there is no process here to branch — the sheet shows what the symbol looks like, and wiring exits to it would be drawing a flowchart instead.",
-      "acceptedAt": "2026-08-26T16:29:35.395Z"
+      "acceptedAt": "2026-08-26T00:00:00.000Z"
     },
     {
       "fingerprint": "86e1df0a8622",
@@ -2137,7 +2137,7 @@
       "page": "base",
       "title": "dangling path end",
       "reason": "these strokes are specimens, not connectors: they demonstrate a stroke style and are meant to end in open paper rather than meet anything.",
-      "acceptedAt": "2026-08-26T16:29:35.496Z"
+      "acceptedAt": "2026-08-26T00:00:00.000Z"
     },
     {
       "fingerprint": "c467b48b8d5e",
@@ -2145,7 +2145,7 @@
       "page": "base",
       "title": "dangling path end",
       "reason": "these strokes are specimens, not connectors: they demonstrate a stroke style and are meant to end in open paper rather than meet anything.",
-      "acceptedAt": "2026-08-26T16:29:35.447Z"
+      "acceptedAt": "2026-08-26T00:00:00.000Z"
     }
   ]
 }

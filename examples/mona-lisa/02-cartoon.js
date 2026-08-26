@@ -12,8 +12,8 @@
  * Hatching is not a workaround for that so much as the correct idiom: an ink
  * cartoon builds tone from strokes, and strokes are what this engine is.
  */
-import { driver, q, polygonOf, polylineOf, clipOutside, curveOf, ellipse, finish, col } from './_lib.js';
-import { figure } from './_figure.js';
+import { driver, q, polygonOf, polylineOf, clipOutside, curveOf, ellipse, finish, col } from './figure-library.js';
+import { figure } from './mona-lisa-figure.js';
 
 export default async function build() {
   const { call, asJson } = driver();

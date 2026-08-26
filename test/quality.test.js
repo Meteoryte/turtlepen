@@ -6,6 +6,7 @@ import test from 'node:test';
 
 import * as core from '../src/core/index.js';
 import { buildArtifactManifest } from '../src/quality/artifacts.js';
+import { normalizeArtifactCatalog } from '../src/quality/artifact-catalog.js';
 import { documentationBundle } from '../src/quality/documentation.js';
 import { benchmarkWorksheet, loadCorpus, scoreBenchmarkRun } from '../src/benchmark/runner.js';
 
@@ -36,6 +37,43 @@ test('artifact manifests expose every quality dimension and never call unreviewe
   assert.equal(manifest.artifacts[0].exports.svg.present, true);
   assert.equal(manifest.artifacts[0].source.path, 'architecture.turtlepen.json');
   assert.equal(manifest.artifacts[0].exports.svg.path, 'architecture.svg');
+});
+
+test('artifact catalog is the sole owner of release scope', async (t) => {
+  const { root, path } = await saved(t);
+  const catalog = normalizeArtifactCatalog({
+    schema: 1,
+    roles: { release: ['architecture.turtlepen.json'], example: [], fixture: [], study: [] },
+    releasePolicy: { required: ['structurallyClear', 'perceptuallyReviewed'], note: 'test policy' },
+  });
+  const manifest = await buildArtifactManifest([path], { root, catalog });
+  assert.equal(manifest.schema, 2);
+  assert.equal(manifest.artifacts[0].catalog.role, 'release');
+  assert.equal(manifest.summary.release.artifacts, 1);
+  assert.equal(manifest.summary.release.blocked, 1);
+  assert.equal(manifest.qualityContract.releasePolicy.note, 'test policy');
+  assert.throws(() => normalizeArtifactCatalog({
+    schema: 1,
+    roles: { release: ['same.turtlepen.json'], example: ['same.turtlepen.json'], fixture: [], study: [] },
+    releasePolicy: { required: ['structurallyClear'] },
+  }), /appears more than once/);
+});
+
+test('a current clean perceptual review satisfies the numeric blocker-count gate', async (t) => {
+  const { root, path, doc } = await saved(t);
+  const renderHash = core.renderHash(core.renderSvg(doc));
+  core.attachPerceptualReview(doc, { renderHash, reviewer: 'test/quality', findings: [] });
+  await core.checkpointDocument(doc, path);
+  const catalog = normalizeArtifactCatalog({
+    schema: 1,
+    roles: { release: ['architecture.turtlepen.json'], example: [], fixture: [], study: [] },
+    releasePolicy: { required: ['structurallyClear', 'modelHasNoErrors', 'perceptuallyReviewed', 'perceptualCurrent', 'perceptualHasNoBlockers', 'hasPortableVector'] },
+  });
+  const manifest = await buildArtifactManifest([path], { root, catalog });
+  assert.equal(manifest.artifacts[0].perceptual.blocking, 0);
+  assert.equal(manifest.artifacts[0].contract.perceptualHasNoBlockers, true);
+  assert.equal(manifest.artifacts[0].contract.publishable, true);
+  assert.deepEqual(manifest.summary.release, { artifacts: 1, ready: 1, blocked: 0 });
 });
 
 test('documentation bundles derive model, view, resource, and machine-readable files', async (t) => {

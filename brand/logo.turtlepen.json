@@ -152146,5 +152146,12 @@
       "reason": "Intentional logo construction: L006 between board-outline and arm-outline is required by the supplied turtle-at-easel composition.",
       "acceptedAt": "2026-08-08T00:00:00.000Z"
     }
-  ]
+  ],
+  "perceptual": {
+    "renderHash": "3864fe58bdd785f1",
+    "reviewer": "codex/gpt-5.6",
+    "reviewedAt": "2026-08-26T22:26:28.981Z",
+    "note": "Reviewed the current SVG and parity PNG at native dimensions on 2026-08-26; checked legibility, clipping, silhouettes, connector direction, image fitting, and intended composition.",
+    "findings": []
+  }
 }

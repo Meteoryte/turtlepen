@@ -9,8 +9,8 @@
  * Drawn at a large radius on purpose — the curves are polylines through
  * sampled control points, so smoothness is bought with quadrants.
  */
-import { driver, q, polygonOf, polylineOf, clipOutside, finish, col } from './_lib.js';
-import { figure } from './_figure.js';
+import { driver, q, polygonOf, polylineOf, clipOutside, finish, col } from './figure-library.js';
+import { figure } from './mona-lisa-figure.js';
 
 export default async function build() {
   const { call, asJson } = driver();

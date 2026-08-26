@@ -88,9 +88,9 @@ roadmap this project already warns against.
 | Their feature | Why not |
 |---|---|
 | Real-time collaboration, cross-device sync, accounts | TurtlePen is a local MCP server holding one document. This is a product, not a substrate capability. |
-| Export to PPT / Word / Excel | Each needs an OOXML writer. Zero runtime dependencies is a stated design choice; three office writers is not a rounding error. **PNG export is the export gap that matters** and is already tracked as T1 in the imaging roadmap. |
+| Export to PPT / Word / Excel | Each needs an OOXML writer. Zero runtime dependencies is a stated design choice; three office writers is not a rounding error. Portable SVG/PNG/PDF output is implemented; proprietary office writers remain outside the product boundary. |
 | Import from Visio / Xmind | Large proprietary parsers. Revisit only if someone actually needs it. |
-| Mermaid / Markdown import | *Genuinely interesting* and the closest fit — Mermaid `flowchart` maps almost 1:1 onto F1 + F2. Deferred as **F9**, not rejected. |
+| Other diagram imports | Mermaid `flowchart` import is complete as F9 and compiles into ordinary TurtlePen operations. Visio, Xmind, and other proprietary formats remain excluded until observed need justifies their parsers. |
 | AI one-click generation | TurtlePen's caller already is the AI. |
 | 13 diagram types (Gantt, fishbone, ERD…) | Most are layout conventions over shapes that F1/F3 provide. Build the vocabulary, not thirteen bespoke generators. |
 
@@ -192,12 +192,12 @@ Semantics, pinned by test:
 described as passing through a "corner cut", which is the mechanism but not the
 truth.
 
-Proof: `build_swimlane.js` → `diagrams/swimlane-order-handling.svg`, 17
+Proof: `build-swimlane.js` → `diagrams/swimlane-order-handling.svg`, 17
 elements, 0 findings above INFO, 4 lane-crossings accepted with a reason.
 
 ### F6 — Rebuild `important-process` properly — **DONE**
 
-Built by `build_flowchart.js`: 51 elements, 0 findings, 9 decisions, 3
+Built by `build-flowchart.js`: 51 elements, 0 findings, 9 decisions, 3
 terminators. The script exits non-zero if anything above INFO remains, so the
 chart cannot be committed in the state the previous attempt was left in.
 

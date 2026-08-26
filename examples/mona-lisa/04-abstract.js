@@ -12,7 +12,7 @@
  * different densities therefore read as transparency without any alpha
  * compositing existing anywhere in the engine.
  */
-import { driver, q, polygonOf, polylineOf, ellipse, curveOf, hatchFill, finish, col } from './_lib.js';
+import { driver, q, polygonOf, polylineOf, ellipse, curveOf, hatchFill, finish, col } from './figure-library.js';
 
 export default async function build() {
   const { call, asJson } = driver();

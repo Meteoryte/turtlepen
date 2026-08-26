@@ -1,15 +1,5 @@
 TurtlePen — an integer-exact grid for AI-authored diagrams.
 
-LIVE DISCOVERY (0.3.0)
-  turtlepen_help returns a compact orientation by default; pass section="all"
-  for this full manual. search_help finds current tools by task, category,
-  argument, or name, and doctor checks the running schema/capability registry.
-  One schema-3 model can own static, filtered, and ordered dynamic views,
-  themes/perspectives, linked documentation resources, semantic acceptances,
-  labelled relationship outcomes, and reversible 1-design-pixel masks.
-  The native turtlepen CLI validates, inspects, renders SVG/PNG/PDF, generates
-  documentation bundles and artifact manifests, and runs benchmark adapters.
-
 WHY IT EXISTS
   Diagram tools measure text at render time, long after a layout was chosen, so
   labels overflow their boxes and nothing notices. Here measurement happens
@@ -34,6 +24,20 @@ THE CANVAS IS NOT A BUDGET
 WORKFLOW
   measure -> plan -> commit -> validate -> render -> LOOK AT IT
                                         -> accept_finding for anything deliberate.
+
+  DONE MEANS ALL FOUR. A drawing is not delivered until it has been:
+    1. validated AFTER the last edit, not before it. An earlier clean log says
+       nothing about the state you finished in.
+    2. adjudicated to zero open findings — every one either fixed or accepted
+       with a reason. "Only three minor ones left" is not done; it is a report
+       of three known defects.
+    3. rendered to a file. The SVG is PART OF THE DELIVERABLE, not an extra
+       produced when someone asks. Nobody asked you to keep it to yourself.
+    4. looked at. An author who has not seen the drawing does not know what
+       they made.
+  Report what the final validation actually said. Three sessions have announced
+  finished work whose last real check was several edits old.
+
   Only a fingerprint in the current validation may be accepted. Geometry changes
   make the old acceptance visibly stale; unaccept_finding withdraws that record.
   A committed edit that proves wrong is recoverable with history action="undo".
@@ -51,6 +55,50 @@ WORKFLOW
 
   Findings are ranked S0 critical, S1 error, S2 warn, S3 info. Accepting a
   finding records intent; it lapses automatically if the geometry changes.
+
+IMPORTING A MERMAID FLOWCHART
+  import_mermaid { source: "flowchart TD ..." }  ->  operations, NOT a change
+
+  It compiles onto operations you already have and hands them back. Feed them
+  to plan, read the log, then commit — so an import faces exactly the same
+  validation as anything you draw, and cannot make geometry the normal path
+  could not. F001 and F002 apply to it too: a decision imported from Mermaid
+  still has to branch.
+
+  ([x]) terminator   {x} decision    [/x/] io      {{x}} prep
+  [(x)] data         [[x]] subprocess              [x] process
+
+  It lays out a top-to-bottom spine. It does NOT route, and it tells you which
+  edges are not a straight drop so you can reroute them yourself. subgraph,
+  classDef, style and click are refused by name rather than silently dropped —
+  half a diagram reported as a success is worse than an error.
+
+PERCEPTUAL REVIEW — the half validate cannot see
+  render  ->  LOOK  ->  perceptual_review
+
+  validate proves the drawing is UNDEFECTIVE. It cannot prove the drawing
+  depicts what you were asked for. This corpus validated CLEAN while a sheep
+  read as a stegosaurus, two ears rendered as flags, and half-tone spots
+  dithered into plus-signs. Every coordinate was legal. Every one was wrong.
+
+  "render" returns a renderHash. Look at the image, then record what you SAW:
+
+    perceptual_review { renderHash, reviewer, findings: [{
+      id, severity: P0..P3, category, symptom, consequence,
+      elements: [...], repair }] }
+
+  symptom is what it LOOKS like. consequence is what a reader would get wrong.
+  Categories are a closed set: semantic-identity-mismatch, ambiguous-silhouette,
+  misleading-structure, symbol-collision, accidental-glyph, poor-hierarchy,
+  illegible-density, grouping-error, perspective-implausible,
+  annotation-ambiguity.
+
+  Nothing recorded here touches collision geometry — an opinion must never
+  silently become an engine fact. The two verdicts come back SIDE BY SIDE and
+  are never merged, because a clean log over the wrong picture is the case that
+  matters. Editing the drawing marks an existing review STALE rather than
+  leaving a stale opinion looking current, and a document with no review is
+  NOT REVIEWED, never clean: absence of a review is not a pass.
 
 THE LATTICE
   1 cell = 10x10 px.  1 quadrant = 5x5 px.  Strokes are 5px = 1 quadrant thick.
@@ -105,6 +153,27 @@ GROUPS AND FOLLOW RELATIONSHIPS
   chains cascade and cycles are refused. Named and indexed anchors work, offsets
   are whole quadrants, and describe reports groups plus relationship sync state.
 
+SEMANTIC MODEL AND NODE CONNECTIONS
+  annotate { id, description, technology, tags, properties, perspectives }
+  connect { id, from: "api.E", to: "db.W", routing: "direct" }
+  connect { id, from: "api.E", to: "db.W", routing: "curved",
+            via: ["K5.q1"] }
+  inspect_model                                report incomplete model meaning
+
+  connect always begins and ends at named node ports. Direct is one exact ray;
+  orthogonal applies an inspectable simple route; curved rasterizes through one
+  or more explicit whole-quadrant waypoints. Meaning and routing persist, and
+  describe returns both. Semantic inspection is separate from collision
+  validation, so missing metadata can never masquerade as broken geometry.
+
+1PX ERASER / MICRO-MASK
+  micro_mask { action: "add", id, target, points: [{x,y}], width: 1 }
+  micro_mask { action: "remove", id }
+
+  One design pixel is one integer SVG-viewBox pixel. The mask changes SVG and
+  renderHash, but NEVER cuts the target's 5px quadrant footprint. V1 supports
+  artwork paths and images only. ASCII states that masks are not represented.
+
 PEN GRAMMAR
   pen from <id>.<N|S|E|W>                      START HERE for connectors: seats
                                                the cursor just outside a box's
@@ -119,6 +188,61 @@ PEN GRAMMAR
   <dir> [<style>] corner align <sideA> <sideB> place a junction and turn
   <dir> ... line to <address|id.port>          draw until it reaches a target;
                                                indexed target faces also work
+
+FLOWCHART NODES — the symbol carries the meaning
+  place_box ... shape <name>        or  box ... shape decision  in a pen program
+
+  process     the basic step, named with a verb phrase       rectangle
+  decision    branches the process on a test                 diamond
+  terminator  start or end of the process                    stadium
+  subprocess  enters another process and returns             double side bars
+  io          input or output                                parallelogram
+  prep        preparation or setup                           hexagon
+  manual      a step a person performs                       trapezoid
+  data        stored data                                    cylinder
+  document    a printed or written artifact                  wavy foot
+  bar         fork or join                                   solid bar
+
+  lane        a swimlane: who performs these steps          titled band + frame
+  group       a named container around a sub-process         titled band + frame
+
+  CONTAINERS ARE THE EXCEPTION. lane and group reserve only their title band
+  and border ring and leave their hole FREE, so members placed inside collide
+  with nothing. A node straddling the frame still reports L001, because it
+  really does cross the border. Flow crossing a lane border is a real L004 and
+  is exactly what accept_finding is for — handing over between lanes is what a
+  swimlane depicts, not a defect.
+
+  A shape still CLAIMS its whole bounding box, so gutters, free_space and
+  layout are unchanged; it only INKS the symbol. A stroke clipping a diamond's
+  empty corner is therefore L013 information, not an L004 error.
+
+  TEXT IS MEASURED AGAINST THE SYMBOL, NOT THE BOX. A diamond gives a label
+  about half its bounding width and half its height; a parallelogram gives
+  three quarters of its width. A label that fits the rectangle can still
+  overflow the diamond, and the log says so. Measure, then choose the span.
+
+  Below 3x3 quadrants a shape has no room to read as itself, so it stays a
+  rectangle rather than degrading into a blob.
+
+  The four rules the symbols exist to serve:
+    1. order runs left-to-right and top-to-bottom unless you mean otherwise
+    2. exactly ONE start; zero or many ends
+    3. one arrow per path, and no bend without a reason
+    4. avoid crossings; where one is unavoidable, say so with a "hop"
+
+  Rules 2 and part of 3 are CHECKED, not merely advised:
+    F001  more than one terminator with nothing leading into it
+    F002  a decision with fewer than two ways out
+
+  They wake up on their own as soon as a document uses a decision or a
+  terminator, so nothing you drew before is reclassified. An edge is read from
+  what you stated — "pen from <id>.<face>" records the source and "line to
+  <id>.<port>" the target — never from which strokes happen to sit near which
+  box. Rules about branch labels and verb phrases are deliberately NOT checked:
+  deciding that a floating "NO" belongs to one edge, or that a label is not a
+  verb phrase, means guessing, and a rule that guesses teaches you to ignore
+  the log.
 
 SHAPES — anything that is not a rectangle
   ray to <address>                             a straight line at ANY angle
@@ -231,6 +355,19 @@ EXAMPLE — a connector between two boxes, with no address arithmetic
   pen from gateway.S
   down align right line to checkout.N arrow
 
+ROUTING — a proposal, never a change
+  route { from: "gateway.S", to: "checkout.N" }  ->  a pen program
+
+  It hands back a program and changes NOTHING. Read it, then run it with "pen"
+  like anything you wrote; it validates identically. That is the condition
+  auto-routing was deferred on — the path stays inspectable, and there is no
+  router hiding inside the kernel producing geometry nobody can account for.
+
+  It tries the three shapes a person would draw — straight, one turn, two turns
+  — against everything already on the page. If none is clear it SAYS SO and
+  names what is in the way. A twelve-turn path that technically avoids every
+  obstacle is not a connector anyone can follow, so it is not offered.
+
 CONNECTORS: THE TWO MISTAKES WORTH KNOWING
   1. Starting at an address you worked out yourself. A box's south face is
      already outside it, but its north face is its own top row — so leaving
@@ -239,6 +376,31 @@ CONNECTORS: THE TWO MISTAKES WORTH KNOWING
   2. Assuming "to <id>.<port>" arrives. It only sets the DISTANCE along the way
      you are travelling. If the run is on a different row or column from the
      target, it stops level with it and never touches it — reported as L016.
+
+IF YOU ARE GOING ROUND IN CIRCLES, validate WILL SAY SO
+  Three checks in a row with edits between them and the SAME findings still
+  open — not merely the same count, the same findings — and validate appends a
+  NO PROGRESS note. It means what is being changed is not what is being
+  reported. Read one finding, use "repair" to see whether any of its fixes is a
+  single call, and if none is, change the approach rather than the edit.
+
+  It watches the sequence of attempts, never the drawing, so it advises and
+  never blocks. Validating twice without editing is not stagnation, and a clean
+  document checked repeatedly is never nagged.
+
+EVERY FIX IS ALSO A CALL
+  repair { fingerprint }          list the fixes for a current finding
+  repair { fingerprint, index }   perform that one
+
+  Listing says which fixes are one call away and which need a decision from you
+  first. Performing goes through the ordinary operations — rehearsable,
+  undoable, nothing it could not have done by hand; it only saves you working
+  out the arguments.
+
+  It does NOT guess. reroute, offset, hop, extend, rename and shorten are
+  refused by name, because where a path should go instead, or which words to
+  cut, is yours to decide. Inventing a plausible mutation you did not ask for
+  is the failure this engine exists to prevent.
 
 EVERY FIX HAS A TOOL
   widen / heighten -> resize        shorten / font -> restyle
@@ -296,6 +458,20 @@ lattice:
     "rounded",
     "indented",
     "chamfered"
+  ],
+  "nodeShapes": [
+    "process",
+    "decision",
+    "terminator",
+    "subprocess",
+    "io",
+    "prep",
+    "manual",
+    "data",
+    "document",
+    "bar",
+    "lane",
+    "group"
   ],
   "legibilityFloorPx": 8
 }
@@ -417,9 +593,29 @@ rules:
     "title": "heuristic image approximation",
     "blurb": "continuous-tone source was simplified without semantic understanding"
   },
+  "L024": {
+    "severity": "S2",
+    "title": "symbol out of proportion",
+    "blurb": "a shape is stretched until its silhouette no longer distinguishes it"
+  },
+  "L025": {
+    "severity": "S1",
+    "title": "depth flattened onto one page",
+    "blurb": "things at different depths share a page, so neither can pass behind the other"
+  },
   "C001": {
     "severity": "S3",
     "title": "sparse canvas",
     "blurb": "the page has so little ink that nothing was really composed"
+  },
+  "F001": {
+    "severity": "S1",
+    "title": "more than one start",
+    "blurb": "a flowchart has exactly one beginning"
+  },
+  "F002": {
+    "severity": "S1",
+    "title": "decision does not branch",
+    "blurb": "a judgement with fewer than two ways out decides nothing"
   }
 }

@@ -11,7 +11,7 @@ import {
   PERCEPTUAL_CATEGORIES, PERCEPTUAL_SEVERITIES,
   normalizePerceptualFinding, attachPerceptualReview, verdicts, renderHash,
 } from '../src/core/perceptual.js';
-import { createDocument, placeBox, validate, renderSvg, serialize, deserialize, SCHEMA_VERSION } from '../src/core/index.js';
+import { createDocument, placeBox, validate, renderSvg, serialize, deserialize, preservePerceptualReview, SCHEMA_VERSION } from '../src/core/index.js';
 
 const good = {
   id: 'p1',
@@ -141,6 +141,25 @@ test('perceptual review survives a save/reopen round trip with its original time
   assert.equal(reopened.perceptual.reviewedAt, reviewedAt);
   assert.equal(reopened.perceptual.renderHash, 'render-123');
   assert.deepEqual(reopened.perceptual.findings, doc.perceptual.findings);
+});
+
+test('a deterministic rebuild preserves review provenance only for byte-matched renders', () => {
+  const previous = docWithSheep();
+  const render = renderHash(renderSvg(previous));
+  attachPerceptualReview(previous, { renderHash: render, reviewer: 'critic', findings: [], note: 'visual pass' });
+  const reviewedAt = previous.perceptual.reviewedAt;
+
+  const identical = docWithSheep();
+  const carried = preservePerceptualReview(identical, previous);
+  assert.equal(carried.preserved, true);
+  assert.equal(identical.perceptual.reviewedAt, reviewedAt, 'a rebuild must not pretend the old review happened again');
+
+  const changed = docWithSheep();
+  placeBox(changed, 'base', { id: 'extra', at: 'X4', span: '6x4', label: 'new' });
+  const refused = preservePerceptualReview(changed, previous);
+  assert.equal(refused.preserved, false);
+  assert.equal(refused.reason, 'render changed');
+  assert.equal(changed.perceptual, undefined);
 });
 
 test('schema 1 documents migrate to schema 3 and unknown future schemas are refused', () => {

@@ -40,7 +40,15 @@ now implements every in-scope audit phase:
   and explicit pins;
 - SVG semantics, viewer plan approval, semantic review, view switching, bounded
   history, and lazy canvas state close the accessibility/approval workbench gap;
-- the current verified surface is 61 MCP tools and 613 passing tests.
+- dependency-free raster output now preserves flowchart silhouettes, measured
+  text layout, gradients, styled paths, notation keys, and image aspect rules;
+- an authored 59-document catalog owns release/example/fixture/study scope, a
+  generated manifest reports all 8 release artifacts ready, and governance
+  enforces naming, catalog, hash, generated-help, version, registry, and SSOT
+  parity;
+- deterministic rebuilds retain visual approval only when rendered bytes remain
+  identical and lapse it after any real output change;
+- the current verified surface is 61 MCP tools and 625 passing tests.
 
 The only unresolved items are external evidence, not missing in-scope product
 implementation: no same-model comparative benchmark has been executed, and no

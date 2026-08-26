@@ -16,6 +16,10 @@ import * as core from '../src/core/index.js';
 const OUT = resolve(process.cwd(), 'diagrams/example.turtlepen.json');
 const SVG = resolve(process.cwd(), 'diagrams/example.svg');
 const FIXED_CREATED_AT = '2026-08-10T13:29:24.124Z';
+const previous = await core.loadDocument(OUT).catch((error) => {
+  if (error.code === 'ENOENT') return null;
+  throw error;
+});
 
 const rule = (s) => console.log(`\n${'─'.repeat(72)}\n${s}\n${'─'.repeat(72)}`);
 
@@ -115,6 +119,7 @@ rule('7. render');
 
 console.log(core.renderAscii(doc, { page: 'base', findings: final.open }).text);
 
+core.preservePerceptualReview(doc, previous);
 await core.saveDocument(doc, OUT);
 await core.exportSvg(doc, SVG, { findings: final.open, showGrid: true });
 console.log(`\nwrote ${OUT}`);

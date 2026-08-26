@@ -34,7 +34,7 @@ export function createSession({ cwd = process.cwd(), createdAt = null, historyLi
   }
   return {
     doc: null, path: null, diskHash: null, cwd, createdAt, startedAt: new Date().toISOString(), historyLimit, progress: core.createProgressLog(),
-    history: [], future: [], historyNotice: 'no diagram is open',
+    history: [], future: [], historyNotice: 'no diagram is open', reviewCandidate: null,
   };
 }
 
@@ -313,9 +313,17 @@ export function createTools(session) {
         additionalProperties: false,
       },
       handler: async ({ name, path, cols = 160, rows = 100, fontSize = 10 }) => {
+        const target = path ? resolve(session.cwd, path) : resolve(session.cwd, `diagrams/${name.replace(/\W+/g, '-').toLowerCase()}.turtlepen.json`);
+        session.reviewCandidate = null;
+        try {
+          const previous = await core.loadDocumentRecord(target);
+          if (previous.document.perceptual) session.reviewCandidate = previous.document;
+        } catch (error) {
+          if (error.code !== 'ENOENT') session.reviewCandidate = null;
+        }
         session.doc = core.createDocument({ name, canvas: { cols, rows }, font: { size: fontSize } });
         if (session.createdAt) session.doc.createdAt = session.createdAt;
-        session.path = path ? resolve(session.cwd, path) : resolve(session.cwd, `diagrams/${name.replace(/\W+/g, '-').toLowerCase()}.turtlepen.json`);
+        session.path = target;
         // New-diagram is an explicit replacement workflow, including the
         // deterministic example generators. Subsequent edits are guarded.
         session.diskHash = undefined;
@@ -336,6 +344,7 @@ export function createTools(session) {
         session.path = target;
         session.doc = opened.document;
         session.diskHash = opened.hash;
+        session.reviewCandidate = null;
         await restoreHistory(session);
         const v = core.validate(session.doc);
         return `opened "${session.doc.name}" from ${session.path}\npages: ${session.doc.pages.map((p) => `${p.id} (z:${p.z}, ${p.intent})`).join(', ')}\nhistory: ${session.historyNotice}\n\n${core.formatLog(v)}`;
@@ -2126,13 +2135,18 @@ ${r.program}`;
             session.diskHash = null;
           }
         }
+        const reviewCarry = session.reviewCandidate
+          ? core.preservePerceptualReview(doc, session.reviewCandidate)
+          : { preserved: false, reason: 'no rebuild review candidate' };
+        session.reviewCandidate = null;
         await core.saveDocument(doc, session.path, { force, expectedHash: session.diskHash, backup: true });
         const saved = await core.loadDocumentRecord(session.path);
         session.diskHash = saved.hash;
         await persistHistory(session);
-        return force && doc.forcedSave
+        const message = force && doc.forcedSave
           ? `saved ${session.path} — FORCED past ${doc.forcedSave.findingCount} outstanding finding(s); the document records this`
           : `saved ${session.path}`;
+        return reviewCarry.preserved ? `${message}; preserved byte-matched perceptual review ${reviewCarry.renderHash}` : message;
       },
     },
   ];

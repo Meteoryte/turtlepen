@@ -24,9 +24,10 @@ const here = dirname(fileURLToPath(import.meta.url));
 const project = resolve(here, '..');
 const quiet = process.argv.includes('--quiet');
 const say = (...a) => { if (!quiet) console.log(...a); };
+const FIXED_CREATED_AT = '2026-08-26T00:00:00.000Z';
 
 function driver() {
-  const session = createSession({ cwd: project });
+  const session = createSession({ cwd: project, createdAt: FIXED_CREATED_AT });
   const tools = Object.fromEntries(createTools(session).map((t) => [t.name, t]));
   // MCP tools report failure as TEXT. `route` even reports "no clear route",
   // which a careless /clear/ test reads as success — so refusals are matched
@@ -50,7 +51,7 @@ const col = (n) => {
 //  ATLAS 1 — NODES
 // ═══════════════════════════════════════════════════════════════════════════
 async function atlasNodes() {
-  const { call, asJson } = driver();
+  const { session, call, asJson } = driver();
   await call('new_diagram', {
     name: 'Node Atlas', path: 'diagrams/atlas-nodes.turtlepen.json', cols: 120, rows: 78,
   });
@@ -131,14 +132,14 @@ async function atlasNodes() {
     program: `text "NODE ATLAS — shapes, corners, arrowheads, connector styles" at C2 span 90x2 font 12 weight 700`,
   });
 
-  return finish(call, asJson, 'atlas-nodes', 'Node Atlas');
+  return finish(session, call, asJson, 'atlas-nodes', 'Node Atlas');
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  ATLAS 2 — MARKS
 // ═══════════════════════════════════════════════════════════════════════════
 async function atlasMarks() {
-  const { call, asJson } = driver();
+  const { session, call, asJson } = driver();
   await call('new_diagram', {
     name: 'Mark Atlas', path: 'diagrams/atlas-marks.turtlepen.json', cols: 116, rows: 84,
   });
@@ -224,7 +225,7 @@ async function atlasMarks() {
     program: `text "clockwise from east; radii in quadrants" at C6 span 60x2 font 8`,
   });
 
-  return finish(call, asJson, 'atlas-marks', 'Mark Atlas');
+  return finish(session, call, asJson, 'atlas-marks', 'Mark Atlas');
 }
 
 function colIndex(letters) {
@@ -234,7 +235,7 @@ function colIndex(letters) {
 }
 
 /** Validate, adjudicate what a specimen sheet legitimately is, render. */
-async function finish(call, asJson, slug, title) {
+async function finish(session, call, asJson, slug, title) {
   // A declared size is a first guess. Grow the sheet to whatever the specimens
   // actually needed rather than cramming them into the number picked up front.
   const pages = await asJson('describe', {});
@@ -280,6 +281,7 @@ async function finish(call, asJson, slug, title) {
 
   const after = await asJson('validate', { format: 'json' });
   const blocking = (after.open ?? []).filter((f) => f.severity === 'S0' || f.severity === 'S1');
+  for (const acceptance of session.doc.acceptances) acceptance.acceptedAt = FIXED_CREATED_AT;
   await call('save', { force: true });
   const rendered = await call('render', { path: `diagrams/${slug}.svg` });
   say(`${title}: ${(after.open ?? []).length} open (${blocking.length} blocking), `

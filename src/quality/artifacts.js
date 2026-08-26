@@ -19,7 +19,7 @@ async function exported(path, root) {
   }
 }
 
-export async function inspectArtifact(path, { root = process.cwd() } = {}) {
+export async function inspectArtifact(path, { root = process.cwd(), catalogEntry = null } = {}) {
   const manifestRoot = resolve(root);
   const sourcePath = resolve(path);
   const record = await core.loadDocumentRecord(sourcePath);
@@ -43,14 +43,18 @@ export async function inspectArtifact(path, { root = process.cwd() } = {}) {
     modelHasNoErrors: model.summary.error === 0,
     perceptuallyReviewed: perceptual.reviewed === true,
     perceptualCurrent: perceptual.reviewed === true && perceptual.stale === false,
-    perceptualHasNoBlockers: perceptual.reviewed === true && perceptual.blocking === false,
+    perceptualHasNoBlockers: perceptual.reviewed === true && perceptual.blocking === 0,
     hasPortableVector: exports.svg.present,
     publishable: blocking.length === 0 && model.summary.error === 0
-      && perceptual.reviewed === true && perceptual.stale === false && perceptual.blocking === false
+      && perceptual.reviewed === true && perceptual.stale === false && perceptual.blocking === 0
       && exports.svg.present,
   };
+  const catalog = catalogEntry
+    ? { role: catalogEntry.role, releaseRequired: catalogEntry.releaseRequired }
+    : { role: 'unclassified', releaseRequired: false };
   return {
     id: doc.name,
+    catalog,
     source: { path: portablePath(sourcePath, manifestRoot), schema: doc.schema, sha256: record.hash, bytes: Buffer.byteLength(core.serialize(doc)) },
     document: { pages: doc.pages.length, elements: Object.values(doc.elements).flat().length, views: doc.views.length, resources: doc.resources.length },
     structural: { state: validation.summary.state, open: validation.open.length, accepted: validation.accepted.length, stale: validation.staleAcceptances.length, summary: validation.summary },
@@ -61,22 +65,42 @@ export async function inspectArtifact(path, { root = process.cwd() } = {}) {
   };
 }
 
-export async function buildArtifactManifest(paths, { generatedAt = null, root = process.cwd() } = {}) {
+export async function buildArtifactManifest(paths, { generatedAt = null, root = process.cwd(), catalog = null } = {}) {
   if (!Array.isArray(paths) || !paths.length) throw new RangeError('artifact manifest needs at least one TurtlePen document path');
   const artifacts = [];
-  for (const path of [...new Set(paths)].sort()) artifacts.push(await inspectArtifact(path, { root }));
+  for (const path of [...new Set(paths)].sort()) {
+    const portable = portablePath(resolve(path), resolve(root));
+    artifacts.push(await inspectArtifact(path, { root, catalogEntry: catalog?.byPath.get(portable) ?? null }));
+  }
+  const byRole = Object.fromEntries(
+    [...new Set(artifacts.map((artifact) => artifact.catalog.role))].sort().map((role) => {
+      const selected = artifacts.filter((artifact) => artifact.catalog.role === role);
+      return [role, {
+        artifacts: selected.length,
+        publishable: selected.filter((artifact) => artifact.contract.publishable).length,
+      }];
+    }),
+  );
+  const release = artifacts.filter((artifact) => artifact.catalog.releaseRequired);
   const summary = {
     artifacts: artifacts.length,
     publishable: artifacts.filter((artifact) => artifact.contract.publishable).length,
     structurallyClear: artifacts.filter((artifact) => artifact.contract.structurallyClear).length,
     missingSvg: artifacts.filter((artifact) => !artifact.exports.svg.present).length,
+    byRole,
+    release: {
+      artifacts: release.length,
+      ready: release.filter((artifact) => artifact.contract.publishable).length,
+      blocked: release.filter((artifact) => !artifact.contract.publishable).length,
+    },
   };
   return {
-    schema: 1,
+    schema: 2,
     generatedAt,
     qualityContract: {
       required: ['structurallyClear', 'modelHasNoErrors', 'perceptuallyReviewed', 'perceptualCurrent', 'perceptualHasNoBlockers', 'hasPortableVector'],
       note: 'Every dimension remains visible. A missing perceptual review is not silently treated as a pass.',
+      releasePolicy: catalog?.releasePolicy ?? null,
     },
     summary,
     artifacts,

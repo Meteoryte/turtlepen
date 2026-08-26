@@ -10,7 +10,9 @@ import { atomicWriteFile } from './io.js';
 import { VERSION } from './version.js';
 import { capabilityRegistry, doctorReport, searchCapabilities } from './capabilities.js';
 import { buildArtifactManifest } from './quality/artifacts.js';
+import { loadArtifactCatalog } from './quality/artifact-catalog.js';
 import { documentationBundle } from './quality/documentation.js';
+import { governanceReport } from './quality/governance.js';
 import { benchmarkWorksheet, loadCorpus, runBenchmark, scoreBenchmarkRun } from './benchmark/runner.js';
 
 const argv = process.argv.slice(2);
@@ -29,24 +31,26 @@ const HELP = [
   '',
   'Usage: turtlepen <command> [options]',
   '',
-  '  help [query]                         searchable capability help',
+  '  help [query] [--manual]              searchable help or full live manual',
   '  doctor [--json]                      runtime and registry diagnostics',
+  '  governance [--json]                  naming, SSOT, catalog, and drift gate',
   '  validate <document> [--json]         structural validation',
   '  inspect <document> [--json]          semantic-model inspection',
   '  render <document> --format svg|png|pdf [--out path] [--view key] [--force]',
-  '  manifest [documents...] [--out path] [--generated-at ISO] [--enforce]',
+  '  review <document> --render-hash hash --reviewer name [--findings path] [--note text]',
+  '  manifest [documents...] [--catalog path] [--out path] [--generated-at ISO] [--enforce]',
   '  bundle <document> --out <directory>  architecture/model/view/ADR docs',
   '  benchmark worksheet [--partition dev|holdout] [--out path]',
   '  benchmark score <run.json> [--out path]',
   '  benchmark run <config.json> [--out path]',
   '',
-  'When manifest receives no paths it uses git-tracked diagrams only. Benchmark',
+  'When manifest receives no paths it uses the authoritative artifact catalog. Benchmark',
   'commands never invent perceptual results; missing human/model review remains unreviewed.',
 ].join('\n');
 
 function trackedDocuments() {
   try {
-    return execFileSync('git', ['ls-files', 'diagrams/*.turtlepen.json'], { encoding: 'utf8', windowsHide: true })
+    return execFileSync('git', ['ls-files', '*.turtlepen.json', '**/*.turtlepen.json'], { encoding: 'utf8', windowsHide: true })
       .split(/\r?\n/).filter(Boolean);
   } catch (error) {
     throw new Error('no document paths were supplied and git tracking could not be read: ' + error.message);
@@ -60,10 +64,22 @@ async function writeJsonOrPrint(value, path) {
   } else process.stdout.write(json(value) + '\n');
 }
 
+async function writeTextOrPrint(value, path) {
+  const text = String(value).replace(/\n*$/, '\n');
+  if (path) {
+    await atomicWriteFile(resolve(path), text, { backup: true });
+    process.stdout.write(resolve(path) + '\n');
+  } else process.stdout.write(text);
+}
+
 async function main() {
   const session = createSession({ cwd: process.cwd() });
   const tools = createTools(session);
   if (command === 'help' || command === '--help' || command === '-h') {
+    if (has('manual')) {
+      const manual = tools.find((tool) => tool.name === 'turtlepen_help').handler({ section: 'all' });
+      return writeTextOrPrint(manual, option('out'));
+    }
     const query = positional().join(' ');
     if (!query) return process.stdout.write(HELP + '\n');
     const result = searchCapabilities(tools, query);
@@ -78,6 +94,13 @@ async function main() {
     return;
   }
   if (command === 'capabilities') return process.stdout.write(json(capabilityRegistry(tools)) + '\n');
+  if (command === 'governance') {
+    const result = await governanceReport(process.cwd());
+    if (has('json')) process.stdout.write(json(result) + '\n');
+    else process.stdout.write(['TurtlePen governance: ' + result.state.toUpperCase(), ...result.checks.map((entry) => (entry.ok ? 'PASS ' : 'FAIL ') + entry.id.padEnd(18) + entry.detail)].join('\n') + '\n');
+    if (result.state !== 'ready') process.exitCode = 2;
+    return;
+  }
 
   if (command === 'validate' || command === 'inspect') {
     const path = positional()[0];
@@ -108,15 +131,51 @@ async function main() {
     if (format === 'svg') await core.exportSvg(doc, out, options);
     if (format === 'png') await core.exportPng(doc, out, options);
     if (format === 'pdf') await core.exportPdf(doc, out, options);
-    process.stdout.write(out + '\n');
+    const receipt = { path: out, format };
+    if (format === 'svg') receipt.renderHash = core.renderHash(await readFile(out, 'utf8'));
+    process.stdout.write(has('json') ? json(receipt) + '\n' : out + (receipt.renderHash ? '\nrenderHash: ' + receipt.renderHash : '') + '\n');
+    return;
+  }
+
+  if (command === 'review') {
+    const path = positional()[0];
+    if (!path) throw new Error('review needs a document path');
+    const record = await core.loadDocumentRecord(resolve(path));
+    const currentRenderHash = core.renderHash(core.renderSvg(record.document, {}));
+    if (has('status')) {
+      const result = core.perceptualVerdicts(record.document, { currentRenderHash });
+      process.stdout.write(has('json') ? json(result) + '\n' : json(result.perceptual) + '\n');
+      return;
+    }
+    const reviewedHash = option('render-hash');
+    const reviewer = option('reviewer');
+    if (!reviewedHash || !reviewer) throw new Error('review needs --render-hash and --reviewer');
+    if (reviewedHash !== currentRenderHash) {
+      throw new Error(`review hash ${reviewedHash} is stale; the current default SVG renderHash is ${currentRenderHash}`);
+    }
+    const findingsPath = option('findings');
+    const findings = findingsPath ? JSON.parse(await readFile(resolve(findingsPath), 'utf8')) : [];
+    if (!Array.isArray(findings)) throw new Error('--findings must name a JSON array');
+    core.OPERATIONS.perceptual_review(record.document, { renderHash: reviewedHash, reviewer, findings, note: option('note') });
+    await core.checkpointDocumentRecord(record.document, record.path, { expectedHash: record.hash, backup: true });
+    const result = core.perceptualVerdicts(record.document, { currentRenderHash });
+    process.stdout.write(json({ path: record.path, renderHash: reviewedHash, reviewer, findings: findings.length, perceptual: result.perceptual }) + '\n');
     return;
   }
 
   if (command === 'manifest') {
     const paths = positional();
-    const manifest = await buildArtifactManifest(paths.length ? paths : trackedDocuments(), { generatedAt: option('generated-at') });
+    const catalogPath = resolve(option('catalog', 'artifacts/artifact-catalog.json'));
+    let catalog = null;
+    try {
+      catalog = await loadArtifactCatalog(catalogPath);
+    } catch (error) {
+      if (!paths.length || error.code !== 'ENOENT') throw error;
+    }
+    const selected = paths.length ? paths : (catalog?.entries.map((entry) => entry.path) ?? trackedDocuments());
+    const manifest = await buildArtifactManifest(selected, { generatedAt: option('generated-at'), catalog });
     await writeJsonOrPrint(manifest, option('out'));
-    if (has('enforce') && manifest.summary.publishable !== manifest.summary.artifacts) process.exitCode = 2;
+    if (has('enforce') && manifest.summary.release.blocked > 0) process.exitCode = 2;
     return;
   }
 

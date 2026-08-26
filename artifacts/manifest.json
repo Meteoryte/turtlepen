@@ -1,6 +1,6 @@
 {
-  "schema": 1,
-  "generatedAt": "2026-08-26T00:00:00.000Z",
+  "schema": 2,
+  "generatedAt": null,
   "qualityContract": {
     "required": [
       "structurallyClear",
@@ -10,17 +10,231 @@
       "perceptualHasNoBlockers",
       "hasPortableVector"
     ],
-    "note": "Every dimension remains visible. A missing perceptual review is not silently treated as a pass."
+    "note": "Every dimension remains visible. A missing perceptual review is not silently treated as a pass.",
+    "releasePolicy": {
+      "required": [
+        "structurallyClear",
+        "modelHasNoErrors",
+        "perceptuallyReviewed",
+        "perceptualCurrent",
+        "perceptualHasNoBlockers",
+        "hasPortableVector"
+      ],
+      "note": "Only release-role artifacts gate TurtlePen publication. Examples, fixtures, and studies remain visible evidence but cannot silently become release assets."
+    }
   },
   "summary": {
-    "artifacts": 57,
-    "publishable": 0,
-    "structurallyClear": 36,
-    "missingSvg": 1
+    "artifacts": 59,
+    "publishable": 9,
+    "structurallyClear": 40,
+    "missingSvg": 1,
+    "byRole": {
+      "example": {
+        "artifacts": 26,
+        "publishable": 1
+      },
+      "fixture": {
+        "artifacts": 5,
+        "publishable": 0
+      },
+      "release": {
+        "artifacts": 8,
+        "publishable": 8
+      },
+      "study": {
+        "artifacts": 20,
+        "publishable": 0
+      }
+    },
+    "release": {
+      "artifacts": 8,
+      "ready": 8,
+      "blocked": 0
+    }
   },
   "artifacts": [
     {
+      "id": "TurtlePen logo — turtle at easel",
+      "catalog": {
+        "role": "release",
+        "releaseRequired": true
+      },
+      "source": {
+        "path": "brand/logo-v2.turtlepen.json",
+        "schema": 3,
+        "sha256": "82720ca3e5dfd1c9fe37ef4f310a6075e078c12e1bbd7ab7107ddef43caba722",
+        "bytes": 3245773
+      },
+      "document": {
+        "pages": 6,
+        "elements": 59,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 137,
+        "accepted": 69,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 137,
+          "total": 137,
+          "accepted": 69,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": true,
+        "reviewer": "codex/gpt-5.6",
+        "findings": 0,
+        "blocking": 0,
+        "clean": true,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "brand/logo-v2.svg",
+          "present": true,
+          "bytes": 102418,
+          "sha256": "a669bb47aa3fac34f1c287fbe5ecee3986e9cd0a0531874b4eef44f32dc43ee6"
+        },
+        "png": {
+          "path": "brand/logo-v2.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "brand/logo-v2.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
+        "hasPortableVector": true,
+        "publishable": true
+      }
+    },
+    {
+      "id": "TurtlePen logo — turtle at easel",
+      "catalog": {
+        "role": "release",
+        "releaseRequired": true
+      },
+      "source": {
+        "path": "brand/logo.turtlepen.json",
+        "schema": 3,
+        "sha256": "7306e907300a5cd9e970ecccab4eb81844cd49e943bf9243549425c64a7a47be",
+        "bytes": 3204238
+      },
+      "document": {
+        "pages": 5,
+        "elements": 60,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 134,
+        "accepted": 70,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 134,
+          "total": 134,
+          "accepted": 70,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": true,
+        "reviewer": "codex/gpt-5.6",
+        "findings": 0,
+        "blocking": 0,
+        "clean": true,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "brand/logo.svg",
+          "present": true,
+          "bytes": 58777,
+          "sha256": "d5e32f5f747029018b1f217c5d67d108f3577c922ebdf6a4bd1d7797eca4de29"
+        },
+        "png": {
+          "path": "brand/logo.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "brand/logo.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
+        "hasPortableVector": true,
+        "publishable": true
+      }
+    },
+    {
       "id": "checkout service",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/agent-session.turtlepen.json",
         "schema": 3,
@@ -104,6 +318,10 @@
     },
     {
       "id": "Anime Waifu",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/anime-waifu.turtlepen.json",
         "schema": 3,
@@ -187,6 +405,10 @@
     },
     {
       "id": "Art Deco Hero",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/art-deco-hero.turtlepen.json",
         "schema": 3,
@@ -270,10 +492,14 @@
     },
     {
       "id": "Mark Atlas",
+      "catalog": {
+        "role": "fixture",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/atlas-marks.turtlepen.json",
         "schema": 3,
-        "sha256": "7afaafa869c65e4be29bcbb231bb5780ad9f3502fc4b30bd76fe74f657c8326f",
+        "sha256": "04246185511c89a9c4363b44bea1990a3836db8131b46deabe5ea40e2e908789",
         "bytes": 152074
       },
       "document": {
@@ -353,10 +579,14 @@
     },
     {
       "id": "Node Atlas",
+      "catalog": {
+        "role": "fixture",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/atlas-nodes.turtlepen.json",
         "schema": 3,
-        "sha256": "97082f3896e31f729d0cd97864729235dcf6f1965e3792dc5e7495f1987c9b2b",
+        "sha256": "e6c0af8d6c9cc3e4508160a134eb8d70f13e5766675ac616a6d83225f3888303",
         "bytes": 47488
       },
       "document": {
@@ -436,6 +666,10 @@
     },
     {
       "id": "Branching Tree Study",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/branching-tree.turtlepen.json",
         "schema": 3,
@@ -519,6 +753,10 @@
     },
     {
       "id": "Capability audit",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/capability-audit.turtlepen.json",
         "schema": 3,
@@ -602,6 +840,10 @@
     },
     {
       "id": "Morning Coffee Ritual",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/coffee-ritual.turtlepen.json",
         "schema": 3,
@@ -685,11 +927,15 @@
     },
     {
       "id": "Condenser image workflow test",
+      "catalog": {
+        "role": "release",
+        "releaseRequired": true
+      },
       "source": {
         "path": "diagrams/condenser-image-workflow.turtlepen.json",
         "schema": 3,
-        "sha256": "135903cc0d0b7401b6ea3efcc2dea24f3aec2b7a0235346b33ec6f2f0718049a",
-        "bytes": 4646702
+        "sha256": "78c72c3e2d8a42ed68072f0330cedabf7bcbec5fedb9274c633809f6daf60a1a",
+        "bytes": 4647057
       },
       "document": {
         "pages": 1,
@@ -730,10 +976,11 @@
         }
       },
       "perceptual": {
-        "reviewed": false,
+        "reviewed": true,
+        "reviewer": "codex/gpt-5.6",
         "findings": 0,
         "blocking": 0,
-        "clean": false,
+        "clean": true,
         "stale": false
       },
       "exports": {
@@ -759,20 +1006,24 @@
       "contract": {
         "structurallyClear": true,
         "modelHasNoErrors": true,
-        "perceptuallyReviewed": false,
-        "perceptualCurrent": false,
-        "perceptualHasNoBlockers": false,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
         "hasPortableVector": true,
-        "publishable": false
+        "publishable": true
       }
     },
     {
       "id": "Condenser replacement field workflow",
+      "catalog": {
+        "role": "release",
+        "releaseRequired": true
+      },
       "source": {
         "path": "diagrams/condenser-replacement-field-guide.turtlepen.json",
         "schema": 3,
-        "sha256": "156393c18dd7e866691f5e9822c11f907716dbca02d52c4beb63db292bb9d5c4",
-        "bytes": 32960
+        "sha256": "ab5189fe418bb13e51b3560d95a4bb24c1866fd8cc9d759918a52b689e5fdbab",
+        "bytes": 33315
       },
       "document": {
         "pages": 1,
@@ -813,10 +1064,11 @@
         }
       },
       "perceptual": {
-        "reviewed": false,
+        "reviewed": true,
+        "reviewer": "codex/gpt-5.6",
         "findings": 0,
         "blocking": 0,
-        "clean": false,
+        "clean": true,
         "stale": false
       },
       "exports": {
@@ -842,15 +1094,19 @@
       "contract": {
         "structurallyClear": true,
         "modelHasNoErrors": true,
-        "perceptuallyReviewed": false,
-        "perceptualCurrent": false,
-        "perceptualHasNoBlockers": false,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
         "hasPortableVector": true,
-        "publishable": false
+        "publishable": true
       }
     },
     {
       "id": "constraint stress",
+      "catalog": {
+        "role": "fixture",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/constraint-stress.turtlepen.json",
         "schema": 3,
@@ -934,10 +1190,14 @@
     },
     {
       "id": "CRT Desk Scene",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/crt-desk-scene.turtlepen.json",
         "schema": 3,
-        "sha256": "1bcbd68822e0689dc6d792a7f0dc8d316539d0877c401da25ab03c23998eeb63",
+        "sha256": "042c6fd8b3fed71b3fdbe0853832d704d69df2bb56ea0dfb8bfb174e043cef99",
         "bytes": 204683
       },
       "document": {
@@ -1017,6 +1277,10 @@
     },
     {
       "id": "Dither proof",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/dither-proof.turtlepen.json",
         "schema": 3,
@@ -1100,11 +1364,15 @@
     },
     {
       "id": "ingest pipeline",
+      "catalog": {
+        "role": "release",
+        "releaseRequired": true
+      },
       "source": {
         "path": "diagrams/example.turtlepen.json",
         "schema": 3,
-        "sha256": "e166e534baa6eda9e72f226c8b82af23bad2109255a894fa17ff900ab61bcf5a",
-        "bytes": 9524
+        "sha256": "643f6c0023fa48f1370393704a19b20d99debd45349fe3ab9b5c95b0429e0ae5",
+        "bytes": 9879
       },
       "document": {
         "pages": 3,
@@ -1145,10 +1413,11 @@
         }
       },
       "perceptual": {
-        "reviewed": false,
+        "reviewed": true,
+        "reviewer": "codex/gpt-5.6",
         "findings": 0,
         "blocking": 0,
-        "clean": false,
+        "clean": true,
         "stale": false
       },
       "exports": {
@@ -1174,20 +1443,24 @@
       "contract": {
         "structurallyClear": true,
         "modelHasNoErrors": true,
-        "perceptuallyReviewed": false,
-        "perceptualCurrent": false,
-        "perceptualHasNoBlockers": false,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
         "hasPortableVector": true,
-        "publishable": false
+        "publishable": true
       }
     },
     {
       "id": "Five Farm Animals",
+      "catalog": {
+        "role": "release",
+        "releaseRequired": true
+      },
       "source": {
         "path": "diagrams/farm-animals.turtlepen.json",
         "schema": 3,
-        "sha256": "311e76334c977351005fdd495c510fbb98c5cec8581fd529ae4881592abb64e8",
-        "bytes": 186346
+        "sha256": "68e6e90601b476a2327df552e037f0df244308f41e3439f3da981c6da6e875a1",
+        "bytes": 186701
       },
       "document": {
         "pages": 1,
@@ -1228,10 +1501,11 @@
         }
       },
       "perceptual": {
-        "reviewed": false,
+        "reviewed": true,
+        "reviewer": "codex/gpt-5.6",
         "findings": 0,
         "blocking": 0,
-        "clean": false,
+        "clean": true,
         "stale": false
       },
       "exports": {
@@ -1257,20 +1531,24 @@
       "contract": {
         "structurallyClear": true,
         "modelHasNoErrors": true,
-        "perceptuallyReviewed": false,
-        "perceptualCurrent": false,
-        "perceptualHasNoBlockers": false,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
         "hasPortableVector": true,
-        "publishable": false
+        "publishable": true
       }
     },
     {
       "id": "Important Process — flowchart",
+      "catalog": {
+        "role": "release",
+        "releaseRequired": true
+      },
       "source": {
         "path": "diagrams/flowchart-important-process.turtlepen.json",
         "schema": 3,
-        "sha256": "5f0681bebd4cba0b4d143422cdde1bb3245ab5a2dc9267d23673e9a2fac15de5",
-        "bytes": 80726
+        "sha256": "c904ee4932522cc241a04a56d73dc7e60f8d17f368d74451146e778445052a27",
+        "bytes": 100350
       },
       "document": {
         "pages": 1,
@@ -1279,20 +1557,20 @@
         "resources": 0
       },
       "structural": {
-        "state": "needs-decisions",
-        "open": 11,
+        "state": "structurally-clear",
+        "open": 9,
         "accepted": 0,
         "stale": 0,
         "summary": {
           "S0": 0,
           "S1": 0,
-          "S2": 11,
-          "S3": 0,
-          "total": 11,
+          "S2": 0,
+          "S3": 9,
+          "total": 9,
           "accepted": 0,
           "stale": 0,
-          "clean": false,
-          "state": "needs-decisions"
+          "clean": true,
+          "state": "structurally-clear"
         }
       },
       "model": {
@@ -1311,18 +1589,19 @@
         }
       },
       "perceptual": {
-        "reviewed": false,
+        "reviewed": true,
+        "reviewer": "codex/gpt-5.6",
         "findings": 0,
         "blocking": 0,
-        "clean": false,
+        "clean": true,
         "stale": false
       },
       "exports": {
         "svg": {
           "path": "diagrams/flowchart-important-process.svg",
           "present": true,
-          "bytes": 45448,
-          "sha256": "7e8e8d19f816f06f3ee463ec7de3964dee982d606baf41aa70597d5057a35cbd"
+          "bytes": 55265,
+          "sha256": "f1001b4498e38c53ddd85dade7496d5a7bc320f4ba29161c241ce9b1c654cef6"
         },
         "png": {
           "path": "diagrams/flowchart-important-process.png",
@@ -1338,17 +1617,21 @@
         }
       },
       "contract": {
-        "structurallyClear": false,
+        "structurallyClear": true,
         "modelHasNoErrors": true,
-        "perceptuallyReviewed": false,
-        "perceptualCurrent": false,
-        "perceptualHasNoBlockers": false,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
         "hasPortableVector": true,
-        "publishable": false
+        "publishable": true
       }
     },
     {
       "id": "Detailed Apple",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/gemini31-scene-apple.turtlepen.json",
         "schema": 3,
@@ -1432,6 +1715,10 @@
     },
     {
       "id": "Detailed Fence",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/gemini31-scene-fence.turtlepen.json",
         "schema": 3,
@@ -1515,6 +1802,10 @@
     },
     {
       "id": "Living Room Family",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/gemini31-scene-living-room-family.turtlepen.json",
         "schema": 3,
@@ -1598,6 +1889,10 @@
     },
     {
       "id": "Fractal Tree",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/gemini31-scene-tree.turtlepen.json",
         "schema": 3,
@@ -1681,6 +1976,10 @@
     },
     {
       "id": "Datacenter",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/gemini31-server-structure.turtlepen.json",
         "schema": 3,
@@ -1764,6 +2063,10 @@
     },
     {
       "id": "Neural Learning",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/gemini31-teaching-loop.turtlepen.json",
         "schema": 3,
@@ -1847,6 +2150,10 @@
     },
     {
       "id": "Candlestick Chart",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/gemini31-technical-analysis.turtlepen.json",
         "schema": 3,
@@ -1930,6 +2237,10 @@
     },
     {
       "id": "Gears Workflow",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/gemini31-workflow.turtlepen.json",
         "schema": 3,
@@ -2013,6 +2324,10 @@
     },
     {
       "id": "Home Lab Network",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/home-lab-network.turtlepen.json",
         "schema": 3,
@@ -2096,6 +2411,10 @@
     },
     {
       "id": "inked pipeline",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/inked-diagram.turtlepen.json",
         "schema": 3,
@@ -2179,6 +2498,10 @@
     },
     {
       "id": "release pipeline",
+      "catalog": {
+        "role": "fixture",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/layout-after.turtlepen.json",
         "schema": 3,
@@ -2262,6 +2585,10 @@
     },
     {
       "id": "m2",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/m2.turtlepen.json",
         "schema": 3,
@@ -2345,6 +2672,10 @@
     },
     {
       "id": "m",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/mechroom.turtlepen.json",
         "schema": 3,
@@ -2428,6 +2759,10 @@
     },
     {
       "id": "minisplit",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/minisplit-elevation.turtlepen.json",
         "schema": 3,
@@ -2511,6 +2846,10 @@
     },
     {
       "id": "How to Paint the Mona Lisa",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/mona/mona-01-flowchart.turtlepen.json",
         "schema": 3,
@@ -2594,6 +2933,10 @@
     },
     {
       "id": "Mona Lisa — Cartoon",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/mona/mona-02-cartoon.turtlepen.json",
         "schema": 3,
@@ -2677,6 +3020,10 @@
     },
     {
       "id": "Mona Lisa — Colouring Page",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/mona/mona-03-coloring.turtlepen.json",
         "schema": 3,
@@ -2760,6 +3107,10 @@
     },
     {
       "id": "Mona Lisa — Abstract",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/mona/mona-04-abstract.turtlepen.json",
         "schema": 3,
@@ -2843,6 +3194,10 @@
     },
     {
       "id": "Mona Lisa — Sculpture",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/mona/mona-05-sculpture.turtlepen.json",
         "schema": 3,
@@ -2926,6 +3281,10 @@
     },
     {
       "id": "Solar System",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/random-01-solar-system.turtlepen.json",
         "schema": 3,
@@ -3009,6 +3368,10 @@
     },
     {
       "id": "Mountain Landscape",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/random-02-mountains.turtlepen.json",
         "schema": 3,
@@ -3092,6 +3455,10 @@
     },
     {
       "id": "Abstract Geometric",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/random-03-abstract.turtlepen.json",
         "schema": 3,
@@ -3175,6 +3542,10 @@
     },
     {
       "id": "Underwater Scene",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/random-04-underwater.turtlepen.json",
         "schema": 3,
@@ -3258,6 +3629,10 @@
     },
     {
       "id": "City Skyline",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/random-05-city-skyline.turtlepen.json",
         "schema": 3,
@@ -3341,6 +3716,10 @@
     },
     {
       "id": "Scene - Apple",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/scene-apple.turtlepen.json",
         "schema": 3,
@@ -3424,6 +3803,10 @@
     },
     {
       "id": "Scene - Picket Fence",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/scene-fence.turtlepen.json",
         "schema": 3,
@@ -3507,6 +3890,10 @@
     },
     {
       "id": "Scene - Living Room Family",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/scene-living-room-family.turtlepen.json",
         "schema": 3,
@@ -3590,6 +3977,10 @@
     },
     {
       "id": "Scene - Tree",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/scene-tree.turtlepen.json",
         "schema": 3,
@@ -3673,6 +4064,10 @@
     },
     {
       "id": "Server Structures - HA Microservices",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/server-structure-ha-microservices.turtlepen.json",
         "schema": 3,
@@ -3756,6 +4151,10 @@
     },
     {
       "id": "Castle Scene",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/showcase-castle.turtlepen.json",
         "schema": 3,
@@ -3839,6 +4238,10 @@
     },
     {
       "id": "Deployment Pipeline",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/showcase-flowchart.turtlepen.json",
         "schema": 3,
@@ -3922,6 +4325,10 @@
     },
     {
       "id": "Home Office 3D",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/showcase-perspective.turtlepen.json",
         "schema": 3,
@@ -4005,6 +4412,10 @@
     },
     {
       "id": "ETL Data Pipeline",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/showcase-pipeline.turtlepen.json",
         "schema": 3,
@@ -4088,10 +4499,14 @@
     },
     {
       "id": "Revision Session",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/showcase-revision.turtlepen.json",
         "schema": 3,
-        "sha256": "107b3a54fed2b2e9cbc18119929ae45784879f080220f7107b8095732394330b",
+        "sha256": "8e339ab21f93f5e357037fa0cb59ba48336d3cdf242a546ee2009e0db0a526e0",
         "bytes": 23030
       },
       "document": {
@@ -4165,13 +4580,17 @@
         "modelHasNoErrors": true,
         "perceptuallyReviewed": true,
         "perceptualCurrent": true,
-        "perceptualHasNoBlockers": false,
+        "perceptualHasNoBlockers": true,
         "hasPortableVector": true,
-        "publishable": false
+        "publishable": true
       }
     },
     {
       "id": "Server Room Layout",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/showcase-server-room.turtlepen.json",
         "schema": 3,
@@ -4255,6 +4674,10 @@
     },
     {
       "id": "Five seeded-random supersampling trials",
+      "catalog": {
+        "role": "fixture",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/supersample-random-five.turtlepen.json",
         "schema": 3,
@@ -4338,11 +4761,15 @@
     },
     {
       "id": "Order handling — swimlanes",
+      "catalog": {
+        "role": "release",
+        "releaseRequired": true
+      },
       "source": {
         "path": "diagrams/swimlane-order-handling.turtlepen.json",
         "schema": 3,
-        "sha256": "cd5a145c9dd6e89dd0aa8434229b6b5c6fcab7a2fedfd23a7665b1cc38cc12d9",
-        "bytes": 30391
+        "sha256": "7af38723d225efb8c99168a4b4a68a4cbc62490c2bb05c9cf79560e3be0d9899",
+        "bytes": 33287
       },
       "document": {
         "pages": 1,
@@ -4351,20 +4778,20 @@
         "resources": 0
       },
       "structural": {
-        "state": "needs-decisions",
-        "open": 4,
+        "state": "structurally-clear",
+        "open": 5,
         "accepted": 4,
         "stale": 0,
         "summary": {
           "S0": 0,
           "S1": 0,
-          "S2": 1,
-          "S3": 3,
-          "total": 4,
+          "S2": 0,
+          "S3": 5,
+          "total": 5,
           "accepted": 4,
           "stale": 0,
-          "clean": false,
-          "state": "needs-decisions"
+          "clean": true,
+          "state": "structurally-clear"
         }
       },
       "model": {
@@ -4383,18 +4810,19 @@
         }
       },
       "perceptual": {
-        "reviewed": false,
+        "reviewed": true,
+        "reviewer": "codex/gpt-5.6",
         "findings": 0,
         "blocking": 0,
-        "clean": false,
+        "clean": true,
         "stale": false
       },
       "exports": {
         "svg": {
           "path": "diagrams/swimlane-order-handling.svg",
           "present": true,
-          "bytes": 23189,
-          "sha256": "d8c374e52190f10085bce29e9b3e8987ea4498e820ae1f2d52c3a465b59845bb"
+          "bytes": 25140,
+          "sha256": "661aec1e48cd499f2d995436368f1996868f8b408bd04f8b90245405330f1a24"
         },
         "png": {
           "path": "diagrams/swimlane-order-handling.png",
@@ -4410,17 +4838,21 @@
         }
       },
       "contract": {
-        "structurallyClear": false,
+        "structurallyClear": true,
         "modelHasNoErrors": true,
-        "perceptuallyReviewed": false,
-        "perceptualCurrent": false,
-        "perceptualHasNoBlockers": false,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
         "hasPortableVector": true,
-        "publishable": false
+        "publishable": true
       }
     },
     {
       "id": "Teaching and Education - Mastery Learning",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/teaching-mastery-learning-cycle.turtlepen.json",
         "schema": 3,
@@ -4504,6 +4936,10 @@
     },
     {
       "id": "Technical Analysis - Quant Engine",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/technical-analysis-quant-engine.turtlepen.json",
         "schema": 3,
@@ -4587,6 +5023,10 @@
     },
     {
       "id": "turtlefont specimen",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/turtlefont-specimen.turtlepen.json",
         "schema": 3,
@@ -4670,6 +5110,10 @@
     },
     {
       "id": "Workflow - Automated CI/CD Pipeline",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
       "source": {
         "path": "diagrams/workflow-cicd-deployment-pipeline.turtlepen.json",
         "schema": 3,

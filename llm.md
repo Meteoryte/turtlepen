@@ -36,6 +36,8 @@ of placement and makes every defect a ranked, numeric finding.
   measurement; `core/svg.js` emits `textLength` + `lengthAdjust` on every run so
   the renderer cannot disagree. Do not add a rendering path that lays out text
   independently — that reintroduces the exact bug this project eliminates.
+  Native PNG/PDF rendering consumes the same `layoutTextRuns` result; it must
+  never wrap, size, or align text through a second policy.
   TurtleFont (`core/turtlefont.js`) holds the same line differently: it does not
   predict a width at all, because `measureStrokeText` IS `renderStrokeText` with
   the quadrants discarded. There is no second implementation to drift.
@@ -228,7 +230,7 @@ A drawing is not delivered until all four have happened, in this order:
 Report what the final validation actually said. This is written down because a
 session shipped a flowchart whose every decision node was a rectangle, never
 rendered it until prompted, and reported it complete with three overlaps open.
-`build_flowchart.js` and `build_logo_v2.js` encode the rule: both exit non-zero
+`build-flowchart.js` and `brand/build-logo.mjs` encode the rule: both exit non-zero
 if any finding above INFO survives.
 
 ## Boundaries
