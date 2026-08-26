@@ -1,0 +1,4755 @@
+{
+  "schema": 1,
+  "generatedAt": "2026-08-26T00:00:00.000Z",
+  "qualityContract": {
+    "required": [
+      "structurallyClear",
+      "modelHasNoErrors",
+      "perceptuallyReviewed",
+      "perceptualCurrent",
+      "perceptualHasNoBlockers",
+      "hasPortableVector"
+    ],
+    "note": "Every dimension remains visible. A missing perceptual review is not silently treated as a pass."
+  },
+  "summary": {
+    "artifacts": 57,
+    "publishable": 0,
+    "structurallyClear": 36,
+    "missingSvg": 1
+  },
+  "artifacts": [
+    {
+      "id": "checkout service",
+      "source": {
+        "path": "diagrams/agent-session.turtlepen.json",
+        "schema": 3,
+        "sha256": "70925a2d4c636d7e52e4b058e2667f95e64bc807e9ff5ef37be158d969b42fb5",
+        "bytes": 20800
+      },
+      "document": {
+        "pages": 2,
+        "elements": 15,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 2,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 2,
+          "total": 2,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 22,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 16,
+          "info": 6,
+          "total": 22,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/agent-session.svg",
+          "present": true,
+          "bytes": 14900,
+          "sha256": "f5af0b2731e3470ced8f08891c9b3769b0c41bc22e9c8e29f638e60c262228d4"
+        },
+        "png": {
+          "path": "diagrams/agent-session.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/agent-session.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Anime Waifu",
+      "source": {
+        "path": "diagrams/anime-waifu.turtlepen.json",
+        "schema": 3,
+        "sha256": "1f96d25f3bcbb750af13727e3a8bb458784699fe938aef73a0df2df3c4aa80f3",
+        "bytes": 706171
+      },
+      "document": {
+        "pages": 6,
+        "elements": 39,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 124,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 124,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/anime-waifu.svg",
+          "present": true,
+          "bytes": 28271,
+          "sha256": "03d0229f516e4629b8729b7c080b95ab2c4ac9b999ea0c8fd40612f21cf07e11"
+        },
+        "png": {
+          "path": "diagrams/anime-waifu.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/anime-waifu.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Art Deco Hero",
+      "source": {
+        "path": "diagrams/art-deco-hero.turtlepen.json",
+        "schema": 3,
+        "sha256": "e1850073ddee906cd74a0adf02fb96766ff47a5a764cddced8eefe92fe96783e",
+        "bytes": 449312
+      },
+      "document": {
+        "pages": 1,
+        "elements": 25,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 14,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 14,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 36,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 22,
+          "info": 14,
+          "total": 36,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/art-deco-hero.svg",
+          "present": true,
+          "bytes": 161276,
+          "sha256": "47e22869e366d63e5e44dc5510fb9d57aa453040425f2f214609f839ec4ecfd3"
+        },
+        "png": {
+          "path": "diagrams/art-deco-hero.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/art-deco-hero.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Mark Atlas",
+      "source": {
+        "path": "diagrams/atlas-marks.turtlepen.json",
+        "schema": 3,
+        "sha256": "7afaafa869c65e4be29bcbb231bb5780ad9f3502fc4b30bd76fe74f657c8326f",
+        "bytes": 152074
+      },
+      "document": {
+        "pages": 2,
+        "elements": 40,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/atlas-marks.svg",
+          "present": true,
+          "bytes": 64994,
+          "sha256": "b5344d442386ab34704bc2302757962c9159d3683f12b08eee3b142c93d0fc2d"
+        },
+        "png": {
+          "path": "diagrams/atlas-marks.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/atlas-marks.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Node Atlas",
+      "source": {
+        "path": "diagrams/atlas-nodes.turtlepen.json",
+        "schema": 3,
+        "sha256": "97082f3896e31f729d0cd97864729235dcf6f1965e3792dc5e7495f1987c9b2b",
+        "bytes": 47488
+      },
+      "document": {
+        "pages": 2,
+        "elements": 43,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 4,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 4,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 29,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 26,
+          "info": 3,
+          "total": 29,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/atlas-nodes.svg",
+          "present": true,
+          "bytes": 34573,
+          "sha256": "a9843a62f4f110822e8f787aa32c9d939d8b5346a5216141fc3dee4cfbad2f41"
+        },
+        "png": {
+          "path": "diagrams/atlas-nodes.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/atlas-nodes.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Branching Tree Study",
+      "source": {
+        "path": "diagrams/branching-tree.turtlepen.json",
+        "schema": 3,
+        "sha256": "ba0b99fa2e044be84722b3e27509750e76bf6370070a7727be71d5157131e679",
+        "bytes": 71131
+      },
+      "document": {
+        "pages": 2,
+        "elements": 2,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 1,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 1,
+          "total": 1,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/branching-tree.svg",
+          "present": true,
+          "bytes": 13393,
+          "sha256": "904e9f08f5045622ad309b5ab4084e4e5061e9faa92cff56085639d495a8bf93"
+        },
+        "png": {
+          "path": "diagrams/branching-tree.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/branching-tree.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Capability audit",
+      "source": {
+        "path": "diagrams/capability-audit.turtlepen.json",
+        "schema": 3,
+        "sha256": "d01f32e503a78322d4a9820f765a54d83622c7d95adb3e6fd532dc835af626d0",
+        "bytes": 66448
+      },
+      "document": {
+        "pages": 2,
+        "elements": 29,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 1,
+        "accepted": 1,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 1,
+          "S3": 0,
+          "total": 1,
+          "accepted": 1,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 30,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 30,
+          "info": 0,
+          "total": 30,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/capability-audit.svg",
+          "present": true,
+          "bytes": 34889,
+          "sha256": "f1ec06ebc06f03d20d3d91d16b4ca7847253ac28802ba0816c000813439128d4"
+        },
+        "png": {
+          "path": "diagrams/capability-audit.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/capability-audit.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Morning Coffee Ritual",
+      "source": {
+        "path": "diagrams/coffee-ritual.turtlepen.json",
+        "schema": 3,
+        "sha256": "e013a91a817076f881713c7017b610804bc4e1b95940db3207ec5028176dc7e3",
+        "bytes": 24517
+      },
+      "document": {
+        "pages": 1,
+        "elements": 14,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 21,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 14,
+          "info": 7,
+          "total": 21,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/coffee-ritual.svg",
+          "present": true,
+          "bytes": 15065,
+          "sha256": "a5f4fea57c371be71b8761b96136b4c1886c557bef1311fb2a533a49f1695c1e"
+        },
+        "png": {
+          "path": "diagrams/coffee-ritual.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/coffee-ritual.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Condenser image workflow test",
+      "source": {
+        "path": "diagrams/condenser-image-workflow.turtlepen.json",
+        "schema": 3,
+        "sha256": "135903cc0d0b7401b6ea3efcc2dea24f3aec2b7a0235346b33ec6f2f0718049a",
+        "bytes": 4646702
+      },
+      "document": {
+        "pages": 1,
+        "elements": 8,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 10,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 10,
+          "info": 0,
+          "total": 10,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/condenser-image-workflow.svg",
+          "present": true,
+          "bytes": 4588307,
+          "sha256": "145cc8e51607576ad32987301fa42ca3d8968eba9398703262efca2aa5fe41bf"
+        },
+        "png": {
+          "path": "diagrams/condenser-image-workflow.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/condenser-image-workflow.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Condenser replacement field workflow",
+      "source": {
+        "path": "diagrams/condenser-replacement-field-guide.turtlepen.json",
+        "schema": 3,
+        "sha256": "156393c18dd7e866691f5e9822c11f907716dbca02d52c4beb63db292bb9d5c4",
+        "bytes": 32960
+      },
+      "document": {
+        "pages": 1,
+        "elements": 27,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 43,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 32,
+          "info": 11,
+          "total": 43,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/condenser-replacement-field-guide.svg",
+          "present": true,
+          "bytes": 24060,
+          "sha256": "acb10161980b840099b4b50c841fb961d2d088a0af1c39fa53cdbb8d7897ade3"
+        },
+        "png": {
+          "path": "diagrams/condenser-replacement-field-guide.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/condenser-replacement-field-guide.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "constraint stress",
+      "source": {
+        "path": "diagrams/constraint-stress.turtlepen.json",
+        "schema": 3,
+        "sha256": "33451c558baca7c980db73d381d49728db59d938356542a7cf0d6e86d414c2a5",
+        "bytes": 70006
+      },
+      "document": {
+        "pages": 1,
+        "elements": 11,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 17,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 12,
+          "info": 5,
+          "total": 17,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/constraint-stress.svg",
+          "present": true,
+          "bytes": 31692,
+          "sha256": "e165868469eaed2e38434e242894a00c1408cc03d192a50741c9bd76577f705c"
+        },
+        "png": {
+          "path": "diagrams/constraint-stress.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/constraint-stress.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "CRT Desk Scene",
+      "source": {
+        "path": "diagrams/crt-desk-scene.turtlepen.json",
+        "schema": 3,
+        "sha256": "1bcbd68822e0689dc6d792a7f0dc8d316539d0877c401da25ab03c23998eeb63",
+        "bytes": 204683
+      },
+      "document": {
+        "pages": 3,
+        "elements": 6,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 4,
+        "accepted": 3,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 4,
+          "total": 4,
+          "accepted": 3,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/crt-desk-scene.svg",
+          "present": true,
+          "bytes": 99074,
+          "sha256": "d5806cbf6d333c9d4c7264f6b20b63694eff9baba17a7718cadcc02b34074cfb"
+        },
+        "png": {
+          "path": "diagrams/crt-desk-scene.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/crt-desk-scene.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Dither proof",
+      "source": {
+        "path": "diagrams/dither-proof.turtlepen.json",
+        "schema": 3,
+        "sha256": "1ad55b1f15a80e7763565afc2279c8bff1d504c23aa57a125b90359e4ef66914",
+        "bytes": 67948
+      },
+      "document": {
+        "pages": 1,
+        "elements": 2,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/dither-proof.svg",
+          "present": true,
+          "bytes": 51929,
+          "sha256": "a65e0ae6077a04e2867c704dc20640391d2d273da0ee51b85a3888dbea34fc4e"
+        },
+        "png": {
+          "path": "diagrams/dither-proof.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/dither-proof.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "ingest pipeline",
+      "source": {
+        "path": "diagrams/example.turtlepen.json",
+        "schema": 3,
+        "sha256": "e166e534baa6eda9e72f226c8b82af23bad2109255a894fa17ff900ab61bcf5a",
+        "bytes": 9524
+      },
+      "document": {
+        "pages": 3,
+        "elements": 10,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 2,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 2,
+          "total": 2,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 18,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 16,
+          "info": 2,
+          "total": 18,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/example.svg",
+          "present": true,
+          "bytes": 13024,
+          "sha256": "cb67128def82cdc2356272efc32c2efe7f4d87562c0374e0007ab99153497a83"
+        },
+        "png": {
+          "path": "diagrams/example.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/example.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Five Farm Animals",
+      "source": {
+        "path": "diagrams/farm-animals.turtlepen.json",
+        "schema": 3,
+        "sha256": "311e76334c977351005fdd495c510fbb98c5cec8581fd529ae4881592abb64e8",
+        "bytes": 186346
+      },
+      "document": {
+        "pages": 1,
+        "elements": 46,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 11,
+        "stale": 5,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 11,
+          "stale": 5,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/farm-animals.svg",
+          "present": true,
+          "bytes": 27484,
+          "sha256": "6894a0ed69fcc49b489739528d09116710c13a60965dc0bb677f8eca172f9eff"
+        },
+        "png": {
+          "path": "diagrams/farm-animals.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/farm-animals.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Important Process — flowchart",
+      "source": {
+        "path": "diagrams/flowchart-important-process.turtlepen.json",
+        "schema": 3,
+        "sha256": "5f0681bebd4cba0b4d143422cdde1bb3245ab5a2dc9267d23673e9a2fac15de5",
+        "bytes": 80726
+      },
+      "document": {
+        "pages": 1,
+        "elements": 51,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 11,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 11,
+          "S3": 0,
+          "total": 11,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 45,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 26,
+          "info": 19,
+          "total": 45,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/flowchart-important-process.svg",
+          "present": true,
+          "bytes": 45448,
+          "sha256": "7e8e8d19f816f06f3ee463ec7de3964dee982d606baf41aa70597d5057a35cbd"
+        },
+        "png": {
+          "path": "diagrams/flowchart-important-process.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/flowchart-important-process.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Detailed Apple",
+      "source": {
+        "path": "diagrams/gemini31-scene-apple.turtlepen.json",
+        "schema": 3,
+        "sha256": "4dc1637cae02c4859f54b9fec21a4c3df894b1d182df88077e314b18b430da55",
+        "bytes": 674686
+      },
+      "document": {
+        "pages": 6,
+        "elements": 12,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 15,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 5,
+          "S3": 10,
+          "total": 15,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 2,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 0,
+          "total": 2,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/gemini31-scene-apple.svg",
+          "present": true,
+          "bytes": 23221,
+          "sha256": "5ab6b4554404a12d0db37d74f5223eb8b12bdebdf5a83f9e74d3d48399533a87"
+        },
+        "png": {
+          "path": "diagrams/gemini31-scene-apple.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/gemini31-scene-apple.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Detailed Fence",
+      "source": {
+        "path": "diagrams/gemini31-scene-fence.turtlepen.json",
+        "schema": 3,
+        "sha256": "c7dc4cad33f229383fe3026e6b00d7c1dc2c831b189d61b4b601b3b6f35cfd3a",
+        "bytes": 230443
+      },
+      "document": {
+        "pages": 5,
+        "elements": 83,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 153,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 3,
+          "S3": 150,
+          "total": 153,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 30,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 30,
+          "info": 0,
+          "total": 30,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/gemini31-scene-fence.svg",
+          "present": true,
+          "bytes": 39972,
+          "sha256": "0552f5610fd428a445ef531a23e83a92a761694df85f707498680e04a2d53755"
+        },
+        "png": {
+          "path": "diagrams/gemini31-scene-fence.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/gemini31-scene-fence.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Living Room Family",
+      "source": {
+        "path": "diagrams/gemini31-scene-living-room-family.turtlepen.json",
+        "schema": 3,
+        "sha256": "d1de8e20f6f01a966f3c2840b6c0186775b6f6c7260a6f323523a47df22d4b6e",
+        "bytes": 169433
+      },
+      "document": {
+        "pages": 7,
+        "elements": 44,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 55,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 19,
+          "S3": 36,
+          "total": 55,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 18,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 18,
+          "info": 0,
+          "total": 18,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/gemini31-scene-living-room-family.svg",
+          "present": true,
+          "bytes": 24845,
+          "sha256": "d9592166c980e3f84d103ae1daf27a4b5ffe9ce5d1152e2ed1713af59d5d48ce"
+        },
+        "png": {
+          "path": "diagrams/gemini31-scene-living-room-family.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/gemini31-scene-living-room-family.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Fractal Tree",
+      "source": {
+        "path": "diagrams/gemini31-scene-tree.turtlepen.json",
+        "schema": 3,
+        "sha256": "0295be773e4686b1bb34303c8e1be117d11db47caf573a9fbca1baccbbe89660",
+        "bytes": 704802
+      },
+      "document": {
+        "pages": 4,
+        "elements": 97,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 284,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 78,
+          "S3": 206,
+          "total": 284,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 2,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 0,
+          "total": 2,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/gemini31-scene-tree.svg",
+          "present": true,
+          "bytes": 60530,
+          "sha256": "579172bdc82410b95f83c32a0dca22c9811e8c778fc60e9921ae2273d1fce045"
+        },
+        "png": {
+          "path": "diagrams/gemini31-scene-tree.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/gemini31-scene-tree.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Datacenter",
+      "source": {
+        "path": "diagrams/gemini31-server-structure.turtlepen.json",
+        "schema": 3,
+        "sha256": "d19167605e1c8e3bf79416997321ac35f6f73ab1318f276fb6e9bcb5d69818b4",
+        "bytes": 193361
+      },
+      "document": {
+        "pages": 6,
+        "elements": 86,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "blocking-errors",
+        "open": 102,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 2,
+          "S2": 0,
+          "S3": 100,
+          "total": 102,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "blocking-errors"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 16,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 16,
+          "info": 0,
+          "total": 16,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/gemini31-server-structure.svg",
+          "present": true,
+          "bytes": 31558,
+          "sha256": "065b0255777cfca1e7c56d81a8156e61308d8bfd145aa24c9a3c015bcdea0a35"
+        },
+        "png": {
+          "path": "diagrams/gemini31-server-structure.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/gemini31-server-structure.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Neural Learning",
+      "source": {
+        "path": "diagrams/gemini31-teaching-loop.turtlepen.json",
+        "schema": 3,
+        "sha256": "8134ab724b5e6d13c8d23fea831bd0ad79ebca5ed6c2019151d9de2a44b31438",
+        "bytes": 628026
+      },
+      "document": {
+        "pages": 9,
+        "elements": 25,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 53,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 6,
+          "S3": 47,
+          "total": 53,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 8,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 8,
+          "info": 0,
+          "total": 8,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/gemini31-teaching-loop.svg",
+          "present": true,
+          "bytes": 42908,
+          "sha256": "13add2338549b597140a00a6ba75eb08136b2e7fcf09eeae9da08b2b246de07e"
+        },
+        "png": {
+          "path": "diagrams/gemini31-teaching-loop.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/gemini31-teaching-loop.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Candlestick Chart",
+      "source": {
+        "path": "diagrams/gemini31-technical-analysis.turtlepen.json",
+        "schema": 3,
+        "sha256": "23a7621cd8ce525da0b4d64e39a7fa9901d9fe0401370f049cc02a7c5550ba84",
+        "bytes": 318213
+      },
+      "document": {
+        "pages": 3,
+        "elements": 78,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 75,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 75,
+          "total": 75,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 102,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 102,
+          "info": 0,
+          "total": 102,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/gemini31-technical-analysis.svg",
+          "present": true,
+          "bytes": 24443,
+          "sha256": "f7286f68ae36cc02f5a85677f45be722233062187df7c4454c79936d99476637"
+        },
+        "png": {
+          "path": "diagrams/gemini31-technical-analysis.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/gemini31-technical-analysis.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Gears Workflow",
+      "source": {
+        "path": "diagrams/gemini31-workflow.turtlepen.json",
+        "schema": 3,
+        "sha256": "5e26442fdd799128c44605070e6449a0d7099a9a914c791e520edfcbffa17629",
+        "bytes": 337719
+      },
+      "document": {
+        "pages": 4,
+        "elements": 84,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 79,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 79,
+          "total": 79,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 8,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 8,
+          "info": 0,
+          "total": 8,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/gemini31-workflow.svg",
+          "present": true,
+          "bytes": 45824,
+          "sha256": "27e3be66498eecffb65772dadeb380938066301448ad72f81f7e8888f5962460"
+        },
+        "png": {
+          "path": "diagrams/gemini31-workflow.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/gemini31-workflow.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Home Lab Network",
+      "source": {
+        "path": "diagrams/home-lab-network.turtlepen.json",
+        "schema": 3,
+        "sha256": "15fff56926e22362841736212005907a742fbbba95a348761aa015509243b7da",
+        "bytes": 13074
+      },
+      "document": {
+        "pages": 2,
+        "elements": 10,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 1,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 1,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 16,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 12,
+          "info": 4,
+          "total": 16,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/home-lab-network.svg",
+          "present": true,
+          "bytes": 10613,
+          "sha256": "721a2f5a3b12883892d793a8fc22f177cdda3b76d4778542caa7797c8b0c87be"
+        },
+        "png": {
+          "path": "diagrams/home-lab-network.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/home-lab-network.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "inked pipeline",
+      "source": {
+        "path": "diagrams/inked-diagram.turtlepen.json",
+        "schema": 3,
+        "sha256": "469b8e404b51966793a06901a0c540bc3012cb0c2bad142cece5ee76171119c2",
+        "bytes": 165994
+      },
+      "document": {
+        "pages": 1,
+        "elements": 13,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 1,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 1,
+          "S3": 0,
+          "total": 1,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 11,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 8,
+          "info": 3,
+          "total": 11,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/inked-diagram.svg",
+          "present": true,
+          "bytes": 120567,
+          "sha256": "ecd33afe9f18fad661eba61132116222b77154d56343dfa35deadf0a608f98ef"
+        },
+        "png": {
+          "path": "diagrams/inked-diagram.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/inked-diagram.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "release pipeline",
+      "source": {
+        "path": "diagrams/layout-after.turtlepen.json",
+        "schema": 3,
+        "sha256": "fa99fbf167c3cf5839a6d06f5845eb806148e39cb8e7e482a95be99d17424aff",
+        "bytes": 120560
+      },
+      "document": {
+        "pages": 1,
+        "elements": 24,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "blocking-errors",
+        "open": 8,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 2,
+          "S2": 4,
+          "S3": 2,
+          "total": 8,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "blocking-errors"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 35,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 22,
+          "info": 13,
+          "total": 35,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/layout-after.svg",
+          "present": true,
+          "bytes": 50495,
+          "sha256": "57d85ea60ecc9d1496ff76a77e37c1356744e282fcc0efb0c77ef48638c01dca"
+        },
+        "png": {
+          "path": "diagrams/layout-after.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/layout-after.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "m2",
+      "source": {
+        "path": "diagrams/m2.turtlepen.json",
+        "schema": 3,
+        "sha256": "a02687850995420f613a28fe26899834306962dacef046db58910b6765a6e5cc",
+        "bytes": 7484
+      },
+      "document": {
+        "pages": 1,
+        "elements": 14,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 12,
+        "accepted": 8,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 12,
+          "S3": 0,
+          "total": 12,
+          "accepted": 8,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 28,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 28,
+          "info": 0,
+          "total": 28,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/m2.svg",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "png": {
+          "path": "diagrams/m2.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/m2.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": false,
+        "publishable": false
+      }
+    },
+    {
+      "id": "m",
+      "source": {
+        "path": "diagrams/mechroom.turtlepen.json",
+        "schema": 3,
+        "sha256": "b9a2fa3fef66187e014a4e073840920b44c9b6b8eb6dbc6166a1497121f315b1",
+        "bytes": 9123
+      },
+      "document": {
+        "pages": 1,
+        "elements": 14,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "blocking-errors",
+        "open": 15,
+        "accepted": 16,
+        "stale": 0,
+        "summary": {
+          "S0": 7,
+          "S1": 0,
+          "S2": 8,
+          "S3": 0,
+          "total": 15,
+          "accepted": 16,
+          "stale": 0,
+          "clean": false,
+          "state": "blocking-errors"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 28,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 28,
+          "info": 0,
+          "total": 28,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/mechroom.svg",
+          "present": true,
+          "bytes": 9843,
+          "sha256": "f5dcc596106407ebe75bcebf21736b2205e703b4b02d3a8293a95c85c0696c45"
+        },
+        "png": {
+          "path": "diagrams/mechroom.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/mechroom.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "minisplit",
+      "source": {
+        "path": "diagrams/minisplit-elevation.turtlepen.json",
+        "schema": 3,
+        "sha256": "dc8359faafa5201e44a8e878f629821e6708e6721532192ed45e46acbdf1b54e",
+        "bytes": 17092
+      },
+      "document": {
+        "pages": 1,
+        "elements": 19,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "blocking-errors",
+        "open": 25,
+        "accepted": 16,
+        "stale": 0,
+        "summary": {
+          "S0": 9,
+          "S1": 9,
+          "S2": 7,
+          "S3": 0,
+          "total": 25,
+          "accepted": 16,
+          "stale": 0,
+          "clean": false,
+          "state": "blocking-errors"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 34,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 34,
+          "info": 0,
+          "total": 34,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/minisplit-elevation.svg",
+          "present": true,
+          "bytes": 12406,
+          "sha256": "7249c27375c2f4efbdaff2c6c409e1a5a2c8b781a0c5ef05223309fcd67265c6"
+        },
+        "png": {
+          "path": "diagrams/minisplit-elevation.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/minisplit-elevation.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "How to Paint the Mona Lisa",
+      "source": {
+        "path": "diagrams/mona/mona-01-flowchart.turtlepen.json",
+        "schema": 3,
+        "sha256": "64dbc6b341f0a41c577a9123633246fdfcb604d3349267b388392d4d769c560f",
+        "bytes": 59134
+      },
+      "document": {
+        "pages": 2,
+        "elements": 20,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 3,
+        "accepted": 1,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 3,
+          "total": 3,
+          "accepted": 1,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 27,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 18,
+          "info": 9,
+          "total": 27,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/mona/mona-01-flowchart.svg",
+          "present": true,
+          "bytes": 21675,
+          "sha256": "028dea9554b7a5a2799f853324558dd7922c6ba2f4b1cb3034a5beb595453b22"
+        },
+        "png": {
+          "path": "diagrams/mona/mona-01-flowchart.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/mona/mona-01-flowchart.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Mona Lisa — Cartoon",
+      "source": {
+        "path": "diagrams/mona/mona-02-cartoon.turtlepen.json",
+        "schema": 3,
+        "sha256": "ea11e5801a3bec775f3445caf804840ed9e8d014a339923c7a4bc32edd2cf624",
+        "bytes": 2224460
+      },
+      "document": {
+        "pages": 2,
+        "elements": 86,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 120,
+        "accepted": 15,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 12,
+          "S3": 108,
+          "total": 120,
+          "accepted": 15,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/mona/mona-02-cartoon.svg",
+          "present": true,
+          "bytes": 40224,
+          "sha256": "f515ad463cb926e26679ac3e61c1ace48168d1ef80760b79573afe318e2792fe"
+        },
+        "png": {
+          "path": "diagrams/mona/mona-02-cartoon.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/mona/mona-02-cartoon.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Mona Lisa — Colouring Page",
+      "source": {
+        "path": "diagrams/mona/mona-03-coloring.turtlepen.json",
+        "schema": 3,
+        "sha256": "2ebc28621db6987be90d8d4f5cf07853cf286b9064809360a0bfba84c54a610f",
+        "bytes": 894313
+      },
+      "document": {
+        "pages": 2,
+        "elements": 38,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 7,
+        "accepted": 15,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 4,
+          "S3": 3,
+          "total": 7,
+          "accepted": 15,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/mona/mona-03-coloring.svg",
+          "present": true,
+          "bytes": 18145,
+          "sha256": "1d12bd800f784471133c3c9730f830a5f0d4bf751633a19a03b2816916670018"
+        },
+        "png": {
+          "path": "diagrams/mona/mona-03-coloring.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/mona/mona-03-coloring.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Mona Lisa — Abstract",
+      "source": {
+        "path": "diagrams/mona/mona-04-abstract.turtlepen.json",
+        "schema": 3,
+        "sha256": "551e02270ffda4d6a9701b20a147541daf59c0d458daf0dc7e883602f78088bf",
+        "bytes": 1971425
+      },
+      "document": {
+        "pages": 2,
+        "elements": 121,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 388,
+        "accepted": 15,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 48,
+          "S3": 340,
+          "total": 388,
+          "accepted": 15,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/mona/mona-04-abstract.svg",
+          "present": true,
+          "bytes": 40977,
+          "sha256": "53f459eb31c9d4b392c77473836e5f64905f262ff5a15ceea1933bb63841caf0"
+        },
+        "png": {
+          "path": "diagrams/mona/mona-04-abstract.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/mona/mona-04-abstract.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Mona Lisa — Sculpture",
+      "source": {
+        "path": "diagrams/mona/mona-05-sculpture.turtlepen.json",
+        "schema": 3,
+        "sha256": "967b7f9f76cbdcc7dba187a53e72d0dff34e33083d47e47c44d2608faff116d3",
+        "bytes": 1335567
+      },
+      "document": {
+        "pages": 8,
+        "elements": 97,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 106,
+        "accepted": 15,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 106,
+          "total": 106,
+          "accepted": 15,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/mona/mona-05-sculpture.svg",
+          "present": true,
+          "bytes": 282974,
+          "sha256": "70b95ac0a15559ac70186b6d1d41da5f5e2c09f86e37c61e1588df7c0eabbf84"
+        },
+        "png": {
+          "path": "diagrams/mona/mona-05-sculpture.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/mona/mona-05-sculpture.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Solar System",
+      "source": {
+        "path": "diagrams/random-01-solar-system.turtlepen.json",
+        "schema": 3,
+        "sha256": "b9e0f0c95dc26557050a12ee792329d3a5aef9e26aba337cd0eabbd518fa04c8",
+        "bytes": 160330
+      },
+      "document": {
+        "pages": 5,
+        "elements": 26,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 12,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 12,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/random-01-solar-system.svg",
+          "present": true,
+          "bytes": 23564,
+          "sha256": "937ecc5b1944c8f210231dad1e301349fa2040360ba84305cc8af2f0010e9bfd"
+        },
+        "png": {
+          "path": "diagrams/random-01-solar-system.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/random-01-solar-system.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Mountain Landscape",
+      "source": {
+        "path": "diagrams/random-02-mountains.turtlepen.json",
+        "schema": 3,
+        "sha256": "aa8143740916734fedd6c70b0b7e049d8ac27c764b5048ae2bf58e527da4e736",
+        "bytes": 406834
+      },
+      "document": {
+        "pages": 5,
+        "elements": 26,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 18,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 18,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/random-02-mountains.svg",
+          "present": true,
+          "bytes": 26793,
+          "sha256": "5c708b3c6409342b3b7d274a9cca72641c5bcdf08a8c578d7e822f3adc468881"
+        },
+        "png": {
+          "path": "diagrams/random-02-mountains.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/random-02-mountains.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Abstract Geometric",
+      "source": {
+        "path": "diagrams/random-03-abstract.turtlepen.json",
+        "schema": 3,
+        "sha256": "104fafd607b9ee318a780208d035049e947548b1e635cbeb0cca60c86f1ecd71",
+        "bytes": 195680
+      },
+      "document": {
+        "pages": 4,
+        "elements": 27,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 88,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 88,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/random-03-abstract.svg",
+          "present": true,
+          "bytes": 18046,
+          "sha256": "1194391d9b88dd9fc721d97f26031d202b11844c4eb350263059205f7f416e9a"
+        },
+        "png": {
+          "path": "diagrams/random-03-abstract.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/random-03-abstract.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Underwater Scene",
+      "source": {
+        "path": "diagrams/random-04-underwater.turtlepen.json",
+        "schema": 3,
+        "sha256": "3887f1a4961e7af50826120f67ffe1f6a37f78e6f3b6b4189d62040edd29d837",
+        "bytes": 108385
+      },
+      "document": {
+        "pages": 4,
+        "elements": 35,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 20,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 20,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/random-04-underwater.svg",
+          "present": true,
+          "bytes": 23919,
+          "sha256": "a9714cf29881d8200b355d245aa9b4b9558df851824fd335ea93dde23c181abd"
+        },
+        "png": {
+          "path": "diagrams/random-04-underwater.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/random-04-underwater.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "City Skyline",
+      "source": {
+        "path": "diagrams/random-05-city-skyline.turtlepen.json",
+        "schema": 3,
+        "sha256": "ad115edd497e3b864bddfe2505ed738b37dfbfe9b815bce2ac876376d914d228",
+        "bytes": 467181
+      },
+      "document": {
+        "pages": 5,
+        "elements": 50,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 24,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 24,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/random-05-city-skyline.svg",
+          "present": true,
+          "bytes": 31685,
+          "sha256": "7334132ca80614f2c97345008fc8fb465d2d6b8e2df38b39ef3f4d93a0ac4431"
+        },
+        "png": {
+          "path": "diagrams/random-05-city-skyline.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/random-05-city-skyline.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Scene - Apple",
+      "source": {
+        "path": "diagrams/scene-apple.turtlepen.json",
+        "schema": 3,
+        "sha256": "a94c29caaa82bec926fc72b94d16f1b33aebfc7aab0b03b6eff688025f6fb426",
+        "bytes": 46121
+      },
+      "document": {
+        "pages": 1,
+        "elements": 6,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 6,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 6,
+          "S3": 0,
+          "total": 6,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 2,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 0,
+          "total": 2,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/scene-apple.svg",
+          "present": true,
+          "bytes": 8046,
+          "sha256": "70a94f2fc2e83ab4836ccd6200e9c13dd0b6f2ce87119459bdfd327521a86327"
+        },
+        "png": {
+          "path": "diagrams/scene-apple.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/scene-apple.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Scene - Picket Fence",
+      "source": {
+        "path": "diagrams/scene-fence.turtlepen.json",
+        "schema": 3,
+        "sha256": "7b2771867c760d292c9bf8513737809e9c95fa0727901525b721cf5300ac764d",
+        "bytes": 50358
+      },
+      "document": {
+        "pages": 2,
+        "elements": 11,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 14,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 14,
+          "total": 14,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 16,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 16,
+          "info": 0,
+          "total": 16,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/scene-fence.svg",
+          "present": true,
+          "bytes": 7865,
+          "sha256": "28fcbca192174a7b126951731f8f09a35f7fbe0942a06d098f471068bc4d6436"
+        },
+        "png": {
+          "path": "diagrams/scene-fence.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/scene-fence.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Scene - Living Room Family",
+      "source": {
+        "path": "diagrams/scene-living-room-family.turtlepen.json",
+        "schema": 3,
+        "sha256": "8d2e4d84254359afeec5e5538b92bce6571f6bee26ca01e92b6d16f9c68a782b",
+        "bytes": 28011
+      },
+      "document": {
+        "pages": 3,
+        "elements": 17,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 7,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 4,
+          "S3": 3,
+          "total": 7,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 12,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 12,
+          "info": 0,
+          "total": 12,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/scene-living-room-family.svg",
+          "present": true,
+          "bytes": 12125,
+          "sha256": "dd408f4040688e0b0aa0622b839aacc6f2801128e2dc0a74152b4cb398b5537e"
+        },
+        "png": {
+          "path": "diagrams/scene-living-room-family.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/scene-living-room-family.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Scene - Tree",
+      "source": {
+        "path": "diagrams/scene-tree.turtlepen.json",
+        "schema": 3,
+        "sha256": "a8dea5bc170227aa836eff8bec6b0bbf5bdb775fb7d5e623c92db6b7585a0494",
+        "bytes": 84525
+      },
+      "document": {
+        "pages": 2,
+        "elements": 10,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 13,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 5,
+          "S3": 8,
+          "total": 13,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 4,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 4,
+          "info": 0,
+          "total": 4,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/scene-tree.svg",
+          "present": true,
+          "bytes": 11134,
+          "sha256": "03ec86b362ca0c4d178be1dbfc6183ff4d26625c1969628d23ce9dfbf19e57e8"
+        },
+        "png": {
+          "path": "diagrams/scene-tree.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/scene-tree.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Server Structures - HA Microservices",
+      "source": {
+        "path": "diagrams/server-structure-ha-microservices.turtlepen.json",
+        "schema": 3,
+        "sha256": "dcc5f9443d49f8548da2fb61f42a23467e917e935459f36f6947b1ce2c41a2b4",
+        "bytes": 29300
+      },
+      "document": {
+        "pages": 1,
+        "elements": 19,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 1,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 1,
+          "S3": 0,
+          "total": 1,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 29,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 20,
+          "info": 9,
+          "total": 29,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/server-structure-ha-microservices.svg",
+          "present": true,
+          "bytes": 17965,
+          "sha256": "7e83ccb0163861b626d2b20621e9dc393a4f0ef9ed9627e4e8fe71587aaed1f7"
+        },
+        "png": {
+          "path": "diagrams/server-structure-ha-microservices.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/server-structure-ha-microservices.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Castle Scene",
+      "source": {
+        "path": "diagrams/showcase-castle.turtlepen.json",
+        "schema": 3,
+        "sha256": "9e55ce8aac7cac3544963d7a4d6ae7dca6fe844094adb44e3c2e94274259f68a",
+        "bytes": 189704
+      },
+      "document": {
+        "pages": 3,
+        "elements": 20,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 2,
+        "accepted": 14,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 2,
+          "total": 2,
+          "accepted": 14,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/showcase-castle.svg",
+          "present": true,
+          "bytes": 43741,
+          "sha256": "6140e8a6823227476feefe3894cd89cd990f9852fafe075f6883874ffaf350c8"
+        },
+        "png": {
+          "path": "diagrams/showcase-castle.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/showcase-castle.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Deployment Pipeline",
+      "source": {
+        "path": "diagrams/showcase-flowchart.turtlepen.json",
+        "schema": 3,
+        "sha256": "827d605881cafc11a60fb5d39f792422e40737907cc7dad84f3f1f941d5269b2",
+        "bytes": 48754
+      },
+      "document": {
+        "pages": 1,
+        "elements": 18,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 12,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 12,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 28,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 20,
+          "info": 8,
+          "total": 28,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/showcase-flowchart.svg",
+          "present": true,
+          "bytes": 25590,
+          "sha256": "4bcd8eb058cbf5d81bdb4c60d67d9f41c07911bf3f370195d3984f6734ac645e"
+        },
+        "png": {
+          "path": "diagrams/showcase-flowchart.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/showcase-flowchart.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Home Office 3D",
+      "source": {
+        "path": "diagrams/showcase-perspective.turtlepen.json",
+        "schema": 3,
+        "sha256": "179e778bcf8cbcb48e944ed5be8652b5890f7c4de94fad7fce9387874b4e829e",
+        "bytes": 211100
+      },
+      "document": {
+        "pages": 7,
+        "elements": 6,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 10,
+        "accepted": 1,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 10,
+          "total": 10,
+          "accepted": 1,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/showcase-perspective.svg",
+          "present": true,
+          "bytes": 105440,
+          "sha256": "9b49e2e70559d9c595460d539e79910ed4d36f94a04853513474cecbae34270a"
+        },
+        "png": {
+          "path": "diagrams/showcase-perspective.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/showcase-perspective.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "ETL Data Pipeline",
+      "source": {
+        "path": "diagrams/showcase-pipeline.turtlepen.json",
+        "schema": 3,
+        "sha256": "efa6c53675c17a8e99e663b4b64fa9c96ee0d9841efe22398f581e3d9540eefc",
+        "bytes": 34870
+      },
+      "document": {
+        "pages": 1,
+        "elements": 18,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 1,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 1,
+          "total": 1,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 27,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 18,
+          "info": 9,
+          "total": 27,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/showcase-pipeline.svg",
+          "present": true,
+          "bytes": 20487,
+          "sha256": "ec3cb16c73c14b2b1816288f89ae4052ca9098e2d5dcf77533fcb2f5b302a49a"
+        },
+        "png": {
+          "path": "diagrams/showcase-pipeline.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/showcase-pipeline.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Revision Session",
+      "source": {
+        "path": "diagrams/showcase-revision.turtlepen.json",
+        "schema": 3,
+        "sha256": "107b3a54fed2b2e9cbc18119929ae45784879f080220f7107b8095732394330b",
+        "bytes": 23030
+      },
+      "document": {
+        "pages": 1,
+        "elements": 9,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 1,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 1,
+          "total": 1,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 14,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 10,
+          "info": 4,
+          "total": 14,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": true,
+        "reviewer": "showcase-revision.js",
+        "findings": 0,
+        "blocking": 0,
+        "clean": true,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/showcase-revision.svg",
+          "present": true,
+          "bytes": 14794,
+          "sha256": "d522a2b4a0bf8eddc86d9a6788d81c9c5c356230ed7776634d7b9485ec1036c8"
+        },
+        "png": {
+          "path": "diagrams/showcase-revision.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/showcase-revision.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Server Room Layout",
+      "source": {
+        "path": "diagrams/showcase-server-room.turtlepen.json",
+        "schema": 3,
+        "sha256": "15dd7db1e6a8991e5d86f1b624c294d37450862aa5c35bd6c7631fb1ce0a9704",
+        "bytes": 71636
+      },
+      "document": {
+        "pages": 2,
+        "elements": 29,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 16,
+        "accepted": 40,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 16,
+          "total": 16,
+          "accepted": 40,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 50,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 50,
+          "info": 0,
+          "total": 50,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/showcase-server-room.svg",
+          "present": true,
+          "bytes": 31487,
+          "sha256": "339b09d72be0b990a6165ae2287683cf3efb27e90858b7ba236b6a3a635f924f"
+        },
+        "png": {
+          "path": "diagrams/showcase-server-room.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/showcase-server-room.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Five seeded-random supersampling trials",
+      "source": {
+        "path": "diagrams/supersample-random-five.turtlepen.json",
+        "schema": 3,
+        "sha256": "0d48ea1a5364d8734525014febbf40ea98a5ec3ff4b7e4657074664709ca1465",
+        "bytes": 256848
+      },
+      "document": {
+        "pages": 1,
+        "elements": 31,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 32,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 32,
+          "info": 0,
+          "total": 32,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/supersample-random-five.svg",
+          "present": true,
+          "bytes": 191866,
+          "sha256": "fe66a2abb8acb1abc298c4ea79ed985e5813051340d84396fa4cecbbc5810813"
+        },
+        "png": {
+          "path": "diagrams/supersample-random-five.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/supersample-random-five.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Order handling — swimlanes",
+      "source": {
+        "path": "diagrams/swimlane-order-handling.turtlepen.json",
+        "schema": 3,
+        "sha256": "cd5a145c9dd6e89dd0aa8434229b6b5c6fcab7a2fedfd23a7665b1cc38cc12d9",
+        "bytes": 30391
+      },
+      "document": {
+        "pages": 1,
+        "elements": 17,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "needs-decisions",
+        "open": 4,
+        "accepted": 4,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 1,
+          "S3": 3,
+          "total": 4,
+          "accepted": 4,
+          "stale": 0,
+          "clean": false,
+          "state": "needs-decisions"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 23,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 18,
+          "info": 5,
+          "total": 23,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/swimlane-order-handling.svg",
+          "present": true,
+          "bytes": 23189,
+          "sha256": "d8c374e52190f10085bce29e9b3e8987ea4498e820ae1f2d52c3a465b59845bb"
+        },
+        "png": {
+          "path": "diagrams/swimlane-order-handling.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/swimlane-order-handling.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Teaching and Education - Mastery Learning",
+      "source": {
+        "path": "diagrams/teaching-mastery-learning-cycle.turtlepen.json",
+        "schema": 3,
+        "sha256": "769f3f9e9e6964f93ce02ed19ec71c16a45c380f69a3843ba3b2a053d61ba3a9",
+        "bytes": 15282
+      },
+      "document": {
+        "pages": 1,
+        "elements": 12,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 18,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 12,
+          "info": 6,
+          "total": 18,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/teaching-mastery-learning-cycle.svg",
+          "present": true,
+          "bytes": 11983,
+          "sha256": "83cfcd40167cf92f4b2e539632bf2206e4451a9ade3318a4a6cee7110a6bbc6f"
+        },
+        "png": {
+          "path": "diagrams/teaching-mastery-learning-cycle.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/teaching-mastery-learning-cycle.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Technical Analysis - Quant Engine",
+      "source": {
+        "path": "diagrams/technical-analysis-quant-engine.turtlepen.json",
+        "schema": 3,
+        "sha256": "64456a0084102a81ba2372fad914fbb31e1f3678b84459875ad9c14c5eca312b",
+        "bytes": 14209
+      },
+      "document": {
+        "pages": 1,
+        "elements": 13,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 20,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 14,
+          "info": 6,
+          "total": 20,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/technical-analysis-quant-engine.svg",
+          "present": true,
+          "bytes": 12939,
+          "sha256": "759660ca5e53f23fcb70a746630e925832bb867e85547e601a87ed0c6e4e6974"
+        },
+        "png": {
+          "path": "diagrams/technical-analysis-quant-engine.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/technical-analysis-quant-engine.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "turtlefont specimen",
+      "source": {
+        "path": "diagrams/turtlefont-specimen.turtlepen.json",
+        "schema": 3,
+        "sha256": "bb85f31f52f79748855a4d0cd832fb5e97b9b8d8cdbc830904a863f91502fdd0",
+        "bytes": 2405689
+      },
+      "document": {
+        "pages": 1,
+        "elements": 73,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/turtlefont-specimen.svg",
+          "present": true,
+          "bytes": 2166835,
+          "sha256": "7e9f2df18564e6535fb1e5c903b73e8244fe77680e6fc4438fd7687e607141a2"
+        },
+        "png": {
+          "path": "diagrams/turtlefont-specimen.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/turtlefont-specimen.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Workflow - Automated CI/CD Pipeline",
+      "source": {
+        "path": "diagrams/workflow-cicd-deployment-pipeline.turtlepen.json",
+        "schema": 3,
+        "sha256": "8baeb9be824e66c41d3fc2aad98dfe43e9c2a0d4f0250bda520dacd06e34988d",
+        "bytes": 12762
+      },
+      "document": {
+        "pages": 1,
+        "elements": 13,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 20,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 14,
+          "info": 6,
+          "total": 20,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/workflow-cicd-deployment-pipeline.svg",
+          "present": true,
+          "bytes": 11894,
+          "sha256": "9a1e368d287123a87b5660fbc73d66e895943c1c28f3b55d3ce8a96389bfcede"
+        },
+        "png": {
+          "path": "diagrams/workflow-cicd-deployment-pipeline.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/workflow-cicd-deployment-pipeline.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    }
+  ]
+}

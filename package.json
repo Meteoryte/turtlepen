@@ -1,6 +1,6 @@
 {
   "name": "turtlepen",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -16,6 +16,10 @@
     "test:endpoints": "node --test test/endpoints.test.js test/mcp.test.js test/viewer.test.js",
     "viewer": "node src/viewer/server.js",
     "mcp": "node src/mcp/server.js",
+    "cli": "node src/cli.js",
+    "doctor": "node src/cli.js doctor",
+    "quality:manifest": "node src/cli.js manifest --out artifacts/manifest.json",
+    "benchmark:worksheet": "node src/cli.js benchmark worksheet --out benchmark/worksheet.json",
     "example": "node examples/build-example.js",
     "session": "node examples/agent-session.js",
     "stress": "node examples/constraint-stress.js",
@@ -35,7 +39,8 @@
   "dependencies": {},
   "devDependencies": {},
   "bin": {
-    "turtlepen-mcp": "src/mcp/server.js"
+    "turtlepen-mcp": "src/mcp/server.js",
+    "turtlepen": "src/cli.js"
   },
   "exports": {
     ".": "./src/core/index.js",
@@ -49,6 +54,9 @@
     "llm.md",
     "status.md",
     "docs/QUICKSTART.md",
+    "docs/adr",
+    "benchmark",
+    "artifacts",
     "LICENSE"
   ],
   "keywords": [

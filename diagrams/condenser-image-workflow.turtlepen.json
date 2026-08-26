@@ -1,5 +1,5 @@
 {
-  "schema": 2,
+  "schema": 3,
   "name": "Condenser image workflow test",
   "canvas": {
     "cols": 156,
@@ -11648,6 +11648,12 @@
         "state": null
       }
     ]
+  },
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
   },
   "acceptances": []
 }

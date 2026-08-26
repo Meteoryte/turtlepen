@@ -61,6 +61,9 @@ test('the live viewer serves its UI, brand, and cheap unchanged state responses'
   assert.match(app.body, /element\.mode !== 'embed'/, 'the inspector must not offer stale-grid resize for any rasterized image');
   assert.match(app.body, /Simplification/);
   assert.match(app.body, /selection-hit/, 'sparse images need a full-footprint selection target');
+  assert.match(app.body, /pointerdown/, 'the 1px eraser must support continuous pointer strokes');
+  assert.match(app.body, /plan-rehearse/, 'the viewer must expose rehearsal before approval');
+  assert.match(app.body, /expectedHash/, 'browser mutations must carry an optimistic concurrency guard');
   assert.doesNotMatch(app.body, /setInterval|700/, 'the browser must not poll for document state');
 
   const brand = await response(port, '/brand-logo.svg');
@@ -109,6 +112,37 @@ test('the live viewer serves its UI, brand, and cheap unchanged state responses'
   for (const path of ['/server.js', '/capabilities.js', '/missing', '/..%2Fpackage.json']) {
     assert.equal((await response(port, path)).status, 404, `GET ${path} must remain private`);
   }
+});
+
+test('the state endpoint projects named views and supports a lighter canvas payload', async (t) => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-viewer-view-'));
+  const path = resolve(dir, 'views.turtlepen.json');
+  const doc = core.createDocument({ name: 'view state' });
+  core.placeBox(doc, 'base', { id: 'web', at: 'C4.tl', span: { w: 4, h: 2 }, label: 'Web', tags: ['public'] });
+  core.placeBox(doc, 'base', { id: 'db', at: 'M4.tl', span: { w: 4, h: 2 }, label: 'DB', tags: ['data'] });
+  core.annotateElement(doc, 'web', { tags: ['public'] });
+  core.annotateElement(doc, 'db', { tags: ['data'] });
+  core.defineView(doc, { key: 'public', title: 'Public', type: 'filtered', includeTags: ['public'] });
+  core.upsertResource(doc, { id: 'runbook', type: 'runbook', uri: 'docs/runbook.md' });
+  await core.checkpointDocument(doc, path);
+  const port = await freePort();
+  const child = spawn(process.execPath, ['src/viewer/server.js', '--port', String(port), '--doc', path], {
+    cwd: project, stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  t.after(() => child.kill());
+  t.after(() => rm(dir, { recursive: true, force: true }));
+  await waitForResponse(port, '/');
+
+  const response_ = await response(port, '/api/state?view=public&detail=canvas');
+  const state = JSON.parse(response_.body);
+  assert.equal(state.ok, true);
+  assert.equal(state.view.key, 'public');
+  assert.deepEqual(state.elements.map((element) => element.id), ['web']);
+  assert.equal(state.ascii, null);
+  assert.match(state.hash, /^[0-9a-f]{64}$/);
+  assert.equal(state.resources[0].id, 'runbook');
+  assert.ok(state.model.summary.total > 0);
+  assert.match(state.svg, /Public/);
 });
 
 test('the live viewer reports a missing document without crashing', async (t) => {
@@ -199,6 +233,13 @@ test('the WebSocket editor persists mutations, broadcasts exact state, restores 
   const saved = JSON.parse(await readFile(path, 'utf8'));
   assert.equal(saved.elements.base.find((element) => element.id === 'unit').rect.x, 8);
   assert.equal(saved.elements.base.find((element) => element.id === 'tag').rect.x, 28);
+
+  second.send({ type: 'call', id: 'stale-write', tool: 'move', args: {
+    id: 'unit', cellsX: 1, expectedHash: initialSecond.state.hash,
+  } });
+  const staleWrite = await second.next((message) => message.id === 'stale-write');
+  assert.equal(staleWrite.ok, false);
+  assert.match(staleWrite.error, /document changed since the supplied expectedHash/);
 
   second.send({ type: 'call', id: 'undo-1', tool: 'history', args: { action: 'undo' } });
   assert.equal((await second.next((message) => message.id === 'undo-1')).ok, true);
@@ -329,6 +370,15 @@ test('every browser-authorized tool completes through the WebSocket editor', asy
   assert.ok(finding, 'the acceptance endpoint needs a current finding');
   await invoke('accept_finding', { fingerprint: finding.fingerprint, reason: 'viewer endpoint contract' });
   await invoke('unaccept_finding', { fingerprint: finding.fingerprint });
+  const modelFinding = latest.model.open[0];
+  assert.ok(modelFinding, 'the model acceptance endpoint needs a current semantic finding');
+  await invoke('accept_model_finding', { fingerprint: modelFinding.fingerprint, reason: 'viewer model contract' });
+  await invoke('unaccept_model_finding', { fingerprint: modelFinding.fingerprint });
+  const plan = JSON.parse((await invoke('plan', {
+    operations: [{ op: 'move', id: 'tag', cellsX: 1 }], format: 'json',
+  }, { mutates: false })).text);
+  assert.equal(plan.committed, false);
+  assert.deepEqual(plan.diff.elements.changed, ['tag']);
   await invoke('remove', { id: 'run' });
   assert.match((await invoke('history', { action: 'status' }, { mutates: false })).text, /undo_available/);
 

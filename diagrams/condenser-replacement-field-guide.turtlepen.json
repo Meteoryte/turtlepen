@@ -1,5 +1,5 @@
 {
-  "schema": 2,
+  "schema": 3,
   "name": "Condenser replacement field workflow",
   "canvas": {
     "cols": 100,
@@ -1357,6 +1357,12 @@
         }
       }
     ]
+  },
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
   },
   "acceptances": []
 }

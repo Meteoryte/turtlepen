@@ -1,15 +1,15 @@
 # TurtlePen — status
 
-**As of 2026-08-26.** Prototype, working end to end, 588/588 tests green,
+**As of 2026-08-26.** Prototype, working end to end, 613/613 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **588/588 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **613/613 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
-- **Every external surface has a drift-proof contract.** All 52 MCP tools
+- **Every external surface has a drift-proof contract.** All 61 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC
   method and notification path is asserted; all public viewer routes are tested
   with GET, HEAD, method refusal, and security headers; and every browser-authorized
@@ -17,10 +17,27 @@ Verified by running it, not by inspection:
   close, masking, UTF-8, fragmentation, binary and reserved frames, control sizes,
   and the 64 KiB limit. The executable map is
   `docs/endpoint-use-case-coverage.md`.
-- **Runtime and persistence truth are explicit.** Schema-1 documents migrate to
-  schema 2; perceptual review survives save/open; direct and nested-plan calls
+- **Runtime and persistence truth are explicit.** Schema-1 and schema-2
+  documents migrate to schema 3; perceptual review survives save/open; direct and nested-plan calls
   are validated against the same schemas; `runtime_info` reports version,
   schema, tool count, capability fingerprint, session start, and document hash.
+- **Local writes are conflict-aware and recoverable.** Document checkpoints,
+  saves, SVG/PNG/PDF exports, and history sidecars use same-directory atomic
+  replacement. Backups preserve the prior destination and optimistic document
+  hashes refuse stale in-memory or concurrent writers with retry-safe evidence.
+- **One semantic model produces multiple durable views.** Static, tag-filtered,
+  and ordered dynamic views project shared elements; document-owned tokens,
+  tag/perspective styles, generated keys, linked documentation/ADR/runbook
+  resources, and fingerprinted model acceptances survive migration and reopen.
+- **Native, dependency-free output is available outside MCP.** The `turtlepen`
+  CLI validates and inspects, renders deterministic SVG/PNG/PDF, generates
+  architecture documentation bundles and artifact contracts, and executes or
+  scores same-model benchmark adapter receipts while keeping structural,
+  semantic, perceptual, and workflow dimensions separate.
+- **The viewer is an approval workbench.** Named-view switching, semantic model
+  review, bounded history, non-mutating JSON plan diffs, explicit approve/reject,
+  revision hashes, lazy canvas payloads, and continuous pointer-based 1px
+  erasing share the same operations and persistence guards as MCP.
 - **Architecture meaning is first-class.** `connect` authors direct,
   orthogonal, or node-attached curved relationships between named ports;
   `annotate` persists descriptions, technology, tags, properties, and
@@ -143,7 +160,7 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (52 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (61 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
 - **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),

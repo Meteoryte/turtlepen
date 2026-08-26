@@ -1,5 +1,5 @@
 {
-  "schema": 2,
+  "schema": 3,
   "name": "checkout service",
   "canvas": {
     "cols": 140,
@@ -954,6 +954,12 @@
         }
       }
     ]
+  },
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
   },
   "acceptances": []
 }

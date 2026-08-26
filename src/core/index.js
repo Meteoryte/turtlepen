@@ -7,8 +7,7 @@
  * layer ever silently adjusts geometry.
  */
 
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import { readFile } from 'node:fs/promises';
 
 import * as geometry from './geometry.js';
 import * as address from './address.js';
@@ -22,11 +21,14 @@ import * as tone_ from './tone.js';
 import * as pattern_ from './pattern.js';
 import * as wireframe_ from './wireframe.js';
 import * as perspective_ from './perspective.js';
+import * as workspace from './workspace.js';
+import { renderPng, renderPdf, rasterizeDocument, encodePng } from './output.js';
 import { OPPOSITE } from './geometry.js';
 import { approachPoint, parsePortSpec } from './shapes.js';
 import { rayQuads, curveQuads } from './raster.js';
+import { atomicWriteFile, hashBytes, readFileRecord } from '../io.js';
 
-import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, microMasksOf, addMicroMask, removeMicroMask, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, SCHEMA_VERSION, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
+import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, microMasksOf, addMicroMask, updateMicroMask, microMaskStatus, removeMicroMask, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, SCHEMA_VERSION, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
 import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL } from './collide.js';
 import { renderAscii } from './ascii.js';
@@ -34,10 +36,11 @@ import { renderSvg } from './svg.js';
 import * as perceptual from './perceptual.js';
 import { mermaidToOperations, parseMermaid } from './mermaid.js';
 import { layoutGraph } from './layout.js';
+import { acceptModelFinding, unacceptModelFinding } from './inspect.js';
 import * as turtlefont from './turtlefont.js';
 export { turtlefont };
 import { routeProgram as routeProgram_ } from './route.js';
-export { inspectModel, formatInspection, INSPECTION_RULES, INSPECTION_SEVERITIES } from './inspect.js';
+export { inspectModel, formatInspection, acceptModelFinding, unacceptModelFinding, INSPECTION_RULES, INSPECTION_SEVERITIES } from './inspect.js';
 export { mermaidToOperations, parseMermaid } from './mermaid.js';
 
 // Perceptual review is a sibling of validate, not a part of it: same document,
@@ -54,6 +57,12 @@ export {
 
 export { geometry, address, text, shapes, occupancy, image, png, dither };
 export { tone_ as tone };
+export { workspace };
+export { renderPng, renderPdf, rasterizeDocument, encodePng };
+export {
+  VIEW_TYPES, VIEW_DIRECTIONS, RESOURCE_TYPES, defineView, removeView, configureTheme,
+  upsertResource, removeResource, resolveView, styleForElement, generatedKey,
+} from './workspace.js';
 export { pattern_ as pattern };
 export { wireframe_ as wireframe };
 export { perspective_ as perspective };
@@ -62,7 +71,7 @@ export {
   elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
   groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup,
   constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints,
-  microMasksOf, addMicroMask, removeMicroMask,
+  microMasksOf, addMicroMask, updateMicroMask, microMaskStatus, removeMicroMask,
   runPen, validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL,
   renderAscii, renderSvg,
   perceptual,
@@ -318,7 +327,7 @@ function normalizeStringMap(value, label) {
   return out;
 }
 
-function semanticPatch({ description, technology, tags, properties, perspectives }) {
+function semanticPatch({ description, technology, tags, properties, perspectives, relationshipLabel, outcome }) {
   const out = {};
   if (description != null) {
     if (typeof description !== 'string' || !description.trim()) throw new TypeError('description must be a non-empty string');
@@ -336,6 +345,12 @@ function semanticPatch({ description, technology, tags, properties, perspectives
   }
   if (properties != null) out.properties = normalizeStringMap(properties, 'properties');
   if (perspectives != null) out.perspectives = normalizeStringMap(perspectives, 'perspectives');
+  for (const [key, value] of Object.entries({ relationshipLabel, outcome })) {
+    if (value != null) {
+      if (typeof value !== 'string' || !value.trim()) throw new TypeError(`${key} must be a non-empty string`);
+      out[key] = value.trim();
+    }
+  }
   return out;
 }
 
@@ -373,6 +388,7 @@ function relationshipEndpoint(doc, pageId, spec, label) {
 export function connectNodes(doc, {
   id, page = 'base', from, to, routing = 'direct', via = [], color = null, width = null,
   description = null, technology = null, tags = null, properties = null, perspectives = null,
+  relationshipLabel = null, outcome = null,
 } = {}) {
   if (!RELATIONSHIP_ROUTINGS.includes(routing)) {
     throw new SyntaxError(`relationship routing must be ${RELATIONSHIP_ROUTINGS.join(', ')} — got ${JSON.stringify(routing)}`);
@@ -424,7 +440,7 @@ export function connectNodes(doc, {
     routing,
     via: waypoints.map((point) => point.at),
   };
-  Object.assign(path, semanticPatch({ description, technology, tags, properties, perspectives }));
+  Object.assign(path, semanticPatch({ description, technology, tags, properties, perspectives, relationshipLabel, outcome }));
   doc.pages = draft.pages;
   doc.elements = draft.elements;
   return { path, page, relationship: path.relationship };
@@ -795,9 +811,18 @@ export const OPERATIONS = Object.freeze({
   perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
   micro_mask: (doc, a) => {
     if (a.action === 'add') return addMicroMask(doc, a);
+    if (a.action === 'extend') return updateMicroMask(doc, a.id, a.points);
+    if (a.action === 'replace') return updateMicroMask(doc, a.id, a.points, { replace: true });
     if (a.action === 'remove') return removeMicroMask(doc, a.id);
-    throw new SyntaxError(`micro_mask action must be add or remove — got ${JSON.stringify(a.action)}`);
+    throw new SyntaxError(`micro_mask action must be add, extend, replace, or remove — got ${JSON.stringify(a.action)}`);
   },
+  define_view: (doc, a) => workspace.defineView(doc, a),
+  remove_view: (doc, a) => workspace.removeView(doc, a.key),
+  configure_theme: (doc, a) => workspace.configureTheme(doc, a),
+  attach_resource: (doc, a) => workspace.upsertResource(doc, a),
+  remove_resource: (doc, a) => workspace.removeResource(doc, a.id),
+  accept_model_finding: (doc, a) => acceptModelFinding(doc, a.fingerprint, a.reason),
+  unaccept_model_finding: (doc, a) => unacceptModelFinding(doc, a.fingerprint),
   // A review is document state, so it goes through OPERATIONS like every other
   // mutation: rehearsable in plan, undoable in history. A mutation only the
   // tool layer could perform would be invisible to rehearsal.
@@ -959,13 +984,47 @@ const FIX_TOOL = Object.freeze({
  * refuse, or the engine would start fighting the author mid-draft, which is the
  * behaviour it was built to avoid.
  */
-export async function checkpointDocument(doc, path) {
-  await mkdir(dirname(path), { recursive: true });
-  await writeFile(path, serialize(doc), 'utf8');
-  return path;
+export async function checkpointDocument(doc, path, { expectedHash = undefined, backup = true } = {}) {
+  return (await checkpointDocumentRecord(doc, path, { expectedHash, backup })).path;
 }
 
-export async function saveDocument(doc, path, { force = false } = {}) {
+/**
+ * A stable, reviewable summary of what a rehearsed plan would change.
+ *
+ * The diff intentionally names document objects instead of exposing a raw JSON
+ * patch. That keeps approval useful to a human while preserving the exact
+ * before/after documents for the engine's own all-or-nothing transaction.
+ */
+export function documentDiff(before, after) {
+  const entries = (candidate) => Object.values(candidate.elements ?? {}).flat();
+  const compare = (left, right, key) => {
+    const a = new Map(left.map((entry) => [entry[key], entry]));
+    const b = new Map(right.map((entry) => [entry[key], entry]));
+    return {
+      added: [...b.keys()].filter((id) => !a.has(id)).sort(),
+      removed: [...a.keys()].filter((id) => !b.has(id)).sort(),
+      changed: [...a.keys()].filter((id) => b.has(id)
+        && JSON.stringify(a.get(id)) !== JSON.stringify(b.get(id))).sort(),
+    };
+  };
+  const elements = compare(entries(before), entries(after), 'id');
+  const pages = compare(before.pages ?? [], after.pages ?? [], 'id');
+  const views = compare(before.views ?? [], after.views ?? [], 'key');
+  const resources = compare(before.resources ?? [], after.resources ?? [], 'id');
+  const themeChanged = JSON.stringify(before.theme ?? null) !== JSON.stringify(after.theme ?? null);
+  const changed = [...elements.added, ...elements.removed, ...elements.changed].length
+    + [...pages.added, ...pages.removed, ...pages.changed].length
+    + [...views.added, ...views.removed, ...views.changed].length
+    + [...resources.added, ...resources.removed, ...resources.changed].length
+    + Number(themeChanged);
+  return { changed, elements, pages, views, resources, themeChanged };
+}
+
+export async function checkpointDocumentRecord(doc, path, { expectedHash = undefined, backup = true } = {}) {
+  return atomicWriteFile(path, serialize(doc), { expectedHash, backup });
+}
+
+export async function saveDocument(doc, path, { force = false, expectedHash = undefined, backup = true } = {}) {
   const gate = adjudicationGate(doc);
   if (gate.blocked) {
     if (!force) throw new Error(formatGate(gate, 'save'));
@@ -973,23 +1032,39 @@ export async function saveDocument(doc, path, { force = false } = {}) {
     // next reader sees that findings were outstanding, without having to guess.
     doc.forcedSave = { at: new Date().toISOString(), findingCount: gate.blocking.length, rules: gate.blocking.map((f) => f.rule) };
   }
-  await mkdir(dirname(path), { recursive: true });
-  await writeFile(path, serialize(doc), 'utf8');
-  return path;
+  return (await atomicWriteFile(path, serialize(doc), { expectedHash, backup })).path;
 }
 
 export async function loadDocument(path) {
   return deserialize(await readFile(path, 'utf8'));
 }
 
+export async function loadDocumentRecord(path) {
+  const record = await readFileRecord(path, 'utf8');
+  if (!record.exists) throw Object.assign(new Error(`document does not exist: ${path}`), { code: 'ENOENT' });
+  return { document: deserialize(record.text), hash: record.hash, path };
+}
+
+export const documentHash = (doc) => hashBytes(serialize(doc));
+
 export async function exportSvg(doc, path, opts = {}) {
   // A rendered image is a deliverable — it leaves the tool and gets looked at,
   // so it is gated on the same terms as the document itself.
   const gate = adjudicationGate(doc);
   if (gate.blocked && !opts.force) throw new Error(formatGate(gate, 'render'));
-  await mkdir(dirname(path), { recursive: true });
-  await writeFile(path, renderSvg(doc, opts), 'utf8');
-  return path;
+  return (await atomicWriteFile(path, renderSvg(doc, opts), { expectedHash: opts.expectedHash, backup: opts.backup ?? false })).path;
+}
+
+export async function exportPng(doc, path, opts = {}) {
+  const gate = adjudicationGate(doc);
+  if (gate.blocked && !opts.force) throw new Error(formatGate(gate, 'render'));
+  return (await atomicWriteFile(path, renderPng(doc, opts), { expectedHash: opts.expectedHash, backup: opts.backup ?? false })).path;
+}
+
+export async function exportPdf(doc, path, opts = {}) {
+  const gate = adjudicationGate(doc);
+  if (gate.blocked && !opts.force) throw new Error(formatGate(gate, 'render'));
+  return (await atomicWriteFile(path, renderPdf(doc, opts), { expectedHash: opts.expectedHash, backup: opts.backup ?? false })).path;
 }
 
 /** Constants an AI needs to do the arithmetic itself. */
@@ -1276,6 +1351,7 @@ export function distributeElements(doc, ids, axis) {
 
 /** Default separation between laid-out nodes, in quadrants — four cells across, five down. */
 export const LAYOUT_DEFAULTS = Object.freeze({ gapX: 8, gapY: 10 });
+export const LAYOUT_DIRECTIONS = Object.freeze(['top-down', 'bottom-up', 'left-right', 'right-left']);
 
 /**
  * Lay out the connected boxes on a page, then redraw their connectors.
@@ -1304,11 +1380,17 @@ export function layoutElements(doc, {
   gapX = LAYOUT_DEFAULTS.gapX,
   gapY = LAYOUT_DEFAULTS.gapY,
   reroute = true,
+  direction = 'top-down',
+  pins = {},
 } = {}) {
   getPage(doc, page);
   if (!Number.isInteger(gapX) || !Number.isInteger(gapY) || gapX < 0 || gapY < 0) {
     throw new SyntaxError('layout gaps are whole quadrants and cannot be negative');
   }
+  if (!LAYOUT_DIRECTIONS.includes(direction)) {
+    throw new SyntaxError(`layout direction must be ${LAYOUT_DIRECTIONS.join(', ')} — got ${JSON.stringify(direction)}`);
+  }
+  if (!pins || typeof pins !== 'object' || Array.isArray(pins)) throw new TypeError('layout pins must map element ids to addresses');
 
   const els = doc.elements[page] ?? [];
   const wanted = ids ? new Set(ids) : null;
@@ -1345,14 +1427,66 @@ export function layoutElements(doc, {
   // Anchor the result where the drawing already is, rather than teleporting it
   // to the origin and leaving whatever else is on the page behind.
   const before = geometry.boundsOf(boxes.map((b) => b.rect));
+  const horizontal = direction === 'left-right' || direction === 'right-left';
   const result = layoutGraph({
-    nodes: boxes.map((b) => ({ id: b.id, cellsW: b.rect.w, cellsH: b.rect.h })),
+    nodes: boxes.map((b) => ({ id: b.id, cellsW: horizontal ? b.rect.h : b.rect.w, cellsH: horizontal ? b.rect.w : b.rect.h })),
     edges: edges.map((e) => ({ from: e.from, to: e.to })),
-    gapX,
-    gapY,
-    originCol: before.x,
-    originRow: before.y,
+    gapX: horizontal ? gapY : gapX,
+    gapY: horizontal ? gapX : gapY,
+    originCol: horizontal ? before.y : before.x,
+    originRow: horizontal ? before.x : before.y,
   });
+
+  if (horizontal) {
+    for (const position of result.positions.values()) [position.col, position.row] = [position.row, position.col];
+  }
+  if (direction === 'bottom-up') {
+    const min = Math.min(...boxes.map((box) => result.positions.get(box.id).row));
+    const max = Math.max(...boxes.map((box) => {
+      const p = result.positions.get(box.id);
+      return p.row + box.rect.h;
+    }));
+    for (const box of boxes) {
+      const p = result.positions.get(box.id);
+      p.row = min + max - (p.row + box.rect.h);
+    }
+  }
+  if (direction === 'right-left') {
+    const min = Math.min(...boxes.map((box) => result.positions.get(box.id).col));
+    const max = Math.max(...boxes.map((box) => {
+      const p = result.positions.get(box.id);
+      return p.col + box.rect.w;
+    }));
+    for (const box of boxes) {
+      const p = result.positions.get(box.id);
+      p.col = min + max - (p.col + box.rect.w);
+    }
+  }
+  const pinned = [];
+  const resolvedPins = Object.entries(pins).map(([id, at]) => {
+    const box = boxes.find((entry) => entry.id === id);
+    if (!box) throw new Error(`layout pin names "${id}", which is not one of the boxes being arranged`);
+    const point = address.pinPoint(at);
+    return { id, at, point };
+  });
+  // The first pin anchors the composition as a whole so a fixed root does not
+  // invert or collapse its graph. Additional pins are explicit overrides and
+  // may deliberately reshape the arrangement.
+  if (resolvedPins.length) {
+    const anchor = resolvedPins[0];
+    const position = result.positions.get(anchor.id);
+    const dx = anchor.point.x - position.col;
+    const dy = anchor.point.y - position.row;
+    for (const candidate of result.positions.values()) {
+      candidate.col += dx;
+      candidate.row += dy;
+    }
+  }
+  for (const { id, at, point } of resolvedPins) {
+    result.positions.get(id).col = point.x;
+    result.positions.get(id).row = point.y;
+    pinned.push({ id, at: address.quadToAddress(point.x, point.y) });
+  }
 
   const moved = [];
   for (const b of boxes) {
@@ -1393,7 +1527,10 @@ export function layoutElements(doc, {
     // takes the left-most slot, and the connectors stop crossing on the way out
     // of the box.
     const widthOf = (id) => boxes.find((b) => b.id === id).rect.w;
-    const centreOf = (id) => result.positions.get(id).col + widthOf(id) / 2;
+    const heightOf = (id) => boxes.find((b) => b.id === id).rect.h;
+    const centreOf = (id) => horizontal
+      ? result.positions.get(id).row + heightOf(id) / 2
+      : result.positions.get(id).col + widthOf(id) / 2;
     const rankAt = (id) => result.positions.get(id).rank;
 
     // The faces come from the NEW arrangement, not the old one. `.E` and `.W`
@@ -1404,8 +1541,13 @@ export function layoutElements(doc, {
     const facesFor = (e) => {
       const a = rankAt(e.from);
       const b = rankAt(e.to);
-      if (b > a) return ['S', 'N'];
-      if (b < a) return ['N', 'S'];
+      if (horizontal) {
+        if (b > a) return direction === 'right-left' ? ['W', 'E'] : ['E', 'W'];
+        if (b < a) return direction === 'right-left' ? ['E', 'W'] : ['W', 'E'];
+        return centreOf(e.to) > centreOf(e.from) ? ['S', 'N'] : ['N', 'S'];
+      }
+      if (b > a) return direction === 'bottom-up' ? ['N', 'S'] : ['S', 'N'];
+      if (b < a) return direction === 'bottom-up' ? ['S', 'N'] : ['N', 'S'];
       return centreOf(e.to) > centreOf(e.from) ? ['E', 'W'] : ['W', 'E'];
     };
 
@@ -1424,7 +1566,7 @@ export function layoutElements(doc, {
         // Only N and S fan out. Their slots run along the width, which is the
         // axis the far ends are sorted on; an E or W face slots along the
         // height, where that ordering means nothing.
-        if (face !== 'N' && face !== 'S') continue;
+        if ((!horizontal && face !== 'N' && face !== 'S') || (horizontal && face !== 'E' && face !== 'W')) continue;
         const key = `${e[end]}|${face}`;
         if (!groups.has(key)) groups.set(key, { node: e[end], face, members: [] });
         groups.get(key).members.push(e);
@@ -1472,6 +1614,7 @@ export function layoutElements(doc, {
       channels.get(key).push(e.via);
     }
     const trackFor = (e) => {
+      if (horizontal) return null;
       const rFrom = rankOf(e.from);
       const rTo = rankOf(e.to);
       if (rTo !== rFrom + 1) return null;          // only an adjacent-rank channel is reserved
@@ -1511,6 +1654,17 @@ export function layoutElements(doc, {
           role: was.element.role ?? 'connector',
           stroke: was.element.stroke,
         });
+        const rebuilt = findElement(doc, e.via, page).element;
+        for (const key of ['description', 'technology', 'tags', 'properties', 'perspectives', 'label', 'relationshipLabel', 'outcome']) {
+          if (was.element[key] != null) rebuilt[key] = structuredClone(was.element[key]);
+        }
+        if (was.element.relationship) {
+          rebuilt.relationship = {
+            ...structuredClone(was.element.relationship),
+            from: { id: e.from, port: specFor(e, 'from') },
+            to: { id: e.to, port: specFor(e, 'to') },
+          };
+        }
         routed.push({ id: e.via, turns: attempt.turns });
       } else {
         // Put back exactly what was there. A connector that cannot be redrawn
@@ -1523,6 +1677,7 @@ export function layoutElements(doc, {
           note: was.element.note ?? null,
           role: was.element.role ?? 'connector',
         });
+        Object.assign(findElement(doc, e.via, page).element, structuredClone(was.element));
         stranded.push({ id: e.via, blockedBy: attempt.blockedBy, note: attempt.note });
       }
     }
@@ -1540,6 +1695,8 @@ export function layoutElements(doc, {
 
   return {
     page,
+    direction,
+    pinned,
     boxes: boxes.length,
     moved: moved.length,
     movedDetail: moved,

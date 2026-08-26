@@ -1,18 +1,36 @@
 # Changelog
 
-## Unreleased — 2026-08-26
+## 0.3.0 — 2026-08-26
 
-- Schema 2 persists perceptual review and migrates schema-1 documents.
+- Schema 3 persists perceptual review plus one shared semantic model, static,
+  filtered, and ordered dynamic views, themes/tokens, resource links, and
+  fingerprinted semantic-finding acceptances. Schema-1 and schema-2 documents
+  migrate without geometry changes.
 - Validation distinguishes blocking errors, unresolved S2 decisions, and
   structural clearance; the viewer separately reports perceptual readiness.
 - Runtime JSON-schema enforcement covers direct calls and nested plan
-  operations. `runtime_info` identifies the running build and active document.
+  operations. `runtime_info`, `doctor`, the capability registry, and searchable
+  help identify the running build and active document without stale counts.
 - `connect` adds semantic direct, orthogonal, and node-attached curved
   relationships through explicit lattice waypoints. `annotate` and
   `inspect_model` add model metadata, perspectives, and completeness checks.
-- `micro_mask` adds a reversible 1-design-pixel eraser for artwork paths and
-  images without changing structural footprints.
-- 588 tests and 52 MCP tools are covered through core, real stdio, and
+- Relationships now retain visible labels and outcomes through four-direction
+  layout and rerouting. Layout supports top-down, bottom-up, left-right, and
+  right-left reading directions plus composition-preserving pins.
+- `micro_mask` adds reversible, continuous 1-design-pixel eraser strokes for
+  artwork paths and images, with full-mask warnings and SVG/PNG parity without
+  changing structural footprints.
+- Saves/checkpoints/exports use same-directory atomic replacement, backups, and
+  optimistic hashes; stale concurrent writers are refused instead of winning.
+- The dependency-free CLI validates and inspects models, renders deterministic
+  SVG/PNG/PDF, generates architecture documentation bundles and quality
+  manifests, and runs/scores benchmark adapters without fabricating perceptual
+  results.
+- SVG output carries document/element relationship semantics and generated
+  notation keys. The local viewer adds view switching, semantic model review,
+  bounded history, exact plan rehearsal/approval diffs, lazy canvas state, and
+  continuous pointer erasing.
+- 613 tests and 61 MCP tools are covered through core, real stdio, CLI, and
   WebSocket endpoint contracts.
 
 ## 0.2.0 — 2026-08-18
@@ -108,9 +126,10 @@ SVG rather than the mask.
 
 ### Known and deliberately unbuilt
 
-`F003`/`F004` (branch labels and verb phrases) would require guessing. The
-benchmark harness is not written and nothing has been run, so the claim that a
-model using TurtlePen is measurably better remains **untested**.
+`F003`/`F004` (branch labels and verb phrases) would require guessing. A
+benchmark harness now exists, but no same-model comparative run has been
+executed, so the claim that a model using TurtlePen is measurably better remains
+**untested**.
 
 ## 0.1.0
 

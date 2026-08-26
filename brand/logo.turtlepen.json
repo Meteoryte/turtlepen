@@ -1,5 +1,5 @@
 {
-  "schema": 2,
+  "schema": 3,
   "name": "TurtlePen logo — turtle at easel",
   "canvas": {
     "cols": 120,
@@ -151578,6 +151578,12 @@
         }
       }
     ]
+  },
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
   },
   "acceptances": [
     {

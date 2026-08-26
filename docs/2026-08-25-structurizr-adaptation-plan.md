@@ -9,7 +9,7 @@ screens, wording, branded themes, icons, or trade dress
 
 ## Construction receipt — 2026-08-26
 
-The first slice is implemented and executable:
+All in-scope adaptation slices are implemented and executable:
 
 - `annotate` persists descriptions, technology, tags, properties, and named
   perspectives on elements and relationships;
@@ -17,12 +17,23 @@ The first slice is implemented and executable:
   `orthogonal`, and `curved` routing; curved routes require explicit waypoints;
 - `inspect_model` reports semantic omissions and broken relationship references
   on an independent error/warning/info axis;
-- `describe`, viewer state, schema-2 persistence, plan/history, real stdio MCP,
+- `describe`, viewer state, schema-3 persistence, plan/history, real stdio MCP,
   and endpoint tests expose the new model;
-- runtime truth and persistence prerequisites are complete.
+- static, tag-filtered, and ordered dynamic views project one shared model;
+- document-owned tokens, tag styles, perspective styles, accessible SVG
+  semantics, and generated notation keys preserve presentation/model separation;
+- documentation, ADR, runbook, URL, and file resources are durable references;
+  generated bundles provide an offline model/view/resource index;
+- relationship labels/outcomes and semantic metadata survive rerouting across
+  top-down, bottom-up, left-right, and right-left layouts with explicit pins;
+- the viewer switches views, exposes semantic acceptances, rehearses exact JSON
+  object diffs, and requires explicit approval against the rehearsed hash;
+- runtime truth, atomic conflict-aware persistence, CLI output, and regression
+  prerequisites are complete.
 
-Filtered/dynamic views, theme layering, documentation/ADR attachment, and richer
-view composition remain phased adaptations rather than implied completed work.
+Cloud/server administration and branded/provider icon themes remain outside the
+local verified-compiler scope. No icon asset was imported: licensing,
+provenance, deterministic embedding, and SCANGATE approval remain prerequisites.
 
 ## Research contract
 
@@ -119,7 +130,7 @@ Add one `connect` operation/tool:
   indistinguishable from a direct route;
 - changing routing never changes relationship meaning.
 
-### D. Subsequent slices
+### D. Subsequent slices — completed 2026-08-26
 
 1. durable view definitions and tag filters;
 2. dynamic ordered relationship views;
@@ -129,9 +140,12 @@ Add one `connect` operation/tool:
 6. documentation/ADR bundle;
 7. viewer approval and view switching.
 
+All seven are covered by schema, core, CLI/MCP, viewer, migration, rendering,
+and endpoint tests. The list is retained to show the construction order.
+
 ## Acceptance for the first slice
 
-1. Schema-1 documents open through a tested migration and save as schema 2.
+1. Schema-1 and schema-2 documents open through tested migrations and save as schema 3.
 2. Perceptual review survives direct and MCP save/reopen/undo flows.
 3. Unknown MCP arguments fail with an exact field path.
 4. The running package version/tool count/source fingerprint are queryable.

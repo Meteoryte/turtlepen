@@ -28,12 +28,14 @@ test('every advertised MCP tool completes a representative use case over stdio',
   try {
     const initialized = await client.init();
     assert.equal(initialized.result.serverInfo.name, 'turtlepen');
-    assert.equal(initialized.result.serverInfo.version, '0.2.0');
+    assert.equal(initialized.result.serverInfo.version, '0.3.0');
     assert.equal(initialized.result.protocolVersion, '2025-06-18');
 
     await invoke('turtlepen_help');
+    assert.match(await invoke('search_help', { query: 'views' }), /match\(es\)/);
+    assert.match(await invoke('doctor'), /TurtlePen doctor: READY/);
     const runtime = JSON.parse(await invoke('runtime_info'));
-    assert.equal(runtime.version, '0.2.0');
+    assert.equal(runtime.version, '0.3.0');
     assert.equal(runtime.toolCount, advertised.length);
     await invoke('measure', { text: 'Outdoor condensing unit', fontSize: 10, maxWidthCells: 12 });
     await invoke('new_diagram', { name: 'endpoint matrix', path: 'endpoint.turtlepen.json', cols: 80, rows: 50 });
@@ -51,7 +53,18 @@ test('every advertised MCP tool completes a representative use case over stdio',
       id: 'unit-tag', from: 'unit.N', to: 'tag.N', routing: 'curved', via: ['J2.q1'],
       description: 'control relationship', tags: ['control'],
     });
-    assert.match(await invoke('inspect_model', { minimum: 'warning' }), /MODEL INCOMPLETE|MODEL ERRORS/);
+    const model = JSON.parse(await invoke('inspect_model', { minimum: 'warning', format: 'json' }));
+    assert.match(model.summary.state, /model-incomplete|model-errors/);
+    const modelFinding = model.open[0];
+    await invoke('accept_model_finding', { fingerprint: modelFinding.fingerprint, reason: 'endpoint semantic review contract' });
+    await invoke('unaccept_model_finding', { fingerprint: modelFinding.fingerprint });
+    await invoke('define_view', { key: 'equipment', title: 'Equipment', type: 'filtered', includeTags: ['equipment'] });
+    await invoke('configure_theme', {
+      name: 'Endpoint theme', tokens: { paper: '#ffffff' }, tagStyles: [{ tag: 'equipment', fill: '#dceef8' }],
+    });
+    await invoke('attach_resource', { id: 'runbook', type: 'runbook', uri: 'docs/runbook.md', label: 'Runbook' });
+    await invoke('remove_resource', { id: 'runbook' });
+    await invoke('remove_view', { key: 'equipment' });
     // Layout operations: the arithmetic every diagram in this repo used to do
     // by hand, done once and named.
     await invoke('align', { ids: ['unit', 'tag'], edge: 'top' });

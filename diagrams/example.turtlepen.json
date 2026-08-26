@@ -1,5 +1,5 @@
 {
-  "schema": 2,
+  "schema": 3,
   "name": "ingest pipeline",
   "canvas": {
     "cols": 120,
@@ -443,6 +443,12 @@
         "state": null
       }
     ]
+  },
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
   },
   "acceptances": []
 }

@@ -1,5 +1,5 @@
 {
-  "schema": 2,
+  "schema": 3,
   "name": "Revision Session",
   "canvas": {
     "cols": 50,
@@ -11,7 +11,7 @@
     "advanceRatio": 0.6,
     "paddingQuads": 1
   },
-  "createdAt": "2026-08-26T10:26:12.658Z",
+  "createdAt": "2026-08-26T16:29:34.457Z",
   "pages": [
     {
       "id": "base",
@@ -1020,11 +1020,17 @@
       }
     ]
   },
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
+  },
   "acceptances": [],
   "perceptual": {
-    "renderHash": "9796378ba0f2dbf5",
+    "renderHash": "d522a2b4a0bf8edd",
     "reviewer": "showcase-revision.js",
-    "reviewedAt": "2026-08-26T10:26:12.756Z",
+    "reviewedAt": "2026-08-26T16:29:34.719Z",
     "note": "Viewed at full size. The triage diamond reads as a decision and both outcomes leave it on their own tracks; the archive step sits clear of the work order. Recorded against this render hash so it lapses the moment the drawing changes.",
     "findings": []
   }

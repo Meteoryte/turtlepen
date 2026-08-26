@@ -81,8 +81,9 @@ h1 { margin: 0; font-size: 15px; letter-spacing: 0; }
 .connection { font-family: var(--mono); font-size: 11px; color: var(--muted); }
 .connection[data-state="live"] { color: var(--good); }
 .connection[data-state="offline"] { color: var(--danger); }
-.zoom-control { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 11px; }
+.zoom-control, .view-control { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 11px; }
 .zoom-control select { width: 76px; }
+.view-control select { width: min(190px, 20vw); }
 .history-actions { display: flex; gap: 6px; margin-left: auto; }
 .counts { display: flex; gap: 5px; font-family: var(--mono); font-size: 11px; }
 .badge { padding: 2px 7px; border: 1px solid var(--line); border-radius: 4px; white-space: nowrap; }
@@ -101,9 +102,14 @@ main { display: grid; grid-template-columns: minmax(0, 1fr) 370px; min-height: 0
 #stage svg { display: block; max-width: 100%; height: auto; }
 #stage [data-element] { cursor: pointer; }
 #stage [data-element].is-selected { filter: drop-shadow(0 0 3px var(--focus)); }
+#stage.eraser-active, #stage.eraser-active [data-element] { cursor: crosshair; touch-action: none; }
+#stage .eraser-preview { fill: var(--danger); opacity: 0.78; pointer-events: none; }
 #stage g[data-page].page-hidden { display: none; }
 aside { border-left: 1px solid var(--line); background: var(--panel); overflow: auto; }
 .panel-section { padding: 13px 15px; border-bottom: 1px solid var(--line); }
+.panel-tabs { position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1px; padding: 0; border-bottom: 1px solid var(--line); background: var(--line); }
+.panel-tabs button { min-height: 38px; padding: 5px 3px; border: 0; border-radius: 0; background: var(--panel); color: var(--muted); font-size: 10.5px; }
+.panel-tabs button[aria-selected="true"] { color: var(--ink); box-shadow: inset 0 -2px var(--focus); }
 h2 { margin: 0 0 9px; color: var(--muted); font-size: 11px; font-weight: 650; text-transform: uppercase; letter-spacing: 0.08em; }
 .pages { display: flex; gap: 9px 12px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; }
 .pages label { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; color: var(--muted); }
@@ -133,7 +139,25 @@ label.field { display: grid; gap: 3px; color: var(--muted); font-size: 11px; }
 .nudge label { width: 90px; }
 .danger { color: var(--danger); border-color: currentColor; }
 .draft-warning { margin-top: 7px; color: var(--warn); font-size: 11px; }
+.hint { color: var(--muted); font-size: 11px; }
+.mask-meter { margin: 8px 0; padding: 7px 8px; border-left: 3px solid var(--focus); background: var(--bg); font: 11px/1.4 var(--mono); }
 .relation { padding: 7px 0; font-family: var(--mono); font-size: 11px; border-top: 1px dotted var(--line); overflow-wrap: anywhere; }
+
+.model-summary { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--muted); }
+.model-row, .model-finding, .history-row { display: grid; gap: 2px; padding: 8px 0; border-top: 1px dotted var(--line); overflow-wrap: anywhere; }
+.model-row span, .model-row small, .model-finding small, .history-row span { color: var(--muted); }
+.model-row small { font-family: var(--mono); }
+.model-finding { grid-template-columns: minmax(0, 1fr) auto; }
+.model-finding .fingerprint, .model-finding small { grid-column: 1; }
+.model-finding button { grid-column: 2; grid-row: 1 / span 2; align-self: center; min-height: 28px; }
+.model-finding.error { border-left: 3px solid var(--danger); padding-left: 8px; }
+.model-finding.warning { border-left: 3px solid var(--warn); padding-left: 8px; }
+.model-finding.accepted { border-left: 3px solid var(--good); padding-left: 8px; }
+.history-row { grid-template-columns: 76px 1fr; }
+.history-row span { font: 10.5px/1.4 var(--mono); }
+.history-row strong { font-weight: 550; }
+.history-row.future { opacity: 0.75; }
+.plan-result { max-height: 360px; white-space: pre-wrap; overflow-wrap: anywhere; }
 
 .finding { width: 100%; margin: 0; padding: 8px 0 8px 10px; border: 0; border-left: 3px solid var(--line); border-radius: 0; background: transparent; color: inherit; text-align: left; }
 .finding + .finding { margin-top: 8px; }

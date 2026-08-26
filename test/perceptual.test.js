@@ -143,10 +143,10 @@ test('perceptual review survives a save/reopen round trip with its original time
   assert.deepEqual(reopened.perceptual.findings, doc.perceptual.findings);
 });
 
-test('schema 1 documents migrate to schema 2 and unknown future schemas are refused', () => {
+test('schema 1 documents migrate to schema 3 and unknown future schemas are refused', () => {
   const current = JSON.parse(serialize(docWithSheep()));
   const migrated = deserialize({ ...current, schema: 1 });
-  assert.equal(migrated.schema, 2);
-  assert.match(serialize(migrated), /"schema": 2/);
+  assert.equal(migrated.schema, 3);
+  assert.match(serialize(migrated), /"schema": 3/);
   assert.throws(() => deserialize({ ...current, schema: 999 }), /schema 999 is not supported/);
 });

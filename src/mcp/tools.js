@@ -8,11 +8,13 @@
  */
 
 import { createHash } from 'node:crypto';
-import { readFile, stat, writeFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import * as core from '../core/index.js';
+import { atomicWriteFile } from '../io.js';
 import { VERSION } from '../version.js';
 import { assertSchema } from './schema.js';
+import { capabilityRegistry, doctorReport, searchCapabilities } from '../capabilities.js';
 
 const REQUIRE_DOC = 'no diagram is open — call new_diagram or open_diagram first';
 const HISTORY_SCHEMA = 1;
@@ -31,7 +33,7 @@ export function createSession({ cwd = process.cwd(), createdAt = null, historyLi
     throw new RangeError(`historyLimit must be a whole number from 1 to ${MAX_HISTORY_LIMIT} — got ${JSON.stringify(historyLimit)}`);
   }
   return {
-    doc: null, path: null, cwd, createdAt, startedAt: new Date().toISOString(), historyLimit, progress: core.createProgressLog(),
+    doc: null, path: null, diskHash: null, cwd, createdAt, startedAt: new Date().toISOString(), historyLimit, progress: core.createProgressLog(),
     history: [], future: [], historyNotice: 'no diagram is open',
   };
 }
@@ -47,6 +49,8 @@ const semanticProperties = () => ({
   tags: { type: 'array', items: { type: 'string', minLength: 1 }, description: 'semantic categories used for filtered views and styling' },
   properties: { type: 'object', additionalProperties: { type: 'string' }, description: 'named model metadata' },
   perspectives: { type: 'object', additionalProperties: { type: 'string' }, description: 'named concern overlays, e.g. security or ownership' },
+  relationshipLabel: { type: 'string', minLength: 1, description: 'short visible edge label' },
+  outcome: { type: 'string', minLength: 1, description: 'result or response associated with a relationship, especially in dynamic views' },
 });
 
 /** Read and canonicalise an image relative to the active diagram. */
@@ -93,7 +97,13 @@ async function resolveSources(session, operations) {
 async function persist(session) {
   // Working state, not a deliverable: checkpoints never adjudicate, so an
   // author can place roughly and repair afterwards exactly as before.
-  if (session.doc && session.path) await core.checkpointDocument(session.doc, session.path);
+  if (session.doc && session.path) {
+    const receipt = await core.checkpointDocumentRecord(session.doc, session.path, {
+      expectedHash: session.diskHash,
+      backup: true,
+    });
+    session.diskHash = receipt.hash;
+  }
 }
 
 function resetHistory(session, notice = 'history reset') {
@@ -124,13 +134,13 @@ function validateHistoryEntries(entries, name) {
 async function persistHistory(session) {
   if (!session.doc || !session.path) return;
   const state = core.serialize(session.doc);
-  await writeFile(historyPath(session), JSON.stringify({
+  await atomicWriteFile(historyPath(session), JSON.stringify({
     schema: HISTORY_SCHEMA,
     currentHash: stateHash(state),
     limit: session.historyLimit,
     history: trimHistory(session, session.history),
     future: trimHistory(session, session.future),
-  }, null, 2), 'utf8');
+  }, null, 2));
   session.historyNotice = `saved to ${historyPath(session)}`;
 }
 
@@ -203,6 +213,9 @@ async function withHistory(session, name, args, handler) {
     session.historyNotice = noticeBefore;
     if (session.doc && core.serialize(session.doc) !== before) {
       session.doc = core.deserialize(before);
+      // The disk already belongs to another writer. Restore only our in-memory
+      // transaction; overwriting the external version would defeat the guard.
+      if (err.code === 'E_TURTLEPEN_CONFLICT') throw err;
       try {
         await persist(session);
         await persistHistory(session);
@@ -221,9 +234,41 @@ export function createTools(session) {
     {
       name: 'turtlepen_help',
       description:
-        'Read this first. Returns the lattice constants, the Excel addressing scheme, the pen command grammar, the corner/alignment vocabulary, and the full collision rule table with severities. Everything needed to author a diagram correctly on the first attempt.',
-      inputSchema: { type: 'object', properties: {}, additionalProperties: false },
-      handler: () => [HELP, '', 'lattice:', json(core.latticeInfo(session.doc)), '', 'rules:', json(core.RULES)].join('\n'),
+        'Read this first. Returns a compact orientation by default; section="all" returns the full grammar and rule manual. Use search_help for task-focused discovery.',
+      inputSchema: { type: 'object', properties: { section: { type: 'string', enum: ['orientation', 'all'] } }, additionalProperties: false },
+      handler: ({ section = 'orientation' }) => [section === 'all' ? HELP : ORIENTATION, '', 'lattice:', json(core.latticeInfo(session.doc)), '', 'rules:', json(core.RULES)].join('\n'),
+    },
+
+    {
+      name: 'search_help',
+      description: 'Search the live capability registry by task, tool name, category, description, or argument field. Returns compact matches instead of the full manual.',
+      inputSchema: {
+        type: 'object',
+        properties: { query: { type: 'string' }, format: { type: 'string', enum: ['text', 'json'] } },
+        additionalProperties: false,
+      },
+      handler: ({ query = '', format = 'text' }) => {
+        const result = searchCapabilities(tools, query);
+        if (format === 'json') return json(result);
+        return ['TurtlePen capability search: ' + JSON.stringify(query) + ' — ' + result.count + ' match(es)']
+          .concat(result.matches.map((entry) => entry.name.padEnd(24) + ' [' + entry.category + '] ' + entry.description))
+          .join('\n');
+      },
+    },
+
+    {
+      name: 'doctor',
+      description: 'Run local, read-only runtime and capability diagnostics. Reports readiness, exact checks, tool count, and the full capability fingerprint.',
+      inputSchema: { type: 'object', properties: { format: { type: 'string', enum: ['text', 'json'] } }, additionalProperties: false },
+      handler: ({ format = 'text' }) => {
+        const result = doctorReport(tools, { schemaVersion: core.SCHEMA_VERSION, version: VERSION, cwd: session.cwd });
+        return format === 'json'
+          ? json(result)
+          : ['TurtlePen doctor: ' + result.state.toUpperCase()]
+            .concat(result.checks.map((check) => (check.ok ? 'PASS ' : 'FAIL ') + check.id.padEnd(10) + check.detail))
+            .concat(['capabilities ' + result.capabilityFingerprint])
+            .join('\n');
+      },
     },
 
     {
@@ -238,13 +283,15 @@ export function createTools(session) {
           .update(JSON.stringify(tools.map(({ name, inputSchema }) => ({ name, inputSchema }))))
           .digest('hex')
           .slice(0, 16),
+        capabilityRegistry: capabilityRegistry(tools).fingerprint,
         startedAt: session.startedAt,
         cwd: session.cwd,
         activeDocument: session.doc
           ? {
             name: session.doc.name,
             path: session.path,
-            hash: createHash('sha256').update(core.serialize(session.doc)).digest('hex').slice(0, 16),
+            hash: core.documentHash(session.doc),
+            diskHash: session.diskHash ?? null,
           }
           : null,
       }),
@@ -269,6 +316,9 @@ export function createTools(session) {
         session.doc = core.createDocument({ name, canvas: { cols, rows }, font: { size: fontSize } });
         if (session.createdAt) session.doc.createdAt = session.createdAt;
         session.path = path ? resolve(session.cwd, path) : resolve(session.cwd, `diagrams/${name.replace(/\W+/g, '-').toLowerCase()}.turtlepen.json`);
+        // New-diagram is an explicit replacement workflow, including the
+        // deterministic example generators. Subsequent edits are guarded.
+        session.diskHash = undefined;
         resetHistory(session, 'new diagram starts with empty history');
         await persist(session);
         await persistHistory(session);
@@ -282,9 +332,10 @@ export function createTools(session) {
       inputSchema: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'], additionalProperties: false },
       handler: async ({ path }) => {
         const target = resolve(session.cwd, path);
-        const opened = await core.loadDocument(target);
+        const opened = await core.loadDocumentRecord(target);
         session.path = target;
-        session.doc = opened;
+        session.doc = opened.document;
+        session.diskHash = opened.hash;
         await restoreHistory(session);
         const v = core.validate(session.doc);
         return `opened "${session.doc.name}" from ${session.path}\npages: ${session.doc.pages.map((p) => `${p.id} (z:${p.z}, ${p.intent})`).join(', ')}\nhistory: ${session.historyNotice}\n\n${core.formatLog(v)}`;
@@ -909,18 +960,20 @@ ${stalled}` : core.formatLog(result);
           gapX: { type: 'integer', minimum: 0, description: 'quadrants between neighbours on a rank (default 8)' },
           gapY: { type: 'integer', minimum: 0, description: 'quadrants between ranks (default 10)' },
           reroute: { type: 'boolean', description: 'redraw the connectors after moving (default true)' },
+          direction: { type: 'string', enum: [...core.LAYOUT_DIRECTIONS], description: 'reading direction (default top-down)' },
+          pins: { type: 'object', additionalProperties: { type: 'string' }, description: 'element ids mapped to fixed top-left addresses' },
         },
         additionalProperties: false,
       },
-      handler: async ({ page = 'base', ids = null, gapX, gapY, reroute = true }) => {
+      handler: async ({ page = 'base', ids = null, gapX, gapY, reroute = true, direction = 'top-down', pins = {} }) => {
         const doc = need(session);
         const r = core.OPERATIONS.layout(doc, {
-          page, ids, reroute, ...(gapX === undefined ? {} : { gapX }), ...(gapY === undefined ? {} : { gapY }),
+          page, ids, reroute, direction, pins, ...(gapX === undefined ? {} : { gapX }), ...(gapY === undefined ? {} : { gapY }),
         });
         await persist(session);
 
         const lines = [
-          `laid out ${r.boxes} box(es) over ${r.ranks} rank(s) on "${r.page}" — ${r.moved} moved`,
+          `laid out ${r.boxes} box(es) over ${r.ranks} rank(s) on "${r.page}" ${r.direction} — ${r.moved} moved, ${r.pinned.length} pinned`,
           r.crossingsBefore === r.crossings
             ? `${r.crossings} edge crossing(s), unchanged`
             : `edge crossings ${r.crossingsBefore} -> ${r.crossings}`,
@@ -963,6 +1016,132 @@ ${stalled}` : core.formatLog(result);
       handler: ({ minimum = 'info', format = 'log' }) => {
         const result = core.inspectModel(need(session), { minimum });
         return format === 'json' ? json(result) : core.formatInspection(result);
+      },
+    },
+
+    {
+      name: 'accept_model_finding',
+      description: 'Record that one current fingerprinted semantic-model finding is deliberate. The decision lapses automatically when the finding changes.',
+      inputSchema: {
+        type: 'object',
+        properties: { fingerprint: { type: 'string' }, reason: { type: 'string', minLength: 1 } },
+        required: ['fingerprint', 'reason'], additionalProperties: false,
+      },
+      handler: async ({ fingerprint, reason }) => {
+        const result = core.acceptModelFinding(need(session), fingerprint, reason);
+        await persist(session);
+        return `accepted model finding #${fingerprint} (${result.finding.rule}) — ${result.acceptance.reason}`;
+      },
+    },
+
+    {
+      name: 'unaccept_model_finding',
+      description: 'Withdraw a semantic-model finding acceptance so the current finding becomes open again.',
+      inputSchema: {
+        type: 'object', properties: { fingerprint: { type: 'string' } }, required: ['fingerprint'], additionalProperties: false,
+      },
+      handler: async ({ fingerprint }) => {
+        core.unacceptModelFinding(need(session), fingerprint);
+        await persist(session);
+        return `withdrew model finding acceptance #${fingerprint}`;
+      },
+    },
+
+    {
+      name: 'define_view',
+      description: 'Create or replace a durable static, tag-filtered, or ordered dynamic view. Views project one shared model; they never duplicate diagram elements.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          key: { type: 'string' }, title: { type: 'string' },
+          type: { type: 'string', enum: [...core.VIEW_TYPES] }, description: { type: 'string' },
+          includeTags: { type: 'array', items: { type: 'string' } },
+          excludeTags: { type: 'array', items: { type: 'string' } },
+          includeElements: { type: 'array', items: { type: 'string' } },
+          excludeElements: { type: 'array', items: { type: 'string' } },
+          pages: { type: 'array', items: { type: 'string' } },
+          order: { type: 'array', items: { type: 'string' }, description: 'relationship ids in event order for a dynamic view' },
+          direction: { type: 'string', enum: [...core.VIEW_DIRECTIONS] },
+          perspective: { type: 'string' }, showKey: { type: 'boolean' },
+        },
+        required: ['key'], additionalProperties: false,
+      },
+      handler: async (args) => {
+        const view = core.defineView(need(session), args);
+        const resolved = core.resolveView(session.doc, view.key);
+        await persist(session);
+        return `defined ${view.type} view "${view.key}" with ${resolved.elements.length} element(s), ${view.direction}`;
+      },
+    },
+
+    {
+      name: 'remove_view',
+      description: 'Remove a durable view definition without removing any shared model elements.',
+      inputSchema: { type: 'object', properties: { key: { type: 'string' } }, required: ['key'], additionalProperties: false },
+      handler: async ({ key }) => {
+        core.removeView(need(session), key);
+        await persist(session);
+        return `removed view "${key}"; model elements were left untouched`;
+      },
+    },
+
+    {
+      name: 'configure_theme',
+      description: 'Replace the document theme: named colour tokens, tag rules, and perspective-value rules. Styling changes presentation only; collision geometry remains exact.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          tokens: { type: 'object', additionalProperties: { type: 'string' } },
+          tagStyles: {
+            type: 'array', items: {
+              type: 'object', properties: { tag: { type: 'string' }, fill: { type: 'string' }, stroke: { type: 'string' }, text: { type: 'string' }, opacity: { type: 'number' } },
+              required: ['tag'], additionalProperties: false,
+            },
+          },
+          perspectiveStyles: {
+            type: 'array', items: {
+              type: 'object', properties: { perspective: { type: 'string' }, value: { type: 'string' }, fill: { type: 'string' }, stroke: { type: 'string' }, text: { type: 'string' } },
+              required: ['perspective', 'value'], additionalProperties: false,
+            },
+          },
+        },
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        const theme = core.configureTheme(need(session), args);
+        await persist(session);
+        return `configured theme "${theme.name}" with ${theme.tagStyles.length} tag rule(s) and ${theme.perspectiveStyles.length} perspective rule(s)`;
+      },
+    },
+
+    {
+      name: 'attach_resource',
+      description: 'Attach or update a durable documentation, ADR, runbook, URL, or local-file reference on the workspace model.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' }, type: { type: 'string', enum: [...core.RESOURCE_TYPES] },
+          label: { type: 'string' }, uri: { type: 'string' }, description: { type: 'string' },
+          tags: { type: 'array', items: { type: 'string' } },
+        },
+        required: ['id', 'uri'], additionalProperties: false,
+      },
+      handler: async (args) => {
+        const resource = core.upsertResource(need(session), args);
+        await persist(session);
+        return `attached ${resource.type} resource "${resource.id}" at ${resource.uri}`;
+      },
+    },
+
+    {
+      name: 'remove_resource',
+      description: 'Remove a linked resource record. TurtlePen never deletes the referenced external file or URL.',
+      inputSchema: { type: 'object', properties: { id: { type: 'string' } }, required: ['id'], additionalProperties: false },
+      handler: async ({ id }) => {
+        core.removeResource(need(session), id);
+        await persist(session);
+        return `removed resource "${id}"; its external target was not modified`;
       },
     },
 
@@ -1021,7 +1200,7 @@ ${stalled}` : core.formatLog(result);
       inputSchema: {
         type: 'object',
         properties: {
-          action: { type: 'string', enum: ['add', 'remove'] },
+          action: { type: 'string', enum: ['add', 'extend', 'replace', 'remove'] },
           id: { type: 'string', description: 'stable mask id' },
           target: { type: 'string', description: 'artwork path or image id; required for add' },
           points: {
@@ -1043,11 +1222,19 @@ ${stalled}` : core.formatLog(result);
         if (args.action === 'add' && (!args.target || !args.points)) {
           throw new SyntaxError('micro_mask add needs target and points');
         }
+        if (['extend', 'replace'].includes(args.action) && !args.points) {
+          throw new SyntaxError(`micro_mask ${args.action} needs points`);
+        }
         const result = core.OPERATIONS.micro_mask(need(session), args);
         await persist(session);
-        return args.action === 'remove'
-          ? `removed micro-mask "${args.id}"; structural geometry was unchanged`
-          : json({ ...result, note: 'presentation-only; ASCII and structural collision geometry remain unmasked' });
+        if (args.action === 'remove') return `removed micro-mask "${args.id}"; structural geometry was unchanged`;
+        const status = core.microMaskStatus(session.doc, result.target);
+        return json({
+          ...result,
+          status,
+          warning: status.fullyMasked ? 'target is fully masked; remove the target if that was the intent' : null,
+          note: 'presentation-only; ASCII and structural collision geometry remain unmasked',
+        });
       },
     },
 
@@ -1310,26 +1497,54 @@ ${stalled}` : core.formatLog(result);
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
+          format: { type: 'string', enum: ['log', 'json'], description: 'log (default) for prose; json for a reviewable before/after diff' },
         },
         required: ['operations'],
         additionalProperties: false,
       },
-      handler: async ({ operations, commit = false }) => {
+      handler: async ({ operations, commit = false, format = 'log' }) => {
         const doc = need(session);
         const ops = await resolveSources(session, operations);
-        const result = commit ? core.commitOperations(doc, ops) : core.planOperations(doc, ops);
-        if (!result.ok) {
+        const rehearsal = core.planOperations(doc, ops);
+        if (!rehearsal.ok) {
+          const failure = {
+            ok: false, committed: false, applied: rehearsal.applied,
+            failedAt: rehearsal.failedAt, error: rehearsal.error,
+            operation: operations[rehearsal.failedAt] ?? null,
+          };
+          if (format === 'json') return JSON.stringify(failure, null, 2);
           return [
-            `plan FAILED at operation ${result.failedAt + 1} of ${operations.length}: ${result.error}`,
+            `plan FAILED at operation ${rehearsal.failedAt + 1} of ${operations.length}: ${rehearsal.error}`,
             `nothing was applied — the document is unchanged.`,
-            `operation ${result.failedAt + 1} was: ${JSON.stringify(operations[result.failedAt])}`,
+            `operation ${rehearsal.failedAt + 1} was: ${JSON.stringify(operations[rehearsal.failedAt])}`,
           ].join('\n');
         }
+        const diff = core.documentDiff(doc, rehearsal.preview);
+        const result = commit ? core.commitOperations(doc, ops) : rehearsal;
         if (commit) await persist(session);
+        const receipt = {
+          ok: true,
+          committed: commit,
+          applied: result.applied,
+          diff,
+          validation: {
+            summary: result.validation.summary,
+            open: result.validation.open.map((finding) => ({
+              fingerprint: finding.fingerprint,
+              severity: finding.severity,
+              rule: finding.rule,
+              message: finding.message,
+            })),
+            accepted: result.validation.accepted.length,
+            stale: result.validation.staleAcceptances.length,
+          },
+        };
+        if (format === 'json') return JSON.stringify(receipt, null, 2);
         return [
           commit
             ? `committed ${result.applied} operation(s).`
             : `rehearsed ${result.applied} operation(s) on a copy — the document is unchanged. Re-send with commit:true to apply.`,
+          `diff: ${diff.changed} changed object(s); elements +${diff.elements.added.length} -${diff.elements.removed.length} ~${diff.elements.changed.length}; views +${diff.views.added.length} -${diff.views.removed.length} ~${diff.views.changed.length}`,
           '',
           core.formatLog(result.validation),
         ].join('\n');
@@ -1873,6 +2088,7 @@ ${r.program}`;
           session.history = historyBefore;
           session.future = futureBefore;
           session.historyNotice = noticeBefore;
+          if (err.code === 'E_TURTLEPEN_CONFLICT') throw err;
           try {
             await persist(session);
             await persistHistory(session);
@@ -1892,13 +2108,27 @@ ${r.program}`;
         properties: {
           path: { type: 'string' },
           force: { type: 'boolean', description: 'write even with findings outstanding; the document records that you did' },
+          expectedHash: { type: 'string', pattern: '^[0-9a-f]{64}$', description: 'optional optimistic document hash returned by runtime_info' },
         },
         additionalProperties: false,
       },
-      handler: async ({ path = null, force = false }) => {
+      handler: async ({ path = null, force = false, expectedHash = null }) => {
         const doc = need(session);
-        if (path) session.path = resolve(session.cwd, path);
-        await core.saveDocument(doc, session.path, { force });
+        if (expectedHash && core.documentHash(doc) !== expectedHash) {
+          throw Object.assign(new Error('document changed since the supplied expectedHash; inspect before retrying'), {
+            code: 'E_TURTLEPEN_CONFLICT', expectedHash, actualHash: core.documentHash(doc), retrySafe: true,
+          });
+        }
+        if (path) {
+          const nextPath = resolve(session.cwd, path);
+          if (nextPath !== session.path) {
+            session.path = nextPath;
+            session.diskHash = null;
+          }
+        }
+        await core.saveDocument(doc, session.path, { force, expectedHash: session.diskHash, backup: true });
+        const saved = await core.loadDocumentRecord(session.path);
+        session.diskHash = saved.hash;
         await persistHistory(session);
         return force && doc.forcedSave
           ? `saved ${session.path} — FORCED past ${doc.forcedSave.findingCount} outstanding finding(s); the document records this`
@@ -1908,25 +2138,44 @@ ${r.program}`;
   ];
 
   const byName = new Map(tools.map((tool) => [tool.name, tool]));
-  return tools.map((tool) => ({
-    ...tool,
-    handler: (supplied = {}) => {
-      assertSchema(tool.inputSchema, supplied, `${tool.name}.arguments`);
-      if (tool.name === 'plan') {
-        supplied.operations.forEach((operation, index) => {
-          const nested = byName.get(operation?.op);
-          if (!nested || !MUTATING_TOOLS.has(operation.op) || operation.op === 'plan') {
-            throw new SyntaxError(`plan.operations[${index}].op: unknown operation ${JSON.stringify(operation?.op)}`);
-          }
-          const { op: _op, ...args } = operation;
-          assertSchema(nested.inputSchema, args, `plan.operations[${index}]`);
-        });
+  return tools.map((tool) => {
+    const isMutation = MUTATING_TOOLS.has(tool.name);
+    const inputSchema = isMutation
+      ? {
+        ...tool.inputSchema,
+        properties: {
+          ...tool.inputSchema.properties,
+          expectedHash: { type: 'string', pattern: '^[0-9a-f]{64}$', description: 'optional optimistic in-memory document hash' },
+        },
       }
-      return MUTATING_TOOLS.has(tool.name)
-        ? withHistory(session, tool.name, supplied, tool.handler)
-        : tool.handler(supplied);
-    },
-  }));
+      : tool.inputSchema;
+    return {
+      ...tool,
+      inputSchema,
+      handler: (supplied = {}) => {
+        assertSchema(inputSchema, supplied, `${tool.name}.arguments`);
+        const { expectedHash, ...argumentsWithoutGuard } = supplied;
+        if (expectedHash && session.doc && core.documentHash(session.doc) !== expectedHash) {
+          throw Object.assign(new Error('document changed since the supplied expectedHash; inspect before retrying'), {
+            code: 'E_TURTLEPEN_CONFLICT', expectedHash, actualHash: core.documentHash(session.doc), retrySafe: true,
+          });
+        }
+        if (tool.name === 'plan') {
+          argumentsWithoutGuard.operations.forEach((operation, index) => {
+            const nested = byName.get(operation?.op);
+            if (!nested || !MUTATING_TOOLS.has(operation.op) || operation.op === 'plan') {
+              throw new SyntaxError(`plan.operations[${index}].op: unknown operation ${JSON.stringify(operation?.op)}`);
+            }
+            const { op: _op, ...args } = operation;
+            assertSchema(nested.inputSchema, args, `plan.operations[${index}]`);
+          });
+        }
+        return isMutation
+          ? withHistory(session, tool.name, argumentsWithoutGuard, tool.handler)
+          : tool.handler(supplied);
+      },
+    };
+  });
 }
 
 /** Element geometry plus, for anything carrying a label, its live fit status —
@@ -1942,6 +2191,8 @@ function describeElement(doc, el) {
       end: el.end ? { at: core.address.quadToAddress(el.end.x, el.end.y), facing: el.end.facing } : null,
       pieces: countBy(el.pieces.map((p) => p.type)),
       relationship: el.relationship ?? null,
+      relationshipLabel: el.relationshipLabel ?? null,
+      outcome: el.outcome ?? null,
       description: el.description ?? null,
       technology: el.technology ?? null,
       tags: el.tags ?? [],
@@ -2109,6 +2360,40 @@ function describeTrace(t) {
   if (t.action === 'face') return `facing ${t.facing}`;
   return t.at ?? '';
 }
+
+const ORIENTATION = `TurtlePen — verified visual authoring on an integer lattice.
+
+WORKFLOW
+  measure -> plan (rehearse) -> approve/commit -> validate + inspect_model
+          -> render -> LOOK -> perceptual_review -> save
+
+  A structurally clear drawing can still depict the wrong thing. The absence of a review is not a pass.
+  Reviews bind to renderHash and become stale
+  after presentation changes. Every deliberate structural or model finding needs
+  a fingerprinted acceptance reason.
+
+CORE FACTS
+  1 cell = 10px; 1 quadrant = 5px; all geometry is integer-exact.
+  Addresses use Excel columns: C4, C4.tl, C4.q1. The canvas grows right/down.
+  Use pen from <id>.<face> for attached connectors; gateway.S#2 selects an
+  indexed face seat. Use connect for semantic direct, orthogonal, or
+  explicit-waypoint curved relationships.
+
+DISCOVERY
+  search_help { query: "dynamic views" }   compact live capability search
+  turtlepen_help { section: "all" }        full pen grammar and rule manual
+  doctor                                     runtime/schema/registry checks
+  runtime_info                               version, hashes, and tool count
+
+RECOVERY AND OUTPUT
+  plan with format:"json" returns an exact object diff before commit.
+  history supports status/undo/redo/clear. Saves are atomic and hash-guarded.
+  The CLI validates, inspects, renders SVG/PNG/PDF, builds documentation bundles,
+  creates artifact manifests, and runs or scores benchmark receipts.
+
+PERCEPTUAL REVIEW
+  render returns renderHash. Look at the artifact, then call perceptual_review.
+  micro_mask provides reversible 1-design-pixel cleanup on artwork and images.`;
 
 const HELP = `TurtlePen — an integer-exact grid for AI-authored diagrams.
 

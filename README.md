@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 588 tests green, zero runtime dependencies, 52 MCP tools.
+Status: **prototype** — 613 tests green, zero runtime dependencies, 61 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -18,6 +18,7 @@ Status: **prototype** — 588 tests green, zero runtime dependencies, 52 MCP too
 | know what is proven and what is deferred | [`status.md`](status.md) |
 | see the flowchart work and what was deliberately not built | [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md) |
 | know the current tool surface, authoritatively | call `turtlepen_help` — it outranks every document here |
+| validate/render/bundle without an MCP host | run `node src/cli.js help` or the `turtlepen` bin |
 
 The one thing worth knowing before anything else: **a clean validation means the
 drawing is undefective, never that it is finished, and never that it depicts what
@@ -527,8 +528,9 @@ There is nothing to install first: no runtime dependencies, Node 20 or newer.
 Clone it, point the config at `src/mcp/server.js`, and run `pnpm test` once to
 confirm the clone is sound.
 
-52 tools. Call `turtlepen_help` first — it returns the grammar, the lattice
-constants, the rule table, and the fix→tool map.
+61 tools. Call `turtlepen_help` first for a compact orientation, use
+`search_help { query }` for task-focused discovery, and request
+`turtlepen_help { section: "all" }` for the complete grammar and rule manual.
 
 The maintained [endpoint and use-case coverage matrix](docs/endpoint-use-case-coverage.md)
 maps every transport, tool, viewer route, and known workflow to executable evidence.
@@ -563,9 +565,10 @@ inflating effective ink, and record source plus run hashes in the
 
 | Group | Tools |
 |---|---|
-| orient | `turtlepen_help` `runtime_info` `describe` `ascii` `free_space` `history` |
+| orient | `turtlepen_help` `search_help` `doctor` `runtime_info` `describe` `ascii` `free_space` `history` |
 | author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `connect` `annotate` `plan` `group` `constraint` |
-| check | `validate` `inspect_model` `perceptual_review` `accept_finding` `unaccept_finding` |
+| workspace | `define_view` `remove_view` `configure_theme` `attach_resource` `remove_resource` |
+| check | `validate` `inspect_model` `accept_model_finding` `unaccept_model_finding` `perceptual_review` `accept_finding` `unaccept_finding` |
 | repair | `resize` `restyle` `move` `rename` `update_page` `set_canvas` `extend_path` `replace_path` `remove` |
 | fidelity | `micro_mask` `stroke_text` `stroke_label` `glyph` `font_coverage` |
 | compose | `wireframe` `perspective_scene` `export_prompt` |

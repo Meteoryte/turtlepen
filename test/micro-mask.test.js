@@ -20,7 +20,7 @@ test('a 1px micro-mask changes presentation and render hash, never structural va
   assert.equal(JSON.stringify(core.validate(doc)), validation);
   assert.notEqual(after, before);
   assert.match(svg, /data-micro-mask="cleanup" x="25" y="70" width="1" height="1"/);
-  assert.match(svg, /data-element="ink" mask="url\(#tp-mask-ink\)"/);
+  assert.match(svg, /data-element="ink"[^>]*mask="url\(#tp-mask-ink\)"/);
 });
 
 test('micro-masks persist, move with their target, and can be restored', () => {
@@ -50,4 +50,23 @@ test('ASCII states that sub-quadrant masks are not represented', async () => {
   session.doc = doc;
   const output = await createTools(session).find((tool) => tool.name === 'ascii').handler({});
   assert.match(output, /sub-quadrant micro-mask\(s\) are not represented in ASCII/);
+});
+
+test('a continuous mask can be extended or replaced and reports full coverage', () => {
+  const doc = core.createDocument({ name: 'one-dot' });
+  core.applyPen(doc, 'base', 'pen C8.q1\ndot', { id: 'ink', role: 'artwork' });
+  const origin = core.findElement(doc, 'ink').element.pieces[0];
+  const x = origin.x * 5, y = origin.y * 5;
+  const firstRows = [];
+  const lastRows = [];
+  for (let row = 0; row < 5; row++) {
+    const segment = [{ x, y: y + row }, { x: x + 4, y: y + row }];
+    (row < 3 ? firstRows : lastRows).push(...segment);
+  }
+  core.addMicroMask(doc, { id: 'brush', target: 'ink', points: firstRows });
+  assert.equal(core.microMaskStatus(doc, 'ink').fullyMasked, false);
+  core.updateMicroMask(doc, 'brush', lastRows);
+  assert.equal(core.microMaskStatus(doc, 'ink').fullyMasked, true);
+  core.updateMicroMask(doc, 'brush', [{ x, y }], { replace: true });
+  assert.equal(core.microMaskStatus(doc, 'ink').maskedInkPixels, 1);
 });

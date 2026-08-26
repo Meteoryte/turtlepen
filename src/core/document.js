@@ -20,6 +20,7 @@ import { normalizePattern } from './pattern.js';
 import { assertEmbeddedSource, assertMode as assertImageMode, scaleReport } from './image.js';
 import { analyseRuns, SIMPLIFY_DETAILS, SIMPLIFY_SUPERSAMPLES } from './dither.js';
 import { restorePerceptualReview } from './perceptual.js';
+import { createWorkspaceState, restoreWorkspaceState } from './workspace.js';
 
 // `schematic` stacks exactly like `exclusive`; it exists to carry authorial meaning —
 // "this page is deliberately spare" — which the composition rules read and skip.
@@ -28,9 +29,10 @@ export const PATH_ROLES = Object.freeze(['connector', 'artwork']);
 export const PATH_PAINTS = Object.freeze(['line', 'cells']);
 export const TEXT_ALIGNS = Object.freeze(['left', 'center', 'right']);
 export const IMAGE_FITS = Object.freeze(['contain', 'cover']);
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 export function createDocument({ name = 'untitled', canvas = { cols: 160, rows: 100 }, font = {} } = {}) {
+  const workspace = createWorkspaceState();
   const doc = {
     schema: SCHEMA_VERSION,
     name,
@@ -45,6 +47,7 @@ export function createDocument({ name = 'untitled', canvas = { cols: 160, rows: 
     groups: [],
     constraints: [],
     microMasks: [],
+    ...workspace,
     acceptances: [],
     createdAt: new Date().toISOString(),
   };
@@ -441,6 +444,78 @@ export function addMicroMask(doc, { id, target, points, width = 1, cap = 'square
   const mask = { id, target, page: found.page, points: normalized, width, cap };
   microMasksOf(doc).push(mask);
   return mask;
+}
+
+function normalizeMaskPoints(points) {
+  if (!Array.isArray(points) || !points.length) throw new RangeError('micro-mask needs at least one design-pixel point');
+  return points.map((point, index) => {
+    if (!Number.isInteger(point?.x) || !Number.isInteger(point?.y) || point.x < 0 || point.y < 0) {
+      throw new RangeError(`micro-mask point ${index} needs non-negative integer design pixels — got ${JSON.stringify(point)}`);
+    }
+    return { x: point.x, y: point.y };
+  });
+}
+
+export function updateMicroMask(doc, id, points, { replace = false } = {}) {
+  const mask = microMasksOf(doc).find((entry) => entry.id === id);
+  if (!mask) throw new Error(`no micro-mask "${id}"`);
+  const normalized = normalizeMaskPoints(points);
+  mask.points = replace ? normalized : [...mask.points, ...normalized];
+  return mask;
+}
+
+function rasterLine(a, b) {
+  const points = [];
+  let x = a.x, y = a.y;
+  const dx = Math.abs(b.x - a.x), sx = a.x < b.x ? 1 : -1;
+  const dy = -Math.abs(b.y - a.y), sy = a.y < b.y ? 1 : -1;
+  let error = dx + dy;
+  for (;;) {
+    points.push({ x, y });
+    if (x === b.x && y === b.y) break;
+    const twice = error * 2;
+    if (twice >= dy) { error += dy; x += sx; }
+    if (twice <= dx) { error += dx; y += sy; }
+  }
+  return points;
+}
+
+export function microMaskStatus(doc, target) {
+  const found = findElement(doc, target);
+  if (!found) throw new Error(`micro-mask target "${target}" does not exist`);
+  const element = found.element;
+  const masks = microMasksOf(doc).filter((entry) => entry.target === target);
+  const ink = new Set();
+  if (element.kind === 'path') {
+    for (const piece of element.pieces) {
+      for (let py = 0; py < PX_PER_QUAD; py++) for (let px = 0; px < PX_PER_QUAD; px++) {
+        ink.add(`${piece.x * PX_PER_QUAD + px},${piece.y * PX_PER_QUAD + py}`);
+      }
+    }
+  } else if (element.rect) {
+    for (let y = element.rect.y * PX_PER_QUAD; y < (element.rect.y + element.rect.h) * PX_PER_QUAD; y++) {
+      for (let x = element.rect.x * PX_PER_QUAD; x < (element.rect.x + element.rect.w) * PX_PER_QUAD; x++) ink.add(`${x},${y}`);
+    }
+  }
+  const erased = new Set();
+  for (const mask of masks) {
+    if (mask.points.length === 1) erased.add(`${mask.points[0].x},${mask.points[0].y}`);
+    for (let i = 1; i < mask.points.length; i++) {
+      for (const point of rasterLine(mask.points[i - 1], mask.points[i])) erased.add(`${point.x},${point.y}`);
+    }
+  }
+  let maskedInkPixels = 0;
+  for (const pixel of erased) if (ink.has(pixel)) maskedInkPixels += 1;
+  const totalInkPixels = ink.size;
+  return {
+    target,
+    strokes: masks.length,
+    points: masks.reduce((sum, mask) => sum + mask.points.length, 0),
+    maskedInkPixels,
+    totalInkPixels,
+    maskedPercent: totalInkPixels ? Number(((maskedInkPixels / totalInkPixels) * 100).toFixed(2)) : 0,
+    fullyMasked: totalInkPixels > 0 && maskedInkPixels === totalInkPixels,
+  };
 }
 
 export function removeMicroMask(doc, id) {
@@ -866,6 +941,12 @@ export function serialize(doc) {
         constraints: [...constraintsOf(doc)].sort((a, b) => a.id.localeCompare(b.id)),
       } : {}),
       ...(microMasksOf(doc).length ? { microMasks: microMasksOf(doc) } : {}),
+      ...(doc.views.length ? { views: doc.views } : {}),
+      theme: doc.theme,
+      ...(doc.resources.length ? { resources: doc.resources } : {}),
+      ...(doc.modelAcceptances.length ? {
+        modelAcceptances: [...doc.modelAcceptances].sort((a, b) => a.fingerprint.localeCompare(b.fingerprint)),
+      } : {}),
       acceptances: [...doc.acceptances].sort((a, b) => a.fingerprint.localeCompare(b.fingerprint)),
       // Composition source is operational data, not a renderer cache. Tools
       // such as export_prompt need it after the document is reopened, and the
@@ -884,14 +965,16 @@ export function serialize(doc) {
 
 export function deserialize(json) {
   const parsed = typeof json === 'string' ? JSON.parse(json) : json;
-  if (![1, SCHEMA_VERSION].includes(parsed.schema)) {
-    throw new Error(`document schema ${parsed.schema} is not supported by this build (expected 1 or ${SCHEMA_VERSION})`);
+  if (![1, 2, SCHEMA_VERSION].includes(parsed.schema)) {
+    throw new Error(`document schema ${parsed.schema} is not supported by this build (expected 1, 2, or ${SCHEMA_VERSION})`);
   }
-  // Schema 2 adds durable perceptual review state. Schema 1 needs no geometry
-  // rewrite, so migration is explicit and lossless.
-  const raw = parsed.schema === 1 ? { ...parsed, schema: SCHEMA_VERSION } : parsed;
+  // Schema 2 added durable perceptual review. Schema 3 adds workspace views,
+  // themes, resources, and semantic finding acceptances. Neither migration
+  // rewrites geometry.
+  const raw = parsed.schema < SCHEMA_VERSION ? { ...parsed, schema: SCHEMA_VERSION } : parsed;
   if (raw.groups != null && !Array.isArray(raw.groups)) throw new TypeError('document groups must be an array');
   if (raw.constraints != null && !Array.isArray(raw.constraints)) throw new TypeError('document constraints must be an array');
+  const workspace = restoreWorkspaceState(raw);
   const doc = {
     schema: SCHEMA_VERSION,
     name: raw.name,
@@ -910,6 +993,7 @@ export function deserialize(json) {
       offset: { ...constraint.offset },
     })),
     microMasks: [],
+    ...workspace,
     acceptances: raw.acceptances ?? [],
     createdAt: raw.createdAt,
     ...(raw.wireframe ? { wireframe: raw.wireframe } : {}),
@@ -966,7 +1050,7 @@ export function deserialize(json) {
 }
 
 function validateLoadedSemantics(element) {
-  for (const key of ['description', 'technology']) {
+  for (const key of ['description', 'technology', 'relationshipLabel', 'outcome']) {
     if (element?.[key] != null && (typeof element[key] !== 'string' || !element[key].trim())) {
       throw new TypeError(`element "${element?.id ?? '(unknown)'}" ${key} must be a non-empty string`);
     }

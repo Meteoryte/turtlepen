@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {
   breakCycles, rankNodes, insertDummies, countCrossings, orderRanks, assignX, layoutGraph,
 } from '../src/core/layout.js';
+import * as core from '../src/core/index.js';
 
 const node = (id, cellsW = 4, cellsH = 2) => ({ id, cellsW, cellsH });
 
@@ -192,5 +193,44 @@ test('no two boxes on a rank overlap after layout', () => {
     .sort((p, q) => p.col - q.col);
   for (let i = 0; i + 1 < rank1.length; i++) {
     assert.ok(rank1[i].col + 4 <= rank1[i + 1].col, `${rank1[i].id} must not run into ${rank1[i + 1].id}`);
+  }
+});
+
+function semanticPair() {
+  const doc = core.createDocument({ name: 'directed layout', canvas: { cols: 60, rows: 40 } });
+  core.placeBox(doc, 'base', { id: 'source', at: 'C4.tl', span: '6x3', label: 'Source' });
+  core.placeBox(doc, 'base', { id: 'target', at: 'C16.tl', span: '6x3', label: 'Target' });
+  core.connectNodes(doc, {
+    id: 'request', from: 'source.S', to: 'target.N', routing: 'orthogonal',
+    description: 'sends a request', technology: 'HTTPS', tags: ['critical'],
+    properties: { owner: 'platform' }, perspectives: { security: 'reviewed' },
+    relationshipLabel: 'Submit', outcome: 'Accepted',
+  });
+  return doc;
+}
+
+test('document layout supports all reading directions, explicit pins, and semantic rerouting', () => {
+  const expectations = {
+    'top-down': (a, b) => b.rect.y > a.rect.y,
+    'bottom-up': (a, b) => b.rect.y < a.rect.y,
+    'left-right': (a, b) => b.rect.x > a.rect.x,
+    'right-left': (a, b) => b.rect.x < a.rect.x,
+  };
+  for (const [direction, ordered] of Object.entries(expectations)) {
+    const doc = semanticPair();
+    const result = core.layoutElements(doc, { direction, pins: { source: 'M10.tl' } });
+    const source = core.findElement(doc, 'source').element;
+    const target = core.findElement(doc, 'target').element;
+    const relationship = core.findElement(doc, 'request').element;
+    assert.equal(ordered(source, target), true, `${direction} must preserve reading order`);
+    assert.deepEqual({ x: source.rect.x, y: source.rect.y }, core.address.pinPoint('M10.tl'));
+    assert.equal(result.pinned[0].id, 'source');
+    assert.equal(relationship.description, 'sends a request');
+    assert.equal(relationship.technology, 'HTTPS');
+    assert.equal(relationship.relationshipLabel, 'Submit');
+    assert.equal(relationship.outcome, 'Accepted');
+    assert.deepEqual(relationship.tags, ['critical']);
+    assert.deepEqual(relationship.properties, { owner: 'platform' });
+    assert.deepEqual(relationship.perspectives, { security: 'reviewed' });
   }
 });

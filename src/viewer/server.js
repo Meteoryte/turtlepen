@@ -59,6 +59,7 @@ let operationQueue = Promise.resolve();
 function publicElement(doc, element, page) {
   const bounds = core.geometry.boundsOf(core.elementRects(element));
   const content = element.kind === 'text' ? element.text : element.label;
+  const microMasks = core.microMasksOf(doc).filter((mask) => mask.target === element.id);
   return {
     id: element.id,
     page,
@@ -80,12 +81,15 @@ function publicElement(doc, element, page) {
     ditherStats: element.ditherStats ?? null,
     processing: element.processing ?? null,
     relationship: element.relationship ?? null,
+    relationshipLabel: element.relationshipLabel ?? null,
+    outcome: element.outcome ?? null,
     description: element.description ?? null,
     technology: element.technology ?? null,
     tags: element.tags ?? [],
     properties: element.properties ?? {},
     perspectives: element.perspectives ?? {},
-    microMasks: core.microMasksOf(doc).filter((mask) => mask.target === element.id),
+    microMasks,
+    microMaskStatus: microMasks.length ? core.microMaskStatus(doc, element.id) : null,
     groups: core.groupsOf(doc).filter((group) => group.members.includes(element.id)).map((group) => group.id),
     follows: core.constraintsOf(doc).filter((constraint) => constraint.dependent === element.id).map((constraint) => constraint.id),
     followedBy: core.constraintsOf(doc).filter((constraint) => constraint.target === element.id).map((constraint) => constraint.id),
@@ -117,7 +121,7 @@ function publicConstraint(doc, constraint) {
   };
 }
 
-async function state(since = null) {
+async function state(since = null, view = null, detail = 'full') {
   if (loadError || !session.doc) {
     return { ok: false, path: DOC_PATH, revision, error: loadError ?? `no diagram at ${DOC_PATH}` };
   }
@@ -125,12 +129,20 @@ async function state(since = null) {
   try { mtime = (await stat(DOC_PATH)).mtimeMs; } catch { /* represented by the live document */ }
   if (since !== null && Number(since) === mtime) return { ok: true, unchanged: true, mtime };
 
+  if (!['full', 'canvas'].includes(detail)) {
+    return { ok: false, path: DOC_PATH, revision, error: `state detail must be full or canvas — got ${JSON.stringify(detail)}` };
+  }
   const doc = session.doc;
+  let resolved;
+  try { resolved = core.resolveView(doc, view); }
+  catch (err) { return { ok: false, path: DOC_PATH, revision, error: err.message }; }
+  const selected = resolved.elementIds;
   const validation = core.validate(doc);
-  const svg = core.renderSvg(doc, { findings: validation.open, showGrid: true });
+  const svg = core.renderSvg(doc, { view, findings: validation.open, showGrid: true });
+  const canonicalSvg = view == null ? svg : core.renderSvg(doc, { findings: validation.open, showGrid: true });
   const quality = core.perceptualVerdicts(doc, {
     structural: validation,
-    currentRenderHash: core.renderHash(svg),
+    currentRenderHash: core.renderHash(canonicalSvg),
   });
   const readiness = validation.summary.state !== 'structurally-clear'
     ? validation.summary.state
@@ -146,11 +158,19 @@ async function state(since = null) {
     path: DOC_PATH,
     mtime,
     revision,
+    hash: core.documentHash(doc),
     name: doc.name,
+    view: resolved.view,
+    views: doc.views,
+    theme: doc.theme,
+    resources: doc.resources,
     pages: doc.pages,
-    elements: doc.pages.flatMap((page) => core.elementsOf(doc, page.id).map((element) => publicElement(doc, element, page.id))),
-    groups: core.groupsOf(doc).map((group) => publicGroup(doc, group)),
-    constraints: core.constraintsOf(doc).map((constraint) => publicConstraint(doc, constraint)),
+    elements: doc.pages.flatMap((page) => core.elementsOf(doc, page.id)
+      .filter((element) => selected.has(element.id))
+      .map((element) => publicElement(doc, element, page.id))),
+    groups: core.groupsOf(doc).filter((group) => group.members.some((id) => selected.has(id))).map((group) => publicGroup(doc, group)),
+    constraints: core.constraintsOf(doc).filter((constraint) => selected.has(constraint.dependent) && selected.has(constraint.target))
+      .map((constraint) => publicConstraint(doc, constraint)),
     history: {
       undo: session.history.length,
       redo: session.future.length,
@@ -158,6 +178,8 @@ async function state(since = null) {
       nextRedo: session.future.at(-1)?.label ?? null,
       limit: session.historyLimit,
       persistence: session.historyNotice,
+      entries: session.history.slice(-50).reverse().map((entry, index) => ({ index, label: entry.label })),
+      futureEntries: session.future.slice(-50).reverse().map((entry, index) => ({ index, label: entry.label })),
     },
     lattice: core.latticeInfo(doc),
     summary: validation.summary,
@@ -166,7 +188,8 @@ async function state(since = null) {
     findings: validation.open,
     accepted: validation.accepted,
     stale: validation.staleAcceptances,
-    ascii: core.renderAscii(doc, { findings: validation.open }).text,
+    model: core.inspectModel(doc),
+    ascii: detail === 'full' ? core.renderAscii(doc, { findings: validation.open }).text : null,
     svg,
   };
 }
@@ -341,7 +364,8 @@ const server = createServer(async (req, res) => {
     }
     const url = new URL(req.url ?? '/', 'http://127.0.0.1');
     if (url.pathname === '/api/state') {
-      const body = JSON.stringify(await state(url.searchParams.get('since')));
+      const view = url.searchParams.get('view');
+      const body = JSON.stringify(await state(url.searchParams.get('since'), view || null, url.searchParams.get('detail') ?? 'full'));
       res.writeHead(200, { ...SECURITY_HEADERS, 'content-type': 'application/json; charset=utf-8' });
       return end(body);
     }

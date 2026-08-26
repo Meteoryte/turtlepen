@@ -16,6 +16,7 @@ import { PX_PER_QUAD, toPx, right, bottom } from './geometry.js';
 import { elementsOf, contentBounds, microMasksOf } from './document.js';
 import { shapeTextRect, isContainer, containerBand } from './shapes.js';
 import { layoutTextRuns } from './text.js';
+import { generatedKey, resolveView, styleForElement } from './workspace.js';
 
 const CUT = PX_PER_QUAD; // corner cuts are one quadrant
 
@@ -70,25 +71,43 @@ export const SEVERITY_CUE = Object.freeze({
   S3: 'dotted',
 });
 
-export function renderSvg(doc, { pages = null, findings = null, showGrid = true, margin = 20, bounds = 'content' } = {}) {
-  const visible = (pages ? doc.pages.filter((p) => pages.includes(p.id)) : doc.pages)
+export function renderSvg(doc, {
+  pages = null, findings = null, showGrid = true, margin = 20, bounds = 'content',
+  view = null, title = null, description = null, showKey = null,
+} = {}) {
+  const resolved = resolveView(doc, view);
+  const selected = resolved.elementIds;
+  const selectedPages = pages ?? (resolved.view?.pages.length ? resolved.view.pages : null);
+  const visible = (selectedPages ? doc.pages.filter((p) => selectedPages.includes(p.id)) : doc.pages)
     .filter((p) => p.visible !== false)
     .sort((a, b) => a.z - b.z);
 
   if (!['content', 'canvas'].includes(bounds)) throw new SyntaxError(`SVG bounds must be "content" or "canvas" — got ${JSON.stringify(bounds)}`);
   if (!Number.isInteger(margin) || margin < 0) throw new RangeError(`SVG margin must be a whole non-negative pixel count — got ${JSON.stringify(margin)}`);
+  const projected = view == null ? doc : {
+    ...doc,
+    elements: Object.fromEntries(doc.pages.map((page) => [page.id, elementsOf(doc, page.id).filter((element) => selected.has(element.id))])),
+  };
   const b = bounds === 'canvas'
     ? { x: 0, y: 0, w: doc.canvas.cols * 2, h: doc.canvas.rows * 2 }
-    : contentBounds(doc) ?? { x: 0, y: 0, w: 40, h: 24 };
+    : contentBounds(projected) ?? { x: 0, y: 0, w: 40, h: 24 };
   const px = toPx(b);
-  const width = px.w + margin * 2;
+  const key = (showKey ?? resolved.view?.showKey ?? false) ? generatedKey(doc, view) : null;
+  const keyWidth = key?.entries.length ? 180 : 0;
+  const width = px.w + margin * 2 + keyWidth;
   const height = px.h + margin * 2;
   const ox = margin - px.x;
   const oy = margin - px.y;
 
   const parts = [];
-  parts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" font-family="${escapeAttr(doc.font.family)}">`);
-  parts.push(style(doc.background ?? null, gradients(doc), microMaskDefs(doc)));
+  const titleText = title ?? resolved.view?.title ?? doc.name;
+  const descriptionText = description ?? resolved.view?.description
+    ?? `${resolved.elements.length} diagram elements across ${visible.length} visible page(s)`;
+  parts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" font-family="${escapeAttr(doc.font.family)}" role="img" aria-labelledby="tp-title tp-desc">`);
+  parts.push(`<title id="tp-title">${escapeText(titleText)}</title>`);
+  parts.push(`<desc id="tp-desc">${escapeText(descriptionText)}</desc>`);
+  parts.push(`<metadata>${escapeText(JSON.stringify({ schema: doc.schema, name: doc.name, view: view ?? null, elements: resolved.elements.length }))}</metadata>`);
+  parts.push(style(doc.background ?? null, gradients(projected), microMaskDefs(projected), doc.theme?.tokens));
   parts.push(`<rect class="bg" x="0" y="0" width="${width}" height="${height}"/>`);
   if (showGrid) parts.push(gridPattern(b, ox, oy));
   parts.push(`<g transform="translate(${ox},${oy})">`);
@@ -98,12 +117,14 @@ export function renderSvg(doc, { pages = null, findings = null, showGrid = true,
     // existing documents render byte-identically.
     const opacity = page.opacity ?? (page.intent === 'overlay' ? 0.92 : 1);
     parts.push(`<g data-page="${escapeAttr(page.id)}" data-z="${page.z}" opacity="${opacity}">`);
-    for (const el of elementsOf(doc, page.id)) {
+    for (const el of elementsOf(doc, page.id).filter((element) => selected.has(element.id))) {
       const masked = microMasksOf(doc).some((mask) => mask.target === el.id);
-      parts.push(`<g data-element="${escapeAttr(el.id)}"${masked ? ` mask="url(#tp-mask-${escapeAttr(el.id)})"` : ''}>`);
-      if (el.kind === 'box') parts.push(box(el, doc));
-      else if (el.kind === 'path') parts.push(path(el));
-      else if (el.kind === 'text') parts.push(textBlock(el, doc));
+      const themeStyle = styleForElement(doc, el, resolved.view?.perspective ?? null);
+      const accessible = elementAccessibleLabel(el, resolved.relationshipOrder.get(el.id));
+      parts.push(`<g data-element="${escapeAttr(el.id)}" role="group" aria-label="${escapeAttr(accessible)}"${masked ? ` mask="url(#tp-mask-${escapeAttr(el.id)})"` : ''}>`);
+      if (el.kind === 'box') parts.push(box(el, doc, themeStyle));
+      else if (el.kind === 'path') parts.push(path(el, themeStyle, resolved.relationshipOrder.get(el.id)));
+      else if (el.kind === 'text') parts.push(textBlock(el, doc, themeStyle));
       else if (el.kind === 'image') parts.push(imageEl(el));
       parts.push('</g>');
     }
@@ -111,11 +132,38 @@ export function renderSvg(doc, { pages = null, findings = null, showGrid = true,
   }
 
   if (findings?.length) parts.push(findingOverlay(findings));
-  parts.push('</g></svg>');
+  parts.push('</g>');
+  if (key?.entries.length) parts.push(renderGeneratedKey(key, px.w + margin * 2, margin));
+  parts.push('</svg>');
   return parts.join('\n');
 }
 
 // ---------------------------------------------------------------------------
+
+function elementAccessibleLabel(element, order = null) {
+  if (element.relationship) {
+    const prefix = order ? `Step ${order}. ` : '';
+    const meaning = element.description ? `. ${element.description}` : '';
+    return `${prefix}Relationship ${element.id}, from ${element.relationship.from.id} to ${element.relationship.to.id}${meaning}`;
+  }
+  const content = element.label ?? element.text ?? element.description ?? '';
+  return `${element.kind} ${element.id}${content ? `: ${content}` : ''}`;
+}
+
+function renderGeneratedKey(key, x, y) {
+  const out = [`<g class="generated-key" role="group" aria-label="${escapeAttr(key.title)}" transform="translate(${x + 12},${y})">`];
+  const titleWidth = Math.max(1, key.title.length * 6);
+  out.push(`<text class="key-title" x="0" y="10" font-size="10" textLength="${titleWidth}" lengthAdjust="spacingAndGlyphs">${escapeText(key.title)}</text>`);
+  key.entries.forEach((entry, index) => {
+    const yy = 24 + index * 18;
+    const paint = entry.fill ?? PALETTE.paperAlt;
+    const stroke = entry.stroke ?? PALETTE.ink;
+    out.push(`<rect x="0" y="${yy - 10}" width="12" height="12" fill="${escapeAttr(paint)}" stroke="${escapeAttr(stroke)}"/>`);
+    out.push(`<text class="key-label" x="18" y="${yy}" font-size="10" textLength="${Math.max(1, entry.label.length * 6)}" lengthAdjust="spacingAndGlyphs">${escapeText(entry.label)}</text>`);
+  });
+  out.push('</g>');
+  return out.join('');
+}
 
 /**
  * One `<linearGradient>` per box that asked for one, keyed by element id.
@@ -131,10 +179,12 @@ export function renderSvg(doc, { pages = null, findings = null, showGrid = true,
  * gradient set as an attribute renders as the flat default and looks like the
  * feature is broken.
  */
-function fillAttr(el) {
-  if (!el.fill) return '';
-  const paint = typeof el.fill === 'string' ? el.fill : `url(#tp-grad-${el.id})`;
-  return ` style="fill:${escapeAttr(paint)}"`;
+function fillAttr(el, themed = {}) {
+  const value = el.fill ?? themed.fill ?? null;
+  const declarations = [];
+  if (value) declarations.push(`fill:${escapeAttr(typeof value === 'string' ? value : `url(#tp-grad-${el.id})`)}`);
+  if (themed.stroke) declarations.push(`stroke:${escapeAttr(themed.stroke)}`);
+  return declarations.length ? ` style="${declarations.join(';')}"` : '';
 }
 
 function gradients(doc) {
@@ -184,25 +234,11 @@ function microMaskDefs(doc) {
   return out.join('\n');
 }
 
-function style(background = null, gradientDefs = '', microMaskDefinitions = '') {
+function style(background = null, gradientDefs = '', microMaskDefinitions = '', tokens = {}) {
   const definitions = [gradientDefs, microMaskDefinitions].filter(Boolean).join('\n');
-  return `<style>
-  .bg { fill: ${background ?? PALETTE.paper}; }
-  .grid { stroke: ${PALETTE.grid}; stroke-width: 0.5; }
-  .grid-major { stroke: ${PALETTE.gridMajor}; stroke-width: 0.5; }
-  .box { fill: ${PALETTE.paperAlt}; stroke: ${PALETTE.ink}; stroke-width: 1; }
-  .box-label { fill: ${PALETTE.ink}; }
-  .stroke { fill: ${PALETTE.ink}; }
-  .hop { stroke: ${PALETTE.ink}; }
-  .free-text { fill: ${PALETTE.inkSoft}; }
-  .hit-S0 { fill: ${PALETTE.critical}; opacity: 0.30; }
-  .hit-S1 { fill: ${PALETTE.error}; opacity: 0.28; }
-  .hit-S2 { fill: ${PALETTE.warn}; opacity: 0.24; }
-  .hit-S3 { fill: ${PALETTE.info}; opacity: 0.20; }
-  .dimmed { fill: url(#tp-stipple); }
-  .dither-run { fill: ${PALETTE.ink}; }
-  .simplify-run { fill: ${PALETTE.ink}; }
-  @media (prefers-color-scheme: dark) {
+  const palette = { ...PALETTE, ...tokens };
+  const custom = Object.keys(tokens ?? {}).length > 0;
+  const darkMode = custom ? '' : `  @media (prefers-color-scheme: dark) {
     .bg { fill: ${background ?? PALETTE_DARK.paper}; }
     .grid { stroke: ${PALETTE_DARK.grid}; }
     .grid-major { stroke: ${PALETTE_DARK.gridMajor}; }
@@ -212,6 +248,24 @@ function style(background = null, gradientDefs = '', microMaskDefinitions = '') 
     .stroke { fill: ${PALETTE_DARK.ink}; }
     .hop { stroke: ${PALETTE_DARK.ink}; }
   }
+`;
+  return `<style>
+  .bg { fill: ${background ?? palette.paper}; }
+  .grid { stroke: ${palette.grid}; stroke-width: 0.5; }
+  .grid-major { stroke: ${palette.gridMajor}; stroke-width: 0.5; }
+  .box { fill: ${palette.paperAlt}; stroke: ${palette.ink}; stroke-width: 1; }
+  .box-label, .key-title, .key-label { fill: ${palette.ink}; }
+  .stroke { fill: ${palette.ink}; }
+  .hop { stroke: ${palette.ink}; }
+  .free-text { fill: ${palette.inkSoft}; }
+  .hit-S0 { fill: ${palette.critical}; opacity: 0.30; }
+  .hit-S1 { fill: ${palette.error}; opacity: 0.28; }
+  .hit-S2 { fill: ${palette.warn}; opacity: 0.24; }
+  .hit-S3 { fill: ${palette.info}; opacity: 0.20; }
+  .dimmed { fill: url(#tp-stipple); }
+  .dither-run { fill: ${PALETTE.ink}; }
+  .simplify-run { fill: ${PALETTE.ink}; }
+${darkMode}
 </style>
 <defs>
 ${definitions}
@@ -346,11 +400,12 @@ export function shapeOutline(r, shape) {
   }
 }
 
-function box(el, doc) {
+function box(el, doc, themed = {}) {
   // Element opacity multiplies with its page's; geometry is untouched either way.
   const shape = el.shape ?? 'process';
   const d = shapeOutline(el.rect, shape) ?? boxOutline(el.rect, el.corner);
-  const out = [`<path class="box${el.state === 'dimmed' ? ' dimmed' : ''}" d="${d}" data-id="${escapeAttr(el.id)}"${el.opacity != null ? ` opacity="${el.opacity}"` : ''}${fillAttr(el)}/>`];
+  const effectiveOpacity = el.opacity ?? themed.opacity ?? null;
+  const out = [`<path class="box${el.state === 'dimmed' ? ' dimmed' : ''}" d="${d}" data-id="${escapeAttr(el.id)}"${effectiveOpacity != null ? ` opacity="${effectiveOpacity}"` : ''}${fillAttr(el, themed)}/>`];
   if (isContainer(shape)) {
     // A rule under the title band, so the band reads as a heading rather than
     // as empty space at the top of a big rectangle.
@@ -372,7 +427,7 @@ function box(el, doc) {
     out.push(`<path class="box" d="M${x + 10},${y} V${y + h}" fill="none"/>`);
     out.push(`<path class="box" d="M${x + w - 10},${y} V${y + h}" fill="none"/>`);
   }
-  if (el.label) out.push(label(el, doc));
+  if (el.label) out.push(label(el, doc, themed));
   return out.join('');
 }
 
@@ -380,7 +435,7 @@ function box(el, doc) {
  * Text laid out with the engine's own measurements. textLength is what makes
  * the drawing physically unable to disagree with the fit report.
  */
-function label(el, doc) {
+function label(el, doc, themed = {}) {
   const layout = layoutTextRuns(el.label, shapeTextRect(el.rect, el.shape ?? 'process'), {
     fontSize: el.fontSize,
     paddingQuads: doc.font.paddingQuads,
@@ -388,20 +443,20 @@ function label(el, doc) {
     verticalAlign: 'center',
   });
   return layout.runs
-    .map((run) => `<text class="box-label" x="${run.x}" y="${run.baseline}" font-size="${el.fontSize}" textLength="${run.width}" lengthAdjust="spacingAndGlyphs" xml:space="preserve">${escapeText(run.text)}</text>`)
+    .map((run) => `<text class="box-label" x="${run.x}" y="${run.baseline}" font-size="${el.fontSize}" textLength="${run.width}" lengthAdjust="spacingAndGlyphs"${themed.text ? ` style="fill:${escapeAttr(themed.text)}"` : ''} xml:space="preserve">${escapeText(run.text)}</text>`)
     .join('');
 }
 
-function textBlock(el, doc) {
+function textBlock(el, doc, themed = {}) {
   const layout = layoutTextRuns(el.text, el.rect, { fontSize: el.fontSize, align: el.align });
   return layout.runs
-    .map((run) => `<text class="free-text" x="${run.x}" y="${run.baseline}" font-size="${el.fontSize}" font-weight="${el.weight ?? 400}" textLength="${run.width}" lengthAdjust="spacingAndGlyphs"${el.color ? ` style="fill:${escapeAttr(el.color)}"` : ''} xml:space="preserve">${escapeText(run.text)}</text>`)
+    .map((run) => `<text class="free-text" x="${run.x}" y="${run.baseline}" font-size="${el.fontSize}" font-weight="${el.weight ?? 400}" textLength="${run.width}" lengthAdjust="spacingAndGlyphs"${el.color || themed.text ? ` style="fill:${escapeAttr(el.color ?? themed.text)}"` : ''} xml:space="preserve">${escapeText(run.text)}</text>`)
     .join('');
 }
 
 /** Every stroke quadrant is a 5x5 square; junction styles shave the outer corner. */
-function path(el) {
-  if (el.stroke) return styledPath(el);
+function path(el, themed = {}, order = null) {
+  if (el.stroke || themed.stroke) return styledPath(el, themed, order);
   const shapes = el.pieces.map((p) => {
     const x = p.x * PX_PER_QUAD, y = p.y * PX_PER_QUAD, s = PX_PER_QUAD;
     if (p.type === 'arrow') return `<path class="stroke" d="${arrowPath(x, y, s, p.dir)}"/>`;
@@ -411,12 +466,13 @@ function path(el) {
     }
     return `<path class="stroke" d="${junctionPath(x, y, s, p.sides, p.style)}"/>`;
   });
-  return `<g data-id="${escapeAttr(el.id)}" data-kind="path">${shapes.join('')}</g>`;
+  return `<g data-id="${escapeAttr(el.id)}" data-kind="path">${shapes.join('')}${orderMarker(el, order)}${relationshipLabel(el)}</g>`;
 }
 
 /** Paint a path as continuous vector ink while retaining its quadrant claim. */
-function styledPath(el) {
-  if (el.stroke.paint === 'cells') return paintedCells(el);
+function styledPath(el, themed = {}, order = null) {
+  const stroke = el.stroke ?? { color: themed.stroke, width: 5, cap: 'butt' };
+  if (stroke.paint === 'cells') return paintedCells(el, themed, order);
   const groups = [];
   let group = [];
   for (const piece of el.pieces) {
@@ -429,9 +485,9 @@ function styledPath(el) {
   }
   if (group.length) groups.push(group);
 
-  const color = escapeAttr(el.stroke.color);
-  const width = el.stroke.width;
-  const cap = el.stroke.cap;
+  const color = escapeAttr(themed.stroke ?? stroke.color);
+  const width = stroke.width;
+  const cap = stroke.cap;
   const ink = groups.map((pieces) => {
     // The collision model deliberately keeps every Bresenham quadrant. Painting
     // every one of those cell centres, however, turns a straight diagonal into
@@ -462,18 +518,18 @@ function styledPath(el) {
   const arrows = el.pieces
     .filter((piece) => piece.type === 'arrow')
     .map((piece) => `<path d="${arrowPath(piece.x * PX_PER_QUAD, piece.y * PX_PER_QUAD, PX_PER_QUAD, piece.dir)}" fill="${piece.color ? escapeAttr(piece.color) : color}" stroke="none"/>`);
-  return `<g data-id="${escapeAttr(el.id)}" data-kind="path" data-role="${escapeAttr(el.role ?? 'connector')}">${ink.join('')}${arrows.join('')}</g>`;
+  return `<g data-id="${escapeAttr(el.id)}" data-kind="path" data-role="${escapeAttr(el.role ?? 'connector')}">${ink.join('')}${arrows.join('')}${orderMarker(el, order)}${relationshipLabel(el)}</g>`;
 }
 
 /** Colour exact claimed quadrants, merging adjacent cells into compact runs. */
-function paintedCells(el) {
+function paintedCells(el, themed = {}, order = null) {
   // Runs break on a colour change as well as on a gap. A run-length encoder
   // that only watched position would paint a whole gradient in whichever
   // colour happened to start the row.
   const rows = new Map();
   for (const piece of el.pieces) {
     if (!rows.has(piece.y)) rows.set(piece.y, new Map());
-    rows.get(piece.y).set(piece.x, piece.color ?? el.stroke.color);
+    rows.get(piece.y).set(piece.x, piece.color ?? themed.stroke ?? el.stroke.color);
   }
   const rects = [];
   for (const y of [...rows.keys()].sort((a, b) => a - b)) {
@@ -487,7 +543,27 @@ function paintedCells(el) {
     }
     emit();
   }
-  return `<g data-id="${escapeAttr(el.id)}" data-kind="path" data-role="${escapeAttr(el.role ?? 'connector')}" data-paint="cells">${rects.join('')}</g>`;
+  return `<g data-id="${escapeAttr(el.id)}" data-kind="path" data-role="${escapeAttr(el.role ?? 'connector')}" data-paint="cells">${rects.join('')}${orderMarker(el, order)}${relationshipLabel(el)}</g>`;
+}
+
+function relationshipLabel(el) {
+  if (!el.relationshipLabel || !el.pieces.length) return '';
+  const point = el.pieces[Math.floor(el.pieces.length / 2)];
+  const width = Math.max(6, el.relationshipLabel.length * 6);
+  const x = point.x * PX_PER_QUAD + Math.floor(PX_PER_QUAD / 2) - Math.floor(width / 2);
+  const y = point.y * PX_PER_QUAD - 5;
+  return `<rect x="${x - 2}" y="${y - 10}" width="${width + 4}" height="14" fill="${PALETTE.paper}" opacity="0.92"/>`
+    + `<text class="box-label" x="${x}" y="${y}" font-size="10" textLength="${width}" lengthAdjust="spacingAndGlyphs">${escapeText(el.relationshipLabel)}</text>`;
+}
+
+function orderMarker(el, order) {
+  if (!order || !el.pieces.length) return '';
+  const point = el.pieces[Math.floor(el.pieces.length / 2)];
+  const x = point.x * PX_PER_QUAD + Math.floor(PX_PER_QUAD / 2);
+  const y = point.y * PX_PER_QUAD + Math.floor(PX_PER_QUAD / 2);
+  const label_ = String(order);
+  return `<circle cx="${x}" cy="${y}" r="8" fill="${PALETTE.paper}" stroke="${PALETTE.ink}"/>`
+    + `<text class="box-label" x="${x - 3}" y="${y + 3}" font-size="10" textLength="6" lengthAdjust="spacingAndGlyphs">${label_}</text>`;
 }
 
 /** Ramer-Douglas-Peucker simplification for presentation-only artwork ink. */

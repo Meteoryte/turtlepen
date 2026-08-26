@@ -7,6 +7,8 @@
  * geometric defect, while still making omissions enumerable and actionable.
  */
 
+import { createHash } from 'node:crypto';
+
 export const INSPECTION_SEVERITIES = Object.freeze(['error', 'warning', 'info']);
 
 export const INSPECTION_RULES = Object.freeze({
@@ -19,7 +21,9 @@ export const INSPECTION_RULES = Object.freeze({
 });
 
 function finding(rule, element, message, details = {}) {
-  return { rule, severity: INSPECTION_RULES[rule].severity, title: INSPECTION_RULES[rule].title, element, message, ...details };
+  const semanticState = JSON.stringify({ rule, element, message, details });
+  const fingerprint = createHash('sha256').update(semanticState).digest('hex').slice(0, 16);
+  return { rule, severity: INSPECTION_RULES[rule].severity, title: INSPECTION_RULES[rule].title, element, message, ...details, fingerprint };
 }
 
 export function inspectModel(doc, { minimum = 'info' } = {}) {
@@ -69,20 +73,48 @@ export function inspectModel(doc, { minimum = 'info' } = {}) {
   const filtered = findings
     .filter((entry) => rank[entry.severity] <= rank[minimum])
     .sort((a, b) => rank[a.severity] - rank[b.severity] || a.rule.localeCompare(b.rule) || a.element.localeCompare(b.element));
-  const summary = { error: 0, warning: 0, info: 0, total: filtered.length };
-  for (const entry of filtered) summary[entry.severity] += 1;
+  const current = new Set(filtered.map((entry) => entry.fingerprint));
+  const acceptanceMap = new Map((doc.modelAcceptances ?? []).map((entry) => [entry.fingerprint, entry]));
+  const accepted = filtered.filter((entry) => acceptanceMap.has(entry.fingerprint))
+    .map((entry) => ({ ...entry, acceptance: acceptanceMap.get(entry.fingerprint) }));
+  const open = filtered.filter((entry) => !acceptanceMap.has(entry.fingerprint));
+  const stale = (doc.modelAcceptances ?? []).filter((entry) => !current.has(entry.fingerprint));
+  const summary = { error: 0, warning: 0, info: 0, total: open.length, accepted: accepted.length, stale: stale.length };
+  for (const entry of open) summary[entry.severity] += 1;
   summary.state = summary.error ? 'model-errors' : summary.warning ? 'model-incomplete' : 'model-clear';
-  return { findings: filtered, summary };
+  return { findings: open, open, accepted, stale, summary };
+}
+
+export function acceptModelFinding(doc, fingerprint, reason) {
+  if (typeof reason !== 'string' || !reason.trim()) throw new TypeError('accepting a model finding requires a non-empty reason');
+  const result = inspectModel(doc);
+  const target = result.open.find((entry) => entry.fingerprint === fingerprint)
+    ?? result.accepted.find((entry) => entry.fingerprint === fingerprint);
+  if (!target) throw new Error(`cannot accept model finding #${fingerprint}: it is not current; inspect the model again`);
+  const acceptance = { fingerprint, reason: reason.trim() };
+  const index = doc.modelAcceptances.findIndex((entry) => entry.fingerprint === fingerprint);
+  if (index >= 0) doc.modelAcceptances[index] = acceptance;
+  else doc.modelAcceptances.push(acceptance);
+  return { finding: target, acceptance };
+}
+
+export function unacceptModelFinding(doc, fingerprint) {
+  const index = doc.modelAcceptances.findIndex((entry) => entry.fingerprint === fingerprint);
+  if (index < 0) throw new Error(`model finding #${fingerprint} is not accepted`);
+  return doc.modelAcceptances.splice(index, 1)[0];
 }
 
 export function formatInspection(result) {
   const lines = [
-    `model inspection — ${result.summary.total} finding(s)`,
+    `model inspection — ${result.summary.total} open, ${result.summary.accepted ?? 0} accepted, ${result.summary.stale ?? 0} stale`,
     `  status: ${result.summary.state.toUpperCase().replaceAll('-', ' ')}`,
     `  ${result.summary.error} error, ${result.summary.warning} warning, ${result.summary.info} info`,
   ];
   for (const entry of result.findings) {
-    lines.push('', `[${entry.severity.toUpperCase().padEnd(7)}] ${entry.rule} ${entry.title}  ${entry.element}`, `          ${entry.message}`);
+    lines.push('', `[${entry.severity.toUpperCase().padEnd(7)}] ${entry.rule} ${entry.title}  ${entry.element}`, `          ${entry.message}`, `          #${entry.fingerprint}`);
+  }
+  for (const entry of result.accepted ?? []) {
+    lines.push('', `[ACCEPTED] ${entry.rule} ${entry.element}  #${entry.fingerprint}`, `           ${entry.acceptance.reason}`);
   }
   return lines.join('\n');
 }

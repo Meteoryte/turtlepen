@@ -1,5 +1,15 @@
 TurtlePen — an integer-exact grid for AI-authored diagrams.
 
+LIVE DISCOVERY (0.3.0)
+  turtlepen_help returns a compact orientation by default; pass section="all"
+  for this full manual. search_help finds current tools by task, category,
+  argument, or name, and doctor checks the running schema/capability registry.
+  One schema-3 model can own static, filtered, and ordered dynamic views,
+  themes/perspectives, linked documentation resources, semantic acceptances,
+  labelled relationship outcomes, and reversible 1-design-pixel masks.
+  The native turtlepen CLI validates, inspects, renders SVG/PNG/PDF, generates
+  documentation bundles and artifact manifests, and runs benchmark adapters.
+
 WHY IT EXISTS
   Diagram tools measure text at render time, long after a layout was chosen, so
   labels overflow their boxes and nothing notices. Here measurement happens

@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-25
 
-**Status:** evidence-backed recommendation; no source changes made by this audit
+**Status:** implemented on 2026-08-26; the audited baseline remains below for traceability
 
 **Snapshot:** `acceptance-guard-and-depth` at `d02f4fd`, 18 commits ahead of local `main`
 
@@ -12,28 +12,41 @@ priorities
 
 ## Implementation outcome — 2026-08-26
 
-The evidence snapshot below remains the audited baseline. The first construction
-sweep now addresses its highest-risk findings:
+The evidence snapshot below remains the audited baseline. The completion sweep
+now implements every in-scope audit phase:
 
-- schema 2 migrates schema-1 documents and persists perceptual review;
+- schema 3 migrates schema-1/schema-2 documents and persists perceptual review,
+  views, themes, linked resources, and semantic-finding acceptances;
 - validation and the viewer distinguish blocking errors, S2 decisions,
   structural clearance, missing/stale review, perceptual blockers, and
   publishable state;
 - runtime schemas reject unknown direct and nested-plan arguments at exact field
   paths;
-- `runtime_info` derives package version `0.2.0`, schema, tool count, capability
-  fingerprint, process start, and active document hash from the running build;
+- `runtime_info`, `doctor`, and searchable capability help derive version,
+  schema, tool count, fingerprints, process start, and active document hashes
+  from the running build;
 - `connect`, `annotate`, and `inspect_model` add semantic node relationships,
   direct/orthogonal/curved routing, metadata, perspectives, and model
   completeness checks;
-- the proposed 1px eraser exists as the non-destructive `micro_mask` operation
-  and viewer control for artwork paths/images. It alters SVG presentation and
-  render hash, never the structural footprint;
-- the current verified surface is 52 MCP tools and 588 passing tests.
+- the 1px eraser supports add/extend/replace/remove and continuous pointer
+  strokes, reports full-mask coverage, and has deterministic SVG/PNG parity;
+- atomic same-directory writes, backups, and expected-hash conflict refusal
+  protect document, history, and export destinations;
+- a native CLI validates/inspects, renders deterministic SVG/PNG/PDF, generates
+  artifact manifests and static architecture bundles, and runs/scores benchmark
+  adapters without fabricating missing perceptual evidence;
+- one model now drives static, filtered, and ordered dynamic views with themes,
+  perspectives, generated keys, labelled/outcome edges, four layout directions,
+  and explicit pins;
+- SVG semantics, viewer plan approval, semantic review, view switching, bounded
+  history, and lazy canvas state close the accessibility/approval workbench gap;
+- the current verified surface is 61 MCP tools and 613 passing tests.
 
-Still open from the roadmap: atomic/conflict-aware persistence, CLI/PNG/PDF,
-accessibility metadata, labelled/dynamic/filtered views, theming, benchmark
-harness/results, help-size reduction, and payload/delta optimization.
+The only unresolved items are external evidence, not missing in-scope product
+implementation: no same-model comparative benchmark has been executed, and no
+third-party provider icon pack was imported because licensing, provenance, and
+SCANGATE approval are not available. Server/cloud/licensing administration
+remains an explicit product exclusion.
 
 ## Executive conclusion
 

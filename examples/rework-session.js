@@ -20,7 +20,7 @@ async function call(name, args = {}) {
 
 try {
   await mcp.init();
-  const help = await call('turtlepen_help');
+  const help = await call('turtlepen_help', { section: 'all' });
   assert.match(help, /HISTORY AND RECOVERY/);
 
   await call('new_diagram', {
