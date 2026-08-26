@@ -97,7 +97,7 @@ function renderState(state) {
     draftDirty = false;
   }
   byId('doc').textContent = `${state.name}  |  r${state.revision}  |  ${state.lattice.pxPerCell}px cells`;
-  renderCounts(state.summary);
+  renderCounts(state.summary, state.readiness);
   renderPages(state.pages);
   renderStage(state.svg);
   renderInspector();
@@ -106,11 +106,24 @@ function renderState(state) {
   updateHistoryButtons();
 }
 
-function renderCounts(summary) {
+function renderCounts(summary, readiness) {
   const badge = (severity, count) => count ? `<span class="badge ${severity}">${severity} ${count}</span>` : '';
-  const primary = summary.clean
-    ? `<span class="badge clean">Clean</span>${badge('S2', summary.S2)}${badge('S3', summary.S3)}`
-    : badge('S0', summary.S0) + badge('S1', summary.S1) + badge('S2', summary.S2) + badge('S3', summary.S3);
+  const labels = {
+    'blocking-errors': 'Blocking errors',
+    'needs-decisions': 'Needs decisions',
+    'structurally-clear': 'Structurally clear',
+    'review-missing': 'Review missing',
+    'review-stale': 'Review stale',
+    'perceptual-blockers': 'Perceptual blockers',
+    publishable: 'Publishable',
+  };
+  const statusClass = ['blocking-errors', 'perceptual-blockers'].includes(readiness)
+    ? 'S1'
+    : ['needs-decisions', 'review-missing', 'review-stale'].includes(readiness)
+      ? 'S2'
+      : 'clean';
+  const primary = `<span class="badge ${statusClass}">${labels[readiness] ?? labels[summary.state] ?? 'Unknown state'}</span>`
+    + badge('S0', summary.S0) + badge('S1', summary.S1) + badge('S2', summary.S2) + badge('S3', summary.S3);
   const audit = summary.accepted ? `<span class="badge accepted">Accepted ${summary.accepted}</span>` : '';
   const stale = summary.stale ? `<span class="badge stale">Stale ${summary.stale}</span>` : '';
   byId('counts').innerHTML = primary + audit + stale;
@@ -213,7 +226,10 @@ function inspectorHtml(element) {
   const restyle = ['box', 'text'].includes(element.kind) ? `<form class="control-block" data-form="restyle"><h3>Content and style</h3><div class="field-grid"><label class="field wide">${element.kind === 'text' ? 'Text' : 'Label'}<input name="label" value="${escapeHtml(element.label)}"></label><label class="field">Alignment<select name="align">${options(['left', 'center', 'right'], element.align)}</select></label><label class="field">Font size (px)<input name="fontSize" type="number" min="1" step="1" value="${element.fontSize}"></label>${element.kind === 'box' ? `<label class="field">Corners<select name="corner">${options(['square', 'rounded', 'indented', 'chamfered'], element.corner)}</select></label><label class="field">Fill (hex)<input name="fill" pattern="#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?" value="${escapeHtml(element.fill ?? '')}" placeholder="#e9e7e1"></label>` : ''}</div><div class="command-row"><button type="submit">Apply changes</button></div></form>` : '';
 
   const pathEditor = element.kind === 'path' ? `<form class="control-block" data-form="extend-path"><h3>Extend path</h3><label class="field">Pen program<textarea name="program" required></textarea></label><div class="command-row"><button type="submit">Extend</button></div></form><form class="control-block" data-form="replace-path"><h3>Replace path</h3><label class="field">Pen program<textarea name="program" required></textarea></label><div class="command-row"><button type="submit">Replace</button></div></form>` : '';
-  return `<div class="selection-title"><strong>${escapeHtml(element.id)}</strong><span>${escapeHtml(element.kind)}</span></div><dl class="facts"><dt>Page</dt><dd>${escapeHtml(element.page)}</dd><dt>Address</dt><dd>${escapeHtml(element.at)}</dd><dt>Size</dt><dd>${element.cells ? `${element.cells.w} x ${element.cells.h} cells` : 'n/a'}</dd>${imageFacts}</dl>${movable}${sized}${restyle}${pathEditor}${groupHtml(element, group)}${constraintHtml(element, incoming, outgoing)}<div class="control-block"><button type="button" class="danger" data-delete>Delete element</button></div>`;
+  const erasable = element.kind === 'image' || (element.kind === 'path' && element.role === 'artwork');
+  const masks = element.microMasks ?? [];
+  const eraser = erasable ? `<div class="control-block"><h3>Eraser <span class="badge accepted">1px</span></h3><p class="hint">Presentation-only design pixels; structural quadrants stay intact.</p><form data-form="micro-mask"><div class="field-grid"><label class="field wide">Mask ID<input name="id" required value="${escapeHtml(element.id)}-mask-${masks.length + 1}"></label><label class="field">Pixel X<input name="x" type="number" min="0" step="1" required></label><label class="field">Pixel Y<input name="y" type="number" min="0" step="1" required></label></div><div class="command-row"><button type="submit">Erase 1px</button></div></form>${masks.map((mask) => `<div class="relation">${escapeHtml(mask.id)} | ${mask.points.length} point(s)<button type="button" data-micro-mask-remove="${escapeHtml(mask.id)}">Restore</button></div>`).join('')}</div>` : '';
+  return `<div class="selection-title"><strong>${escapeHtml(element.id)}</strong><span>${escapeHtml(element.kind)}${masks.length ? ' · Masked' : ''}</span></div><dl class="facts"><dt>Page</dt><dd>${escapeHtml(element.page)}</dd><dt>Address</dt><dd>${escapeHtml(element.at)}</dd><dt>Size</dt><dd>${element.cells ? `${element.cells.w} x ${element.cells.h} cells` : 'n/a'}</dd>${imageFacts}</dl>${movable}${sized}${restyle}${pathEditor}${eraser}${groupHtml(element, group)}${constraintHtml(element, incoming, outgoing)}<div class="control-block"><button type="button" class="danger" data-delete>Delete element</button></div>`;
 }
 
 function groupHtml(element, group) {
@@ -327,6 +343,9 @@ byId('inspector').addEventListener('click', async (event) => {
   if (event.target.dataset.constraintSync) {
     await callTool('constraint', { action: 'sync', id: event.target.dataset.constraintSync }, 'Synchronized relationship').catch(() => {});
   }
+  if (event.target.dataset.microMaskRemove) {
+    await callTool('micro_mask', { action: 'remove', id: event.target.dataset.microMaskRemove }, 'Restored erased pixel').catch(() => {});
+  }
 });
 
 byId('inspector').addEventListener('submit', async (event) => {
@@ -359,6 +378,9 @@ byId('inspector').addEventListener('submit', async (event) => {
   }
   if (form.dataset.form === 'extend-path') request = ['extend_path', { id: element.id, program: data.program }, `Extended ${element.id}`];
   if (form.dataset.form === 'replace-path') request = ['replace_path', { id: element.id, program: data.program }, `Replaced ${element.id}`];
+  if (form.dataset.form === 'micro-mask') request = ['micro_mask', {
+    action: 'add', id: data.id, target: element.id, points: [{ x: Number(data.x), y: Number(data.y) }], width: 1,
+  }, `Erased 1px on ${element.id}`];
   if (request) await callTool(...request).catch(() => {});
 });
 

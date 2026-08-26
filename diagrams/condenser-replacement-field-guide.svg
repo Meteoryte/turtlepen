@@ -88,37 +88,37 @@
 <path class="box" d="M20,940 H960 V1010 H20 Z" data-id="footer" style="fill:#e8edf0"/><text class="box-label" x="25" y="964" font-size="10" textLength="930" lengthAdjust="spacingAndGlyphs" xml:space="preserve">SPECIAL REFRIGERANT CHECK | When the equipment or refrigerant has flammability or other special handling requirements, identify that condition before work,</text><text class="box-label" x="25" y="979" font-size="10" textLength="924" lengthAdjust="spacingAndGlyphs" xml:space="preserve">control ignition sources, ventilate as required, and use listed compatible service equipment. Record final readings, charge basis, recovered/added weight,</text><text class="box-label" x="25" y="994" font-size="10" textLength="222" lengthAdjust="spacingAndGlyphs" xml:space="preserve">model/serial, and all P01-P20 images.</text>
 </g>
 <g data-element="flow-0-1">
-<g data-id="flow-0-1" data-kind="path" data-role="connector"><polyline points="292,212 292,237" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+<g data-id="flow-0-1" data-kind="path" data-role="connector"><polyline points="292,212 292,237" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/><path d="M290,235 L292.5,240 L295,235 Z" fill="#34444d" stroke="none"/></g>
 </g>
 <g data-element="flow-1-2">
-<g data-id="flow-1-2" data-kind="path" data-role="connector"><polyline points="292,312 292,337" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+<g data-id="flow-1-2" data-kind="path" data-role="connector"><polyline points="292,312 292,337" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/><path d="M290,335 L292.5,340 L295,335 Z" fill="#34444d" stroke="none"/></g>
 </g>
 <g data-element="flow-2-3">
-<g data-id="flow-2-3" data-kind="path" data-role="connector"><polyline points="292,412 292,437" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+<g data-id="flow-2-3" data-kind="path" data-role="connector"><polyline points="292,412 292,437" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/><path d="M290,435 L292.5,440 L295,435 Z" fill="#34444d" stroke="none"/></g>
 </g>
 <g data-element="flow-3-4">
-<g data-id="flow-3-4" data-kind="path" data-role="connector"><polyline points="292,512 292,537" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+<g data-id="flow-3-4" data-kind="path" data-role="connector"><polyline points="292,512 292,537" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/><path d="M290,535 L292.5,540 L295,535 Z" fill="#34444d" stroke="none"/></g>
 </g>
 <g data-element="flow-4-5">
-<g data-id="flow-4-5" data-kind="path" data-role="connector"><polyline points="292,612 292,637" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+<g data-id="flow-4-5" data-kind="path" data-role="connector"><polyline points="292,612 292,637" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/><path d="M290,635 L292.5,640 L295,635 Z" fill="#34444d" stroke="none"/></g>
 </g>
 <g data-element="flow-5-6">
-<g data-id="flow-5-6" data-kind="path" data-role="connector"><polyline points="292,712 292,737" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+<g data-id="flow-5-6" data-kind="path" data-role="connector"><polyline points="292,712 292,737" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/><path d="M290,735 L292.5,740 L295,735 Z" fill="#34444d" stroke="none"/></g>
 </g>
 <g data-element="flow-6-7">
-<g data-id="flow-6-7" data-kind="path" data-role="connector"><polyline points="292,812 292,837" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+<g data-id="flow-6-7" data-kind="path" data-role="connector"><polyline points="292,812 292,837" fill="none" stroke="#34444d" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/><path d="M290,835 L292.5,840 L295,835 Z" fill="#34444d" stroke="none"/></g>
 </g>
 <g data-element="hold-a-link">
-<g data-id="hold-a-link" data-kind="path" data-role="connector"><polyline points="562,277 617,277" fill="none" stroke="#a33e32" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+<g data-id="hold-a-link" data-kind="path" data-role="connector"><polyline points="562,277 617,277" fill="none" stroke="#a33e32" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/><path d="M615,275 L620,277.5 L615,280 Z" fill="#a33e32" stroke="none"/></g>
 </g>
 <g data-element="hold-b-link">
-<g data-id="hold-b-link" data-kind="path" data-role="connector"><polyline points="562,377 617,377" fill="none" stroke="#9a642e" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+<g data-id="hold-b-link" data-kind="path" data-role="connector"><polyline points="562,377 617,377" fill="none" stroke="#9a642e" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/><path d="M615,375 L620,377.5 L615,380 Z" fill="#9a642e" stroke="none"/></g>
 </g>
 <g data-element="hold-c-link">
-<g data-id="hold-c-link" data-kind="path" data-role="connector"><polyline points="562,677 617,677" fill="none" stroke="#9a642e" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+<g data-id="hold-c-link" data-kind="path" data-role="connector"><polyline points="562,677 617,677" fill="none" stroke="#9a642e" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/><path d="M615,675 L620,677.5 L615,680 Z" fill="#9a642e" stroke="none"/></g>
 </g>
 <g data-element="hold-d-link">
-<g data-id="hold-d-link" data-kind="path" data-role="connector"><polyline points="562,777 617,777" fill="none" stroke="#9a642e" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/></g>
+<g data-id="hold-d-link" data-kind="path" data-role="connector"><polyline points="562,777 617,777" fill="none" stroke="#9a642e" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/><path d="M615,775 L620,777.5 L615,780 Z" fill="#9a642e" stroke="none"/></g>
 </g>
 </g>
 </g></svg>

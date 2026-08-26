@@ -26,7 +26,7 @@ const SERVER = resolve(here, '../src/mcp/server.js');
 
 test('the tool module loads and every tool is well formed', () => {
   const tools = createTools(createSession());
-  assert.equal(tools.length, 47, `the documented tool count drifted: got ${tools.length}`);
+  assert.equal(tools.length, 52, `the documented tool count drifted: got ${tools.length}`);
   for (const t of tools) {
     assert.match(t.name, /^[a-z_]+$/, `bad tool name "${t.name}"`);
     assert.ok(t.description.length > 30, `${t.name} needs a real description`);
@@ -41,6 +41,31 @@ test('every core operation has a matching tool, so a plan can be built by hand',
   for (const op of Object.keys(core.OPERATIONS)) {
     assert.ok(names.has(op), `operation "${op}" has no tool of the same name`);
   }
+});
+
+test('runtime diagnostics report the one package version and live capability fingerprint', async () => {
+  const tools = createTools(createSession());
+  const info = JSON.parse(await tools.find((tool) => tool.name === 'runtime_info').handler({}));
+  assert.equal(info.version, '0.2.0');
+  assert.equal(info.schemaVersion, 2);
+  assert.equal(info.toolCount, tools.length);
+  assert.match(info.capabilityFingerprint, /^[0-9a-f]{16}$/);
+  assert.equal(info.activeDocument, null);
+});
+
+test('runtime schemas refuse unknown direct fields and name their exact location', () => {
+  const help = createTools(createSession()).find((tool) => tool.name === 'turtlepen_help');
+  assert.throws(() => help.handler({ surprise: true }), /turtlepen_help\.arguments\.surprise: is not allowed/);
+});
+
+test('plan validates nested operation arguments against the same tool schema', () => {
+  const session = createSession();
+  session.doc = core.createDocument({ name: 'nested-schema' });
+  const plan = createTools(session).find((tool) => tool.name === 'plan');
+  assert.throws(
+    () => plan.handler({ operations: [{ op: 'set_canvas', cols: 20, rows: 10, typo: true }] }),
+    /plan\.operations\[0\]\.typo: is not allowed/,
+  );
 });
 
 test('tools that need a document say so instead of throwing something cryptic', async () => {

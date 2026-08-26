@@ -11,7 +11,7 @@ import {
   PERCEPTUAL_CATEGORIES, PERCEPTUAL_SEVERITIES,
   normalizePerceptualFinding, attachPerceptualReview, verdicts, renderHash,
 } from '../src/core/perceptual.js';
-import { createDocument, placeBox, validate, renderSvg } from '../src/core/index.js';
+import { createDocument, placeBox, validate, renderSvg, serialize, deserialize, SCHEMA_VERSION } from '../src/core/index.js';
 
 const good = {
   id: 'p1',
@@ -129,4 +129,24 @@ test('every category and severity is usable', () => {
   for (const severity of PERCEPTUAL_SEVERITIES) {
     assert.doesNotThrow(() => normalizePerceptualFinding({ ...good, severity }));
   }
+});
+
+test('perceptual review survives a save/reopen round trip with its original timestamp', () => {
+  const doc = docWithSheep();
+  attachPerceptualReview(doc, { renderHash: 'render-123', reviewer: 'critic', findings: [good], note: 'first pass' });
+  const reviewedAt = doc.perceptual.reviewedAt;
+
+  const reopened = deserialize(serialize(doc));
+  assert.equal(reopened.schema, SCHEMA_VERSION);
+  assert.equal(reopened.perceptual.reviewedAt, reviewedAt);
+  assert.equal(reopened.perceptual.renderHash, 'render-123');
+  assert.deepEqual(reopened.perceptual.findings, doc.perceptual.findings);
+});
+
+test('schema 1 documents migrate to schema 2 and unknown future schemas are refused', () => {
+  const current = JSON.parse(serialize(docWithSheep()));
+  const migrated = deserialize({ ...current, schema: 1 });
+  assert.equal(migrated.schema, 2);
+  assert.match(serialize(migrated), /"schema": 2/);
+  assert.throws(() => deserialize({ ...current, schema: 999 }), /schema 999 is not supported/);
 });

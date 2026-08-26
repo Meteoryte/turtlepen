@@ -11,6 +11,8 @@ import { createHash } from 'node:crypto';
 import { readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import * as core from '../core/index.js';
+import { VERSION } from '../version.js';
+import { assertSchema } from './schema.js';
 
 const REQUIRE_DOC = 'no diagram is open — call new_diagram or open_diagram first';
 const HISTORY_SCHEMA = 1;
@@ -29,7 +31,7 @@ export function createSession({ cwd = process.cwd(), createdAt = null, historyLi
     throw new RangeError(`historyLimit must be a whole number from 1 to ${MAX_HISTORY_LIMIT} — got ${JSON.stringify(historyLimit)}`);
   }
   return {
-    doc: null, path: null, cwd, createdAt, historyLimit, progress: core.createProgressLog(),
+    doc: null, path: null, cwd, createdAt, startedAt: new Date().toISOString(), historyLimit, progress: core.createProgressLog(),
     history: [], future: [], historyNotice: 'no diagram is open',
   };
 }
@@ -38,6 +40,14 @@ const need = (s) => {
   if (!s.doc) throw new Error(REQUIRE_DOC);
   return s.doc;
 };
+
+const semanticProperties = () => ({
+  description: { type: 'string', minLength: 1, description: 'what this element or relationship means' },
+  technology: { type: 'string', minLength: 1, description: 'implementation or transport technology' },
+  tags: { type: 'array', items: { type: 'string', minLength: 1 }, description: 'semantic categories used for filtered views and styling' },
+  properties: { type: 'object', additionalProperties: { type: 'string' }, description: 'named model metadata' },
+  perspectives: { type: 'object', additionalProperties: { type: 'string' }, description: 'named concern overlays, e.g. security or ownership' },
+});
 
 /** Read and canonicalise an image relative to the active diagram. */
 async function readImage(session, source) {
@@ -214,6 +224,30 @@ export function createTools(session) {
         'Read this first. Returns the lattice constants, the Excel addressing scheme, the pen command grammar, the corner/alignment vocabulary, and the full collision rule table with severities. Everything needed to author a diagram correctly on the first attempt.',
       inputSchema: { type: 'object', properties: {}, additionalProperties: false },
       handler: () => [HELP, '', 'lattice:', json(core.latticeInfo(session.doc)), '', 'rules:', json(core.RULES)].join('\n'),
+    },
+
+    {
+      name: 'runtime_info',
+      description: 'Report the live TurtlePen runtime version, schema, tool inventory fingerprint, session start, and active document identity so a client can detect stale capabilities instead of guessing.',
+      inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+      handler: () => json({
+        version: VERSION,
+        schemaVersion: core.SCHEMA_VERSION,
+        toolCount: tools.length,
+        capabilityFingerprint: createHash('sha256')
+          .update(JSON.stringify(tools.map(({ name, inputSchema }) => ({ name, inputSchema }))))
+          .digest('hex')
+          .slice(0, 16),
+        startedAt: session.startedAt,
+        cwd: session.cwd,
+        activeDocument: session.doc
+          ? {
+            name: session.doc.name,
+            path: session.path,
+            hash: createHash('sha256').update(core.serialize(session.doc)).digest('hex').slice(0, 16),
+          }
+          : null,
+      }),
     },
 
     {
@@ -501,7 +535,10 @@ ${stalled}` : core.formatLog(result);
       handler: ({ page = null, maxCells = 90, withFindings = true }) => {
         const doc = need(session);
         const findings = withFindings ? core.validate(doc, { page }).open : null;
-        return core.renderAscii(doc, { page, maxCells, findings }).text;
+        const rendered = core.renderAscii(doc, { page, maxCells, findings }).text;
+        return core.microMasksOf(doc).length
+          ? `${rendered}\n\nnote: ${core.microMasksOf(doc).length} sub-quadrant micro-mask(s) are not represented in ASCII; inspect SVG for the presentation result.`
+          : rendered;
       },
     },
 
@@ -913,6 +950,108 @@ ${stalled}` : core.formatLog(result);
     },
 
     {
+      name: 'inspect_model',
+      description: 'Inspect semantic completeness separately from collision geometry. Reports missing node and relationship descriptions, missing relationship technology, disconnected nodes, broken endpoints, and connector paths that have no relationship model.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          minimum: { type: 'string', enum: ['error', 'warning', 'info'], description: 'lowest severity to include (default info)' },
+          format: { type: 'string', enum: ['log', 'json'] },
+        },
+        additionalProperties: false,
+      },
+      handler: ({ minimum = 'info', format = 'log' }) => {
+        const result = core.inspectModel(need(session), { minimum });
+        return format === 'json' ? json(result) : core.formatInspection(result);
+      },
+    },
+
+    {
+      name: 'connect',
+      description:
+        'Create a directed, semantic relationship from one node port to another. routing="direct" draws one exact ray; "orthogonal" emits and applies an inspectable simple route; "curved" starts at the source node and bends through one or more explicit via addresses before terminating at the target node. Geometry remains whole 5px quadrants.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          page: { type: 'string' },
+          from: { type: 'string', description: 'source node and cardinal port, e.g. api.E or api.S#2' },
+          to: { type: 'string', description: 'target node and cardinal port, e.g. db.W' },
+          routing: { type: 'string', enum: [...core.RELATIONSHIP_ROUTINGS] },
+          via: { type: 'array', items: { type: 'string' }, description: 'one or more explicit lattice addresses for curved routing' },
+          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' },
+          width: { type: 'integer', minimum: 1, maximum: 5 },
+          ...semanticProperties(),
+        },
+        required: ['id', 'from', 'to'],
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        const result = core.OPERATIONS.connect(need(session), args);
+        await persist(session);
+        return json({
+          id: result.path.id,
+          page: result.page,
+          quadrants: result.path.pieces.length,
+          relationship: result.relationship,
+          state: 'created; call validate and then render/inspect',
+        });
+      },
+    },
+
+    {
+      name: 'annotate',
+      description: 'Attach semantic model information to any existing node, relationship, text, image, or path without changing its geometry. Descriptions, technology, tags, properties, and perspectives persist in the document and are returned by describe.',
+      inputSchema: {
+        type: 'object',
+        properties: { id: { type: 'string' }, ...semanticProperties() },
+        required: ['id'],
+        additionalProperties: false,
+      },
+      handler: async ({ id, ...annotations }) => {
+        const element = core.OPERATIONS.annotate(need(session), { id, ...annotations });
+        await persist(session);
+        return json(describeElement(session.doc, element));
+      },
+    },
+
+    {
+      name: 'micro_mask',
+      description: 'Apply or remove a reversible 1-design-pixel eraser stroke on an artwork path or image. This changes SVG presentation and renderHash but never deletes 5px quadrant geometry or changes collision validation. Points are absolute integer pixels in the canonical SVG drawing coordinate system.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action: { type: 'string', enum: ['add', 'remove'] },
+          id: { type: 'string', description: 'stable mask id' },
+          target: { type: 'string', description: 'artwork path or image id; required for add' },
+          points: {
+            type: 'array', minItems: 1, description: 'ordered design-pixel points; required for add',
+            items: {
+              type: 'object',
+              properties: { x: { type: 'integer', minimum: 0 }, y: { type: 'integer', minimum: 0 } },
+              required: ['x', 'y'],
+              additionalProperties: false,
+            },
+          },
+          width: { type: 'integer', enum: [1], description: 'v1 is exactly one design pixel' },
+          cap: { type: 'string', enum: ['square', 'round'] },
+        },
+        required: ['action', 'id'],
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        if (args.action === 'add' && (!args.target || !args.points)) {
+          throw new SyntaxError('micro_mask add needs target and points');
+        }
+        const result = core.OPERATIONS.micro_mask(need(session), args);
+        await persist(session);
+        return args.action === 'remove'
+          ? `removed micro-mask "${args.id}"; structural geometry was unchanged`
+          : json({ ...result, note: 'presentation-only; ASCII and structural collision geometry remain unmasked' });
+      },
+    },
+
+    {
       name: 'stroke_text',
       description:
         'Draw words as INK, in TurtleFont — quadrants on the lattice, not an SVG text run. Use it for '
@@ -1167,7 +1306,7 @@ ${stalled}` : core.formatLog(result);
         properties: {
           operations: {
             type: 'array',
-            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image place_reference pen extend_path replace_path resize restyle move rename remove set_canvas accept_finding unaccept_finding group constraint. Args match the same-named tool, including pen role/color/width/cap.',
+            description: 'ordered operations, each { "op": "<name>", ...args }. Names include add_page/update_page/remove_page, place_box/place_image/place_reference, pen/connect/annotate/micro_mask, extend_path/replace_path, resize/restyle/move/rename/remove, set_canvas, finding review, groups, and constraints. Args match the same-named tool.',
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
@@ -1768,9 +1907,26 @@ ${r.program}`;
     },
   ];
 
-  return tools.map((tool) => (MUTATING_TOOLS.has(tool.name)
-    ? { ...tool, handler: (args) => withHistory(session, tool.name, args, tool.handler) }
-    : tool));
+  const byName = new Map(tools.map((tool) => [tool.name, tool]));
+  return tools.map((tool) => ({
+    ...tool,
+    handler: (supplied = {}) => {
+      assertSchema(tool.inputSchema, supplied, `${tool.name}.arguments`);
+      if (tool.name === 'plan') {
+        supplied.operations.forEach((operation, index) => {
+          const nested = byName.get(operation?.op);
+          if (!nested || !MUTATING_TOOLS.has(operation.op) || operation.op === 'plan') {
+            throw new SyntaxError(`plan.operations[${index}].op: unknown operation ${JSON.stringify(operation?.op)}`);
+          }
+          const { op: _op, ...args } = operation;
+          assertSchema(nested.inputSchema, args, `plan.operations[${index}]`);
+        });
+      }
+      return MUTATING_TOOLS.has(tool.name)
+        ? withHistory(session, tool.name, supplied, tool.handler)
+        : tool.handler(supplied);
+    },
+  }));
 }
 
 /** Element geometry plus, for anything carrying a label, its live fit status —
@@ -1785,6 +1941,13 @@ function describeElement(doc, el) {
       to: core.address.quadToAddress(el.pieces.at(-1).x, el.pieces.at(-1).y),
       end: el.end ? { at: core.address.quadToAddress(el.end.x, el.end.y), facing: el.end.facing } : null,
       pieces: countBy(el.pieces.map((p) => p.type)),
+      relationship: el.relationship ?? null,
+      description: el.description ?? null,
+      technology: el.technology ?? null,
+      tags: el.tags ?? [],
+      properties: el.properties ?? {},
+      perspectives: el.perspectives ?? {},
+      microMasks: core.microMasksOf(doc).filter((mask) => mask.target === el.id),
       groups: core.groupsOf(doc).filter((group) => group.members.includes(el.id)).map((group) => group.id),
       constraints: constraintRefs(doc, el.id),
     };
@@ -1797,6 +1960,12 @@ function describeElement(doc, el) {
     at: core.address.quadToAddress(el.rect.x, el.rect.y),
     cells: { w: el.rect.w / 2, h: el.rect.h / 2 },
     label: content,
+    description: el.description ?? null,
+    technology: el.technology ?? null,
+    tags: el.tags ?? [],
+    properties: el.properties ?? {},
+    perspectives: el.perspectives ?? {},
+    microMasks: core.microMasksOf(doc).filter((mask) => mask.target === el.id),
     corner: el.corner,
     fontSize: el.fontSize,
     fit: fit ? { fits: fit.fits, charsPerLine: fit.charsPerLine, lines: fit.lineCount, visibleLines: fit.visibleLines } : null,
@@ -2095,6 +2264,27 @@ GROUPS AND FOLLOW RELATIONSHIPS
   An element belongs to at most one group. A dependent has at most one parent;
   chains cascade and cycles are refused. Named and indexed anchors work, offsets
   are whole quadrants, and describe reports groups plus relationship sync state.
+
+SEMANTIC MODEL AND NODE CONNECTIONS
+  annotate { id, description, technology, tags, properties, perspectives }
+  connect { id, from: "api.E", to: "db.W", routing: "direct" }
+  connect { id, from: "api.E", to: "db.W", routing: "curved",
+            via: ["K5.q1"] }
+  inspect_model                                report incomplete model meaning
+
+  connect always begins and ends at named node ports. Direct is one exact ray;
+  orthogonal applies an inspectable simple route; curved rasterizes through one
+  or more explicit whole-quadrant waypoints. Meaning and routing persist, and
+  describe returns both. Semantic inspection is separate from collision
+  validation, so missing metadata can never masquerade as broken geometry.
+
+1PX ERASER / MICRO-MASK
+  micro_mask { action: "add", id, target, points: [{x,y}], width: 1 }
+  micro_mask { action: "remove", id }
+
+  One design pixel is one integer SVG-viewBox pixel. The mask changes SVG and
+  renderHash, but NEVER cuts the target's 5px quadrant footprint. V1 supports
+  artwork paths and images only. ASCII states that masks are not represented.
 
 PEN GRAMMAR
   pen from <id>.<N|S|E|W>                      START HERE for connectors: seats

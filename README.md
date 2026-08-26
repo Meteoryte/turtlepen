@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 568 tests green, zero runtime dependencies, 47 MCP tools.
+Status: **prototype** — 588 tests green, zero runtime dependencies, 52 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -264,6 +264,38 @@ relationships survive save/open. Moving, resizing, or redrawing a target moves
 its dependents. Manually moving a dependent authors a new offset. `describe`
 reports both sides and whether stored and actual offsets are synchronized.
 
+### Semantic node relationships
+
+`connect` makes an edge a model fact as well as exact ink. It starts and ends
+at named node ports and records routing, description, technology, tags,
+properties, and perspectives:
+
+```json
+{ "id": "api-to-db", "from": "api.E", "to": "db.W",
+  "routing": "curved", "via": ["K5.q1"],
+  "description": "queries customer records", "technology": "SQL/TCP" }
+```
+
+`direct` is one exact ray, `orthogonal` uses the inspectable simple router, and
+`curved` rasterizes through explicit lattice waypoints. A curve with no waypoint
+is refused instead of inventing a design decision. `annotate` adds model fields
+to existing elements; `inspect_model` independently reports semantic omissions,
+disconnected nodes, and broken relationship references.
+
+### Reversible 1px eraser
+
+`micro_mask` is a presentation-only eraser for artwork paths and images. One
+design pixel means one integer pixel in the canonical SVG coordinate system:
+
+```json
+{ "action": "add", "id": "cleanup-1", "target": "ink",
+  "points": [{ "x": 25, "y": 70 }], "width": 1 }
+```
+
+It changes SVG and `renderHash`, but never cuts the target's 5px quadrant
+footprint. Save/open, plan, history, viewer restore, and target movement preserve
+the mask. Remove it with `micro_mask { "action": "remove", "id": "cleanup-1" }`.
+
 > **Corner anchors are bounding-box corners.** On a rectangle that is what you
 > want. On an ellipse or any organic shape, `SW` is the corner of the box around
 > it, which is empty space — anchoring feet there puts them off the body. Use
@@ -495,7 +527,7 @@ There is nothing to install first: no runtime dependencies, Node 20 or newer.
 Clone it, point the config at `src/mcp/server.js`, and run `pnpm test` once to
 confirm the clone is sound.
 
-35 tools. Call `turtlepen_help` first — it returns the grammar, the lattice
+52 tools. Call `turtlepen_help` first — it returns the grammar, the lattice
 constants, the rule table, and the fix→tool map.
 
 The maintained [endpoint and use-case coverage matrix](docs/endpoint-use-case-coverage.md)
@@ -531,10 +563,11 @@ inflating effective ink, and record source plus run hashes in the
 
 | Group | Tools |
 |---|---|
-| orient | `turtlepen_help` `describe` `ascii` `free_space` `history` |
-| author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `plan` `group` `constraint` |
-| check | `validate` `accept_finding` `unaccept_finding` |
+| orient | `turtlepen_help` `runtime_info` `describe` `ascii` `free_space` `history` |
+| author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `connect` `annotate` `plan` `group` `constraint` |
+| check | `validate` `inspect_model` `perceptual_review` `accept_finding` `unaccept_finding` |
 | repair | `resize` `restyle` `move` `rename` `update_page` `set_canvas` `extend_path` `replace_path` `remove` |
+| fidelity | `micro_mask` `stroke_text` `stroke_label` `glyph` `font_coverage` |
 | compose | `wireframe` `perspective_scene` `export_prompt` |
 | image | `measure_image` `place_image` `place_reference` |
 | output | `render` `save` |

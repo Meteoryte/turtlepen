@@ -205,7 +205,12 @@ export function validate(doc, { page = null } = {}) {
 
   const summary = { S0: 0, S1: 0, S2: 0, S3: 0, total: open.length, accepted: acknowledged.length, stale: stale.length };
   for (const f of open) summary[f.severity]++;
-  summary.clean = summary.S0 === 0 && summary.S1 === 0;
+  summary.clean = summary.S0 === 0 && summary.S1 === 0 && summary.S2 === 0;
+  summary.state = summary.S0 || summary.S1
+    ? 'blocking-errors'
+    : summary.S2
+      ? 'needs-decisions'
+      : 'structurally-clear';
 
   return { open, accepted: acknowledged, staleAcceptances: stale, summary };
 }
@@ -771,7 +776,9 @@ export function formatLog(result, { showAccepted = true, showFixes = true } = {}
       `(${s.S0} critical, ${s.S1} error, ${s.S2} warn, ${s.S3} info)` +
       `${s.accepted ? `, ${s.accepted} accepted` : ''}${s.stale ? `, ${s.stale} stale acceptance(s)` : ''}`,
   );
-  lines.push(s.clean ? '  status: CLEAN — no critical or error findings' : '  status: NOT CLEAN');
+  lines.push(s.clean
+    ? '  status: CLEAN — STRUCTURALLY CLEAR; no unresolved critical, error, or decision findings'
+    : `  status: NOT CLEAN — ${s.state === 'needs-decisions' ? 'NEEDS DECISIONS' : 'BLOCKING ERRORS'}`);
   lines.push('');
 
   for (const f of result.open) {

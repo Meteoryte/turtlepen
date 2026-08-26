@@ -94,6 +94,9 @@ legal. Record what you saw with `perceptual_review`.
 |---|---|
 | a finding names a fix and you want it applied | `repair { fingerprint }` — lists which fixes are one call away |
 | you need a connector and do not want to work out the geometry | `route { from: "a.S", to: "b.N" }` — returns a pen program, changes nothing |
+| you need a modelled direct, orthogonal, or node-attached curved edge | `connect { id, from: "a.E", to: "b.W", routing: "curved", via: ["K5.q1"] }` |
+| the AI needs element purpose and ownership | `annotate { id, description, technology, tags, properties, perspectives }`, then `inspect_model` |
+| artwork needs one-pixel cleanup without changing collision geometry | `micro_mask { action: "add", id, target, points: [{x,y}], width: 1 }` |
 | you have a Mermaid flowchart already | `import_mermaid { source }` — returns operations for `plan` |
 | you want to see the actual quadrants, cheaply | `ascii` |
 | "is there room here?" | `free_space { cellsW, cellsH }` |

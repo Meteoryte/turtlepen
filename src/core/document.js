@@ -12,13 +12,14 @@
  * Within a single page, overlap is always an error regardless of intent.
  */
 
-import { rect, rectsOverlap, boundsOf } from './geometry.js';
+import { rect, rectsOverlap, boundsOf, PX_PER_QUAD } from './geometry.js';
 import { claimedQuads, visualQuads, containerClaimQuads, isContainer, assertCornerStyle, assertNodeShape, parsePortSpec, portPoint } from './shapes.js';
 import { DEFAULT_FONT, resolveFontSize } from './text.js';
 import { normalizeTone, normalizeFeather, normalizeTexture } from './tone.js';
 import { normalizePattern } from './pattern.js';
 import { assertEmbeddedSource, assertMode as assertImageMode, scaleReport } from './image.js';
 import { analyseRuns, SIMPLIFY_DETAILS, SIMPLIFY_SUPERSAMPLES } from './dither.js';
+import { restorePerceptualReview } from './perceptual.js';
 
 // `schematic` stacks exactly like `exclusive`; it exists to carry authorial meaning —
 // "this page is deliberately spare" — which the composition rules read and skip.
@@ -27,7 +28,7 @@ export const PATH_ROLES = Object.freeze(['connector', 'artwork']);
 export const PATH_PAINTS = Object.freeze(['line', 'cells']);
 export const TEXT_ALIGNS = Object.freeze(['left', 'center', 'right']);
 export const IMAGE_FITS = Object.freeze(['contain', 'cover']);
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 export function createDocument({ name = 'untitled', canvas = { cols: 160, rows: 100 }, font = {} } = {}) {
   const doc = {
@@ -43,6 +44,7 @@ export function createDocument({ name = 'untitled', canvas = { cols: 160, rows: 
     elements: {},
     groups: [],
     constraints: [],
+    microMasks: [],
     acceptances: [],
     createdAt: new Date().toISOString(),
   };
@@ -236,6 +238,7 @@ export function removePage(doc, id) {
   delete doc.elements[id];
   for (const group of groupsOf(doc)) group.members = group.members.filter((member) => !removedIds.has(member));
   doc.constraints = constraintsOf(doc).filter((constraint) => !removedIds.has(constraint.dependent) && !removedIds.has(constraint.target));
+  doc.microMasks = microMasksOf(doc).filter((mask) => !removedIds.has(mask.target));
   return page;
 }
 
@@ -256,6 +259,16 @@ export function renameElement(doc, id, newId) {
     if (constraint.dependent === id) constraint.dependent = newId;
     if (constraint.target === id) constraint.target = newId;
   }
+  for (const elements of Object.values(doc.elements)) {
+    for (const element of elements) {
+      if (element.kind !== 'path') continue;
+      if (element.source?.id === id) element.source.id = newId;
+      for (const target of element.targets ?? []) if (target.id === id) target.id = newId;
+      if (element.relationship?.from?.id === id) element.relationship.from.id = newId;
+      if (element.relationship?.to?.id === id) element.relationship.to.id = newId;
+    }
+  }
+  for (const mask of microMasksOf(doc)) if (mask.target === id) mask.target = newId;
   return found.element;
 }
 
@@ -394,7 +407,46 @@ export function removeElement(doc, id, pageId = null) {
   list.splice(list.findIndex((e) => e.id === id), 1);
   for (const group of groupsOf(doc)) group.members = group.members.filter((member) => member !== id);
   doc.constraints = constraintsOf(doc).filter((constraint) => constraint.dependent !== id && constraint.target !== id);
+  doc.microMasks = microMasksOf(doc).filter((mask) => mask.target !== id);
   return found;
+}
+
+// ---------------------------------------------------------------------------
+// Presentation micro-masks — sub-quadrant erasing without geometry surgery.
+// ---------------------------------------------------------------------------
+
+export function microMasksOf(doc) {
+  if (!Array.isArray(doc.microMasks)) doc.microMasks = [];
+  return doc.microMasks;
+}
+
+export function addMicroMask(doc, { id, target, points, width = 1, cap = 'square' }) {
+  if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) throw new SyntaxError(`micro-mask id "${id}" must be alphanumeric with dashes or underscores`);
+  if (microMasksOf(doc).some((mask) => mask.id === id)) throw new Error(`micro-mask "${id}" already exists`);
+  const found = findElement(doc, target);
+  if (!found) throw new Error(`micro-mask target "${target}" does not exist`);
+  const supported = found.element.kind === 'image' || (found.element.kind === 'path' && found.element.role === 'artwork');
+  if (!supported) {
+    throw new Error('1px micro-masks currently support artwork paths and images only; connectors, boxes, and text retain their semantic marks');
+  }
+  if (width !== 1) throw new RangeError(`micro-mask v1 is exactly 1 design pixel wide — got ${width}`);
+  if (!['square', 'round'].includes(cap)) throw new SyntaxError(`micro-mask cap must be square or round — got ${JSON.stringify(cap)}`);
+  if (!Array.isArray(points) || !points.length) throw new RangeError('micro-mask needs at least one design-pixel point');
+  const normalized = points.map((point, index) => {
+    if (!Number.isInteger(point?.x) || !Number.isInteger(point?.y) || point.x < 0 || point.y < 0) {
+      throw new RangeError(`micro-mask point ${index} needs non-negative integer design pixels — got ${JSON.stringify(point)}`);
+    }
+    return { x: point.x, y: point.y };
+  });
+  const mask = { id, target, page: found.page, points: normalized, width, cap };
+  microMasksOf(doc).push(mask);
+  return mask;
+}
+
+export function removeMicroMask(doc, id) {
+  const index = microMasksOf(doc).findIndex((mask) => mask.id === id);
+  if (index < 0) throw new Error(`no micro-mask "${id}"`);
+  return microMasksOf(doc).splice(index, 1)[0];
 }
 
 export function moveElement(doc, id, dx, dy, pageId = null) {
@@ -404,6 +456,7 @@ export function moveElement(doc, id, dx, dy, pageId = null) {
   const found = findElement(doc, id, pageId);
   if (!found) throw new Error(`no element "${id}" to move`);
   moveElementRaw(found.element, dx, dy);
+  moveMicroMasksRaw(doc, id, dx, dy);
   reconcileMovedElements(doc, new Set([id]));
   return found;
 }
@@ -430,6 +483,7 @@ export function moveElementToPage(doc, id, toPage) {
   const from = doc.elements[found.page];
   from.splice(from.indexOf(found.element), 1);
   (doc.elements[toPage] ??= []).push(found.element);
+  for (const mask of microMasksOf(doc).filter((entry) => entry.target === id)) mask.page = toPage;
   reconcileMovedElements(doc, new Set([id]));
   return { element: found.element, page: toPage };
 }
@@ -529,7 +583,10 @@ export function moveGroup(doc, id, dx, dy) {
     if (!found) throw new Error(`group "${id}" refers to missing element "${member}"`);
     return found;
   });
-  for (const { element } of members) moveElementRaw(element, dx, dy);
+  for (const { element } of members) {
+    moveElementRaw(element, dx, dy);
+    moveMicroMasksRaw(doc, element.id, dx, dy);
+  }
   reconcileMovedElements(doc, new Set(members.map(({ element }) => element.id)));
   return group;
 }
@@ -571,7 +628,10 @@ function syncConstraintRaw(doc, constraint) {
   const target = elementAnchor(doc, constraint.target, constraint.targetAnchor);
   const dx = target.x + constraint.offset.x - dependent.x;
   const dy = target.y + constraint.offset.y - dependent.y;
-  if (dx || dy) moveElementRaw(findElement(doc, constraint.dependent).element, dx, dy);
+  if (dx || dy) {
+    moveElementRaw(findElement(doc, constraint.dependent).element, dx, dy);
+    moveMicroMasksRaw(doc, constraint.dependent, dx, dy);
+  }
 }
 
 function propagateConstraints(doc, roots, alreadyMoved = new Set()) {
@@ -805,12 +865,14 @@ export function serialize(doc) {
       ...(constraintsOf(doc).length ? {
         constraints: [...constraintsOf(doc)].sort((a, b) => a.id.localeCompare(b.id)),
       } : {}),
+      ...(microMasksOf(doc).length ? { microMasks: microMasksOf(doc) } : {}),
       acceptances: [...doc.acceptances].sort((a, b) => a.fingerprint.localeCompare(b.fingerprint)),
       // Composition source is operational data, not a renderer cache. Tools
       // such as export_prompt need it after the document is reopened, and the
       // perspective receipt is the only durable record of real-world inputs.
       ...(doc.wireframe ? { wireframe: doc.wireframe } : {}),
       ...(doc.perspective_scene ? { perspective_scene: doc.perspective_scene } : {}),
+      ...(doc.perceptual ? { perceptual: doc.perceptual } : {}),
       // Present only when the adjudication gate was overridden. Its absence is
       // the normal case and says the document was written clean.
       ...(doc.forcedSave ? { forcedSave: doc.forcedSave } : {}),
@@ -821,14 +883,17 @@ export function serialize(doc) {
 }
 
 export function deserialize(json) {
-  const raw = typeof json === 'string' ? JSON.parse(json) : json;
-  if (raw.schema !== SCHEMA_VERSION) {
-    throw new Error(`document schema ${raw.schema} is not supported by this build (expected ${SCHEMA_VERSION})`);
+  const parsed = typeof json === 'string' ? JSON.parse(json) : json;
+  if (![1, SCHEMA_VERSION].includes(parsed.schema)) {
+    throw new Error(`document schema ${parsed.schema} is not supported by this build (expected 1 or ${SCHEMA_VERSION})`);
   }
+  // Schema 2 adds durable perceptual review state. Schema 1 needs no geometry
+  // rewrite, so migration is explicit and lossless.
+  const raw = parsed.schema === 1 ? { ...parsed, schema: SCHEMA_VERSION } : parsed;
   if (raw.groups != null && !Array.isArray(raw.groups)) throw new TypeError('document groups must be an array');
   if (raw.constraints != null && !Array.isArray(raw.constraints)) throw new TypeError('document constraints must be an array');
   const doc = {
-    schema: raw.schema,
+    schema: SCHEMA_VERSION,
     name: raw.name,
     canvas: raw.canvas,
     // Absent means the palette, which is what every document written before
@@ -844,6 +909,7 @@ export function deserialize(json) {
       targetAnchor: constraint.targetAnchor ?? 'C',
       offset: { ...constraint.offset },
     })),
+    microMasks: [],
     acceptances: raw.acceptances ?? [],
     createdAt: raw.createdAt,
     ...(raw.wireframe ? { wireframe: raw.wireframe } : {}),
@@ -853,6 +919,7 @@ export function deserialize(json) {
   for (const [page, elements] of Object.entries(doc.elements ?? {})) {
     if (!Array.isArray(elements)) throw new TypeError(`document elements for page "${page}" must be an array`);
     for (const element of elements) {
+      validateLoadedSemantics(element);
       if (element?.kind !== 'image') continue;
       assertImageMode(element.mode ?? 'embed');
       assertImageFit(element.fit ?? 'contain');
@@ -892,5 +959,58 @@ export function deserialize(json) {
       }
     }
   }
+  if (raw.microMasks != null && !Array.isArray(raw.microMasks)) throw new TypeError('document microMasks must be an array');
+  for (const mask of raw.microMasks ?? []) addMicroMask(doc, mask);
+  if (raw.perceptual) restorePerceptualReview(doc, raw.perceptual);
   return validateLoadedRelationships(doc);
+}
+
+function validateLoadedSemantics(element) {
+  for (const key of ['description', 'technology']) {
+    if (element?.[key] != null && (typeof element[key] !== 'string' || !element[key].trim())) {
+      throw new TypeError(`element "${element?.id ?? '(unknown)'}" ${key} must be a non-empty string`);
+    }
+  }
+  if (element?.tags != null) {
+    if (!Array.isArray(element.tags) || element.tags.some((tag) => typeof tag !== 'string' || !tag.trim())) {
+      throw new TypeError(`element "${element?.id ?? '(unknown)'}" tags must be non-empty strings`);
+    }
+    if (new Set(element.tags).size !== element.tags.length) throw new Error(`element "${element.id}" tags contain a duplicate`);
+  }
+  for (const key of ['properties', 'perspectives']) {
+    const map = element?.[key];
+    if (map == null) continue;
+    if (!map || typeof map !== 'object' || Array.isArray(map)
+        || Object.entries(map).some(([name, value]) => !name.trim() || typeof value !== 'string')) {
+      throw new TypeError(`element "${element?.id ?? '(unknown)'}" ${key} must map non-empty names to strings`);
+    }
+  }
+  if (element?.relationship != null) {
+    if (element.kind !== 'path') throw new TypeError(`element "${element.id}" carries relationship topology but is not a path`);
+    const relationship = element.relationship;
+    if (!relationship || typeof relationship !== 'object' || Array.isArray(relationship)) {
+      throw new TypeError(`relationship "${element.id}" must be an object`);
+    }
+    for (const endpoint of ['from', 'to']) {
+      if (!relationship[endpoint]?.id || !relationship[endpoint]?.port) {
+        throw new TypeError(`relationship "${element.id}" needs ${endpoint}.id and ${endpoint}.port`);
+      }
+      parsePortSpec(relationship[endpoint].port);
+    }
+    if (!['direct', 'orthogonal', 'curved', 'manual'].includes(relationship.routing)) {
+      throw new SyntaxError(`relationship "${element.id}" has unknown routing ${JSON.stringify(relationship.routing)}`);
+    }
+    if (!Array.isArray(relationship.via) || relationship.via.some((entry) => typeof entry !== 'string')) {
+      throw new TypeError(`relationship "${element.id}" via must be an array of addresses`);
+    }
+  }
+}
+
+function moveMicroMasksRaw(doc, target, dx, dy) {
+  for (const mask of microMasksOf(doc).filter((entry) => entry.target === target)) {
+    for (const point of mask.points) {
+      point.x += dx * PX_PER_QUAD;
+      point.y += dy * PX_PER_QUAD;
+    }
+  }
 }

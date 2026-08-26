@@ -322,6 +322,7 @@ test('every browser-authorized tool completes through the WebSocket editor', asy
   });
   await invoke('move', { id: 'unit', cellsX: 1, cellsY: 1 });
   await invoke('extend_path', { id: 'run', program: 'right 2 line' });
+  await invoke('micro_mask', { action: 'add', id: 'run-mask', target: 'run', points: [{ x: 22, y: 141 }] });
   await invoke('replace_path', { id: 'run', program: 'pen C18.q1\nright 4 line' });
 
   const finding = latest.findings[0];

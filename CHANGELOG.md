@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased — 2026-08-26
+
+- Schema 2 persists perceptual review and migrates schema-1 documents.
+- Validation distinguishes blocking errors, unresolved S2 decisions, and
+  structural clearance; the viewer separately reports perceptual readiness.
+- Runtime JSON-schema enforcement covers direct calls and nested plan
+  operations. `runtime_info` identifies the running build and active document.
+- `connect` adds semantic direct, orthogonal, and node-attached curved
+  relationships through explicit lattice waypoints. `annotate` and
+  `inspect_model` add model metadata, perspectives, and completeness checks.
+- `micro_mask` adds a reversible 1-design-pixel eraser for artwork paths and
+  images without changing structural footprints.
+- 588 tests and 52 MCP tools are covered through core, real stdio, and
+  WebSocket endpoint contracts.
+
 ## 0.2.0 — 2026-08-18
 
 Flowchart support, the perceptual half of quality, and the loop repairs a weaker

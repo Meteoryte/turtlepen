@@ -63,6 +63,7 @@ function publicElement(doc, element, page) {
     id: element.id,
     page,
     kind: element.kind,
+    role: element.role ?? (element.kind === 'path' ? 'connector' : null),
     at: bounds ? core.address.quadToAddress(bounds.x, bounds.y) : null,
     bounds,
     cells: bounds ? { w: bounds.w / 2, h: bounds.h / 2 } : null,
@@ -78,6 +79,13 @@ function publicElement(doc, element, page) {
     scale: element.scale ?? null,
     ditherStats: element.ditherStats ?? null,
     processing: element.processing ?? null,
+    relationship: element.relationship ?? null,
+    description: element.description ?? null,
+    technology: element.technology ?? null,
+    tags: element.tags ?? [],
+    properties: element.properties ?? {},
+    perspectives: element.perspectives ?? {},
+    microMasks: core.microMasksOf(doc).filter((mask) => mask.target === element.id),
     groups: core.groupsOf(doc).filter((group) => group.members.includes(element.id)).map((group) => group.id),
     follows: core.constraintsOf(doc).filter((constraint) => constraint.dependent === element.id).map((constraint) => constraint.id),
     followedBy: core.constraintsOf(doc).filter((constraint) => constraint.target === element.id).map((constraint) => constraint.id),
@@ -119,6 +127,20 @@ async function state(since = null) {
 
   const doc = session.doc;
   const validation = core.validate(doc);
+  const svg = core.renderSvg(doc, { findings: validation.open, showGrid: true });
+  const quality = core.perceptualVerdicts(doc, {
+    structural: validation,
+    currentRenderHash: core.renderHash(svg),
+  });
+  const readiness = validation.summary.state !== 'structurally-clear'
+    ? validation.summary.state
+    : !quality.perceptual.reviewed
+      ? 'review-missing'
+      : quality.perceptual.stale
+        ? 'review-stale'
+        : quality.perceptual.blocking
+          ? 'perceptual-blockers'
+          : 'publishable';
   return {
     ok: true,
     path: DOC_PATH,
@@ -139,11 +161,13 @@ async function state(since = null) {
     },
     lattice: core.latticeInfo(doc),
     summary: validation.summary,
+    quality,
+    readiness,
     findings: validation.open,
     accepted: validation.accepted,
     stale: validation.staleAcceptances,
     ascii: core.renderAscii(doc, { findings: validation.open }).text,
-    svg: core.renderSvg(doc, { findings: validation.open, showGrid: true }),
+    svg,
   };
 }
 

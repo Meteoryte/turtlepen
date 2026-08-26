@@ -28,9 +28,13 @@ test('every advertised MCP tool completes a representative use case over stdio',
   try {
     const initialized = await client.init();
     assert.equal(initialized.result.serverInfo.name, 'turtlepen');
+    assert.equal(initialized.result.serverInfo.version, '0.2.0');
     assert.equal(initialized.result.protocolVersion, '2025-06-18');
 
     await invoke('turtlepen_help');
+    const runtime = JSON.parse(await invoke('runtime_info'));
+    assert.equal(runtime.version, '0.2.0');
+    assert.equal(runtime.toolCount, advertised.length);
     await invoke('measure', { text: 'Outdoor condensing unit', fontSize: 10, maxWidthCells: 12 });
     await invoke('new_diagram', { name: 'endpoint matrix', path: 'endpoint.turtlepen.json', cols: 80, rows: 50 });
 
@@ -39,11 +43,21 @@ test('every advertised MCP tool completes a representative use case over stdio',
     await invoke('place_box', { id: 'unit', at: 'C4.tl', span: { w: 6, h: 3 }, label: 'Condenser' });
     await invoke('place_box', { id: 'tag', at: 'M4.tl', span: { w: 4, h: 2 }, label: 'Disconnect' });
     await invoke('place_box', { id: 'overlap', at: 'F4.tl', span: { w: 6, h: 3 }, label: 'Conflict' });
+    await invoke('annotate', {
+      id: 'unit', description: 'rejects heat outdoors', technology: 'refrigerant circuit',
+      tags: ['equipment'], properties: { owner: 'facilities' }, perspectives: { service: 'field maintained' },
+    });
+    await invoke('connect', {
+      id: 'unit-tag', from: 'unit.N', to: 'tag.N', routing: 'curved', via: ['J2.q1'],
+      description: 'control relationship', tags: ['control'],
+    });
+    assert.match(await invoke('inspect_model', { minimum: 'warning' }), /MODEL INCOMPLETE|MODEL ERRORS/);
     // Layout operations: the arithmetic every diagram in this repo used to do
     // by hand, done once and named.
     await invoke('align', { ids: ['unit', 'tag'], edge: 'top' });
     await invoke('distribute', { ids: ['unit', 'overlap', 'tag'], axis: 'horizontal' });
     await invoke('pen', { id: 'run', role: 'artwork', program: 'pen C15.q1\nright 4 line' });
+    await invoke('micro_mask', { action: 'add', id: 'run-cleanup', target: 'run', points: [{ x: 22, y: 141 }] });
 
     const image = pngDataUri(20, 10);
     const measurement = JSON.parse(await invoke('measure_image', { source: image, maxWidthCells: 4 }));

@@ -1,15 +1,15 @@
 # TurtlePen — status
 
-**As of 2026-08-17.** Prototype, working end to end, 318/318 tests green,
+**As of 2026-08-26.** Prototype, working end to end, 588/588 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **318/318 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **588/588 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
-- **Every external surface has a drift-proof contract.** All 35 MCP tools
+- **Every external surface has a drift-proof contract.** All 52 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC
   method and notification path is asserted; all public viewer routes are tested
   with GET, HEAD, method refusal, and security headers; and every browser-authorized
@@ -17,6 +17,19 @@ Verified by running it, not by inspection:
   close, masking, UTF-8, fragmentation, binary and reserved frames, control sizes,
   and the 64 KiB limit. The executable map is
   `docs/endpoint-use-case-coverage.md`.
+- **Runtime and persistence truth are explicit.** Schema-1 documents migrate to
+  schema 2; perceptual review survives save/open; direct and nested-plan calls
+  are validated against the same schemas; `runtime_info` reports version,
+  schema, tool count, capability fingerprint, session start, and document hash.
+- **Architecture meaning is first-class.** `connect` authors direct,
+  orthogonal, or node-attached curved relationships between named ports;
+  `annotate` persists descriptions, technology, tags, properties, and
+  perspectives; `inspect_model` reports semantic incompleteness independently
+  of collision geometry.
+- **The 1px eraser is reversible presentation state.** `micro_mask` applies to
+  artwork paths and images, persists through plan/history/save/viewer flows,
+  moves with its target, changes SVG/render hash, and leaves structural
+  validation byte-identical.
 - **TurtlePen has produced a field work product, not only test fixtures.**
   `pnpm run field-guide` authors a complete condenser replacement workflow over
   the real MCP stdio transport, rehearses 27 operations, commits atomically,
@@ -130,7 +143,7 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (35 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (52 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
 - **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),

@@ -22,8 +22,11 @@ import * as tone_ from './tone.js';
 import * as pattern_ from './pattern.js';
 import * as wireframe_ from './wireframe.js';
 import * as perspective_ from './perspective.js';
+import { OPPOSITE } from './geometry.js';
+import { approachPoint, parsePortSpec } from './shapes.js';
+import { rayQuads, curveQuads } from './raster.js';
 
-import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
+import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, microMasksOf, addMicroMask, removeMicroMask, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, SCHEMA_VERSION, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
 import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL } from './collide.js';
 import { renderAscii } from './ascii.js';
@@ -34,6 +37,7 @@ import { layoutGraph } from './layout.js';
 import * as turtlefont from './turtlefont.js';
 export { turtlefont };
 import { routeProgram as routeProgram_ } from './route.js';
+export { inspectModel, formatInspection, INSPECTION_RULES, INSPECTION_SEVERITIES } from './inspect.js';
 export { mermaidToOperations, parseMermaid } from './mermaid.js';
 
 // Perceptual review is a sibling of validate, not a part of it: same document,
@@ -44,7 +48,7 @@ export { repairPlan, applyFix } from './repair.js';
 export { createProgressLog, recordCheck, stagnationNote, digestOf, STAGNATION_AFTER } from './progress.js';
 export {
   PERCEPTUAL_CATEGORIES, PERCEPTUAL_SEVERITIES, REPAIR_CLASSES,
-  normalizePerceptualFinding, attachPerceptualReview, renderHash,
+  normalizePerceptualFinding, attachPerceptualReview, restorePerceptualReview, renderHash,
   verdicts as perceptualVerdicts,
 } from './perceptual.js';
 
@@ -58,10 +62,11 @@ export {
   elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
   groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup,
   constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints,
+  microMasksOf, addMicroMask, removeMicroMask,
   runPen, validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL,
   renderAscii, renderSvg,
   perceptual,
-  MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign,
+  MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, SCHEMA_VERSION, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign,
 };
 export { PALETTE, PALETTE_DARK, SEVERITY_CUE } from './svg.js';
 
@@ -277,6 +282,18 @@ export function replacePath(doc, id, program) {
   const result = applyPen(draft, found.page, program, { id, role: original.role ?? 'connector', stroke: original.stroke });
   if (!result.path) throw new Error(`the replacement program for "${id}" drew no strokes`);
 
+  // Meaning is independent of geometry. Preserve authored annotations across
+  // a reroute, but only preserve relationship topology when the new program
+  // still names the same endpoints; otherwise carrying it forward would lie.
+  for (const key of ['description', 'technology', 'tags', 'properties', 'perspectives']) {
+    if (original[key] != null) result.path[key] = structuredClone(original[key]);
+  }
+  if (original.relationship
+      && result.path.source?.id === original.relationship.from.id
+      && result.path.targets?.some((target) => target.id === original.relationship.to.id)) {
+    result.path.relationship = { ...structuredClone(original.relationship), routing: 'manual', via: [] };
+  }
+
   // Restore the original draw order so stacking within the page is unchanged.
   const committedList = draft.elements[found.page];
   committedList.splice(committedList.indexOf(result.path), 1);
@@ -286,6 +303,131 @@ export function replacePath(doc, id, program) {
   reconcileElementChange(doc, id);
 
   return { path: result.path, page: found.page, trace: result.trace, notes: result.notes };
+}
+
+export const RELATIONSHIP_ROUTINGS = Object.freeze(['direct', 'orthogonal', 'curved']);
+
+function normalizeStringMap(value, label) {
+  if (value == null) return null;
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError(`${label} must be an object`);
+  const out = {};
+  for (const [key, entry] of Object.entries(value)) {
+    if (!key.trim() || typeof entry !== 'string') throw new TypeError(`${label} must map non-empty names to strings`);
+    out[key] = entry;
+  }
+  return out;
+}
+
+function semanticPatch({ description, technology, tags, properties, perspectives }) {
+  const out = {};
+  if (description != null) {
+    if (typeof description !== 'string' || !description.trim()) throw new TypeError('description must be a non-empty string');
+    out.description = description;
+  }
+  if (technology != null) {
+    if (typeof technology !== 'string' || !technology.trim()) throw new TypeError('technology must be a non-empty string');
+    out.technology = technology;
+  }
+  if (tags != null) {
+    if (!Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string' || !tag.trim())) {
+      throw new TypeError('tags must be an array of non-empty strings');
+    }
+    out.tags = [...new Set(tags)];
+  }
+  if (properties != null) out.properties = normalizeStringMap(properties, 'properties');
+  if (perspectives != null) out.perspectives = normalizeStringMap(perspectives, 'perspectives');
+  return out;
+}
+
+/** Add model meaning to an existing visual element without changing geometry. */
+export function annotateElement(doc, id, annotations) {
+  const found = findElement(doc, id);
+  if (!found) throw new Error(`no element "${id}" to annotate`);
+  const patch = semanticPatch(annotations);
+  if (!Object.keys(patch).length) throw new Error('annotate needs at least one semantic field');
+  Object.assign(found.element, patch);
+  return found.element;
+}
+
+function relationshipEndpoint(doc, pageId, spec, label) {
+  const dot = String(spec).lastIndexOf('.');
+  if (dot <= 0 || dot === String(spec).length - 1) {
+    throw new SyntaxError(`${label} needs a node and cardinal port, e.g. "api.E"`);
+  }
+  const id = String(spec).slice(0, dot);
+  const port = String(spec).slice(dot + 1);
+  parsePortSpec(port);
+  const found = findElement(doc, id);
+  if (!found) throw new Error(`${label}: no element "${id}"`);
+  if (found.page !== pageId) throw new Error(`${label} "${id}" is on page "${found.page}", not relationship page "${pageId}"`);
+  if (found.element.kind !== 'box') throw new Error(`${label} "${id}" is a ${found.element.kind}, not a node box`);
+  const seat = approachPoint(found.element.rect, port, found.element.shape, found.element.corner);
+  return { id, port, seat };
+}
+
+/**
+ * Draw a semantic, directed relationship from one node port to another.
+ * Curves are node-attached Catmull-Rom paths through explicit lattice
+ * waypoints; direct and orthogonal paths keep their own literal routing modes.
+ */
+export function connectNodes(doc, {
+  id, page = 'base', from, to, routing = 'direct', via = [], color = null, width = null,
+  description = null, technology = null, tags = null, properties = null, perspectives = null,
+} = {}) {
+  if (!RELATIONSHIP_ROUTINGS.includes(routing)) {
+    throw new SyntaxError(`relationship routing must be ${RELATIONSHIP_ROUTINGS.join(', ')} — got ${JSON.stringify(routing)}`);
+  }
+  getPage(doc, page);
+  const source = relationshipEndpoint(doc, page, from, 'connect from');
+  const target = relationshipEndpoint(doc, page, to, 'connect to');
+  if (source.id === target.id) throw new Error('connect needs two different node ids');
+  const waypoints = via.map((entry) => {
+    const point = address.pinPoint(entry);
+    return { x: point.x, y: point.y, at: address.quadToAddress(point.x, point.y) };
+  });
+  if (routing === 'curved' && waypoints.length === 0) {
+    throw new Error('a curved node relationship needs at least one explicit via address so its bend is authored, not guessed');
+  }
+  if (routing !== 'curved' && waypoints.length) {
+    throw new Error('via addresses are currently reserved for curved relationships; direct and orthogonal routing compute their literal path');
+  }
+
+  const draft = structuredClone(doc);
+  let path;
+  if (routing === 'orthogonal') {
+    const route = routeProgram_(draft, page, from, to, { avoid: 'boxes' });
+    if (!route.clear) throw new Error(`no clear orthogonal relationship route: ${route.note}`);
+    path = applyPen(draft, page, route.program, { id, color, width }).path;
+  } else {
+    const points = [source.seat, ...waypoints, target.seat];
+    const raw = routing === 'curved'
+      ? curveQuads(points)
+      : rayQuads(source.seat.x, source.seat.y, target.seat.x, target.seat.y);
+    const arrival = OPPOSITE[target.seat.facing];
+    const pieces = raw.map((piece, index) => ({
+      ...piece,
+      type: index === raw.length - 1 ? 'arrow' : 'line',
+      dir: index === raw.length - 1 ? arrival : undefined,
+    }));
+    path = addPath(draft, page, {
+      id,
+      pieces,
+      stroke: color != null || width != null ? { color: color ?? undefined, width: width ?? undefined } : null,
+    });
+    path.end = { x: target.seat.x, y: target.seat.y, facing: arrival };
+    path.source = { id: source.id, port: source.port };
+    path.targets = [{ id: target.id, port: target.port, step: 1 }];
+  }
+  path.relationship = {
+    from: { id: source.id, port: source.port },
+    to: { id: target.id, port: target.port },
+    routing,
+    via: waypoints.map((point) => point.at),
+  };
+  Object.assign(path, semanticPatch({ description, technology, tags, properties, perspectives }));
+  doc.pages = draft.pages;
+  doc.elements = draft.elements;
+  return { path, page, relationship: path.relationship };
 }
 
 /**
@@ -618,6 +760,8 @@ export const OPERATIONS = Object.freeze({
     id: a.id, role: a.role, stroke: a.stroke, color: a.color, width: a.width, cap: a.cap, paint: a.paint,
     tone: a.tone, feather: a.feather, texture: a.texture, pattern: a.pattern,
   }),
+  connect: (doc, a) => connectNodes(doc, a),
+  annotate: (doc, a) => annotateElement(doc, a.id, a),
   extend_path: (doc, a) => extendPath(doc, a.id, a.program),
   replace_path: (doc, a) => replacePath(doc, a.id, a.program),
   resize: (doc, a) => resizeBox(doc, a.id, a),
@@ -649,6 +793,11 @@ export const OPERATIONS = Object.freeze({
   stroke_label: (doc, a) => placeStrokeLabel(doc, a.page ?? null, a),
   wireframe: (doc, a) => applyWireframe(doc, a),
   perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
+  micro_mask: (doc, a) => {
+    if (a.action === 'add') return addMicroMask(doc, a);
+    if (a.action === 'remove') return removeMicroMask(doc, a.id);
+    throw new SyntaxError(`micro_mask action must be add or remove — got ${JSON.stringify(a.action)}`);
+  },
   // A review is document state, so it goes through OPERATIONS like every other
   // mutation: rehearsable in plan, undoable in history. A mutation only the
   // tool layer could perform would be invisible to rehearsal.

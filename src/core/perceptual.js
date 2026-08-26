@@ -155,6 +155,30 @@ export function attachPerceptualReview(doc, { renderHash: hash, reviewer, findin
   return doc.perceptual;
 }
 
+/** Restore a persisted review without rewriting the timestamp it was made. */
+export function restorePerceptualReview(doc, raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) fail('saved review must be an object');
+  const { renderHash: hash, reviewer, reviewedAt, findings = [], note = null } = raw;
+  if (!hash || typeof hash !== 'string') fail('a saved review must name the renderHash it describes');
+  if (!reviewer || typeof reviewer !== 'string') fail('a saved review must name its reviewer');
+  if (!reviewedAt || typeof reviewedAt !== 'string' || Number.isNaN(Date.parse(reviewedAt))) {
+    fail('a saved review must carry a valid reviewedAt timestamp');
+  }
+  if (note != null && typeof note !== 'string') fail('saved review note must be a string or null');
+  if (!Array.isArray(findings)) fail('saved review findings must be an array');
+
+  const knownIds = new Set(Object.values(doc.elements ?? {}).flat().map((e) => e.id));
+  const normalized = findings.map((finding) => normalizePerceptualFinding(finding, { knownIds }));
+  const seen = new Set();
+  for (const finding of normalized) {
+    if (seen.has(finding.id)) fail(`duplicate finding id "${finding.id}"`);
+    seen.add(finding.id);
+  }
+
+  doc.perceptual = { renderHash: hash, reviewer, reviewedAt, note, findings: normalized };
+  return doc.perceptual;
+}
+
 /**
  * The two verdicts, side by side and never combined.
  *

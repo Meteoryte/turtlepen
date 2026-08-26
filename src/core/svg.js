@@ -13,7 +13,7 @@
  */
 
 import { PX_PER_QUAD, toPx, right, bottom } from './geometry.js';
-import { elementsOf, contentBounds } from './document.js';
+import { elementsOf, contentBounds, microMasksOf } from './document.js';
 import { shapeTextRect, isContainer, containerBand } from './shapes.js';
 import { layoutTextRuns } from './text.js';
 
@@ -88,7 +88,7 @@ export function renderSvg(doc, { pages = null, findings = null, showGrid = true,
 
   const parts = [];
   parts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" font-family="${escapeAttr(doc.font.family)}">`);
-  parts.push(style(doc.background ?? null, gradients(doc)));
+  parts.push(style(doc.background ?? null, gradients(doc), microMaskDefs(doc)));
   parts.push(`<rect class="bg" x="0" y="0" width="${width}" height="${height}"/>`);
   if (showGrid) parts.push(gridPattern(b, ox, oy));
   parts.push(`<g transform="translate(${ox},${oy})">`);
@@ -99,7 +99,8 @@ export function renderSvg(doc, { pages = null, findings = null, showGrid = true,
     const opacity = page.opacity ?? (page.intent === 'overlay' ? 0.92 : 1);
     parts.push(`<g data-page="${escapeAttr(page.id)}" data-z="${page.z}" opacity="${opacity}">`);
     for (const el of elementsOf(doc, page.id)) {
-      parts.push(`<g data-element="${escapeAttr(el.id)}">`);
+      const masked = microMasksOf(doc).some((mask) => mask.target === el.id);
+      parts.push(`<g data-element="${escapeAttr(el.id)}"${masked ? ` mask="url(#tp-mask-${escapeAttr(el.id)})"` : ''}>`);
       if (el.kind === 'box') parts.push(box(el, doc));
       else if (el.kind === 'path') parts.push(path(el));
       else if (el.kind === 'text') parts.push(textBlock(el, doc));
@@ -158,7 +159,33 @@ function gradients(doc) {
   return out.join('\n');
 }
 
-function style(background = null, gradientDefs = '') {
+/** One subtractive SVG mask per edited target; document geometry is untouched. */
+function microMaskDefs(doc) {
+  const byTarget = new Map();
+  for (const mask of microMasksOf(doc)) {
+    if (!byTarget.has(mask.target)) byTarget.set(mask.target, []);
+    byTarget.get(mask.target).push(mask);
+  }
+  const out = [];
+  for (const [target, masks] of byTarget) {
+    out.push(`<mask id="tp-mask-${escapeAttr(target)}" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="-100000" y="-100000" width="200000" height="200000" style="mask-type:luminance">`);
+    out.push('<rect x="-100000" y="-100000" width="200000" height="200000" fill="white"/>');
+    for (const mask of masks) {
+      if (mask.points.length === 1) {
+        const point = mask.points[0];
+        out.push(`<rect data-micro-mask="${escapeAttr(mask.id)}" x="${point.x}" y="${point.y}" width="1" height="1" fill="black"/>`);
+      } else {
+        const points = mask.points.map((point) => `${point.x + 0.5},${point.y + 0.5}`).join(' ');
+        out.push(`<polyline data-micro-mask="${escapeAttr(mask.id)}" points="${points}" fill="none" stroke="black" stroke-width="${mask.width}" stroke-linecap="${escapeAttr(mask.cap)}" stroke-linejoin="round"/>`);
+      }
+    }
+    out.push('</mask>');
+  }
+  return out.join('\n');
+}
+
+function style(background = null, gradientDefs = '', microMaskDefinitions = '') {
+  const definitions = [gradientDefs, microMaskDefinitions].filter(Boolean).join('\n');
   return `<style>
   .bg { fill: ${background ?? PALETTE.paper}; }
   .grid { stroke: ${PALETTE.grid}; stroke-width: 0.5; }
@@ -187,7 +214,7 @@ function style(background = null, gradientDefs = '') {
   }
 </style>
 <defs>
-${gradientDefs}
+${definitions}
   <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
        5px quadrant so a dimmed element is made of the same units as every
        other mark on the page. -->
@@ -429,7 +456,13 @@ function styledPath(el) {
     const encoded = points.map((p) => `${p.x},${p.y}`).join(' ');
     return `<polyline points="${encoded}" fill="none" stroke="${color}" stroke-width="${width}" stroke-linecap="${cap}" stroke-linejoin="round"/>`;
   });
-  return `<g data-id="${escapeAttr(el.id)}" data-kind="path" data-role="${escapeAttr(el.role ?? 'connector')}">${ink.join('')}</g>`;
+  // A continuous styled polyline still needs its authored arrow markers.
+  // Previously the styled branch ignored piece types entirely, so adding a
+  // colour to a connector silently erased its direction.
+  const arrows = el.pieces
+    .filter((piece) => piece.type === 'arrow')
+    .map((piece) => `<path d="${arrowPath(piece.x * PX_PER_QUAD, piece.y * PX_PER_QUAD, PX_PER_QUAD, piece.dir)}" fill="${piece.color ? escapeAttr(piece.color) : color}" stroke="none"/>`);
+  return `<g data-id="${escapeAttr(el.id)}" data-kind="path" data-role="${escapeAttr(el.role ?? 'connector')}">${ink.join('')}${arrows.join('')}</g>`;
 }
 
 /** Colour exact claimed quadrants, merging adjacent cells into compact runs. */

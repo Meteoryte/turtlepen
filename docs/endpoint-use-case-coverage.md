@@ -1,6 +1,6 @@
 # Endpoint and use-case coverage
 
-**As of 2026-08-17.** This is the executable surface contract for TurtlePen.
+**As of 2026-08-26.** This is the executable surface contract for TurtlePen.
 An endpoint is covered only when a test crosses its real transport or exercises
 the exact shared core path. Name-count checks alone are not considered coverage.
 
@@ -13,7 +13,7 @@ the exact shared core path. Name-count checks alone are not considered coverage.
 | `notifications/cancelled` | accepted without a reply | notification response suppression | `test/mcp.test.js` |
 | `ping` | returns an empty result | connection remains ordered | `test/mcp.test.js` |
 | `tools/list` | schemas for the complete live tool set | exact comparison to `createTools` prevents drift | `test/mcp.test.js` |
-| `tools/call` | all 35 tools complete over real stdio | unknown tool and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
+| `tools/call` | all 52 tools complete over real stdio | unknown tool, schema refusal, and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
 | unknown request | n/a | JSON-RPC `-32601` | `test/mcp.test.js` |
 | malformed JSON | n/a | JSON-RPC `-32700` with null id | `test/mcp.test.js` |
 
@@ -26,6 +26,7 @@ tool without a successful transport case fails the suite.
 | Tool | Representative proven use case |
 |---|---|
 | `turtlepen_help` | retrieve the complete authoring reference before a document exists |
+| `runtime_info` | identify the running version, schema, capabilities, session, and document hash |
 | `new_diagram` | create and checkpoint a named diagram with explicit canvas bounds |
 | `open_diagram` | reopen persisted wireframe source and history state |
 | `add_page` | add an overlay page |
@@ -33,7 +34,10 @@ tool without a successful transport case fails the suite.
 | `measure` | size wrapped text before placement |
 | `place_box` | place labelled equipment with exact cell dimensions |
 | `pen` | author an exact artwork path |
+| `connect` | author direct, orthogonal, and node-attached curved semantic relationships |
+| `annotate` | persist descriptions, technology, tags, properties, and perspectives |
 | `validate` | obtain structured current findings and fingerprints |
+| `inspect_model` | enumerate missing semantics, disconnected nodes, and broken relationship references |
 | `accept_finding` | record an auditable reason for a current finding |
 | `ascii` | inspect the claimed lattice without a browser |
 | `free_space` | find a fitting rectangle across the page stack in a bounded region |
@@ -49,6 +53,7 @@ tool without a successful transport case fails the suite.
 | `set_canvas` | expand declared composition bounds |
 | `extend_path` | continue from a stored pen endpoint |
 | `replace_path` | reroute a path while keeping its identity |
+| `micro_mask` | apply a reversible 1-design-pixel eraser without changing structural geometry |
 | `unaccept_finding` | withdraw a prior finding acceptance |
 | `plan` | rehearse without mutation, then commit the same batch atomically |
 | `render` | export a forced full-canvas SVG without a grid |
@@ -85,7 +90,7 @@ Every tool in `VIEWER_TOOLS` completes over a masked WebSocket frame, mutating
 calls broadcast a higher revision, and the final state is verified on disk.
 The covered editor operations are `move`, `resize`, `restyle`, `remove`,
 `group`, `constraint`, `history`, `extend_path`, `replace_path`,
-`accept_finding`, and `unaccept_finding`.
+`micro_mask`, `accept_finding`, and `unaccept_finding`.
 
 The frame matrix proves:
 

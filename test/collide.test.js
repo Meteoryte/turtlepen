@@ -173,6 +173,8 @@ test('touching boxes are flagged for having no gutter', () => {
   const v = core.validate(d);
   assert.equal(byRule(v, 'L001').length, 0, 'they do not overlap');
   assert.equal(byRule(v, 'L007').length, 1, 'but they touch');
+  assert.equal(v.summary.clean, false, 'an unresolved S2 decision cannot be labelled clean while save blocks it');
+  assert.equal(v.summary.state, 'needs-decisions');
 });
 
 test('a free-floating connector is reported once, not once per end', () => {

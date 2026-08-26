@@ -16,6 +16,7 @@ export const VIEWER_TOOLS = Object.freeze([
   'history',
   'extend_path',
   'replace_path',
+  'micro_mask',
   'accept_finding',
   'unaccept_finding',
 ]);
