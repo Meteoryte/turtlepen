@@ -21,7 +21,10 @@ import {
 } from './src/core/index.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const out = (f) => path.join(here, 'diagrams', f);
+const outputRoot = process.env.TURTLEPEN_OUTPUT_DIR
+  ? path.resolve(process.env.TURTLEPEN_OUTPUT_DIR)
+  : path.join(here, 'diagrams');
+const out = (f) => path.join(outputRoot, f);
 const documentPath = out('swimlane-order-handling.turtlepen.json');
 const previous = await loadDocument(documentPath).catch((error) => {
   if (error.code === 'ENOENT') return null;
@@ -29,8 +32,16 @@ const previous = await loadDocument(documentPath).catch((error) => {
 });
 
 const INK = { lane: '#eef2ee', node: '#2ea685', end: '#c2ed98', start: '#0f766e' };
+const FIXED_CREATED_AT = '2026-08-26T22:40:43.689Z';
+const FIXED_ACCEPTED_AT = new Map([
+  ['155995cbffa5', '2026-08-26T22:40:45.170Z'],
+  ['2b000c28ce08', '2026-08-26T22:40:44.675Z'],
+  ['807a53ce8158', '2026-08-26T22:40:46.090Z'],
+  ['f61146bb58fa', '2026-08-26T22:40:45.627Z'],
+]);
 
 const doc = createDocument({ name: 'Order handling — swimlanes', canvas: { cols: 122, rows: 66 } });
+doc.createdAt = FIXED_CREATED_AT;
 const pen = (id, program) => applyPen(doc, 'base', program, { id });
 
 pen('title', 'text "ORDER HANDLING" at D3 span 30x3 font 16 weight 700');
@@ -68,6 +79,9 @@ for (const f of validate(doc).open) {
     acceptFinding(doc, f.fingerprint,
       'the flow hands over between lanes here — crossing the lane border is what a swimlane depicts');
   }
+}
+for (const acceptance of doc.acceptances) {
+  acceptance.acceptedAt = FIXED_ACCEPTED_AT.get(acceptance.fingerprint) ?? FIXED_CREATED_AT;
 }
 
 const log = validate(doc);

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.2 — 2026-08-27
+
+- Tightened the published-file allowlist so repository backups and other
+  transient artifact state cannot enter the package through broad directories.
+- Made the repository-only governance command report a stable source-checkout
+  boundary in packaged installs instead of exposing a raw Git failure.
+- Exposed the existing review-status mode and governance scope in CLI help.
+- Made both root reference builders idempotent by fixing generated metadata and
+  added an isolated two-pass regression so a verification run cannot silently
+  rewrite tracked documents and manifest hashes.
+- Re-audited the source, package, local browser workbench, links, JSON, secrets,
+  naming, and SSOT ownership; 628 tests and the complete generated-artifact gate
+  cover the repaired release boundary.
+
 ## 0.3.1 — 2026-08-26
 
 - Added an authored artifact catalog as the single owner of release, example,

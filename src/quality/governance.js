@@ -20,8 +20,13 @@ export function auditProjectFileNames(paths) {
 }
 
 export function trackedProjectFiles(root = process.cwd()) {
-  return execFileSync('git', ['ls-files', '-z'], { cwd: resolve(root), encoding: 'utf8', windowsHide: true })
-    .split('\0').filter(Boolean).map((path) => path.replaceAll('\\', '/'));
+  try {
+    return execFileSync('git', ['ls-files', '-z'], {
+      cwd: resolve(root), encoding: 'utf8', windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'],
+    }).split('\0').filter(Boolean).map((path) => path.replaceAll('\\', '/'));
+  } catch {
+    throw new Error('governance requires a TurtlePen source checkout with Git metadata; packaged installs should run `turtlepen doctor` instead');
+  }
 }
 
 async function fileHash(path) {

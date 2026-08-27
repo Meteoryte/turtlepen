@@ -14,6 +14,8 @@ test('CLI doctor and searchable help expose the live registry', () => {
   assert.equal(doctor.state, 'ready');
   assert.ok(doctor.toolCount >= 60);
   assert.match(run('help', 'dynamic', 'view'), /define_view/);
+  assert.match(run('help'), /governance \[--json\]\s+source-checkout/);
+  assert.match(run('help'), /review <document> --status \[--json\]/);
 });
 
 test('CLI governance verifies naming and source-of-truth ownership', () => {

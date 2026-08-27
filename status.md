@@ -1,13 +1,13 @@
 # TurtlePen — status
 
-**As of 2026-08-26.** Prototype, working end to end, 625/625 tests green,
+**As of 2026-08-27.** Prototype, working end to end, 628/628 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **625/625 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **628/628 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
 - **Every external surface has a drift-proof contract.** All 61 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC

@@ -17,7 +17,10 @@ import {
 } from './src/core/index.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const out = (f) => path.join(here, 'diagrams', f);
+const outputRoot = process.env.TURTLEPEN_OUTPUT_DIR
+  ? path.resolve(process.env.TURTLEPEN_OUTPUT_DIR)
+  : path.join(here, 'diagrams');
+const out = (f) => path.join(outputRoot, f);
 const documentPath = out('flowchart-important-process.turtlepen.json');
 const previous = await loadDocument(documentPath).catch((error) => {
   if (error.code === 'ENOENT') return null;
@@ -25,6 +28,7 @@ const previous = await loadDocument(documentPath).catch((error) => {
 });
 
 const INK = { decision: '#2ea685', start: '#0f766e', fix: '#00a67d', end: '#c2ed98', muted: '#e9e7e1' };
+const FIXED_CREATED_AT = '2026-08-26T22:40:43.319Z';
 
 // The vertical spine. Every decision is a diamond; row is its top edge.
 const SPINE = [
@@ -43,6 +47,7 @@ const SPINE = [
 const RETURNS = SPINE.slice(2);
 
 const doc = createDocument({ name: 'Important Process — flowchart', canvas: { cols: 115, rows: 148 } });
+doc.createdAt = FIXED_CREATED_AT;
 const pen = (id, program) => applyPen(doc, 'base', program, { id });
 
 pen('title', 'text "IMPORTANT PROCESS" at F4 span 30x3 font 16 weight 700');

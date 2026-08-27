@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 625 tests green, zero runtime dependencies, 61 MCP tools.
+Status: **prototype** — 628 tests green, zero runtime dependencies, 61 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -502,7 +502,7 @@ pnpm run check                         # full test suite + examples, logo, and t
 pnpm test                              # automated test suite
 pnpm run test:endpoints                # MCP, HTTP, and WebSocket surface contract
 pnpm run quality:manifest              # regenerate role-scoped artifact evidence
-pnpm run governance                    # enforce naming, catalog, SSOT, and generated-file parity
+pnpm run governance                    # source checkout: enforce naming, catalog, SSOT, and generated-file parity
 node src/cli.js render diagrams/example.turtlepen.json --format svg --json --force
 node src/cli.js review diagrams/example.turtlepen.json --render-hash <hash> --reviewer <name>
 node examples/build-example.js         # the plan -> commit cycle, end to end
