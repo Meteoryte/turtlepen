@@ -1,15 +1,15 @@
 # TurtlePen — status
 
-**As of 2026-08-28.** Prototype, working end to end, 433/433 tests green,
+**As of 2026-08-28.** Prototype, working end to end, 438/438 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **433/433 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **438/438 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
-- **Every external surface has a drift-proof contract.** All 49 MCP tools
+- **Every external surface has a drift-proof contract.** All 51 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC
   method and notification path is asserted; all public viewer routes are tested
   with GET, HEAD, method refusal, and security headers; and every browser-authorized
@@ -106,6 +106,15 @@ Verified by running it, not by inspection:
   intersections, and gaps. Every mutation shares the `OPERATIONS`/`plan` path,
   participates in history, and has real-stdio plus geometry, invalid-input, and
   persistence coverage.
+- **Compatible SVG is now editable rather than opaque.** `inspect_svg` compiles
+  a bounded source subset without mutating the document, showing deterministic
+  IDs, provenance, exact quadrant bounds, and any opt-in nearest-lattice shifts.
+  `import_svg` turns those solid lattice rectangles and 5px linear strokes into
+  ordinary artwork paths; they then use the same boolean, slice, offset,
+  collision, history, plan, save/open, and renderer paths as hand-authored
+  geometry. Curves, transforms, styles, resources, filters, masks, text, and
+  active SVG are refused by name before mutation; raw source markup never enters
+  a document or the live viewer DOM.
 - **Subsystem grouping is durable and exact.** Flat groups own explicit element
   ids across pages, serialize deterministically, move every member by one exact
   delta, participate in plan and history, follow rename/removal, reject ambiguous
@@ -140,7 +149,7 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (49 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (51 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
 - **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),

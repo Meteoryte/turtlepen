@@ -25,6 +25,8 @@ approximated.
 | `duplicate` | Creates one deep copy with an explicit ID and whole-quadrant delta. Flat-group membership follows the copy; follow constraints do not. |
 | `array` | Creates a bounded rectangular copy array with stable row-major IDs. The source remains at row 0, column 0. |
 | `inspect` | Returns exact areas, perimeters, integer bounds, rational centers, shared quadrants, and pairwise bounding gaps without mutating the document. |
+| `inspect_svg` | Reads a strict SVG import report: generated IDs, source provenance, exact lattice bounds, and explicit nearest-lattice shifts, without mutating the document. |
+| `import_svg` | Compiles an exact, safe SVG subset into ordinary editable artwork paths that can be inspected, sliced, combined, offset, validated, and exported. |
 
 Derived geometry records its source IDs and operation in `provenance`. Destructive
 operations refuse to silently erase a source that is referenced by a follow
@@ -63,7 +65,8 @@ The following remain separate future design work, not partial implementations:
 - arbitrary Bézier node/handle editing, freeform knives, and arbitrary affine
   transforms;
 - gradients, SVG paint servers, clip paths, masks, filters, and raw `<defs>`;
-- arbitrary SVG import and lossless foreign-SVG round trips;
+- arbitrary SVG import and lossless foreign-SVG round trips beyond the
+  [strict lattice subset](svg-import.md);
 - text outlining, variable-width strokes, and raster-to-vector tracing.
 
 Those features need a document model beyond exact quadrant sets. They should

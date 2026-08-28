@@ -1,7 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { resolve } from 'node:path';
 
 import * as core from '../src/core/index.js';
+import { createSession, createTools } from '../src/mcp/tools.js';
 
 const source = `
 <?xml version="1.0"?>
@@ -46,6 +50,7 @@ test('the SVG compiler refuses unsupported or unsafe constructs before document 
     ['<path d="M 2.5 2.5 C 7.5 2.5 12.5 7.5 17.5 7.5" fill="none" stroke="#123" stroke-width="5"/>', /path command "C"/],
     ['<line x1="0" y1="0" x2="10" y2="0" stroke="#123" stroke-width="5"/>', /quadrant centre/],
     ['<image href="https://example.test/logo.svg"/>', /<image>/],
+    ['<rect width="1000000000000" height="5" fill="#123"/>', /safety limit/],
   ];
 
   for (const [fragment, expected] of rejected) {
@@ -83,4 +88,30 @@ test('SVG import shares plan semantics and leaves source markup out of document 
   assert.equal(committed.ok, true);
   assert.equal(core.serialize(d), core.serialize(rehearsal.preview));
   assert.ok(!core.serialize(d).includes('<svg'));
+});
+
+test('direct SVG import and plan resolve a file relative to the active diagram alike', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-svg-import-'));
+  try {
+    const tools = createTools(createSession({ cwd: dir }));
+    await tools.find((tool) => tool.name === 'new_diagram').handler({
+      name: 'SVG file source', path: 'diagrams/imported.turtlepen.json',
+    });
+    await writeFile(resolve(dir, 'diagrams', 'asset.svg'), source, 'utf8');
+
+    const inspect = tools.find((tool) => tool.name === 'inspect_svg');
+    const imported = tools.find((tool) => tool.name === 'import_svg');
+    const plan = tools.find((tool) => tool.name === 'plan');
+    const report = JSON.parse(await inspect.handler({ source: 'asset.svg', prefix: 'file' }));
+    assert.deepEqual(report.elements.map((element) => element.id), ['file-1', 'file-2', 'file-3', 'file-4']);
+
+    const direct = JSON.parse(await imported.handler({ source: 'asset.svg', prefix: 'file' }));
+    assert.deepEqual(direct.created, ['file-1', 'file-2', 'file-3', 'file-4']);
+    assert.match(
+      await plan.handler({ operations: [{ op: 'import_svg', source: 'asset.svg', prefix: 'planned-file' }] }),
+      /rehearsed 1 operation/,
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
 });

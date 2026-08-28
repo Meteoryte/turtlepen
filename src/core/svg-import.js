@@ -259,6 +259,9 @@ function quantizeBoundary(value, coordinate, context) {
     result = Math.round(units);
     recordAdjustment(context, coordinate, value, result * PX_PER_QUAD);
   }
+  if (!Number.isSafeInteger(result)) {
+    throw new RangeError(`${coordinate} is outside the safe integer lattice range`);
+  }
   if (result < 0) throw new RangeError(`${coordinate} reaches ${result * PX_PER_QUAD}px, outside TurtlePen's top-left lattice boundary`);
   return result;
 }
@@ -272,6 +275,9 @@ function quantizeCenter(value, coordinate, context) {
     }
     result = Math.round(units);
     recordAdjustment(context, coordinate, value, (result + 0.5) * PX_PER_QUAD);
+  }
+  if (!Number.isSafeInteger(result)) {
+    throw new RangeError(`${coordinate} is outside the safe integer lattice range`);
   }
   if (result < 0) throw new RangeError(`${coordinate} reaches ${(result + 0.5) * PX_PER_QUAD}px, outside TurtlePen's top-left lattice`);
   return result;
@@ -317,6 +323,12 @@ function pushSpec(context, spec) {
   context.elements.push(spec);
 }
 
+function assertCapacity(context, count, what) {
+  if (!Number.isSafeInteger(count) || count < 1 || count > MAX_SVG_IMPORT_QUADRANTS - context.quadrants) {
+    throw new RangeError(`${what} would exceed the ${MAX_SVG_IMPORT_QUADRANTS} quadrant safety limit`);
+  }
+}
+
 function nextId(context) {
   return `${context.prefix}-${context.elements.length + 1}`;
 }
@@ -342,6 +354,10 @@ function compileRect(attributes, context, sourceIndex) {
   const y = boundaryAttribute(attributes, 'y', context, { defaultValue: 0 });
   const w = boundaryAttribute(attributes, 'width', context, { positive: true });
   const h = boundaryAttribute(attributes, 'height', context, { positive: true });
+  if (x > Number.MAX_SAFE_INTEGER - w || y > Number.MAX_SAFE_INTEGER - h) {
+    throw new RangeError('SVG <rect> extends outside the safe integer lattice range');
+  }
+  assertCapacity(context, w * h, 'SVG <rect>');
   pushSpec(context, {
     id: nextId(context),
     pieces: filledRectPieces(x, y, w, h),
@@ -392,6 +408,11 @@ function appendSegment(pieces, from, to, context, tag) {
   if (start.x === end.x && start.y === end.y) {
     unsupported(`zero-length <${tag}> segment; its cap cannot be preserved as lattice geometry`);
   }
+  assertCapacity(
+    context,
+    pieces.length + Math.max(Math.abs(end.x - start.x), Math.abs(end.y - start.y)) + 1,
+    `SVG <${tag}> path`,
+  );
   const raster = rayQuads(start.x, start.y, end.x, end.y);
   const previous = pieces.at(-1);
   for (const point of raster) {

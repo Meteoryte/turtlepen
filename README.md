@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 433 tests green, zero runtime dependencies, 49 MCP tools.
+Status: **prototype** — 438 tests green, zero runtime dependencies, 51 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -18,6 +18,7 @@ Status: **prototype** — 433 tests green, zero runtime dependencies, 49 MCP too
 | know what is proven and what is deferred | [`status.md`](status.md) |
 | see the flowchart work and what was deliberately not built | [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md) |
 | repair existing lattice geometry | [`docs/lattice-editing.md`](docs/lattice-editing.md) |
+| import a compatible SVG safely | [`docs/svg-import.md`](docs/svg-import.md) |
 | know the current tool surface, authoritatively | call `turtlepen_help` — it outranks every document here |
 
 The one thing worth knowing before anything else: **a clean validation means the
@@ -397,7 +398,7 @@ There is nothing to install first: no runtime dependencies, Node 20 or newer.
 Clone it, point the config at `src/mcp/server.js`, and run `pnpm test` once to
 confirm the clone is sound.
 
-49 tools. Call `turtlepen_help` first — it returns the grammar, the lattice
+51 tools. Call `turtlepen_help` first — it returns the grammar, the lattice
 constants, the rule table, and the fix→tool map.
 
 The maintained [endpoint and use-case coverage matrix](docs/endpoint-use-case-coverage.md)
@@ -439,6 +440,7 @@ inflating effective ink, and record source plus run hashes in the
 | repair | `resize` `restyle` `move` `rename` `update_page` `set_canvas` `extend_path` `replace_path` `remove` |
 | lattice editing | `boolean` `slice` `offset_path` `stroke_to_path` `path_edit` `normalize_path` `reorder` `duplicate` `array` |
 | inspect geometry | `inspect` |
+| SVG import | `inspect_svg` `import_svg` |
 | compose | `wireframe` `perspective_scene` `export_prompt` |
 | image | `measure_image` `place_image` `place_reference` |
 | output | `render` `save` |
@@ -464,7 +466,7 @@ Lowercase marks a claimed-but-not-inked corner cut. `✗` marks a collision.
 
 ```
 src/core/     pure engine, no I/O — geometry, address, text, shapes,
-              document, pen, edit, occupancy, collide, ascii, svg
+              document, pen, edit, svg-import, occupancy, collide, ascii, svg
 src/mcp/      MCP stdio server (hand-rolled JSON-RPC 2.0) + tool definitions
 src/viewer/   local HTTP/WebSocket server + live browser editor and log
 test/         node:test, no framework

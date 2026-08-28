@@ -13,7 +13,7 @@ the exact shared core path. Name-count checks alone are not considered coverage.
 | `notifications/cancelled` | accepted without a reply | notification response suppression | `test/mcp.test.js` |
 | `ping` | returns an empty result | connection remains ordered | `test/mcp.test.js` |
 | `tools/list` | schemas for the complete live tool set | exact comparison to `createTools` prevents drift | `test/mcp.test.js` |
-| `tools/call` | all 49 tools complete over real stdio | unknown tool and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
+| `tools/call` | all 51 tools complete over real stdio | unknown tool and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
 | unknown request | n/a | JSON-RPC `-32601` | `test/mcp.test.js` |
 | malformed JSON | n/a | JSON-RPC `-32700` with null id | `test/mcp.test.js` |
 
@@ -59,6 +59,8 @@ tool without a successful transport case fails the suite.
 | `duplicate` | copy a path by an exact quadrant delta |
 | `array` | create a bounded row-major lattice copy array |
 | `inspect` | return exact geometry measurements and intersection facts |
+| `inspect_svg` | report whether an SVG maps exactly to editable lattice geometry |
+| `import_svg` | compile a strict SVG subset into regular artwork paths |
 | `unaccept_finding` | withdraw a prior finding acceptance |
 | `plan` | rehearse without mutation, then commit the same batch atomically |
 | `render` | export a forced full-canvas SVG without a grid |
@@ -117,6 +119,7 @@ The frame matrix proves:
 | Z-page overlay and text occlusion | `test/collide.test.js`, `test/mcp.test.js` |
 | path authoring, anchors, ports, arrows, hops | `test/pen.test.js`, `test/connectors.test.js` |
 | lattice boolean, slice, offset, path editing, ordering, copies, arrays, and inspection | `test/lattice-editing.test.js`, `test/endpoints.test.js` |
+| strict SVG inspection/import, quantization, persistence, plan, and unsafe-input refusal | `test/svg-import.test.js`, `test/endpoints.test.js`, `test/mcp.test.js` |
 | groups and durable follow constraints | `test/edit.test.js`, `test/mcp.test.js`, `test/viewer.test.js` |
 | finding adjudication and publication gate | `test/gate.test.js`, `test/viewer.test.js` |
 | image measurement, up/downscale, contain/cover, embedding, tonal dither, 1x/2x/4x supersampled non-fidelity simplification, five seeded-random RGB/RGBA and fit/detail trials, exact weighted-coverage resolve, minimum semantic size, working-memory limit, continuous-tone review gate, tracing, hostile-input refusal, resize/re-place, save/reopen | `examples/image-session.js`, `examples/supersample-random-five.js`, `test/image-mcp.test.js`, `test/image.test.js`, `test/png.test.js`, `test/dither.test.js`, `test/endpoints.test.js`, `test/viewer.test.js` |
