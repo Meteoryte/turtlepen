@@ -24,13 +24,13 @@
     }
   },
   "summary": {
-    "artifacts": 59,
+    "artifacts": 64,
     "publishable": 9,
-    "structurallyClear": 40,
+    "structurallyClear": 45,
     "missingSvg": 1,
     "byRole": {
       "example": {
-        "artifacts": 26,
+        "artifacts": 31,
         "publishable": 1
       },
       "fixture": {
@@ -3264,6 +3264,441 @@
         },
         "pdf": {
           "path": "diagrams/mona/mona-05-sculpture.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Alpine Campfire",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/postcard-alpine-campfire.turtlepen.json",
+        "schema": 3,
+        "sha256": "ed3d4fc7725f55b0de786ded5d00e740d9de95aea6c74186547af287d43ba47b",
+        "bytes": 2258948
+      },
+      "document": {
+        "pages": 15,
+        "elements": 15,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 50,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 50,
+          "total": 50,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 2,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 0,
+          "total": 2,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/postcard-alpine-campfire.svg",
+          "present": true,
+          "bytes": 37377,
+          "sha256": "9092705ad050867a4201cd54f35f3c47cddd35ee7b17889182ecb8ff7b9d5800"
+        },
+        "png": {
+          "path": "diagrams/postcard-alpine-campfire.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/postcard-alpine-campfire.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Botanical Terrarium",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/postcard-botanical-terrarium.turtlepen.json",
+        "schema": 3,
+        "sha256": "8ba205b449fb02dce4f8350da78c42ff6ec240834d42bde6202b59d30a011688",
+        "bytes": 1084189
+      },
+      "document": {
+        "pages": 11,
+        "elements": 11,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 28,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 28,
+          "total": 28,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 2,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 0,
+          "total": 2,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/postcard-botanical-terrarium.svg",
+          "present": true,
+          "bytes": 22981,
+          "sha256": "3aa7fde710a4afdc49eb102e184a9c98302f0565116ed9f793f51fd80bbe3b7b"
+        },
+        "png": {
+          "path": "diagrams/postcard-botanical-terrarium.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/postcard-botanical-terrarium.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Deep Sea Explorer",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/postcard-deep-sea-explorer.turtlepen.json",
+        "schema": 3,
+        "sha256": "f40383a6c2056f73c419af7e6cd458874723099238b3f79af6d53cdc6cfb0a57",
+        "bytes": 905989
+      },
+      "document": {
+        "pages": 14,
+        "elements": 14,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 24,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 24,
+          "total": 24,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 2,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 0,
+          "total": 2,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/postcard-deep-sea-explorer.svg",
+          "present": true,
+          "bytes": 16007,
+          "sha256": "bd1a1fb3210320c463804427e4dc2ea7fb9968767cbdcd779595f73a385394e6"
+        },
+        "png": {
+          "path": "diagrams/postcard-deep-sea-explorer.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/postcard-deep-sea-explorer.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Night Observatory",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/postcard-night-observatory.turtlepen.json",
+        "schema": 3,
+        "sha256": "bf8a72bfb0f30b7bc59ccee9c8f0e111cde185c99525f980878b4943e349301a",
+        "bytes": 1818016
+      },
+      "document": {
+        "pages": 13,
+        "elements": 13,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 25,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 25,
+          "total": 25,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 2,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 0,
+          "total": 2,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/postcard-night-observatory.svg",
+          "present": true,
+          "bytes": 23252,
+          "sha256": "9e3c407425e966cdee0079b23fed6e1db8b10d60f0d33699c994f5879ff356fa"
+        },
+        "png": {
+          "path": "diagrams/postcard-night-observatory.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/postcard-night-observatory.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Rocket Liftoff",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/postcard-rocket-liftoff.turtlepen.json",
+        "schema": 3,
+        "sha256": "8ab4e1244bcb56035c960ffb3172b3228d1ccebd701af98c175271ec31e8e354",
+        "bytes": 803536
+      },
+      "document": {
+        "pages": 14,
+        "elements": 14,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 28,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 28,
+          "total": 28,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 2,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 0,
+          "total": 2,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/postcard-rocket-liftoff.svg",
+          "present": true,
+          "bytes": 23022,
+          "sha256": "1fcd87a444b07ccadf74d924652f01b3afc3d37b4be4cf6498110943b1827f74"
+        },
+        "png": {
+          "path": "diagrams/postcard-rocket-liftoff.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/postcard-rocket-liftoff.pdf",
           "present": false,
           "bytes": 0,
           "sha256": null
