@@ -45,7 +45,7 @@ test('a strict SVG subset compiles to exact editable lattice paths', () => {
 
 test('the SVG compiler refuses unsupported or unsafe constructs before document mutation', () => {
   const rejected = [
-    ['<script>alert(1)</script>', /<script>/],
+    ['<script>alert(1)</script>', /<script>/i],
     ['<g transform="translate(5,0)"></g>', /attribute "transform"/],
     ['<path d="M 2.5 2.5 C 7.5 2.5 12.5 7.5 17.5 7.5" fill="none" stroke="#123" stroke-width="5"/>', /path command "C"/],
     ['<line x1="0" y1="0" x2="10" y2="0" stroke="#123" stroke-width="5"/>', /quadrant centre/],
