@@ -1896,6 +1896,39 @@ REGIONAL DESCRIPTION
   bounding box. Add page to narrow both page and region; the response repeats
   the normalized effective filter.
 
+LATTICE-NATIVE EDITING
+  boolean { action, ids, id?, removeSources?, footprint? }
+    Exact union, difference, intersection, or xor over whole quadrants. visual
+    (default) uses visible shape ink; claimed uses reserved layout geometry.
+    The output is cell-painted artwork with source provenance, not a guessed
+    floating-point Bézier result. Sources must share a page.
+  slice { id, axis: "vertical"|"horizontal", at, mode?, ids? }
+    Divide at an explicit lattice boundary. divide (default) returns every
+    edge-connected result; partition returns one result per side. Default ids
+    are source-part-1, source-part-2, … in stable order.
+  offset_path { id, distance, resultId?, removeSource?, footprint? }
+    Positive distance dilates and negative distance erodes by whole quadrants
+    with a square (Chebyshev) neighborhood. Empty or off-grid results refuse.
+  stroke_to_path { id, resultId?, removeSource? }
+    Makes the path's exact claimed quadrants into editable cell-painted artwork.
+    A 1–5px stroke cannot honestly become fractional quadrant geometry.
+  path_edit { id, action, index?, at?, ids?, with? }
+    actions: insert delete move reverse open close split join. Insert/move use
+    an address; close draws an exact Bresenham bridge; join requires adjacent
+    ends. Direct piece edits clear resumable pen state rather than extending
+    stale geometry.
+  normalize_path { id }                 remove repeated quadrants only
+  reorder { id, action, relative? }     bring_to_front | send_to_back | raise |
+                                         lower | before | after
+  duplicate { id, to, dx?, dy? }        exact quadrant copy; no copied follow link
+  array { id, columns, rows, stepX, stepY, prefix? }
+    Creates at most 100 copies with stable row-major ids. The source is row 0,
+    column 0. reorder changes paint order only; same-page overlap remains an
+    error, so use an overlay page for deliberate stacking.
+  inspect { ids, footprint? }
+    Read exact areas, perimeters, integer bounds, rational centres, intersections,
+    and bounding gaps without changing the document.
+
 DIMENSIONED COMPOSITIONS
   wireframe authors a plan/elevation in real inches and measures routed runs;
   export_prompt turns that stored composition into a normalized image brief.

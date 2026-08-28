@@ -1,15 +1,15 @@
 # TurtlePen — status
 
-**As of 2026-08-17.** Prototype, working end to end, 318/318 tests green,
+**As of 2026-08-28.** Prototype, working end to end, 433/433 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **318/318 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **433/433 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
-- **Every external surface has a drift-proof contract.** All 35 MCP tools
+- **Every external surface has a drift-proof contract.** All 49 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC
   method and notification path is asserted; all public viewer routes are tested
   with GET, HEAD, method refusal, and security headers; and every browser-authorized
@@ -96,6 +96,16 @@ Verified by running it, not by inspection:
   calls consume no entry, divergent edits clear redo, every restoration is
   checkpointed, and partial composite failure rolls back memory, document, and
   sidecar together.
+- **Lattice-native editing is a first-class mutation vocabulary.** `boolean`
+  performs exact union/difference/intersection/XOR over visible or claimed
+  quadrants; `slice` returns deterministic addressable regions; `offset_path`
+  applies square-grid morphology; and `stroke_to_path` materializes the existing
+  path footprint without inventing fractional coordinates. `path_edit`,
+  `normalize_path`, `reorder`, `duplicate`, and `array` provide explicit repair
+  operations, while `inspect` returns exact areas, perimeters, bounds, centers,
+  intersections, and gaps. Every mutation shares the `OPERATIONS`/`plan` path,
+  participates in history, and has real-stdio plus geometry, invalid-input, and
+  persistence coverage.
 - **Subsystem grouping is durable and exact.** Flat groups own explicit element
   ids across pages, serialize deterministically, move every member by one exact
   delta, participate in plan and history, follow rename/removal, reject ambiguous
@@ -130,7 +140,7 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (35 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (49 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
 - **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),

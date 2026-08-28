@@ -13,7 +13,7 @@ the exact shared core path. Name-count checks alone are not considered coverage.
 | `notifications/cancelled` | accepted without a reply | notification response suppression | `test/mcp.test.js` |
 | `ping` | returns an empty result | connection remains ordered | `test/mcp.test.js` |
 | `tools/list` | schemas for the complete live tool set | exact comparison to `createTools` prevents drift | `test/mcp.test.js` |
-| `tools/call` | all 35 tools complete over real stdio | unknown tool and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
+| `tools/call` | all 49 tools complete over real stdio | unknown tool and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
 | unknown request | n/a | JSON-RPC `-32601` | `test/mcp.test.js` |
 | malformed JSON | n/a | JSON-RPC `-32700` with null id | `test/mcp.test.js` |
 
@@ -49,6 +49,16 @@ tool without a successful transport case fails the suite.
 | `set_canvas` | expand declared composition bounds |
 | `extend_path` | continue from a stored pen endpoint |
 | `replace_path` | reroute a path while keeping its identity |
+| `boolean` | combine overlapping lattice geometry with exact set algebra |
+| `slice` | divide a lattice shape at a named boundary with deterministic output ids |
+| `offset_path` | dilate a path and retain a separate offset result |
+| `stroke_to_path` | materialize a path footprint as editable cell-painted geometry |
+| `path_edit` | insert an explicit lattice node into a path |
+| `normalize_path` | remove a repeated path quadrant without redrawing |
+| `reorder` | bring an element forward within its page |
+| `duplicate` | copy a path by an exact quadrant delta |
+| `array` | create a bounded row-major lattice copy array |
+| `inspect` | return exact geometry measurements and intersection facts |
 | `unaccept_finding` | withdraw a prior finding acceptance |
 | `plan` | rehearse without mutation, then commit the same batch atomically |
 | `render` | export a forced full-canvas SVG without a grid |
@@ -106,6 +116,7 @@ The frame matrix proves:
 | commit, detect, undo, redo, reopen | `examples/rework-session.js`, `test/mcp.test.js` |
 | Z-page overlay and text occlusion | `test/collide.test.js`, `test/mcp.test.js` |
 | path authoring, anchors, ports, arrows, hops | `test/pen.test.js`, `test/connectors.test.js` |
+| lattice boolean, slice, offset, path editing, ordering, copies, arrays, and inspection | `test/lattice-editing.test.js`, `test/endpoints.test.js` |
 | groups and durable follow constraints | `test/edit.test.js`, `test/mcp.test.js`, `test/viewer.test.js` |
 | finding adjudication and publication gate | `test/gate.test.js`, `test/viewer.test.js` |
 | image measurement, up/downscale, contain/cover, embedding, tonal dither, 1x/2x/4x supersampled non-fidelity simplification, five seeded-random RGB/RGBA and fit/detail trials, exact weighted-coverage resolve, minimum semantic size, working-memory limit, continuous-tone review gate, tracing, hostile-input refusal, resize/re-place, save/reopen | `examples/image-session.js`, `examples/supersample-random-five.js`, `test/image-mcp.test.js`, `test/image.test.js`, `test/png.test.js`, `test/dither.test.js`, `test/endpoints.test.js`, `test/viewer.test.js` |

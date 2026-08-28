@@ -90,6 +90,8 @@ test('every advertised MCP tool completes a representative use case over stdio',
     await invoke('place_box', { id: 'boolean-left', at: 'A30.tl', span: { w: 2, h: 2 } });
     await invoke('place_box', { id: 'boolean-right', at: 'B30.tl', span: { w: 2, h: 2 } });
     await invoke('boolean', { action: 'union', ids: ['boolean-left', 'boolean-right'], id: 'boolean-merged' });
+    assert.match(await invoke('history', { action: 'undo' }), /undid boolean "boolean-merged"/);
+    assert.match(await invoke('history', { action: 'redo' }), /redid boolean "boolean-merged"/);
     await invoke('slice', { id: 'boolean-merged', axis: 'vertical', at: 'B30.tl' });
     await invoke('offset_path', {
       id: 'boolean-merged-part-2', distance: 1, resultId: 'offset-result', removeSource: false,
