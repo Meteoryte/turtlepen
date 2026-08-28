@@ -63,6 +63,28 @@ async function readImage(session, source) {
   return { bytes, info, dataUri: `data:${core.image.MIME_BY_FORMAT[info.format]};base64,${bytes.toString('base64')}` };
 }
 
+/** Read bounded SVG source text without ever treating it as executable markup. */
+async function readSvg(session, source) {
+  if (typeof source !== 'string' || !source.trim()) {
+    throw new TypeError('SVG source must be inline <svg> markup or a relative file path');
+  }
+  const inline = source.trim().startsWith('<');
+  if (inline) {
+    if (Buffer.byteLength(source, 'utf8') > core.svgImport.MAX_SVG_IMPORT_BYTES) {
+      throw new RangeError(`SVG source is over the ${core.svgImport.MAX_SVG_IMPORT_BYTES} byte import limit`);
+    }
+    return source;
+  }
+  const base = session.path ? dirname(session.path) : session.cwd;
+  const path = resolve(base, source);
+  const file = await stat(path);
+  if (!file.isFile()) throw new Error(`SVG source is not a file: ${path}`);
+  if (file.size > core.svgImport.MAX_SVG_IMPORT_BYTES) {
+    throw new RangeError(`SVG source is ${file.size} bytes, over the ${core.svgImport.MAX_SVG_IMPORT_BYTES} byte import limit`);
+  }
+  return readFile(path, 'utf8');
+}
+
 /**
  * Turn any file-path image source into a data: URI before the operation reaches
  * core.
@@ -76,7 +98,9 @@ async function readImage(session, source) {
 async function resolveSources(session, operations) {
   const out = [];
   for (const op of operations) {
-    if (['place_image', 'place_reference'].includes(op?.op) && op.source) {
+    if (op?.op === 'import_svg' && op.source) {
+      out.push({ ...op, source: await readSvg(session, op.source) });
+    } else if (['place_image', 'place_reference'].includes(op?.op) && op.source) {
       const resolved = await readImage(session, op.source);
       out.push({ ...op, source: resolved.dataUri });
     } else {
@@ -797,6 +821,46 @@ ${stalled}` : core.formatLog(result);
     },
 
     {
+      name: 'inspect_svg',
+      description:
+        'Read a strict SVG import report without changing the diagram. The compiler accepts only solid unstroked lattice rectangles and 5px hex-colour line/polyline/polygon/M-L-H-V-Z strokes; it reports their generated ids, exact quadrant bounds, and any explicitly requested nearest-lattice shifts. It never embeds, executes, or preserves raw SVG markup.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          source: { type: 'string', description: 'inline <svg> markup or a path relative to the active document' },
+          prefix: { type: 'string', description: 'deterministic generated id prefix (default "svg")' },
+          quantize: { type: 'string', enum: [...core.svgImport.SVG_IMPORT_QUANTIZATION], description: 'reject (default) or explicitly nearest-lattice map incompatible coordinates' },
+        },
+        required: ['source'],
+        additionalProperties: false,
+      },
+      handler: async ({ source, prefix = 'svg', quantize = 'reject' }) => json(core.inspectSvg(
+        await readSvg(session, source),
+        { prefix, quantize },
+      )),
+    },
+
+    {
+      name: 'import_svg',
+      description:
+        'Import a strict, exact SVG subset as ordinary editable TurtlePen artwork paths. Source markup is compiled, never embedded or emitted verbatim: solid 5px-lattice rectangles become cell-painted paths, while 5px hex-colour line/polyline/polygon/M-L-H-V-Z strokes become exact rasterized paths. Unsupported curves, transforms, text, resources, styles, filters, masks, and scripts fail by name. Use inspect_svg or plan first; direct import participates in validation, history, save/open, and plan exactly like hand-authored geometry.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          source: { type: 'string', description: 'inline <svg> markup or a path relative to the active document' },
+          page: { type: 'string', description: 'destination page (default base)' },
+          prefix: { type: 'string', description: 'deterministic generated id prefix (default "svg")' },
+          quantize: { type: 'string', enum: [...core.svgImport.SVG_IMPORT_QUANTIZATION], description: 'reject (default) or explicitly nearest-lattice map incompatible coordinates' },
+        },
+        required: ['source'],
+        additionalProperties: false,
+      },
+      handler: async ({ source, page = 'base', prefix = 'svg', quantize = 'reject' }) => json(await applyAndPersist(session, 'import_svg', {
+        source: await readSvg(session, source), page, prefix, quantize,
+      })),
+    },
+
+    {
       name: 'boolean',
       description:
         'Combine two or more elements with exact lattice set algebra. action union, difference, intersection, or xor uses each element’s visual footprint by default and creates a cell-painted artwork path. This is not floating-point Bézier clipping: every output quadrant is explicit, collision-checked, persistent, undoable, and available to plan.',
@@ -999,7 +1063,7 @@ ${stalled}` : core.formatLog(result);
         properties: {
           operations: {
             type: 'array',
-            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image place_reference pen extend_path replace_path boolean slice offset_path stroke_to_path path_edit normalize_path reorder duplicate array resize restyle move rename remove set_canvas accept_finding unaccept_finding group constraint. Args match the same-named tool, including pen role/color/width/cap.',
+            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image place_reference pen extend_path replace_path import_svg boolean slice offset_path stroke_to_path path_edit normalize_path reorder duplicate array resize restyle move rename remove set_canvas accept_finding unaccept_finding group constraint. Args match the same-named tool, including pen role/color/width/cap.',
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
@@ -1928,6 +1992,27 @@ LATTICE-NATIVE EDITING
   inspect { ids, footprint? }
     Read exact areas, perimeters, integer bounds, rational centres, intersections,
     and bounding gaps without changing the document.
+
+STRICT SVG IMPORT
+  inspect_svg { source, prefix?, quantize? }
+    Read what TurtlePen can import before changing the document. source is inline
+    <svg> text or a path relative to the active diagram. It never embeds or
+    executes source markup.
+  import_svg { source, page?, prefix?, quantize? }
+    Compile exact source geometry into ordinary editable artwork paths. Only
+    solid, unstroked <rect> elements on 5px boundaries and 5px hex-colour
+    <line>, <polyline>, <polygon>, and M/L/H/V/Z <path> strokes are accepted.
+    Multi-segment strokes must declare stroke-linejoin="round". Curves, text,
+    transforms, CSS/styles, images/resources, defs, clipping/masks, filters,
+    and scripts refuse by name — no source construct is silently dropped or
+    preserved as unsafe raw SVG.
+
+    Coordinate policy is quantize:"reject" by default: filled boundaries must
+    land on 5px multiples and stroke points on 2.5px quadrant centres. Choose
+    quantize:"nearest" only after inspect_svg reports the exact shift; its
+    output records every changed coordinate. Imports use deterministic
+    prefix-1, prefix-2, … ids, retain source-element provenance, validate and
+    serialize like hand-authored paths, and can be rehearsed in plan.
 
 DIMENSIONED COMPOSITIONS
   wireframe authors a plan/elevation in real inches and measures routed runs;

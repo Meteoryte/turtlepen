@@ -23,12 +23,13 @@ import * as pattern_ from './pattern.js';
 import * as wireframe_ from './wireframe.js';
 import * as perspective_ from './perspective.js';
 import * as edit_ from './edit.js';
+import * as svgImport_ from './svg-import.js';
 import {
   booleanGeometry, sliceGeometry, offsetPath, strokeToPath, editPath, normalizePath,
   reorderElement, duplicateElement, arrayElements, inspectGeometry,
 } from './edit.js';
-
-import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
+import { compileSvg, inspectSvg } from './svg-import.js';
+import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, assertFreeId, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
 import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL } from './collide.js';
 import { renderAscii } from './ascii.js';
@@ -55,6 +56,7 @@ export { pattern_ as pattern };
 export { wireframe_ as wireframe };
 export { perspective_ as perspective };
 export { edit_ as edit };
+export { svgImport_ as svgImport };
 export {
   createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, findElement,
   elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
@@ -66,6 +68,7 @@ export {
   MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign,
   booleanGeometry, sliceGeometry, offsetPath, strokeToPath, editPath, normalizePath,
   reorderElement, duplicateElement, arrayElements, inspectGeometry,
+  compileSvg, inspectSvg,
 };
 export { PALETTE, PALETTE_DARK, SEVERITY_CUE } from './svg.js';
 
@@ -247,6 +250,40 @@ export function replacePath(doc, id, program) {
   reconcileElementChange(doc, id);
 
   return { path: result.path, page: found.page, trace: result.trace, notes: result.notes };
+}
+
+/**
+ * Import a strict, grid-aligned SVG subset as ordinary artwork paths.
+ *
+ * The compiler never preserves source markup. It produces exact quadrant paths
+ * first, then this mutation adds those paths in source order only after every
+ * generated id has been checked. That leaves imported SVG subject to the same
+ * serialization, collision rules, plan rehearsal, and history boundary as
+ * hand-authored geometry.
+ */
+export function importSvg(doc, {
+  source, page = 'base', prefix = 'svg', quantize = 'reject',
+} = {}) {
+  getPage(doc, page);
+  const compiled = compileSvg(source, { prefix, quantize });
+  for (const spec of compiled.elements) assertFreeId(doc, spec.id);
+
+  const draft = structuredClone(doc);
+  const created = [];
+  for (const spec of compiled.elements) {
+    const path = addPath(draft, page, {
+      id: spec.id,
+      pieces: spec.pieces,
+      stroke: spec.stroke,
+      role: spec.role,
+    });
+    if (spec.closed) path.closed = true;
+    path.provenance = structuredClone(spec.provenance);
+    created.push(path.id);
+  }
+  doc.pages = draft.pages;
+  doc.elements = draft.elements;
+  return { page, created, ...compiled.report };
 }
 
 /**
@@ -521,6 +558,7 @@ export const OPERATIONS = Object.freeze({
   }),
   extend_path: (doc, a) => extendPath(doc, a.id, a.program),
   replace_path: (doc, a) => replacePath(doc, a.id, a.program),
+  import_svg: (doc, a) => importSvg(doc, a),
   boolean: (doc, a) => booleanGeometry(doc, a),
   slice: (doc, a) => sliceGeometry(doc, a),
   offset_path: (doc, a) => offsetPath(doc, a),

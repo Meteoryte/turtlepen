@@ -101,6 +101,21 @@ test('every advertised MCP tool completes a representative use case over stdio',
     }));
     assert.equal(inspected.elements.length, 2);
 
+    const importedSvg = [
+      '<svg viewBox="0 0 40 20">',
+      '<rect x="0" y="0" width="10" height="10" fill="#abc"/>',
+      '<line x1="22.5" y1="2.5" x2="32.5" y2="2.5" stroke="#456" stroke-width="5"/>',
+      '</svg>',
+    ].join('');
+    const svgPreview = JSON.parse(await invoke('inspect_svg', { source: importedSvg, prefix: 'svg-piece' }));
+    assert.deepEqual(svgPreview.elements.map((element) => element.id), ['svg-piece-1', 'svg-piece-2']);
+    const svgImport = JSON.parse(await invoke('import_svg', {
+      source: importedSvg, page: 'notes', prefix: 'svg-piece',
+    }));
+    assert.deepEqual(svgImport.created, ['svg-piece-1', 'svg-piece-2']);
+    assert.match(await invoke('history', { action: 'undo' }), /undid import_svg/);
+    assert.match(await invoke('history', { action: 'redo' }), /redid import_svg/);
+
     const validation = JSON.parse(await invoke('validate', { format: 'json' }));
     assert.ok(validation.open.length > 0, 'the acceptance workflow needs a current finding');
     const fingerprint = validation.open[0].fingerprint;

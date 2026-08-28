@@ -26,7 +26,7 @@ const SERVER = resolve(here, '../src/mcp/server.js');
 
 test('the tool module loads and every tool is well formed', () => {
   const tools = createTools(createSession());
-  assert.equal(tools.length, 49, `the documented tool count drifted: got ${tools.length}`);
+  assert.equal(tools.length, 51, `the documented tool count drifted: got ${tools.length}`);
   for (const t of tools) {
     assert.match(t.name, /^[a-z_]+$/, `bad tool name "${t.name}"`);
     assert.ok(t.description.length > 30, `${t.name} needs a real description`);
@@ -77,7 +77,7 @@ test('the validate tool surfaces composition findings to the agent', async () =>
 test('help documents the lattice, the grammar and every rule', () => {
   const tools = createTools(createSession());
   const help = tools.find((t) => t.name === 'turtlepen_help').handler({});
-  for (const needle of ['PEN GRAMMAR', 'scope="stack"', 'searched_pages', 'REGIONAL DESCRIPTION', 'exact claimed', 'LATTICE-NATIVE EDITING', 'boolean', 'stroke_to_path', 'DIMENSIONED COMPOSITIONS', 'stale geometry is refused by name', 'HISTORY AND RECOVERY', 'exact document hash', 'new edit after undo clears redo', 'GROUPS AND FOLLOW RELATIONSHIPS', 'cycles are refused', 'explicit constraint', 'S#2', 'align', 'hop', 'arrow', 'EVERY FIX HAS A TOOL', 'L001', 'L015', 'L021']) {
+  for (const needle of ['PEN GRAMMAR', 'scope="stack"', 'searched_pages', 'REGIONAL DESCRIPTION', 'exact claimed', 'LATTICE-NATIVE EDITING', 'boolean', 'stroke_to_path', 'STRICT SVG IMPORT', 'inspect_svg', 'quantize:"nearest"', 'DIMENSIONED COMPOSITIONS', 'stale geometry is refused by name', 'HISTORY AND RECOVERY', 'exact document hash', 'new edit after undo clears redo', 'GROUPS AND FOLLOW RELATIONSHIPS', 'cycles are refused', 'explicit constraint', 'S#2', 'align', 'hop', 'arrow', 'EVERY FIX HAS A TOOL', 'L001', 'L015', 'L021']) {
     assert.ok(help.includes(needle), `help is missing "${needle}"`);
   }
 });
