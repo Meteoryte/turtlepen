@@ -78,6 +78,26 @@ test('every advertised MCP tool completes a representative use case over stdio',
     await invoke('rename', { id: 'overlap', to: 'obstacle' });
     await invoke('extend_path', { id: 'run', program: 'right 2 line' });
     await invoke('replace_path', { id: 'run', program: 'pen C18.q1\nright 4 line' });
+    await invoke('path_edit', { id: 'run', action: 'insert', index: 1, at: 'C18.q1' });
+    await invoke('normalize_path', { id: 'run' });
+    await invoke('stroke_to_path', { id: 'run', resultId: 'run-outline', removeSource: false });
+    await invoke('reorder', { id: 'run-outline', action: 'bring_to_front' });
+    await invoke('duplicate', { id: 'run-outline', to: 'run-outline-copy', dx: 0, dy: 8 });
+    await invoke('array', {
+      id: 'run-outline-copy', columns: 2, rows: 1, stepX: 12, stepY: 0, prefix: 'run-array',
+    });
+
+    await invoke('place_box', { id: 'boolean-left', at: 'A30.tl', span: { w: 2, h: 2 } });
+    await invoke('place_box', { id: 'boolean-right', at: 'B30.tl', span: { w: 2, h: 2 } });
+    await invoke('boolean', { action: 'union', ids: ['boolean-left', 'boolean-right'], id: 'boolean-merged' });
+    await invoke('slice', { id: 'boolean-merged', axis: 'vertical', at: 'B30.tl' });
+    await invoke('offset_path', {
+      id: 'boolean-merged-part-2', distance: 1, resultId: 'offset-result', removeSource: false,
+    });
+    const inspected = JSON.parse(await invoke('inspect', {
+      ids: ['boolean-merged-part-1', 'offset-result'], footprint: 'claimed',
+    }));
+    assert.equal(inspected.elements.length, 2);
 
     const validation = JSON.parse(await invoke('validate', { format: 'json' }));
     assert.ok(validation.open.length > 0, 'the acceptance workflow needs a current finding');
