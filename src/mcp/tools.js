@@ -39,6 +39,12 @@ const need = (s) => {
   return s.doc;
 };
 
+async function applyAndPersist(session, operation, args) {
+  const result = core.applyOperation(need(session), { ...args, op: operation });
+  await persist(session);
+  return result;
+}
+
 /** Read and canonicalise an image relative to the active diagram. */
 async function readImage(session, source) {
   if (String(source).startsWith('data:')) {
@@ -791,6 +797,189 @@ ${stalled}` : core.formatLog(result);
     },
 
     {
+      name: 'boolean',
+      description:
+        'Combine two or more elements with exact lattice set algebra. action union, difference, intersection, or xor uses each element’s visual footprint by default and creates a cell-painted artwork path. This is not floating-point Bézier clipping: every output quadrant is explicit, collision-checked, persistent, undoable, and available to plan.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action: { type: 'string', enum: [...core.edit.BOOLEAN_ACTIONS] },
+          ids: { type: 'array', items: { type: 'string' }, minItems: 2, description: 'source element ids, in subtraction order for difference' },
+          id: { type: 'string', description: 'result id; defaults to the first source id when replacing sources' },
+          removeSources: { type: 'boolean', description: 'replace sources (default true), or retain them and create a separate result' },
+          footprint: { type: 'string', enum: [...core.edit.FOOTPRINTS], description: 'visual (default) uses visible shape ink; claimed uses layout reservation geometry' },
+          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$', description: 'optional result colour' },
+        },
+        required: ['action', 'ids'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'boolean', args)),
+    },
+
+    {
+      name: 'slice',
+      description:
+        'Divide one element at an explicit vertical or horizontal lattice boundary. divide (default) returns every edge-connected result in deterministic order; partition returns the two sides. The boundary is an address, never an inferred mouse gesture, so no fractional quadrants are discarded or approximated.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', description: 'element to partition' },
+          axis: { type: 'string', enum: [...core.edit.SLICE_AXES] },
+          at: { type: 'string', description: 'lattice boundary address, such as M1.tl for a vertical slice' },
+          ids: { type: 'array', items: { type: 'string' }, description: 'optional deterministic ids for every result, in returned order' },
+          mode: { type: 'string', enum: [...core.edit.SLICE_MODES] },
+          footprint: { type: 'string', enum: [...core.edit.FOOTPRINTS] },
+          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' },
+        },
+        required: ['id', 'axis', 'at'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'slice', args)),
+    },
+
+    {
+      name: 'offset_path',
+      description:
+        'Offset visible or claimed lattice geometry by a signed whole-quadrant distance. Positive distances dilate and negative distances erode using an exact square-grid (Chebyshev) neighborhood; the operation fails rather than creating an empty or off-grid result.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          distance: { type: 'integer', description: 'signed offset in whole quadrants; positive outward, negative inward' },
+          resultId: { type: 'string', description: 'result id; defaults to the source id when replacing it' },
+          removeSource: { type: 'boolean', description: 'replace the source (default true), or retain it' },
+          footprint: { type: 'string', enum: [...core.edit.FOOTPRINTS] },
+          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' },
+        },
+        required: ['id', 'distance'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'offset_path', args)),
+    },
+
+    {
+      name: 'stroke_to_path',
+      description:
+        'Materialise a path’s exact claimed quadrants as cell-painted artwork geometry. TurtlePen widths are at most one 5px quadrant, so this produces the only honest editable outline instead of inventing sub-lattice fractional geometry.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', description: 'source path id' },
+          resultId: { type: 'string', description: 'result id; defaults to the source id when replacing it' },
+          removeSource: { type: 'boolean', description: 'replace the path (default true), or retain it' },
+          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' },
+        },
+        required: ['id'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'stroke_to_path', args)),
+    },
+
+    {
+      name: 'path_edit',
+      description:
+        'Edit explicit lattice path pieces. insert/move use an address and piece index; delete removes one piece; reverse flips path order; close draws the exact Bresenham bridge; open removes closure; split returns two paths; join appends an adjacent path. Direct piece edits clear resumable pen-program state so a stale cursor can never silently continue edited geometry.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          action: { type: 'string', enum: [...core.edit.PATH_EDIT_ACTIONS] },
+          index: { type: 'integer', minimum: 0, description: 'piece index for insert, move, delete, or split' },
+          at: { type: 'string', description: 'address for insert or move' },
+          ids: { type: 'array', items: { type: 'string' }, description: 'two result ids for split; defaults to source id and source-part-2' },
+          with: { type: 'string', description: 'adjacent path id to append for join' },
+        },
+        required: ['id', 'action'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'path_edit', args)),
+    },
+
+    {
+      name: 'normalize_path',
+      description:
+        'Remove repeated lattice quadrants from one path while preserving first-occurrence order. This is a narrow, explicit cleanup operation; it never simplifies, moves, or approximates geometry that the caller did not name.',
+      inputSchema: {
+        type: 'object',
+        properties: { id: { type: 'string' } },
+        required: ['id'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'normalize_path', args)),
+    },
+
+    {
+      name: 'reorder',
+      description:
+        'Change an element’s presentation order within its page: bring_to_front, send_to_back, raise, lower, before, or after. Same-page collisions remain validation errors; use an overlay page and an accepted finding for deliberate stacking.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          action: { type: 'string', enum: [...core.edit.REORDER_ACTIONS] },
+          relative: { type: 'string', description: 'required by before and after; must be on the same page' },
+        },
+        required: ['id', 'action'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'reorder', args)),
+    },
+
+    {
+      name: 'duplicate',
+      description:
+        'Deep-copy one element with a caller-chosen deterministic id and exact whole-quadrant delta. A duplicate joins the source’s flat group when it has one, but does not silently clone follow constraints.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          to: { type: 'string', description: 'new element id' },
+          dx: { type: 'integer', description: 'horizontal delta in quadrants (default 0)' },
+          dy: { type: 'integer', description: 'vertical delta in quadrants (default 0)' },
+        },
+        required: ['id', 'to'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'duplicate', args)),
+    },
+
+    {
+      name: 'array',
+      description:
+        'Create a bounded rectangular array of exact copies, retaining the source at row 0 column 0. New ids are deterministic prefix-1, prefix-2, … in row-major order; values are capped at 100 copies and all steps are whole quadrants.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          columns: { type: 'integer', minimum: 1 },
+          rows: { type: 'integer', minimum: 1 },
+          stepX: { type: 'integer', description: 'horizontal copy spacing in quadrants' },
+          stepY: { type: 'integer', description: 'vertical copy spacing in quadrants' },
+          prefix: { type: 'string', description: 'new id prefix; defaults to source-copy' },
+        },
+        required: ['id', 'columns', 'rows', 'stepX', 'stepY'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'array', args)),
+    },
+
+    {
+      name: 'inspect',
+      description:
+        'Inspect exact claimed or visual lattice geometry without changing the document. Returns areas, perimeters, integer bounds, rational centers, pairwise shared quadrants, and bounding-box gaps for explicit element ids.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          ids: { type: 'array', items: { type: 'string' }, minItems: 1 },
+          footprint: { type: 'string', enum: [...core.edit.FOOTPRINTS], description: 'claimed (default) or visual geometry' },
+        },
+        required: ['ids'],
+        additionalProperties: false,
+      },
+      handler: ({ ids, footprint = 'claimed' }) => json(core.inspectGeometry(need(session), { ids, footprint })),
+    },
+
+    {
       name: 'unaccept_finding',
       description: 'Withdraw a previously recorded acceptance, putting the finding back in the open log.',
       inputSchema: { type: 'object', properties: { fingerprint: { type: 'string' } }, required: ['fingerprint'], additionalProperties: false },
@@ -810,7 +999,7 @@ ${stalled}` : core.formatLog(result);
         properties: {
           operations: {
             type: 'array',
-            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image place_reference pen extend_path replace_path resize restyle move rename remove set_canvas accept_finding unaccept_finding group constraint. Args match the same-named tool, including pen role/color/width/cap.',
+            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image place_reference pen extend_path replace_path boolean slice offset_path stroke_to_path path_edit normalize_path reorder duplicate array resize restyle move rename remove set_canvas accept_finding unaccept_finding group constraint. Args match the same-named tool, including pen role/color/width/cap.',
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
