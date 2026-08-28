@@ -22,6 +22,11 @@ import * as tone_ from './tone.js';
 import * as pattern_ from './pattern.js';
 import * as wireframe_ from './wireframe.js';
 import * as perspective_ from './perspective.js';
+import * as edit_ from './edit.js';
+import {
+  booleanGeometry, sliceGeometry, offsetPath, strokeToPath, editPath, normalizePath,
+  reorderElement, duplicateElement, arrayElements, inspectGeometry,
+} from './edit.js';
 
 import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
@@ -49,6 +54,7 @@ export { tone_ as tone };
 export { pattern_ as pattern };
 export { wireframe_ as wireframe };
 export { perspective_ as perspective };
+export { edit_ as edit };
 export {
   createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, findElement,
   elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
@@ -58,6 +64,8 @@ export {
   renderAscii, renderSvg,
   perceptual,
   MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign,
+  booleanGeometry, sliceGeometry, offsetPath, strokeToPath, editPath, normalizePath,
+  reorderElement, duplicateElement, arrayElements, inspectGeometry,
 };
 export { PALETTE, PALETTE_DARK, SEVERITY_CUE } from './svg.js';
 
@@ -513,6 +521,15 @@ export const OPERATIONS = Object.freeze({
   }),
   extend_path: (doc, a) => extendPath(doc, a.id, a.program),
   replace_path: (doc, a) => replacePath(doc, a.id, a.program),
+  boolean: (doc, a) => booleanGeometry(doc, a),
+  slice: (doc, a) => sliceGeometry(doc, a),
+  offset_path: (doc, a) => offsetPath(doc, a),
+  stroke_to_path: (doc, a) => strokeToPath(doc, a),
+  path_edit: (doc, a) => editPath(doc, a),
+  normalize_path: (doc, a) => normalizePath(doc, a),
+  reorder: (doc, a) => reorderElement(doc, a),
+  duplicate: (doc, a) => duplicateElement(doc, a),
+  array: (doc, a) => arrayElements(doc, a),
   resize: (doc, a) => resizeBox(doc, a.id, a),
   restyle: (doc, a) => restyleBox(doc, a.id, a),
   move: (doc, a) => {
