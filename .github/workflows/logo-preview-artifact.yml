@@ -1,0 +1,26 @@
+name: Export TurtlePen logo preview artifact
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/logo-preview-artifact.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  export-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify existing preview
+        run: test -s brand/logo-redesign-preview.png
+      - name: Upload preview for inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: turtlepen-logo-preview
+          path: brand/logo-redesign-preview.png
+          if-no-files-found: error
+          retention-days: 1
