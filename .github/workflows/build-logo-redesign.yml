@@ -1,0 +1,44 @@
+name: Build TurtlePen MCP logo redesign
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'examples/logo-redesign-mcp.js'
+      - '.github/workflows/build-logo-redesign.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-logo-redesign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build through the real TurtlePen MCP server
+        run: node examples/logo-redesign-mcp.js
+
+      - name: Verify generated artifacts exist
+        run: |
+          test -s brand/logo-redesign.turtlepen.json
+          test -s brand/logo-redesign.svg
+
+      - name: Commit generated TurtlePen artifacts
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add brand/logo-redesign.turtlepen.json brand/logo-redesign.svg
+          if git diff --cached --quiet; then
+            echo 'No generated changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Generate TurtlePen MCP logo redesign'
+          git push
