@@ -13,7 +13,7 @@ the exact shared core path. Name-count checks alone are not considered coverage.
 | `notifications/cancelled` | accepted without a reply | notification response suppression | `test/mcp.test.js` |
 | `ping` | returns an empty result | connection remains ordered | `test/mcp.test.js` |
 | `tools/list` | schemas for the complete live tool set | exact comparison to `createTools` prevents drift | `test/mcp.test.js` |
-| `tools/call` | all 61 tools complete over real stdio | unknown tool, schema refusal, and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
+| `tools/call` | all 73 tools complete over real stdio | unknown tool, schema refusal, and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
 | unknown request | n/a | JSON-RPC `-32601` | `test/mcp.test.js` |
 | malformed JSON | n/a | JSON-RPC `-32700` with null id | `test/mcp.test.js` |
 
