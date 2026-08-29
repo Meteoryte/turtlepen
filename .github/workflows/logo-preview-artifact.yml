@@ -15,12 +15,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify existing preview
-        run: test -s brand/logo-redesign-preview.png
-      - name: Upload preview for inspection
+
+      - name: Prepare visual review set
+        shell: bash
+        run: |
+          test -s brand/logo-redesign-preview.png
+          test -s brand/logo-v2-source-mark.png
+          test -s brand/logo.svg
+          test -s brand/logo-mark.svg
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq librsvg2-bin
+          mkdir -p /tmp/turtlepen-logo-review
+          cp brand/logo-redesign-preview.png /tmp/turtlepen-logo-review/redesign-preview.png
+          cp brand/logo-v2-source-mark.png /tmp/turtlepen-logo-review/reference-source-mark.png
+          rsvg-convert -w 900 brand/logo.svg -o /tmp/turtlepen-logo-review/canonical-logo.png
+          rsvg-convert -w 900 brand/logo-mark.svg -o /tmp/turtlepen-logo-review/canonical-mark.png
+
+      - name: Upload review set
         uses: actions/upload-artifact@v4
         with:
-          name: turtlepen-logo-preview
-          path: brand/logo-redesign-preview.png
+          name: turtlepen-logo-review-set
+          path: /tmp/turtlepen-logo-review/
           if-no-files-found: error
           retention-days: 1
