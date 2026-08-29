@@ -17,7 +17,15 @@ function colName(n) {
   while (n > 0) { n -= 1; s = String.fromCharCode(65 + (n % 26)) + s; n = Math.floor(n / 26); }
   return s;
 }
-const q = (x, y, pin = 'c') => `${colName(Math.max(1, Math.ceil(x / 2)))}${Math.max(1, Math.ceil(y / 2))}.${pin}`;
+const q = (x, y, pin = null) => {
+      const col = Math.floor(x / 2);
+      const row = Math.floor(y / 2);
+      if (pin) return `${colName(col + 1)}${row + 1}.${pin}`;
+      const qx = x - col * 2;
+      const qy = y - row * 2;
+      const part = qy === 0 ? (qx === 0 ? 'q1' : 'q2') : (qx === 0 ? 'q3' : 'q4');
+      return `${colName(col + 1)}${row + 1}.${part}`;
+    };
 const cell = (x, y, pin = 'c') => `${colName(x)}${y}.${pin}`;
 
 async function call(mcp, name, args = {}, { print = false } = {}) {
@@ -71,11 +79,11 @@ try {
   // The supplied brand source is scaffolding only. TurtlePen itself flags the
   // document until this page is removed, which prevents the raster from shipping.
   await call(mcp, 'measure_image', {
-    source: 'brand/logo-v2-source-mark.png', maxWidthCells: 78, maxHeightCells: 86,
+    source: 'logo-v2-source-mark.png', maxWidthCells: 78,
   }, { print: true });
   await call(mcp, 'place_reference', {
-    id: 'trace-source', source: 'brand/logo-v2-source-mark.png',
-    at: 'D12.tl', span: '78x86', opacity: 0.16, mode: 'simplify', fit: 'contain', detail: 'high', supersample: 4,
+    id: 'trace-source', source: 'logo-v2-source-mark.png',
+    at: 'D12.tl', span: '78x65', opacity: 0.16, mode: 'simplify', fit: 'contain', detail: 'high', supersample: 4,
   }, { print: true });
 
   const pages = [
@@ -160,7 +168,7 @@ try {
   line('smile', polyline([[93,65],[97,69],[103,71],[110,69]]), C.navy, 4, 'features');
 
   // pen in hand + a lively native drawing gesture on the canvas
-  line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 6, 'features');
+  line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 5, 'features');
   line('pen-inner', polyline([[145,82],[168,95]]), C.orange, 3, 'features');
   solid('pen-nib-fill', polygonFill([[168,93],[176,101],[166,98]]), C.navy, 'features');
   line('canvas-gesture-a', polyline([[171,101],[179,99],[187,94],[193,86],[197,76]]), C.greenDark, 5, 'ink');
@@ -220,7 +228,7 @@ try {
   await call(mcp, 'annotate', {
     id:'board-fill', description:'Central canvas from which TurtlePen capability splashes emerge',
     technology:'TurtlePen lattice artwork', tags:['brand','canvas','capability-source'],
-    properties:{ referenceUsedOnlyForAuthoring:true, shippedRaster:false },
+    properties:{ referenceUsedOnlyForAuthoring:'true', shippedRaster:'false' },
   });
   await call(mcp, 'annotate', {
     id:'shell-fill', description:'Friendly turtle artist mascot reconstructed as native exact lattice artwork',

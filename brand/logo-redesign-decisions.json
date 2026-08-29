@@ -1,5 +1,2305 @@
 {
-  "extraction": "no validation payload found",
-  "summary": null,
-  "findings": []
+  "extraction": "ok",
+  "summary": {
+    "S0": 0,
+    "S1": 0,
+    "S2": 65,
+    "S3": 290,
+    "total": 355,
+    "accepted": 0,
+    "stale": 0,
+    "clean": false,
+    "state": "needs-decisions"
+  },
+  "findings": [
+    {
+      "fingerprint": "bd00c7b2d225",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "arm",
+      "message": "paths \"arm-fill\" and \"hand-fill\" share 243 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "arm-fill",
+        "hand-fill"
+      ],
+      "cells": [
+        "BP45.q2",
+        "BP45.q3",
+        "BP45.q4",
+        "BP46.q1",
+        "BP46.q2",
+        "BP46.q3",
+        "BP46.q4",
+        "BP47.q1",
+        "BP47.q2",
+        "BP47.q4",
+        "BP48.q2",
+        "BQ44.q3",
+        "BQ44.q4",
+        "BQ45.q1",
+        "BQ45.q2",
+        "BQ45.q3",
+        "BQ45.q4",
+        "BQ46.q1",
+        "BQ46.q2",
+        "BQ46.q3",
+        "BQ46.q4",
+        "BQ47.q1",
+        "BQ47.q2",
+        "BQ47.q3"
+      ],
+      "cellSummary": "BP45 BP46 BP47 BP48 BQ44 BQ45 BQ46 BQ47",
+      "metrics": {
+        "quadrants": 243
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "13de7839dee4",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "body",
+      "message": "paths \"left-foot-fill\" and \"plastron-fill\" share 8 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "left-foot-fill",
+        "plastron-fill"
+      ],
+      "cells": [
+        "AN73.q3",
+        "AN74.q2",
+        "AN74.q4",
+        "AO74.q3",
+        "AO75.q1",
+        "AO75.q2",
+        "AO75.q4",
+        "AP76.q1"
+      ],
+      "cellSummary": "AN73 AN74 AO74 AO75 AP76",
+      "metrics": {
+        "quadrants": 8
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "9c151df8b8be",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "body",
+      "message": "paths \"right-foot-fill\" and \"plastron-fill\" share 84 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "right-foot-fill",
+        "plastron-fill"
+      ],
+      "cells": [
+        "AT74.q2",
+        "AT74.q4",
+        "AT75.q2",
+        "AT75.q4",
+        "AT76.q2",
+        "AT76.q4",
+        "AT77.q2",
+        "AT77.q4",
+        "AT78.q2",
+        "AU74.q1",
+        "AU74.q2",
+        "AU74.q3",
+        "AU74.q4",
+        "AU75.q1",
+        "AU75.q2",
+        "AU75.q3",
+        "AU75.q4",
+        "AU76.q1",
+        "AU76.q2",
+        "AU76.q3",
+        "AU76.q4",
+        "AU77.q1",
+        "AU77.q2",
+        "AU77.q3"
+      ],
+      "cellSummary": "AT74 AT75 AT76 AT77 AT78 AU74 AU75 AU76 \u2026+1 more",
+      "metrics": {
+        "quadrants": 84
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "2a8252c2c84d",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "easel",
+      "message": "paths \"board-fill\" and \"tray-fill\" share 66 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "board-fill",
+        "tray-fill"
+      ],
+      "cells": [
+        "BO64.q1",
+        "BO64.q2",
+        "BP64.q1",
+        "BP64.q2",
+        "BQ64.q1",
+        "BQ64.q2",
+        "BR64.q1",
+        "BR64.q2",
+        "BS64.q1",
+        "BS64.q2",
+        "BT64.q1",
+        "BT64.q2",
+        "BU64.q1",
+        "BU64.q2",
+        "BV64.q1",
+        "BV64.q2",
+        "BW64.q1",
+        "BW64.q2",
+        "BX64.q1",
+        "BX64.q2",
+        "BY64.q1",
+        "BY64.q2",
+        "BZ64.q1",
+        "BZ64.q2"
+      ],
+      "cellSummary": "BO64 BP64 BQ64 BR64 BS64 BT64 BU64 BV64 \u2026+4 more",
+      "metrics": {
+        "quadrants": 66
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "96a002ab47ea",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "easel",
+      "message": "paths \"tray-fill\" and \"leg-left-fill\" share 9 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "tray-fill",
+        "leg-left-fill"
+      ],
+      "cells": [
+        "BR67.q2",
+        "BS67.q1",
+        "BS67.q2",
+        "BT67.q1",
+        "BT67.q2",
+        "BU67.q1",
+        "BU67.q2",
+        "BV67.q1",
+        "BV67.q2"
+      ],
+      "cellSummary": "BR67 BS67 BT67 BU67 BV67",
+      "metrics": {
+        "quadrants": 9
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "471f6b642b2a",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "easel",
+      "message": "paths \"leg-left-fill\" and \"brace-fill\" share 4 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "leg-left-fill",
+        "brace-fill"
+      ],
+      "cells": [
+        "BS80.q2",
+        "BT78.q1",
+        "BT78.q3",
+        "BT79.q1"
+      ],
+      "cellSummary": "BS80 BT78 BT79",
+      "metrics": {
+        "quadrants": 4
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "f9b5ce6b3fe7",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "easel",
+      "message": "paths \"board-fill\" and \"clip-fill\" share 140 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "board-fill",
+        "clip-fill"
+      ],
+      "cells": [
+        "CE25.q4",
+        "CE26.q2",
+        "CF23.q3",
+        "CF23.q4",
+        "CF24.q1",
+        "CF24.q2",
+        "CF24.q3",
+        "CF24.q4",
+        "CF25.q1",
+        "CF25.q2",
+        "CF25.q3",
+        "CF25.q4",
+        "CF26.q1",
+        "CF26.q2",
+        "CG23.q1",
+        "CG23.q2",
+        "CG23.q3",
+        "CG23.q4",
+        "CG24.q1",
+        "CG24.q2",
+        "CG24.q3",
+        "CG24.q4",
+        "CG25.q1",
+        "CG25.q2"
+      ],
+      "cellSummary": "CE25 CE26 CF23 CF24 CF25 CF26 CG23 CG24 \u2026+1 more",
+      "metrics": {
+        "quadrants": 140
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "8cc3768ee478",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "easel",
+      "message": "paths \"clip-fill\" and \"clip-tab-fill\" share 9 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "clip-fill",
+        "clip-tab-fill"
+      ],
+      "cells": [
+        "CI21.q3",
+        "CI21.q4",
+        "CJ21.q3",
+        "CJ21.q4",
+        "CK21.q3",
+        "CK21.q4",
+        "CL21.q3",
+        "CL21.q4",
+        "CM21.q3"
+      ],
+      "cellSummary": "CI21 CJ21 CK21 CL21 CM21",
+      "metrics": {
+        "quadrants": 9
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "16ea47d8210d",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "easel",
+      "message": "paths \"tray-fill\" and \"leg-right-fill\" share 9 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "tray-fill",
+        "leg-right-fill"
+      ],
+      "cells": [
+        "CO67.q1",
+        "CO67.q2",
+        "CP67.q1",
+        "CP67.q2",
+        "CQ67.q1",
+        "CQ67.q2",
+        "CR67.q1",
+        "CR67.q2",
+        "CS67.q1"
+      ],
+      "cellSummary": "CO67 CP67 CQ67 CR67 CS67",
+      "metrics": {
+        "quadrants": 9
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "5e87f6771ca1",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-rim\" and \"shell-left-plates\" share 4 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-rim",
+        "shell-left-plates"
+      ],
+      "cells": [
+        "AC72.q3",
+        "AC72.q4",
+        "AD73.q1",
+        "AE37.q2"
+      ],
+      "cellSummary": "AC72 AD73 AE37",
+      "metrics": {
+        "quadrants": 4
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "9c5e026721a8",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-rim\" and \"shell-right-plates\" share 4 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-rim",
+        "shell-right-plates"
+      ],
+      "cells": [
+        "AE37.q2",
+        "AG73.q1",
+        "AG73.q2",
+        "AH72.q4"
+      ],
+      "cellSummary": "AE37 AG73 AH72",
+      "metrics": {
+        "quadrants": 4
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "afa95232c2ff",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-left-plates\" and \"shell-right-plates\" share 3 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-left-plates",
+        "shell-right-plates"
+      ],
+      "cells": [
+        "AE37.q2",
+        "AE55.q2",
+        "AE74.q2"
+      ],
+      "cellSummary": "AE37 AE55 AE74",
+      "metrics": {
+        "quadrants": 3
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "aaa9091bcdbc",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-band\" and \"shell-left-plates\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-band",
+        "shell-left-plates"
+      ],
+      "cells": [
+        "AE55.q1",
+        "AE55.q2"
+      ],
+      "cellSummary": "AE55",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "b873ffa81c5a",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-band\" and \"shell-right-plates\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-band",
+        "shell-right-plates"
+      ],
+      "cells": [
+        "AE55.q2",
+        "AF55.q1"
+      ],
+      "cellSummary": "AE55 AF55",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "ba8feefe9e4a",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-right-plates\" and \"chest-seams-b\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-right-plates",
+        "chest-seams-b"
+      ],
+      "cells": [
+        "AK60.q4",
+        "AL60.q3"
+      ],
+      "cellSummary": "AK60 AL60",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "bfc6a1cddb47",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-right-plates\" and \"chest-seams-c\" share 1 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-right-plates",
+        "chest-seams-c"
+      ],
+      "cells": [
+        "AK70.q2"
+      ],
+      "cellSummary": "AK70",
+      "metrics": {
+        "quadrants": 1
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "4d8775378307",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"eye-left-white\" and \"eye-left-outline\" share 28 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "eye-left-white",
+        "eye-left-outline"
+      ],
+      "cells": [
+        "AM25.q4",
+        "AN23.q2",
+        "AN23.q3",
+        "AN24.q1",
+        "AN27.q1",
+        "AN27.q3",
+        "AN28.q2",
+        "AO22.q2",
+        "AO29.q2",
+        "AP21.q3",
+        "AP21.q4",
+        "AP29.q3",
+        "AP29.q4",
+        "AR21.q1",
+        "AR30.q1",
+        "AS21.q4",
+        "AS29.q4",
+        "AT21.q3",
+        "AT22.q2",
+        "AT29.q2",
+        "AT29.q3",
+        "AU23.q2",
+        "AU28.q2",
+        "AV23.q3"
+      ],
+      "cellSummary": "AM25 AN23 AN24 AN27 AN28 AO22 AO29 AP21 \u2026+11 more",
+      "metrics": {
+        "quadrants": 28
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "00641303386a",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-right-plates\" and \"chest-seams-a\" share 1 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-right-plates",
+        "chest-seams-a"
+      ],
+      "cells": [
+        "AN51.q2"
+      ],
+      "cellSummary": "AN51",
+      "metrics": {
+        "quadrants": 1
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "54ec04bce6a6",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-rim\" and \"chest-seams-c\" share 1 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-rim",
+        "chest-seams-c"
+      ],
+      "cells": [
+        "AN70.q2"
+      ],
+      "cellSummary": "AN70",
+      "metrics": {
+        "quadrants": 1
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "4b9d888d97b3",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"eye-left-white\" and \"pupil-left\" share 49 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "eye-left-white",
+        "pupil-left"
+      ],
+      "cells": [
+        "AP25.q4",
+        "AQ24.q2",
+        "AQ24.q3",
+        "AQ24.q4",
+        "AQ25.q1",
+        "AQ25.q2",
+        "AQ25.q3",
+        "AQ25.q4",
+        "AQ26.q1",
+        "AQ26.q2",
+        "AQ26.q3",
+        "AQ26.q4",
+        "AQ27.q2",
+        "AR23.q4",
+        "AR24.q1",
+        "AR24.q2",
+        "AR24.q3",
+        "AR24.q4",
+        "AR25.q1",
+        "AR25.q2",
+        "AR25.q3",
+        "AR25.q4",
+        "AR26.q1",
+        "AR26.q2"
+      ],
+      "cellSummary": "AP25 AQ24 AQ25 AQ26 AQ27 AR23 AR24 AR25 \u2026+1 more",
+      "metrics": {
+        "quadrants": 49
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "8f3a7e34d267",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"eye-left-white\" and \"eye-glint-left\" share 5 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "eye-left-white",
+        "eye-glint-left"
+      ],
+      "cells": [
+        "AR24.q4",
+        "AS24.q1",
+        "AS24.q3",
+        "AS24.q4",
+        "AS25.q1"
+      ],
+      "cellSummary": "AR24 AS24 AS25",
+      "metrics": {
+        "quadrants": 5
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "5f6ad5a29a00",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"pupil-left\" and \"eye-glint-left\" share 5 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "pupil-left",
+        "eye-glint-left"
+      ],
+      "cells": [
+        "AR24.q4",
+        "AS24.q1",
+        "AS24.q3",
+        "AS24.q4",
+        "AS25.q1"
+      ],
+      "cellSummary": "AR24 AS24 AS25",
+      "metrics": {
+        "quadrants": 5
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "0ef741ad226a",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-rim\" and \"chest-seams-a\" share 1 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-rim",
+        "chest-seams-a"
+      ],
+      "cells": [
+        "AU51.q2"
+      ],
+      "cellSummary": "AU51",
+      "metrics": {
+        "quadrants": 1
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "ca52389193a2",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-rim\" and \"chest-seams-b\" share 1 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-rim",
+        "chest-seams-b"
+      ],
+      "cells": [
+        "AU60.q3"
+      ],
+      "cellSummary": "AU60",
+      "metrics": {
+        "quadrants": 1
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "528187118d30",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"shell-rim\" and \"shell-band\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-rim",
+        "shell-band"
+      ],
+      "cells": [
+        "AV55.q1",
+        "P55.q1"
+      ],
+      "cellSummary": "AV55 P55",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "2bd93028afb1",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"eye-right-white\" and \"eye-right-outline\" share 20 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "eye-right-white",
+        "eye-right-outline"
+      ],
+      "cells": [
+        "BA25.q2",
+        "BB22.q4",
+        "BB23.q3",
+        "BB26.q3",
+        "BB27.q4",
+        "BC22.q1",
+        "BC28.q1",
+        "BD21.q3",
+        "BD28.q3",
+        "BE21.q2",
+        "BE29.q2",
+        "BG21.q3",
+        "BG28.q3",
+        "BH22.q1",
+        "BH22.q4",
+        "BH27.q4",
+        "BH28.q1",
+        "BI23.q3",
+        "BI25.q2",
+        "BI26.q3"
+      ],
+      "cellSummary": "BA25 BB22 BB23 BB26 BB27 BC22 BC28 BD21 \u2026+11 more",
+      "metrics": {
+        "quadrants": 20
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "915b77d572db",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"eye-right-white\" and \"pupil-right\" share 29 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "eye-right-white",
+        "pupil-right"
+      ],
+      "cells": [
+        "BC24.q4",
+        "BC25.q2",
+        "BC25.q3",
+        "BC25.q4",
+        "BC26.q2",
+        "BC26.q4",
+        "BD24.q2",
+        "BD24.q3",
+        "BD24.q4",
+        "BD25.q1",
+        "BD25.q2",
+        "BD25.q3",
+        "BD25.q4",
+        "BD26.q1",
+        "BD26.q2",
+        "BD26.q3",
+        "BD26.q4",
+        "BD27.q2",
+        "BE24.q3",
+        "BE24.q4",
+        "BE25.q1",
+        "BE25.q2",
+        "BE25.q3",
+        "BE25.q4"
+      ],
+      "cellSummary": "BC24 BC25 BC26 BD24 BD25 BD26 BD27 BE24 \u2026+1 more",
+      "metrics": {
+        "quadrants": 29
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "6732db99256e",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"eye-right-white\" and \"eye-glint-right\" share 5 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "eye-right-white",
+        "eye-glint-right"
+      ],
+      "cells": [
+        "BD24.q4",
+        "BE24.q1",
+        "BE24.q3",
+        "BE24.q4",
+        "BE25.q1"
+      ],
+      "cellSummary": "BD24 BE24 BE25",
+      "metrics": {
+        "quadrants": 5
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "e245ae30a59e",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"pupil-right\" and \"eye-glint-right\" share 4 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "pupil-right",
+        "eye-glint-right"
+      ],
+      "cells": [
+        "BD24.q4",
+        "BE24.q3",
+        "BE24.q4",
+        "BE25.q1"
+      ],
+      "cellSummary": "BD24 BE24 BE25",
+      "metrics": {
+        "quadrants": 4
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "7e57b63b2412",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"pen-outer\" and \"pen-nib-fill\" share 3 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "pen-outer",
+        "pen-nib-fill"
+      ],
+      "cells": [
+        "CF49.q2",
+        "CG49.q1",
+        "CG49.q4"
+      ],
+      "cellSummary": "CF49 CG49",
+      "metrics": {
+        "quadrants": 3
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "9dd1c7073924",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "features",
+      "message": "paths \"pen-inner\" and \"pen-nib-fill\" share 1 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "pen-inner",
+        "pen-nib-fill"
+      ],
+      "cells": [
+        "CG48.q3"
+      ],
+      "cellSummary": "CG48",
+      "metrics": {
+        "quadrants": 1
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "1f66cc04cc5f",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "head",
+      "message": "paths \"neck-fill\" and \"head-fill\" share 133 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "neck-fill",
+        "head-fill"
+      ],
+      "cells": [
+        "AL37.q2",
+        "AM37.q1",
+        "AM37.q2",
+        "AM37.q3",
+        "AM37.q4",
+        "AM38.q2",
+        "AN37.q1",
+        "AN37.q2",
+        "AN37.q3",
+        "AN37.q4",
+        "AN38.q1",
+        "AN38.q2",
+        "AN38.q4",
+        "AO37.q1",
+        "AO37.q2",
+        "AO37.q3",
+        "AO37.q4",
+        "AO38.q1",
+        "AO38.q2",
+        "AO38.q3",
+        "AO38.q4",
+        "AO39.q2",
+        "AP37.q1",
+        "AP37.q2"
+      ],
+      "cellSummary": "AL37 AM37 AM38 AN37 AN38 AO37 AO38 AO39 \u2026+1 more",
+      "metrics": {
+        "quadrants": 133
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "ab1bb538039f",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "head",
+      "message": "paths \"head-fill\" and \"snout-fill\" share 659 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "head-fill",
+        "snout-fill"
+      ],
+      "cells": [
+        "AR30.q4",
+        "AS27.q4",
+        "AS28.q2",
+        "AS28.q3",
+        "AS28.q4",
+        "AS29.q1",
+        "AS29.q2",
+        "AS29.q3",
+        "AS29.q4",
+        "AS30.q1",
+        "AS30.q2",
+        "AS30.q3",
+        "AS30.q4",
+        "AS31.q1",
+        "AS31.q2",
+        "AS31.q3",
+        "AS31.q4",
+        "AS32.q1",
+        "AS32.q2",
+        "AS32.q3",
+        "AS32.q4",
+        "AS33.q2",
+        "AS33.q4",
+        "AT26.q2"
+      ],
+      "cellSummary": "AR30 AS27 AS28 AS29 AS30 AS31 AS32 AS33 \u2026+1 more",
+      "metrics": {
+        "quadrants": 659
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "ef01b3eb9d2f",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "head",
+      "message": "paths \"neck-fill\" and \"snout-fill\" share 3 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "neck-fill",
+        "snout-fill"
+      ],
+      "cells": [
+        "AX37.q1",
+        "AX37.q2",
+        "AY37.q1"
+      ],
+      "cellSummary": "AX37 AY37",
+      "metrics": {
+        "quadrants": 3
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "768276bb4723",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"shell-outline\" and \"head-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-outline",
+        "head-outline"
+      ],
+      "cells": [
+        "AI34.q2",
+        "AT40.q1"
+      ],
+      "cellSummary": "AI34 AT40",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "724792fce6fe",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"neck-outline\" and \"head-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "neck-outline",
+        "head-outline"
+      ],
+      "cells": [
+        "AL37.q2",
+        "AY39.q1"
+      ],
+      "cellSummary": "AL37 AY39",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "61ce1e89d22c",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"plastron-outline\" and \"neck-outline\" share 5 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "plastron-outline",
+        "neck-outline"
+      ],
+      "cells": [
+        "AM40.q3",
+        "AM41.q1",
+        "AP37.q1",
+        "AY37.q1",
+        "AY37.q4"
+      ],
+      "cellSummary": "AM40 AM41 AP37 AY37",
+      "metrics": {
+        "quadrants": 5
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "1dc5216ff097",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"left-foot-outline\" and \"plastron-outline\" share 4 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "left-foot-outline",
+        "plastron-outline"
+      ],
+      "cells": [
+        "AM72.q3",
+        "AM73.q2",
+        "AP76.q1",
+        "AP76.q4"
+      ],
+      "cellSummary": "AM72 AM73 AP76",
+      "metrics": {
+        "quadrants": 4
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "d6793dd9dd33",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"shell-outline\" and \"plastron-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-outline",
+        "plastron-outline"
+      ],
+      "cells": [
+        "AN74.q4",
+        "AP37.q1"
+      ],
+      "cellSummary": "AN74 AP37",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "3f9627bebcd2",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"shell-outline\" and \"left-foot-outline\" share 1 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-outline",
+        "left-foot-outline"
+      ],
+      "cells": [
+        "AO74.q1"
+      ],
+      "cellSummary": "AO74",
+      "metrics": {
+        "quadrants": 1
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "e77e5d5c558e",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"shell-outline\" and \"neck-outline\" share 3 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-outline",
+        "neck-outline"
+      ],
+      "cells": [
+        "AP37.q1",
+        "AP37.q2",
+        "AX46.q3"
+      ],
+      "cellSummary": "AP37 AX46",
+      "metrics": {
+        "quadrants": 3
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "6a28c59b6f5d",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"plastron-outline\" and \"snout-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "plastron-outline",
+        "snout-outline"
+      ],
+      "cells": [
+        "AT35.q2",
+        "AY37.q4"
+      ],
+      "cellSummary": "AT35 AY37",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "e30e34bcdc0a",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"right-foot-outline\" and \"plastron-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "right-foot-outline",
+        "plastron-outline"
+      ],
+      "cells": [
+        "AT78.q1",
+        "BA73.q3"
+      ],
+      "cellSummary": "AT78 BA73",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "db5f43c9f39c",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"neck-outline\" and \"snout-outline\" share 4 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "neck-outline",
+        "snout-outline"
+      ],
+      "cells": [
+        "AW37.q2",
+        "AX37.q1",
+        "AX37.q2",
+        "AY37.q4"
+      ],
+      "cellSummary": "AW37 AX37 AY37",
+      "metrics": {
+        "quadrants": 4
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "7a7e9b4e9de9",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"shell-outline\" and \"arm-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "shell-outline",
+        "arm-outline"
+      ],
+      "cells": [
+        "AX47.q4",
+        "AY55.q4"
+      ],
+      "cellSummary": "AX47 AY55",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "55e63d6aa883",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"plastron-outline\" and \"head-outline\" share 1 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "plastron-outline",
+        "head-outline"
+      ],
+      "cells": [
+        "AZ38.q4"
+      ],
+      "cellSummary": "AZ38",
+      "metrics": {
+        "quadrants": 1
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "80f3170dc720",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"head-outline\" and \"snout-outline\" share 3 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "head-outline",
+        "snout-outline"
+      ],
+      "cells": [
+        "BB37.q3",
+        "BB37.q4",
+        "BH26.q3"
+      ],
+      "cellSummary": "BB37 BH26",
+      "metrics": {
+        "quadrants": 3
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "fad40311db01",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"plastron-outline\" and \"arm-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "plastron-outline",
+        "arm-outline"
+      ],
+      "cells": [
+        "BE50.q3",
+        "BE56.q4"
+      ],
+      "cellSummary": "BE50 BE56",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "7149b776a1f0",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"arm-outline\" and \"hand-outline\" share 3 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "arm-outline",
+        "hand-outline"
+      ],
+      "cells": [
+        "BO46.q2",
+        "BV50.q3",
+        "BV50.q4"
+      ],
+      "cellSummary": "BO46 BV50",
+      "metrics": {
+        "quadrants": 3
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "aeb97b8d2cd4",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"board-outline\" and \"tray-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "board-outline",
+        "tray-outline"
+      ],
+      "cells": [
+        "BO64.q1",
+        "CV64.q1"
+      ],
+      "cellSummary": "BO64 CV64",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "fc8fb498da82",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"board-outline\" and \"arm-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "board-outline",
+        "arm-outline"
+      ],
+      "cells": [
+        "BP54.q2",
+        "BR43.q4"
+      ],
+      "cellSummary": "BP54 BR43",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "489bb52315b9",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"board-outline\" and \"hand-outline\" share 3 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "board-outline",
+        "hand-outline"
+      ],
+      "cells": [
+        "BQ49.q2",
+        "BQ49.q4",
+        "BR41.q2"
+      ],
+      "cellSummary": "BQ49 BR41",
+      "metrics": {
+        "quadrants": 3
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "7bf60cef158b",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"tray-outline\" and \"leg-left-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "tray-outline",
+        "leg-left-outline"
+      ],
+      "cells": [
+        "BR67.q4",
+        "BW67.q3"
+      ],
+      "cellSummary": "BR67 BW67",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "d9cafa8d0aa4",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"leg-left-outline\" and \"brace-outline\" share 3 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "leg-left-outline",
+        "brace-outline"
+      ],
+      "cells": [
+        "BT78.q2",
+        "BT79.q1",
+        "BT80.q3"
+      ],
+      "cellSummary": "BT78 BT79 BT80",
+      "metrics": {
+        "quadrants": 3
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "95931edae97f",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"board-outline\" and \"clip-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "board-outline",
+        "clip-outline"
+      ],
+      "cells": [
+        "CF23.q1",
+        "CP23.q1"
+      ],
+      "cellSummary": "CF23 CP23",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "164957d5b4e7",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"clip-outline\" and \"clip-tab-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "clip-outline",
+        "clip-tab-outline"
+      ],
+      "cells": [
+        "CI21.q3",
+        "CM21.q4"
+      ],
+      "cellSummary": "CI21 CM21",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "93c27883841d",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"tray-outline\" and \"leg-right-outline\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "tray-outline",
+        "leg-right-outline"
+      ],
+      "cells": [
+        "CO67.q3",
+        "CS67.q4"
+      ],
+      "cellSummary": "CO67 CS67",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "932dac2ae65e",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "outlines",
+      "message": "paths \"leg-right-outline\" and \"brace-outline\" share 5 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "leg-right-outline",
+        "brace-outline"
+      ],
+      "cells": [
+        "CQ78.q2",
+        "CR79.q1",
+        "CR79.q3",
+        "CR80.q1",
+        "CR80.q3"
+      ],
+      "cellSummary": "CQ78 CR79 CR80",
+      "metrics": {
+        "quadrants": 5
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "53aa0e070c1c",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "splash-back",
+      "message": "paths \"burst-orange\" and \"trail-measure\" share 1 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "burst-orange",
+        "trail-measure"
+      ],
+      "cells": [
+        "BC21.q1"
+      ],
+      "cellSummary": "BC21",
+      "metrics": {
+        "quadrants": 1
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "5231d28d59e0",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "splash-back",
+      "message": "paths \"burst-orange\" and \"drop-orange-a\" share 3 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "burst-orange",
+        "drop-orange-a"
+      ],
+      "cells": [
+        "BC8.q4",
+        "BC9.q2",
+        "BC9.q4"
+      ],
+      "cellSummary": "BC8 BC9",
+      "metrics": {
+        "quadrants": 3
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "fdbbff5a0aa2",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "splash-back",
+      "message": "paths \"burst-coral\" and \"trail-trace\" share 1 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "burst-coral",
+        "trail-trace"
+      ],
+      "cells": [
+        "BS17.q3"
+      ],
+      "cellSummary": "BS17",
+      "metrics": {
+        "quadrants": 1
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "9759c0b9ecf1",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "splash-back",
+      "message": "paths \"burst-coral\" and \"drop-coral-a\" share 4 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "burst-coral",
+        "drop-coral-a"
+      ],
+      "cells": [
+        "CB8.q4",
+        "CC7.q2",
+        "CC7.q3",
+        "CC8.q1"
+      ],
+      "cellSummary": "CB8 CC7 CC8",
+      "metrics": {
+        "quadrants": 4
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "a2c2fb20c3fd",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "splash-back",
+      "message": "paths \"burst-cyan\" and \"drop-cyan-a\" share 2 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "burst-cyan",
+        "drop-cyan-a"
+      ],
+      "cells": [
+        "CN60.q1",
+        "CN60.q4"
+      ],
+      "cellSummary": "CN60",
+      "metrics": {
+        "quadrants": 2
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "ddf16ce5c29d",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "splash-back",
+      "message": "paths \"burst-violet\" and \"drop-violet-a\" share 4 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "burst-violet",
+        "drop-violet-a"
+      ],
+      "cells": [
+        "CR22.q4",
+        "CS22.q3",
+        "CS22.q4",
+        "CT22.q3"
+      ],
+      "cellSummary": "CR22 CS22 CT22",
+      "metrics": {
+        "quadrants": 4
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    },
+    {
+      "fingerprint": "8968313daf05",
+      "rule": "L006",
+      "severity": "S2",
+      "severityLabel": "WARN",
+      "title": "stroke overlap",
+      "page": "splash-back",
+      "message": "paths \"drop-violet-a\" and \"trail-edit\" share 3 quadrant(s) with no junction or hop \u2014 they will render as a merged line",
+      "actors": [
+        "drop-violet-a",
+        "trail-edit"
+      ],
+      "cells": [
+        "CT24.q4",
+        "CU24.q2",
+        "CV23.q3"
+      ],
+      "cellSummary": "CT24 CU24 CV23",
+      "metrics": {
+        "quadrants": 3
+      },
+      "fixes": [
+        {
+          "kind": "offset",
+          "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+        },
+        {
+          "kind": "hop",
+          "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+        }
+      ]
+    }
+  ]
 }
