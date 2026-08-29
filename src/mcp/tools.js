@@ -8,9 +8,13 @@
  */
 
 import { createHash } from 'node:crypto';
-import { readFile, stat, writeFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import * as core from '../core/index.js';
+import { atomicWriteFile } from '../io.js';
+import { VERSION } from '../version.js';
+import { assertSchema } from './schema.js';
+import { capabilityRegistry, doctorReport, searchCapabilities } from '../capabilities.js';
 
 const REQUIRE_DOC = 'no diagram is open — call new_diagram or open_diagram first';
 const HISTORY_SCHEMA = 1;
@@ -29,8 +33,8 @@ export function createSession({ cwd = process.cwd(), createdAt = null, historyLi
     throw new RangeError(`historyLimit must be a whole number from 1 to ${MAX_HISTORY_LIMIT} — got ${JSON.stringify(historyLimit)}`);
   }
   return {
-    doc: null, path: null, cwd, createdAt, historyLimit, progress: core.createProgressLog(),
-    history: [], future: [], historyNotice: 'no diagram is open',
+    doc: null, path: null, diskHash: null, cwd, createdAt, startedAt: new Date().toISOString(), historyLimit, progress: core.createProgressLog(),
+    history: [], future: [], historyNotice: 'no diagram is open', reviewCandidate: null,
   };
 }
 
@@ -38,6 +42,16 @@ const need = (s) => {
   if (!s.doc) throw new Error(REQUIRE_DOC);
   return s.doc;
 };
+
+const semanticProperties = () => ({
+  description: { type: 'string', minLength: 1, description: 'what this element or relationship means' },
+  technology: { type: 'string', minLength: 1, description: 'implementation or transport technology' },
+  tags: { type: 'array', items: { type: 'string', minLength: 1 }, description: 'semantic categories used for filtered views and styling' },
+  properties: { type: 'object', additionalProperties: { type: 'string' }, description: 'named model metadata' },
+  perspectives: { type: 'object', additionalProperties: { type: 'string' }, description: 'named concern overlays, e.g. security or ownership' },
+  relationshipLabel: { type: 'string', minLength: 1, description: 'short visible edge label' },
+  outcome: { type: 'string', minLength: 1, description: 'result or response associated with a relationship, especially in dynamic views' },
+});
 
 async function applyAndPersist(session, operation, args) {
   const result = core.applyOperation(need(session), { ...args, op: operation });
@@ -113,7 +127,13 @@ async function resolveSources(session, operations) {
 async function persist(session) {
   // Working state, not a deliverable: checkpoints never adjudicate, so an
   // author can place roughly and repair afterwards exactly as before.
-  if (session.doc && session.path) await core.checkpointDocument(session.doc, session.path);
+  if (session.doc && session.path) {
+    const receipt = await core.checkpointDocumentRecord(session.doc, session.path, {
+      expectedHash: session.diskHash,
+      backup: true,
+    });
+    session.diskHash = receipt.hash;
+  }
 }
 
 function resetHistory(session, notice = 'history reset') {
@@ -144,13 +164,13 @@ function validateHistoryEntries(entries, name) {
 async function persistHistory(session) {
   if (!session.doc || !session.path) return;
   const state = core.serialize(session.doc);
-  await writeFile(historyPath(session), JSON.stringify({
+  await atomicWriteFile(historyPath(session), JSON.stringify({
     schema: HISTORY_SCHEMA,
     currentHash: stateHash(state),
     limit: session.historyLimit,
     history: trimHistory(session, session.history),
     future: trimHistory(session, session.future),
-  }, null, 2), 'utf8');
+  }, null, 2));
   session.historyNotice = `saved to ${historyPath(session)}`;
 }
 
@@ -223,6 +243,9 @@ async function withHistory(session, name, args, handler) {
     session.historyNotice = noticeBefore;
     if (session.doc && core.serialize(session.doc) !== before) {
       session.doc = core.deserialize(before);
+      // The disk already belongs to another writer. Restore only our in-memory
+      // transaction; overwriting the external version would defeat the guard.
+      if (err.code === 'E_TURTLEPEN_CONFLICT') throw err;
       try {
         await persist(session);
         await persistHistory(session);
@@ -241,9 +264,67 @@ export function createTools(session) {
     {
       name: 'turtlepen_help',
       description:
-        'Read this first. Returns the lattice constants, the Excel addressing scheme, the pen command grammar, the corner/alignment vocabulary, and the full collision rule table with severities. Everything needed to author a diagram correctly on the first attempt.',
+        'Read this first. Returns a compact orientation by default; section="all" returns the full grammar and rule manual. Use search_help for task-focused discovery.',
+      inputSchema: { type: 'object', properties: { section: { type: 'string', enum: ['orientation', 'all'] } }, additionalProperties: false },
+      handler: ({ section = 'orientation' }) => [section === 'all' ? HELP : ORIENTATION, '', 'lattice:', json(core.latticeInfo(session.doc)), '', 'rules:', json(core.RULES)].join('\n'),
+    },
+
+    {
+      name: 'search_help',
+      description: 'Search the live capability registry by task, tool name, category, description, or argument field. Returns compact matches instead of the full manual.',
+      inputSchema: {
+        type: 'object',
+        properties: { query: { type: 'string' }, format: { type: 'string', enum: ['text', 'json'] } },
+        additionalProperties: false,
+      },
+      handler: ({ query = '', format = 'text' }) => {
+        const result = searchCapabilities(tools, query);
+        if (format === 'json') return json(result);
+        return ['TurtlePen capability search: ' + JSON.stringify(query) + ' — ' + result.count + ' match(es)']
+          .concat(result.matches.map((entry) => entry.name.padEnd(24) + ' [' + entry.category + '] ' + entry.description))
+          .join('\n');
+      },
+    },
+
+    {
+      name: 'doctor',
+      description: 'Run local, read-only runtime and capability diagnostics. Reports readiness, exact checks, tool count, and the full capability fingerprint.',
+      inputSchema: { type: 'object', properties: { format: { type: 'string', enum: ['text', 'json'] } }, additionalProperties: false },
+      handler: ({ format = 'text' }) => {
+        const result = doctorReport(tools, { schemaVersion: core.SCHEMA_VERSION, version: VERSION, cwd: session.cwd });
+        return format === 'json'
+          ? json(result)
+          : ['TurtlePen doctor: ' + result.state.toUpperCase()]
+            .concat(result.checks.map((check) => (check.ok ? 'PASS ' : 'FAIL ') + check.id.padEnd(10) + check.detail))
+            .concat(['capabilities ' + result.capabilityFingerprint])
+            .join('\n');
+      },
+    },
+
+    {
+      name: 'runtime_info',
+      description: 'Report the live TurtlePen runtime version, schema, tool inventory fingerprint, session start, and active document identity so a client can detect stale capabilities instead of guessing.',
       inputSchema: { type: 'object', properties: {}, additionalProperties: false },
-      handler: () => [HELP, '', 'lattice:', json(core.latticeInfo(session.doc)), '', 'rules:', json(core.RULES)].join('\n'),
+      handler: () => json({
+        version: VERSION,
+        schemaVersion: core.SCHEMA_VERSION,
+        toolCount: tools.length,
+        capabilityFingerprint: createHash('sha256')
+          .update(JSON.stringify(tools.map(({ name, inputSchema }) => ({ name, inputSchema }))))
+          .digest('hex')
+          .slice(0, 16),
+        capabilityRegistry: capabilityRegistry(tools).fingerprint,
+        startedAt: session.startedAt,
+        cwd: session.cwd,
+        activeDocument: session.doc
+          ? {
+            name: session.doc.name,
+            path: session.path,
+            hash: core.documentHash(session.doc),
+            diskHash: session.diskHash ?? null,
+          }
+          : null,
+      }),
     },
 
     {
@@ -262,9 +343,20 @@ export function createTools(session) {
         additionalProperties: false,
       },
       handler: async ({ name, path, cols = 160, rows = 100, fontSize = 10 }) => {
+        const target = path ? resolve(session.cwd, path) : resolve(session.cwd, `diagrams/${name.replace(/\W+/g, '-').toLowerCase()}.turtlepen.json`);
+        session.reviewCandidate = null;
+        try {
+          const previous = await core.loadDocumentRecord(target);
+          if (previous.document.perceptual) session.reviewCandidate = previous.document;
+        } catch (error) {
+          if (error.code !== 'ENOENT') session.reviewCandidate = null;
+        }
         session.doc = core.createDocument({ name, canvas: { cols, rows }, font: { size: fontSize } });
         if (session.createdAt) session.doc.createdAt = session.createdAt;
-        session.path = path ? resolve(session.cwd, path) : resolve(session.cwd, `diagrams/${name.replace(/\W+/g, '-').toLowerCase()}.turtlepen.json`);
+        session.path = target;
+        // New-diagram is an explicit replacement workflow, including the
+        // deterministic example generators. Subsequent edits are guarded.
+        session.diskHash = undefined;
         resetHistory(session, 'new diagram starts with empty history');
         await persist(session);
         await persistHistory(session);
@@ -278,9 +370,11 @@ export function createTools(session) {
       inputSchema: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'], additionalProperties: false },
       handler: async ({ path }) => {
         const target = resolve(session.cwd, path);
-        const opened = await core.loadDocument(target);
+        const opened = await core.loadDocumentRecord(target);
         session.path = target;
-        session.doc = opened;
+        session.doc = opened.document;
+        session.diskHash = opened.hash;
+        session.reviewCandidate = null;
         await restoreHistory(session);
         const v = core.validate(session.doc);
         return `opened "${session.doc.name}" from ${session.path}\npages: ${session.doc.pages.map((p) => `${p.id} (z:${p.z}, ${p.intent})`).join(', ')}\nhistory: ${session.historyNotice}\n\n${core.formatLog(v)}`;
@@ -329,24 +423,41 @@ export function createTools(session) {
     {
       name: 'measure',
       description:
-        'Measure text BEFORE placing a box. Returns advance width, characters per line, wrapped line count, and the cell span the label actually needs. Use this to size boxes rather than estimating.',
+        'Measure text BEFORE placing a box. Returns advance width, characters per line, wrapped line count, and the cell span the label actually needs. Use this to size boxes rather than estimating. Pass the shape you intend to draw: a symbol carves its label area out of the box, so the span a diamond or a cylinder needs is not the span the raw text needs.',
       inputSchema: {
         type: 'object',
         properties: {
           text: { type: 'string' },
           fontSize: { type: 'integer' },
           maxWidthCells: { type: 'integer', description: 'if given, wraps to this width and reports the height needed' },
+          shape: { type: 'string', description: 'the node shape this label will sit in; returns a span that fits the SYMBOL and holds its proportion' },
         },
         required: ['text'],
         additionalProperties: false,
       },
-      handler: ({ text, fontSize = session.doc?.font?.size ?? 10, maxWidthCells = null }) =>
-        json({
+      handler: ({ text, fontSize = session.doc?.font?.size ?? 10, maxWidthCells = null, shape = null }) => {
+        const measured = core.text.requiredCellsFor(text, { fontSize, maxWidthCells });
+        const note = `advance ${core.text.advanceWidth(fontSize)}px per character; a box of N cells holds floor((N*10 - 10) / ${core.text.advanceWidth(fontSize)}) characters per line`;
+        if (!shape) return json({ text, fontSize, ...measured, note });
+
+        core.shapes.assertNodeShape(shape);
+        const span = core.shapes.spanForShape(shape, measured);
+        const spec = core.shapes.SHAPE_PROPORTION[shape];
+        return json({
           text,
           fontSize,
-          ...core.text.requiredCellsFor(text, { fontSize, maxWidthCells }),
-          note: `advance ${core.text.advanceWidth(fontSize)}px per character; a box of N cells holds floor((N*10 - 10) / ${core.text.advanceWidth(fontSize)}) characters per line`,
-        }),
+          ...measured,
+          shape,
+          span,
+          // Reporting both is the point: the gap between them is the trap. An
+          // author who sizes from cellsWide alone gets L003 the moment a symbol
+          // is applied, and widening — the obvious response — makes it worse.
+          shapeNote: spec
+            ? `a ${shape} inks only part of its box, so this span is larger than the raw text needs; it holds the shape at or under ${spec.maxAspect}:1 (natural proportion ${spec.ideal}:1). Past that limit the symbol reads as a plain box and reports L024.`
+            : `a ${shape} has no proportion constraint — its span is the text's own`,
+          note,
+        });
+      },
     },
 
     {
@@ -365,7 +476,21 @@ export function createTools(session) {
           shape: { description: 'flowchart symbol: process (default), decision, terminator, subprocess, io, prep, manual, data, document, bar; or a container — lane, group — which reserves only its title band and border ring so members sit inside without colliding', type: 'string', enum: [...core.NODE_SHAPES] },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
           fontSize: { type: 'integer' },
-          fill: { type: 'string' },
+          fill: {
+            oneOf: [
+              { type: 'string', description: '3- or 6-digit hex colour' },
+              {
+                type: 'object',
+                properties: {
+                  from: { type: 'string' }, to: { type: 'string' },
+                  angle: { type: 'number', description: 'degrees; 0 runs left to right' },
+                },
+                required: ['from', 'to'],
+                additionalProperties: false,
+              },
+            ],
+            description: 'a flat hex colour, or { from, to, angle } for a linear gradient',
+          },
         },
         required: ['id', 'at', 'span'],
         additionalProperties: false,
@@ -395,7 +520,8 @@ export function createTools(session) {
           page: { type: 'string' },
           id: { type: 'string', description: 'id for the path this program creates' },
           role: { type: 'string', enum: ['connector', 'artwork'], description: 'connector (default) is checked for loose ends; artwork may be intentionally open' },
-          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$', description: 'optional 3- or 6-digit hex ink colour' },
+          color: { oneOf: [ { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' }, { type: 'object', properties: { from: { type: 'string' }, to: { type: 'string' } }, required: ['from', 'to'], additionalProperties: false } ], description: 'ink colour: one hex, or { from, to } for a stroke that gradates along its own length' },
+          fillColor: { oneOf: [ { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' }, { type: 'object', properties: { from: { type: 'string' }, to: { type: 'string' } }, required: ['from', 'to'], additionalProperties: false } ], description: 'colour for a region drawn with the "fill" modifier; { from, to } gradates ACROSS the region, which is tone without hatching' },
           width: { type: 'integer', minimum: 1, maximum: 5, description: 'presentation width in px; collision geometry remains quadrant-exact' },
           cap: { type: 'string', enum: ['butt', 'round', 'square'] },
           paint: { type: 'string', enum: ['line', 'cells'], description: 'line paints continuous ink; cells paints every exact 5px claimed quadrant' },
@@ -407,9 +533,9 @@ export function createTools(session) {
         required: ['program'],
         additionalProperties: false,
       },
-      handler: async ({ program, page = 'base', id = null, role = 'connector', color = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null }) => {
+      handler: async ({ program, page = 'base', id = null, role = 'connector', color = null, fillColor = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null }) => {
         const doc = need(session);
-        const r = core.applyPen(doc, page, program, { id, role, color, width, cap, paint, tone, feather, texture, pattern });
+        const r = core.applyPen(doc, page, program, { id, role, color, fillColor, width, cap, paint, tone, feather, texture, pattern });
         await persist(session);
         const lines = [`pen program applied to page "${page}" as ${role}`];
         if (r.path) {
@@ -499,7 +625,10 @@ ${stalled}` : core.formatLog(result);
       handler: ({ page = null, maxCells = 90, withFindings = true }) => {
         const doc = need(session);
         const findings = withFindings ? core.validate(doc, { page }).open : null;
-        return core.renderAscii(doc, { page, maxCells, findings }).text;
+        const rendered = core.renderAscii(doc, { page, maxCells, findings }).text;
+        return core.microMasksOf(doc).length
+          ? `${rendered}\n\nnote: ${core.microMasksOf(doc).length} sub-quadrant micro-mask(s) are not represented in ASCII; inspect SVG for the presentation result.`
+          : rendered;
       },
     },
 
@@ -696,16 +825,33 @@ ${stalled}` : core.formatLog(result);
     {
       name: 'restyle',
       description:
-        'Change a box\'s label, corner style, text alignment, font size, or fill. This is the tool behind the "shorten" and "font" fixes; it re-measures the label.',
+        'Change a box\'s label, node shape, corner style, text alignment, font size, or fill. This is the tool behind the "shorten", "font" and "shape" fixes; it re-measures the label.',
       inputSchema: {
         type: 'object',
         properties: {
           id: { type: 'string' },
           label: { type: 'string' },
+          // `restyleBox` has always accepted a shape; the schema did not expose
+          // it, so the "shape" fix named a change this tool refused.
+          shape: { type: 'string', description: 'node shape — the symbol drawn inside the box' },
           corner: { type: 'string', enum: ['square', 'rounded', 'indented', 'chamfered'] },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
           fontSize: { type: 'integer' },
-          fill: { type: 'string' },
+          fill: {
+            oneOf: [
+              { type: 'string', description: '3- or 6-digit hex colour' },
+              {
+                type: 'object',
+                properties: {
+                  from: { type: 'string' }, to: { type: 'string' },
+                  angle: { type: 'number', description: 'degrees; 0 runs left to right' },
+                },
+                required: ['from', 'to'],
+                additionalProperties: false,
+              },
+            ],
+            description: 'a flat hex colour, or { from, to, angle } for a linear gradient',
+          },
         },
         required: ['id'],
         additionalProperties: false,
@@ -723,7 +869,7 @@ ${stalled}` : core.formatLog(result);
     {
       name: 'move',
       description:
-        'Move an element, either to an address (its pin corner lands there) or by a delta in cells. This is the tool behind the "move" fix.',
+        'Move an element: to an address (its pin corner lands there), by a delta in cells, or onto another page. Moving to a page is a move in DEPTH — with no z-buffer, "in front of" is which page a thing sits on, so this is how one element passes behind another. This is the tool behind the "move" fix.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -732,15 +878,17 @@ ${stalled}` : core.formatLog(result);
           pin: { type: 'string', description: 'which corner of the element lands on `at` (default tl)' },
           cellsX: { type: 'integer', description: 'relative move instead, in cells' },
           cellsY: { type: 'integer' },
+          toPage: { type: 'string', description: 'move onto this page, keeping x and y exactly; a higher-z page puts the element in front' },
         },
         required: ['id'],
         additionalProperties: false,
       },
-      handler: async ({ id, at = null, pin = 'tl', cellsX = 0, cellsY = 0 }) => {
+      // Routed through the shared operation rather than reimplemented: this
+      // handler once duplicated the move logic, so a `toPage` added to core was
+      // invisible here and `plan` and the tool disagreed about what move meant.
+      handler: async ({ id, at = null, pin = 'tl', cellsX = 0, cellsY = 0, toPage = null }) => {
         const doc = need(session);
-        if (at) core.moveElementTo(doc, id, at, pin);
-        else if (cellsX || cellsY) core.moveElement(doc, id, cellsX * 2, cellsY * 2);
-        else throw new Error('move needs either `at` or a non-zero `cellsX`/`cellsY`');
+        core.OPERATIONS.move(doc, { id, at, pin, cellsX: cellsX || null, cellsY: cellsY || null, toPage });
         await persist(session);
         const found = core.findElement(doc, id);
         const b = found.element.kind === 'path' ? found.element.pieces[0] : found.element.rect;
@@ -779,6 +927,550 @@ ${stalled}` : core.formatLog(result);
         const page = core.updatePage(need(session), id, changes);
         await persist(session);
         return `page "${page.id}" is now z:${page.z}, ${page.intent}, ${page.visible ? 'visible' : 'hidden'}\n\n${core.formatLog(core.validate(session.doc))}`;
+      },
+    },
+
+    {
+      name: 'align',
+      description:
+        'Move the named elements onto one shared edge: left, right, top, bottom, centerX or centerY. '
+        + 'The target is taken from the elements you name rather than invented, and anything you do not '
+        + 'name is left alone. Use this instead of hand-computing a column of x values.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          ids: { type: 'array', items: { type: 'string' }, minItems: 2 },
+          edge: { type: 'string', enum: ['left', 'right', 'top', 'bottom', 'centerX', 'centerY'] },
+        },
+        required: ['ids', 'edge'],
+        additionalProperties: false,
+      },
+      handler: async ({ ids, edge }) => {
+        const doc = need(session);
+        const n = core.OPERATIONS.align(doc, { ids, edge });
+        await persist(session);
+        return `aligned ${n} element(s) to ${edge}`;
+      },
+    },
+
+    {
+      name: 'distribute',
+      description:
+        'Space the named elements evenly along an axis. The two furthest apart anchor the span and never '
+        + 'move, so this tightens a layout you already made rather than replacing it. Needs at least three '
+        + 'elements — with two there is no middle to move.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          ids: { type: 'array', items: { type: 'string' }, minItems: 3 },
+          axis: { type: 'string', enum: ['horizontal', 'vertical'] },
+        },
+        required: ['ids', 'axis'],
+        additionalProperties: false,
+      },
+      handler: async ({ ids, axis }) => {
+        const doc = need(session);
+        const n = core.OPERATIONS.distribute(doc, { ids, axis });
+        await persist(session);
+        return `distributed ${n} element(s) ${axis}ly with equal gaps`;
+      },
+    },
+
+    {
+      name: 'layout',
+      description:
+        'Arrange the connected boxes on a page and redraw their connectors. align and distribute tidy an '
+        + 'arrangement you already chose; this chooses one — it ranks the graph so flow runs down the page, '
+        + 'gives every long edge a lane of its own, reorders each rank to remove crossings, and centres each '
+        + 'node over its neighbours. The graph comes from what your pen programs already recorded ("from a.S" '
+        + 'is an origin, "line to b.N" is a target), never from which boxes happen to sit near each other, so '
+        + 'draw the connections before calling this. Reports what moved, how many crossings went away, any '
+        + 'cycle it had to reverse to rank the graph, and any connector it could NOT redraw cleanly.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          page: { type: 'string', description: 'defaults to base' },
+          ids: {
+            type: 'array',
+            items: { type: 'string' },
+            minItems: 2,
+            description: 'box ids to arrange; omit to take every box on the page',
+          },
+          gapX: { type: 'integer', minimum: 0, description: 'quadrants between neighbours on a rank (default 8)' },
+          gapY: { type: 'integer', minimum: 0, description: 'quadrants between ranks (default 10)' },
+          reroute: { type: 'boolean', description: 'redraw the connectors after moving (default true)' },
+          direction: { type: 'string', enum: [...core.LAYOUT_DIRECTIONS], description: 'reading direction (default top-down)' },
+          pins: { type: 'object', additionalProperties: { type: 'string' }, description: 'element ids mapped to fixed top-left addresses' },
+        },
+        additionalProperties: false,
+      },
+      handler: async ({ page = 'base', ids = null, gapX, gapY, reroute = true, direction = 'top-down', pins = {} }) => {
+        const doc = need(session);
+        const r = core.OPERATIONS.layout(doc, {
+          page, ids, reroute, direction, pins, ...(gapX === undefined ? {} : { gapX }), ...(gapY === undefined ? {} : { gapY }),
+        });
+        await persist(session);
+
+        const lines = [
+          `laid out ${r.boxes} box(es) over ${r.ranks} rank(s) on "${r.page}" ${r.direction} — ${r.moved} moved, ${r.pinned.length} pinned`,
+          r.crossingsBefore === r.crossings
+            ? `${r.crossings} edge crossing(s), unchanged`
+            : `edge crossings ${r.crossingsBefore} -> ${r.crossings}`,
+        ];
+        if (r.routed.length) lines.push(`redrew ${r.routed.length} connector(s)`);
+        for (const c of r.crowded) {
+          lines.push(
+            `"${c.id}" has ${c.edges} connector(s) meeting its ${c.face} face but only ${c.capacity} slot(s) `
+            + `to seat them on — widen it to about ${c.edges * 2} cells, or some of those lines share a track.`,
+          );
+        }
+        for (const rev of r.reversed) {
+          lines.push(
+            `reversed "${rev.id}" (${rev.from} -> ${rev.to}) to break a cycle — the arrangement now reads `
+            + 'as if that edge ran the other way. Check it says what you meant.',
+          );
+        }
+        for (const s of r.stranded) {
+          lines.push(
+            `could NOT redraw "${s.id}": ${s.blockedBy ? `blocked by ${s.blockedBy.by} at ${s.blockedBy.at}` : s.note ?? 'no clear route'}. `
+            + 'It still holds its old shape, which no longer matches where the boxes are.',
+          );
+        }
+        lines.push('Now render and look at it — a good arrangement is not the same as a finished drawing.');
+        return lines.join('\n');
+      },
+    },
+
+    {
+      name: 'inspect_model',
+      description: 'Inspect semantic completeness separately from collision geometry. Reports missing node and relationship descriptions, missing relationship technology, disconnected nodes, broken endpoints, and connector paths that have no relationship model.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          minimum: { type: 'string', enum: ['error', 'warning', 'info'], description: 'lowest severity to include (default info)' },
+          format: { type: 'string', enum: ['log', 'json'] },
+        },
+        additionalProperties: false,
+      },
+      handler: ({ minimum = 'info', format = 'log' }) => {
+        const result = core.inspectModel(need(session), { minimum });
+        return format === 'json' ? json(result) : core.formatInspection(result);
+      },
+    },
+
+    {
+      name: 'accept_model_finding',
+      description: 'Record that one current fingerprinted semantic-model finding is deliberate. The decision lapses automatically when the finding changes.',
+      inputSchema: {
+        type: 'object',
+        properties: { fingerprint: { type: 'string' }, reason: { type: 'string', minLength: 1 } },
+        required: ['fingerprint', 'reason'], additionalProperties: false,
+      },
+      handler: async ({ fingerprint, reason }) => {
+        const result = core.acceptModelFinding(need(session), fingerprint, reason);
+        await persist(session);
+        return `accepted model finding #${fingerprint} (${result.finding.rule}) — ${result.acceptance.reason}`;
+      },
+    },
+
+    {
+      name: 'unaccept_model_finding',
+      description: 'Withdraw a semantic-model finding acceptance so the current finding becomes open again.',
+      inputSchema: {
+        type: 'object', properties: { fingerprint: { type: 'string' } }, required: ['fingerprint'], additionalProperties: false,
+      },
+      handler: async ({ fingerprint }) => {
+        core.unacceptModelFinding(need(session), fingerprint);
+        await persist(session);
+        return `withdrew model finding acceptance #${fingerprint}`;
+      },
+    },
+
+    {
+      name: 'define_view',
+      description: 'Create or replace a durable static, tag-filtered, or ordered dynamic view. Views project one shared model; they never duplicate diagram elements.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          key: { type: 'string' }, title: { type: 'string' },
+          type: { type: 'string', enum: [...core.VIEW_TYPES] }, description: { type: 'string' },
+          includeTags: { type: 'array', items: { type: 'string' } },
+          excludeTags: { type: 'array', items: { type: 'string' } },
+          includeElements: { type: 'array', items: { type: 'string' } },
+          excludeElements: { type: 'array', items: { type: 'string' } },
+          pages: { type: 'array', items: { type: 'string' } },
+          order: { type: 'array', items: { type: 'string' }, description: 'relationship ids in event order for a dynamic view' },
+          direction: { type: 'string', enum: [...core.VIEW_DIRECTIONS] },
+          perspective: { type: 'string' }, showKey: { type: 'boolean' },
+        },
+        required: ['key'], additionalProperties: false,
+      },
+      handler: async (args) => {
+        const view = core.defineView(need(session), args);
+        const resolved = core.resolveView(session.doc, view.key);
+        await persist(session);
+        return `defined ${view.type} view "${view.key}" with ${resolved.elements.length} element(s), ${view.direction}`;
+      },
+    },
+
+    {
+      name: 'remove_view',
+      description: 'Remove a durable view definition without removing any shared model elements.',
+      inputSchema: { type: 'object', properties: { key: { type: 'string' } }, required: ['key'], additionalProperties: false },
+      handler: async ({ key }) => {
+        core.removeView(need(session), key);
+        await persist(session);
+        return `removed view "${key}"; model elements were left untouched`;
+      },
+    },
+
+    {
+      name: 'configure_theme',
+      description: 'Replace the document theme: named colour tokens, tag rules, and perspective-value rules. Styling changes presentation only; collision geometry remains exact.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          tokens: { type: 'object', additionalProperties: { type: 'string' } },
+          tagStyles: {
+            type: 'array', items: {
+              type: 'object', properties: { tag: { type: 'string' }, fill: { type: 'string' }, stroke: { type: 'string' }, text: { type: 'string' }, opacity: { type: 'number' } },
+              required: ['tag'], additionalProperties: false,
+            },
+          },
+          perspectiveStyles: {
+            type: 'array', items: {
+              type: 'object', properties: { perspective: { type: 'string' }, value: { type: 'string' }, fill: { type: 'string' }, stroke: { type: 'string' }, text: { type: 'string' } },
+              required: ['perspective', 'value'], additionalProperties: false,
+            },
+          },
+        },
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        const theme = core.configureTheme(need(session), args);
+        await persist(session);
+        return `configured theme "${theme.name}" with ${theme.tagStyles.length} tag rule(s) and ${theme.perspectiveStyles.length} perspective rule(s)`;
+      },
+    },
+
+    {
+      name: 'attach_resource',
+      description: 'Attach or update a durable documentation, ADR, runbook, URL, or local-file reference on the workspace model.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' }, type: { type: 'string', enum: [...core.RESOURCE_TYPES] },
+          label: { type: 'string' }, uri: { type: 'string' }, description: { type: 'string' },
+          tags: { type: 'array', items: { type: 'string' } },
+        },
+        required: ['id', 'uri'], additionalProperties: false,
+      },
+      handler: async (args) => {
+        const resource = core.upsertResource(need(session), args);
+        await persist(session);
+        return `attached ${resource.type} resource "${resource.id}" at ${resource.uri}`;
+      },
+    },
+
+    {
+      name: 'remove_resource',
+      description: 'Remove a linked resource record. TurtlePen never deletes the referenced external file or URL.',
+      inputSchema: { type: 'object', properties: { id: { type: 'string' } }, required: ['id'], additionalProperties: false },
+      handler: async ({ id }) => {
+        core.removeResource(need(session), id);
+        await persist(session);
+        return `removed resource "${id}"; its external target was not modified`;
+      },
+    },
+
+    {
+      name: 'connect',
+      description:
+        'Create a directed, semantic relationship from one node port to another. routing="direct" draws one exact ray; "orthogonal" emits and applies an inspectable simple route; "curved" starts at the source node and bends through one or more explicit via addresses before terminating at the target node. Geometry remains whole 5px quadrants.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          page: { type: 'string' },
+          from: { type: 'string', description: 'source node and cardinal port, e.g. api.E or api.S#2' },
+          to: { type: 'string', description: 'target node and cardinal port, e.g. db.W' },
+          routing: { type: 'string', enum: [...core.RELATIONSHIP_ROUTINGS] },
+          via: { type: 'array', items: { type: 'string' }, description: 'one or more explicit lattice addresses for curved routing' },
+          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' },
+          width: { type: 'integer', minimum: 1, maximum: 5 },
+          ...semanticProperties(),
+        },
+        required: ['id', 'from', 'to'],
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        const result = core.OPERATIONS.connect(need(session), args);
+        await persist(session);
+        return json({
+          id: result.path.id,
+          page: result.page,
+          quadrants: result.path.pieces.length,
+          relationship: result.relationship,
+          state: 'created; call validate and then render/inspect',
+        });
+      },
+    },
+
+    {
+      name: 'annotate',
+      description: 'Attach semantic model information to any existing node, relationship, text, image, or path without changing its geometry. Descriptions, technology, tags, properties, and perspectives persist in the document and are returned by describe.',
+      inputSchema: {
+        type: 'object',
+        properties: { id: { type: 'string' }, ...semanticProperties() },
+        required: ['id'],
+        additionalProperties: false,
+      },
+      handler: async ({ id, ...annotations }) => {
+        const element = core.OPERATIONS.annotate(need(session), { id, ...annotations });
+        await persist(session);
+        return json(describeElement(session.doc, element));
+      },
+    },
+
+    {
+      name: 'micro_mask',
+      description: 'Apply or remove a reversible 1-design-pixel eraser stroke on an artwork path or image. This changes SVG presentation and renderHash but never deletes 5px quadrant geometry or changes collision validation. Points are absolute integer pixels in the canonical SVG drawing coordinate system.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action: { type: 'string', enum: ['add', 'extend', 'replace', 'remove'] },
+          id: { type: 'string', description: 'stable mask id' },
+          target: { type: 'string', description: 'artwork path or image id; required for add' },
+          points: {
+            type: 'array', minItems: 1, description: 'ordered design-pixel points; required for add',
+            items: {
+              type: 'object',
+              properties: { x: { type: 'integer', minimum: 0 }, y: { type: 'integer', minimum: 0 } },
+              required: ['x', 'y'],
+              additionalProperties: false,
+            },
+          },
+          width: { type: 'integer', enum: [1], description: 'v1 is exactly one design pixel' },
+          cap: { type: 'string', enum: ['square', 'round'] },
+        },
+        required: ['action', 'id'],
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        if (args.action === 'add' && (!args.target || !args.points)) {
+          throw new SyntaxError('micro_mask add needs target and points');
+        }
+        if (['extend', 'replace'].includes(args.action) && !args.points) {
+          throw new SyntaxError(`micro_mask ${args.action} needs points`);
+        }
+        const result = core.OPERATIONS.micro_mask(need(session), args);
+        await persist(session);
+        if (args.action === 'remove') return `removed micro-mask "${args.id}"; structural geometry was unchanged`;
+        const status = core.microMaskStatus(session.doc, result.target);
+        return json({
+          ...result,
+          status,
+          warning: status.fullyMasked ? 'target is fully masked; remove the target if that was the intent' : null,
+          note: 'presentation-only; ASCII and structural collision geometry remain unmasked',
+        });
+      },
+    },
+
+    {
+      name: 'stroke_text',
+      description:
+        'Draw words as INK, in TurtleFont — quadrants on the lattice, not an SVG text run. Use it for '
+        + 'titles, callouts, plotter output, and anything where the words must collide, measure exactly, '
+        + 'and survive without a font file. It is a DISPLAY face: cap height is 6 quadrants (30px), '
+        + 'because a stroke glyph smaller than that stops being legible once the lattice has quantised '
+        + 'it — for 11px body text, keep using place_box labels. SIZE is the cap height in quadrants: 6 is 30px and the smallest that keeps every letter distinct, 12 is what the glyphs are drawn at, and anything between rounds (the result says whether it did). weight sets pen thickness independently, so a size can be light or bold. A character the face cannot draw is REFUSED, never skipped, '
+        + 'so a missing glyph can never become a silent hole in a sentence — call font_coverage first if '
+        + 'you are unsure.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          at: { type: 'string', description: 'top-left of the text block, e.g. "C4.tl"' },
+          text: { type: 'string', description: 'newlines start a new line' },
+          page: { type: 'string' },
+          scale: { type: 'integer', minimum: 1, description: 'whole multiples of the design size; use size for anything else' },
+          size: { type: 'integer', minimum: 6, description: 'cap height in QUADRANTS — 6 is 30px and the smallest the face stays legible at; 12 is the size it is drawn at. Use this OR scale, not both.' },
+          tracking: { type: 'integer', description: 'extra quadrants between glyphs' },
+          maxWidth: { type: 'integer', description: 'wrap at this many quadrants, breaking between words' },
+          align: { type: 'string', enum: ['left', 'center', 'right'] },
+          rotate: { type: 'integer', enum: [0, 90, 180, 270], description: 'quarter turns only — any other angle would need fractional quadrants' },
+          color: { type: 'string', description: '3- or 6-digit hex' },
+          width: { type: 'integer', description: 'stroke width in px' },
+          role: { type: 'string', enum: ['connector', 'artwork'], description: 'defaults to artwork' },
+        },
+        required: ['id', 'at', 'text'],
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        const doc = need(session);
+        const r = core.OPERATIONS.stroke_text(doc, args);
+        await persist(session);
+        const lines = [
+          `drew "${args.id}" as ${r.pieces} quadrant(s) of ink — ${r.lines} line(s), `
+          + `${r.width}x${r.height} quadrants at cap height ${r.size} (${r.size * 5}px), pen ${r.weight}`,
+        ];
+        if (!r.exact) {
+          lines.push(
+            `${r.size} is not a whole multiple of the design's ${core.turtlefont.REFERENCE_CAP}, so glyph `
+            + 'points were rounded to the lattice. The letters are all still distinct at this size, but fine '
+            + 'detail is lost — use a multiple of 12 if you want the drawing exactly as designed.',
+          );
+        }
+        if (r.inked) {
+          lines.push(`ink lands in ${r.inked.w}x${r.inked.h} quadrants; the block reserves the full line box either way`);
+        }
+        if (r.overflowed) {
+          lines.push(
+            'a word is wider than maxWidth and overhangs — it was NOT hyphenated. Widen the block, '
+            + 'shorten the word, or accept the overhang.',
+          );
+        }
+        lines.push('This is ink: it collides like any other stroke. Validate, then render and look at it.');
+        return lines.join('\n');
+      },
+    },
+
+    {
+      name: 'glyph',
+      description:
+        'Look at ONE glyph: a picture of its ink, its metrics, and a fingerprint of exactly which '
+        + 'quadrants it covers. Use this when editing the face — two different stroke lists can rasterise '
+        + 'to identical quadrants, so a source change is not proof of a drawing change, and the '
+        + 'fingerprint is what tells the two apart. The picture reads in a terminal, so a glyph can be '
+        + 'judged without rendering, opening and screenshotting an SVG.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          char: { type: 'string', description: 'a single character', minLength: 1 },
+          compare: { type: 'string', description: 'a second character to show beside it', minLength: 1 },
+        },
+        required: ['char'],
+        additionalProperties: false,
+      },
+      handler: ({ char, compare = null }) => {
+        const show = (ch) => {
+          const g = core.turtlefont.inspectGlyph([...ch][0]);
+          if (!g) {
+            return `${JSON.stringify(ch)} is not in this face. font_coverage lists what is.`;
+          }
+          return [
+            `${JSON.stringify(g.char)}  ${g.codePoint}  ${g.source}`,
+            `width ${g.width}, advance ${g.advance}, ${g.strokes} stroke(s), `
+            + `${g.quadrants} quadrant(s), ink ${g.fingerprint}`,
+            g.picture,
+          ].join('\n');
+        };
+        if (!compare) return show(char);
+        const a = core.turtlefont.inspectGlyph([...char][0]);
+        const b = core.turtlefont.inspectGlyph([...compare][0]);
+        const verdict = a && b && a.fingerprint === b.fingerprint
+          ? `\nSAME INK: ${JSON.stringify(a.char)} and ${JSON.stringify(b.char)} are one drawing under two names. `
+            + 'If that is deliberate, alias one to the other; if not, one of them needs redrawing.'
+          : '\nDifferent ink.';
+        return `${show(char)}\n\n${show(compare)}${verdict}`;
+      },
+    },
+
+    {
+      name: 'stroke_label',
+      description:
+        'Label a box with INK rather than an SVG text run, so the whole drawing survives without a font '
+        + 'file and can go to a plotter. The label is its OWN element: it collides like any other stroke '
+        + 'and can be moved or removed on its own, and the box keeps whatever <text> label it already had '
+        + '(pass an empty label to place_box if you want only the ink). The text area comes from the '
+        + 'SYMBOL, so a diamond leaves far less room than its bounding box — and because cap height is 6 '
+        + 'quadrants, inked labels need much bigger nodes than <text> ones. It measures and REFUSES with '
+        + 'numbers rather than shrinking or spilling.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          target: { type: 'string', description: 'the box to label' },
+          text: { type: 'string' },
+          page: { type: 'string' },
+          scale: { type: 'integer', minimum: 1 },
+          size: { type: 'integer', minimum: 6, description: 'cap height in QUADRANTS — 6 is 30px and the smallest the face stays legible at; 12 is the size it is drawn at. Use this OR scale, not both.' },
+          weight: { type: 'integer', minimum: 1, description: 'pen thickness in quadrants; defaults to match the size' },
+          tracking: { type: 'integer' },
+          align: { type: 'string', enum: ['left', 'center', 'right'] },
+          rotate: { type: 'integer', enum: [0, 90, 180, 270], description: 'quarter turns only' },
+          padding: { type: 'integer', minimum: 0, description: 'quadrants of breathing room (default 1)' },
+          color: { type: 'string' },
+          width: { type: 'integer' },
+        },
+        required: ['id', 'target', 'text'],
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        const doc = need(session);
+        const r = core.OPERATIONS.stroke_label(doc, args);
+        await persist(session);
+        return [
+          `inked "${args.id}" inside "${r.target}" — ${r.pieces} quadrant(s), `
+          + `${r.width}x${r.height} in an area of ${r.area.w}x${r.area.h}`,
+          'It is a separate path, so it collides on its own terms. Validate, then look at it.',
+        ].join('\n');
+      },
+    },
+
+    {
+      name: 'font_coverage',
+      description:
+        'What TurtleFont can draw. With no argument it returns every glyph in the face grouped by block; '
+        + 'given text, it returns only the characters that face CANNOT draw, which is the check to run '
+        + 'before stroke_text on anything you did not type yourself.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          text: { type: 'string', description: 'check just these characters' },
+        },
+        additionalProperties: false,
+      },
+      handler: ({ text = null }) => {
+        if (text != null) {
+          const missing = core.turtlefont.missingFrom(text);
+          return json({
+            text,
+            drawable: missing.length === 0,
+            missing,
+            note: missing.length
+              ? 'stroke_text will refuse this string. Use place_box labels for it, or drop these characters.'
+              : 'every character in this string can be drawn as ink',
+          });
+        }
+        const all = core.turtlefont.coverage();
+        return json({
+          glyphs: all.length,
+          metrics: core.turtlefont.METRICS,
+          lineHeight: core.turtlefont.LINE_HEIGHT,
+          lineAdvance: core.turtlefont.LINE_ADVANCE,
+          characters: all.join(''),
+        });
+      },
+    },
+
+    {
+      name: 'set_background',
+      description:
+        'Set the paper colour for the whole drawing, or pass no colour to go back to the palette. '
+        + 'Paper is document state rather than a render option: a drawing composed against dark '
+        + 'paper is a different drawing, and re-rendering it light would misreport it.',
+      inputSchema: {
+        type: 'object',
+        properties: { color: { type: 'string', description: '3- or 6-digit hex; omit to clear' } },
+        additionalProperties: false,
+      },
+      handler: async ({ color = null }) => {
+        const doc = need(session);
+        core.OPERATIONS.set_background(doc, { color });
+        await persist(session);
+        return color ? `paper is now ${color}` : 'paper is back to the palette';
       },
     },
 
@@ -1063,30 +1755,58 @@ ${stalled}` : core.formatLog(result);
         properties: {
           operations: {
             type: 'array',
-            description: 'ordered operations, each { "op": "<name>", ...args }. Names: add_page update_page remove_page place_box place_image place_reference pen extend_path replace_path import_svg boolean slice offset_path stroke_to_path path_edit normalize_path reorder duplicate array resize restyle move rename remove set_canvas accept_finding unaccept_finding group constraint. Args match the same-named tool, including pen role/color/width/cap.',
+            description: 'ordered operations, each { "op": "<name>", ...args }. Names include add_page/update_page/remove_page, place_box/place_image/place_reference, pen/connect/annotate/micro_mask, extend_path/replace_path, import_svg, boolean/slice/offset_path/stroke_to_path/path_edit/normalize_path, reorder/duplicate/array, resize/restyle/move/rename/remove, set_canvas, finding review, groups, and constraints. Args match the same-named tool.',
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
+          format: { type: 'string', enum: ['log', 'json'], description: 'log (default) for prose; json for a reviewable before/after diff' },
         },
         required: ['operations'],
         additionalProperties: false,
       },
-      handler: async ({ operations, commit = false }) => {
+      handler: async ({ operations, commit = false, format = 'log' }) => {
         const doc = need(session);
         const ops = await resolveSources(session, operations);
-        const result = commit ? core.commitOperations(doc, ops) : core.planOperations(doc, ops);
-        if (!result.ok) {
+        const rehearsal = core.planOperations(doc, ops);
+        if (!rehearsal.ok) {
+          const failure = {
+            ok: false, committed: false, applied: rehearsal.applied,
+            failedAt: rehearsal.failedAt, error: rehearsal.error,
+            operation: operations[rehearsal.failedAt] ?? null,
+          };
+          if (format === 'json') return JSON.stringify(failure, null, 2);
           return [
-            `plan FAILED at operation ${result.failedAt + 1} of ${operations.length}: ${result.error}`,
+            `plan FAILED at operation ${rehearsal.failedAt + 1} of ${operations.length}: ${rehearsal.error}`,
             `nothing was applied — the document is unchanged.`,
-            `operation ${result.failedAt + 1} was: ${JSON.stringify(operations[result.failedAt])}`,
+            `operation ${rehearsal.failedAt + 1} was: ${JSON.stringify(operations[rehearsal.failedAt])}`,
           ].join('\n');
         }
+        const diff = core.documentDiff(doc, rehearsal.preview);
+        const result = commit ? core.commitOperations(doc, ops) : rehearsal;
         if (commit) await persist(session);
+        const receipt = {
+          ok: true,
+          committed: commit,
+          applied: result.applied,
+          diff,
+          validation: {
+            summary: result.validation.summary,
+            open: result.validation.open.map((finding) => ({
+              fingerprint: finding.fingerprint,
+              severity: finding.severity,
+              rule: finding.rule,
+              message: finding.message,
+            })),
+            accepted: result.validation.accepted.length,
+            stale: result.validation.staleAcceptances.length,
+          },
+        };
+        if (format === 'json') return JSON.stringify(receipt, null, 2);
         return [
           commit
             ? `committed ${result.applied} operation(s).`
             : `rehearsed ${result.applied} operation(s) on a copy — the document is unchanged. Re-send with commit:true to apply.`,
+          `diff: ${diff.changed} changed object(s); elements +${diff.elements.added.length} -${diff.elements.removed.length} ~${diff.elements.changed.length}; views +${diff.views.added.length} -${diff.views.removed.length} ~${diff.views.changed.length}`,
           '',
           core.formatLog(result.validation),
         ].join('\n');
@@ -1630,6 +2350,7 @@ ${r.program}`;
           session.history = historyBefore;
           session.future = futureBefore;
           session.historyNotice = noticeBefore;
+          if (err.code === 'E_TURTLEPEN_CONFLICT') throw err;
           try {
             await persist(session);
             await persistHistory(session);
@@ -1649,24 +2370,79 @@ ${r.program}`;
         properties: {
           path: { type: 'string' },
           force: { type: 'boolean', description: 'write even with findings outstanding; the document records that you did' },
+          expectedHash: { type: 'string', pattern: '^[0-9a-f]{64}$', description: 'optional optimistic document hash returned by runtime_info' },
         },
         additionalProperties: false,
       },
-      handler: async ({ path = null, force = false }) => {
+      handler: async ({ path = null, force = false, expectedHash = null }) => {
         const doc = need(session);
-        if (path) session.path = resolve(session.cwd, path);
-        await core.saveDocument(doc, session.path, { force });
+        if (expectedHash && core.documentHash(doc) !== expectedHash) {
+          throw Object.assign(new Error('document changed since the supplied expectedHash; inspect before retrying'), {
+            code: 'E_TURTLEPEN_CONFLICT', expectedHash, actualHash: core.documentHash(doc), retrySafe: true,
+          });
+        }
+        if (path) {
+          const nextPath = resolve(session.cwd, path);
+          if (nextPath !== session.path) {
+            session.path = nextPath;
+            session.diskHash = null;
+          }
+        }
+        const reviewCarry = session.reviewCandidate
+          ? core.preservePerceptualReview(doc, session.reviewCandidate)
+          : { preserved: false, reason: 'no rebuild review candidate' };
+        session.reviewCandidate = null;
+        await core.saveDocument(doc, session.path, { force, expectedHash: session.diskHash, backup: true });
+        const saved = await core.loadDocumentRecord(session.path);
+        session.diskHash = saved.hash;
         await persistHistory(session);
-        return force && doc.forcedSave
+        const message = force && doc.forcedSave
           ? `saved ${session.path} — FORCED past ${doc.forcedSave.findingCount} outstanding finding(s); the document records this`
           : `saved ${session.path}`;
+        return reviewCarry.preserved ? `${message}; preserved byte-matched perceptual review ${reviewCarry.renderHash}` : message;
       },
     },
   ];
 
-  return tools.map((tool) => (MUTATING_TOOLS.has(tool.name)
-    ? { ...tool, handler: (args) => withHistory(session, tool.name, args, tool.handler) }
-    : tool));
+  const byName = new Map(tools.map((tool) => [tool.name, tool]));
+  return tools.map((tool) => {
+    const isMutation = MUTATING_TOOLS.has(tool.name);
+    const inputSchema = isMutation
+      ? {
+        ...tool.inputSchema,
+        properties: {
+          ...tool.inputSchema.properties,
+          expectedHash: { type: 'string', pattern: '^[0-9a-f]{64}$', description: 'optional optimistic in-memory document hash' },
+        },
+      }
+      : tool.inputSchema;
+    return {
+      ...tool,
+      inputSchema,
+      handler: (supplied = {}) => {
+        assertSchema(inputSchema, supplied, `${tool.name}.arguments`);
+        const { expectedHash, ...argumentsWithoutGuard } = supplied;
+        if (expectedHash && session.doc && core.documentHash(session.doc) !== expectedHash) {
+          throw Object.assign(new Error('document changed since the supplied expectedHash; inspect before retrying'), {
+            code: 'E_TURTLEPEN_CONFLICT', expectedHash, actualHash: core.documentHash(session.doc), retrySafe: true,
+          });
+        }
+        if (tool.name === 'plan') {
+          argumentsWithoutGuard.operations.forEach((operation, index) => {
+            const nested = byName.get(operation?.op);
+            if (!nested || !MUTATING_TOOLS.has(operation.op) || operation.op === 'plan') {
+              throw new SyntaxError(`plan.operations[${index}].op: unknown operation ${JSON.stringify(operation?.op)}`);
+            }
+            const { op: _op, ...args } = operation;
+            assertSchema(nested.inputSchema, args, `plan.operations[${index}]`);
+          });
+        }
+        return isMutation
+          ? withHistory(session, tool.name, argumentsWithoutGuard, tool.handler)
+          : tool.handler(supplied);
+      },
+    };
+  });
 }
 
 /** Element geometry plus, for anything carrying a label, its live fit status —
@@ -1681,6 +2457,15 @@ function describeElement(doc, el) {
       to: core.address.quadToAddress(el.pieces.at(-1).x, el.pieces.at(-1).y),
       end: el.end ? { at: core.address.quadToAddress(el.end.x, el.end.y), facing: el.end.facing } : null,
       pieces: countBy(el.pieces.map((p) => p.type)),
+      relationship: el.relationship ?? null,
+      relationshipLabel: el.relationshipLabel ?? null,
+      outcome: el.outcome ?? null,
+      description: el.description ?? null,
+      technology: el.technology ?? null,
+      tags: el.tags ?? [],
+      properties: el.properties ?? {},
+      perspectives: el.perspectives ?? {},
+      microMasks: core.microMasksOf(doc).filter((mask) => mask.target === el.id),
       groups: core.groupsOf(doc).filter((group) => group.members.includes(el.id)).map((group) => group.id),
       constraints: constraintRefs(doc, el.id),
     };
@@ -1693,6 +2478,12 @@ function describeElement(doc, el) {
     at: core.address.quadToAddress(el.rect.x, el.rect.y),
     cells: { w: el.rect.w / 2, h: el.rect.h / 2 },
     label: content,
+    description: el.description ?? null,
+    technology: el.technology ?? null,
+    tags: el.tags ?? [],
+    properties: el.properties ?? {},
+    perspectives: el.perspectives ?? {},
+    microMasks: core.microMasksOf(doc).filter((mask) => mask.target === el.id),
     corner: el.corner,
     fontSize: el.fontSize,
     fit: fit ? { fits: fit.fits, charsPerLine: fit.charsPerLine, lines: fit.lineCount, visibleLines: fit.visibleLines } : null,
@@ -1757,7 +2548,7 @@ function formatConstraint(doc, constraint) {
 function portSeats(el) {
   const out = {};
   for (const face of ['N', 'S', 'E', 'W']) {
-    const p = core.shapes.approachPoint(el.rect, face);
+    const p = core.shapes.approachPoint(el.rect, face, el.shape, el.corner);
     out[face] = core.address.quadToAddress(p.x, p.y);
   }
   return out;
@@ -1836,6 +2627,40 @@ function describeTrace(t) {
   if (t.action === 'face') return `facing ${t.facing}`;
   return t.at ?? '';
 }
+
+const ORIENTATION = `TurtlePen — verified visual authoring on an integer lattice.
+
+WORKFLOW
+  measure -> plan (rehearse) -> approve/commit -> validate + inspect_model
+          -> render -> LOOK -> perceptual_review -> save
+
+  A structurally clear drawing can still depict the wrong thing. The absence of a review is not a pass.
+  Reviews bind to renderHash and become stale
+  after presentation changes. Every deliberate structural or model finding needs
+  a fingerprinted acceptance reason.
+
+CORE FACTS
+  1 cell = 10px; 1 quadrant = 5px; all geometry is integer-exact.
+  Addresses use Excel columns: C4, C4.tl, C4.q1. The canvas grows right/down.
+  Use pen from <id>.<face> for attached connectors; gateway.S#2 selects an
+  indexed face seat. Use connect for semantic direct, orthogonal, or
+  explicit-waypoint curved relationships.
+
+DISCOVERY
+  search_help { query: "dynamic views" }   compact live capability search
+  turtlepen_help { section: "all" }        full pen grammar and rule manual
+  doctor                                     runtime/schema/registry checks
+  runtime_info                               version, hashes, and tool count
+
+RECOVERY AND OUTPUT
+  plan with format:"json" returns an exact object diff before commit.
+  history supports status/undo/redo/clear. Saves are atomic and hash-guarded.
+  The CLI validates, inspects, renders SVG/PNG/PDF, builds documentation bundles,
+  creates artifact manifests, and runs or scores benchmark receipts.
+
+PERCEPTUAL REVIEW
+  render returns renderHash. Look at the artifact, then call perceptual_review.
+  micro_mask provides reversible 1-design-pixel cleanup on artwork and images.`;
 
 const HELP = `TurtlePen — an integer-exact grid for AI-authored diagrams.
 
@@ -2045,6 +2870,27 @@ GROUPS AND FOLLOW RELATIONSHIPS
   An element belongs to at most one group. A dependent has at most one parent;
   chains cascade and cycles are refused. Named and indexed anchors work, offsets
   are whole quadrants, and describe reports groups plus relationship sync state.
+
+SEMANTIC MODEL AND NODE CONNECTIONS
+  annotate { id, description, technology, tags, properties, perspectives }
+  connect { id, from: "api.E", to: "db.W", routing: "direct" }
+  connect { id, from: "api.E", to: "db.W", routing: "curved",
+            via: ["K5.q1"] }
+  inspect_model                                report incomplete model meaning
+
+  connect always begins and ends at named node ports. Direct is one exact ray;
+  orthogonal applies an inspectable simple route; curved rasterizes through one
+  or more explicit whole-quadrant waypoints. Meaning and routing persist, and
+  describe returns both. Semantic inspection is separate from collision
+  validation, so missing metadata can never masquerade as broken geometry.
+
+1PX ERASER / MICRO-MASK
+  micro_mask { action: "add", id, target, points: [{x,y}], width: 1 }
+  micro_mask { action: "remove", id }
+
+  One design pixel is one integer SVG-viewBox pixel. The mask changes SVG and
+  renderHash, but NEVER cuts the target's 5px quadrant footprint. V1 supports
+  artwork paths and images only. ASCII states that masks are not represented.
 
 PEN GRAMMAR
   pen from <id>.<N|S|E|W>                      START HERE for connectors: seats

@@ -1,0 +1,302 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2045" height="2315" viewBox="0 0 2045 2315" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace">
+<style>
+  .bg { fill: #f4f3ef; }
+  .grid { stroke: #dedbd3; stroke-width: 0.5; }
+  .grid-major { stroke: #cbc7bd; stroke-width: 0.5; }
+  .box { fill: #e9e7e1; stroke: #2b2a26; stroke-width: 1; }
+  .box-label { fill: #2b2a26; }
+  .stroke { fill: #2b2a26; }
+  .hop { stroke: #2b2a26; }
+  .free-text { fill: #6b6862; }
+  .hit-S0 { fill: #8a5b56; opacity: 0.30; }
+  .hit-S1 { fill: #96755c; opacity: 0.28; }
+  .hit-S2 { fill: #87805a; opacity: 0.24; }
+  .hit-S3 { fill: #4a6572; opacity: 0.20; }
+  .dimmed { fill: url(#tp-stipple); }
+  .dither-run { fill: #2b2a26; }
+  .simplify-run { fill: #2b2a26; }
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #1a1917; }
+    .grid { stroke: #2e2c28; }
+    .grid-major { stroke: #3d3a35; }
+    .box { fill: #232220; stroke: #dedbd3; }
+    .box-label { fill: #dedbd3; }
+    .free-text { fill: #9a968d; }
+    .stroke { fill: #dedbd3; }
+    .hop { stroke: #dedbd3; }
+  }
+</style>
+<defs>
+  <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
+       5px quadrant so a dimmed element is made of the same units as every
+       other mark on the page. -->
+  <pattern id="tp-stipple" width="10" height="10" patternUnits="userSpaceOnUse">
+    <rect width="5" height="5" fill="#2b2a26"/>
+    <rect x="5" y="5" width="5" height="5" fill="#2b2a26"/>
+  </pattern>
+</defs>
+<rect class="bg" x="0" y="0" width="2045" height="2315"/>
+<g transform="translate(-20,-60)">
+<g data-page="base" data-z="0" opacity="1">
+<g data-element="hair-l-0">
+<g data-id="hair-l-0" data-kind="path" data-role="artwork"><polyline points="1012,312 987,337 987,342 977,347 972,362 957,377 957,382 937,407 932,422 907,452 882,507 872,517 832,597 832,607 827,612 827,622 822,627 822,637 812,657 807,702 802,707 797,747 792,752 792,827 787,832 787,907 782,912 782,1087 787,1092 787,1157 792,1162 792,1187 797,1192 797,1247 802,1252 802,1272 807,1277 807,1292 812,1297 812,1322" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-0">
+<g data-id="hair-r-0" data-kind="path" data-role="artwork"><polyline points="1072,312 1097,337 1097,342 1107,347 1112,362 1127,377 1127,382 1147,407 1152,422 1177,452 1192,487 1212,512 1217,532 1252,597 1252,607 1257,612 1257,622 1262,627 1262,637 1272,657 1277,702 1282,707 1287,747 1292,752 1292,827 1297,832 1297,907 1302,912 1302,1087 1297,1092 1297,1157 1292,1162 1292,1187 1287,1192 1287,1247 1282,1252 1282,1272 1277,1277 1277,1292 1272,1297 1272,1322" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-l-1">
+<g data-id="hair-l-1" data-kind="path" data-role="artwork"><polyline points="992,312 972,332 972,337 952,362 942,387 932,397 917,427 897,452 882,487 857,522 832,572 832,582 827,587 827,597 822,602 822,612 817,617 817,627 812,632 812,642 802,662 797,707 792,712 787,752 782,757 782,832 777,837 777,912 772,917 772,1092 777,1097 777,1162 782,1167 782,1192 787,1197 787,1252 792,1257 792,1277 797,1282 797,1297 802,1302 802,1327" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-1">
+<g data-id="hair-r-1" data-kind="path" data-role="artwork"><polyline points="1092,312 1112,332 1112,337 1132,362 1142,387 1152,397 1167,427 1187,452 1202,487 1227,522 1252,572 1252,582 1257,587 1257,597 1262,602 1262,612 1267,617 1267,627 1272,632 1272,642 1282,662 1287,707 1292,712 1297,752 1302,757 1302,832 1307,837 1307,912 1312,917 1312,1092 1307,1097 1307,1162 1302,1167 1302,1192 1297,1197 1297,1252 1292,1257 1292,1277 1287,1282 1287,1297 1282,1302 1282,1327" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-l-2">
+<g data-id="hair-l-2" data-kind="path" data-role="artwork"><polyline points="972,317 952,352 937,367 892,457 882,467 867,497 852,512 832,547 832,557 807,602 807,612 802,617 802,627 797,632 797,642 787,662 782,707 777,712 772,752 767,757 762,917 757,922 757,1097 762,1102 762,1162 767,1167 767,1192 772,1197 772,1222 777,1227 782,1277 787,1282 787,1297 792,1302 792,1327" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-2">
+<g data-id="hair-r-2" data-kind="path" data-role="artwork"><polyline points="1112,317 1132,352 1147,367 1192,457 1202,467 1217,497 1232,512 1252,547 1252,557 1277,602 1277,612 1282,617 1282,627 1287,632 1287,642 1297,662 1302,707 1307,712 1312,752 1317,757 1322,917 1327,922 1327,1097 1322,1102 1322,1162 1317,1167 1317,1192 1312,1197 1312,1222 1307,1227 1302,1277 1297,1282 1297,1297 1292,1302 1292,1327" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-l-3">
+<g data-id="hair-l-3" data-kind="path" data-role="artwork"><polyline points="947,327 932,347 932,357 917,372 917,382 912,387 912,397 902,417 892,427 877,462 857,487 842,522 832,532 802,592 802,602 797,607 797,617 792,622 792,632 787,637 787,647 777,667 772,712 767,717 762,757 757,762 752,922 747,927 747,1102 752,1107 752,1167 757,1172 757,1197 762,1202 762,1227 767,1232 772,1282 777,1287 777,1302 782,1307 782,1332" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-3">
+<g data-id="hair-r-3" data-kind="path" data-role="artwork"><polyline points="1137,327 1162,362 1167,382 1172,387 1172,397 1182,417 1192,427 1207,462 1227,487 1242,522 1252,532 1282,592 1282,602 1287,607 1287,617 1292,622 1292,632 1297,637 1297,647 1307,667 1312,712 1317,717 1322,757 1327,762 1332,922 1337,927 1337,1102 1332,1107 1332,1167 1327,1172 1327,1197 1322,1202 1322,1227 1317,1232 1312,1282 1307,1287 1307,1302 1302,1307 1302,1332" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-l-4">
+<g data-id="hair-l-4" data-kind="path" data-role="artwork"><polyline points="927,337 927,342 917,352 917,362 902,382 902,392 897,397 897,407 887,427 877,437 852,492 832,517 792,597 792,607 787,612 787,622 782,627 782,637 777,642 777,652 767,672 767,692 762,697 762,727 757,732 757,762 752,767 752,802 747,807 747,842 742,847 742,927 737,932 737,1107 742,1112 742,1172 747,1177 747,1202 752,1207 752,1232 757,1237 762,1287 767,1292 767,1307 772,1312 772,1337" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-4">
+<g data-id="hair-r-4" data-kind="path" data-role="artwork"><polyline points="1157,337 1157,342 1167,352 1167,362 1182,382 1182,392 1187,397 1187,407 1197,427 1207,437 1232,492 1252,517 1292,597 1292,607 1297,612 1297,622 1302,627 1302,637 1307,642 1307,652 1317,672 1317,692 1322,697 1322,727 1327,732 1327,762 1332,767 1332,802 1337,807 1337,842 1342,847 1342,927 1347,932 1347,1107 1342,1112 1342,1172 1337,1177 1337,1202 1332,1207 1332,1232 1327,1237 1322,1287 1317,1292 1317,1307 1312,1312 1312,1337" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-l-5">
+<g data-id="hair-l-5" data-kind="path" data-role="artwork"><polyline points="907,352 902,367 892,377 892,387 862,447 852,457 827,512 817,522 777,602 777,612 772,617 772,627 767,632 767,642 762,647 762,657 752,677 747,722 742,727 742,742 737,747 737,807 732,812 732,847 727,852 727,932 722,937 722,1112 727,1117 727,1147 732,1152 732,1177 737,1182 737,1207 742,1212 742,1237 747,1242 747,1267 752,1272 752,1292 757,1297 757,1332 762,1342" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-5">
+<g data-id="hair-r-5" data-kind="path" data-role="artwork"><polyline points="1177,352 1182,367 1192,377 1192,387 1222,447 1232,457 1257,512 1267,522 1307,602 1307,612 1312,617 1312,627 1317,632 1317,642 1322,647 1322,657 1332,677 1337,722 1342,727 1342,742 1347,747 1347,807 1352,812 1352,847 1357,852 1357,932 1362,937 1362,1112 1357,1117 1357,1147 1352,1152 1352,1177 1347,1182 1347,1207 1342,1212 1342,1237 1337,1242 1337,1267 1332,1272 1332,1292 1327,1297 1327,1332 1322,1342" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-l-6">
+<g data-id="hair-l-6" data-kind="path" data-role="artwork"><polyline points="887,372 852,457 842,467 827,502 817,512 792,567 782,577 762,617 762,627 757,632 757,642 752,647 752,657 742,677 737,722 732,727 732,742 727,747 727,807 722,812 722,847 717,852 717,932 712,937 712,1112 717,1117 717,1147 722,1152 722,1177 727,1182 727,1207 732,1212 732,1237 737,1242 737,1267 742,1272 742,1292 747,1297 747,1332 752,1342" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-6">
+<g data-id="hair-r-6" data-kind="path" data-role="artwork"><polyline points="1197,372 1232,457 1242,467 1257,502 1277,527 1322,617 1322,627 1327,632 1327,642 1332,647 1332,657 1342,677 1347,722 1352,727 1352,742 1357,747 1357,807 1362,812 1362,847 1367,852 1367,932 1372,937 1372,1112 1367,1117 1367,1147 1362,1152 1362,1177 1357,1182 1357,1207 1352,1212 1352,1237 1347,1242 1347,1267 1342,1272 1342,1292 1337,1297 1337,1332 1332,1342" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-l-7">
+<g data-id="hair-l-7" data-kind="path" data-role="artwork"><polyline points="867,392 862,412 852,422 837,462 827,472 812,507 792,532 777,567 767,577 757,597 757,607 747,622 747,632 742,637 742,647 737,652 737,662 727,682 722,727 717,732 712,772 707,777 702,937 697,942 697,1117 702,1122 702,1152 707,1157 707,1182 712,1187 712,1212 717,1217 722,1272 727,1277 727,1292 737,1307 737,1337 742,1347" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-7">
+<g data-id="hair-r-7" data-kind="path" data-role="artwork"><polyline points="1217,392 1222,412 1232,422 1247,462 1257,472 1272,507 1292,532 1307,567 1317,577 1327,597 1327,607 1337,622 1337,632 1342,637 1342,647 1347,652 1347,662 1357,682 1362,727 1367,732 1372,772 1377,777 1382,937 1387,942 1387,1117 1382,1122 1382,1152 1377,1157 1377,1182 1372,1187 1372,1212 1367,1217 1362,1272 1357,1277 1357,1292 1347,1307 1347,1337 1342,1347" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-l-8">
+<g data-id="hair-l-8" data-kind="path" data-role="artwork"><polyline points="847,417 822,472 802,497 737,627 737,637 732,642 732,652 727,657 727,667 717,687 717,707 712,712 712,742 707,747 707,777 702,782 702,817 697,822 697,857 692,862 692,942 687,947 687,1122 692,1127 692,1157 697,1162 697,1187 702,1192 702,1217 707,1222 712,1277 717,1282 717,1297 727,1312 727,1342 732,1352" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-8">
+<g data-id="hair-r-8" data-kind="path" data-role="artwork"><polyline points="1237,417 1262,472 1282,497 1347,627 1347,637 1352,642 1352,652 1357,657 1357,667 1367,687 1367,707 1372,712 1372,742 1377,747 1377,777 1382,782 1382,817 1387,822 1387,857 1392,862 1392,942 1397,947 1397,1122 1392,1127 1392,1157 1387,1162 1387,1187 1382,1192 1382,1217 1377,1222 1372,1277 1367,1282 1367,1297 1357,1312 1357,1342 1352,1352" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-l-9">
+<g data-id="hair-l-9" data-kind="path" data-role="artwork"><polyline points="822,447 822,442 802,492 767,542 742,592 737,617 727,632 727,642 722,647 722,657 717,662 717,672 707,692 707,712 702,717 702,747 697,752 697,782 692,787 692,822 687,827 687,862 682,867 682,947 677,952 677,1127 682,1132 682,1162 687,1167 687,1192 692,1197 692,1222 697,1227 702,1282 707,1287 707,1302 717,1317 717,1347 722,1357" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-9">
+<g data-id="hair-r-9" data-kind="path" data-role="artwork"><polyline points="1262,447 1262,442 1282,492 1317,542 1342,592 1347,617 1357,632 1357,642 1362,647 1362,657 1367,662 1367,672 1377,692 1377,712 1382,717 1382,747 1387,752 1387,782 1392,787 1392,822 1397,827 1397,862 1402,867 1402,947 1407,952 1407,1127 1402,1132 1402,1162 1397,1167 1397,1192 1392,1197 1392,1222 1387,1227 1382,1282 1377,1287 1377,1302 1367,1317 1367,1347 1362,1357" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-l-10">
+<g data-id="hair-l-10" data-kind="path" data-role="artwork"><polyline points="802,477 807,462 802,462 787,497 752,547 722,607 722,617 712,632 712,642 707,647 707,657 702,662 702,672 692,692 692,712 687,717 687,747 682,752 682,782 677,787 677,822 672,827 672,862 667,867 667,947 662,952 662,1132 667,1137 667,1167 672,1172 677,1222 687,1242 692,1282 697,1287 697,1307 702,1312 702,1327 707,1332 707,1347 712,1357" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-10">
+<g data-id="hair-r-10" data-kind="path" data-role="artwork"><polyline points="1282,477 1277,462 1282,462 1297,497 1332,547 1362,607 1362,617 1372,632 1372,642 1377,647 1377,657 1382,662 1382,672 1392,692 1392,712 1397,717 1397,747 1402,752 1402,782 1407,787 1407,822 1412,827 1412,862 1417,867 1417,947 1422,952 1422,1132 1417,1137 1417,1167 1412,1172 1407,1222 1397,1242 1392,1282 1387,1287 1387,1307 1382,1312 1382,1327 1377,1332 1377,1347 1372,1357" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-l-11">
+<g data-id="hair-l-11" data-kind="path" data-role="artwork"><polyline points="782,512 782,502 787,497 787,472 772,502 752,527 692,657 692,677 687,682 687,692 682,697 682,717 677,722 677,752 672,757 672,787 667,792 667,827 662,832 662,867 657,872 657,952 652,957 652,1137 657,1142 657,1172 662,1177 667,1227 677,1247 682,1287 687,1292 687,1312 692,1317 692,1332 697,1337 697,1352 702,1362" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hair-r-11">
+<g data-id="hair-r-11" data-kind="path" data-role="artwork"><polyline points="1302,512 1302,502 1297,497 1297,472 1312,502 1332,527 1392,657 1392,677 1397,682 1397,692 1402,697 1402,717 1407,722 1407,752 1412,757 1412,787 1417,792 1417,827 1422,832 1422,867 1427,872 1427,952 1432,957 1432,1137 1427,1142 1427,1172 1422,1177 1417,1227 1407,1247 1402,1287 1397,1292 1397,1312 1392,1317 1392,1332 1387,1337 1387,1352 1382,1362" fill="none" stroke="#2f2a26" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-274">
+<g data-id="dress-274" data-kind="path" data-role="artwork"><polyline points="592,1387 632,1387 637,1382 762,1382 767,1377 917,1377 922,1372 1162,1372 1167,1377 1317,1377 1322,1382 1447,1382 1452,1387 1492,1387" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-281">
+<g data-id="dress-281" data-kind="path" data-role="artwork"><polyline points="577,1422 622,1422 627,1417 752,1417 757,1412 912,1412 917,1407 1167,1407 1172,1412 1322,1412 1327,1417 1457,1417 1462,1422 1507,1422" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-288">
+<g data-id="dress-288" data-kind="path" data-role="artwork"><polyline points="557,1457 602,1457 607,1452 737,1452 742,1447 907,1447 912,1442 1172,1442 1177,1447 1337,1447 1342,1452 1477,1452 1482,1457 1527,1457" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-295">
+<g data-id="dress-295" data-kind="path" data-role="artwork"><polyline points="542,1492 587,1492 592,1487 732,1487 737,1482 902,1482 907,1477 1177,1477 1182,1482 1347,1482 1352,1487 1487,1487 1492,1492 1542,1492" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-302">
+<g data-id="dress-302" data-kind="path" data-role="artwork"><polyline points="522,1527 567,1527 572,1522 717,1522 722,1517 897,1517 902,1512 1177,1512 1182,1517 1362,1517 1367,1522 1507,1522 1512,1527 1562,1527" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-309">
+<g data-id="dress-309" data-kind="path" data-role="artwork"><polyline points="507,1562 557,1562 562,1557 707,1557 712,1552 892,1552 897,1547 1182,1547 1187,1552 1367,1552 1372,1557 1522,1557 1527,1562 1577,1562" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-316">
+<g data-id="dress-316" data-kind="path" data-role="artwork"><polyline points="507,1597 557,1597 562,1592 707,1592 712,1587 892,1587 897,1582 1182,1582 1187,1587 1367,1587 1372,1592 1522,1592 1527,1597 1577,1597" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-323">
+<g data-id="dress-323" data-kind="path" data-role="artwork"><polyline points="492,1632 542,1632 547,1627 697,1627 702,1622 887,1622 892,1617 1187,1617 1192,1622 1377,1622 1382,1627 1532,1627 1537,1632 1592,1632" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-330">
+<g data-id="dress-330" data-kind="path" data-role="artwork"><polyline points="477,1667 527,1667 532,1662 687,1662 692,1657 887,1657 892,1652 1192,1652 1197,1657 1387,1657 1392,1662 1547,1662 1552,1667 1607,1667" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-337">
+<g data-id="dress-337" data-kind="path" data-role="artwork"><polyline points="477,1702 527,1702 532,1697 687,1697 692,1692 887,1692 892,1687 1192,1687 1197,1692 1387,1692 1392,1697 1547,1697 1552,1702 1607,1702" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-344">
+<g data-id="dress-344" data-kind="path" data-role="artwork"><polyline points="462,1737 517,1737 522,1732 682,1732 687,1727 882,1727 887,1722 1197,1722 1202,1727 1397,1727 1402,1732 1562,1732 1567,1737 1622,1737" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-351">
+<g data-id="dress-351" data-kind="path" data-role="artwork"><polyline points="447,1772 502,1772 507,1767 672,1767 677,1762 877,1762 882,1757 1202,1757 1207,1762 1407,1762 1412,1767 1577,1767 1582,1772 1637,1772" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-358">
+<g data-id="dress-358" data-kind="path" data-role="artwork"><polyline points="432,1807 487,1807 492,1802 662,1802 667,1797 872,1797 877,1792 1202,1792 1207,1797 1417,1797 1422,1802 1587,1802 1592,1807 1652,1807" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-365">
+<g data-id="dress-365" data-kind="path" data-role="artwork"><polyline points="432,1842 487,1842 492,1837 662,1837 667,1832 872,1832 877,1827 1202,1827 1207,1832 1417,1832 1422,1837 1587,1837 1592,1842 1652,1842" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-372">
+<g data-id="dress-372" data-kind="path" data-role="artwork"><polyline points="417,1877 472,1877 477,1872 652,1872 657,1867 867,1867 872,1862 1207,1862 1212,1867 1422,1867 1427,1872 1602,1872 1607,1877 1667,1877" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-379">
+<g data-id="dress-379" data-kind="path" data-role="artwork"><polyline points="417,1912 472,1912 477,1907 652,1907 657,1902 867,1902 872,1897 1207,1897 1212,1902 1422,1902 1427,1907 1602,1907 1607,1912 1667,1912" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-386">
+<g data-id="dress-386" data-kind="path" data-role="artwork"><polyline points="407,1947 467,1947 472,1942 647,1942 652,1937 867,1937 872,1932 1212,1932 1217,1937 1427,1937 1432,1942 1612,1942 1617,1947 1677,1947" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-393">
+<g data-id="dress-393" data-kind="path" data-role="artwork"><polyline points="392,1982 452,1982 457,1977 637,1977 642,1972 862,1972 867,1967 1217,1967 1222,1972 1437,1972 1442,1977 1622,1977 1627,1982 1692,1982" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-400">
+<g data-id="dress-400" data-kind="path" data-role="artwork"><polyline points="392,2017 452,2017 457,2012 637,2012 642,2007 862,2007 867,2002 1217,2002 1222,2007 1437,2007 1442,2012 1622,2012 1627,2017 1692,2017" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-407">
+<g data-id="dress-407" data-kind="path" data-role="artwork"><polyline points="377,2052 437,2052 442,2047 627,2047 632,2042 857,2042 862,2037 1222,2037 1227,2042 1447,2042 1452,2047 1637,2047 1642,2052 1707,2052" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-414">
+<g data-id="dress-414" data-kind="path" data-role="artwork"><polyline points="377,2087 437,2087 442,2082 627,2082 632,2077 857,2077 862,2072 1222,2072 1227,2077 1447,2077 1452,2082 1637,2082 1642,2087 1707,2087" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-421">
+<g data-id="dress-421" data-kind="path" data-role="artwork"><polyline points="367,2122 427,2122 432,2117 622,2117 627,2112 852,2112 857,2107 1222,2107 1227,2112 1457,2112 1462,2117 1647,2117 1652,2122 1717,2122" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-428">
+<g data-id="dress-428" data-kind="path" data-role="artwork"><polyline points="357,2157 422,2157 427,2152 617,2152 622,2147 852,2147 857,2142 1227,2142 1232,2147 1462,2147 1467,2152 1657,2152 1662,2157 1727,2157" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-435">
+<g data-id="dress-435" data-kind="path" data-role="artwork"><polyline points="357,2192 422,2192 427,2187 617,2187 622,2182 852,2182 857,2177 1227,2177 1232,2182 1462,2182 1467,2187 1657,2187 1662,2192 1727,2192" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-442">
+<g data-id="dress-442" data-kind="path" data-role="artwork"><polyline points="347,2227 412,2227 417,2222 612,2222 617,2217 847,2217 852,2212 1227,2212 1232,2217 1467,2217 1472,2222 1667,2222 1672,2227 1737,2227" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-449">
+<g data-id="dress-449" data-kind="path" data-role="artwork"><polyline points="337,2262 402,2262 407,2257 602,2257 607,2252 847,2252 852,2247 1232,2247 1237,2252 1472,2252 1477,2257 1677,2257 1682,2262 1747,2262" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-456">
+<g data-id="dress-456" data-kind="path" data-role="artwork"><polyline points="337,2297 402,2297 407,2292 602,2292 607,2287 847,2287 852,2282 1232,2282 1237,2287 1472,2287 1477,2292 1677,2292 1682,2297 1747,2297" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="dress-463">
+<g data-id="dress-463" data-kind="path" data-role="artwork"><polyline points="327,2332 392,2332 397,2327 597,2327 602,2322 842,2322 847,2317 1232,2317 1237,2322 1477,2322 1482,2327 1682,2327 1687,2332 1757,2332" fill="none" stroke="#4a3f34" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="cheek-0">
+<g data-id="cheek-0" data-kind="path" data-role="artwork"><polyline points="1172,662 1177,667 1177,692 1182,697 1182,707 1202,747 1202,762 1207,767 1207,802 1212,807 1212,852 1207,857 1207,887 1202,892 1202,907 1182,942 1172,982" fill="none" stroke="#6b6259" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="cheek-1">
+<g data-id="cheek-1" data-kind="path" data-role="artwork"><polyline points="1192,677 1197,682 1197,707 1217,747 1222,777 1227,782 1227,812 1232,817 1232,862 1217,892 1212,917 1202,937 1192,947 1192,957 1187,962" fill="none" stroke="#6b6259" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="cheek-2">
+<g data-id="cheek-2" data-kind="path" data-role="artwork"><polyline points="1212,692 1217,697 1217,722 1237,762 1242,792 1247,797 1252,867 1232,907 1202,942" fill="none" stroke="#6b6259" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="cheek-3">
+<g data-id="cheek-3" data-kind="path" data-role="artwork"><polyline points="1232,707 1237,712 1237,737 1257,772 1257,787 1267,807 1267,842 1272,847 1272,872 1267,882 1237,912 1217,922" fill="none" stroke="#6b6259" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="cheek-4">
+<g data-id="cheek-4" data-kind="path" data-role="artwork"><polyline points="1252,722 1257,727 1257,747 1262,752 1262,762 1277,787 1277,802 1287,822 1287,837 1292,842 1292,882 1282,892 1232,902" fill="none" stroke="#6b6259" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="cheek-5">
+<g data-id="cheek-5" data-kind="path" data-role="artwork"><polyline points="1272,737 1277,742 1277,762 1292,787 1297,817 1307,837 1307,852 1312,857 1312,882 1307,892 1282,892 1262,882 1247,882" fill="none" stroke="#6b6259" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+<g data-element="cheek-6">
+<g data-id="cheek-6" data-kind="path" data-role="artwork"><polyline points="1292,752 1297,757 1297,772 1312,797 1312,812 1317,817 1322,847 1332,867 1332,892 1327,897 1317,897 1297,882 1292,882 1277,867 1267,867 1262,862" fill="none" stroke="#6b6259" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
+</g>
+</g>
+<g data-page="ink" data-z="1" opacity="0.92">
+<g data-element="horizon-0">
+<g data-id="horizon-0" data-kind="path" data-role="artwork"><polyline points="112,712 672,712" fill="none" stroke="#9a9388" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="horizon-1">
+<g data-id="horizon-1" data-kind="path" data-role="artwork"><polyline points="1412,712 1972,712" fill="none" stroke="#9a9388" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="ridge-l-0">
+<g data-id="ridge-l-0" data-kind="path" data-role="artwork"><polyline points="42,742 227,547 232,547 247,532 287,512 322,512 327,517 337,517 357,527 452,622 472,627 477,632 497,632 517,617 522,617 577,562 577,557 607,532 627,532 637,537 667,567 672,582 687,602" fill="none" stroke="#9a9388" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="ridge-r-0">
+<g data-id="ridge-r-0" data-kind="path" data-role="artwork"><polyline points="1402,602 1412,582 1422,572 1427,557 1477,502 1497,492 1517,492 1537,502 1577,542 1577,547 1597,567 1597,572 1642,612 1662,617 1667,622 1677,622 1697,607 1702,607 1727,582 1732,567 1762,537 1767,522 1797,487 1802,487 1822,472 1842,472 1877,492 1912,527 1922,547 1942,567 1942,572 1972,607 1972,612 2002,652 2007,667 2022,682 2022,687 2042,712" fill="none" stroke="#9a9388" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="head">
+<g data-id="head" data-kind="path" data-role="artwork"><polyline points="1322,692 1317,712 1312,717 1312,732 1302,752 1302,767 1297,772 1297,787 1292,792 1287,822 1232,932 1222,942 1202,977 1187,992 1187,997 1172,1012 1172,1017 1137,1052 1107,1067 1097,1067 1092,1072 1062,1072 1057,1067 1042,1067 992,1042 947,1002 947,997 922,972 922,967 882,917 877,902 857,877 852,862 842,852 822,812 817,782 812,777 812,767 807,762 807,752 797,732 797,717 787,697 787,662 792,657 792,612 797,607 802,557 817,532 817,522 852,452 867,437 867,432 882,417 882,412 937,357 997,327 1007,327 1022,317 1047,317 1052,312 1092,312 1097,317 1122,317 1172,342 1187,357 1192,357 1217,382 1217,387 1237,407 1237,412 1257,437 1287,497 1287,507 1292,512 1292,522 1297,527 1297,537 1307,557 1312,607 1317,612 1317,657 1322,662 1322,687" fill="none" stroke="#1b1b1b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hairline">
+<g data-id="hairline" data-kind="path" data-role="artwork"><polyline points="672,622 697,572 697,562 707,547 707,537 712,532 712,522 717,517 727,477 747,437 747,427 752,422 762,382 817,272 832,257 832,252 872,217 892,207 907,207 912,202 967,202 972,207 1007,207 1012,212 1067,212 1072,207 1107,207 1112,202 1167,202 1172,207 1202,212 1232,237 1237,237 1267,272 1277,297 1287,307 1302,337 1302,347 1342,427 1342,437 1352,457 1352,472 1357,477 1357,487 1362,492 1362,502 1372,522 1372,532 1382,547 1382,557 1402,592 1402,602 1412,622" fill="none" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="eye-l">
+<g data-id="eye-l" data-kind="path" data-role="artwork"><polyline points="1012,632 1007,652 992,677 952,697 937,697 932,702 877,702 872,697 852,697 812,677 802,667 797,647 792,642 792,627 797,622 797,612 807,592 852,567 867,567 872,562 927,562 932,567 952,567 992,587 1002,597 1012,627" fill="none" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="eye-r">
+<g data-id="eye-r" data-kind="path" data-role="artwork"><polyline points="1292,632 1287,652 1272,677 1232,697 1217,697 1212,702 1157,702 1152,697 1132,697 1092,677 1082,667 1077,647 1072,642 1072,627 1077,622 1077,612 1087,592 1132,567 1147,567 1152,562 1207,562 1212,567 1232,567 1272,587 1282,597 1292,627" fill="none" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="pupil-l">
+<g data-id="pupil-l" data-kind="path" data-role="artwork" data-paint="cells"><rect x="900" y="605" width="5" height="5" fill="#1b1b1b"/><rect x="885" y="610" width="35" height="5" fill="#1b1b1b"/><rect x="880" y="615" width="45" height="5" fill="#1b1b1b"/><rect x="875" y="620" width="55" height="5" fill="#1b1b1b"/><rect x="870" y="625" width="65" height="5" fill="#1b1b1b"/><rect x="870" y="630" width="65" height="5" fill="#1b1b1b"/><rect x="870" y="635" width="65" height="5" fill="#1b1b1b"/><rect x="865" y="640" width="75" height="5" fill="#1b1b1b"/><rect x="870" y="645" width="65" height="5" fill="#1b1b1b"/><rect x="870" y="650" width="65" height="5" fill="#1b1b1b"/><rect x="870" y="655" width="65" height="5" fill="#1b1b1b"/><rect x="875" y="660" width="55" height="5" fill="#1b1b1b"/><rect x="880" y="665" width="45" height="5" fill="#1b1b1b"/><rect x="885" y="670" width="35" height="5" fill="#1b1b1b"/><rect x="900" y="675" width="5" height="5" fill="#1b1b1b"/></g>
+</g>
+<g data-element="pupil-r">
+<g data-id="pupil-r" data-kind="path" data-role="artwork" data-paint="cells"><rect x="1180" y="605" width="5" height="5" fill="#1b1b1b"/><rect x="1165" y="610" width="35" height="5" fill="#1b1b1b"/><rect x="1160" y="615" width="45" height="5" fill="#1b1b1b"/><rect x="1155" y="620" width="55" height="5" fill="#1b1b1b"/><rect x="1150" y="625" width="65" height="5" fill="#1b1b1b"/><rect x="1150" y="630" width="65" height="5" fill="#1b1b1b"/><rect x="1150" y="635" width="65" height="5" fill="#1b1b1b"/><rect x="1145" y="640" width="75" height="5" fill="#1b1b1b"/><rect x="1150" y="645" width="65" height="5" fill="#1b1b1b"/><rect x="1150" y="650" width="65" height="5" fill="#1b1b1b"/><rect x="1150" y="655" width="65" height="5" fill="#1b1b1b"/><rect x="1155" y="660" width="55" height="5" fill="#1b1b1b"/><rect x="1160" y="665" width="45" height="5" fill="#1b1b1b"/><rect x="1165" y="670" width="35" height="5" fill="#1b1b1b"/><rect x="1180" y="675" width="5" height="5" fill="#1b1b1b"/></g>
+</g>
+<g data-element="brow-l">
+<g data-id="brow-l" data-kind="path" data-role="artwork"><polyline points="812,492 822,482 862,462 872,462 897,447 922,447 992,482 1002,492" fill="none" stroke="#1b1b1b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="brow-r">
+<g data-id="brow-r" data-kind="path" data-role="artwork"><polyline points="1082,492 1097,477 1157,447 1182,447 1272,492" fill="none" stroke="#1b1b1b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="nose">
+<g data-id="nose" data-kind="path" data-role="artwork"><polyline points="1122,652 1117,657 1112,682 1087,727 1087,742 1082,747 1082,767 1087,772 1087,782 1107,802 1117,807 1137,807 1177,787" fill="none" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="smile">
+<g data-id="smile" data-kind="path" data-role="artwork"><polyline points="832,872 837,882 867,912 867,917 907,957 907,962 957,1007 977,1017 1102,1017 1132,1002 1177,962 1177,957 1217,917 1217,912 1252,877 1252,872" fill="none" stroke="#1b1b1b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="chair-arm">
+<g data-id="chair-arm" data-kind="path" data-role="artwork"><polyline points="1692,2092 1677,2092 1672,2087 1642,2087 1637,2082 1617,2082 1612,2077 1592,2077 1587,2072 1567,2072 1562,2067 1542,2067 1537,2062 1512,2062 1507,2057 1477,2057 1472,2052 1422,2052 1417,2047 1372,2047 1367,2042 1262,2042 1257,2037 1132,2037 1127,2042 1007,2042 1002,2047 842,2047 837,2052 782,2052" fill="none" stroke="#1b1b1b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hand-far">
+<g data-id="hand-far" data-kind="path" data-role="artwork"><polyline points="852,1892 907,1852 932,1842 947,1827 967,1817 977,1817 1002,1802 1017,1802 1022,1797 1132,1797 1137,1802 1172,1802 1177,1807 1192,1807 1242,1832 1262,1837 1307,1877 1312,1877 1332,1892" fill="none" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="hand-near">
+<g data-id="hand-near" data-kind="path" data-role="artwork"><polyline points="1352,1942 1297,1892 1292,1892 1242,1857 1232,1857 1212,1847 1182,1847 1177,1842 1077,1842 1072,1847 1037,1847 1032,1852 1017,1852 1012,1857 997,1857 992,1862 957,1867 907,1892 882,1897 852,1912 822,1942 817,1952 812,2002" fill="none" stroke="#1b1b1b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="finger-0">
+<g data-id="finger-0" data-kind="path" data-role="artwork"><polyline points="882,1892 897,1912 897,1917 917,1937 922,1967 897,1992 887,1992 877,2002 872,2002" fill="none" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="finger-1">
+<g data-id="finger-1" data-kind="path" data-role="artwork"><polyline points="982,1907 997,1927 997,1932 1012,1942 1017,1962 1022,1967 1022,1977 1012,1982 972,1987" fill="none" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="finger-2">
+<g data-id="finger-2" data-kind="path" data-role="artwork"><polyline points="1082,1922 1097,1942 1097,1947 1112,1957 1122,1982 1102,1982 1097,1977 1072,1972" fill="none" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="finger-3">
+<g data-id="finger-3" data-kind="path" data-role="artwork"><polyline points="1182,1937 1187,1947 1217,1977 1217,1987 1222,1992 1217,1992 1197,1972 1192,1972 1177,1957 1172,1957" fill="none" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="neck-l">
+<g data-id="neck-l" data-kind="path" data-role="artwork"><polyline points="942,1022 922,1192" fill="none" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="neck-r">
+<g data-id="neck-r" data-kind="path" data-role="artwork"><polyline points="1142,1022 1162,1192" fill="none" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="shoulders">
+<g data-id="shoulders" data-kind="path" data-role="artwork"><polyline points="292,2352 292,2342 297,2337 297,2312 302,2307 307,2267 312,2262 312,2242 317,2237 317,2217 322,2212 327,2162 332,2157 332,2132 337,2127 342,2072 347,2067 347,2047 352,2042 352,2027 357,2022 357,2007 362,2002 362,1987 367,1982 367,1967 372,1962 372,1947 377,1942 377,1922 382,1917 387,1867 392,1862 397,1832 402,1827 402,1817 412,1797 412,1782 417,1777 417,1767 427,1747 427,1732 432,1727 432,1717 442,1697 442,1682 447,1677 447,1667 457,1647 457,1632 462,1627 462,1617 467,1612 467,1602 472,1597 472,1587 477,1582 477,1572 487,1552 492,1522 512,1487 512,1477 522,1462 522,1452 577,1342 602,1312 607,1297 657,1247 662,1247 692,1222 722,1207 762,1202 767,1197 787,1197 792,1202 837,1202 842,1207 852,1207 857,1212 867,1212 887,1222 927,1227 932,1232 942,1232 947,1237 957,1237 977,1247 992,1247 997,1252 1082,1252 1087,1247 1107,1247 1112,1242 1122,1242 1127,1237 1137,1237 1157,1227 1197,1222 1202,1217 1212,1217 1217,1212 1227,1212 1247,1202 1292,1202 1297,1197 1317,1197 1322,1202 1342,1202 1347,1207 1357,1207 1397,1227 1427,1252 1432,1252 1477,1297 1482,1312 1512,1347 1522,1367 1522,1377 1567,1462 1572,1487 1592,1522 1592,1532 1602,1552 1602,1567 1607,1572 1607,1582 1612,1587 1612,1597 1617,1602 1617,1612 1622,1617 1622,1627 1632,1647 1632,1662 1637,1667 1637,1677 1647,1697 1647,1712 1652,1717 1652,1727 1662,1747 1662,1762 1667,1767 1667,1777 1677,1797 1677,1812 1682,1817 1682,1827 1692,1847 1692,1862 1697,1867 1697,1882 1702,1887 1707,1937 1712,1942 1712,1957 1717,1962 1717,1977 1722,1982 1722,1997 1727,2002 1727,2017 1732,2022 1732,2037 1737,2042 1737,2067 1742,2072 1742,2097 1747,2102 1752,2157 1757,2162 1762,2212 1767,2217 1767,2237 1772,2242 1772,2262 1777,2267 1777,2287 1782,2292 1782,2307 1787,2312 1792,2352" fill="none" stroke="#1b1b1b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="neckline">
+<g data-id="neckline" data-kind="path" data-role="artwork"><polyline points="762,1242 797,1292 812,1327 827,1342 827,1347 842,1362 842,1367 857,1382 857,1387 897,1427 932,1447 942,1447 962,1457 987,1457 992,1462 1092,1462 1097,1457 1122,1457 1127,1452 1137,1452 1142,1447 1152,1447 1172,1437 1182,1427 1187,1427 1232,1382 1232,1377 1272,1327 1277,1312 1302,1277 1312,1252 1322,1242" fill="none" stroke="#1b1b1b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="forearm">
+<g data-id="forearm" data-kind="path" data-role="artwork"><polyline points="1672,2012 1662,2007 1627,1972 1622,1972 1602,1952 1597,1952 1557,1912 1537,1902 1497,1867 1492,1867 1467,1847 1452,1842 1442,1832 1402,1812 1362,1807 1357,1802 1342,1802 1337,1797 1292,1797 1287,1792 1212,1792" fill="none" stroke="#1b1b1b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g data-element="text-1">
+<text class="free-text" x="100" y="106" font-size="22" font-weight="800" textLength="143" lengthAdjust="spacingAndGlyphs" xml:space="preserve">LA GIOCONDA</text>
+</g>
+</g>
+</g></svg>

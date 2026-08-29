@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 3,
   "name": "ingest pipeline",
   "canvas": {
     "cols": 120,
@@ -444,5 +444,18 @@
       }
     ]
   },
-  "acceptances": []
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
+  },
+  "acceptances": [],
+  "perceptual": {
+    "renderHash": "2f87ca0d99756d47",
+    "reviewer": "codex/gpt-5.6",
+    "reviewedAt": "2026-08-26T22:26:30.221Z",
+    "note": "Reviewed the current SVG and parity PNG at native dimensions on 2026-08-26; checked legibility, clipping, silhouettes, connector direction, image fitting, and intended composition.",
+    "findings": []
+  }
 }

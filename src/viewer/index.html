@@ -16,6 +16,11 @@
     <span class="meta" id="doc">Connecting</span>
   </div>
   <span class="connection" id="connection" data-state="connecting" aria-live="polite">Connecting</span>
+  <label class="view-control">View
+    <select id="view-select" aria-label="Semantic view">
+      <option value="">Complete model</option>
+    </select>
+  </label>
   <label class="zoom-control">Zoom
     <select id="zoom" aria-label="Canvas zoom">
       <option value="fit" selected>Fit</option>
@@ -40,15 +45,43 @@
       <h2>Pages</h2>
       <div id="pages" class="pages"></div>
     </section>
-    <section class="panel-section">
+    <nav class="panel-tabs" role="tablist" aria-label="Workbench panels">
+      <button type="button" role="tab" aria-selected="true" data-tab="selection">Selection</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="model">Model</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="plan">Plan</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="history">History</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="review">Review</button>
+    </nav>
+    <section class="panel-section tab-panel" id="panel-selection" data-panel="selection">
       <h2>Selection</h2>
       <div id="inspector" class="empty">No selection</div>
     </section>
-    <section class="panel-section">
+    <section class="panel-section tab-panel" id="panel-model" data-panel="model" hidden>
+      <h2>Semantic model</h2>
+      <div id="model" class="empty">Waiting for model state</div>
+    </section>
+    <section class="panel-section tab-panel" id="panel-plan" data-panel="plan" hidden>
+      <h2>Rehearse and approve</h2>
+      <p class="hint">Enter an operation array. Rehearsal is non-mutating and produces an exact object diff before approval.</p>
+      <label class="field">Operations (JSON)
+        <textarea id="plan-ops" spellcheck="false">[
+  { "op": "move", "id": "element-id", "cellsX": 1 }
+]</textarea>
+      </label>
+      <div class="command-row">
+        <button type="button" id="plan-rehearse">Rehearse</button>
+        <button type="button" id="plan-approve" disabled>Approve plan</button>
+        <button type="button" id="plan-reject" disabled>Reject</button>
+      </div>
+      <pre id="plan-result" class="plan-result">No rehearsal yet.</pre>
+    </section>
+    <section class="panel-section tab-panel" id="panel-history" data-panel="history" hidden>
+      <h2>History and recovery</h2>
+      <div id="history-list" class="empty">No edits yet</div>
+    </section>
+    <section class="panel-section tab-panel" id="panel-review" data-panel="review" hidden>
       <h2>Collision log</h2>
       <div id="log" class="empty" aria-live="polite">Waiting for document state</div>
-    </section>
-    <section class="panel-section">
       <details><summary>Quadrant view</summary><pre id="ascii"></pre></details>
     </section>
   </aside>

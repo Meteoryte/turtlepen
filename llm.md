@@ -25,13 +25,72 @@ of placement and makes every defect a ranked, numeric finding.
   wrong, not the lattice.
 - **The engine never silently changes geometry.** It measures and reports; the
   AI decides. No auto-resize, no auto-shrink, no snapping a stroke onto a track
-  without emitting `L014`. Auto-fit and auto-routing are deferred features, and
-  when built they must produce visible, inspectable output rather than quiet
-  correction.
+  without emitting `L014`. Auto-fit is still a deferred feature, and when built
+  it must produce visible, inspectable output rather than quiet correction.
+  Auto-routing and auto-layout now exist and were built on those terms: `route`
+  returns a pen program and changes nothing, and `layout` is asked for by name,
+  reports every box it moved, every crossing it removed, every cycle it had to
+  reverse, and every connector it could not redraw. Neither happens on its own,
+  and neither can express geometry the ordinary path could not.
 - **Measurement and rendering share one code path.** `core/text.js` owns
   measurement; `core/svg.js` emits `textLength` + `lengthAdjust` on every run so
   the renderer cannot disagree. Do not add a rendering path that lays out text
   independently — that reintroduces the exact bug this project eliminates.
+  Native PNG/PDF rendering consumes the same `layoutTextRuns` result; it must
+  never wrap, size, or align text through a second policy.
+  TurtleFont (`core/turtlefont.js`) holds the same line differently: it does not
+  predict a width at all, because `measureStrokeText` IS `renderStrokeText` with
+  the quadrants discarded. There is no second implementation to drift.
+- **A label names its box, and that is authored fact.** `stroke_label` records
+  which box it belongs to, and `L004` exempts it from that ONE box. Do not widen
+  the exemption to all boxes, and do not infer the relationship from overlap:
+  ink sprawling across a node it does not label is exactly the defect that rule
+  exists to catch. This is the same principle as a connector recording its
+  origin rather than the engine guessing from proximity.
+- **If several unrelated glyphs are all "not quite right", the design grid is
+  too small — do not fix them one at a time.** TurtleFont shipped with an
+  x-height of 4 quadrants, which is five rows for a lowercase letter. In five
+  rows a double-storey `a` gets a counter one row deep and looks pinched, `s`
+  cannot curve so it comes out as a zigzag that reads as `8`, a fraction cannot
+  hold a numerator, a solidus and a denominator without all three colliding, and
+  a ring sign cannot hold both a ring and the letter inside it. Every one of
+  those was reported separately, and each was "fixed" separately, and they were
+  all the same defect. The grid was doubled — exact, because every coordinate is
+  already a whole number — and the letters had room to be drawn properly. Ask
+  whether the room exists BEFORE redrawing anything.
+- **A shape that is solid must say so and be filled at render time.** Solid
+  marks were once drawn as hand-spaced scan lines, one glyph unit apart. The
+  moment the grid doubled, every gap doubled with it and a filled square became
+  a striped one. A `*` prefix on a stroke means "closed and solid", and
+  `fillInterior` does the work at whatever scale is being drawn. Never hand-space
+  a fill: it encodes the grid into the glyph and breaks the first time the grid
+  moves.
+- **Prove an edit changed the INK, not the source.** Two different stroke lists
+  can rasterise to identical quadrants. A letter in this face was once
+  "redrawn", reviewed on a comparison sheet, declared improved and committed
+  without changing a single quadrant; the exported SVG being byte-identical to
+  the previous commit was the only thing that gave it away. `glyph` reports a
+  fingerprint of the ink, and `glyph --compare` answers whether two drawings are
+  the same drawing. Use it before believing a redraw.
+- **A size is a cap height, and the floor under it is measured.** The glyphs are
+  drawn at one cap height and rendered at any other, so most sizes round. That
+  is allowed — `rayQuads` already rounds every point BETWEEN two endpoints, and
+  rounding the endpoints too is the same kind of decision — but it must be
+  reported, which is what `exact` is for. `MIN_CAP` is not a preference: it is
+  whatever `examples/turtlefont-floor.js` says, and that script renders every
+  glyph at every candidate size looking for two letters landing on identical
+  quadrants. Change the glyph data and the answer moves, so run it again.
+- **Rotation is quarter turns only.** A quarter turn maps every quadrant onto
+  another quadrant exactly; any other angle needs coordinates between quadrants,
+  which do not exist here. Rotate the finished SVG if you need 30 degrees.
+- **Words can be ink.** `stroke_text` draws through TurtleFont, so a label is
+  quadrants the collision engine sees rather than an SVG `<text>` run laid out
+  by the viewer's font stack. It is a display face by arithmetic — cap height 6
+  quadrants — and scales by whole multiples only, because a fractional scale
+  would put glyph points between quadrants. Do not add fractional scaling, and
+  do not make a missing glyph render as blank: it is refused on purpose, since a
+  silently dropped character is a hole in a sentence that nothing downstream can
+  detect.
 - **Claimed vs visual footprint is load-bearing.** `elementClaimed` is what an
   element reserves, `elementVisual` is where ink lands. Corner styles carve the
   difference. Rules must use the right one: body crossings are errors, corner-cut
@@ -171,7 +230,7 @@ A drawing is not delivered until all four have happened, in this order:
 Report what the final validation actually said. This is written down because a
 session shipped a flowchart whose every decision node was a rectangle, never
 rendered it until prompted, and reported it complete with three overlaps open.
-`build_flowchart.js` and `build_logo_v2.js` encode the rule: both exit non-zero
+`build-flowchart.js` and `brand/build-logo.mjs` encode the rule: both exit non-zero
 if any finding above INFO survives.
 
 ## Boundaries

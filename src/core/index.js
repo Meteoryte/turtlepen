@@ -7,8 +7,7 @@
  * layer ever silently adjusts geometry.
  */
 
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import { readFile } from 'node:fs/promises';
 
 import * as geometry from './geometry.js';
 import * as address from './address.js';
@@ -22,20 +21,33 @@ import * as tone_ from './tone.js';
 import * as pattern_ from './pattern.js';
 import * as wireframe_ from './wireframe.js';
 import * as perspective_ from './perspective.js';
+import * as workspace from './workspace.js';
 import * as edit_ from './edit.js';
 import * as svgImport_ from './svg-import.js';
+import { renderPng, renderPdf, rasterizeDocument, encodePng } from './output.js';
+import { OPPOSITE } from './geometry.js';
+import { approachPoint, parsePortSpec } from './shapes.js';
+import { rayQuads, curveQuads } from './raster.js';
+import { atomicWriteFile, hashBytes, readFileRecord } from '../io.js';
 import {
   booleanGeometry, sliceGeometry, offsetPath, strokeToPath, editPath, normalizePath,
   reorderElement, duplicateElement, arrayElements, inspectGeometry,
 } from './edit.js';
 import { compileSvg, inspectSvg } from './svg-import.js';
-import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, assertFreeId, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
+
+import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, assertFreeId, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, microMasksOf, addMicroMask, updateMicroMask, microMaskStatus, removeMicroMask, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, SCHEMA_VERSION, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
 import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL } from './collide.js';
 import { renderAscii } from './ascii.js';
 import { renderSvg } from './svg.js';
 import * as perceptual from './perceptual.js';
 import { mermaidToOperations, parseMermaid } from './mermaid.js';
+import { layoutGraph } from './layout.js';
+import { acceptModelFinding, unacceptModelFinding } from './inspect.js';
+import * as turtlefont from './turtlefont.js';
+export { turtlefont };
+import { routeProgram as routeProgram_ } from './route.js';
+export { inspectModel, formatInspection, acceptModelFinding, unacceptModelFinding, INSPECTION_RULES, INSPECTION_SEVERITIES } from './inspect.js';
 export { mermaidToOperations, parseMermaid } from './mermaid.js';
 
 // Perceptual review is a sibling of validate, not a part of it: same document,
@@ -46,31 +58,55 @@ export { repairPlan, applyFix } from './repair.js';
 export { createProgressLog, recordCheck, stagnationNote, digestOf, STAGNATION_AFTER } from './progress.js';
 export {
   PERCEPTUAL_CATEGORIES, PERCEPTUAL_SEVERITIES, REPAIR_CLASSES,
-  normalizePerceptualFinding, attachPerceptualReview, renderHash,
+  normalizePerceptualFinding, attachPerceptualReview, restorePerceptualReview, renderHash,
   verdicts as perceptualVerdicts,
 } from './perceptual.js';
 
 export { geometry, address, text, shapes, occupancy, image, png, dither };
 export { tone_ as tone };
+export { workspace };
+export { renderPng, renderPdf, rasterizeDocument, encodePng };
+export {
+  VIEW_TYPES, VIEW_DIRECTIONS, RESOURCE_TYPES, defineView, removeView, configureTheme,
+  upsertResource, removeResource, resolveView, styleForElement, generatedKey,
+} from './workspace.js';
 export { pattern_ as pattern };
 export { wireframe_ as wireframe };
 export { perspective_ as perspective };
 export { edit_ as edit };
 export { svgImport_ as svgImport };
 export {
-  createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, findElement,
+  createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement,
   elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
   groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup,
   constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints,
+  microMasksOf, addMicroMask, updateMicroMask, microMaskStatus, removeMicroMask,
   runPen, validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL,
   renderAscii, renderSvg,
   perceptual,
-  MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign,
+  MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, SCHEMA_VERSION, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign,
   booleanGeometry, sliceGeometry, offsetPath, strokeToPath, editPath, normalizePath,
   reorderElement, duplicateElement, arrayElements, inspectGeometry,
   compileSvg, inspectSvg,
 };
 export { PALETTE, PALETTE_DARK, SEVERITY_CUE } from './svg.js';
+
+/**
+ * Carry a perceptual review across a deterministic rebuild only when the newly
+ * rendered default SVG is byte-equivalent to the render the review names.
+ * The original reviewer and timestamp are restored verbatim; a changed image
+ * receives no review rather than a freshly dated opinion nobody made.
+ */
+export function preservePerceptualReview(doc, previous) {
+  const review = previous?.perceptual ?? null;
+  if (!review) return { preserved: false, reason: 'no prior review' };
+  const currentRenderHash = perceptual.renderHash(renderSvg(doc, {}));
+  if (review.renderHash !== currentRenderHash) {
+    return { preserved: false, reason: 'render changed', previousRenderHash: review.renderHash, currentRenderHash };
+  }
+  perceptual.restorePerceptualReview(doc, review);
+  return { preserved: true, renderHash: currentRenderHash, reviewer: review.reviewer, reviewedAt: review.reviewedAt };
+}
 
 /**
  * Apply a pen program to a page, creating a path element plus any boxes or
@@ -123,7 +159,7 @@ export function applyPen(doc, pageId, program, options = {}) {
   return result;
 }
 
-function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', stroke = null, color = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null } = {}) {
+function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', stroke = null, color = null, fillColor = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null } = {}) {
   getPage(doc, pageId);
   const result = runPen(program, {
     resolveElement: (name) => findElement(doc, name)?.element ?? null,
@@ -159,6 +195,21 @@ function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', 
       }
       : null);
     const pathId = id ?? nextId(doc, 'path', 0);
+    /**
+     * Spread a two-stop ramp across the pieces by position along the run.
+     * Only written when a ramp was asked for — a flat stroke must not carry a
+     * colour on every quadrant just because the field exists.
+     */
+    const applyRamp = (list, ramp) => {
+      if (!ramp || list.length === 0) return list;
+      const mix = (a, b, t) => {
+        const ch = (h, i) => parseInt(h.slice(1 + i * 2, 3 + i * 2), 16);
+        const hex = (n) => n.toString(16).padStart(2, '0');
+        return `#${[0, 1, 2].map((i) => hex(Math.round(ch(a, i) + (ch(b, i) - ch(a, i)) * t))).join('')}`;
+      };
+      const last = Math.max(1, list.length - 1);
+      return list.map((piece, i) => ({ ...piece, color: mix(ramp.from, ramp.to, i / last) }));
+    };
     // Tone filters the PIECES, and a piece is one quadrant. Everything
     // downstream — elementClaimed, elementRects, the SVG emitter, the ASCII
     // view — derives from this array, so a 50% shape claims exactly its 50%
@@ -171,12 +222,40 @@ function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', 
         seed: pathId,
       }), presentation.pattern ?? null)
       : result.pieces;
-    if (!pieces.length) {
+    // The ramp is spread AFTER tone and pattern have removed quadrants, so the
+    // colour runs end to end across what actually survives rather than across
+    // what was originally asked for.
+    // Read off the RAW colour: `presentation` is the argument object, and the
+    // ramp only exists once `normalizeStroke` has seen it inside `addPath`.
+    const rawRamp = presentation?.color && typeof presentation.color === 'object' ? presentation.color : null;
+    let painted = rawRamp ? applyRamp(pieces, rawRamp) : pieces;
+
+    /**
+     * A fill colour is independent of the outline's, because a drawn shape has
+     * an edge and an inside and they are not the same mark. Given two stops it
+     * gradates ACROSS the region rather than along a path — which is tone
+     * without hatching, and the thing hatching was standing in for.
+     */
+    if (fillColor) {
+      const flat = typeof fillColor === 'string';
+      const from = flat ? fillColor : fillColor.from;
+      const to = flat ? fillColor : fillColor.to;
+      const ys = painted.map((p) => p.y);
+      const lo = Math.min(...ys);
+      const span = Math.max(1, Math.max(...ys) - lo);
+      const mix = (a, b, t) => {
+        const ch = (h, i) => parseInt(h.slice(1 + i * 2, 3 + i * 2), 16);
+        const hex = (n) => n.toString(16).padStart(2, '0');
+        return `#${[0, 1, 2].map((i) => hex(Math.round(ch(a, i) + (ch(b, i) - ch(a, i)) * t))).join('')}`;
+      };
+      painted = painted.map((p) => ({ ...p, color: flat ? from : mix(from, to, (p.y - lo) / span) }));
+    }
+    if (!painted.length) {
       throw new RangeError(
         `tone or pattern left "${pathId}" with no inked quadrants — raise the tone, reduce the feather, or drop the texture or pattern`,
       );
     }
-    path = addPath(doc, pageId, { id: pathId, pieces, role, stroke: presentation });
+    path = addPath(doc, pageId, { id: pathId, pieces: painted, role, stroke: presentation });
     // A shape is not a connector. If the trace comes back to where it started,
     // say so — the rules about loose ends and retraced quadrants are about
     // connectors, and applying them to an outline is how a rule cries wolf.
@@ -241,6 +320,18 @@ export function replacePath(doc, id, program) {
   const result = applyPen(draft, found.page, program, { id, role: original.role ?? 'connector', stroke: original.stroke });
   if (!result.path) throw new Error(`the replacement program for "${id}" drew no strokes`);
 
+  // Meaning is independent of geometry. Preserve authored annotations across
+  // a reroute, but only preserve relationship topology when the new program
+  // still names the same endpoints; otherwise carrying it forward would lie.
+  for (const key of ['description', 'technology', 'tags', 'properties', 'perspectives']) {
+    if (original[key] != null) result.path[key] = structuredClone(original[key]);
+  }
+  if (original.relationship
+      && result.path.source?.id === original.relationship.from.id
+      && result.path.targets?.some((target) => target.id === original.relationship.to.id)) {
+    result.path.relationship = { ...structuredClone(original.relationship), routing: 'manual', via: [] };
+  }
+
   // Restore the original draw order so stacking within the page is unchanged.
   const committedList = draft.elements[found.page];
   committedList.splice(committedList.indexOf(result.path), 1);
@@ -250,6 +341,138 @@ export function replacePath(doc, id, program) {
   reconcileElementChange(doc, id);
 
   return { path: result.path, page: found.page, trace: result.trace, notes: result.notes };
+}
+
+export const RELATIONSHIP_ROUTINGS = Object.freeze(['direct', 'orthogonal', 'curved']);
+
+function normalizeStringMap(value, label) {
+  if (value == null) return null;
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError(`${label} must be an object`);
+  const out = {};
+  for (const [key, entry] of Object.entries(value)) {
+    if (!key.trim() || typeof entry !== 'string') throw new TypeError(`${label} must map non-empty names to strings`);
+    out[key] = entry;
+  }
+  return out;
+}
+
+function semanticPatch({ description, technology, tags, properties, perspectives, relationshipLabel, outcome }) {
+  const out = {};
+  if (description != null) {
+    if (typeof description !== 'string' || !description.trim()) throw new TypeError('description must be a non-empty string');
+    out.description = description;
+  }
+  if (technology != null) {
+    if (typeof technology !== 'string' || !technology.trim()) throw new TypeError('technology must be a non-empty string');
+    out.technology = technology;
+  }
+  if (tags != null) {
+    if (!Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string' || !tag.trim())) {
+      throw new TypeError('tags must be an array of non-empty strings');
+    }
+    out.tags = [...new Set(tags)];
+  }
+  if (properties != null) out.properties = normalizeStringMap(properties, 'properties');
+  if (perspectives != null) out.perspectives = normalizeStringMap(perspectives, 'perspectives');
+  for (const [key, value] of Object.entries({ relationshipLabel, outcome })) {
+    if (value != null) {
+      if (typeof value !== 'string' || !value.trim()) throw new TypeError(`${key} must be a non-empty string`);
+      out[key] = value.trim();
+    }
+  }
+  return out;
+}
+
+/** Add model meaning to an existing visual element without changing geometry. */
+export function annotateElement(doc, id, annotations) {
+  const found = findElement(doc, id);
+  if (!found) throw new Error(`no element "${id}" to annotate`);
+  const patch = semanticPatch(annotations);
+  if (!Object.keys(patch).length) throw new Error('annotate needs at least one semantic field');
+  Object.assign(found.element, patch);
+  return found.element;
+}
+
+function relationshipEndpoint(doc, pageId, spec, label) {
+  const dot = String(spec).lastIndexOf('.');
+  if (dot <= 0 || dot === String(spec).length - 1) {
+    throw new SyntaxError(`${label} needs a node and cardinal port, e.g. "api.E"`);
+  }
+  const id = String(spec).slice(0, dot);
+  const port = String(spec).slice(dot + 1);
+  parsePortSpec(port);
+  const found = findElement(doc, id);
+  if (!found) throw new Error(`${label}: no element "${id}"`);
+  if (found.page !== pageId) throw new Error(`${label} "${id}" is on page "${found.page}", not relationship page "${pageId}"`);
+  if (found.element.kind !== 'box') throw new Error(`${label} "${id}" is a ${found.element.kind}, not a node box`);
+  const seat = approachPoint(found.element.rect, port, found.element.shape, found.element.corner);
+  return { id, port, seat };
+}
+
+/**
+ * Draw a semantic, directed relationship from one node port to another.
+ * Curves are node-attached Catmull-Rom paths through explicit lattice
+ * waypoints; direct and orthogonal paths keep their own literal routing modes.
+ */
+export function connectNodes(doc, {
+  id, page = 'base', from, to, routing = 'direct', via = [], color = null, width = null,
+  description = null, technology = null, tags = null, properties = null, perspectives = null,
+  relationshipLabel = null, outcome = null,
+} = {}) {
+  if (!RELATIONSHIP_ROUTINGS.includes(routing)) {
+    throw new SyntaxError(`relationship routing must be ${RELATIONSHIP_ROUTINGS.join(', ')} — got ${JSON.stringify(routing)}`);
+  }
+  getPage(doc, page);
+  const source = relationshipEndpoint(doc, page, from, 'connect from');
+  const target = relationshipEndpoint(doc, page, to, 'connect to');
+  if (source.id === target.id) throw new Error('connect needs two different node ids');
+  const waypoints = via.map((entry) => {
+    const point = address.pinPoint(entry);
+    return { x: point.x, y: point.y, at: address.quadToAddress(point.x, point.y) };
+  });
+  if (routing === 'curved' && waypoints.length === 0) {
+    throw new Error('a curved node relationship needs at least one explicit via address so its bend is authored, not guessed');
+  }
+  if (routing !== 'curved' && waypoints.length) {
+    throw new Error('via addresses are currently reserved for curved relationships; direct and orthogonal routing compute their literal path');
+  }
+
+  const draft = structuredClone(doc);
+  let path;
+  if (routing === 'orthogonal') {
+    const route = routeProgram_(draft, page, from, to, { avoid: 'boxes' });
+    if (!route.clear) throw new Error(`no clear orthogonal relationship route: ${route.note}`);
+    path = applyPen(draft, page, route.program, { id, color, width }).path;
+  } else {
+    const points = [source.seat, ...waypoints, target.seat];
+    const raw = routing === 'curved'
+      ? curveQuads(points)
+      : rayQuads(source.seat.x, source.seat.y, target.seat.x, target.seat.y);
+    const arrival = OPPOSITE[target.seat.facing];
+    const pieces = raw.map((piece, index) => ({
+      ...piece,
+      type: index === raw.length - 1 ? 'arrow' : 'line',
+      dir: index === raw.length - 1 ? arrival : undefined,
+    }));
+    path = addPath(draft, page, {
+      id,
+      pieces,
+      stroke: color != null || width != null ? { color: color ?? undefined, width: width ?? undefined } : null,
+    });
+    path.end = { x: target.seat.x, y: target.seat.y, facing: arrival };
+    path.source = { id: source.id, port: source.port };
+    path.targets = [{ id: target.id, port: target.port, step: 1 }];
+  }
+  path.relationship = {
+    from: { id: source.id, port: source.port },
+    to: { id: target.id, port: target.port },
+    routing,
+    via: waypoints.map((point) => point.at),
+  };
+  Object.assign(path, semanticPatch({ description, technology, tags, properties, perspectives, relationshipLabel, outcome }));
+  doc.pages = draft.pages;
+  doc.elements = draft.elements;
+  return { path, page, relationship: path.relationship };
 }
 
 /**
@@ -492,8 +715,68 @@ export function placeReference(doc, { id = 'reference', source, at = 'A1.tl', sp
   return page;
 }
 
+/**
+ * How many findings one identical reason may explain before it stops being an
+ * explanation.
+ *
+ * Calibrated against `diagrams/`, the same way the composition thresholds are:
+ * the largest honest repeat in the corpus is `art-deco-hero`, where fourteen
+ * frame members legitimately terminate in open space under one rationale. The
+ * engine's own wireframe clearance reasons never exceed four, because they name
+ * their unit. Fifteen clears both.
+ *
+ * Do not raise this to fit a diagram in front of you. Bulk reuse is a weak
+ * signal on its own — every acceptance this limit catches in the showcase batch
+ * was already refused as a restatement — so it is a backstop against a future
+ * batch that loops one plausible sentence, not the primary check.
+ */
+const REASON_REUSE_LIMIT = 15;
+
+/**
+ * A fingerprint proves a finding is real and current. It cannot prove anybody
+ * looked at it. These two checks catch the ways a batch launders findings it
+ * never judged — both taken from a real session that accepted 145 of them.
+ *
+ * Neither check can read intent, and neither tries to. They test the only
+ * machine-verifiable property a non-reason has: it carries no information the
+ * finding did not already carry.
+ */
+function assertReasonWasConsidered(doc, finding, reason) {
+  // 1. Restatement. "overlay composition: L014" tells the reader the rule id
+  //    they already have. Keyed to the finding's OWN rule, because a reason
+  //    that names a different rule is usually drawing a contrast — the
+  //    wireframe tool accepts an L007 by explaining that an encroachment
+  //    would instead report as L001, and that is a real explanation.
+  const own = new RegExp(`\\b${finding.rule}\\b`, 'ig');
+  if (own.test(reason)) {
+    const rest = reason.replace(own, ' ').match(/[\p{L}\p{N}]+/gu) ?? [];
+    if (rest.length < 5) {
+      throw new Error(
+        `this reason restates the rule instead of explaining it: "${reason}". ` +
+        `${finding.rule} is what the engine already reported — say why THIS instance is intended, ` +
+        'or fix the finding instead of accepting it.',
+      );
+    }
+  }
+
+  // 2. Bulk reuse. One string spread across a whole batch is a loop, not a
+  //    judgement. Re-accepting the same fingerprint is an update and does not
+  //    count against the limit.
+  const shared = doc.acceptances.filter(
+    (a) => a.reason === reason && a.fingerprint !== finding.fingerprint,
+  ).length;
+  if (shared >= REASON_REUSE_LIMIT) {
+    throw new Error(
+      `this reason already explains ${shared} other findings: "${reason}". ` +
+      `One rationale can cover a class of findings, but past ${REASON_REUSE_LIMIT} it is a loop rather than a judgement — ` +
+      'accept these individually, or fix the shared cause.',
+    );
+  }
+}
+
 function recordFindingAcceptance(doc, finding, reason) {
   if (!reason || !String(reason).trim()) throw new Error('accepting a finding requires a reason — an unexplained acceptance is indistinguishable from a missed defect');
+  assertReasonWasConsidered(doc, finding, String(reason).trim());
   const { fingerprint } = finding;
   const existing = doc.acceptances.find((a) => a.fingerprint === fingerprint);
   if (existing) {
@@ -556,6 +839,8 @@ export const OPERATIONS = Object.freeze({
     id: a.id, role: a.role, stroke: a.stroke, color: a.color, width: a.width, cap: a.cap, paint: a.paint,
     tone: a.tone, feather: a.feather, texture: a.texture, pattern: a.pattern,
   }),
+  connect: (doc, a) => connectNodes(doc, a),
+  annotate: (doc, a) => annotateElement(doc, a.id, a),
   extend_path: (doc, a) => extendPath(doc, a.id, a.program),
   replace_path: (doc, a) => replacePath(doc, a.id, a.program),
   import_svg: (doc, a) => importSvg(doc, a),
@@ -571,18 +856,46 @@ export const OPERATIONS = Object.freeze({
   resize: (doc, a) => resizeBox(doc, a.id, a),
   restyle: (doc, a) => restyleBox(doc, a.id, a),
   move: (doc, a) => {
+    // Depth is the third axis a move can travel on: with no z-buffer, "in
+    // front" is a page, so changing page IS a move. It composes with an x/y
+    // move in one operation because an element that changes layer usually
+    // changes position too, and two operations would validate in between.
+    const moved = a.toPage ? moveElementToPage(doc, a.id, a.toPage) : null;
     if (a.at) return moveElementTo(doc, a.id, a.at, a.pin ?? 'tl');
     const usesCells = a.cellsX != null || a.cellsY != null;
     const dx = usesCells ? (a.cellsX ?? 0) * 2 : (a.dx ?? 0);
     const dy = usesCells ? (a.cellsY ?? 0) * 2 : (a.dy ?? 0);
-    if (!dx && !dy) throw new Error('move needs either `at` or a non-zero `cellsX`/`cellsY`');
+    if (!dx && !dy) {
+      if (moved) return moved;
+      throw new Error('move needs either `at`, a non-zero `cellsX`/`cellsY`, or a `toPage`');
+    }
     return moveElement(doc, a.id, dx, dy);
   },
   rename: (doc, a) => renameElement(doc, a.id, a.to),
   remove: (doc, a) => removeElement(doc, a.id, a.page ?? null),
   set_canvas: (doc, a) => setCanvas(doc, a.cols, a.rows),
+  set_background: (doc, a) => setBackground(doc, a.color ?? null),
+  align: (doc, a) => alignElements(doc, a.ids, a.edge),
+  distribute: (doc, a) => distributeElements(doc, a.ids, a.axis),
+  layout: (doc, a) => layoutElements(doc, a),
+  stroke_text: (doc, a) => placeStrokeText(doc, a.page ?? 'base', a),
+  stroke_label: (doc, a) => placeStrokeLabel(doc, a.page ?? null, a),
   wireframe: (doc, a) => applyWireframe(doc, a),
   perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
+  micro_mask: (doc, a) => {
+    if (a.action === 'add') return addMicroMask(doc, a);
+    if (a.action === 'extend') return updateMicroMask(doc, a.id, a.points);
+    if (a.action === 'replace') return updateMicroMask(doc, a.id, a.points, { replace: true });
+    if (a.action === 'remove') return removeMicroMask(doc, a.id);
+    throw new SyntaxError(`micro_mask action must be add, extend, replace, or remove — got ${JSON.stringify(a.action)}`);
+  },
+  define_view: (doc, a) => workspace.defineView(doc, a),
+  remove_view: (doc, a) => workspace.removeView(doc, a.key),
+  configure_theme: (doc, a) => workspace.configureTheme(doc, a),
+  attach_resource: (doc, a) => workspace.upsertResource(doc, a),
+  remove_resource: (doc, a) => workspace.removeResource(doc, a.id),
+  accept_model_finding: (doc, a) => acceptModelFinding(doc, a.fingerprint, a.reason),
+  unaccept_model_finding: (doc, a) => unacceptModelFinding(doc, a.fingerprint),
   // A review is document state, so it goes through OPERATIONS like every other
   // mutation: rehearsable in plan, undoable in history. A mutation only the
   // tool layer could perform would be invisible to rehearsal.
@@ -744,13 +1057,47 @@ const FIX_TOOL = Object.freeze({
  * refuse, or the engine would start fighting the author mid-draft, which is the
  * behaviour it was built to avoid.
  */
-export async function checkpointDocument(doc, path) {
-  await mkdir(dirname(path), { recursive: true });
-  await writeFile(path, serialize(doc), 'utf8');
-  return path;
+export async function checkpointDocument(doc, path, { expectedHash = undefined, backup = true } = {}) {
+  return (await checkpointDocumentRecord(doc, path, { expectedHash, backup })).path;
 }
 
-export async function saveDocument(doc, path, { force = false } = {}) {
+/**
+ * A stable, reviewable summary of what a rehearsed plan would change.
+ *
+ * The diff intentionally names document objects instead of exposing a raw JSON
+ * patch. That keeps approval useful to a human while preserving the exact
+ * before/after documents for the engine's own all-or-nothing transaction.
+ */
+export function documentDiff(before, after) {
+  const entries = (candidate) => Object.values(candidate.elements ?? {}).flat();
+  const compare = (left, right, key) => {
+    const a = new Map(left.map((entry) => [entry[key], entry]));
+    const b = new Map(right.map((entry) => [entry[key], entry]));
+    return {
+      added: [...b.keys()].filter((id) => !a.has(id)).sort(),
+      removed: [...a.keys()].filter((id) => !b.has(id)).sort(),
+      changed: [...a.keys()].filter((id) => b.has(id)
+        && JSON.stringify(a.get(id)) !== JSON.stringify(b.get(id))).sort(),
+    };
+  };
+  const elements = compare(entries(before), entries(after), 'id');
+  const pages = compare(before.pages ?? [], after.pages ?? [], 'id');
+  const views = compare(before.views ?? [], after.views ?? [], 'key');
+  const resources = compare(before.resources ?? [], after.resources ?? [], 'id');
+  const themeChanged = JSON.stringify(before.theme ?? null) !== JSON.stringify(after.theme ?? null);
+  const changed = [...elements.added, ...elements.removed, ...elements.changed].length
+    + [...pages.added, ...pages.removed, ...pages.changed].length
+    + [...views.added, ...views.removed, ...views.changed].length
+    + [...resources.added, ...resources.removed, ...resources.changed].length
+    + Number(themeChanged);
+  return { changed, elements, pages, views, resources, themeChanged };
+}
+
+export async function checkpointDocumentRecord(doc, path, { expectedHash = undefined, backup = true } = {}) {
+  return atomicWriteFile(path, serialize(doc), { expectedHash, backup });
+}
+
+export async function saveDocument(doc, path, { force = false, expectedHash = undefined, backup = true } = {}) {
   const gate = adjudicationGate(doc);
   if (gate.blocked) {
     if (!force) throw new Error(formatGate(gate, 'save'));
@@ -758,23 +1105,39 @@ export async function saveDocument(doc, path, { force = false } = {}) {
     // next reader sees that findings were outstanding, without having to guess.
     doc.forcedSave = { at: new Date().toISOString(), findingCount: gate.blocking.length, rules: gate.blocking.map((f) => f.rule) };
   }
-  await mkdir(dirname(path), { recursive: true });
-  await writeFile(path, serialize(doc), 'utf8');
-  return path;
+  return (await atomicWriteFile(path, serialize(doc), { expectedHash, backup })).path;
 }
 
 export async function loadDocument(path) {
   return deserialize(await readFile(path, 'utf8'));
 }
 
+export async function loadDocumentRecord(path) {
+  const record = await readFileRecord(path, 'utf8');
+  if (!record.exists) throw Object.assign(new Error(`document does not exist: ${path}`), { code: 'ENOENT' });
+  return { document: deserialize(record.text), hash: record.hash, path };
+}
+
+export const documentHash = (doc) => hashBytes(serialize(doc));
+
 export async function exportSvg(doc, path, opts = {}) {
   // A rendered image is a deliverable — it leaves the tool and gets looked at,
   // so it is gated on the same terms as the document itself.
   const gate = adjudicationGate(doc);
   if (gate.blocked && !opts.force) throw new Error(formatGate(gate, 'render'));
-  await mkdir(dirname(path), { recursive: true });
-  await writeFile(path, renderSvg(doc, opts), 'utf8');
-  return path;
+  return (await atomicWriteFile(path, renderSvg(doc, opts), { expectedHash: opts.expectedHash, backup: opts.backup ?? false })).path;
+}
+
+export async function exportPng(doc, path, opts = {}) {
+  const gate = adjudicationGate(doc);
+  if (gate.blocked && !opts.force) throw new Error(formatGate(gate, 'render'));
+  return (await atomicWriteFile(path, renderPng(doc, opts), { expectedHash: opts.expectedHash, backup: opts.backup ?? false })).path;
+}
+
+export async function exportPdf(doc, path, opts = {}) {
+  const gate = adjudicationGate(doc);
+  if (gate.blocked && !opts.force) throw new Error(formatGate(gate, 'render'));
+  return (await atomicWriteFile(path, renderPdf(doc, opts), { expectedHash: opts.expectedHash, backup: opts.backup ?? false })).path;
 }
 
 /** Constants an AI needs to do the arithmetic itself. */
@@ -903,6 +1266,12 @@ export function applyWireframe(doc, {
  * Boxes are drawn FAR TO NEAR. The lattice has no z-buffer, so draw order is
  * the only thing that makes an occlusion read correctly.
  */
+/** Record how far from the camera an element sits, in room inches. */
+function tagDepth(doc, id, depth) {
+  const found = findElement(doc, id);
+  if (found && Number.isFinite(depth)) found.element.depth = Math.round(depth);
+}
+
 export function applyPerspectiveScene(doc, {
   page = 'base', roomIn, eyeIn, targetIn, fovDeg = 60, items = [], runs = [],
   widthQ = null, heightQ = null,
@@ -922,6 +1291,11 @@ export function applyPerspectiveScene(doc, {
     const prog = perspective_.segmentProgram(b.segments, { widthQ: W, heightQ: H });
     if (!prog) continue;
     applyPen(doc, page, prog, { id: b.id, role: 'artwork' });
+    // Depth rides on the ELEMENT, not just the scene receipt. A receipt says
+    // what the camera saw; the collision engine needs to know, per element,
+    // which of two overlapping things is in front — and that question outlives
+    // the call that generated them.
+    tagDepth(doc, b.id, b.depth);
     drawn.push({ id: b.id, dropped: b.dropped, depth: Math.round(b.depth) });
   }
 
@@ -938,9 +1312,609 @@ export function applyPerspectiveScene(doc, {
       const a = r.waypoints[i - 1], b = r.waypoints[i];
       lengthIn += Math.hypot(b.x - a.x, b.y - a.y, b.z - a.z);
     }
-    paths.push({ id: r.id, lengthIn: Math.round(lengthIn * 10) / 10, dropped: pr.dropped });
+    tagDepth(doc, r.id, pr.depth);
+    paths.push({ id: r.id, lengthIn: Math.round(lengthIn * 10) / 10, dropped: pr.dropped, depth: Math.round(pr.depth) });
   }
 
   doc.perspective_scene = { roomIn, eyeIn, targetIn, fovDeg, boxes: drawn, runs: paths };
   return { boxes: drawn, runs: paths };
+}
+
+/**
+ * Edges an alignment can name. `centerX`/`centerY` align middles, which is a
+ * different operation from aligning an edge and is the one people actually mean
+ * when a row of boxes of different widths has to look deliberate.
+ */
+export const ALIGN_EDGES = Object.freeze(['left', 'right', 'top', 'bottom', 'centerX', 'centerY']);
+export const DISTRIBUTE_AXES = Object.freeze(['horizontal', 'vertical']);
+
+const rectOfElement = (el) => (el.kind === 'path'
+  ? geometry.boundsOf(el.pieces.map((p) => geometry.rect(p.x, p.y, 1, 1)))
+  : el.rect);
+
+/**
+ * Move the NAMED elements onto one shared edge.
+ *
+ * Every diagram in this repo hand-computed its own layout — a gap constant, a
+ * running row counter, a uniform width worked out with `Math.max`. That
+ * arithmetic is identical in every file and wrong in a new way each time, which
+ * is a large part of why a generated diagram looks generated.
+ *
+ * The engine still decides nothing: the caller names the elements and the edge,
+ * and the target is taken from those elements rather than invented.
+ */
+export function alignElements(doc, ids, edge) {
+  if (!ALIGN_EDGES.includes(edge)) {
+    throw new SyntaxError(`align edge must be one of ${ALIGN_EDGES.join(', ')} — got ${JSON.stringify(edge)}`);
+  }
+  const found = ids.map((id) => {
+    const hit = findElement(doc, id);
+    if (!hit) throw new Error(`no element "${id}" to align`);
+    return { id, el: hit.element, rect: rectOfElement(hit.element) };
+  });
+  if (found.length < 2) throw new Error('aligning needs at least two elements to have anything to agree on');
+
+  const target = {
+    left: Math.min(...found.map((f) => f.rect.x)),
+    right: Math.max(...found.map((f) => f.rect.x + f.rect.w)),
+    top: Math.min(...found.map((f) => f.rect.y)),
+    bottom: Math.max(...found.map((f) => f.rect.y + f.rect.h)),
+    centerX: Math.round(found.reduce((s, f) => s + f.rect.x + f.rect.w / 2, 0) / found.length),
+    centerY: Math.round(found.reduce((s, f) => s + f.rect.y + f.rect.h / 2, 0) / found.length),
+  }[edge];
+
+  for (const f of found) {
+    const dx = {
+      left: target - f.rect.x,
+      right: target - (f.rect.x + f.rect.w),
+      centerX: target - Math.round(f.rect.x + f.rect.w / 2),
+    }[edge] ?? 0;
+    const dy = {
+      top: target - f.rect.y,
+      bottom: target - (f.rect.y + f.rect.h),
+      centerY: target - Math.round(f.rect.y + f.rect.h / 2),
+    }[edge] ?? 0;
+    // Whole quadrants, not whole cells. Snapping these to even numbers was a
+    // habit borrowed from cell arithmetic; it cost up to a quadrant per element
+    // and left centred boxes visibly off from each other.
+    if (dx || dy) moveElement(doc, f.id, dx, dy);
+  }
+  return found.length;
+}
+
+/**
+ * Space the NAMED elements evenly between the two that already sit furthest
+ * apart. The ends anchor the span and never move, so distributing is a
+ * tightening of what the author already laid out rather than a re-layout.
+ */
+export function distributeElements(doc, ids, axis) {
+  if (!DISTRIBUTE_AXES.includes(axis)) {
+    throw new SyntaxError(`distribute axis must be ${DISTRIBUTE_AXES.join(' or ')} — got ${JSON.stringify(axis)}`);
+  }
+  const found = ids.map((id) => {
+    const hit = findElement(doc, id);
+    if (!hit) throw new Error(`no element "${id}" to distribute`);
+    return { id, rect: rectOfElement(hit.element) };
+  });
+  if (found.length < 3) {
+    throw new Error('distributing needs at least three elements — with two there is no middle to move');
+  }
+
+  const horizontal = axis === 'horizontal';
+  const pos = (r) => (horizontal ? r.x : r.y);
+  const size = (r) => (horizontal ? r.w : r.h);
+  found.sort((a, b) => pos(a.rect) - pos(b.rect));
+
+  const first = found[0];
+  const last = found[found.length - 1];
+  const span = pos(last.rect) - (pos(first.rect) + size(first.rect));
+  const occupied = found.slice(1, -1).reduce((s, f) => s + size(f.rect), 0);
+  const gap = (span - occupied) / (found.length - 1);
+
+  let cursor = pos(first.rect) + size(first.rect);
+  for (const f of found.slice(1, -1)) {
+    cursor += gap;
+    const want = Math.round(cursor);
+    const delta = want - pos(f.rect);
+    if (delta) moveElement(doc, f.id, horizontal ? delta : 0, horizontal ? 0 : delta);
+    cursor += size(f.rect);
+  }
+  return found.length;
+}
+
+/** Default separation between laid-out nodes, in quadrants — four cells across, five down. */
+export const LAYOUT_DEFAULTS = Object.freeze({ gapX: 8, gapY: 10 });
+export const LAYOUT_DIRECTIONS = Object.freeze(['top-down', 'bottom-up', 'left-right', 'right-left']);
+
+/**
+ * Lay out the connected boxes on a page, then redraw their connectors.
+ *
+ * `align` and `distribute` tidy an arrangement the author already chose. This
+ * CHOOSES one: it ranks the graph, gives every long edge a lane of its own,
+ * reduces crossings, and centres each node over its neighbours. That is the
+ * arithmetic every diagram in this repo used to write by hand as a gap
+ * constant and a running row counter, and writing it by hand is most of why a
+ * generated diagram looks generated.
+ *
+ * THE GRAPH IS AUTHORED FACT, NEVER INFERRED. Edges come from what the pen
+ * programs already recorded — `pen from a.S` states an origin and `line to b.N`
+ * states a target. Nothing here decides that two boxes are related because
+ * they happen to sit near each other.
+ *
+ * NOTHING HAPPENS SILENTLY. The caller asks for this by name, the same way
+ * they would ask for `align`; the return says how many boxes moved, how many
+ * crossings went away, which cycles had to be broken to rank the graph, and —
+ * importantly — which connectors could NOT be redrawn cleanly. A route that
+ * cannot be made is reported, not faked.
+ */
+export function layoutElements(doc, {
+  page = 'base',
+  ids = null,
+  gapX = LAYOUT_DEFAULTS.gapX,
+  gapY = LAYOUT_DEFAULTS.gapY,
+  reroute = true,
+  direction = 'top-down',
+  pins = {},
+} = {}) {
+  getPage(doc, page);
+  if (!Number.isInteger(gapX) || !Number.isInteger(gapY) || gapX < 0 || gapY < 0) {
+    throw new SyntaxError('layout gaps are whole quadrants and cannot be negative');
+  }
+  if (!LAYOUT_DIRECTIONS.includes(direction)) {
+    throw new SyntaxError(`layout direction must be ${LAYOUT_DIRECTIONS.join(', ')} — got ${JSON.stringify(direction)}`);
+  }
+  if (!pins || typeof pins !== 'object' || Array.isArray(pins)) throw new TypeError('layout pins must map element ids to addresses');
+
+  const els = doc.elements[page] ?? [];
+  const wanted = ids ? new Set(ids) : null;
+  if (wanted) {
+    for (const id of wanted) {
+      const hit = findElement(doc, id, page);
+      if (!hit) throw new Error(`no element "${id}" on page "${page}" to lay out`);
+      if (hit.element.kind !== 'box') throw new Error(`"${id}" is a ${hit.element.kind} — layout arranges boxes, and moves the connectors between them`);
+    }
+  }
+  const boxes = els.filter((e) => e.kind === 'box' && (!wanted || wanted.has(e.id)));
+  if (boxes.length < 2) {
+    throw new Error('layout needs at least two boxes — with one there is no arrangement to choose');
+  }
+
+  const inSet = new Set(boxes.map((b) => b.id));
+  const connectors = els.filter((e) => e.kind === 'path'
+    && e.source && inSet.has(e.source.id)
+    && (e.targets ?? []).some((t) => inSet.has(t.id) && t.id !== e.source.id));
+
+  const edges = [];
+  for (const p of connectors) {
+    const t = [...p.targets].reverse().find((x) => inSet.has(x.id) && x.id !== p.source.id);
+    edges.push({ from: p.source.id, to: t.id, via: p.id, fromPort: p.source.port, toPort: t.port });
+  }
+  if (!edges.length) {
+    throw new Error(
+      'layout found no connectors joining these boxes, so there is no graph to rank. '
+      + 'Draw the connections first — a pen program that says "from a.S" and "line to b.N" '
+      + 'records the edge — or use align and distribute, which arrange boxes that are not joined.',
+    );
+  }
+
+  // Anchor the result where the drawing already is, rather than teleporting it
+  // to the origin and leaving whatever else is on the page behind.
+  const before = geometry.boundsOf(boxes.map((b) => b.rect));
+  const horizontal = direction === 'left-right' || direction === 'right-left';
+  const result = layoutGraph({
+    nodes: boxes.map((b) => ({ id: b.id, cellsW: horizontal ? b.rect.h : b.rect.w, cellsH: horizontal ? b.rect.w : b.rect.h })),
+    edges: edges.map((e) => ({ from: e.from, to: e.to })),
+    gapX: horizontal ? gapY : gapX,
+    gapY: horizontal ? gapX : gapY,
+    originCol: horizontal ? before.y : before.x,
+    originRow: horizontal ? before.x : before.y,
+  });
+
+  if (horizontal) {
+    for (const position of result.positions.values()) [position.col, position.row] = [position.row, position.col];
+  }
+  if (direction === 'bottom-up') {
+    const min = Math.min(...boxes.map((box) => result.positions.get(box.id).row));
+    const max = Math.max(...boxes.map((box) => {
+      const p = result.positions.get(box.id);
+      return p.row + box.rect.h;
+    }));
+    for (const box of boxes) {
+      const p = result.positions.get(box.id);
+      p.row = min + max - (p.row + box.rect.h);
+    }
+  }
+  if (direction === 'right-left') {
+    const min = Math.min(...boxes.map((box) => result.positions.get(box.id).col));
+    const max = Math.max(...boxes.map((box) => {
+      const p = result.positions.get(box.id);
+      return p.col + box.rect.w;
+    }));
+    for (const box of boxes) {
+      const p = result.positions.get(box.id);
+      p.col = min + max - (p.col + box.rect.w);
+    }
+  }
+  const pinned = [];
+  const resolvedPins = Object.entries(pins).map(([id, at]) => {
+    const box = boxes.find((entry) => entry.id === id);
+    if (!box) throw new Error(`layout pin names "${id}", which is not one of the boxes being arranged`);
+    const point = address.pinPoint(at);
+    return { id, at, point };
+  });
+  // The first pin anchors the composition as a whole so a fixed root does not
+  // invert or collapse its graph. Additional pins are explicit overrides and
+  // may deliberately reshape the arrangement.
+  if (resolvedPins.length) {
+    const anchor = resolvedPins[0];
+    const position = result.positions.get(anchor.id);
+    const dx = anchor.point.x - position.col;
+    const dy = anchor.point.y - position.row;
+    for (const candidate of result.positions.values()) {
+      candidate.col += dx;
+      candidate.row += dy;
+    }
+  }
+  for (const { id, at, point } of resolvedPins) {
+    result.positions.get(id).col = point.x;
+    result.positions.get(id).row = point.y;
+    pinned.push({ id, at: address.quadToAddress(point.x, point.y) });
+  }
+
+  const moved = [];
+  for (const b of boxes) {
+    const want = result.positions.get(b.id);
+    const dx = want.col - b.rect.x;
+    const dy = want.row - b.rect.y;
+    if (dx || dy) { moveElement(doc, b.id, dx, dy); moved.push({ id: b.id, dx, dy }); }
+  }
+
+  const routed = [];
+  const stranded = [];
+  const crowded = [];
+  if (reroute) {
+    // EVERY connector comes off the page first.
+    //
+    // Routing them one at a time in place does not work, and fails in a way
+    // that looks like success: the router treats existing ink as an obstacle,
+    // so each connector is routed around the STALE shapes of the ones not
+    // redrawn yet. The first drawing of this made a well-arranged diagram with
+    // twice as many errors as the hand-laid spine it replaced. Moving the boxes
+    // invalidates all of the connectors at once, so all of them have to be
+    // taken down at once.
+    const list = doc.elements[page];
+    const original = new Map();
+    for (const e of edges) {
+      const el = list.find((x) => x.id === e.via);
+      if (el) original.set(e.via, { element: structuredClone(el), index: list.indexOf(el) });
+    }
+    for (const e of edges) if (original.has(e.via)) removeElement(doc, e.via, page);
+
+    // Fan-out gets its own slot on the face.
+    //
+    // Three edges leaving one box all seated on the middle of `.S` start on the
+    // same quadrant and block each other immediately, which no amount of
+    // rearranging fixes — it is a port problem, not a layout problem. Cardinal
+    // faces have had indexed slots all along (`a.S#2`), so the edges are spread
+    // across them in the order their far ends actually landed: left-most target
+    // takes the left-most slot, and the connectors stop crossing on the way out
+    // of the box.
+    const widthOf = (id) => boxes.find((b) => b.id === id).rect.w;
+    const heightOf = (id) => boxes.find((b) => b.id === id).rect.h;
+    const centreOf = (id) => horizontal
+      ? result.positions.get(id).row + heightOf(id) / 2
+      : result.positions.get(id).col + widthOf(id) / 2;
+    const rankAt = (id) => result.positions.get(id).rank;
+
+    // The faces come from the NEW arrangement, not the old one. `.E` and `.W`
+    // were the right choice when two boxes sat side by side; after ranking they
+    // sit above and below, and honouring the old face asks the router for a
+    // connector that leaves leftward toward something on the right. Flow runs
+    // down the page, so a forward edge leaves the bottom and arrives at the top.
+    const facesFor = (e) => {
+      const a = rankAt(e.from);
+      const b = rankAt(e.to);
+      if (horizontal) {
+        if (b > a) return direction === 'right-left' ? ['W', 'E'] : ['E', 'W'];
+        if (b < a) return direction === 'right-left' ? ['E', 'W'] : ['W', 'E'];
+        return centreOf(e.to) > centreOf(e.from) ? ['S', 'N'] : ['N', 'S'];
+      }
+      if (b > a) return direction === 'bottom-up' ? ['N', 'S'] : ['S', 'N'];
+      if (b < a) return direction === 'bottom-up' ? ['S', 'N'] : ['N', 'S'];
+      return centreOf(e.to) > centreOf(e.from) ? ['E', 'W'] : ['W', 'E'];
+    };
+
+    // Slot 1 is the middle of the face and the rest alternate outward, so the
+    // left-to-right reading order is not 1,2,3.
+    const offsetOfSlot = (s) => (s === 1 ? 0 : (s % 2 === 0 ? -1 : 1) * Math.ceil((s - 1) / 2) * 2);
+    const slotsLeftToRight = (k) => Array.from({ length: k }, (_, i) => i + 1)
+      .sort((a, b) => offsetOfSlot(a) - offsetOfSlot(b));
+
+    const portOf = new Map(); // `${via}|from` or `${via}|to` -> the spec to route with
+
+    for (const end of ['from', 'to']) {
+      const groups = new Map();
+      for (const e of edges) {
+        const face = facesFor(e)[end === 'from' ? 0 : 1];
+        // Only N and S fan out. Their slots run along the width, which is the
+        // axis the far ends are sorted on; an E or W face slots along the
+        // height, where that ordering means nothing.
+        if ((!horizontal && face !== 'N' && face !== 'S') || (horizontal && face !== 'E' && face !== 'W')) continue;
+        const key = `${e[end]}|${face}`;
+        if (!groups.has(key)) groups.set(key, { node: e[end], face, members: [] });
+        groups.get(key).members.push(e);
+      }
+      for (const { node, face, members } of groups.values()) {
+        if (members.length < 2) continue;
+        const far = end === 'from' ? 'to' : 'from';
+        members.sort((a, b) => centreOf(a[far]) - centreOf(b[far]) || a.via.localeCompare(b.via));
+        const rect = boxes.find((b) => b.id === node).rect;
+        const capacity = shapes.portSlotCapacity(rect, face);
+        if (members.length > capacity) {
+          // Said out loud rather than silently overlapping two connectors: the
+          // box is too narrow for the number of lines meeting this face, and
+          // the fix is to widen it, which is the author's call.
+          crowded.push({ id: node, face, edges: members.length, capacity });
+        }
+        const slots = slotsLeftToRight(Math.min(members.length, capacity));
+        members.forEach((e, i) => {
+          const slot = slots[i] ?? 1;
+          portOf.set(`${e.via}|${end}`, slot === 1 ? face : `${face}#${slot}`);
+        });
+      }
+    }
+    const specFor = (e, end) => portOf.get(`${e.via}|${end}`) ?? facesFor(e)[end === 'from' ? 0 : 1];
+
+    // Short edges first. A connector between adjacent ranks has exactly one
+    // sensible path and should get it; a long one has choices and can bend.
+    const rankOf = (id) => result.positions.get(id).rank;
+    const byReach = [...edges].sort((a, b) => {
+      const span = Math.abs(rankOf(a.to) - rankOf(a.from)) - Math.abs(rankOf(b.to) - rankOf(b.from));
+      return span || a.via.localeCompare(b.via);
+    });
+
+    // Every connector between the same two ranks gets its own crossing track
+    // inside the channel the layout already reserved between them. Without
+    // this they all take the midpoint and overlap along their whole horizontal
+    // run, which reads as one thick line going nowhere.
+    // Clear of everything on the page, so a loop-back never runs over a box.
+    const margin = Math.max(...boxes.map((b) => b.rect.x + b.rect.w)) + 4;
+
+    const channels = new Map();
+    for (const e of byReach) {
+      const key = `${rankOf(e.from)}->${rankOf(e.to)}`;
+      if (!channels.has(key)) channels.set(key, []);
+      channels.get(key).push(e.via);
+    }
+    const trackFor = (e) => {
+      if (horizontal) return null;
+      const rFrom = rankOf(e.from);
+      const rTo = rankOf(e.to);
+      if (rTo !== rFrom + 1) return null;          // only an adjacent-rank channel is reserved
+      const top = result.rankRows[rFrom] + result.rankHeights[rFrom];
+      const peers = channels.get(`${rFrom}->${rTo}`);
+      const slot = peers.indexOf(e.via);
+      const track = top + 2 * (slot + 1);
+      // Stay inside the channel; past its far edge the track would run through
+      // the rank below.
+      return track < result.rankRows[rTo] ? track : null;
+    };
+
+    for (const e of byReach) {
+      const was = original.get(e.via);
+      if (!was) continue;
+      const from = `${e.from}.${specFor(e, 'from')}`;
+      const to = `${e.to}.${specFor(e, 'to')}`;
+      // Crossing another connector is a crossing, not a failure — flowcharts
+      // have always had them and `hop` exists to mark one. Crossing a BOX is a
+      // failure, and that is still refused.
+      let attempt = routeProgram_(doc, page, from, to, { track: trackFor(e), avoid: 'boxes' });
+      if (!attempt.program) attempt = routeProgram_(doc, page, from, to, { avoid: 'boxes' });
+      // A loop back up the page. Every flowchart has one — a retry, a rollback,
+      // a "no" branch returning to an earlier step — and it cannot be drawn
+      // between the ranks, because everything between them is full. It goes
+      // round the outside instead: out of the right face, up the margin clear
+      // of every box, and back in the right face of its target. The existing
+      // two-turn route already draws exactly that shape once it is told which
+      // vertical track to use.
+      if (!attempt.program && rankAt(e.to) < rankAt(e.from)) {
+        attempt = routeProgram_(doc, page, `${e.from}.E`, `${e.to}.E`, { track: margin, avoid: 'boxes' });
+      }
+      if (!attempt.program) attempt = routeProgram_(doc, page, from, to);
+      if (attempt.program) {
+        applyPen(doc, page, attempt.program, {
+          id: e.via,
+          role: was.element.role ?? 'connector',
+          stroke: was.element.stroke,
+        });
+        const rebuilt = findElement(doc, e.via, page).element;
+        for (const key of ['description', 'technology', 'tags', 'properties', 'perspectives', 'label', 'relationshipLabel', 'outcome']) {
+          if (was.element[key] != null) rebuilt[key] = structuredClone(was.element[key]);
+        }
+        if (was.element.relationship) {
+          rebuilt.relationship = {
+            ...structuredClone(was.element.relationship),
+            from: { id: e.from, port: specFor(e, 'from') },
+            to: { id: e.to, port: specFor(e, 'to') },
+          };
+        }
+        routed.push({ id: e.via, turns: attempt.turns });
+      } else {
+        // Put back exactly what was there. A connector that cannot be redrawn
+        // is a fact about the arrangement; deleting the author's line to make
+        // the log quieter would be the worse of the two failures.
+        addPath(doc, page, {
+          id: e.via,
+          pieces: was.element.pieces,
+          stroke: was.element.stroke,
+          note: was.element.note ?? null,
+          role: was.element.role ?? 'connector',
+        });
+        Object.assign(findElement(doc, e.via, page).element, structuredClone(was.element));
+        stranded.push({ id: e.via, blockedBy: attempt.blockedBy, note: attempt.note });
+      }
+    }
+
+    // Restore draw order. Boxes never moved within the list, so putting each
+    // connector back at the index it held reproduces the original stacking.
+    const after = doc.elements[page];
+    const restored = after.filter((x) => !original.has(x.id));
+    for (const [id, was] of [...original.entries()].sort((a, b) => a[1].index - b[1].index)) {
+      const el = after.find((x) => x.id === id);
+      if (el) restored.splice(Math.min(was.index, restored.length), 0, el);
+    }
+    doc.elements[page] = restored;
+  }
+
+  return {
+    page,
+    direction,
+    pinned,
+    boxes: boxes.length,
+    moved: moved.length,
+    movedDetail: moved,
+    edges: edges.length,
+    crossings: result.crossings,
+    crossingsBefore: result.crossingsBefore,
+    ranks: result.depth,
+    routed,
+    crowded,
+    stranded,
+    // A cycle had to be broken to rank the graph at all. Which edge was
+    // reversed changes what the picture claims, so it is named rather than
+    // absorbed.
+    reversed: result.reversed.map((i) => ({ id: edges[i].via, from: edges[i].from, to: edges[i].to })),
+  };
+}
+
+/**
+ * Place text as INK.
+ *
+ * The one mark in this engine that used to escape the lattice was a letter.
+ * Everything else is quadrants the collision engine can see; a label was an
+ * SVG `<text>` run whose width `core/text.js` had to predict. This draws the
+ * words with TurtleFont instead, so they collide, they measure exactly, and
+ * they survive a plotter.
+ *
+ * It costs size: cap height is six quadrants, because a stroke glyph below
+ * that stops being legible once the lattice has quantised it. That is why this
+ * sits ALONGSIDE `place_box` labels rather than replacing them — titles,
+ * callouts and plotter work get real ink, and 11px body text stays as text.
+ */
+export function placeStrokeText(doc, pageId, {
+  id, at, text, scale = null, size = null, tracking = 0, maxWidth = null, align = 'left', rotate = 0, weight = null,
+  color = null, width = null, role = 'artwork', note = null,
+}) {
+  getPage(doc, pageId);
+  if (typeof text !== 'string' || !text.length) {
+    throw new SyntaxError(`stroke text "${id}" needs something to say`);
+  }
+  const a = address.parseAddress(at);
+  const origin = address.pinPoint(a);
+
+  const drawn = turtlefont.renderStrokeText(text, {
+    at: origin, scale, size, tracking, maxWidth, align, rotate, weight,
+  });
+  if (!drawn.pieces.length) {
+    throw new Error(`stroke text "${id}" drew nothing — ${JSON.stringify(text)} is all spaces`);
+  }
+
+  const path = addPath(doc, pageId, {
+    id,
+    pieces: drawn.pieces.map((p) => ({ ...p })),
+    stroke: normalizeStroke(color || width ? { color, width } : null),
+    // What it says, kept on the element. A path of 400 quadrants is unreadable
+    // in a describe listing; the sentence it spells is the useful fact.
+    note: note ?? `stroke text: ${text.replace(/\n/g, ' / ')}`,
+    role,
+  });
+  path.text = text;
+  path.font = { face: 'turtlefont', size: drawn.size, weight: drawn.weight, tracking, align, rotate };
+  return { element: path, ...drawn, pieces: drawn.pieces.length };
+}
+
+/**
+ * Label a box with INK instead of an SVG text run.
+ *
+ * `place_box` writes its label as `<text>`, which is right for body sizes and
+ * wrong for two cases this closes: a drawing that has to survive without a font
+ * file, and a drawing that has to go to a plotter, where a `<text>` element is
+ * not a path and simply does not exist.
+ *
+ * It is a SEPARATE element, deliberately. Folding stroke ink into the box would
+ * make a label part of the box's own visual footprint and change what every
+ * collision rule sees; a label that is its own path collides like anything else
+ * and can be moved, restyled or removed on its own. The box keeps whatever
+ * `<text>` label it already had — pass an empty label to `place_box` if you
+ * want only the ink.
+ *
+ * The text area comes from `shapeTextRect`, so a diamond or a cylinder gets the
+ * room its SYMBOL leaves rather than its bounding box — the same rule the SVG
+ * label already obeys.
+ */
+export function placeStrokeLabel(doc, pageId, {
+  id, target, text, scale = null, size = null, tracking = 0, align = 'center', rotate = 0, weight = null,
+  color = null, width = null, padding = 1, role = 'artwork',
+}) {
+  const found = findElement(doc, target, pageId);
+  if (!found) throw new Error(`no element "${target}" to label`);
+  if (found.element.kind !== 'box') {
+    throw new Error(`"${target}" is a ${found.element.kind} — stroke labels go inside boxes. Use stroke_text to place ink anywhere.`);
+  }
+  if (typeof text !== 'string' || !text.trim()) {
+    throw new SyntaxError(`stroke label "${id}" needs something to say`);
+  }
+
+  const area = shapes.shapeTextRect(found.element.rect, found.element.shape ?? 'process');
+  const inner = {
+    x: area.x + padding,
+    y: area.y + padding,
+    w: Math.max(1, area.w - padding * 2),
+    h: Math.max(1, area.h - padding * 2),
+  };
+
+  const measured = turtlefont.measureStrokeText(text, {
+    scale, size, weight, tracking, align, rotate, maxWidth: inner.w,
+  });
+
+  // Measure, report, refuse — never shrink the text or spill it. The numbers
+  // are the useful part: an author can widen the box, drop the scale, or
+  // shorten the words, and each of those is their decision to make.
+  if (measured.penWidth > inner.w || measured.penHeight > inner.h) {
+    const fits = Math.max(1, Math.floor(inner.h / (turtlefont.LINE_HEIGHT * scale)));
+    throw new Error(
+      `"${text}" does not fit inside "${target}" at scale ${scale}: it needs `
+      + `${measured.penWidth}x${measured.penHeight} quadrants and the symbol leaves ${inner.w}x${inner.h}. `
+      + `Widen "${target}" by ${Math.max(0, measured.width - inner.w)} and heighten it by `
+      + `${Math.max(0, measured.penHeight - inner.h)} quadrants, or drop to size ${Math.max(turtlefont.MIN_CAP, measured.size - 2)}`
+      + (measured.lines > fits ? `, or shorten it — only ${fits} line(s) of this size fit.` : '.'),
+    );
+  }
+
+  // Centre the INK, not the advance block. Every glyph carries a trailing side
+  // bearing, so centring on the block leaves the last letter's empty margin
+  // inside the box and pushes the visible word off to the left — metrically
+  // correct and optically wrong, which is not a trade this engine makes
+  // anywhere else.
+  const draft = turtlefont.renderStrokeText(text, {
+    at: { x: 0, y: 0 }, scale, size, weight, tracking, align, rotate, maxWidth: inner.w,
+  });
+  const seen = draft.inked ?? { x: 0, y: 0, w: measured.width, h: measured.height };
+  const at = {
+    x: inner.x + Math.floor((inner.w - seen.w) / 2) - seen.x,
+    y: inner.y + Math.floor((inner.h - seen.h) / 2) - seen.y,
+  };
+  const drawn = turtlefont.renderStrokeText(text, { at, scale, size, weight, tracking, align, rotate, maxWidth: inner.w });
+
+  const path = addPath(doc, found.page, {
+    id,
+    pieces: drawn.pieces.map((p) => ({ ...p })),
+    stroke: normalizeStroke(color || width ? { color, width } : null),
+    note: `stroke label for "${target}": ${text.replace(/\n/g, ' / ')}`,
+    role,
+  });
+  path.text = text;
+  path.font = { face: 'turtlefont', size: drawn.size, weight: drawn.weight, tracking, align, rotate };
+  path.labels = target;
+  return { element: path, target, ...drawn, pieces: drawn.pieces.length, area: inner };
 }

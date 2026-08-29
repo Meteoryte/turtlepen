@@ -33,6 +33,7 @@ test('every fix kind the engine emits is covered by an operation', () => {
     move: 'move', rename: 'rename', intent: 'update_page', canvas: 'set_canvas',
     extend: 'extend_path', reroute: 'replace_path', offset: 'replace_path', hop: 'replace_path',
     remove: 'remove', remove_page: 'remove_page', shape: 'restyle',
+    layer: 'move', reposition: 'move',
   };
   for (const kind of kinds) {
     assert.ok(routes[kind], `fix kind "${kind}" has no documented repair route`);
@@ -475,4 +476,173 @@ test('acceptance batches keep exact failure indexes and invalidate their finding
   assert.equal(result.failedAt, 2);
   assert.match(result.error, /not a current finding/);
   assert.equal(core.serialize(d), before, 'a failed optimized batch still leaves the live document untouched');
+});
+
+// ---------------------------------------------------------------------------
+// Moving between pages.
+//
+// A Z-page is how this lattice expresses depth: there is no z-buffer, so a
+// thing in front is a thing on a higher page. Until now an element could move
+// in x and y but never in z, which left the one axis occlusion needs
+// unreachable — and left L025 with advice no tool could carry out.
+// ---------------------------------------------------------------------------
+
+test('an element can move to another page without changing its geometry', () => {
+  const d = doc();
+  core.addPage(d, { id: 'front', z: 1, intent: 'overlay' });
+  core.placeBox(d, 'base', { id: 'plug', at: 'C4.tl', span: { w: 4, h: 2 } });
+  const before = { ...core.findElement(d, 'plug').element.rect };
+
+  core.moveElementToPage(d, 'plug', 'front');
+
+  const found = core.findElement(d, 'plug');
+  assert.equal(found.page, 'front', 'the element now lives on the front page');
+  assert.deepEqual(found.element.rect, before, 'moving in z leaves x and y alone');
+  assert.equal(core.elementsOf(d, 'base').length, 0, 'and it left the page it came from');
+});
+
+test('moving to a page that does not exist is refused before anything changes', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'plug', at: 'C4.tl', span: { w: 4, h: 2 } });
+  assert.throws(() => core.moveElementToPage(d, 'plug', 'nope'), /no page "nope"/);
+  assert.equal(core.findElement(d, 'plug').page, 'base', 'the element stayed put');
+});
+
+test('moving an element to the page it is already on is a no-op, not an error', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'plug', at: 'C4.tl', span: { w: 4, h: 2 } });
+  core.moveElementToPage(d, 'plug', 'base');
+  assert.equal(core.findElement(d, 'plug').page, 'base');
+});
+
+test('the move operation carries the page change, so plan and tools share it', () => {
+  const d = doc();
+  core.addPage(d, { id: 'front', z: 1, intent: 'overlay' });
+  core.placeBox(d, 'base', { id: 'plug', at: 'C4.tl', span: { w: 4, h: 2 } });
+
+  core.OPERATIONS.move(d, { id: 'plug', toPage: 'front' });
+  assert.equal(core.findElement(d, 'plug').page, 'front');
+});
+
+// ---------------------------------------------------------------------------
+// A fix must name changes its tool will actually accept.
+//
+// `llm.md` requires every emitted `fix.kind` to have a tool that applies it,
+// and the test above checks the ROUTE exists. It does not check the PARAMS,
+// so `L024` shipped a `shape` fix routed to `restyle` while `restyle` declared
+// `additionalProperties: false` and no `shape` — a diagnosis the AI can read
+// and cannot act on, which is the exact dead end the invariant exists to
+// prevent.
+// ---------------------------------------------------------------------------
+
+test('every fix the engine emits is either executable or declared advisory', () => {
+  // `repairPlan` is the contract: it turns a fix into the exact call that
+  // performs it, and refuses BY NAME anything it cannot build. A fix that is
+  // neither executable nor deliberately advisory is a diagnosis the AI can read
+  // and cannot act on — the dead end the closed-set invariant exists to prevent.
+  //
+  // Both rules added later failed this. L024 offered `shape` and `heighten`
+  // carrying `params`, while the repair table builds those from `to`; L025
+  // offered a `move` carrying `toPage`, which the move builder does not read.
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 }, label: 'Ingest & Normalize Payload' });
+  core.placeBox(d, 'base', { id: 'b', at: 'E4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'c', at: 'M4.tl', span: { w: 4, h: 2 }, fontSize: 6 });
+  core.placeBox(d, 'base', { id: 'flat', at: 'C20.tl', span: { w: 20, h: 2 }, shape: 'data', label: 'db' });
+  core.placeBox(d, 'base', { id: 'near', at: 'C30.tl', span: { w: 8, h: 4 } });
+  core.placeBox(d, 'base', { id: 'far', at: 'E30.tl', span: { w: 8, h: 4 } });
+  core.findElement(d, 'near').element.depth = 20;
+  core.findElement(d, 'far').element.depth = 90;
+  core.applyPen(d, 'base', 'pen C40.q1' + String.fromCharCode(10) + 'right 3 align top line', { id: 'wire' });
+
+  const BROKEN = /does not carry|no operation that performs it/;
+  const kinds = new Set();
+  for (const f of core.validate(d).open) {
+    for (const entry of core.repairPlan(d, f.fingerprint).fixes) {
+      kinds.add(entry.kind);
+      assert.ok(
+        entry.executable || !BROKEN.test(entry.why ?? ''),
+        `${f.rule} fix "${entry.kind}" cannot be acted on: ${entry.why}`,
+      );
+    }
+  }
+  assert.ok(kinds.size >= 6, `expected a broad set of fix kinds, got ${[...kinds].join(', ')}`);
+});
+
+// ---------------------------------------------------------------------------
+// align and distribute
+//
+// Every diagram in this repo hand-computes its own layout: a GAP constant, a
+// TOP constant, a uniform column width worked out with Math.max, and a running
+// row counter. That arithmetic is the same in every file and wrong in a new way
+// each time — which is most of why a generated diagram looks generated.
+//
+// Nothing here invents a position. Both operations take the elements NAMED by
+// the caller and move them to a rule the caller chose; the engine still never
+// decides where anything goes.
+// ---------------------------------------------------------------------------
+
+test('align moves the named elements onto one edge and leaves the others alone', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 10, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'H10.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'c', at: 'M16.tl', span: { w: 8, h: 3 } });
+  const untouched = { ...core.findElement(d, 'c').element.rect };
+
+  core.alignElements(d, ['a', 'b'], 'left');
+  const a = core.findElement(d, 'a').element.rect;
+  const b = core.findElement(d, 'b').element.rect;
+  assert.equal(a.x, b.x, 'both left edges land on the same column');
+  assert.equal(a.x, 4, 'and it is the leftmost of the two, not a new position');
+  assert.deepEqual(core.findElement(d, 'c').element.rect, untouched, 'c was not named');
+});
+
+test('centring aligns the middles, not the edges', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'wide', at: 'C4.tl', span: { w: 20, h: 3 } });
+  core.placeBox(d, 'base', { id: 'narrow', at: 'C10.tl', span: { w: 6, h: 3 } });
+  core.alignElements(d, ['wide', 'narrow'], 'centerX');
+  const w = core.findElement(d, 'wide').element.rect;
+  const n = core.findElement(d, 'narrow').element.rect;
+  assert.equal(w.x + w.w / 2, n.x + n.w / 2);
+});
+
+test('distribute gives equal gaps and never moves the two end elements', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'K4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'c', at: 'AH4.tl', span: { w: 6, h: 3 } });
+  const first = { ...core.findElement(d, 'a').element.rect };
+  const last = { ...core.findElement(d, 'c').element.rect };
+
+  core.distributeElements(d, ['a', 'b', 'c'], 'horizontal');
+
+  assert.deepEqual(core.findElement(d, 'a').element.rect, first, 'the ends anchor the span');
+  assert.deepEqual(core.findElement(d, 'c').element.rect, last);
+  const [ra, rb, rc] = ['a', 'b', 'c'].map((id) => core.findElement(d, id).element.rect);
+  const gap1 = rb.x - (ra.x + ra.w);
+  const gap2 = rc.x - (rb.x + rb.w);
+  assert.ok(Math.abs(gap1 - gap2) <= 1, `gaps ${gap1} and ${gap2} should match within a quadrant`);
+});
+
+test('distribute needs three elements to have a middle to move', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'K4.tl', span: { w: 6, h: 3 } });
+  assert.throws(() => core.distributeElements(d, ['a', 'b'], 'horizontal'), /at least three/);
+});
+
+test('align refuses an unknown element by name rather than skipping it', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  assert.throws(() => core.alignElements(d, ['a', 'ghost'], 'left'), /no element "ghost"/);
+});
+
+test('align and distribute are operations, so plan and the tools share them', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'K9.tl', span: { w: 6, h: 3 } });
+  core.OPERATIONS.align(d, { ids: ['a', 'b'], edge: 'top' });
+  const [ra, rb] = ['a', 'b'].map((id) => core.findElement(d, id).element.rect);
+  assert.equal(ra.y, rb.y);
 });

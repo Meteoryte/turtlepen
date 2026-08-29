@@ -11,7 +11,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { createTools } from '../src/mcp/tools.js';
+import { createSession, createTools } from '../src/mcp/tools.js';
 import * as core from '../src/core/index.js';
 
 function session() {
@@ -126,4 +126,29 @@ test('a bad category is refused at the tool boundary', async () => {
 test('recording a review is a rehearsable operation, not a tool-only mutation', () => {
   // llm.md: a mutation only the tool layer can perform is invisible to `plan`.
   assert.equal(typeof core.OPERATIONS.perceptual_review, 'function');
+});
+
+test('a byte-identical new-diagram rebuild preserves the original review provenance on save', async (t) => {
+  const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'tp-review-rebuild-'));
+  t.after(() => fs.rmSync(cwd, { recursive: true, force: true }));
+  const relative = 'reviewed.turtlepen.json';
+  const firstSession = createSession({ cwd, createdAt: '2026-08-26T00:00:00.000Z' });
+  const first = createTools(firstSession);
+  await call(first, 'new_diagram', { name: 'reviewed', path: relative, cols: 40, rows: 20 });
+  await call(first, 'place_box', { id: 'node', at: 'D4', span: '14x6', label: 'same bytes' });
+  const rendered = await call(first, 'render', { path: path.join(cwd, 'reviewed.svg') });
+  const renderHash = /renderHash: ([0-9a-f]{16})/.exec(rendered)[1];
+  await call(first, 'perceptual_review', { renderHash, reviewer: 'original-reviewer', findings: [], note: 'original pass' });
+  await call(first, 'save');
+  const original = await core.loadDocument(path.join(cwd, relative));
+
+  const secondSession = createSession({ cwd, createdAt: '2026-08-26T00:00:00.000Z' });
+  const second = createTools(secondSession);
+  await call(second, 'new_diagram', { name: 'reviewed', path: relative, cols: 40, rows: 20 });
+  await call(second, 'place_box', { id: 'node', at: 'D4', span: '14x6', label: 'same bytes' });
+  const saved = await call(second, 'save');
+  assert.match(saved, /preserved byte-matched perceptual review/);
+  const rebuilt = await core.loadDocument(path.join(cwd, relative));
+  assert.equal(rebuilt.perceptual.reviewedAt, original.perceptual.reviewedAt);
+  assert.equal(rebuilt.perceptual.reviewer, 'original-reviewer');
 });

@@ -11,7 +11,7 @@ import {
   PERCEPTUAL_CATEGORIES, PERCEPTUAL_SEVERITIES,
   normalizePerceptualFinding, attachPerceptualReview, verdicts, renderHash,
 } from '../src/core/perceptual.js';
-import { createDocument, placeBox, validate, renderSvg } from '../src/core/index.js';
+import { createDocument, placeBox, validate, renderSvg, serialize, deserialize, preservePerceptualReview, SCHEMA_VERSION } from '../src/core/index.js';
 
 const good = {
   id: 'p1',
@@ -129,4 +129,43 @@ test('every category and severity is usable', () => {
   for (const severity of PERCEPTUAL_SEVERITIES) {
     assert.doesNotThrow(() => normalizePerceptualFinding({ ...good, severity }));
   }
+});
+
+test('perceptual review survives a save/reopen round trip with its original timestamp', () => {
+  const doc = docWithSheep();
+  attachPerceptualReview(doc, { renderHash: 'render-123', reviewer: 'critic', findings: [good], note: 'first pass' });
+  const reviewedAt = doc.perceptual.reviewedAt;
+
+  const reopened = deserialize(serialize(doc));
+  assert.equal(reopened.schema, SCHEMA_VERSION);
+  assert.equal(reopened.perceptual.reviewedAt, reviewedAt);
+  assert.equal(reopened.perceptual.renderHash, 'render-123');
+  assert.deepEqual(reopened.perceptual.findings, doc.perceptual.findings);
+});
+
+test('a deterministic rebuild preserves review provenance only for byte-matched renders', () => {
+  const previous = docWithSheep();
+  const render = renderHash(renderSvg(previous));
+  attachPerceptualReview(previous, { renderHash: render, reviewer: 'critic', findings: [], note: 'visual pass' });
+  const reviewedAt = previous.perceptual.reviewedAt;
+
+  const identical = docWithSheep();
+  const carried = preservePerceptualReview(identical, previous);
+  assert.equal(carried.preserved, true);
+  assert.equal(identical.perceptual.reviewedAt, reviewedAt, 'a rebuild must not pretend the old review happened again');
+
+  const changed = docWithSheep();
+  placeBox(changed, 'base', { id: 'extra', at: 'X4', span: '6x4', label: 'new' });
+  const refused = preservePerceptualReview(changed, previous);
+  assert.equal(refused.preserved, false);
+  assert.equal(refused.reason, 'render changed');
+  assert.equal(changed.perceptual, undefined);
+});
+
+test('schema 1 documents migrate to schema 3 and unknown future schemas are refused', () => {
+  const current = JSON.parse(serialize(docWithSheep()));
+  const migrated = deserialize({ ...current, schema: 1 });
+  assert.equal(migrated.schema, 3);
+  assert.match(serialize(migrated), /"schema": 3/);
+  assert.throws(() => deserialize({ ...current, schema: 999 }), /schema 999 is not supported/);
 });

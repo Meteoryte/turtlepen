@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 3,
   "name": "Five Farm Animals",
   "canvas": {
     "cols": 200,
@@ -8755,6 +8755,12 @@
       }
     ]
   },
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
+  },
   "acceptances": [
     {
       "fingerprint": "27da6e1c3bd7",
@@ -8884,5 +8890,12 @@
       "reason": "udder attaches to the belly line — it must touch",
       "acceptedAt": "2026-08-18T00:01:33.044Z"
     }
-  ]
+  ],
+  "perceptual": {
+    "renderHash": "e150cca609f7403e",
+    "reviewer": "codex/gpt-5.6",
+    "reviewedAt": "2026-08-26T22:26:30.578Z",
+    "note": "Reviewed the current SVG and parity PNG at native dimensions on 2026-08-26; checked legibility, clipping, silhouettes, connector direction, image fitting, and intended composition.",
+    "findings": []
+  }
 }

@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 438 tests green, zero runtime dependencies, 51 MCP tools.
+Status: **prototype** — 628 tests green, zero runtime dependencies, 61 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -16,10 +16,12 @@ Status: **prototype** — 438 tests green, zero runtime dependencies, 51 MCP too
 | understand the lattice, pen grammar and rules | this file, below |
 | change anything in `src/core/` | [`llm.md`](llm.md) — the invariants, first |
 | know what is proven and what is deferred | [`status.md`](status.md) |
+| find the owner of version, schema, tools, artifacts, or generated evidence | [`docs/source-of-truth-map.md`](docs/source-of-truth-map.md) |
 | see the flowchart work and what was deliberately not built | [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md) |
 | repair existing lattice geometry | [`docs/lattice-editing.md`](docs/lattice-editing.md) |
 | import a compatible SVG safely | [`docs/svg-import.md`](docs/svg-import.md) |
 | know the current tool surface, authoritatively | call `turtlepen_help` — it outranks every document here |
+| validate/render/bundle without an MCP host | run `node src/cli.js help` or the `turtlepen` bin |
 
 The one thing worth knowing before anything else: **a clean validation means the
 drawing is undefective, never that it is finished, and never that it depicts what
@@ -100,6 +102,100 @@ down align left line to queue.N arrow  # engine counts the distance; run ends in
   arrowhead**, rather than adding one after it — so `line to db.W arrow` points
   at a box without overlapping it. Standing alone, `<dir> arrow` places a head
   at the cursor.
+- **`curve <addr> <addr> <addr> …` draws a smooth line through its points.**
+  `ray` is straight and `arc` is circular; a curve is neither, and hair, drapery
+  and coastlines are all curves. Sampled Catmull-Rom, then connected with rays,
+  so the run is contiguous by construction rather than by a lucky sample rate.
+- **`ellipse <rx> <ry> [rotDeg]` finishes the circle family.** With equal radii
+  and no rotation it delegates to `circle`, so the two commands can never
+  disagree about the same shape.
+- **`fill` turns a closed outline into a region that CLAIMS its interior.** That
+  is the point, not a side effect: a filled shape genuinely occupies its inside,
+  so it hides what is behind it and the collision engine knows. `fillColor`
+  colours the region independently of the outline, and given `{ from, to }` it
+  gradates ACROSS the region — tone, without hatching. An open outline is
+  refused rather than flooded: a shape that silently fills the page is much
+  worse than one that fills nothing.
+- **A stroke may change colour along its own length.** `color: { from, to }`
+  spreads a ramp over the pieces. Colour lives on the piece, not the element —
+  it never reached the collision engine, so where it was stored was only ever a
+  presentation decision.
+- **`stroke_text` draws words as INK.** Text used to be the one mark that escaped
+  the lattice: a label was an SVG `<text>` run, rendered by whatever font the
+  viewer had, and `core/text.js` had to PREDICT its width rather than know it.
+  TurtleFont is a stroke face of 442 glyphs — Latin with accents, Greek,
+  Cyrillic, maths, arrows, currency and marks — drawn as integer polylines on
+  the quadrant grid. The words collide like any other stroke, measure exactly,
+  and survive without a font file. It is honestly a DISPLAY face: cap height is
+  12 quadrants (60px). The first version used 6, and five rows of x-height was
+  too few to draw a lowercase letter properly — that one constraint was behind a
+  pinched `a`, an `s` that read as an `8`, and fractions that could not be read
+  at all, and it scales by whole multiples only, since
+  there is no half quadrant to interpolate onto. A character the face cannot
+  draw is refused rather than skipped — a missing glyph must never become a
+  silent hole in a sentence. `font_coverage` says what it has.
+- **`stroke_label` inks a box's label, so a whole drawing can be font-free.**
+  `place_box` writes its label as `<text>`, which is right at body sizes and
+  impossible to plot; this draws it with TurtleFont instead, centred in the room
+  the SYMBOL leaves rather than the bounding box. The label is its own element,
+  so it collides on its own terms — and the rule about strokes crossing nodes
+  exempts a label from the one box it names, which the author states, never
+  something inferred from proximity. `examples/inked-diagram.js` renders a
+  diagram containing zero `<text>` elements and checks that claim rather than
+  making it.
+- **Ask for a size, not a multiple.** `size` is the cap height in quadrants —
+  6 is 30px, 12 is what the glyphs are drawn at, and every whole number between
+  and above works. A whole multiple of the design size reproduces the drawing
+  exactly; anything else rounds glyph points onto the lattice, and the result
+  SAYS which happened rather than leaving you to wonder. The floor is measured,
+  not chosen: `pnpm run font:floor` renders all 442 glyphs at each candidate
+  size and finds where two letters start landing on the same quadrants. Below
+  that it refuses, because an unreadable letter is the same hole in a sentence
+  that a missing one would be.
+- **`weight` is a separate axis.** Pen thickness in quadrants, independent of
+  size, so one size can be light or bold — and a plotter with a single nib can
+  draw a large size with a one-quadrant pen.
+- **Text turns in quarters.** `rotate: 90` gives a vertical axis label that
+  loses nothing: on a square lattice a quarter turn maps every quadrant onto
+  another quadrant exactly. Any other angle is refused, because it would need
+  coordinates between quadrants.
+- **`glyph` shows one letter's ink and fingerprints it.** Two different stroke
+  lists can rasterise to identical quadrants — this repo shipped a "redrawn"
+  letter that changed nothing before that was noticed — so a source change is
+  not proof of a drawing change. The fingerprint is what tells them apart, and
+  the picture reads in a terminal so a glyph can be judged without rendering an
+  SVG.
+- **`layout` chooses the arrangement; `align` and `distribute` tidy one you
+  already chose.** It ranks the graph so flow runs down the page, gives every
+  long edge a lane of its own, reorders each rank to remove crossings, centres
+  each node over its neighbours, spreads fan-out across indexed port slots, and
+  redraws the connectors — including a loop back up the outside margin, which
+  every real flowchart has. The graph is authored fact: `pen from a.S` states an
+  origin and `line to b.N` states a target, so nothing is inferred from which
+  boxes happen to sit near each other. It reports what moved, how many crossings
+  went away, any cycle it reversed to rank the graph, and any connector it could
+  NOT redraw — a route that cannot be made is reported, never faked.
+- **`align` and `distribute` do the smaller layout arithmetic.** Every diagram in this
+  repo used to hand-write a gap constant, a running row counter and a uniform
+  width worked out with `Math.max`; that is what makes a generated diagram look
+  generated. Neither invents a position — the target comes from the elements you
+  name, and anything unnamed is left alone.
+- **Paper is document state.** `set_background <hex>` colours the sheet, and it
+  is saved with the drawing — a composition made against dark paper is a
+  different composition, and re-rendering it light would misreport it.
+- **A box fill is a hex OR a gradient.** `fill: { from, to, angle }` emits a
+  linear gradient keyed to the box. Both are presentation: no fill of any kind
+  reaches the collision engine.
+- **`arrow both` heads each end; `arrow start` heads only the origin.** The head
+  at the origin points back the way the run came, because a double-headed arrow
+  points outward at both ends. The run itself is unchanged — no quadrant is
+  added or moved, the first and last simply become heads. A run one quadrant
+  long has one end and is refused.
+- **A port belongs to the shape, not to its bounding box.** `pen from x.E` and
+  `line to x.W` both seat against the quadrant the SYMBOL actually inks, so a
+  connector meets a diamond at its vertex and a parallelogram at its slant. The
+  span between the ink and the claimed rectangle is claimed-but-uninked, which
+  the engine reports as information exactly like a corner cut.
 - **An omitted `align` continues on the track the cursor is already on.** A
   fixed default would fight a deliberately seated cursor.
 
@@ -121,7 +217,10 @@ for one primitive and stops will typically ink under 1%.
 
 ```
 ray to AF20.q1        a straight line at ANY angle (Bresenham)
+curve C4 K10 S6 AB14  a smooth line through the points, contiguous by construction
 circle 12             outline (midpoint); radius in QUADRANTS, not cells
+ellipse 24 10 30      the same family, two radii and an optional rotation
+circle 18 fill        any closed shape may be filled; the region claims its inside
 disc 12               the same circle, filled
 arc 12 0 90           part of it, clockwise from east
 triangle M4.q1 T9.q1  three points; polygon takes more
@@ -168,6 +267,38 @@ parent; chains cascade, cycles are refused, offsets are exact quadrants, and
 relationships survive save/open. Moving, resizing, or redrawing a target moves
 its dependents. Manually moving a dependent authors a new offset. `describe`
 reports both sides and whether stored and actual offsets are synchronized.
+
+### Semantic node relationships
+
+`connect` makes an edge a model fact as well as exact ink. It starts and ends
+at named node ports and records routing, description, technology, tags,
+properties, and perspectives:
+
+```json
+{ "id": "api-to-db", "from": "api.E", "to": "db.W",
+  "routing": "curved", "via": ["K5.q1"],
+  "description": "queries customer records", "technology": "SQL/TCP" }
+```
+
+`direct` is one exact ray, `orthogonal` uses the inspectable simple router, and
+`curved` rasterizes through explicit lattice waypoints. A curve with no waypoint
+is refused instead of inventing a design decision. `annotate` adds model fields
+to existing elements; `inspect_model` independently reports semantic omissions,
+disconnected nodes, and broken relationship references.
+
+### Reversible 1px eraser
+
+`micro_mask` is a presentation-only eraser for artwork paths and images. One
+design pixel means one integer pixel in the canonical SVG coordinate system:
+
+```json
+{ "action": "add", "id": "cleanup-1", "target": "ink",
+  "points": [{ "x": 25, "y": 70 }], "width": 1 }
+```
+
+It changes SVG and `renderHash`, but never cuts the target's 5px quadrant
+footprint. Save/open, plan, history, viewer restore, and target movement preserve
+the mask. Remove it with `micro_mask { "action": "remove", "id": "cleanup-1" }`.
 
 > **Corner anchors are bounding-box corners.** On a rectangle that is what you
 > want. On an ellipse or any organic shape, `SW` is the corner of the box around
@@ -284,6 +415,8 @@ Within a single page, overlap is always an error regardless of intent.
 | `L020` | S2 warn | a temporary tracing-reference page is still present |
 | `L022` | S2 warn | a rasterized image has enough neighboring ink changes to obscure its identity |
 | `L023` | S2 warn | continuous-tone source was simplified without semantic understanding |
+| `L024` | S2 warn | a shape is stretched until its silhouette no longer distinguishes it |
+| `L025` | S1 error | things at different depths share a page, so neither can pass behind the other |
 | `L010` | S3 info | expected overlap from an overlay page |
 | `L013` | S3 info | a path crosses a claimed but un-inked corner cut |
 | `C001` | S3 info | sparse canvas — too little ink to have been composed; compose it, or declare the page `schematic` |
@@ -370,6 +503,10 @@ cannot exit, so these are kept a closed set — and a test asserts it.
 pnpm run check                         # full test suite + examples, logo, and tree
 pnpm test                              # automated test suite
 pnpm run test:endpoints                # MCP, HTTP, and WebSocket surface contract
+pnpm run quality:manifest              # regenerate role-scoped artifact evidence
+pnpm run governance                    # source checkout: enforce naming, catalog, SSOT, and generated-file parity
+node src/cli.js render diagrams/example.turtlepen.json --format svg --json --force
+node src/cli.js review diagrams/example.turtlepen.json --render-hash <hash> --reviewer <name>
 node examples/build-example.js         # the plan -> commit cycle, end to end
 node examples/agent-session.js         # an agent authoring a real diagram over MCP
 node examples/constraint-stress.js      # crowded same-face rehearsal and rework over MCP
@@ -398,8 +535,9 @@ There is nothing to install first: no runtime dependencies, Node 20 or newer.
 Clone it, point the config at `src/mcp/server.js`, and run `pnpm test` once to
 confirm the clone is sound.
 
-51 tools. Call `turtlepen_help` first — it returns the grammar, the lattice
-constants, the rule table, and the fix→tool map.
+61 tools. Call `turtlepen_help` first for a compact orientation, use
+`search_help { query }` for task-focused discovery, and request
+`turtlepen_help { section: "all" }` for the complete grammar and rule manual.
 
 The maintained [endpoint and use-case coverage matrix](docs/endpoint-use-case-coverage.md)
 maps every transport, tool, viewer route, and known workflow to executable evidence.
@@ -434,10 +572,12 @@ inflating effective ink, and record source plus run hashes in the
 
 | Group | Tools |
 |---|---|
-| orient | `turtlepen_help` `describe` `ascii` `free_space` `history` |
-| author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `plan` `group` `constraint` |
-| check | `validate` `accept_finding` `unaccept_finding` |
+| orient | `turtlepen_help` `search_help` `doctor` `runtime_info` `describe` `ascii` `free_space` `history` |
+| author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `connect` `annotate` `plan` `group` `constraint` |
+| workspace | `define_view` `remove_view` `configure_theme` `attach_resource` `remove_resource` |
+| check | `validate` `inspect_model` `accept_model_finding` `unaccept_model_finding` `perceptual_review` `accept_finding` `unaccept_finding` |
 | repair | `resize` `restyle` `move` `rename` `update_page` `set_canvas` `extend_path` `replace_path` `remove` |
+| fidelity | `micro_mask` `stroke_text` `stroke_label` `glyph` `font_coverage` |
 | lattice editing | `boolean` `slice` `offset_path` `stroke_to_path` `path_edit` `normalize_path` `reorder` `duplicate` `array` |
 | inspect geometry | `inspect` |
 | SVG import | `inspect_svg` `import_svg` |
@@ -469,6 +609,7 @@ src/core/     pure engine, no I/O — geometry, address, text, shapes,
               document, pen, edit, svg-import, occupancy, collide, ascii, svg
 src/mcp/      MCP stdio server (hand-rolled JSON-RPC 2.0) + tool definitions
 src/viewer/   local HTTP/WebSocket server + live browser editor and log
+src/quality/  artifact catalog, manifest, and naming/SSOT governance
 test/         node:test, no framework
 examples/     worked end-to-end demonstration
 ```
@@ -501,15 +642,18 @@ only the editor's explicit public assets and tool allowlist are reachable.
 ## Deferred, deliberately
 
 - **Auto-fit** — the engine reports the shortfall and the fix; it does not resize.
-- **Auto-routing** — the pen is the primitive. If auto-routing is built, it will
-  be a generator that emits pen commands, so paths stay inspectable.
 - **Proportional fonts** — the monospace model makes capacity countable
   (`chars/line = floor((cells × 10 − 10) / 6)` at 10px), which is arithmetic an
   AI can do reliably.
 - **Negative addressing** — the grid runs `A1` rightward and downward only.
   Start at an inset origin if a drawing may need to grow up or left.
 
-## AI Generated Examples
+## Experimental AI-generated studies
+
+These studies are retained as comparative authoring evidence, not presented as
+release-qualified artifacts. Their authoritative role and quality disposition
+live in [`artifacts/artifact-catalog.json`](artifacts/artifact-catalog.json);
+[`artifacts/manifest.json`](artifacts/manifest.json) is generated evidence.
 
 The following sample diagrams and visual scenes were authored using TurtlePen MCP tools by **Gemini 3.6 Flash (High)**:
 
@@ -525,7 +669,7 @@ The following sample diagrams and visual scenes were authored using TurtlePen MC
 - **Fence**: [Wooden Picket Fence Scene](diagrams/scene-fence.svg) ([JSON](diagrams/scene-fence.turtlepen.json))
 - **Living Room**: [Cozy Living Room & Stick Figure Family](diagrams/scene-living-room-family.svg) ([JSON](diagrams/scene-living-room-family.turtlepen.json))
 
-Authoring script: `build_all_diagrams.js`  
+Authoring script: `build-all-diagrams.js`
 Model used: **Gemini 3.6 Flash (High)**
 
 ---
@@ -544,7 +688,7 @@ The following sample diagrams and visual scenes were authored using TurtlePen MC
 - **Fence**: [White Picket Fence Scene](diagrams/gemini31-scene-fence.svg) ([JSON](diagrams/gemini31-scene-fence.turtlepen.json))
 - **Living Room**: [Living Room Family](diagrams/gemini31-scene-living-room-family.svg) ([JSON](diagrams/gemini31-scene-living-room-family.turtlepen.json))
 
-Authoring script: `build_gemini_3.1_diagrams.js`  
+Authoring script: `build-gemini-3-1-diagrams.js`
 Model used: **Gemini 3.1 Pro (High)**
 
 ---
@@ -555,7 +699,7 @@ The following were authored using TurtlePen MCP tools by **Claude Opus 5**:
 
 ![Important Process flowchart](diagrams/flowchart-important-process.svg)
 
-[SVG](diagrams/flowchart-important-process.svg) · ([JSON](diagrams/flowchart-important-process.turtlepen.json)) · built by [`build_flowchart.js`](build_flowchart.js)
+[SVG](diagrams/flowchart-important-process.svg) · ([JSON](diagrams/flowchart-important-process.turtlepen.json)) · built by [`build-flowchart.js`](build-flowchart.js)
 
 Decisions are **diamonds**, terminators are **stadiums**, and that distinction is
 load-bearing rather than cosmetic. A node still *claims* its bounding box — so
@@ -612,13 +756,13 @@ built are in [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md).
 ![Five Farm Animals](diagrams/farm-animals.svg)
 
 - **Composition**: [Five Farm Animals](diagrams/farm-animals.svg) ([JSON](diagrams/farm-animals.turtlepen.json))
-- **Working record (PDF)**: [**TurtlePen — Five Farm Animals**](docs/TurtlePen-Five-Farm-Animals.pdf) · 14 pages
+- **Working record (PDF)**: [**TurtlePen — Five Farm Animals**](docs/turtlepen-five-farm-animals.pdf) · 14 pages
 
 | | | |
 |:--:|:--:|:--:|
-| [![cover](docs/preview/pdf-01-cover.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | [![method](docs/preview/pdf-02-method.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | [![animals](docs/preview/pdf-03-animals.png)](docs/TurtlePen-Five-Farm-Animals.pdf) |
+| [![cover](docs/preview/pdf-01-cover.png)](docs/turtlepen-five-farm-animals.pdf) | [![method](docs/preview/pdf-02-method.png)](docs/turtlepen-five-farm-animals.pdf) | [![animals](docs/preview/pdf-03-animals.png)](docs/turtlepen-five-farm-animals.pdf) |
 | the composition | how each silhouette is built | every committed pen program |
-| [![findings](docs/preview/pdf-05-findings.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | [![learned](docs/preview/pdf-06-learned.png)](docs/TurtlePen-Five-Farm-Animals.pdf) | |
+| [![findings](docs/preview/pdf-05-findings.png)](docs/turtlepen-five-farm-animals.pdf) | [![learned](docs/preview/pdf-06-learned.png)](docs/turtlepen-five-farm-animals.pdf) | |
 | real defects vs. declared anatomy | what the session taught | |
 
 Cow, pig, sheep, rooster and horse each fold **head, body and all four legs into
@@ -676,9 +820,10 @@ wrong. Four properties make it safe to have opinions in a deterministic engine:
 - **An unreviewed document is `NOT REVIEWED`, never clean.** Absence of a review
   is not a pass.
 
-Roadmap for the imaging gaps — raster **out** and filling a closed path — is in
-[`docs/imaging-capability-roadmap.md`](docs/imaging-capability-roadmap.md), with
-paste-ready prompts in
+Raster output and closed-path filling are implemented and regression-tested.
+Their evidence history and the still-inferred imaging candidates are retained in
+[`docs/imaging-capability-roadmap.md`](docs/imaging-capability-roadmap.md); the
+original implementation prompts are archived in
 [`docs/imaging-capability-prompts.md`](docs/imaging-capability-prompts.md).
 
 Model used: **Claude Opus 5**

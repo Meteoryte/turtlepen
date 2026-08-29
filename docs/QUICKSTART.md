@@ -94,6 +94,11 @@ legal. Record what you saw with `perceptual_review`.
 |---|---|
 | a finding names a fix and you want it applied | `repair { fingerprint }` — lists which fixes are one call away |
 | you need a connector and do not want to work out the geometry | `route { from: "a.S", to: "b.N" }` — returns a pen program, changes nothing |
+| you need a modelled direct, orthogonal, or node-attached curved edge | `connect { id, from: "a.E", to: "b.W", routing: "curved", via: ["K5.q1"] }` |
+| the AI needs element purpose and ownership | `annotate { id, description, technology, tags, properties, perspectives }`, then `inspect_model` |
+| artwork needs one-pixel cleanup without changing collision geometry | `micro_mask { action: "add", id, target, points: [{x,y}], width: 1 }`, or draw with the viewer eraser |
+| you need one model rendered several ways | `define_view` for static, filtered, or ordered dynamic views; pass its key to the CLI renderer or viewer |
+| you need to find a capability without loading the full manual | `search_help { query: "your task" }`; use `turtlepen_help { section: "all" }` only for the complete grammar |
 | you have a Mermaid flowchart already | `import_mermaid { source }` — returns operations for `plan` |
 | you want to see the actual quadrants, cheaply | `ascii` |
 | "is there room here?" | `free_space { cellsW, cellsH }` |
@@ -116,3 +121,20 @@ have to compete with artwork for the same quadrants.
 - [`llm.md`](../llm.md) — the agent contract and the invariants, before changing `src/core/`
 - [`status.md`](../status.md) — what is proven and what is deferred
 - `turtlepen_help` — always current, and the authority over all of the above
+
+## Native CLI
+
+The same document format can be checked and published without an MCP host:
+
+```bash
+node src/cli.js doctor
+node src/cli.js validate first.turtlepen.json
+node src/cli.js inspect first.turtlepen.json
+node src/cli.js render first.turtlepen.json --format png --out first.png --force
+node src/cli.js render first.turtlepen.json --format pdf --out first.pdf --force
+node src/cli.js bundle first.turtlepen.json --out first-docs
+```
+
+SVG/PNG/PDF and document writes are atomic. Browser and MCP mutations carry a
+document hash so a stale editor cannot silently overwrite a newer in-memory
+revision.

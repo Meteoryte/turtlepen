@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 3,
   "name": "Five seeded-random supersampling trials",
   "canvas": {
     "cols": 80,
@@ -9766,6 +9766,12 @@
         "state": null
       }
     ]
+  },
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
   },
   "acceptances": []
 }

@@ -40,10 +40,25 @@ export function normalizePattern(value, what = 'pattern') {
  * possible at all: the index IS the distance travelled, so the cycle survives
  * corners without any geometry needing to be recomputed.
  */
+/**
+ * Pieces a pattern must never delete.
+ *
+ * A dash pattern is a property of the LINE. An arrowhead says which way the
+ * path travels and that it arrived; a hop says a crossing was deliberate; a
+ * corner is where the path changes track. Dropping any of them does not style
+ * the connector, it changes what the connector claims.
+ *
+ * This was found by two dashed runs in the showcase pipeline that reported
+ * `L008` and `L016` — drawn correctly to their targets, then truncated by a
+ * style, with whether it happened at all depending on how many quadrants long
+ * the run happened to be.
+ */
+const STRUCTURAL = new Set(['arrow', 'hop', 'corner']);
+
 export function patternMask(quads, pattern) {
   const p = normalizePattern(pattern);
   if (!p) return quads;
   const { on, off } = CYCLES[p];
   const period = on + off;
-  return quads.filter((_, i) => i % period < on);
+  return quads.filter((q, i) => STRUCTURAL.has(q.type) || i % period < on);
 }

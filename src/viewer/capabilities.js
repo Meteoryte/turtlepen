@@ -16,6 +16,10 @@ export const VIEWER_TOOLS = Object.freeze([
   'history',
   'extend_path',
   'replace_path',
+  'micro_mask',
   'accept_finding',
   'unaccept_finding',
+  'accept_model_finding',
+  'unaccept_model_finding',
+  'plan',
 ]);

@@ -12,8 +12,9 @@
 
 import { createInterface } from 'node:readline';
 import { createSession, createTools } from './tools.js';
+import { VERSION } from '../version.js';
 
-const SERVER_INFO = { name: 'turtlepen', version: '0.1.0' };
+const SERVER_INFO = { name: 'turtlepen', version: VERSION };
 const DEFAULT_PROTOCOL = '2025-06-18';
 const SUPPORTED_PROTOCOLS = new Set([DEFAULT_PROTOCOL, '2025-03-26', '2024-11-05']);
 

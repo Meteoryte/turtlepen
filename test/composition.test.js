@@ -103,6 +103,7 @@ test('composition findings are S3 and do not affect summary.clean', () => {
 
   assert.ok(result.open.some((f) => f.rule === 'C001'), 'validate surfaces composition findings');
   assert.equal(result.summary.clean, true, 'an INFO finding must not make a document unclean');
+  assert.equal(result.summary.state, 'structurally-clear');
   assert.ok(result.summary.S3 >= 1);
 });
 

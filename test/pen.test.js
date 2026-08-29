@@ -207,3 +207,86 @@ test('hop refuses a destination instead of silently ignoring it', () => {
   // The legitimate single-quadrant crossing is untouched.
   assert.doesNotThrow(() => runPen('pen C10\nright 3 line\nright hop\nright 3 line'));
 });
+
+// ---------------------------------------------------------------------------
+// Arrowheads at both ends.
+//
+// `arrow` put one head on the run's final quadrant and there was no way to ask
+// for another. A connector that means "these two talk to each other" had to be
+// drawn as two overlapping paths, which reports as a self-overlap and reads as
+// a mistake.
+//
+// The head at the START points AWAY from travel: a double-headed arrow points
+// outward at both ends, so the two heads disagree about direction on purpose.
+// ---------------------------------------------------------------------------
+
+test('arrow puts a head on the final quadrant and nothing else', () => {
+  const r = runPen('pen C4.q1\nright 5 line arrow');
+  const heads = r.pieces.filter((p) => p.type === 'arrow');
+  assert.equal(heads.length, 1);
+  assert.deepEqual(
+    { x: heads[0].x, y: heads[0].y, dir: heads[0].dir },
+    { x: r.pieces[r.pieces.length - 1].x, y: r.pieces[r.pieces.length - 1].y, dir: 'right' },
+  );
+});
+
+test('arrow both puts a head on each end, pointing outward', () => {
+  const r = runPen('pen C4.q1\nright 5 line arrow both');
+  const heads = r.pieces.filter((p) => p.type === 'arrow');
+  assert.equal(heads.length, 2, 'one head at each end');
+
+  const first = r.pieces[0];
+  const last = r.pieces[r.pieces.length - 1];
+  assert.equal(first.type, 'arrow', 'the first quadrant is a head');
+  assert.equal(last.type, 'arrow', 'and so is the last');
+  assert.equal(first.dir, 'left', 'the leading head points back the way it came');
+  assert.equal(last.dir, 'right', 'the trailing head points the way it travelled');
+
+  // The run itself is unchanged: same quadrants, same order.
+  const plain = runPen('pen C4.q1\nright 5 line');
+  assert.deepEqual(
+    r.pieces.map((p) => [p.x, p.y]),
+    plain.pieces.map((p) => [p.x, p.y]),
+    'adding a second head must not move or lengthen the run',
+  );
+});
+
+test('arrow start puts a head only at the origin', () => {
+  const r = runPen('pen C4.q1\nright 5 line arrow start');
+  const heads = r.pieces.filter((p) => p.type === 'arrow');
+  assert.equal(heads.length, 1);
+  assert.equal(r.pieces[0].type, 'arrow');
+  assert.equal(r.pieces[0].dir, 'left');
+  assert.equal(r.pieces[r.pieces.length - 1].type, 'line');
+});
+
+test('the shortest run a cell can express still carries two heads', () => {
+  // `1 line` is one CELL, which is two quadrants — one end each. This is the
+  // shortest legitimate double-headed connector, not a degenerate case.
+  const r = runPen('pen C4.q1\nright 1 line arrow both');
+  assert.equal(r.pieces.length, 2);
+  assert.deepEqual(r.pieces.map((p) => [p.type, p.dir]), [['arrow', 'left'], ['arrow', 'right']]);
+});
+
+test('a single-quadrant run has one end, not two', () => {
+  assert.throws(
+    () => runPen('pen C4.q1\nright line to C4.q2 arrow both'),
+    /both ends/,
+  );
+});
+
+test('a semicolon inside quotes is text, not a command separator', () => {
+  // `;` separates commands on one line, and the split ran over the raw line
+  // before tokenising — so any label containing one was cut in half and the
+  // remainder parsed as a command. Found writing a caption that read
+  // "clockwise from east; radii in quadrants".
+  const r = runPen('text "clockwise from east; radii in quadrants" at C4 span 40x2 font 8');
+  assert.equal(r.texts.length, 1);
+  assert.equal(r.texts[0].text, 'clockwise from east; radii in quadrants');
+});
+
+test('a semicolon outside quotes still separates commands', () => {
+  const r = runPen('pen C4.q1; right 3 line; down 2 line');
+  assert.ok(r.pieces.length > 0);
+  assert.equal(r.trace.filter((t) => t.action === 'line').length, 2);
+});

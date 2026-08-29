@@ -1,15 +1,15 @@
 # TurtlePen — status
 
-**As of 2026-08-28.** Prototype, working end to end, 438/438 tests green,
+**As of 2026-08-27.** Prototype, working end to end, 628/628 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **438/438 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **628/628 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
-- **Every external surface has a drift-proof contract.** All 51 MCP tools
+- **Every external surface has a drift-proof contract.** All 61 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC
   method and notification path is asserted; all public viewer routes are tested
   with GET, HEAD, method refusal, and security headers; and every browser-authorized
@@ -17,6 +17,49 @@ Verified by running it, not by inspection:
   close, masking, UTF-8, fragmentation, binary and reserved frames, control sizes,
   and the 64 KiB limit. The executable map is
   `docs/endpoint-use-case-coverage.md`.
+- **Runtime and persistence truth are explicit.** Schema-1 and schema-2
+  documents migrate to schema 3; perceptual review survives save/open; direct and nested-plan calls
+  are validated against the same schemas; `runtime_info` reports version,
+  schema, tool count, capability fingerprint, session start, and document hash.
+- **Local writes are conflict-aware and recoverable.** Document checkpoints,
+  saves, SVG/PNG/PDF exports, and history sidecars use same-directory atomic
+  replacement. Backups preserve the prior destination and optimistic document
+  hashes refuse stale in-memory or concurrent writers with retry-safe evidence.
+- **One semantic model produces multiple durable views.** Static, tag-filtered,
+  and ordered dynamic views project shared elements; document-owned tokens,
+  tag/perspective styles, generated keys, linked documentation/ADR/runbook
+  resources, and fingerprinted model acceptances survive migration and reopen.
+- **Native, dependency-free output is available outside MCP.** The `turtlepen`
+  CLI validates and inspects, renders deterministic SVG/PNG/PDF, generates
+  architecture documentation bundles and artifact contracts, and executes or
+  scores same-model benchmark adapter receipts while keeping structural,
+  semantic, perceptual, and workflow dimensions separate. `render --json`
+  returns the exact SVG hash a reviewer saw, and `review` records a guarded,
+  hash-bound perceptual verdict without opening an MCP host.
+- **Artifact scope has one owner and release evidence is complete.** The
+  authored catalog classifies 59 tracked documents as release, example,
+  fixture, or study; the generated manifest reports all 8 release artifacts
+  ready and keeps non-release evidence from blocking that claim. The governance
+  gate checks catalog coverage, filenames, hashes, help parity, runtime version,
+  tool-registry identity, and the source-of-truth map.
+- **Native raster output preserves the semantic renderer's geometry.** PNG/PDF
+  use symbol silhouettes, measured text size/alignment/weight, gradients,
+  path styling, view notation keys, and aspect-preserving images; regression
+  tests prevent a decision diamond or measured label from flattening into a
+  generic rectangle or fixed-size glyph run.
+- **The viewer is an approval workbench.** Named-view switching, semantic model
+  review, bounded history, non-mutating JSON plan diffs, explicit approve/reject,
+  revision hashes, lazy canvas payloads, and continuous pointer-based 1px
+  erasing share the same operations and persistence guards as MCP.
+- **Architecture meaning is first-class.** `connect` authors direct,
+  orthogonal, or node-attached curved relationships between named ports;
+  `annotate` persists descriptions, technology, tags, properties, and
+  perspectives; `inspect_model` reports semantic incompleteness independently
+  of collision geometry.
+- **The 1px eraser is reversible presentation state.** `micro_mask` applies to
+  artwork paths and images, persists through plan/history/save/viewer flows,
+  moves with its target, changes SVG/render hash, and leaves structural
+  validation byte-identical.
 - **TurtlePen has produced a field work product, not only test fixtures.**
   `pnpm run field-guide` authors a complete condenser replacement workflow over
   the real MCP stdio transport, rehearses 27 operations, commits atomically,
@@ -149,7 +192,7 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (51 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (61 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
 - **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),
@@ -388,7 +431,7 @@ the one this project exists to make impossible, wearing a different coat:
   other 203; the unconditional `save` that followed then wrote a valid, empty
   document. The tool layer had returned each failure as readable text — the
   right shape for an agent that reads results, and a loaded gun for a script
-  that ignores them. `build_gemini_3.1_diagrams.js` now throws on a failed
+  that ignores them. `build-gemini-3-1-diagrams.js` now throws on a failed
   operation and refuses to save a document carrying an S0 or S1 finding.
   Transactional writes protect the document; they do not protect a caller from
   believing it succeeded.
@@ -480,8 +523,6 @@ added, it is not shipped until `HELP` names it at the moment of need.
 
 - **Auto-fit.** The engine reports the shortfall and the fixes; it does not
   resize. Chuck's call during design.
-- **Auto-routing.** The pen is the primitive. If auto-routing is added it must
-  emit pen commands so the path stays inspectable.
 - **Proportional fonts.** The monospace model is what makes capacity countable.
 - **Negative addressing.** The grid runs `A1` rightward and downward only.
 

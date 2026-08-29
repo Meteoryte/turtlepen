@@ -9,6 +9,10 @@ let selectedFinding = null;
 let draftDirty = false;
 let draftRevision = null;
 let zoomMode = 'fit';
+let activeView = '';
+let pendingPlan = null;
+let eraserMode = false;
+let eraserStroke = null;
 
 const severityLabel = { S0: 'CRITICAL', S1: 'ERROR', S2: 'WARN', S3: 'INFO' };
 const escapeHtml = (value) => String(value ?? '')
@@ -40,7 +44,10 @@ function connect() {
   socket.addEventListener('message', (event) => {
     let message;
     try { message = JSON.parse(event.data); } catch { return setOperation('Invalid server message', 'error'); }
-    if (message.type === 'state') renderState(message.state);
+    if (message.type === 'state') {
+      if (activeView && message.state.ok) fetchViewState(activeView).catch((err) => setOperation(err.message, 'error'));
+      else renderState(message.state);
+    }
     if (message.type === 'result') {
       const request = pending.get(message.id);
       pending.delete(message.id);
@@ -72,9 +79,19 @@ function callTool(tool, args, success) {
     return Promise.reject(new Error('Editor is offline'));
   }
   const id = crypto.randomUUID();
+  const guardedArgs = tool !== 'history' && current?.hash && args.expectedHash == null
+    ? { ...args, expectedHash: current.hash }
+    : args;
   setOperation('Applying change', 'busy');
-  socket.send(JSON.stringify({ type: 'call', id, tool, args }));
+  socket.send(JSON.stringify({ type: 'call', id, tool, args: guardedArgs }));
   return new Promise((resolve, reject) => pending.set(id, { resolve, reject, success }));
+}
+
+async function fetchViewState(view) {
+  const response = await fetch(`/api/state?view=${encodeURIComponent(view)}&detail=canvas`, { cache: 'no-store' });
+  const state = await response.json();
+  if (state.ascii == null) state.ascii = current?.ascii ?? '';
+  renderState(state);
 }
 
 function renderState(state) {
@@ -84,6 +101,8 @@ function renderState(state) {
     byId('stage').replaceChildren();
     byId('pages').replaceChildren();
     byId('inspector').innerHTML = '<div class="empty">No document</div>';
+    byId('model').innerHTML = '<div class="empty">No semantic model</div>';
+    byId('history-list').innerHTML = '<div class="empty">No history</div>';
     byId('log').innerHTML = '<div class="empty">No collision log</div>';
     byId('ascii').textContent = '';
     byId('counts').replaceChildren();
@@ -97,20 +116,65 @@ function renderState(state) {
     draftDirty = false;
   }
   byId('doc').textContent = `${state.name}  |  r${state.revision}  |  ${state.lattice.pxPerCell}px cells`;
-  renderCounts(state.summary);
+  renderViewSelector(state.views, state.view);
+  renderCounts(state.summary, state.readiness);
   renderPages(state.pages);
   renderStage(state.svg);
   renderInspector();
   renderFindings(state.findings, state.accepted, state.stale);
-  byId('ascii').textContent = state.ascii;
+  renderModel(state.model, state.views, state.resources);
+  renderHistory(state.history);
+  if (state.ascii != null) byId('ascii').textContent = state.ascii;
   updateHistoryButtons();
 }
 
-function renderCounts(summary) {
+function renderViewSelector(views = [], selected = null) {
+  const select = byId('view-select');
+  const wanted = selected?.key ?? activeView;
+  select.innerHTML = '<option value="">Complete model</option>' + views.map((view) =>
+    `<option value="${escapeHtml(view.key)}"${view.key === wanted ? ' selected' : ''}>${escapeHtml(view.title)} · ${escapeHtml(view.type)}</option>`).join('');
+}
+
+function renderModel(model, views = [], resources = []) {
+  const node = byId('model');
+  if (!model) { node.className = 'empty'; node.textContent = 'No semantic model'; return; }
+  node.className = '';
+  const viewRows = views.length ? views.map((view) => `<div class="model-row"><strong>${escapeHtml(view.title)}</strong><span>${escapeHtml(view.type)} · ${escapeHtml(view.direction)}</span>${view.description ? `<small>${escapeHtml(view.description)}</small>` : ''}</div>`).join('') : '<div class="empty">No named views</div>';
+  const resourceRows = resources.length ? resources.map((resource) => `<div class="model-row"><strong>${escapeHtml(resource.label)}</strong><span>${escapeHtml(resource.type)}</span><small>${escapeHtml(resource.uri)}</small></div>`).join('') : '<div class="empty">No linked documentation or decisions</div>';
+  const findingRows = model.open.length ? model.open.map((finding) => `<div class="model-finding ${escapeHtml(finding.severity)}"><div><strong>${escapeHtml(finding.rule)}</strong> ${escapeHtml(finding.message)}</div><div class="fingerprint">#${escapeHtml(finding.fingerprint)}</div><button type="button" data-model-accept="${escapeHtml(finding.fingerprint)}">Accept</button></div>`).join('') : '<div class="empty">No open semantic findings</div>';
+  const acceptedRows = model.accepted.length ? model.accepted.map((finding) => `<div class="model-finding accepted"><div><strong>Accepted ${escapeHtml(finding.rule)}</strong> ${escapeHtml(finding.message)}</div><small>${escapeHtml(finding.acceptance.reason)}</small><button type="button" data-model-unaccept="${escapeHtml(finding.fingerprint)}">Withdraw</button></div>`).join('') : '';
+  node.innerHTML = `<div class="model-summary"><span class="badge ${model.summary.error ? 'S1' : model.summary.warning ? 'S2' : 'clean'}">${escapeHtml(model.summary.state)}</span><span>${model.summary.total} open · ${model.summary.accepted} accepted · ${model.summary.stale} stale</span></div><h3 class="log-heading">Views</h3>${viewRows}<h3 class="log-heading">Resources</h3>${resourceRows}<h3 class="log-heading">Model findings</h3>${findingRows}${acceptedRows}`;
+}
+
+function renderHistory(history) {
+  const node = byId('history-list');
+  if (!history?.entries?.length && !history?.futureEntries?.length) {
+    node.className = 'empty'; node.textContent = 'No edits yet'; return;
+  }
+  node.className = 'history-list';
+  const undo = history.entries.map((entry, index) => `<div class="history-row"><span>${index === 0 ? 'Next undo' : `Undo ${index + 1}`}</span><strong>${escapeHtml(entry.label)}</strong></div>`).join('');
+  const redo = history.futureEntries.map((entry, index) => `<div class="history-row future"><span>${index === 0 ? 'Next redo' : `Redo ${index + 1}`}</span><strong>${escapeHtml(entry.label)}</strong></div>`).join('');
+  node.innerHTML = undo + redo + `<p class="hint">${escapeHtml(history.persistence)}</p>`;
+}
+
+function renderCounts(summary, readiness) {
   const badge = (severity, count) => count ? `<span class="badge ${severity}">${severity} ${count}</span>` : '';
-  const primary = summary.clean
-    ? `<span class="badge clean">Clean</span>${badge('S2', summary.S2)}${badge('S3', summary.S3)}`
-    : badge('S0', summary.S0) + badge('S1', summary.S1) + badge('S2', summary.S2) + badge('S3', summary.S3);
+  const labels = {
+    'blocking-errors': 'Blocking errors',
+    'needs-decisions': 'Needs decisions',
+    'structurally-clear': 'Structurally clear',
+    'review-missing': 'Review missing',
+    'review-stale': 'Review stale',
+    'perceptual-blockers': 'Perceptual blockers',
+    publishable: 'Publishable',
+  };
+  const statusClass = ['blocking-errors', 'perceptual-blockers'].includes(readiness)
+    ? 'S1'
+    : ['needs-decisions', 'review-missing', 'review-stale'].includes(readiness)
+      ? 'S2'
+      : 'clean';
+  const primary = `<span class="badge ${statusClass}">${labels[readiness] ?? labels[summary.state] ?? 'Unknown state'}</span>`
+    + badge('S0', summary.S0) + badge('S1', summary.S1) + badge('S2', summary.S2) + badge('S3', summary.S3);
   const audit = summary.accepted ? `<span class="badge accepted">Accepted ${summary.accepted}</span>` : '';
   const stale = summary.stale ? `<span class="badge stale">Stale ${summary.stale}</span>` : '';
   byId('counts').innerHTML = primary + audit + stale;
@@ -213,7 +277,11 @@ function inspectorHtml(element) {
   const restyle = ['box', 'text'].includes(element.kind) ? `<form class="control-block" data-form="restyle"><h3>Content and style</h3><div class="field-grid"><label class="field wide">${element.kind === 'text' ? 'Text' : 'Label'}<input name="label" value="${escapeHtml(element.label)}"></label><label class="field">Alignment<select name="align">${options(['left', 'center', 'right'], element.align)}</select></label><label class="field">Font size (px)<input name="fontSize" type="number" min="1" step="1" value="${element.fontSize}"></label>${element.kind === 'box' ? `<label class="field">Corners<select name="corner">${options(['square', 'rounded', 'indented', 'chamfered'], element.corner)}</select></label><label class="field">Fill (hex)<input name="fill" pattern="#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?" value="${escapeHtml(element.fill ?? '')}" placeholder="#e9e7e1"></label>` : ''}</div><div class="command-row"><button type="submit">Apply changes</button></div></form>` : '';
 
   const pathEditor = element.kind === 'path' ? `<form class="control-block" data-form="extend-path"><h3>Extend path</h3><label class="field">Pen program<textarea name="program" required></textarea></label><div class="command-row"><button type="submit">Extend</button></div></form><form class="control-block" data-form="replace-path"><h3>Replace path</h3><label class="field">Pen program<textarea name="program" required></textarea></label><div class="command-row"><button type="submit">Replace</button></div></form>` : '';
-  return `<div class="selection-title"><strong>${escapeHtml(element.id)}</strong><span>${escapeHtml(element.kind)}</span></div><dl class="facts"><dt>Page</dt><dd>${escapeHtml(element.page)}</dd><dt>Address</dt><dd>${escapeHtml(element.at)}</dd><dt>Size</dt><dd>${element.cells ? `${element.cells.w} x ${element.cells.h} cells` : 'n/a'}</dd>${imageFacts}</dl>${movable}${sized}${restyle}${pathEditor}${groupHtml(element, group)}${constraintHtml(element, incoming, outgoing)}<div class="control-block"><button type="button" class="danger" data-delete>Delete element</button></div>`;
+  const erasable = element.kind === 'image' || (element.kind === 'path' && element.role === 'artwork');
+  const masks = element.microMasks ?? [];
+  const maskStatus = element.microMaskStatus;
+  const eraser = erasable ? `<div class="control-block"><h3>Eraser <span class="badge accepted">1px</span></h3><p class="hint">Draw over artwork to subtract exact design pixels. Geometry and semantic relationships remain unchanged.</p>${maskStatus ? `<div class="mask-meter${maskStatus.fullyMasked ? ' danger' : ''}">${maskStatus.maskedInkPixels} / ${maskStatus.totalInkPixels} ink pixels masked (${maskStatus.maskedPercent}%)${maskStatus.fullyMasked ? ' · Fully masked — restore or revise this stroke' : ''}</div>` : ''}<div class="command-row"><button type="button" data-eraser-toggle aria-pressed="${eraserMode}">${eraserMode ? 'Stop drawing' : 'Draw 1px eraser'}</button></div><details><summary>Place one pixel by coordinate</summary><form data-form="micro-mask"><div class="field-grid"><label class="field wide">Mask ID<input name="id" required value="${escapeHtml(element.id)}-mask-${masks.length + 1}"></label><label class="field">Pixel X<input name="x" type="number" min="0" step="1" required></label><label class="field">Pixel Y<input name="y" type="number" min="0" step="1" required></label></div><div class="command-row"><button type="submit">Erase 1px</button></div></form></details>${masks.map((mask) => `<div class="relation">${escapeHtml(mask.id)} | ${mask.points.length} point(s)<button type="button" data-micro-mask-remove="${escapeHtml(mask.id)}">Restore</button></div>`).join('')}</div>` : '';
+  return `<div class="selection-title"><strong>${escapeHtml(element.id)}</strong><span>${escapeHtml(element.kind)}${masks.length ? ' · Masked' : ''}</span></div><dl class="facts"><dt>Page</dt><dd>${escapeHtml(element.page)}</dd><dt>Address</dt><dd>${escapeHtml(element.at)}</dd><dt>Size</dt><dd>${element.cells ? `${element.cells.w} x ${element.cells.h} cells` : 'n/a'}</dd>${imageFacts}</dl>${movable}${sized}${restyle}${pathEditor}${eraser}${groupHtml(element, group)}${constraintHtml(element, incoming, outgoing)}<div class="control-block"><button type="button" class="danger" data-delete>Delete element</button></div>`;
 }
 
 function groupHtml(element, group) {
@@ -267,6 +335,7 @@ function updateHistoryButtons() {
 
 function selectElement(id) {
   if (draftDirty && id !== selectedId && !confirm('Discard the current draft?')) return;
+  if (id !== selectedId) setEraserMode(false, false);
   selectedId = id;
   draftDirty = false;
   renderStage(current.svg);
@@ -282,6 +351,7 @@ byId('pages').addEventListener('change', (event) => {
 });
 
 byId('stage').addEventListener('click', (event) => {
+  if (eraserMode) return;
   const node = event.target.closest('[data-element]');
   if (node) selectElement(node.dataset.element);
 });
@@ -298,6 +368,10 @@ byId('inspector').addEventListener('input', () => {
 byId('inspector').addEventListener('click', async (event) => {
   const element = selectedElement();
   if (!element) return;
+  if (event.target.matches('[data-eraser-toggle]')) {
+    setEraserMode(!eraserMode);
+    return;
+  }
   const moveX = event.target.dataset.moveX;
   const moveY = event.target.dataset.moveY;
   if (moveX || moveY) {
@@ -327,7 +401,93 @@ byId('inspector').addEventListener('click', async (event) => {
   if (event.target.dataset.constraintSync) {
     await callTool('constraint', { action: 'sync', id: event.target.dataset.constraintSync }, 'Synchronized relationship').catch(() => {});
   }
+  if (event.target.dataset.microMaskRemove) {
+    await callTool('micro_mask', { action: 'remove', id: event.target.dataset.microMaskRemove }, 'Restored erased pixel').catch(() => {});
+  }
 });
+
+function setEraserMode(enabled, redraw = true) {
+  eraserMode = Boolean(enabled);
+  if (!eraserMode) {
+    eraserStroke = null;
+    byId('stage').classList.remove('eraser-active');
+    for (const preview of byId('stage').querySelectorAll('.eraser-preview')) preview.remove();
+  } else {
+    byId('stage').classList.add('eraser-active');
+    setOperation('1px eraser active — drag across the selected artwork');
+  }
+  if (redraw && current?.ok) renderInspector(true);
+}
+
+function eraserPoint(event) {
+  const element = selectedElement();
+  const svg = byId('stage').querySelector('svg');
+  const selectedNode = svg?.querySelector(`[data-element="${CSS.escape(element?.id ?? '')}"]`);
+  const page = selectedNode?.closest('g[data-page]');
+  const matrix = page?.getScreenCTM();
+  if (!element || !svg || !page || !matrix || !element.bounds) return null;
+  const source = svg.createSVGPoint();
+  source.x = event.clientX; source.y = event.clientY;
+  const local = source.matrixTransform(matrix.inverse());
+  const point = { x: Math.round(local.x), y: Math.round(local.y) };
+  const q = current.lattice.pxPerQuadrant;
+  const minX = element.bounds.x * q;
+  const minY = element.bounds.y * q;
+  const maxX = (element.bounds.x + element.bounds.w) * q;
+  const maxY = (element.bounds.y + element.bounds.h) * q;
+  if (point.x < minX || point.x >= maxX || point.y < minY || point.y >= maxY) return null;
+  return { point, page };
+}
+
+function appendEraserPoint(event) {
+  const located = eraserPoint(event);
+  if (!located || !eraserStroke || eraserStroke.points.length >= 1800) return;
+  const previous = eraserStroke.points.at(-1);
+  if (previous?.x === located.point.x && previous?.y === located.point.y) return;
+  eraserStroke.points.push(located.point);
+  const mark = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  mark.classList.add('eraser-preview');
+  mark.setAttribute('x', located.point.x);
+  mark.setAttribute('y', located.point.y);
+  mark.setAttribute('width', '1'); mark.setAttribute('height', '1');
+  located.page.append(mark);
+}
+
+byId('stage').addEventListener('pointerdown', (event) => {
+  if (!eraserMode || event.button !== 0) return;
+  const element = selectedElement();
+  const hit = event.target.closest('[data-element]');
+  if (!element || hit?.dataset.element !== element.id) return;
+  event.preventDefault();
+  byId('stage').setPointerCapture(event.pointerId);
+  eraserStroke = { pointerId: event.pointerId, points: [] };
+  appendEraserPoint(event);
+});
+
+byId('stage').addEventListener('pointermove', (event) => {
+  if (eraserStroke?.pointerId !== event.pointerId) return;
+  event.preventDefault();
+  appendEraserPoint(event);
+});
+
+async function finishEraser(event, apply) {
+  if (eraserStroke?.pointerId !== event.pointerId) return;
+  const points = eraserStroke.points;
+  const element = selectedElement();
+  eraserStroke = null;
+  for (const preview of byId('stage').querySelectorAll('.eraser-preview')) preview.remove();
+  if (!apply || !element || !points.length) return;
+  let serial = (element.microMasks?.length ?? 0) + 1;
+  const existing = new Set((element.microMasks ?? []).map((mask) => mask.id));
+  while (existing.has(`${element.id}-mask-${serial}`)) serial += 1;
+  setEraserMode(false);
+  await callTool('micro_mask', {
+    action: 'add', id: `${element.id}-mask-${serial}`, target: element.id, points, width: 1, cap: 'round',
+  }, `Erased ${points.length} sampled design pixel(s) on ${element.id}`).catch(() => {});
+}
+
+byId('stage').addEventListener('pointerup', (event) => finishEraser(event, true));
+byId('stage').addEventListener('pointercancel', (event) => finishEraser(event, false));
 
 byId('inspector').addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -359,6 +519,9 @@ byId('inspector').addEventListener('submit', async (event) => {
   }
   if (form.dataset.form === 'extend-path') request = ['extend_path', { id: element.id, program: data.program }, `Extended ${element.id}`];
   if (form.dataset.form === 'replace-path') request = ['replace_path', { id: element.id, program: data.program }, `Replaced ${element.id}`];
+  if (form.dataset.form === 'micro-mask') request = ['micro_mask', {
+    action: 'add', id: data.id, target: element.id, points: [{ x: Number(data.x), y: Number(data.y) }], width: 1,
+  }, `Erased 1px on ${element.id}`];
   if (request) await callTool(...request).catch(() => {});
 });
 
@@ -389,6 +552,16 @@ byId('log').addEventListener('keydown', (event) => {
   toggleFinding(finding.dataset.fingerprint);
 });
 
+byId('model').addEventListener('click', async (event) => {
+  const accept = event.target.dataset.modelAccept;
+  if (accept) {
+    const reason = prompt('Reason this semantic finding is intentional:');
+    if (reason?.trim()) await callTool('accept_model_finding', { fingerprint: accept, reason: reason.trim() }, 'Model finding accepted').catch(() => {});
+  }
+  const unaccept = event.target.dataset.modelUnaccept;
+  if (unaccept) await callTool('unaccept_model_finding', { fingerprint: unaccept }, 'Model acceptance withdrawn').catch(() => {});
+});
+
 function toggleFinding(fingerprint) {
   selectedFinding = fingerprint === selectedFinding ? null : fingerprint;
   renderFindings(current.findings, current.accepted, current.stale);
@@ -399,6 +572,73 @@ function toggleFinding(fingerprint) {
 byId('undo').addEventListener('click', () => callTool('history', { action: 'undo' }, 'Undid last change').catch(() => {}));
 byId('redo').addEventListener('click', () => callTool('history', { action: 'redo' }, 'Redid change').catch(() => {}));
 byId('zoom').addEventListener('change', (event) => { zoomMode = event.target.value; applyZoom(); });
+byId('view-select').addEventListener('change', async (event) => {
+  activeView = event.target.value;
+  selectedId = null;
+  setEraserMode(false, false);
+  if (activeView) await fetchViewState(activeView).catch((err) => setOperation(err.message, 'error'));
+  else {
+    const response = await fetch('/api/state', { cache: 'no-store' });
+    renderState(await response.json());
+  }
+});
+
+document.querySelector('.panel-tabs').addEventListener('click', (event) => {
+  const tab = event.target.closest('[data-tab]');
+  if (!tab) return;
+  for (const button of document.querySelectorAll('[data-tab]')) button.setAttribute('aria-selected', String(button === tab));
+  for (const panel of document.querySelectorAll('[data-panel]')) panel.hidden = panel.dataset.panel !== tab.dataset.tab;
+});
+
+byId('plan-rehearse').addEventListener('click', async () => {
+  let operations;
+  try {
+    operations = JSON.parse(byId('plan-ops').value);
+    if (!Array.isArray(operations)) throw new TypeError('operations must be a JSON array');
+  } catch (err) {
+    byId('plan-result').textContent = `Cannot rehearse: ${err.message}`;
+    return setOperation(`Cannot rehearse: ${err.message}`, 'error');
+  }
+  try {
+    const hash = current.hash;
+    const text = await callTool('plan', { operations, commit: false, format: 'json', expectedHash: hash }, 'Plan rehearsed — review the diff');
+    const receipt = JSON.parse(text);
+    byId('plan-result').textContent = JSON.stringify(receipt, null, 2);
+    pendingPlan = receipt.ok ? { operations, hash, receipt } : null;
+    byId('plan-approve').disabled = !pendingPlan;
+    byId('plan-reject').disabled = !pendingPlan;
+  } catch { pendingPlan = null; }
+});
+
+byId('plan-approve').addEventListener('click', async () => {
+  if (!pendingPlan) return;
+  const candidate = pendingPlan;
+  try {
+    const text = await callTool('plan', {
+      operations: candidate.operations, commit: true, format: 'json', expectedHash: candidate.hash,
+    }, 'Approved plan committed');
+    byId('plan-result').textContent = text;
+    pendingPlan = null;
+    byId('plan-approve').disabled = true;
+    byId('plan-reject').disabled = true;
+  } catch { /* operation banner has the conflict or validation detail */ }
+});
+
+byId('plan-reject').addEventListener('click', () => {
+  pendingPlan = null;
+  byId('plan-result').textContent = 'Rehearsal rejected. No document state changed.';
+  byId('plan-approve').disabled = true;
+  byId('plan-reject').disabled = true;
+  setOperation('Plan rejected');
+});
+
+document.querySelector('#panel-review details').addEventListener('toggle', async (event) => {
+  if (!event.target.open || byId('ascii').textContent) return;
+  const query = activeView ? `?view=${encodeURIComponent(activeView)}` : '';
+  const response = await fetch(`/api/state${query}`, { cache: 'no-store' });
+  const state = await response.json();
+  byId('ascii').textContent = state.ascii ?? '';
+});
 window.addEventListener('resize', () => { if (zoomMode === 'fit') applyZoom(); });
 
 connect();

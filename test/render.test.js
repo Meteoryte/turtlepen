@@ -207,3 +207,70 @@ test('severity carries a second, non-colour cue so it survives desaturation', ()
   const cues = new Set(Object.values(core.SEVERITY_CUE));
   assert.equal(cues.size, 4, 'each severity has its own cue');
 });
+
+// ---------------------------------------------------------------------------
+// Paper and fills are PRESENTATION.
+//
+// Neither changes a claimed quadrant, which is why they can be added at all:
+// the collision engine never sees a colour. The paper colour was a constant in
+// the palette, so every drawing in the corpus shipped on the same off-white,
+// and a box could only be filled with one flat hex.
+// ---------------------------------------------------------------------------
+
+test('paper defaults to the palette and survives a round trip when set', () => {
+  const d = core.createDocument({ name: 'paper' });
+  assert.equal(d.background, null, 'unset means "use the palette"');
+  assert.match(core.renderSvg(d), new RegExp(`\.bg \{ fill: ${core.PALETTE.paper}`));
+
+  core.setBackground(d, '#0b1020');
+  assert.equal(d.background, '#0b1020');
+  assert.match(core.renderSvg(d), /\.bg \{ fill: #0b1020/);
+
+  const reopened = core.deserialize(core.serialize(d));
+  assert.equal(reopened.background, '#0b1020', 'paper is document state, not a render option');
+});
+
+test('a bad paper colour is refused by name', () => {
+  const d = core.createDocument({ name: 'paper' });
+  assert.throws(() => core.setBackground(d, 'navy'), /hex colour/);
+});
+
+test('a box can be filled with a gradient, and the def is emitted once per box', () => {
+  const d = core.createDocument({ name: 'grad' });
+  core.placeBox(d, 'base', {
+    id: 'sky', at: 'C4.tl', span: { w: 20, h: 8 },
+    fill: { from: '#89b4d6', to: '#f2e2cf', angle: 90 },
+  });
+
+  const svg = core.renderSvg(d);
+  assert.match(svg, /<linearGradient id="tp-grad-sky"/, 'a gradient needs a def to point at');
+  assert.match(svg, /stop-color="#89b4d6"/);
+  assert.match(svg, /stop-color="#f2e2cf"/);
+  // Inline style, not an attribute: the `.box` CSS rule would otherwise win and
+  // the gradient would silently render as the flat default.
+  assert.match(svg, /style="fill:url\(#tp-grad-sky\)"/, 'and the box has to reference it');
+});
+
+test('a gradient survives save and reopen', () => {
+  const d = core.createDocument({ name: 'grad' });
+  core.placeBox(d, 'base', {
+    id: 'sky', at: 'C4.tl', span: { w: 20, h: 8 },
+    fill: { from: '#89b4d6', to: '#f2e2cf', angle: 45 },
+  });
+  const back = core.deserialize(core.serialize(d));
+  assert.deepEqual(core.findElement(back, 'sky').element.fill, { from: '#89b4d6', to: '#f2e2cf', angle: 45 });
+});
+
+test('a gradient with a bad stop is refused by name', () => {
+  const d = core.createDocument({ name: 'grad' });
+  assert.throws(
+    () => core.placeBox(d, 'base', { id: 'x', at: 'C4.tl', span: { w: 6, h: 3 }, fill: { from: 'red', to: '#fff' } }),
+    /hex colour/,
+  );
+});
+
+test('a flat hex fill still works exactly as before', () => {
+  const d = core.createDocument({ name: 'flat' });
+  core.placeBox(d, 'base', { id: 'b', at: 'C4.tl', span: { w: 6, h: 3 }, fill: '#c0ffee' });
+  assert.match(core.renderSvg(d), /style="fill:#c0ffee"/);
+});

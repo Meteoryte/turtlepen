@@ -1,0 +1,3182 @@
+{
+  "schema": 1,
+  "name": "Server Room Layout",
+  "canvas": {
+    "cols": 76,
+    "rows": 64
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-19T12:00:00.000Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    },
+    {
+      "id": "overhead",
+      "z": 1,
+      "intent": "overlay",
+      "title": "Overhead cable tray",
+      "visible": true,
+      "opacity": 0.92
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "wall_n",
+        "kind": "box",
+        "rect": {
+          "x": 1,
+          "y": 1,
+          "w": 146,
+          "h": 1
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "wall_s",
+        "kind": "box",
+        "rect": {
+          "x": 1,
+          "y": 122,
+          "w": 146,
+          "h": 1
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "wall_w",
+        "kind": "box",
+        "rect": {
+          "x": 1,
+          "y": 2,
+          "w": 1,
+          "h": 120
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "wall_e",
+        "kind": "box",
+        "rect": {
+          "x": 146,
+          "y": 2,
+          "w": 1,
+          "h": 120
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rack-a",
+        "kind": "box",
+        "rect": {
+          "x": 26,
+          "y": 22,
+          "w": 16,
+          "h": 24
+        },
+        "label": "rack-a",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rack-a_clr_n",
+        "kind": "box",
+        "rect": {
+          "x": 10,
+          "y": 6,
+          "w": 48,
+          "h": 16
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rack-a_clr_s",
+        "kind": "box",
+        "rect": {
+          "x": 10,
+          "y": 46,
+          "w": 48,
+          "h": 16
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rack-a_clr_w",
+        "kind": "box",
+        "rect": {
+          "x": 10,
+          "y": 22,
+          "w": 16,
+          "h": 24
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rack-a_clr_e",
+        "kind": "box",
+        "rect": {
+          "x": 42,
+          "y": 22,
+          "w": 16,
+          "h": 24
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rack-b",
+        "kind": "box",
+        "rect": {
+          "x": 90,
+          "y": 22,
+          "w": 16,
+          "h": 24
+        },
+        "label": "rack-b",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rack-b_clr_n",
+        "kind": "box",
+        "rect": {
+          "x": 74,
+          "y": 6,
+          "w": 48,
+          "h": 16
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rack-b_clr_s",
+        "kind": "box",
+        "rect": {
+          "x": 74,
+          "y": 46,
+          "w": 48,
+          "h": 16
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rack-b_clr_w",
+        "kind": "box",
+        "rect": {
+          "x": 74,
+          "y": 22,
+          "w": 16,
+          "h": 24
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "rack-b_clr_e",
+        "kind": "box",
+        "rect": {
+          "x": 106,
+          "y": 22,
+          "w": 16,
+          "h": 24
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "ups",
+        "kind": "box",
+        "rect": {
+          "x": 22,
+          "y": 82,
+          "w": 12,
+          "h": 16
+        },
+        "label": "ups",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "ups_clr_n",
+        "kind": "box",
+        "rect": {
+          "x": 10,
+          "y": 70,
+          "w": 36,
+          "h": 12
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "ups_clr_s",
+        "kind": "box",
+        "rect": {
+          "x": 10,
+          "y": 98,
+          "w": 36,
+          "h": 12
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "ups_clr_w",
+        "kind": "box",
+        "rect": {
+          "x": 10,
+          "y": 82,
+          "w": 12,
+          "h": 16
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "ups_clr_e",
+        "kind": "box",
+        "rect": {
+          "x": 34,
+          "y": 82,
+          "w": 12,
+          "h": 16
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "switch",
+        "kind": "box",
+        "rect": {
+          "x": 102,
+          "y": 82,
+          "w": 12,
+          "h": 12
+        },
+        "label": "switch",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "switch_clr_n",
+        "kind": "box",
+        "rect": {
+          "x": 90,
+          "y": 70,
+          "w": 36,
+          "h": 12
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "switch_clr_s",
+        "kind": "box",
+        "rect": {
+          "x": 90,
+          "y": 94,
+          "w": 36,
+          "h": 12
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "switch_clr_w",
+        "kind": "box",
+        "rect": {
+          "x": 90,
+          "y": 82,
+          "w": 12,
+          "h": 12
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "switch_clr_e",
+        "kind": "box",
+        "rect": {
+          "x": 114,
+          "y": 82,
+          "w": 12,
+          "h": 12
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "desk",
+        "kind": "box",
+        "rect": {
+          "x": 54,
+          "y": 82,
+          "w": 32,
+          "h": 16
+        },
+        "label": "desk",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null
+      }
+    ],
+    "overhead": [
+      {
+        "id": "power-a",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 28,
+            "y": 98,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 97,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 96,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 95,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 94,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 93,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 92,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 91,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 90,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 89,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 88,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 87,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 86,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 85,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 84,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 83,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 82,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 81,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 80,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 79,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 78,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 71,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 69,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 68,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 67,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 66,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 65,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 64,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 63,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 62,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 61,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 60,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 59,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 58,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 57,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 56,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 55,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 34,
+          "y": 46,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "power-b",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 28,
+            "y": 98,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 99,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 100,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 101,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 102,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 103,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 104,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 105,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 106,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 107,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 108,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 110,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 111,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 112,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 113,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 28,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 35,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 47,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 48,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 49,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 51,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 52,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 53,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 54,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 55,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 56,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 77,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 78,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 79,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 80,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 83,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 84,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 86,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 87,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 88,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 90,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 91,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 92,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 114,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 113,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 112,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 111,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 110,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 109,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 108,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 107,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 106,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 105,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 104,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 103,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 102,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 101,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 100,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 99,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 98,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 97,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 96,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 95,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 94,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 93,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 92,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 91,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 90,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 89,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 88,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 87,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 86,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 85,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 84,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 83,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 82,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 81,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 80,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 79,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 78,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 74,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 73,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 71,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 69,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 68,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 67,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 66,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 65,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 64,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 63,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 62,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 61,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 60,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 59,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 58,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 57,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 56,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 55,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 50,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 98,
+          "y": 46,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "net-a",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 108,
+            "y": 82,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 81,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 80,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 71,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 105,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 104,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 101,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 100,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 99,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 91,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 90,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 86,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 84,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 80,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 79,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 56,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 55,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 54,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 51,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 49,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 35,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 68,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 67,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 66,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 63,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 62,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 61,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 58,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 57,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 56,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 51,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 46,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 5,
+          "cap": "butt",
+          "pattern": "dashed"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 34,
+          "y": 46,
+          "facing": "right"
+        }
+      },
+      {
+        "id": "net-b",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 108,
+            "y": 82,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 81,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 80,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 77,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 76,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 75,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 72,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 71,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 70,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 67,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 66,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 66,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 105,
+            "y": 66,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 104,
+            "y": 66,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 103,
+            "y": 66,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 100,
+            "y": 66,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 99,
+            "y": 66,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 66,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 64,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 63,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 62,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 59,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 58,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 57,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 54,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 53,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 52,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 49,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 48,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 47,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 5,
+          "cap": "butt",
+          "pattern": "dashed"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 98,
+          "y": 46,
+          "facing": "right"
+        }
+      }
+    ]
+  },
+  "acceptances": [
+    {
+      "fingerprint": "0de92d853b6c",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against ups by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.272Z"
+    },
+    {
+      "fingerprint": "0ec0f54968fa",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against switch by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.148Z"
+    },
+    {
+      "fingerprint": "130fb6a210e5",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of ups meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.306Z"
+    },
+    {
+      "fingerprint": "146cd7143885",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of rack-b meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.201Z"
+    },
+    {
+      "fingerprint": "158ae377b34a",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of switch meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.163Z"
+    },
+    {
+      "fingerprint": "2018e47dccf2",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "a clearance band starts at the face of the unit it belongs to, so band and unit touch by definition. An encroachment would be an overlap and would report as a critical.",
+      "acceptedAt": "2026-08-20T00:18:45.445Z"
+    },
+    {
+      "fingerprint": "2057c8cb6a60",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of switch meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.223Z"
+    },
+    {
+      "fingerprint": "2f407b87f104",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of rack-b meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.125Z"
+    },
+    {
+      "fingerprint": "30bfaeef18ed",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of rack-a meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.336Z"
+    },
+    {
+      "fingerprint": "418c0cffc487",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against rack-a by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.230Z"
+    },
+    {
+      "fingerprint": "478766d6bc2e",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of rack-a meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.328Z"
+    },
+    {
+      "fingerprint": "4d861849a63f",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against rack-b by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.187Z"
+    },
+    {
+      "fingerprint": "5fcd637091eb",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against rack-a by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.251Z"
+    },
+    {
+      "fingerprint": "60990c6489d3",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of rack-a meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.244Z"
+    },
+    {
+      "fingerprint": "65a20d686e88",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of switch meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.216Z"
+    },
+    {
+      "fingerprint": "6801d91f717e",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against rack-a by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.265Z"
+    },
+    {
+      "fingerprint": "6af9be353370",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against switch by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.181Z"
+    },
+    {
+      "fingerprint": "7b01cc235360",
+      "rule": "L006",
+      "page": "overhead",
+      "title": "stroke overlap",
+      "reason": "the clearance bands of one unit meet at its corners: together they form a single ring of access space around it, which is the geometry a service clearance actually describes.",
+      "acceptedAt": "2026-08-20T00:18:45.402Z"
+    },
+    {
+      "fingerprint": "7e93c3aeb525",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against switch by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.209Z"
+    },
+    {
+      "fingerprint": "847ddf15e86c",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against ups by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.258Z"
+    },
+    {
+      "fingerprint": "8d282106f275",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against ups by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.293Z"
+    },
+    {
+      "fingerprint": "92cdf0d2e5b5",
+      "rule": "L006",
+      "page": "overhead",
+      "title": "stroke overlap",
+      "reason": "the clearance bands of one unit meet at its corners: together they form a single ring of access space around it, which is the geometry a service clearance actually describes.",
+      "acceptedAt": "2026-08-20T00:18:45.418Z"
+    },
+    {
+      "fingerprint": "93313d46afd1",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of switch meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.174Z"
+    },
+    {
+      "fingerprint": "947c5520afe5",
+      "rule": "L006",
+      "page": "overhead",
+      "title": "stroke overlap",
+      "reason": "the clearance bands of one unit meet at its corners: together they form a single ring of access space around it, which is the geometry a service clearance actually describes.",
+      "acceptedAt": "2026-08-20T00:18:45.392Z"
+    },
+    {
+      "fingerprint": "973393e8276b",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of ups meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.280Z"
+    },
+    {
+      "fingerprint": "9ae3fad771a6",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against rack-b by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.133Z"
+    },
+    {
+      "fingerprint": "9e5b807a2a8c",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of ups meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.286Z"
+    },
+    {
+      "fingerprint": "a4baf6ced387",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of rack-b meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.117Z"
+    },
+    {
+      "fingerprint": "a68d9e7854e4",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of ups meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.314Z"
+    },
+    {
+      "fingerprint": "af5bb0f614f9",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "a clearance band starts at the face of the unit it belongs to, so band and unit touch by definition. An encroachment would be an overlap and would report as a critical.",
+      "acceptedAt": "2026-08-20T00:18:45.438Z"
+    },
+    {
+      "fingerprint": "b0ed1fdcb72c",
+      "rule": "L006",
+      "page": "overhead",
+      "title": "stroke overlap",
+      "reason": "the clearance bands of one unit meet at its corners: together they form a single ring of access space around it, which is the geometry a service clearance actually describes.",
+      "acceptedAt": "2026-08-20T00:18:45.409Z"
+    },
+    {
+      "fingerprint": "c5cf88fc8ac9",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "a clearance band starts at the face of the unit it belongs to, so band and unit touch by definition. An encroachment would be an overlap and would report as a critical.",
+      "acceptedAt": "2026-08-20T00:18:45.431Z"
+    },
+    {
+      "fingerprint": "c89dd8acde37",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "a clearance band starts at the face of the unit it belongs to, so band and unit touch by definition. An encroachment would be an overlap and would report as a critical.",
+      "acceptedAt": "2026-08-20T00:18:45.424Z"
+    },
+    {
+      "fingerprint": "cc524aa0404d",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of rack-b meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.195Z"
+    },
+    {
+      "fingerprint": "d6a61da9cef4",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against ups by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.300Z"
+    },
+    {
+      "fingerprint": "e8bf7296f6db",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against rack-a by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.321Z"
+    },
+    {
+      "fingerprint": "f54e585c39d1",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against rack-b by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.141Z"
+    },
+    {
+      "fingerprint": "f556f4e3750c",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against rack-b by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.111Z"
+    },
+    {
+      "fingerprint": "f93a421146f5",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "Clearance bands of rack-a meet at a corner: they form one ring around the unit, which is the intended geometry.",
+      "acceptedAt": "2026-08-20T00:18:45.237Z"
+    },
+    {
+      "fingerprint": "fbb6db3c62c3",
+      "rule": "L007",
+      "page": "base",
+      "title": "no gutter",
+      "reason": "A clearance band sits against switch by definition — the band starts at the unit's face.",
+      "acceptedAt": "2026-08-20T00:18:45.155Z"
+    }
+  ],
+  "wireframe": {
+    "scale": 8,
+    "quadrantsPerInch": 0.6666666666666666,
+    "view": "plan",
+    "area": {
+      "rect": {
+        "x": 2,
+        "y": 2,
+        "w": 144,
+        "h": 120
+      },
+      "verticalIn": 180,
+      "widthIn": 216,
+      "depthIn": 180
+    },
+    "items": [
+      {
+        "id": "rack-a",
+        "rect": {
+          "x": 26,
+          "y": 22,
+          "w": 16,
+          "h": 24
+        },
+        "describe": "Server rack A — primary compute",
+        "widthIn": 24,
+        "depthIn": 36,
+        "atXIn": 36,
+        "atYIn": 30,
+        "atAffIn": null,
+        "clearance": {
+          "inches": 24,
+          "quadrants": 16,
+          "bands": [
+            {
+              "id": "rack-a_clr_n",
+              "rect": {
+                "x": 10,
+                "y": 6,
+                "w": 48,
+                "h": 16
+              }
+            },
+            {
+              "id": "rack-a_clr_s",
+              "rect": {
+                "x": 10,
+                "y": 46,
+                "w": 48,
+                "h": 16
+              }
+            },
+            {
+              "id": "rack-a_clr_w",
+              "rect": {
+                "x": 10,
+                "y": 22,
+                "w": 16,
+                "h": 24
+              }
+            },
+            {
+              "id": "rack-a_clr_e",
+              "rect": {
+                "x": 42,
+                "y": 22,
+                "w": 16,
+                "h": 24
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "rack-b",
+        "rect": {
+          "x": 90,
+          "y": 22,
+          "w": 16,
+          "h": 24
+        },
+        "describe": "Server rack B — secondary/storage",
+        "widthIn": 24,
+        "depthIn": 36,
+        "atXIn": 132,
+        "atYIn": 30,
+        "atAffIn": null,
+        "clearance": {
+          "inches": 24,
+          "quadrants": 16,
+          "bands": [
+            {
+              "id": "rack-b_clr_n",
+              "rect": {
+                "x": 74,
+                "y": 6,
+                "w": 48,
+                "h": 16
+              }
+            },
+            {
+              "id": "rack-b_clr_s",
+              "rect": {
+                "x": 74,
+                "y": 46,
+                "w": 48,
+                "h": 16
+              }
+            },
+            {
+              "id": "rack-b_clr_w",
+              "rect": {
+                "x": 74,
+                "y": 22,
+                "w": 16,
+                "h": 24
+              }
+            },
+            {
+              "id": "rack-b_clr_e",
+              "rect": {
+                "x": 106,
+                "y": 22,
+                "w": 16,
+                "h": 24
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "ups",
+        "rect": {
+          "x": 22,
+          "y": 82,
+          "w": 12,
+          "h": 16
+        },
+        "describe": "UPS battery backup — 3kVA",
+        "widthIn": 18,
+        "depthIn": 24,
+        "atXIn": 30,
+        "atYIn": 120,
+        "atAffIn": null,
+        "clearance": {
+          "inches": 18,
+          "quadrants": 12,
+          "bands": [
+            {
+              "id": "ups_clr_n",
+              "rect": {
+                "x": 10,
+                "y": 70,
+                "w": 36,
+                "h": 12
+              }
+            },
+            {
+              "id": "ups_clr_s",
+              "rect": {
+                "x": 10,
+                "y": 98,
+                "w": 36,
+                "h": 12
+              }
+            },
+            {
+              "id": "ups_clr_w",
+              "rect": {
+                "x": 10,
+                "y": 82,
+                "w": 12,
+                "h": 16
+              }
+            },
+            {
+              "id": "ups_clr_e",
+              "rect": {
+                "x": 34,
+                "y": 82,
+                "w": 12,
+                "h": 16
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "switch",
+        "rect": {
+          "x": 102,
+          "y": 82,
+          "w": 12,
+          "h": 12
+        },
+        "describe": "Network switch cabinet — 1Gb managed",
+        "widthIn": 18,
+        "depthIn": 18,
+        "atXIn": 150,
+        "atYIn": 120,
+        "atAffIn": null,
+        "clearance": {
+          "inches": 18,
+          "quadrants": 12,
+          "bands": [
+            {
+              "id": "switch_clr_n",
+              "rect": {
+                "x": 90,
+                "y": 70,
+                "w": 36,
+                "h": 12
+              }
+            },
+            {
+              "id": "switch_clr_s",
+              "rect": {
+                "x": 90,
+                "y": 94,
+                "w": 36,
+                "h": 12
+              }
+            },
+            {
+              "id": "switch_clr_w",
+              "rect": {
+                "x": 90,
+                "y": 82,
+                "w": 12,
+                "h": 12
+              }
+            },
+            {
+              "id": "switch_clr_e",
+              "rect": {
+                "x": 114,
+                "y": 82,
+                "w": 12,
+                "h": 12
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "desk",
+        "rect": {
+          "x": 54,
+          "y": 82,
+          "w": 32,
+          "h": 16
+        },
+        "describe": "Workstation desk",
+        "widthIn": 48,
+        "depthIn": 24,
+        "atXIn": 78,
+        "atYIn": 120,
+        "atAffIn": null
+      }
+    ],
+    "drift": [],
+    "page": "base",
+    "clearanceDrawn": true,
+    "runs": [
+      {
+        "id": "power-a",
+        "kind": "power",
+        "pattern": null,
+        "describe": "Power from UPS to Rack A",
+        "quads": [
+          {
+            "x": 28,
+            "y": 98
+          },
+          {
+            "x": 28,
+            "y": 70
+          },
+          {
+            "x": 34,
+            "y": 70
+          },
+          {
+            "x": 34,
+            "y": 46
+          }
+        ],
+        "lengthIn": 87,
+        "drawnLengthIn": 87,
+        "allowanceIn": 0,
+        "penetrations": []
+      },
+      {
+        "id": "power-b",
+        "kind": "power",
+        "pattern": null,
+        "describe": "Power from UPS to Rack B",
+        "quads": [
+          {
+            "x": 28,
+            "y": 98
+          },
+          {
+            "x": 28,
+            "y": 114
+          },
+          {
+            "x": 98,
+            "y": 114
+          },
+          {
+            "x": 98,
+            "y": 46
+          }
+        ],
+        "lengthIn": 231,
+        "drawnLengthIn": 231,
+        "allowanceIn": 0,
+        "penetrations": []
+      },
+      {
+        "id": "net-a",
+        "kind": "control",
+        "pattern": "dashed",
+        "describe": "Network from switch to Rack A",
+        "quads": [
+          {
+            "x": 108,
+            "y": 82
+          },
+          {
+            "x": 108,
+            "y": 70
+          },
+          {
+            "x": 34,
+            "y": 70
+          },
+          {
+            "x": 34,
+            "y": 46
+          }
+        ],
+        "lengthIn": 165,
+        "drawnLengthIn": 165,
+        "allowanceIn": 0,
+        "penetrations": []
+      },
+      {
+        "id": "net-b",
+        "kind": "control",
+        "pattern": "dashed",
+        "describe": "Network from switch to Rack B",
+        "quads": [
+          {
+            "x": 108,
+            "y": 82
+          },
+          {
+            "x": 108,
+            "y": 66
+          },
+          {
+            "x": 98,
+            "y": 66
+          },
+          {
+            "x": 98,
+            "y": 46
+          }
+        ],
+        "lengthIn": 69,
+        "drawnLengthIn": 69,
+        "allowanceIn": 0,
+        "penetrations": []
+      }
+    ]
+  }
+}

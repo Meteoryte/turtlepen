@@ -17,12 +17,13 @@ visible in review rather than invisible in a number.
 ## What is here, and what is not
 
 **Here:** the task specifications, the four scoring dimensions, a dev/holdout
-split, and four negative cases.
+split, four negative cases, a worksheet generator, an external adapter runner,
+and a receipt scorer. The runner gives every configured system the same declared
+model id and reports dimensions separately.
 
-**Not here:** the execution harness, the model runners, and any results. Nothing
-has been run. The corpus is the part that must be fixed *before* measuring, and
-publishing a rubric alongside results produced by the same hand is how
-benchmarks become advocacy.
+**Not here:** credentials or adapters for a model provider, human perceptual
+judgements, or comparative results. Nothing has been run. TurtlePen will not
+invent these external inputs or convert an unreviewed image into a pass.
 
 ## The four dimensions, kept apart
 
@@ -45,6 +46,24 @@ A benchmark with no traps rewards whatever the system already does well. These
 are the cases where a naive scorer and an honest one disagree.
 
 ## Using it
+
+Create a blank, partition-aware receipt worksheet:
+
+```bash
+node src/cli.js benchmark worksheet --partition dev --out benchmark/worksheet.json
+```
+
+Run adapters described by a JSON config. Each adapter reads one JSON task on
+stdin and returns one JSON result on stdout:
+
+```bash
+node src/cli.js benchmark run benchmark/run-config.json --out benchmark/run.json
+node src/cli.js benchmark score benchmark/run.json --out benchmark/scored.json
+```
+
+The runner does not grant provider access or choose a model. A run config must
+name the shared model and executable adapters explicitly; raw metrics and
+perceptual reviewers belong in their receipts.
 
 Give the same task specification and the same rubric to every system. Score the
 dimensions separately. Do not let a system win by omitting content — the rubric

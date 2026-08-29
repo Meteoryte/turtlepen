@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "roles": {
+    "release": [
+      "brand/logo-v2.turtlepen.json",
+      "brand/logo.turtlepen.json",
+      "diagrams/condenser-image-workflow.turtlepen.json",
+      "diagrams/condenser-replacement-field-guide.turtlepen.json",
+      "diagrams/example.turtlepen.json",
+      "diagrams/farm-animals.turtlepen.json",
+      "diagrams/flowchart-important-process.turtlepen.json",
+      "diagrams/swimlane-order-handling.turtlepen.json"
+    ],
+    "example": [
+      "diagrams/agent-session.turtlepen.json",
+      "diagrams/anime-waifu.turtlepen.json",
+      "diagrams/art-deco-hero.turtlepen.json",
+      "diagrams/branching-tree.turtlepen.json",
+      "diagrams/capability-audit.turtlepen.json",
+      "diagrams/coffee-ritual.turtlepen.json",
+      "diagrams/crt-desk-scene.turtlepen.json",
+      "diagrams/dither-proof.turtlepen.json",
+      "diagrams/home-lab-network.turtlepen.json",
+      "diagrams/inked-diagram.turtlepen.json",
+      "diagrams/postcard-alpine-campfire.turtlepen.json",
+      "diagrams/postcard-botanical-terrarium.turtlepen.json",
+      "diagrams/postcard-deep-sea-explorer.turtlepen.json",
+      "diagrams/postcard-night-observatory.turtlepen.json",
+      "diagrams/postcard-rocket-liftoff.turtlepen.json",
+      "diagrams/random-01-solar-system.turtlepen.json",
+      "diagrams/random-02-mountains.turtlepen.json",
+      "diagrams/random-03-abstract.turtlepen.json",
+      "diagrams/random-04-underwater.turtlepen.json",
+      "diagrams/random-05-city-skyline.turtlepen.json",
+      "diagrams/server-structure-ha-microservices.turtlepen.json",
+      "diagrams/showcase-castle.turtlepen.json",
+      "diagrams/showcase-flowchart.turtlepen.json",
+      "diagrams/showcase-perspective.turtlepen.json",
+      "diagrams/showcase-pipeline.turtlepen.json",
+      "diagrams/showcase-revision.turtlepen.json",
+      "diagrams/showcase-server-room.turtlepen.json",
+      "diagrams/teaching-mastery-learning-cycle.turtlepen.json",
+      "diagrams/technical-analysis-quant-engine.turtlepen.json",
+      "diagrams/turtlefont-specimen.turtlepen.json",
+      "diagrams/workflow-cicd-deployment-pipeline.turtlepen.json"
+    ],
+    "fixture": [
+      "diagrams/atlas-marks.turtlepen.json",
+      "diagrams/atlas-nodes.turtlepen.json",
+      "diagrams/constraint-stress.turtlepen.json",
+      "diagrams/layout-after.turtlepen.json",
+      "diagrams/supersample-random-five.turtlepen.json"
+    ],
+    "study": [
+      "diagrams/gemini31-scene-apple.turtlepen.json",
+      "diagrams/gemini31-scene-fence.turtlepen.json",
+      "diagrams/gemini31-scene-living-room-family.turtlepen.json",
+      "diagrams/gemini31-scene-tree.turtlepen.json",
+      "diagrams/gemini31-server-structure.turtlepen.json",
+      "diagrams/gemini31-teaching-loop.turtlepen.json",
+      "diagrams/gemini31-technical-analysis.turtlepen.json",
+      "diagrams/gemini31-workflow.turtlepen.json",
+      "diagrams/m2.turtlepen.json",
+      "diagrams/mechroom.turtlepen.json",
+      "diagrams/minisplit-elevation.turtlepen.json",
+      "diagrams/mona/mona-01-flowchart.turtlepen.json",
+      "diagrams/mona/mona-02-cartoon.turtlepen.json",
+      "diagrams/mona/mona-03-coloring.turtlepen.json",
+      "diagrams/mona/mona-04-abstract.turtlepen.json",
+      "diagrams/mona/mona-05-sculpture.turtlepen.json",
+      "diagrams/scene-apple.turtlepen.json",
+      "diagrams/scene-fence.turtlepen.json",
+      "diagrams/scene-living-room-family.turtlepen.json",
+      "diagrams/scene-tree.turtlepen.json"
+    ]
+  },
+  "releasePolicy": {
+    "required": [
+      "structurallyClear",
+      "modelHasNoErrors",
+      "perceptuallyReviewed",
+      "perceptualCurrent",
+      "perceptualHasNoBlockers",
+      "hasPortableVector"
+    ],
+    "note": "Only release-role artifacts gate TurtlePen publication. Examples, fixtures, and studies remain visible evidence but cannot silently become release assets."
+  }
+}

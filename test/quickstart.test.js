@@ -68,3 +68,16 @@ test('package metadata makes the server runnable by a stranger', () => {
     assert.ok(fs.existsSync(new URL(`../${f}`, import.meta.url)), `files lists "${f}", which is missing`);
   }
 });
+
+test('package metadata excludes repository backup and transient artifact state', () => {
+  const pkg = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
+  for (const required of [
+    'artifacts/artifact-catalog.json', 'artifacts/manifest.json',
+    'benchmark/README.md', 'benchmark/corpus-v1.json',
+  ]) assert.ok(pkg.files.includes(required), `package must include ${required}`);
+  for (const broadDirectory of ['artifacts', 'benchmark', 'docs/adr']) {
+    assert.ok(!pkg.files.includes(broadDirectory), `package must not broadly include ${broadDirectory}`);
+  }
+  assert.ok(pkg.files.every((entry) => !/\.(?:bak|log)$|\.history\.json$/i.test(entry)),
+    'package allowlist must not name backup, log, or history state');
+});

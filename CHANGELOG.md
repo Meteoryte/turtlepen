@@ -1,5 +1,75 @@
 # Changelog
 
+## 0.3.2 — 2026-08-27
+
+- Tightened the published-file allowlist so repository backups and other
+  transient artifact state cannot enter the package through broad directories.
+- Made the repository-only governance command report a stable source-checkout
+  boundary in packaged installs instead of exposing a raw Git failure.
+- Exposed the existing review-status mode and governance scope in CLI help.
+- Made both root reference builders idempotent by fixing generated metadata and
+  added an isolated two-pass regression so a verification run cannot silently
+  rewrite tracked documents and manifest hashes.
+- Re-audited the source, package, local browser workbench, links, JSON, secrets,
+  naming, and SSOT ownership; 628 tests and the complete generated-artifact gate
+  cover the repaired release boundary.
+
+## 0.3.1 — 2026-08-26
+
+- Added an authored artifact catalog as the single owner of release, example,
+  fixture, and study roles. The generated manifest now reports role-scoped
+  quality and all 8 release artifacts are structurally clear, exported, and
+  bound to current perceptual reviews.
+- Added a naming and SSOT governance gate covering catalog completeness,
+  kebab-case filenames, generated help/manifest parity, runtime version,
+  registry uniqueness, artifact hashes, and the source-of-truth map.
+- Added CLI JSON render receipts and guarded `review` recording so visual
+  evidence can be bound to the exact rendered bytes outside an MCP host.
+- Repaired dependency-free PNG/PDF fidelity for flowchart silhouettes, measured
+  text size/alignment/weight, gradients, styled paths, view keys, and
+  aspect-preserving images.
+- Deterministic builders now preserve a perceptual review only when rebuilt SVG
+  bytes are identical; changed output lapses the review. Generated timestamps
+  are stable, so a verification run leaves canonical artifacts unchanged.
+- Normalized project filenames to the workspace naming protocol and documented
+  the authoritative owner for version, schema, tools, artifacts, commands, and
+  current verified state.
+- 625 tests and 61 MCP tools are covered through core, real stdio, CLI,
+  governance, quality, and WebSocket endpoint contracts.
+
+## 0.3.0 — 2026-08-26
+
+- Schema 3 persists perceptual review plus one shared semantic model, static,
+  filtered, and ordered dynamic views, themes/tokens, resource links, and
+  fingerprinted semantic-finding acceptances. Schema-1 and schema-2 documents
+  migrate without geometry changes.
+- Validation distinguishes blocking errors, unresolved S2 decisions, and
+  structural clearance; the viewer separately reports perceptual readiness.
+- Runtime JSON-schema enforcement covers direct calls and nested plan
+  operations. `runtime_info`, `doctor`, the capability registry, and searchable
+  help identify the running build and active document without stale counts.
+- `connect` adds semantic direct, orthogonal, and node-attached curved
+  relationships through explicit lattice waypoints. `annotate` and
+  `inspect_model` add model metadata, perspectives, and completeness checks.
+- Relationships now retain visible labels and outcomes through four-direction
+  layout and rerouting. Layout supports top-down, bottom-up, left-right, and
+  right-left reading directions plus composition-preserving pins.
+- `micro_mask` adds reversible, continuous 1-design-pixel eraser strokes for
+  artwork paths and images, with full-mask warnings and SVG/PNG parity without
+  changing structural footprints.
+- Saves/checkpoints/exports use same-directory atomic replacement, backups, and
+  optimistic hashes; stale concurrent writers are refused instead of winning.
+- The dependency-free CLI validates and inspects models, renders deterministic
+  SVG/PNG/PDF, generates architecture documentation bundles and quality
+  manifests, and runs/scores benchmark adapters without fabricating perceptual
+  results.
+- SVG output carries document/element relationship semantics and generated
+  notation keys. The local viewer adds view switching, semantic model review,
+  bounded history, exact plan rehearsal/approval diffs, lazy canvas state, and
+  continuous pointer erasing.
+- 613 tests and 61 MCP tools are covered through core, real stdio, CLI, and
+  WebSocket endpoint contracts.
+
 ## 0.2.0 — 2026-08-18
 
 Flowchart support, the perceptual half of quality, and the loop repairs a weaker
@@ -93,9 +163,10 @@ SVG rather than the mask.
 
 ### Known and deliberately unbuilt
 
-`F003`/`F004` (branch labels and verb phrases) would require guessing. The
-benchmark harness is not written and nothing has been run, so the claim that a
-model using TurtlePen is measurably better remains **untested**.
+`F003`/`F004` (branch labels and verb phrases) would require guessing. A
+benchmark harness now exists, but no same-model comparative run has been
+executed, so the claim that a model using TurtlePen is measurably better remains
+**untested**.
 
 ## 0.1.0
 

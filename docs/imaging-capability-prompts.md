@@ -1,7 +1,11 @@
-# Imaging capability — ready-to-run prompts
+# Imaging capability — implementation prompt archive
 
 Companion to [`imaging-capability-roadmap.md`](imaging-capability-roadmap.md).
-One prompt per todo, each self-contained enough to paste into a fresh session.
+These prompts preserve the original implementation intent; they are not the
+current source of truth. T1 (PNG output) and T2 (closed-path fill) are complete.
+T3–T7 remain evidence-gated candidates, not ready-to-run commitments. Use
+`status.md`, `docs/source-of-truth-map.md`, and executable governance before
+acting on any historical wording below.
 
 **Every prompt inherits these preconditions** — they are stated once here rather
 than repeated in each:

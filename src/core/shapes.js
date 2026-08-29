@@ -123,6 +123,77 @@ const CAP = 0.18;
 /** How much of a bar's height the bar itself occupies. */
 const BAR_THICKNESS = 0.34;
 
+/**
+ * How wide a symbol may get before its silhouette stops carrying meaning.
+ *
+ * A shape is only worth drawing if it can be told apart from a plain process
+ * box at a glance, and what distinguishes it is a fixed FRACTION of its
+ * bounding box: a cylinder's cap is `CAP * h`, a parallelogram's slant is
+ * `SKEW * w`, a diamond tapers to its own midpoints. Stretch the box wide and
+ * that feature shrinks against the width until every shape reads as the same
+ * bar. In the showcase batch a cylinder came out 28x8 quadrants, putting its
+ * cap at 5% of the width — drawn correctly, and unrecognisable.
+ *
+ * The cap-bearing shapes derive their limit: `CAP * h >= FEATURE_FLOOR * w`
+ * gives `w/h <= CAP / FEATURE_FLOOR`. The rest are craft defaults chosen so a
+ * conventional flowchart passes unchanged — a stadium is legitimately long, a
+ * diamond legitimately is not. Tune them here; they are not measurements of
+ * anything external.
+ *
+ * `process` and `subprocess` are absent on purpose: a rectangle has no
+ * silhouette to lose. Containers are absent because their size is dictated by
+ * what they hold, and `bar` because a bar is a bar.
+ */
+const FEATURE_FLOOR = 0.08;
+
+export const SHAPE_PROPORTION = Object.freeze({
+  decision: { ideal: 1.4, maxAspect: 2 },
+  data: { ideal: 1.2, maxAspect: round2(CAP / FEATURE_FLOOR) },
+  document: { ideal: 1.6, maxAspect: round2(CAP / FEATURE_FLOOR) },
+  io: { ideal: 2, maxAspect: 3 },
+  manual: { ideal: 2, maxAspect: 3 },
+  prep: { ideal: 2, maxAspect: 3 },
+  terminator: { ideal: 2.5, maxAspect: 4 },
+});
+
+function round2(n) {
+  return Math.round(n * 100) / 100;
+}
+
+/** Visual aspect of a rect. Quadrants are square, so this is w:h as drawn. */
+export function aspectOf(r) {
+  return r.h === 0 ? Infinity : round2(r.w / r.h);
+}
+
+/**
+ * The cell span a labelled symbol needs: wide enough for the text once the
+ * SHAPE has taken its inset, and tall enough to stay in proportion.
+ *
+ * This exists because `measure` alone is a trap for symbolic shapes. It reports
+ * what the text needs in a plain box; `shapeTextRect` then hands a diamond only
+ * half of that. An author who measures, places, sees `L003`, and widens is
+ * chasing the overflow in the one direction that makes the symbol worse.
+ */
+export function spanForShape(shape, measured) {
+  const w = Math.max(1, measured.cellsWide);
+  const h = Math.max(1, measured.cellsTall);
+  const spec = SHAPE_PROPORTION[shape];
+  if (!spec) return { w, h };
+
+  // Give the text back the room the symbol will carve out of it. The inset is
+  // symmetric, so recovering it means scaling by the fraction that survives.
+  const grow = shape === 'decision' ? 2 : 1 / (1 - SKEW * 2);
+  let outW = Math.max(w, Math.ceil(w * grow));
+  let outH = Math.max(h, shape === 'decision' ? Math.ceil(h * 2) : h);
+
+  // Then hold the proportion. Growing height is what keeps a wide label from
+  // flattening the symbol; the engine never silently does this to a placed box,
+  // which is exactly why it has to be offered before placement.
+  const minH = Math.ceil(outW / spec.maxAspect);
+  if (outH < minH) outH = minH;
+  return { w: outW, h: outH };
+}
+
 export function assertNodeShape(shape) {
   if (!NODE_SHAPES.includes(shape)) {
     throw new SyntaxError(`unknown node shape "${shape}" — expected one of ${NODE_SHAPES.join(', ')}`);
@@ -331,15 +402,43 @@ function slottedAxisPoint(start, length, slot, port) {
  * wrong — the north face sits on the box's own top row, so leaving northward
  * means starting one quadrant above it, while the south face is already outside.
  */
-export function approachPoint(r, port) {
+/**
+ * Walk in from a bounding-box face until the SHAPE is actually there.
+ *
+ * A port used to be a property of the claimed rectangle, so a connector into a
+ * diamond or a parallelogram was sent to a place the symbol does not reach.
+ * Measured on a 20x8 box, `io` and `manual` left three empty quadrants and
+ * `decision` and `prep` one — and because the skew is a fraction of the width,
+ * the gap grows with the node rather than staying a rounding error.
+ *
+ * The extra length lands in claimed-but-uninked space, which the engine already
+ * treats as information rather than error: that is the same ground a corner cut
+ * occupies, and `L004` tests the inked body precisely so this distinction can
+ * exist. A shape that fills its box is unchanged, so every connector already
+ * drawn against a rectangle stays exactly where it is.
+ */
+function inkwardOffset(r, shape, style, name, along) {
+  if (!shape || shape === 'process') return 0;
+  const ink = visualQuads(r, style ?? 'square', shape);
+  const limit = name === 'N' || name === 'S' ? r.h : r.w;
+  for (let i = 0; i < limit; i++) {
+    const x = name === 'W' ? r.x + i : name === 'E' ? right(r) - 1 - i : along;
+    const y = name === 'N' ? r.y + i : name === 'S' ? bottom(r) - 1 - i : along;
+    if (ink.has(`${x},${y}`)) return i;
+  }
+  return 0;
+}
+
+export function approachPoint(r, port, shape = null, style = 'square') {
   const { name, slot } = parsePortSpec(port);
   const slotX = () => slottedAxisPoint(r.x, r.w, slot, port);
   const slotY = () => slottedAxisPoint(r.y, r.h, slot, port);
+  const inset = (along) => inkwardOffset(r, shape, style, name, along);
   switch (name) {
-    case 'N': return { x: slotX(), y: r.y - 1, facing: 'up' };
-    case 'S': return { x: slotX(), y: bottom(r), facing: 'down' };
-    case 'W': return { x: r.x - 1, y: slotY(), facing: 'left' };
-    case 'E': return { x: right(r), y: slotY(), facing: 'right' };
+    case 'N': { const x = slotX(); return { x, y: r.y - 1 + inset(x), facing: 'up' }; }
+    case 'S': { const x = slotX(); return { x, y: bottom(r) - inset(x), facing: 'down' }; }
+    case 'W': { const y = slotY(); return { x: r.x - 1 + inset(y), y, facing: 'left' }; }
+    case 'E': { const y = slotY(); return { x: right(r) - inset(y), y, facing: 'right' }; }
     default:
       throw new SyntaxError(
         `"${port}" is not a cardinal face. Starting a path from a box uses N, S, E or W — a corner does not say which way the path should leave.`,
@@ -360,18 +459,22 @@ export function approachPoint(r, port) {
  * while their mirror images landed correctly — an asymmetry no amount of care in
  * the drawing could work around.
  */
-export function portPoint(r, port) {
+export function portPoint(r, port, shape = null, style = 'square') {
   const { name, slot } = parsePortSpec(port);
   const midX = r.x + Math.floor(r.w / 2);
   const midY = r.y + Math.floor(r.h / 2);
   const x2 = right(r) - 1, y2 = bottom(r) - 1;
   const slotX = () => slottedAxisPoint(r.x, r.w, slot, port);
   const slotY = () => slottedAxisPoint(r.y, r.h, slot, port);
+  // The arrival half of the same problem: a path aimed `to db.W` measures its
+  // distance to this point, so a bounding-box answer stops the arrowhead short
+  // of a diamond by exactly the amount the symbol is inset there.
+  const inset = (along) => inkwardOffset(r, shape, style, name, along);
   switch (name) {
-    case 'N': return { x: slotX(), y: r.y };
-    case 'S': return { x: slotX(), y: y2 };
-    case 'W': return { x: r.x, y: slotY() };
-    case 'E': return { x: x2, y: slotY() };
+    case 'N': { const x = slotX(); return { x, y: r.y + inset(x) }; }
+    case 'S': { const x = slotX(); return { x, y: y2 - inset(x) }; }
+    case 'W': { const y = slotY(); return { x: r.x + inset(y), y }; }
+    case 'E': { const y = slotY(); return { x: x2 - inset(y), y }; }
     case 'NW': return { x: r.x, y: r.y };
     case 'NE': return { x: x2, y: r.y };
     case 'SW': return { x: r.x, y: y2 };

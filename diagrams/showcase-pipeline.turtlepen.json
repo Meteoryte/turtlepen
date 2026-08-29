@@ -1,0 +1,1584 @@
+{
+  "schema": 1,
+  "name": "ETL Data Pipeline",
+  "canvas": {
+    "cols": 120,
+    "rows": 50
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-19T12:00:00.000Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "api-source",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 6,
+          "w": 28,
+          "h": 10
+        },
+        "label": "REST API",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "io",
+        "align": "center",
+        "fill": "#bee3f8",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "db-source",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 22,
+          "w": 28,
+          "h": 14
+        },
+        "label": "PostgreSQL",
+        "fontSize": 10,
+        "corner": "indented",
+        "shape": "data",
+        "align": "center",
+        "fill": "#bee3f8",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "file-source",
+        "kind": "box",
+        "rect": {
+          "x": 4,
+          "y": 42,
+          "w": 28,
+          "h": 14
+        },
+        "label": "CSV Files",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "document",
+        "align": "center",
+        "fill": "#bee3f8",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "validate",
+        "kind": "box",
+        "rect": {
+          "x": 62,
+          "y": 6,
+          "w": 22,
+          "h": 8
+        },
+        "label": "Validate & Clean",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": "#c6f6d5",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "enrich",
+        "kind": "box",
+        "rect": {
+          "x": 62,
+          "y": 20,
+          "w": 22,
+          "h": 8
+        },
+        "label": "Enrich & Join",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "subprocess",
+        "align": "center",
+        "fill": "#c6f6d5",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "warehouse",
+        "kind": "box",
+        "rect": {
+          "x": 126,
+          "y": 6,
+          "w": 40,
+          "h": 18
+        },
+        "label": "Data Warehouse",
+        "fontSize": 10,
+        "corner": "indented",
+        "shape": "data",
+        "align": "center",
+        "fill": "#fed7d7",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "lake",
+        "kind": "box",
+        "rect": {
+          "x": 122,
+          "y": 30,
+          "w": 40,
+          "h": 18
+        },
+        "label": "Data Lake",
+        "fontSize": 10,
+        "corner": "indented",
+        "shape": "data",
+        "align": "center",
+        "fill": "#fed7d7",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "extract-join",
+        "kind": "box",
+        "rect": {
+          "x": 46,
+          "y": 6,
+          "w": 2,
+          "h": 50
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": "#2d3748",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "load-fork",
+        "kind": "box",
+        "rect": {
+          "x": 110,
+          "y": 6,
+          "w": 2,
+          "h": 42
+        },
+        "label": "",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": "#2d3748",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "api-to-join",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 28,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 29,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 30,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 31,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 32,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 35,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 11,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 11,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 46,
+          "y": 11,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "extract-join",
+            "port": "W",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "api-source",
+          "port": "E"
+        }
+      },
+      {
+        "id": "db-to-join",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 32,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 35,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 29,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 29,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 46,
+          "y": 29,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "extract-join",
+            "port": "W",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "db-source",
+          "port": "E"
+        }
+      },
+      {
+        "id": "file-to-join",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 32,
+            "y": 49,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 33,
+            "y": 49,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 34,
+            "y": 49,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 49,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 49,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 49,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 49,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 49,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 49,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 49,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 5,
+          "cap": "butt",
+          "pattern": "dashed"
+        },
+        "note": null,
+        "end": {
+          "x": 46,
+          "y": 49,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "extract-join",
+            "port": "W",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "file-source",
+          "port": "E"
+        }
+      },
+      {
+        "id": "join-to-validate",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 48,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 49,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 51,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 52,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 53,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 54,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 55,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 56,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 10,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 62,
+          "y": 10,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "validate",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "join-to-enrich",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 48,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 49,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 51,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 52,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 53,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 54,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 55,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 56,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 24,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 62,
+          "y": 24,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "enrich",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "fork-to-warehouse",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 112,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 113,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 114,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 115,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 116,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 117,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 118,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 119,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 124,
+            "y": 15,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 125,
+            "y": 15,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 126,
+          "y": 15,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "warehouse",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "fork-to-lake",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 112,
+            "y": 39,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 114,
+            "y": 39,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 116,
+            "y": 39,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 118,
+            "y": 39,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 39,
+            "type": "line",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 39,
+            "type": "arrow",
+            "dir": "right",
+            "align": "bottom",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 5,
+          "cap": "butt",
+          "pattern": "dotted"
+        },
+        "note": null,
+        "end": {
+          "x": 122,
+          "y": 39,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "lake",
+            "port": "W",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "id": "validate-to-fork",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 84,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 86,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 87,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 88,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 90,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 91,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 92,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 99,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 100,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 101,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 102,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 103,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 104,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 105,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 107,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 10,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 109,
+            "y": 10,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 110,
+          "y": 10,
+          "facing": "right"
+        },
+        "source": {
+          "id": "validate",
+          "port": "E"
+        }
+      },
+      {
+        "id": "enrich-to-fork",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 84,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 86,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 87,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 88,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 90,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 91,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 92,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 99,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 100,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 101,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 102,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 103,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 104,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 105,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 107,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 24,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 109,
+            "y": 24,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 110,
+          "y": 24,
+          "facing": "right"
+        },
+        "source": {
+          "id": "enrich",
+          "port": "E"
+        }
+      }
+    ]
+  },
+  "groups": [
+    {
+      "id": "extract",
+      "label": "Extract Stage",
+      "members": [
+        "api-source",
+        "db-source",
+        "file-source"
+      ]
+    },
+    {
+      "id": "load",
+      "label": "Load Stage",
+      "members": [
+        "lake",
+        "warehouse"
+      ]
+    },
+    {
+      "id": "transform",
+      "label": "Transform Stage",
+      "members": [
+        "enrich",
+        "validate"
+      ]
+    }
+  ],
+  "constraints": [
+    {
+      "id": "load-follows-transform",
+      "dependent": "warehouse",
+      "target": "validate",
+      "dependentAnchor": "W",
+      "targetAnchor": "E",
+      "offset": {
+        "x": 43,
+        "y": 5
+      }
+    },
+    {
+      "id": "transform-follows-extract",
+      "dependent": "validate",
+      "target": "api-source",
+      "dependentAnchor": "W",
+      "targetAnchor": "E",
+      "offset": {
+        "x": 31,
+        "y": -1
+      }
+    }
+  ],
+  "acceptances": []
+}

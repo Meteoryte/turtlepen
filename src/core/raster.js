@@ -170,3 +170,155 @@ export function discQuads(cx, cy, r) {
   }
   return out;
 }
+
+/**
+ * A smooth line through control points — Catmull-Rom, landed on the lattice.
+ *
+ * The shape vocabulary had `ray` for a straight run and `arc` for a circular
+ * one, and nothing in between. Every organic line in a drawing is neither:
+ * hair, drapery, a lip, a coastline. Four separate sheets in one session each
+ * carried their own copy of this sampler because the engine did not have it.
+ *
+ * The spline is sampled continuously and then CONNECTED with rays, so the
+ * result is contiguous by construction rather than by hoping the sample rate
+ * was high enough. Rounding happens once, at the sample, and nothing
+ * downstream ever sees a fractional coordinate.
+ */
+export function curveQuads(points, { steps = 12 } = {}) {
+  if (!Array.isArray(points) || points.length < 3) {
+    throw new SyntaxError(
+      `a curve needs at least three points — got ${points?.length ?? 0}. Two points is a straight run; use "ray" instead.`,
+    );
+  }
+  for (const p of points) {
+    if (!Number.isInteger(p?.x) || !Number.isInteger(p?.y)) {
+      throw new RangeError(`a curve control point must be whole quadrants — got ${JSON.stringify(p)}`);
+    }
+  }
+
+  const at = (i) => points[Math.max(0, Math.min(points.length - 1, i))];
+  const sampled = [];
+  for (let i = 0; i < points.length - 1; i += 1) {
+    const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+    for (let s = 0; s < steps; s += 1) {
+      const t = s / steps;
+      const t2 = t * t;
+      const t3 = t2 * t;
+      sampled.push({
+        x: Math.round(0.5 * (2 * p1.x + (-p0.x + p2.x) * t
+          + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2
+          + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3)),
+        y: Math.round(0.5 * (2 * p1.y + (-p0.y + p2.y) * t
+          + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2
+          + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3)),
+      });
+    }
+  }
+  sampled.push(points[points.length - 1]);
+
+  const out = [];
+  for (let i = 1; i < sampled.length; i += 1) {
+    const a = sampled[i - 1];
+    const b = sampled[i];
+    if (a.x === b.x && a.y === b.y) continue;
+    // Bresenham between samples: the curve is then adjacent quadrant to
+    // quadrant whatever the sample rate, which is the property a stroke needs.
+    for (const q2 of rayQuads(a.x, a.y, b.x, b.y)) out.push(q2);
+  }
+  return unique(out.length ? out : [sampled[0]]);
+}
+
+/**
+ * An ellipse, optionally rotated. The circle family, finished.
+ *
+ * `circle` and `disc` were there, and a face, an eye and a tilted plane are
+ * none of them — so every portrait in the set shipped its own sampler.
+ *
+ * With equal radii and no rotation this DELEGATES to `circleQuads` rather than
+ * approximating it. A circle is an ellipse with equal radii, the engine already
+ * has an exact eight-way symmetric circle, and reproducing it approximately
+ * would mean two commands disagreeing about the same shape.
+ */
+export function ellipseQuads(cx, cy, rx, ry, rotDeg = 0) {
+  if (!Number.isInteger(rx) || !Number.isInteger(ry) || rx < 1 || ry < 1) {
+    throw new RangeError(
+      `an ellipse needs a whole radius of at least 1 quadrant on each axis — got ${rx}x${ry}. On this lattice a smaller one has no quadrants to draw.`,
+    );
+  }
+  if (rx === ry && !rotDeg) return circleQuads(cx, cy, rx);
+
+  const rot = (rotDeg * Math.PI) / 180;
+  const cos = Math.cos(rot);
+  const sin = Math.sin(rot);
+  // One sample per quadrant of perimeter, roughly, so the ray-connection below
+  // never has to span more than a step or two.
+  const steps = Math.max(48, Math.round(4 * (rx + ry)));
+
+  const sampled = [];
+  for (let i = 0; i <= steps; i += 1) {
+    const t = (i / steps) * Math.PI * 2;
+    const ex = rx * Math.cos(t);
+    const ey = ry * Math.sin(t);
+    sampled.push({
+      x: Math.round(cx + ex * cos - ey * sin),
+      y: Math.round(cy + ex * sin + ey * cos),
+    });
+  }
+
+  const out = [];
+  for (let i = 1; i < sampled.length; i += 1) {
+    const a = sampled[i - 1];
+    const b = sampled[i];
+    if (a.x === b.x && a.y === b.y) continue;
+    for (const q2 of rayQuads(a.x, a.y, b.x, b.y)) out.push(q2);
+  }
+  return unique(out);
+}
+
+/**
+ * The interior of a closed outline, including the outline itself.
+ *
+ * Flood from OUTSIDE and invert, rather than counting scanline crossings. A
+ * rasterised curve doubles its crossings at every local extremum — the top of a
+ * circle contributes two adjacent quadrants on the same row — and parity
+ * counting gets those wrong in ways that depend on the shape rather than on the
+ * algorithm. Flooding has no such special cases.
+ *
+ * An UNCLOSED outline fills nothing: the flood escapes through the gap and
+ * reaches every quadrant, so the interior comes back empty. That is the right
+ * failure. Inventing an interior for an open path would put ink somewhere the
+ * author never enclosed, and a shape that silently fills the page is far worse
+ * than one that fills nothing.
+ */
+export function fillInterior(quads) {
+  if (!Array.isArray(quads) || quads.length === 0) return [];
+
+  const on = new Set(quads.map((p) => `${p.x},${p.y}`));
+  const xs = quads.map((p) => p.x);
+  const ys = quads.map((p) => p.y);
+  // One quadrant of margin so the flood always has a way around the outside.
+  const x0 = Math.min(...xs) - 1, x1 = Math.max(...xs) + 1;
+  const y0 = Math.min(...ys) - 1, y1 = Math.max(...ys) + 1;
+
+  const outside = new Set();
+  const stack = [[x0, y0]];
+  while (stack.length) {
+    const [x, y] = stack.pop();
+    if (x < x0 || x > x1 || y < y0 || y > y1) continue;
+    const k = `${x},${y}`;
+    if (outside.has(k) || on.has(k)) continue;
+    outside.add(k);
+    // Four-connected: an eight-connected flood squeezes through the diagonal
+    // gaps a Bresenham outline leaves, and leaks out of shapes that are closed.
+    stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+  }
+
+  const out = [];
+  for (let y = y0; y <= y1; y += 1) {
+    for (let x = x0; x <= x1; x += 1) {
+      const k = `${x},${y}`;
+      if (!outside.has(k)) out.push({ x, y });
+    }
+  }
+  return out;
+}

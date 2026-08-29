@@ -281,7 +281,7 @@ try {
   if (reopened.open.some((finding) => ['S0', 'S1', 'S2'].includes(finding.severity))) {
     throw new Error('random trial sheet did not survive reopen cleanly');
   }
-  await call('render', { path: SVG, grid: true });
+  await call('render', { path: SVG, showGrid: true });
 
   const changed = ledger.filter((entry) => entry.changed).length;
   const rows = ledger.map((entry) => {
