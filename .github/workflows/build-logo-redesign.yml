@@ -27,6 +27,32 @@ jobs:
       - name: Explore TurtlePen through MCP help
         run: node examples/logo-help-explorer.js
 
+      - name: Persist live MCP contract corrections into authoring source
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('examples/logo-redesign-mcp.js')
+          s = p.read_text()
+          old = "const q = (x, y, pin = 'c') => `${colName(Math.max(1, Math.ceil(x / 2)))}${Math.max(1, Math.ceil(y / 2))}.${pin}`;"
+          if old in s:
+              new = """const q = (x, y, pin = null) => {
+                const col = Math.floor(x / 2);
+                const row = Math.floor(y / 2);
+                if (pin) return `${colName(col + 1)}${row + 1}.${pin}`;
+                const qx = x - col * 2;
+                const qy = y - row * 2;
+                const part = qy === 0 ? (qx === 0 ? 'q1' : 'q2') : (qx === 0 ? 'q3' : 'q4');
+                return `${colName(col + 1)}${row + 1}.${part}`;
+              };"""
+              s = s.replace(old, new)
+          s = s.replace("source: 'brand/logo-v2-source-mark.png'", "source: 'logo-v2-source-mark.png'")
+          s = s.replace("maxWidthCells: 78, maxHeightCells: 86", "maxWidthCells: 78")
+          s = s.replace("span: '78x86'", "span: '78x65'")
+          s = s.replace("line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 6, 'features');", "line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 5, 'features');")
+          s = s.replace("properties:{ referenceUsedOnlyForAuthoring:true, shippedRaster:false }", "properties:{ referenceUsedOnlyForAuthoring:'true', shippedRaster:'false' }")
+          p.write_text(s)
+          PY
+
       - name: Build through the real TurtlePen MCP server
         id: build
         continue-on-error: true
@@ -108,13 +134,13 @@ jobs:
           )
           PY
 
-      - name: Commit TurtlePen diagnostic on failure
+      - name: Commit TurtlePen diagnostic and corrected source on failure
         if: steps.build.outcome == 'failure'
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add brand/logo-redesign-diagnostic.md brand/logo-redesign-decisions.json
+          git add examples/logo-redesign-mcp.js brand/logo-redesign-diagnostic.md brand/logo-redesign-decisions.json
           if git diff --cached --quiet; then
             echo 'No diagnostic changes to commit.'
           else
@@ -132,12 +158,12 @@ jobs:
           test -s brand/logo-redesign.turtlepen.json
           test -s brand/logo-redesign.svg
 
-      - name: Commit generated TurtlePen artifacts
+      - name: Commit corrected source and generated TurtlePen artifacts
         if: steps.build.outcome == 'success'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add brand/logo-redesign.turtlepen.json brand/logo-redesign.svg
+          git add examples/logo-redesign-mcp.js brand/logo-redesign.turtlepen.json brand/logo-redesign.svg
           if git diff --cached --quiet; then
             echo 'No generated changes to commit.'
             exit 0
