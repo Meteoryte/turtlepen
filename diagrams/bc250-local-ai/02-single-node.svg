@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="2060" viewBox="0 0 2200 2060" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
+<title id="tp-title">BC-250 Local AI Compute — Single Node Stack</title>
+<desc id="tp-desc">21 diagram elements across 1 visible page(s)</desc>
+<metadata>{"schema":3,"name":"BC-250 Local AI Compute — Single Node Stack","view":null,"elements":21}</metadata>
+<style>
+  .bg { fill: #f4f3ef; }
+  .grid { stroke: #dedbd3; stroke-width: 0.5; }
+  .grid-major { stroke: #cbc7bd; stroke-width: 0.5; }
+  .box { fill: #e9e7e1; stroke: #2b2a26; stroke-width: 1; }
+  .box-label, .key-title, .key-label { fill: #2b2a26; }
+  .stroke { fill: #2b2a26; }
+  .hop { stroke: #2b2a26; }
+  .free-text { fill: #6b6862; }
+  .hit-S0 { fill: #8a5b56; opacity: 0.30; }
+  .hit-S1 { fill: #96755c; opacity: 0.28; }
+  .hit-S2 { fill: #87805a; opacity: 0.24; }
+  .hit-S3 { fill: #4a6572; opacity: 0.20; }
+  .dimmed { fill: url(#tp-stipple); }
+  .dither-run { fill: #2b2a26; }
+  .simplify-run { fill: #2b2a26; }
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #1a1917; }
+    .grid { stroke: #2e2c28; }
+    .grid-major { stroke: #3d3a35; }
+    .box { fill: #232220; stroke: #dedbd3; }
+    .box-label { fill: #dedbd3; }
+    .free-text { fill: #9a968d; }
+    .stroke { fill: #dedbd3; }
+    .hop { stroke: #dedbd3; }
+  }
+
+</style>
+<defs>
+
+  <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
+       5px quadrant so a dimmed element is made of the same units as every
+       other mark on the page. -->
+  <pattern id="tp-stipple" width="10" height="10" patternUnits="userSpaceOnUse">
+    <rect width="5" height="5" fill="#2b2a26"/>
+    <rect x="5" y="5" width="5" height="5" fill="#2b2a26"/>
+  </pattern>
+</defs>
+<rect class="bg" x="0" y="0" width="2200" height="2060"/>
+<g transform="translate(-210,0)">
+<g data-page="base" data-z="0" opacity="1">
+<g data-element="start" role="group" aria-label="box start: HEADLESS BC-250 AI NODE">
+<path class="box" d="M1045,30 H1575 A5,5 0 0 1 1580,35 V165 A5,5 0 0 1 1575,170 H1045 A5,5 0 0 1 1040,165 V35 A5,5 0 0 1 1045,30 Z" data-id="start" style="fill:#e8f4ff;stroke:#0f766e"/><text class="box-label" x="1241" y="104" font-size="10" textLength="138" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">HEADLESS BC-250 AI NODE</text>
+</g>
+<g data-element="power" role="group" aria-label="box power: POWER + MOUNT — known-good PCIe power / safe board mounting / physical inspection">
+<path class="box" d="M1045,250 H1575 A5,5 0 0 1 1580,255 V385 A5,5 0 0 1 1575,390 H1045 A5,5 0 0 1 1040,385 V255 A5,5 0 0 1 1045,250 Z" data-id="power" style="fill:#ffe8e8;stroke:#b91c1c"/><text class="box-label" x="1067" y="324" font-size="10" textLength="486" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">POWER + MOUNT — known-good PCIe power / safe board mounting / physical inspection</text>
+</g>
+<g data-element="cool" role="group" aria-label="box cool: COOLING — ducted pressure airflow / GDDR6 and VRM attention / fan telemetry / fail-safe">
+<path class="box" d="M1045,470 H1575 A5,5 0 0 1 1580,475 V605 A5,5 0 0 1 1575,610 H1045 A5,5 0 0 1 1040,605 V475 A5,5 0 0 1 1045,470 Z" data-id="cool" style="fill:#e7f5ff;stroke:#0284c7"/><text class="box-label" x="1049" y="544" font-size="10" textLength="522" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">COOLING — ducted pressure airflow / GDDR6 and VRM attention / fan telemetry / fail-safe</text>
+</g>
+<g data-element="linux" role="group" aria-label="box linux: LINUX — modern kernel + SSH + current Mesa/RADV Vulkan stack">
+<path class="box" d="M1045,690 H1575 A5,5 0 0 1 1580,695 V825 A5,5 0 0 1 1575,830 H1045 A5,5 0 0 1 1040,825 V695 A5,5 0 0 1 1045,690 Z" data-id="linux" style="fill:#e7f7ee;stroke:#2f855a"/><text class="box-label" x="1130" y="764" font-size="10" textLength="360" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">LINUX — modern kernel + SSH + current Mesa/RADV Vulkan stack</text>
+</g>
+<g data-element="telemetry" role="group" aria-label="box telemetry: OBSERVE — temperatures / fan RPM / clocks / watts / resets / inference errors">
+<path class="box" d="M245,690 H775 A5,5 0 0 1 780,695 V825 A5,5 0 0 1 775,830 H245 A5,5 0 0 1 240,825 V695 A5,5 0 0 1 245,690 Z" data-id="telemetry" style="fill:#eef2f7;stroke:#475569"/><text class="box-label" x="279" y="764" font-size="10" textLength="462" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">OBSERVE — temperatures / fan RPM / clocks / watts / resets / inference errors</text>
+</g>
+<g data-element="memory" role="group" aria-label="box memory: MEMORY — tune TTM/GTT so Vulkan can allocate the intended shared-memory budget">
+<path class="box" d="M1045,930 H1575 A5,5 0 0 1 1580,935 V1065 A5,5 0 0 1 1575,1070 H1045 A5,5 0 0 1 1040,1065 V935 A5,5 0 0 1 1045,930 Z" data-id="memory" style="fill:#f3e8ff;stroke:#7e22ce"/><text class="box-label" x="1076" y="1004" font-size="10" textLength="468" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">MEMORY — tune TTM/GTT so Vulkan can allocate the intended shared-memory budget</text>
+</g>
+<g data-element="unlock" role="group" aria-label="box unlock: OPTIONAL — only after stock qualification: 40-CU GPU and/or 8-core CPU; then re-test correctness and thermals">
+<path class="box" d="M1845,930 H2375 A5,5 0 0 1 2380,935 V1065 A5,5 0 0 1 2375,1070 H1845 A5,5 0 0 1 1840,1065 V935 A5,5 0 0 1 1845,930 Z" data-id="unlock" style="fill:#ffe8e8;stroke:#b91c1c"/><text class="box-label" x="1858" y="996" font-size="10" textLength="504" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">OPTIONAL — only after stock qualification: 40-CU GPU and/or 8-core CPU; then re-test</text><text class="box-label" x="2038" y="1011" font-size="10" textLength="144" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">correctness and thermals</text>
+</g>
+<g data-element="runtime" role="group" aria-label="box runtime: INFERENCE — llama.cpp Vulkan OR Ollama">
+<path class="box" d="M1045,1170 H1575 A5,5 0 0 1 1580,1175 V1305 A5,5 0 0 1 1575,1310 H1045 A5,5 0 0 1 1040,1305 V1175 A5,5 0 0 1 1045,1170 Z" data-id="runtime" style="fill:#e8f4ff;stroke:#0f766e"/><text class="box-label" x="1196" y="1244" font-size="10" textLength="228" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">INFERENCE — llama.cpp Vulkan OR Ollama</text>
+</g>
+<g data-element="models" role="group" aria-label="box models: MODEL FIT — choose quantization from real free memory + context/KV budget + target latency">
+<path class="box" d="M1045,1410 H1575 A5,5 0 0 1 1580,1415 V1545 A5,5 0 0 1 1575,1550 H1045 A5,5 0 0 1 1040,1545 V1415 A5,5 0 0 1 1045,1410 Z" data-id="models" style="fill:#e8f4ff;stroke:#0f766e"/><text class="box-label" x="1064" y="1476" font-size="10" textLength="492" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">MODEL FIT — choose quantization from real free memory + context/KV budget + target</text><text class="box-label" x="1289" y="1491" font-size="10" textLength="42" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">latency</text>
+</g>
+<g data-element="api" role="group" aria-label="box api: SERVICE — OpenAI-compatible LAN API + optional Open WebUI">
+<path class="box" d="M1045,1650 H1575 A5,5 0 0 1 1580,1655 V1785 A5,5 0 0 1 1575,1790 H1045 A5,5 0 0 1 1040,1785 V1655 A5,5 0 0 1 1045,1650 Z" data-id="api" style="fill:#fff4d8;stroke:#a16207"/><text class="box-label" x="1139" y="1724" font-size="10" textLength="342" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">SERVICE — OpenAI-compatible LAN API + optional Open WebUI</text>
+</g>
+<g data-element="clients" role="group" aria-label="box clients: CLIENTS — BrainnStation / coding agents / RAG / automation / voice / local services">
+<path class="box" d="M1045,1890 H1575 A5,5 0 0 1 1580,1895 V2025 A5,5 0 0 1 1575,2030 H1045 A5,5 0 0 1 1040,2025 V1895 A5,5 0 0 1 1045,1890 Z" data-id="clients" style="fill:#e8f4ff;stroke:#0f766e"/><text class="box-label" x="1061" y="1964" font-size="10" textLength="498" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">CLIENTS — BrainnStation / coding agents / RAG / automation / voice / local services</text>
+</g>
+<g data-element="e1" role="group" aria-label="Relationship e1, from start to power. start.S -&gt; power.N">
+<g data-id="e1" data-kind="path"><rect class="stroke" x="1310" y="170" width="5" height="5"/><rect class="stroke" x="1310" y="175" width="5" height="5"/><rect class="stroke" x="1310" y="180" width="5" height="5"/><rect class="stroke" x="1310" y="185" width="5" height="5"/><rect class="stroke" x="1310" y="190" width="5" height="5"/><rect class="stroke" x="1310" y="195" width="5" height="5"/><rect class="stroke" x="1310" y="200" width="5" height="5"/><rect class="stroke" x="1310" y="205" width="5" height="5"/><rect class="stroke" x="1310" y="210" width="5" height="5"/><rect class="stroke" x="1310" y="215" width="5" height="5"/><rect class="stroke" x="1310" y="220" width="5" height="5"/><rect class="stroke" x="1310" y="225" width="5" height="5"/><rect class="stroke" x="1310" y="230" width="5" height="5"/><rect class="stroke" x="1310" y="235" width="5" height="5"/><rect class="stroke" x="1310" y="240" width="5" height="5"/><path class="stroke" d="M1310,245 L1312.5,250 L1315,245 Z"/></g>
+</g>
+<g data-element="e2" role="group" aria-label="Relationship e2, from power to cool. power.S -&gt; cool.N">
+<g data-id="e2" data-kind="path"><rect class="stroke" x="1310" y="390" width="5" height="5"/><rect class="stroke" x="1310" y="395" width="5" height="5"/><rect class="stroke" x="1310" y="400" width="5" height="5"/><rect class="stroke" x="1310" y="405" width="5" height="5"/><rect class="stroke" x="1310" y="410" width="5" height="5"/><rect class="stroke" x="1310" y="415" width="5" height="5"/><rect class="stroke" x="1310" y="420" width="5" height="5"/><rect class="stroke" x="1310" y="425" width="5" height="5"/><rect class="stroke" x="1310" y="430" width="5" height="5"/><rect class="stroke" x="1310" y="435" width="5" height="5"/><rect class="stroke" x="1310" y="440" width="5" height="5"/><rect class="stroke" x="1310" y="445" width="5" height="5"/><rect class="stroke" x="1310" y="450" width="5" height="5"/><rect class="stroke" x="1310" y="455" width="5" height="5"/><rect class="stroke" x="1310" y="460" width="5" height="5"/><path class="stroke" d="M1310,465 L1312.5,470 L1315,465 Z"/></g>
+</g>
+<g data-element="e3" role="group" aria-label="Relationship e3, from cool to linux. cool.S -&gt; linux.N">
+<g data-id="e3" data-kind="path"><rect class="stroke" x="1310" y="610" width="5" height="5"/><rect class="stroke" x="1310" y="615" width="5" height="5"/><rect class="stroke" x="1310" y="620" width="5" height="5"/><rect class="stroke" x="1310" y="625" width="5" height="5"/><rect class="stroke" x="1310" y="630" width="5" height="5"/><rect class="stroke" x="1310" y="635" width="5" height="5"/><rect class="stroke" x="1310" y="640" width="5" height="5"/><rect class="stroke" x="1310" y="645" width="5" height="5"/><rect class="stroke" x="1310" y="650" width="5" height="5"/><rect class="stroke" x="1310" y="655" width="5" height="5"/><rect class="stroke" x="1310" y="660" width="5" height="5"/><rect class="stroke" x="1310" y="665" width="5" height="5"/><rect class="stroke" x="1310" y="670" width="5" height="5"/><rect class="stroke" x="1310" y="675" width="5" height="5"/><rect class="stroke" x="1310" y="680" width="5" height="5"/><path class="stroke" d="M1310,685 L1312.5,690 L1315,685 Z"/></g>
+</g>
+<g data-element="e4" role="group" aria-label="Relationship e4, from linux to telemetry. linux.W -&gt; telemetry.E">
+<g data-id="e4" data-kind="path" data-role="connector"><polyline points="1037,762 782,762" fill="none" stroke="#475569" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M785,760 L780,762.5 L785,765 Z" fill="#475569" stroke="none"/></g>
+</g>
+<g data-element="e5" role="group" aria-label="Relationship e5, from linux to memory. linux.S -&gt; memory.N">
+<g data-id="e5" data-kind="path"><rect class="stroke" x="1310" y="830" width="5" height="5"/><rect class="stroke" x="1310" y="835" width="5" height="5"/><rect class="stroke" x="1310" y="840" width="5" height="5"/><rect class="stroke" x="1310" y="845" width="5" height="5"/><rect class="stroke" x="1310" y="850" width="5" height="5"/><rect class="stroke" x="1310" y="855" width="5" height="5"/><rect class="stroke" x="1310" y="860" width="5" height="5"/><rect class="stroke" x="1310" y="865" width="5" height="5"/><rect class="stroke" x="1310" y="870" width="5" height="5"/><rect class="stroke" x="1310" y="875" width="5" height="5"/><rect class="stroke" x="1310" y="880" width="5" height="5"/><rect class="stroke" x="1310" y="885" width="5" height="5"/><rect class="stroke" x="1310" y="890" width="5" height="5"/><rect class="stroke" x="1310" y="895" width="5" height="5"/><rect class="stroke" x="1310" y="900" width="5" height="5"/><rect class="stroke" x="1310" y="905" width="5" height="5"/><rect class="stroke" x="1310" y="910" width="5" height="5"/><rect class="stroke" x="1310" y="915" width="5" height="5"/><rect class="stroke" x="1310" y="920" width="5" height="5"/><path class="stroke" d="M1310,925 L1312.5,930 L1315,925 Z"/></g>
+</g>
+<g data-element="e6" role="group" aria-label="Relationship e6, from memory to unlock. memory.E -&gt; unlock.W">
+<g data-id="e6" data-kind="path" data-role="connector"><polyline points="1582,1002 1837,1002" fill="none" stroke="#b91c1c" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1835,1000 L1840,1002.5 L1835,1005 Z" fill="#b91c1c" stroke="none"/></g>
+</g>
+<g data-element="e7" role="group" aria-label="Relationship e7, from memory to runtime. memory.S -&gt; runtime.N">
+<g data-id="e7" data-kind="path"><rect class="stroke" x="1310" y="1070" width="5" height="5"/><rect class="stroke" x="1310" y="1075" width="5" height="5"/><rect class="stroke" x="1310" y="1080" width="5" height="5"/><rect class="stroke" x="1310" y="1085" width="5" height="5"/><rect class="stroke" x="1310" y="1090" width="5" height="5"/><rect class="stroke" x="1310" y="1095" width="5" height="5"/><rect class="stroke" x="1310" y="1100" width="5" height="5"/><rect class="stroke" x="1310" y="1105" width="5" height="5"/><rect class="stroke" x="1310" y="1110" width="5" height="5"/><rect class="stroke" x="1310" y="1115" width="5" height="5"/><rect class="stroke" x="1310" y="1120" width="5" height="5"/><rect class="stroke" x="1310" y="1125" width="5" height="5"/><rect class="stroke" x="1310" y="1130" width="5" height="5"/><rect class="stroke" x="1310" y="1135" width="5" height="5"/><rect class="stroke" x="1310" y="1140" width="5" height="5"/><rect class="stroke" x="1310" y="1145" width="5" height="5"/><rect class="stroke" x="1310" y="1150" width="5" height="5"/><rect class="stroke" x="1310" y="1155" width="5" height="5"/><rect class="stroke" x="1310" y="1160" width="5" height="5"/><path class="stroke" d="M1310,1165 L1312.5,1170 L1315,1165 Z"/></g>
+</g>
+<g data-element="e8" role="group" aria-label="Relationship e8, from runtime to models. runtime.S -&gt; models.N">
+<g data-id="e8" data-kind="path"><rect class="stroke" x="1310" y="1310" width="5" height="5"/><rect class="stroke" x="1310" y="1315" width="5" height="5"/><rect class="stroke" x="1310" y="1320" width="5" height="5"/><rect class="stroke" x="1310" y="1325" width="5" height="5"/><rect class="stroke" x="1310" y="1330" width="5" height="5"/><rect class="stroke" x="1310" y="1335" width="5" height="5"/><rect class="stroke" x="1310" y="1340" width="5" height="5"/><rect class="stroke" x="1310" y="1345" width="5" height="5"/><rect class="stroke" x="1310" y="1350" width="5" height="5"/><rect class="stroke" x="1310" y="1355" width="5" height="5"/><rect class="stroke" x="1310" y="1360" width="5" height="5"/><rect class="stroke" x="1310" y="1365" width="5" height="5"/><rect class="stroke" x="1310" y="1370" width="5" height="5"/><rect class="stroke" x="1310" y="1375" width="5" height="5"/><rect class="stroke" x="1310" y="1380" width="5" height="5"/><rect class="stroke" x="1310" y="1385" width="5" height="5"/><rect class="stroke" x="1310" y="1390" width="5" height="5"/><rect class="stroke" x="1310" y="1395" width="5" height="5"/><rect class="stroke" x="1310" y="1400" width="5" height="5"/><path class="stroke" d="M1310,1405 L1312.5,1410 L1315,1405 Z"/></g>
+</g>
+<g data-element="e9" role="group" aria-label="Relationship e9, from models to api. models.S -&gt; api.N">
+<g data-id="e9" data-kind="path" data-role="connector"><polyline points="1312,1552 1312,1647" fill="none" stroke="#a16207" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,1645 L1312.5,1650 L1315,1645 Z" fill="#a16207" stroke="none"/></g>
+</g>
+<g data-element="e10" role="group" aria-label="Relationship e10, from api to clients. api.S -&gt; clients.N">
+<g data-id="e10" data-kind="path"><rect class="stroke" x="1310" y="1790" width="5" height="5"/><rect class="stroke" x="1310" y="1795" width="5" height="5"/><rect class="stroke" x="1310" y="1800" width="5" height="5"/><rect class="stroke" x="1310" y="1805" width="5" height="5"/><rect class="stroke" x="1310" y="1810" width="5" height="5"/><rect class="stroke" x="1310" y="1815" width="5" height="5"/><rect class="stroke" x="1310" y="1820" width="5" height="5"/><rect class="stroke" x="1310" y="1825" width="5" height="5"/><rect class="stroke" x="1310" y="1830" width="5" height="5"/><rect class="stroke" x="1310" y="1835" width="5" height="5"/><rect class="stroke" x="1310" y="1840" width="5" height="5"/><rect class="stroke" x="1310" y="1845" width="5" height="5"/><rect class="stroke" x="1310" y="1850" width="5" height="5"/><rect class="stroke" x="1310" y="1855" width="5" height="5"/><rect class="stroke" x="1310" y="1860" width="5" height="5"/><rect class="stroke" x="1310" y="1865" width="5" height="5"/><rect class="stroke" x="1310" y="1870" width="5" height="5"/><rect class="stroke" x="1310" y="1875" width="5" height="5"/><rect class="stroke" x="1310" y="1880" width="5" height="5"/><path class="stroke" d="M1310,1885 L1312.5,1890 L1315,1885 Z"/></g>
+</g>
+</g>
+</g>
+</svg>

@@ -1,0 +1,3879 @@
+{
+  "schema": 3,
+  "name": "BC-250 Local AI Compute — Research and Build Roadmap",
+  "canvas": {
+    "cols": 280,
+    "rows": 390
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-29T15:34:00.000Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "phase_zero",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 6,
+          "w": 108,
+          "h": 28
+        },
+        "label": "PHASE 0 — source / inspect / document",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "PHASE 0 — source / inspect / document",
+        "tags": [
+          "root",
+          "phase"
+        ]
+      },
+      {
+        "id": "gate_zero",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 54,
+          "w": 108,
+          "h": 28
+        },
+        "label": "GATE — boots / sensors work / cooling controllable / stock hardware stable",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "GATE — boots / sensors work / cooling controllable / stock hardware stable",
+        "tags": [
+          "benchmark",
+          "risk"
+        ]
+      },
+      {
+        "id": "phase_one",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 102,
+          "w": 108,
+          "h": 28
+        },
+        "label": "PHASE 1 — stock single-node LLM baseline",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "PHASE 1 — stock single-node LLM baseline",
+        "tags": [
+          "phase",
+          "llm"
+        ]
+      },
+      {
+        "id": "baseline_one",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 150,
+          "w": 108,
+          "h": 28
+        },
+        "label": "MEASURE — model fit / prompt tok-s / generation tok-s / TTFT / watts / temps / errors",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "MEASURE — model fit / prompt tok-s / generation tok-s / TTFT / watts / temps / errors",
+        "tags": [
+          "benchmark"
+        ]
+      },
+      {
+        "id": "phase_two",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 198,
+          "w": 108,
+          "h": 28
+        },
+        "label": "PHASE 2 — memory + thermal + efficiency tuning",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "PHASE 2 — memory + thermal + efficiency tuning",
+        "tags": [
+          "phase",
+          "optimization"
+        ]
+      },
+      {
+        "id": "gate_two",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 246,
+          "w": 108,
+          "h": 28
+        },
+        "label": "GATE — improvement is repeatable and worth added power / complexity",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "GATE — improvement is repeatable and worth added power / complexity",
+        "tags": [
+          "benchmark"
+        ]
+      },
+      {
+        "id": "unlock_optional",
+        "kind": "box",
+        "rect": {
+          "x": 368,
+          "y": 246,
+          "w": 108,
+          "h": 28
+        },
+        "label": "OPTIONAL — qualify 40-CU / 8-core paths with rollback and correctness tests",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "OPTIONAL — qualify 40-CU / 8-core paths with rollback and correctness tests",
+        "tags": [
+          "optimization",
+          "risk"
+        ]
+      },
+      {
+        "id": "phase_three",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 298,
+          "w": 108,
+          "h": 28
+        },
+        "label": "PHASE 3 — second node",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "PHASE 3 — second node",
+        "tags": [
+          "phase",
+          "network"
+        ]
+      },
+      {
+        "id": "network_test",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 346,
+          "w": 108,
+          "h": 28
+        },
+        "label": "NETWORK TEST — dedicated 2.5 GbE backend; request sharding vs llama.cpp RPC model split",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "NETWORK TEST — dedicated 2.5 GbE backend; request sharding vs llama.cpp RPC model split",
+        "tags": [
+          "network",
+          "benchmark"
+        ]
+      },
+      {
+        "id": "gate_three",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 394,
+          "w": 108,
+          "h": 28
+        },
+        "label": "GATE — larger-model quality or concurrency justifies second-node watts and latency",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "GATE — larger-model quality or concurrency justifies second-node watts and latency",
+        "tags": [
+          "benchmark"
+        ]
+      },
+      {
+        "id": "phase_four",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 442,
+          "w": 108,
+          "h": 28
+        },
+        "label": "PHASE 4 — router + specialist workers",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "PHASE 4 — router + specialist workers",
+        "tags": [
+          "phase",
+          "llm"
+        ]
+      },
+      {
+        "id": "worker_roles",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 490,
+          "w": 108,
+          "h": 28
+        },
+        "label": "ROLES — fast / code / RAG-batch / speech / image / evaluation",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "ROLES — fast / code / RAG-batch / speech / image / evaluation",
+        "tags": [
+          "llm"
+        ]
+      },
+      {
+        "id": "operations",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 538,
+          "w": 108,
+          "h": 28
+        },
+        "label": "OPERATIONS — config management / monitoring / health / API policy / model-version inventory",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "OPERATIONS — config management / monitoring / health / API policy / model-version inventory",
+        "tags": [
+          "software",
+          "benchmark"
+        ]
+      },
+      {
+        "id": "phase_five",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 586,
+          "w": 108,
+          "h": 28
+        },
+        "label": "PHASE 5 — fleet or rack only if the economics still win",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "PHASE 5 — fleet or rack only if the economics still win",
+        "tags": [
+          "phase",
+          "cost"
+        ]
+      },
+      {
+        "id": "fleet_gate",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 634,
+          "w": 108,
+          "h": 28
+        },
+        "label": "FLEET GATE — compare throughput per dollar and per watt against simpler alternative hardware",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "FLEET GATE — compare throughput per dollar and per watt against simpler alternative hardware",
+        "tags": [
+          "benchmark",
+          "alternative"
+        ]
+      },
+      {
+        "id": "end_state",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 686,
+          "w": 108,
+          "h": 28
+        },
+        "label": "END STATE — measured, reproducible local AI fabric",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "END STATE — measured, reproducible local AI fabric",
+        "tags": [
+          "root",
+          "llm"
+        ]
+      },
+      {
+        "id": "e1",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 34,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 35,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 36,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 37,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 38,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 39,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 40,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 41,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 42,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 43,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 48,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 49,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 50,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 51,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 52,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 53,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 54,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "gate_zero",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "phase_zero",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "phase_zero",
+            "port": "S"
+          },
+          "to": {
+            "id": "gate_zero",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "phase_zero.S -> gate_zero.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e2",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 82,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 83,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 84,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 85,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 86,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 87,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 88,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 89,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 90,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 91,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 92,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 93,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 94,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 95,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 96,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 97,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 98,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 99,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 100,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 101,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 102,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "phase_one",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "gate_zero",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "gate_zero",
+            "port": "S"
+          },
+          "to": {
+            "id": "phase_one",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "gate_zero.S -> phase_one.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e3",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 130,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 131,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 132,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 133,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 134,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 135,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 136,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 137,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 138,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 139,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 140,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 141,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 142,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 143,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 144,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 145,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 146,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 147,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 148,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 149,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 150,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "baseline_one",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "phase_one",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "phase_one",
+            "port": "S"
+          },
+          "to": {
+            "id": "baseline_one",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "phase_one.S -> baseline_one.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e4",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 178,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 179,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 180,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 181,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 182,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 183,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 184,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 185,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 186,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 187,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 188,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 189,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 190,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 191,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 192,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 193,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 194,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 195,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 196,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 197,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 198,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "phase_two",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "baseline_one",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "baseline_one",
+            "port": "S"
+          },
+          "to": {
+            "id": "phase_two",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "baseline_one.S -> phase_two.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e5",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 226,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 227,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 228,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 229,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 230,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 231,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 232,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 233,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 234,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 235,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 236,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 237,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 238,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 239,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 240,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 241,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 242,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 243,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 244,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 245,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 246,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "gate_two",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "phase_two",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "phase_two",
+            "port": "S"
+          },
+          "to": {
+            "id": "gate_two",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "phase_two.S -> gate_two.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e6",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 316,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 317,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 318,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 319,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 320,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 321,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 322,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 323,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 324,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 325,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 326,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 327,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 328,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 329,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 330,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 331,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 332,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 333,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 334,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 335,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 336,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 337,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 338,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 339,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 340,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 341,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 342,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 343,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 344,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 345,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 346,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 347,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 348,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 349,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 350,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 351,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 352,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 353,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 354,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 355,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 356,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 357,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 358,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 359,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 360,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 361,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 362,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 363,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 364,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 365,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 366,
+            "y": 260,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 367,
+            "y": 260,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 368,
+          "y": 260,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "unlock_optional",
+            "port": "W",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "gate_two",
+          "port": "E"
+        },
+        "relationship": {
+          "from": {
+            "id": "gate_two",
+            "port": "E"
+          },
+          "to": {
+            "id": "unlock_optional",
+            "port": "W"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "gate_two.E -> unlock_optional.W",
+        "technology": "logical flow",
+        "tags": [
+          "optimization",
+          "risk"
+        ]
+      },
+      {
+        "id": "e7",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 274,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 275,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 276,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 277,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 278,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 279,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 280,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 281,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 282,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 283,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 284,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 285,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 286,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 287,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 288,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 289,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 290,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 291,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 292,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 293,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 294,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 295,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 296,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 297,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 298,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "phase_three",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "gate_two",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "gate_two",
+            "port": "S"
+          },
+          "to": {
+            "id": "phase_three",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "gate_two.S -> phase_three.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e8",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 326,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 327,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 328,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 329,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 330,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 331,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 332,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 333,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 334,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 335,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 336,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 337,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 338,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 339,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 340,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 341,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 342,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 343,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 344,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 345,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 346,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "network_test",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "phase_three",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "phase_three",
+            "port": "S"
+          },
+          "to": {
+            "id": "network_test",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "phase_three.S -> network_test.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e9",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 374,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 375,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 376,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 377,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 378,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 379,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 380,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 381,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 382,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 383,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 384,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 385,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 386,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 387,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 388,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 389,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 390,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 391,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 392,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 393,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 394,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "gate_three",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "network_test",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "network_test",
+            "port": "S"
+          },
+          "to": {
+            "id": "gate_three",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "network_test.S -> gate_three.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e10",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 422,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 423,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 424,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 425,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 426,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 427,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 428,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 429,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 430,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 431,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 432,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 433,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 434,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 435,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 436,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 437,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 438,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 439,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 440,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 441,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 442,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "phase_four",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "gate_three",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "gate_three",
+            "port": "S"
+          },
+          "to": {
+            "id": "phase_four",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "gate_three.S -> phase_four.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e11",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 470,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 471,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 472,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 473,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 474,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 475,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 476,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 477,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 478,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 479,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 480,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 481,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 482,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 483,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 484,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 485,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 486,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 487,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 488,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 489,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 490,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "worker_roles",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "phase_four",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "phase_four",
+            "port": "S"
+          },
+          "to": {
+            "id": "worker_roles",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "phase_four.S -> worker_roles.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e12",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 518,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 519,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 520,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 521,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 522,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 523,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 524,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 525,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 526,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 527,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 528,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 529,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 530,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 531,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 532,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 533,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 534,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 535,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 536,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 537,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 538,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "operations",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "worker_roles",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "worker_roles",
+            "port": "S"
+          },
+          "to": {
+            "id": "operations",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "worker_roles.S -> operations.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e13",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 566,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 567,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 568,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 569,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 570,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 571,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 572,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 573,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 574,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 575,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 576,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 577,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 578,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 579,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 580,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 581,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 582,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 583,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 584,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 585,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 586,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "phase_five",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "operations",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "operations",
+            "port": "S"
+          },
+          "to": {
+            "id": "phase_five",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "operations.S -> phase_five.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e14",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 614,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 615,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 616,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 617,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 618,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 619,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 620,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 621,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 622,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 623,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 624,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 625,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 626,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 627,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 628,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 629,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 630,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 631,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 632,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 633,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 634,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "fleet_gate",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "phase_five",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "phase_five",
+            "port": "S"
+          },
+          "to": {
+            "id": "fleet_gate",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "phase_five.S -> fleet_gate.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e15",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 662,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 663,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 664,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 665,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 666,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 667,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 668,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 669,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 670,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 671,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 672,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 673,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 674,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 675,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 676,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 677,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 678,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 679,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 680,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 681,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 682,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 683,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 684,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 685,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 686,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "end_state",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "fleet_gate",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "fleet_gate",
+            "port": "S"
+          },
+          "to": {
+            "id": "end_state",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "fleet_gate.S -> end_state.N",
+        "technology": "logical flow",
+        "tags": []
+      }
+    ]
+  },
+  "theme": {
+    "name": "bc250-local-ai",
+    "tokens": {},
+    "tagStyles": [
+      {
+        "tag": "root",
+        "fill": "#dfe7ff",
+        "stroke": "#455a9c",
+        "text": "#111827"
+      },
+      {
+        "tag": "hardware",
+        "fill": "#dceeff",
+        "stroke": "#2563eb",
+        "text": "#111827"
+      },
+      {
+        "tag": "software",
+        "fill": "#e7f7ee",
+        "stroke": "#2f855a",
+        "text": "#111827"
+      },
+      {
+        "tag": "llm",
+        "fill": "#e8f4ff",
+        "stroke": "#0f766e",
+        "text": "#111827"
+      },
+      {
+        "tag": "network",
+        "fill": "#fff4d8",
+        "stroke": "#a16207",
+        "text": "#111827"
+      },
+      {
+        "tag": "cooling",
+        "fill": "#e7f5ff",
+        "stroke": "#0284c7",
+        "text": "#111827"
+      },
+      {
+        "tag": "optimization",
+        "fill": "#f3e8ff",
+        "stroke": "#7e22ce",
+        "text": "#111827"
+      },
+      {
+        "tag": "risk",
+        "fill": "#ffe8e8",
+        "stroke": "#b91c1c",
+        "text": "#111827"
+      },
+      {
+        "tag": "cost",
+        "fill": "#fff0f6",
+        "stroke": "#be185d",
+        "text": "#111827"
+      },
+      {
+        "tag": "benchmark",
+        "fill": "#eef2f7",
+        "stroke": "#475569",
+        "text": "#111827"
+      },
+      {
+        "tag": "phase",
+        "fill": "#ecfdf5",
+        "stroke": "#047857",
+        "text": "#111827"
+      },
+      {
+        "tag": "alternative",
+        "fill": "#fefce8",
+        "stroke": "#a16207",
+        "text": "#111827"
+      }
+    ],
+    "perspectiveStyles": []
+  },
+  "resources": [
+    {
+      "id": "src-bench",
+      "type": "url",
+      "label": "BC-250 LLM benchmarks",
+      "uri": "https://github.com/akandr/bc250",
+      "description": "Single-board Vulkan and memory tuning notes.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-cores",
+      "type": "url",
+      "label": "8-core / CU helper tooling",
+      "uri": "https://github.com/GabriWar/bc250-core-cu-unlock",
+      "description": "Optional CPU/GPU qualification tooling.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-cu",
+      "type": "url",
+      "label": "40-CU unlock research",
+      "uri": "https://github.com/duggasco/bc250-40cu-unlock",
+      "description": "Optional GPU CU qualification research.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-four",
+      "type": "url",
+      "label": "Four-node cluster reference",
+      "uri": "https://github.com/Cirius1792/bc250-cluster-ansible",
+      "description": "Reference multi-worker RPC deployment.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-h6",
+      "type": "url",
+      "label": "H6 BC-250 docs",
+      "uri": "https://github.com/H6-Technologies/BC-250",
+      "description": "Community hardware and Linux documentation.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-ollama",
+      "type": "url",
+      "label": "BC-250 Ollama + Open WebUI",
+      "uri": "https://github.com/thelamer/bc250-ollama-openwebui",
+      "description": "Headless Vulkan/Ollama deployment.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-two",
+      "type": "url",
+      "label": "Two-node llama.cpp cluster",
+      "uri": "https://github.com/4claps/bc250-llama-cluster",
+      "description": "Validated two-node RPC design with dedicated 2.5 GbE backend.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-video",
+      "type": "url",
+      "label": "Original BC-250 video",
+      "uri": "https://www.youtube.com/watch?v=Ztkh2UfSUxw",
+      "description": "Starting point for this research.",
+      "tags": [
+        "source"
+      ]
+    }
+  ],
+  "acceptances": []
+}

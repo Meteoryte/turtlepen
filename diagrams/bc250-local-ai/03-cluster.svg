@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="2180" viewBox="0 0 2200 2180" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
+<title id="tp-title">BC-250 Local AI Compute — Cluster Topology</title>
+<desc id="tp-desc">25 diagram elements across 1 visible page(s)</desc>
+<metadata>{"schema":3,"name":"BC-250 Local AI Compute — Cluster Topology","view":null,"elements":25}</metadata>
+<style>
+  .bg { fill: #f4f3ef; }
+  .grid { stroke: #dedbd3; stroke-width: 0.5; }
+  .grid-major { stroke: #cbc7bd; stroke-width: 0.5; }
+  .box { fill: #e9e7e1; stroke: #2b2a26; stroke-width: 1; }
+  .box-label, .key-title, .key-label { fill: #2b2a26; }
+  .stroke { fill: #2b2a26; }
+  .hop { stroke: #2b2a26; }
+  .free-text { fill: #6b6862; }
+  .hit-S0 { fill: #8a5b56; opacity: 0.30; }
+  .hit-S1 { fill: #96755c; opacity: 0.28; }
+  .hit-S2 { fill: #87805a; opacity: 0.24; }
+  .hit-S3 { fill: #4a6572; opacity: 0.20; }
+  .dimmed { fill: url(#tp-stipple); }
+  .dither-run { fill: #2b2a26; }
+  .simplify-run { fill: #2b2a26; }
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #1a1917; }
+    .grid { stroke: #2e2c28; }
+    .grid-major { stroke: #3d3a35; }
+    .box { fill: #232220; stroke: #dedbd3; }
+    .box-label { fill: #dedbd3; }
+    .free-text { fill: #9a968d; }
+    .stroke { fill: #dedbd3; }
+    .hop { stroke: #dedbd3; }
+  }
+
+</style>
+<defs>
+
+  <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
+       5px quadrant so a dimmed element is made of the same units as every
+       other mark on the page. -->
+  <pattern id="tp-stipple" width="10" height="10" patternUnits="userSpaceOnUse">
+    <rect width="5" height="5" fill="#2b2a26"/>
+    <rect x="5" y="5" width="5" height="5" fill="#2b2a26"/>
+  </pattern>
+</defs>
+<rect class="bg" x="0" y="0" width="2200" height="2180"/>
+<g transform="translate(-210,0)">
+<g data-page="base" data-z="0" opacity="1">
+<g data-element="client" role="group" aria-label="box client: LOCAL CLIENTS / AGENTS">
+<path class="box" d="M1045,30 H1575 A5,5 0 0 1 1580,35 V165 A5,5 0 0 1 1575,170 H1045 A5,5 0 0 1 1040,165 V35 A5,5 0 0 1 1045,30 Z" data-id="client" style="fill:#e8f4ff;stroke:#0f766e"/><text class="box-label" x="1244" y="104" font-size="10" textLength="132" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">LOCAL CLIENTS / AGENTS</text>
+</g>
+<g data-element="router" role="group" aria-label="box router: ROUTER — one logical OpenAI-compatible endpoint / health-aware task + model routing">
+<path class="box" d="M1045,250 H1575 A5,5 0 0 1 1580,255 V385 A5,5 0 0 1 1575,390 H1045 A5,5 0 0 1 1040,385 V255 A5,5 0 0 1 1045,250 Z" data-id="router" style="fill:#fff4d8;stroke:#a16207"/><text class="box-label" x="1061" y="324" font-size="10" textLength="498" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">ROUTER — one logical OpenAI-compatible endpoint / health-aware task + model routing</text>
+</g>
+<g data-element="mode" role="group" aria-label="box mode: SCALING MODE — choose from the measured bottleneck">
+<path class="box" d="M1045,490 H1575 A5,5 0 0 1 1580,495 V625 A5,5 0 0 1 1575,630 H1045 A5,5 0 0 1 1040,625 V495 A5,5 0 0 1 1045,490 Z" data-id="mode" style="fill:#eef2f7;stroke:#475569"/><text class="box-label" x="1160" y="564" font-size="10" textLength="300" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">SCALING MODE — choose from the measured bottleneck</text>
+</g>
+<g data-element="shard" role="group" aria-label="box shard: DEFAULT — request-level sharding">
+<path class="box" d="M245,490 H775 A5,5 0 0 1 780,495 V625 A5,5 0 0 1 775,630 H245 A5,5 0 0 1 240,625 V495 A5,5 0 0 1 245,490 Z" data-id="shard" style="fill:#fff4d8;stroke:#a16207"/><text class="box-label" x="414" y="564" font-size="10" textLength="192" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">DEFAULT — request-level sharding</text>
+</g>
+<g data-element="rpc" role="group" aria-label="box rpc: WHEN NEEDED — distributed-model RPC">
+<path class="box" d="M1845,490 H2375 A5,5 0 0 1 2380,495 V625 A5,5 0 0 1 2375,630 H1845 A5,5 0 0 1 1840,625 V495 A5,5 0 0 1 1845,490 Z" data-id="rpc" style="fill:#fff4d8;stroke:#a16207"/><text class="box-label" x="2005" y="564" font-size="10" textLength="210" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">WHEN NEEDED — distributed-model RPC</text>
+</g>
+<g data-element="workers" role="group" aria-label="box workers: SPECIALISTS — fast general / coding / RAG-batch / speech / image / evaluation workers">
+<path class="box" d="M245,750 H775 A5,5 0 0 1 780,755 V885 A5,5 0 0 1 775,890 H245 A5,5 0 0 1 240,885 V755 A5,5 0 0 1 245,750 Z" data-id="workers" style="fill:#e8f4ff;stroke:#0f766e"/><text class="box-label" x="255" y="824" font-size="10" textLength="510" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">SPECIALISTS — fast general / coding / RAG-batch / speech / image / evaluation workers</text>
+</g>
+<g data-element="coord" role="group" aria-label="box coord: RPC COORDINATOR — llama-server + local Vulkan GPU">
+<path class="box" d="M1845,750 H2375 A5,5 0 0 1 2380,755 V885 A5,5 0 0 1 2375,890 H1845 A5,5 0 0 1 1840,885 V755 A5,5 0 0 1 1845,750 Z" data-id="coord" style="fill:#fff4d8;stroke:#a16207"/><text class="box-label" x="1963" y="824" font-size="10" textLength="294" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">RPC COORDINATOR — llama-server + local Vulkan GPU</text>
+</g>
+<g data-element="worker" role="group" aria-label="box worker: RPC WORKER — ggml-rpc-server + Vulkan GPU">
+<path class="box" d="M1845,990 H2375 A5,5 0 0 1 2380,995 V1125 A5,5 0 0 1 2375,1130 H1845 A5,5 0 0 1 1840,1125 V995 A5,5 0 0 1 1845,990 Z" data-id="worker" style="fill:#fff4d8;stroke:#a16207"/><text class="box-label" x="1987" y="1064" font-size="10" textLength="246" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">RPC WORKER — ggml-rpc-server + Vulkan GPU</text>
+</g>
+<g data-element="backend" role="group" aria-label="box backend: RPC BACKEND — dedicated 2.5 GbE point-to-point; separate it from management/internet traffic">
+<path class="box" d="M1845,1230 H2375 A5,5 0 0 1 2380,1235 V1365 A5,5 0 0 1 2375,1370 H1845 A5,5 0 0 1 1840,1365 V1235 A5,5 0 0 1 1845,1230 Z" data-id="backend" style="fill:#ffe8e8;stroke:#b91c1c"/><text class="box-label" x="1858" y="1296" font-size="10" textLength="504" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">RPC BACKEND — dedicated 2.5 GbE point-to-point; separate it from management/internet</text><text class="box-label" x="2089" y="1311" font-size="10" textLength="42" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">traffic</text>
+</g>
+<g data-element="shardrule" role="group" aria-label="box shardrule: SHARDING BENEFIT — locality / concurrency / independent models / isolated failures">
+<path class="box" d="M245,1490 H775 A5,5 0 0 1 780,1495 V1625 A5,5 0 0 1 775,1630 H245 A5,5 0 0 1 240,1625 V1495 A5,5 0 0 1 245,1490 Z" data-id="shardrule" style="fill:#eef2f7;stroke:#475569"/><text class="box-label" x="264" y="1564" font-size="10" textLength="492" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">SHARDING BENEFIT — locality / concurrency / independent models / isolated failures</text>
+</g>
+<g data-element="rpcrule" role="group" aria-label="box rpcrule: RPC BENEFIT — one larger model can span boards; cost is network synchronization and watts">
+<path class="box" d="M1845,1490 H2375 A5,5 0 0 1 2380,1495 V1625 A5,5 0 0 1 2375,1630 H1845 A5,5 0 0 1 1840,1625 V1495 A5,5 0 0 1 1845,1490 Z" data-id="rpcrule" style="fill:#eef2f7;stroke:#475569"/><text class="box-label" x="1861" y="1556" font-size="10" textLength="498" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">RPC BENEFIT — one larger model can span boards; cost is network synchronization and</text><text class="box-label" x="2095" y="1571" font-size="10" textLength="30" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">watts</text>
+</g>
+<g data-element="ops" role="group" aria-label="box ops: OPERATIONS — Ansible/config management / model inventory / health / Prometheus-Grafana / thermals">
+<path class="box" d="M1045,1750 H1575 A5,5 0 0 1 1580,1755 V1885 A5,5 0 0 1 1575,1890 H1045 A5,5 0 0 1 1040,1885 V1755 A5,5 0 0 1 1045,1750 Z" data-id="ops" style="fill:#eef2f7;stroke:#475569"/><text class="box-label" x="1046" y="1816" font-size="10" textLength="528" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">OPERATIONS — Ansible/config management / model inventory / health / Prometheus-Grafana /</text><text class="box-label" x="1286" y="1831" font-size="10" textLength="48" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">thermals</text>
+</g>
+<g data-element="rule" role="group" aria-label="box rule: SCALE RULE — add independent workers first; grow distributed-model groups only after quality + network benchmarks">
+<path class="box" d="M1045,2010 H1575 A5,5 0 0 1 1580,2015 V2145 A5,5 0 0 1 1575,2150 H1045 A5,5 0 0 1 1040,2145 V2015 A5,5 0 0 1 1045,2010 Z" data-id="rule" style="fill:#eef2f7;stroke:#475569"/><text class="box-label" x="1058" y="2076" font-size="10" textLength="504" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">SCALE RULE — add independent workers first; grow distributed-model groups only after</text><text class="box-label" x="1226" y="2091" font-size="10" textLength="168" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">quality + network benchmarks</text>
+</g>
+<g data-element="e1" role="group" aria-label="Relationship e1, from client to router. client.S -&gt; router.N">
+<g data-id="e1" data-kind="path" data-role="connector"><polyline points="1312,172 1312,247" fill="none" stroke="#a16207" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,245 L1312.5,250 L1315,245 Z" fill="#a16207" stroke="none"/></g>
+</g>
+<g data-element="e2" role="group" aria-label="Relationship e2, from router to mode. router.S -&gt; mode.N">
+<g data-id="e2" data-kind="path" data-role="connector"><polyline points="1312,392 1312,487" fill="none" stroke="#475569" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,485 L1312.5,490 L1315,485 Z" fill="#475569" stroke="none"/></g>
+</g>
+<g data-element="e3" role="group" aria-label="Relationship e3, from mode to shard. mode.W -&gt; shard.E">
+<g data-id="e3" data-kind="path" data-role="connector"><polyline points="1037,562 782,562" fill="none" stroke="#0f766e" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M785,560 L780,562.5 L785,565 Z" fill="#0f766e" stroke="none"/></g>
+</g>
+<g data-element="e4" role="group" aria-label="Relationship e4, from mode to rpc. mode.E -&gt; rpc.W">
+<g data-id="e4" data-kind="path" data-role="connector"><polyline points="1582,562 1837,562" fill="none" stroke="#0f766e" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1835,560 L1840,562.5 L1835,565 Z" fill="#0f766e" stroke="none"/></g>
+</g>
+<g data-element="e5" role="group" aria-label="Relationship e5, from shard to workers. shard.S -&gt; workers.N">
+<g data-id="e5" data-kind="path" data-role="connector"><polyline points="512,632 512,747" fill="none" stroke="#0f766e" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M510,745 L512.5,750 L515,745 Z" fill="#0f766e" stroke="none"/></g>
+</g>
+<g data-element="e6" role="group" aria-label="Relationship e6, from rpc to coord. rpc.S -&gt; coord.N">
+<g data-id="e6" data-kind="path" data-role="connector"><polyline points="2112,632 2112,747" fill="none" stroke="#a16207" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M2110,745 L2112.5,750 L2115,745 Z" fill="#a16207" stroke="none"/></g>
+</g>
+<g data-element="e7" role="group" aria-label="Relationship e7, from coord to worker. coord.S -&gt; worker.N">
+<g data-id="e7" data-kind="path" data-role="connector"><polyline points="2112,892 2112,987" fill="none" stroke="#a16207" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M2110,985 L2112.5,990 L2115,985 Z" fill="#a16207" stroke="none"/></g>
+</g>
+<g data-element="e8" role="group" aria-label="Relationship e8, from worker to backend. worker.S -&gt; backend.N">
+<g data-id="e8" data-kind="path" data-role="connector"><polyline points="2112,1132 2112,1227" fill="none" stroke="#a16207" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M2110,1225 L2112.5,1230 L2115,1225 Z" fill="#a16207" stroke="none"/></g>
+</g>
+<g data-element="e9" role="group" aria-label="Relationship e9, from workers to shardrule. workers.S -&gt; shardrule.N">
+<g data-id="e9" data-kind="path" data-role="connector"><polyline points="512,892 512,1487" fill="none" stroke="#475569" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M510,1485 L512.5,1490 L515,1485 Z" fill="#475569" stroke="none"/></g>
+</g>
+<g data-element="e10" role="group" aria-label="Relationship e10, from backend to rpcrule. backend.S -&gt; rpcrule.N">
+<g data-id="e10" data-kind="path" data-role="connector"><polyline points="2112,1372 2112,1487" fill="none" stroke="#475569" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M2110,1485 L2112.5,1490 L2115,1485 Z" fill="#475569" stroke="none"/></g>
+</g>
+<g data-element="e11" role="group" aria-label="Relationship e11, from mode to ops. mode.S -&gt; ops.N">
+<g data-id="e11" data-kind="path" data-role="connector"><polyline points="1312,632 1312,1747" fill="none" stroke="#2f855a" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,1745 L1312.5,1750 L1315,1745 Z" fill="#2f855a" stroke="none"/></g>
+</g>
+<g data-element="e12" role="group" aria-label="Relationship e12, from ops to rule. ops.S -&gt; rule.N">
+<g data-id="e12" data-kind="path" data-role="connector"><polyline points="1312,1892 1312,2007" fill="none" stroke="#475569" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,2005 L1312.5,2010 L1315,2005 Z" fill="#475569" stroke="none"/></g>
+</g>
+</g>
+</g>
+</svg>

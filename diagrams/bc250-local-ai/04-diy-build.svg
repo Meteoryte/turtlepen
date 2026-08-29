@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="2960" viewBox="0 0 1400 2960" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
+<title id="tp-title">BC-250 Local AI Compute — DIY Build Flow</title>
+<desc id="tp-desc">29 diagram elements across 1 visible page(s)</desc>
+<metadata>{"schema":3,"name":"BC-250 Local AI Compute — DIY Build Flow","view":null,"elements":29}</metadata>
+<style>
+  .bg { fill: #f4f3ef; }
+  .grid { stroke: #dedbd3; stroke-width: 0.5; }
+  .grid-major { stroke: #cbc7bd; stroke-width: 0.5; }
+  .box { fill: #e9e7e1; stroke: #2b2a26; stroke-width: 1; }
+  .box-label, .key-title, .key-label { fill: #2b2a26; }
+  .stroke { fill: #2b2a26; }
+  .hop { stroke: #2b2a26; }
+  .free-text { fill: #6b6862; }
+  .hit-S0 { fill: #8a5b56; opacity: 0.30; }
+  .hit-S1 { fill: #96755c; opacity: 0.28; }
+  .hit-S2 { fill: #87805a; opacity: 0.24; }
+  .hit-S3 { fill: #4a6572; opacity: 0.20; }
+  .dimmed { fill: url(#tp-stipple); }
+  .dither-run { fill: #2b2a26; }
+  .simplify-run { fill: #2b2a26; }
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #1a1917; }
+    .grid { stroke: #2e2c28; }
+    .grid-major { stroke: #3d3a35; }
+    .box { fill: #232220; stroke: #dedbd3; }
+    .box-label { fill: #dedbd3; }
+    .free-text { fill: #9a968d; }
+    .stroke { fill: #dedbd3; }
+    .hop { stroke: #dedbd3; }
+  }
+
+</style>
+<defs>
+
+  <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
+       5px quadrant so a dimmed element is made of the same units as every
+       other mark on the page. -->
+  <pattern id="tp-stipple" width="10" height="10" patternUnits="userSpaceOnUse">
+    <rect width="5" height="5" fill="#2b2a26"/>
+    <rect x="5" y="5" width="5" height="5" fill="#2b2a26"/>
+  </pattern>
+</defs>
+<rect class="bg" x="0" y="0" width="1400" height="2960"/>
+<g transform="translate(-1010,0)">
+<g data-page="base" data-z="0" opacity="1">
+<g data-element="start" role="group" aria-label="box start: DIY BC-250 AI NODE BUILD">
+<path class="box" d="M1045,30 H1575 A5,5 0 0 1 1580,35 V165 A5,5 0 0 1 1575,170 H1045 A5,5 0 0 1 1040,165 V35 A5,5 0 0 1 1045,30 Z" data-id="start" style="fill:#ecfdf5;stroke:#047857"/><text class="box-label" x="1238" y="104" font-size="10" textLength="144" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">DIY BC-250 AI NODE BUILD</text>
+</g>
+<g data-element="source" role="group" aria-label="box source: SOURCE + INSPECT — board / connectors / heatsink / storage / physical condition">
+<path class="box" d="M1045,250 H1575 A5,5 0 0 1 1580,255 V385 A5,5 0 0 1 1575,390 H1045 A5,5 0 0 1 1040,385 V255 A5,5 0 0 1 1045,250 Z" data-id="source" style="fill:#ffe8e8;stroke:#b91c1c"/><text class="box-label" x="1073" y="324" font-size="10" textLength="474" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">SOURCE + INSPECT — board / connectors / heatsink / storage / physical condition</text>
+</g>
+<g data-element="mount" role="group" aria-label="box mount: MOUNT — simple safe frame / protect underside / define airflow path">
+<path class="box" d="M1045,470 H1575 A5,5 0 0 1 1580,475 V605 A5,5 0 0 1 1575,610 H1045 A5,5 0 0 1 1040,605 V475 A5,5 0 0 1 1045,470 Z" data-id="mount" style="fill:#ffe8e8;stroke:#b91c1c"/><text class="box-label" x="1109" y="544" font-size="10" textLength="402" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">MOUNT — simple safe frame / protect underside / define airflow path</text>
+</g>
+<g data-element="power" role="group" aria-label="box power: POWER — known-good PSU / verify PCIe power / avoid questionable adapters">
+<path class="box" d="M1045,690 H1575 A5,5 0 0 1 1580,695 V825 A5,5 0 0 1 1575,830 H1045 A5,5 0 0 1 1040,825 V695 A5,5 0 0 1 1045,690 Z" data-id="power" style="fill:#ffe8e8;stroke:#b91c1c"/><text class="box-label" x="1094" y="764" font-size="10" textLength="432" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">POWER — known-good PSU / verify PCIe power / avoid questionable adapters</text>
+</g>
+<g data-element="cool" role="group" aria-label="box cool: COOLING FIRST — pressure fans / ducting / GDDR6-VRM attention / visible sensors">
+<path class="box" d="M1045,910 H1575 A5,5 0 0 1 1580,915 V1045 A5,5 0 0 1 1575,1050 H1045 A5,5 0 0 1 1040,1045 V915 A5,5 0 0 1 1045,910 Z" data-id="cool" style="fill:#e7f5ff;stroke:#0284c7"/><text class="box-label" x="1073" y="984" font-size="10" textLength="474" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">COOLING FIRST — pressure fans / ducting / GDDR6-VRM attention / visible sensors</text>
+</g>
+<g data-element="boot" role="group" aria-label="box boot: BOOT — modern Linux + SSH + management Ethernet + Vulkan check">
+<path class="box" d="M1045,1130 H1575 A5,5 0 0 1 1580,1135 V1265 A5,5 0 0 1 1575,1270 H1045 A5,5 0 0 1 1040,1265 V1135 A5,5 0 0 1 1045,1130 Z" data-id="boot" style="fill:#fff4d8;stroke:#a16207"/><text class="box-label" x="1124" y="1204" font-size="10" textLength="372" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">BOOT — modern Linux + SSH + management Ethernet + Vulkan check</text>
+</g>
+<g data-element="test" role="group" aria-label="box test: STOCK QUALIFICATION — stress / memory / Vulkan / thermal validation">
+<path class="box" d="M1045,1350 H1575 A5,5 0 0 1 1580,1355 V1485 A5,5 0 0 1 1575,1490 H1045 A5,5 0 0 1 1040,1485 V1355 A5,5 0 0 1 1045,1350 Z" data-id="test" style="fill:#eef2f7;stroke:#475569"/><text class="box-label" x="1109" y="1424" font-size="10" textLength="402" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">STOCK QUALIFICATION — stress / memory / Vulkan / thermal validation</text>
+</g>
+<g data-element="fix" role="group" aria-label="box fix: IF UNSTABLE — repair cooling / power / storage / firmware / board issue, then repeat stock validation">
+<path class="box" d="M1845,1350 H2375 A5,5 0 0 1 2380,1355 V1485 A5,5 0 0 1 2375,1490 H1845 A5,5 0 0 1 1840,1485 V1355 A5,5 0 0 1 1845,1350 Z" data-id="fix" style="fill:#ffe8e8;stroke:#b91c1c"/><text class="box-label" x="1858" y="1416" font-size="10" textLength="504" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">IF UNSTABLE — repair cooling / power / storage / firmware / board issue, then repeat</text><text class="box-label" x="2062" y="1431" font-size="10" textLength="96" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">stock validation</text>
+</g>
+<g data-element="baseline" role="group" aria-label="box baseline: IF STABLE — capture power / clocks / temps / Vulkan-visible memory / inference baseline">
+<path class="box" d="M1045,1590 H1575 A5,5 0 0 1 1580,1595 V1725 A5,5 0 0 1 1575,1730 H1045 A5,5 0 0 1 1040,1725 V1595 A5,5 0 0 1 1045,1590 Z" data-id="baseline" style="fill:#eef2f7;stroke:#475569"/><text class="box-label" x="1049" y="1664" font-size="10" textLength="522" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">IF STABLE — capture power / clocks / temps / Vulkan-visible memory / inference baseline</text>
+</g>
+<g data-element="memory" role="group" aria-label="box memory: TUNE — TTM/GTT + cooling-efficiency profile; verify repeatable gain">
+<path class="box" d="M1045,1830 H1575 A5,5 0 0 1 1580,1835 V1965 A5,5 0 0 1 1575,1970 H1045 A5,5 0 0 1 1040,1965 V1835 A5,5 0 0 1 1045,1830 Z" data-id="memory" style="fill:#f3e8ff;stroke:#7e22ce"/><text class="box-label" x="1109" y="1904" font-size="10" textLength="402" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">TUNE — TTM/GTT + cooling-efficiency profile; verify repeatable gain</text>
+</g>
+<g data-element="llm" role="group" aria-label="box llm: LLM — install llama.cpp or Ollama; start small; step upward in model size and context">
+<path class="box" d="M1045,2070 H1575 A5,5 0 0 1 1580,2075 V2205 A5,5 0 0 1 1575,2210 H1045 A5,5 0 0 1 1040,2205 V2075 A5,5 0 0 1 1045,2070 Z" data-id="llm" style="fill:#e8f4ff;stroke:#0f766e"/><text class="box-label" x="1055" y="2144" font-size="10" textLength="510" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">LLM — install llama.cpp or Ollama; start small; step upward in model size and context</text>
+</g>
+<g data-element="unlock" role="group" aria-label="box unlock: OPTIONAL — qualify 40-CU / 8-core path only now; maintain rollback and repeat correctness tests">
+<path class="box" d="M1845,2070 H2375 A5,5 0 0 1 2380,2075 V2205 A5,5 0 0 1 2375,2210 H1845 A5,5 0 0 1 1840,2205 V2075 A5,5 0 0 1 1845,2070 Z" data-id="unlock" style="fill:#ffe8e8;stroke:#b91c1c"/><text class="box-label" x="1879" y="2136" font-size="10" textLength="462" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">OPTIONAL — qualify 40-CU / 8-core path only now; maintain rollback and repeat</text><text class="box-label" x="2059" y="2151" font-size="10" textLength="102" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">correctness tests</text>
+</g>
+<g data-element="serve" role="group" aria-label="box serve: SERVE — LAN-only API + optional Open WebUI + firewall + process supervision">
+<path class="box" d="M1045,2310 H1575 A5,5 0 0 1 1580,2315 V2445 A5,5 0 0 1 1575,2450 H1045 A5,5 0 0 1 1040,2445 V2315 A5,5 0 0 1 1045,2310 Z" data-id="serve" style="fill:#ffe8e8;stroke:#b91c1c"/><text class="box-label" x="1085" y="2384" font-size="10" textLength="450" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">SERVE — LAN-only API + optional Open WebUI + firewall + process supervision</text>
+</g>
+<g data-element="second" role="group" aria-label="box second: EXPAND — add board #2 only after node #1 is boring and reliable">
+<path class="box" d="M1045,2550 H1575 A5,5 0 0 1 1580,2555 V2685 A5,5 0 0 1 1575,2690 H1045 A5,5 0 0 1 1040,2685 V2555 A5,5 0 0 1 1045,2550 Z" data-id="second" style="fill:#ecfdf5;stroke:#047857"/><text class="box-label" x="1121" y="2624" font-size="10" textLength="378" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">EXPAND — add board #2 only after node #1 is boring and reliable</text>
+</g>
+<g data-element="done" role="group" aria-label="box done: RESULT — reproducible AI appliance with measured baseline and rollback path">
+<path class="box" d="M1045,2790 H1575 A5,5 0 0 1 1580,2795 V2925 A5,5 0 0 1 1575,2930 H1045 A5,5 0 0 1 1040,2925 V2795 A5,5 0 0 1 1045,2790 Z" data-id="done" style="fill:#eef2f7;stroke:#475569"/><text class="box-label" x="1085" y="2864" font-size="10" textLength="450" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">RESULT — reproducible AI appliance with measured baseline and rollback path</text>
+</g>
+<g data-element="e1" role="group" aria-label="Relationship e1, from start to source. start.S -&gt; source.N">
+<g data-id="e1" data-kind="path"><rect class="stroke" x="1310" y="170" width="5" height="5"/><rect class="stroke" x="1310" y="175" width="5" height="5"/><rect class="stroke" x="1310" y="180" width="5" height="5"/><rect class="stroke" x="1310" y="185" width="5" height="5"/><rect class="stroke" x="1310" y="190" width="5" height="5"/><rect class="stroke" x="1310" y="195" width="5" height="5"/><rect class="stroke" x="1310" y="200" width="5" height="5"/><rect class="stroke" x="1310" y="205" width="5" height="5"/><rect class="stroke" x="1310" y="210" width="5" height="5"/><rect class="stroke" x="1310" y="215" width="5" height="5"/><rect class="stroke" x="1310" y="220" width="5" height="5"/><rect class="stroke" x="1310" y="225" width="5" height="5"/><rect class="stroke" x="1310" y="230" width="5" height="5"/><rect class="stroke" x="1310" y="235" width="5" height="5"/><rect class="stroke" x="1310" y="240" width="5" height="5"/><path class="stroke" d="M1310,245 L1312.5,250 L1315,245 Z"/></g>
+</g>
+<g data-element="e2" role="group" aria-label="Relationship e2, from source to mount. source.S -&gt; mount.N">
+<g data-id="e2" data-kind="path"><rect class="stroke" x="1310" y="390" width="5" height="5"/><rect class="stroke" x="1310" y="395" width="5" height="5"/><rect class="stroke" x="1310" y="400" width="5" height="5"/><rect class="stroke" x="1310" y="405" width="5" height="5"/><rect class="stroke" x="1310" y="410" width="5" height="5"/><rect class="stroke" x="1310" y="415" width="5" height="5"/><rect class="stroke" x="1310" y="420" width="5" height="5"/><rect class="stroke" x="1310" y="425" width="5" height="5"/><rect class="stroke" x="1310" y="430" width="5" height="5"/><rect class="stroke" x="1310" y="435" width="5" height="5"/><rect class="stroke" x="1310" y="440" width="5" height="5"/><rect class="stroke" x="1310" y="445" width="5" height="5"/><rect class="stroke" x="1310" y="450" width="5" height="5"/><rect class="stroke" x="1310" y="455" width="5" height="5"/><rect class="stroke" x="1310" y="460" width="5" height="5"/><path class="stroke" d="M1310,465 L1312.5,470 L1315,465 Z"/></g>
+</g>
+<g data-element="e3" role="group" aria-label="Relationship e3, from mount to power. mount.S -&gt; power.N">
+<g data-id="e3" data-kind="path"><rect class="stroke" x="1310" y="610" width="5" height="5"/><rect class="stroke" x="1310" y="615" width="5" height="5"/><rect class="stroke" x="1310" y="620" width="5" height="5"/><rect class="stroke" x="1310" y="625" width="5" height="5"/><rect class="stroke" x="1310" y="630" width="5" height="5"/><rect class="stroke" x="1310" y="635" width="5" height="5"/><rect class="stroke" x="1310" y="640" width="5" height="5"/><rect class="stroke" x="1310" y="645" width="5" height="5"/><rect class="stroke" x="1310" y="650" width="5" height="5"/><rect class="stroke" x="1310" y="655" width="5" height="5"/><rect class="stroke" x="1310" y="660" width="5" height="5"/><rect class="stroke" x="1310" y="665" width="5" height="5"/><rect class="stroke" x="1310" y="670" width="5" height="5"/><rect class="stroke" x="1310" y="675" width="5" height="5"/><rect class="stroke" x="1310" y="680" width="5" height="5"/><path class="stroke" d="M1310,685 L1312.5,690 L1315,685 Z"/></g>
+</g>
+<g data-element="e4" role="group" aria-label="Relationship e4, from power to cool. power.S -&gt; cool.N">
+<g data-id="e4" data-kind="path"><rect class="stroke" x="1310" y="830" width="5" height="5"/><rect class="stroke" x="1310" y="835" width="5" height="5"/><rect class="stroke" x="1310" y="840" width="5" height="5"/><rect class="stroke" x="1310" y="845" width="5" height="5"/><rect class="stroke" x="1310" y="850" width="5" height="5"/><rect class="stroke" x="1310" y="855" width="5" height="5"/><rect class="stroke" x="1310" y="860" width="5" height="5"/><rect class="stroke" x="1310" y="865" width="5" height="5"/><rect class="stroke" x="1310" y="870" width="5" height="5"/><rect class="stroke" x="1310" y="875" width="5" height="5"/><rect class="stroke" x="1310" y="880" width="5" height="5"/><rect class="stroke" x="1310" y="885" width="5" height="5"/><rect class="stroke" x="1310" y="890" width="5" height="5"/><rect class="stroke" x="1310" y="895" width="5" height="5"/><rect class="stroke" x="1310" y="900" width="5" height="5"/><path class="stroke" d="M1310,905 L1312.5,910 L1315,905 Z"/></g>
+</g>
+<g data-element="e5" role="group" aria-label="Relationship e5, from cool to boot. cool.S -&gt; boot.N">
+<g data-id="e5" data-kind="path"><rect class="stroke" x="1310" y="1050" width="5" height="5"/><rect class="stroke" x="1310" y="1055" width="5" height="5"/><rect class="stroke" x="1310" y="1060" width="5" height="5"/><rect class="stroke" x="1310" y="1065" width="5" height="5"/><rect class="stroke" x="1310" y="1070" width="5" height="5"/><rect class="stroke" x="1310" y="1075" width="5" height="5"/><rect class="stroke" x="1310" y="1080" width="5" height="5"/><rect class="stroke" x="1310" y="1085" width="5" height="5"/><rect class="stroke" x="1310" y="1090" width="5" height="5"/><rect class="stroke" x="1310" y="1095" width="5" height="5"/><rect class="stroke" x="1310" y="1100" width="5" height="5"/><rect class="stroke" x="1310" y="1105" width="5" height="5"/><rect class="stroke" x="1310" y="1110" width="5" height="5"/><rect class="stroke" x="1310" y="1115" width="5" height="5"/><rect class="stroke" x="1310" y="1120" width="5" height="5"/><path class="stroke" d="M1310,1125 L1312.5,1130 L1315,1125 Z"/></g>
+</g>
+<g data-element="e6" role="group" aria-label="Relationship e6, from boot to test. boot.S -&gt; test.N">
+<g data-id="e6" data-kind="path"><rect class="stroke" x="1310" y="1270" width="5" height="5"/><rect class="stroke" x="1310" y="1275" width="5" height="5"/><rect class="stroke" x="1310" y="1280" width="5" height="5"/><rect class="stroke" x="1310" y="1285" width="5" height="5"/><rect class="stroke" x="1310" y="1290" width="5" height="5"/><rect class="stroke" x="1310" y="1295" width="5" height="5"/><rect class="stroke" x="1310" y="1300" width="5" height="5"/><rect class="stroke" x="1310" y="1305" width="5" height="5"/><rect class="stroke" x="1310" y="1310" width="5" height="5"/><rect class="stroke" x="1310" y="1315" width="5" height="5"/><rect class="stroke" x="1310" y="1320" width="5" height="5"/><rect class="stroke" x="1310" y="1325" width="5" height="5"/><rect class="stroke" x="1310" y="1330" width="5" height="5"/><rect class="stroke" x="1310" y="1335" width="5" height="5"/><rect class="stroke" x="1310" y="1340" width="5" height="5"/><path class="stroke" d="M1310,1345 L1312.5,1350 L1315,1345 Z"/></g>
+</g>
+<g data-element="e7" role="group" aria-label="Relationship e7, from test to fix. test.E -&gt; fix.W">
+<g data-id="e7" data-kind="path" data-role="connector"><polyline points="1582,1422 1837,1422" fill="none" stroke="#b91c1c" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1835,1420 L1840,1422.5 L1835,1425 Z" fill="#b91c1c" stroke="none"/></g>
+</g>
+<g data-element="e8" role="group" aria-label="Relationship e8, from test to baseline. test.S -&gt; baseline.N">
+<g data-id="e8" data-kind="path" data-role="connector"><polyline points="1312,1492 1312,1587" fill="none" stroke="#475569" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,1585 L1312.5,1590 L1315,1585 Z" fill="#475569" stroke="none"/></g>
+</g>
+<g data-element="e9" role="group" aria-label="Relationship e9, from baseline to memory. baseline.S -&gt; memory.N">
+<g data-id="e9" data-kind="path"><rect class="stroke" x="1310" y="1730" width="5" height="5"/><rect class="stroke" x="1310" y="1735" width="5" height="5"/><rect class="stroke" x="1310" y="1740" width="5" height="5"/><rect class="stroke" x="1310" y="1745" width="5" height="5"/><rect class="stroke" x="1310" y="1750" width="5" height="5"/><rect class="stroke" x="1310" y="1755" width="5" height="5"/><rect class="stroke" x="1310" y="1760" width="5" height="5"/><rect class="stroke" x="1310" y="1765" width="5" height="5"/><rect class="stroke" x="1310" y="1770" width="5" height="5"/><rect class="stroke" x="1310" y="1775" width="5" height="5"/><rect class="stroke" x="1310" y="1780" width="5" height="5"/><rect class="stroke" x="1310" y="1785" width="5" height="5"/><rect class="stroke" x="1310" y="1790" width="5" height="5"/><rect class="stroke" x="1310" y="1795" width="5" height="5"/><rect class="stroke" x="1310" y="1800" width="5" height="5"/><rect class="stroke" x="1310" y="1805" width="5" height="5"/><rect class="stroke" x="1310" y="1810" width="5" height="5"/><rect class="stroke" x="1310" y="1815" width="5" height="5"/><rect class="stroke" x="1310" y="1820" width="5" height="5"/><path class="stroke" d="M1310,1825 L1312.5,1830 L1315,1825 Z"/></g>
+</g>
+<g data-element="e10" role="group" aria-label="Relationship e10, from memory to llm. memory.S -&gt; llm.N">
+<g data-id="e10" data-kind="path"><rect class="stroke" x="1310" y="1970" width="5" height="5"/><rect class="stroke" x="1310" y="1975" width="5" height="5"/><rect class="stroke" x="1310" y="1980" width="5" height="5"/><rect class="stroke" x="1310" y="1985" width="5" height="5"/><rect class="stroke" x="1310" y="1990" width="5" height="5"/><rect class="stroke" x="1310" y="1995" width="5" height="5"/><rect class="stroke" x="1310" y="2000" width="5" height="5"/><rect class="stroke" x="1310" y="2005" width="5" height="5"/><rect class="stroke" x="1310" y="2010" width="5" height="5"/><rect class="stroke" x="1310" y="2015" width="5" height="5"/><rect class="stroke" x="1310" y="2020" width="5" height="5"/><rect class="stroke" x="1310" y="2025" width="5" height="5"/><rect class="stroke" x="1310" y="2030" width="5" height="5"/><rect class="stroke" x="1310" y="2035" width="5" height="5"/><rect class="stroke" x="1310" y="2040" width="5" height="5"/><rect class="stroke" x="1310" y="2045" width="5" height="5"/><rect class="stroke" x="1310" y="2050" width="5" height="5"/><rect class="stroke" x="1310" y="2055" width="5" height="5"/><rect class="stroke" x="1310" y="2060" width="5" height="5"/><path class="stroke" d="M1310,2065 L1312.5,2070 L1315,2065 Z"/></g>
+</g>
+<g data-element="e11" role="group" aria-label="Relationship e11, from llm to unlock. llm.E -&gt; unlock.W">
+<g data-id="e11" data-kind="path" data-role="connector"><polyline points="1582,2142 1837,2142" fill="none" stroke="#b91c1c" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1835,2140 L1840,2142.5 L1835,2145 Z" fill="#b91c1c" stroke="none"/></g>
+</g>
+<g data-element="e12" role="group" aria-label="Relationship e12, from llm to serve. llm.S -&gt; serve.N">
+<g data-id="e12" data-kind="path"><rect class="stroke" x="1310" y="2210" width="5" height="5"/><rect class="stroke" x="1310" y="2215" width="5" height="5"/><rect class="stroke" x="1310" y="2220" width="5" height="5"/><rect class="stroke" x="1310" y="2225" width="5" height="5"/><rect class="stroke" x="1310" y="2230" width="5" height="5"/><rect class="stroke" x="1310" y="2235" width="5" height="5"/><rect class="stroke" x="1310" y="2240" width="5" height="5"/><rect class="stroke" x="1310" y="2245" width="5" height="5"/><rect class="stroke" x="1310" y="2250" width="5" height="5"/><rect class="stroke" x="1310" y="2255" width="5" height="5"/><rect class="stroke" x="1310" y="2260" width="5" height="5"/><rect class="stroke" x="1310" y="2265" width="5" height="5"/><rect class="stroke" x="1310" y="2270" width="5" height="5"/><rect class="stroke" x="1310" y="2275" width="5" height="5"/><rect class="stroke" x="1310" y="2280" width="5" height="5"/><rect class="stroke" x="1310" y="2285" width="5" height="5"/><rect class="stroke" x="1310" y="2290" width="5" height="5"/><rect class="stroke" x="1310" y="2295" width="5" height="5"/><rect class="stroke" x="1310" y="2300" width="5" height="5"/><path class="stroke" d="M1310,2305 L1312.5,2310 L1315,2305 Z"/></g>
+</g>
+<g data-element="e13" role="group" aria-label="Relationship e13, from serve to second. serve.S -&gt; second.N">
+<g data-id="e13" data-kind="path"><rect class="stroke" x="1310" y="2450" width="5" height="5"/><rect class="stroke" x="1310" y="2455" width="5" height="5"/><rect class="stroke" x="1310" y="2460" width="5" height="5"/><rect class="stroke" x="1310" y="2465" width="5" height="5"/><rect class="stroke" x="1310" y="2470" width="5" height="5"/><rect class="stroke" x="1310" y="2475" width="5" height="5"/><rect class="stroke" x="1310" y="2480" width="5" height="5"/><rect class="stroke" x="1310" y="2485" width="5" height="5"/><rect class="stroke" x="1310" y="2490" width="5" height="5"/><rect class="stroke" x="1310" y="2495" width="5" height="5"/><rect class="stroke" x="1310" y="2500" width="5" height="5"/><rect class="stroke" x="1310" y="2505" width="5" height="5"/><rect class="stroke" x="1310" y="2510" width="5" height="5"/><rect class="stroke" x="1310" y="2515" width="5" height="5"/><rect class="stroke" x="1310" y="2520" width="5" height="5"/><rect class="stroke" x="1310" y="2525" width="5" height="5"/><rect class="stroke" x="1310" y="2530" width="5" height="5"/><rect class="stroke" x="1310" y="2535" width="5" height="5"/><rect class="stroke" x="1310" y="2540" width="5" height="5"/><path class="stroke" d="M1310,2545 L1312.5,2550 L1315,2545 Z"/></g>
+</g>
+<g data-element="e14" role="group" aria-label="Relationship e14, from second to done. second.S -&gt; done.N">
+<g data-id="e14" data-kind="path"><rect class="stroke" x="1310" y="2690" width="5" height="5"/><rect class="stroke" x="1310" y="2695" width="5" height="5"/><rect class="stroke" x="1310" y="2700" width="5" height="5"/><rect class="stroke" x="1310" y="2705" width="5" height="5"/><rect class="stroke" x="1310" y="2710" width="5" height="5"/><rect class="stroke" x="1310" y="2715" width="5" height="5"/><rect class="stroke" x="1310" y="2720" width="5" height="5"/><rect class="stroke" x="1310" y="2725" width="5" height="5"/><rect class="stroke" x="1310" y="2730" width="5" height="5"/><rect class="stroke" x="1310" y="2735" width="5" height="5"/><rect class="stroke" x="1310" y="2740" width="5" height="5"/><rect class="stroke" x="1310" y="2745" width="5" height="5"/><rect class="stroke" x="1310" y="2750" width="5" height="5"/><rect class="stroke" x="1310" y="2755" width="5" height="5"/><rect class="stroke" x="1310" y="2760" width="5" height="5"/><rect class="stroke" x="1310" y="2765" width="5" height="5"/><rect class="stroke" x="1310" y="2770" width="5" height="5"/><rect class="stroke" x="1310" y="2775" width="5" height="5"/><rect class="stroke" x="1310" y="2780" width="5" height="5"/><path class="stroke" d="M1310,2785 L1312.5,2790 L1315,2785 Z"/></g>
+</g>
+</g>
+</g>
+</svg>

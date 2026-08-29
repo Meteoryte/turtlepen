@@ -1,0 +1,3197 @@
+{
+  "schema": 3,
+  "name": "BC-250 Local AI Compute — System Overview",
+  "canvas": {
+    "cols": 280,
+    "rows": 210
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-29T15:34:00.000Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "root",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 6,
+          "w": 108,
+          "h": 28
+        },
+        "label": "BC-250 AS A LOW-COST LOCAL AI COMPUTE APPLIANCE",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "BC-250 AS A LOW-COST LOCAL AI COMPUTE APPLIANCE",
+        "tags": [
+          "root",
+          "llm"
+        ]
+      },
+      {
+        "id": "stock",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 50,
+          "w": 108,
+          "h": 28
+        },
+        "label": "STOCK BASELINE — 16 GB shared GDDR6 / 24 GPU CUs / 6 Zen 2 cores / Linux-first",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "STOCK BASELINE — 16 GB shared GDDR6 / 24 GPU CUs / 6 Zen 2 cores / Linux-first",
+        "tags": [
+          "hardware"
+        ]
+      },
+      {
+        "id": "strategy",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 94,
+          "w": 108,
+          "h": 28
+        },
+        "label": "BUILD STRATEGY",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "BUILD STRATEGY",
+        "tags": [
+          "phase"
+        ]
+      },
+      {
+        "id": "better",
+        "kind": "box",
+        "rect": {
+          "x": 48,
+          "y": 94,
+          "w": 108,
+          "h": 28
+        },
+        "label": "BETTER — ducted cooling / TTM-GTT tuning / efficient clocks / optional 40-CU and 8-core qualification",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "BETTER — ducted cooling / TTM-GTT tuning / efficient clocks / optional 40-CU and 8-core qualification",
+        "tags": [
+          "optimization",
+          "cooling"
+        ]
+      },
+      {
+        "id": "cheaper",
+        "kind": "box",
+        "rect": {
+          "x": 368,
+          "y": 94,
+          "w": 108,
+          "h": 28
+        },
+        "label": "CHEAPER — reuse PSU / SSD / fans / simple frame; spend first on thermals and power quality",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "CHEAPER — reuse PSU / SSD / fans / simple frame; spend first on thermals and power quality",
+        "tags": [
+          "cost",
+          "hardware"
+        ]
+      },
+      {
+        "id": "runtime",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 142,
+          "w": 108,
+          "h": 28
+        },
+        "label": "SOFTWARE — Linux + Mesa/RADV + Vulkan + llama.cpp or Ollama + optional Open WebUI",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "SOFTWARE — Linux + Mesa/RADV + Vulkan + llama.cpp or Ollama + optional Open WebUI",
+        "tags": [
+          "software",
+          "llm"
+        ]
+      },
+      {
+        "id": "single",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 190,
+          "w": 108,
+          "h": 28
+        },
+        "label": "ONE BOARD — private LAN inference for general chat / coding / RAG / batch / agent work",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "ONE BOARD — private LAN inference for general chat / coding / RAG / batch / agent work",
+        "tags": [
+          "llm"
+        ]
+      },
+      {
+        "id": "scale",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 238,
+          "w": 108,
+          "h": 28
+        },
+        "label": "SCALE QUESTION — do we need more model capacity or more concurrent work?",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "SCALE QUESTION — do we need more model capacity or more concurrent work?",
+        "tags": [
+          "benchmark"
+        ]
+      },
+      {
+        "id": "fleet",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 286,
+          "w": 108,
+          "h": 28
+        },
+        "label": "SCALE — independent specialist workers first; llama.cpp RPC when one model genuinely must span boards",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "SCALE — independent specialist workers first; llama.cpp RPC when one model genuinely must span boards",
+        "tags": [
+          "network",
+          "llm"
+        ]
+      },
+      {
+        "id": "alts",
+        "kind": "box",
+        "rect": {
+          "x": 368,
+          "y": 286,
+          "w": 108,
+          "h": 28
+        },
+        "label": "ALTERNATIVES — existing CUDA GPU / used high-VRAM accelerator / newer unified-memory AI appliance",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "ALTERNATIVES — existing CUDA GPU / used high-VRAM accelerator / newer unified-memory AI appliance",
+        "tags": [
+          "alternative",
+          "cost"
+        ]
+      },
+      {
+        "id": "result",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 338,
+          "w": 108,
+          "h": 28
+        },
+        "label": "BEST FIT — cheap private inference appliance / weird-compute lab / agent worker",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "BEST FIT — cheap private inference appliance / weird-compute lab / agent worker",
+        "tags": [
+          "root",
+          "llm"
+        ]
+      },
+      {
+        "id": "e1",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 34,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 35,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 36,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 37,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 38,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 39,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 40,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 41,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 42,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 43,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 48,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 49,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 50,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "stock",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "root",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "root",
+            "port": "S"
+          },
+          "to": {
+            "id": "stock",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "root.S -> stock.N",
+        "technology": "logical flow",
+        "tags": [
+          "hardware"
+        ]
+      },
+      {
+        "id": "e2",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 78,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 79,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 80,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 81,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 82,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 83,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 84,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 85,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 86,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 87,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 88,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 89,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 90,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 91,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 92,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 93,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 94,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "strategy",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "stock",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "stock",
+            "port": "S"
+          },
+          "to": {
+            "id": "strategy",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "stock.S -> strategy.N",
+        "technology": "logical flow",
+        "tags": [
+          "phase"
+        ]
+      },
+      {
+        "id": "e3",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 207,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 206,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 205,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 204,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 203,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 202,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 201,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 200,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 199,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 198,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 197,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 196,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 195,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 194,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 193,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 192,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 191,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 190,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 189,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 188,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 187,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 186,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 185,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 184,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 183,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 182,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 181,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 180,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 179,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 178,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 177,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 176,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 175,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 174,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 173,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 172,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 171,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 170,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 169,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 168,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 167,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 166,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 165,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 164,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 163,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 162,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 161,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 160,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 159,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 158,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 157,
+            "y": 108,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 156,
+            "y": 108,
+            "type": "arrow",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 155,
+          "y": 108,
+          "facing": "left"
+        },
+        "targets": [
+          {
+            "id": "better",
+            "port": "E",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "strategy",
+          "port": "W"
+        },
+        "relationship": {
+          "from": {
+            "id": "strategy",
+            "port": "W"
+          },
+          "to": {
+            "id": "better",
+            "port": "E"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "strategy.W -> better.E",
+        "technology": "logical flow",
+        "tags": [
+          "optimization"
+        ]
+      },
+      {
+        "id": "e4",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 316,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 317,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 318,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 319,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 320,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 321,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 322,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 323,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 324,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 325,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 326,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 327,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 328,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 329,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 330,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 331,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 332,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 333,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 334,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 335,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 336,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 337,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 338,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 339,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 340,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 341,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 342,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 343,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 344,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 345,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 346,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 347,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 348,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 349,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 350,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 351,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 352,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 353,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 354,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 355,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 356,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 357,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 358,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 359,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 360,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 361,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 362,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 363,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 364,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 365,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 366,
+            "y": 108,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 367,
+            "y": 108,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 368,
+          "y": 108,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "cheaper",
+            "port": "W",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "strategy",
+          "port": "E"
+        },
+        "relationship": {
+          "from": {
+            "id": "strategy",
+            "port": "E"
+          },
+          "to": {
+            "id": "cheaper",
+            "port": "W"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "strategy.E -> cheaper.W",
+        "technology": "logical flow",
+        "tags": [
+          "cost"
+        ]
+      },
+      {
+        "id": "e5",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 122,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 123,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 124,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 125,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 126,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 127,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 128,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 129,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 130,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 131,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 132,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 133,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 134,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 135,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 136,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 137,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 138,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 139,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 140,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 141,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 142,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "runtime",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "strategy",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "strategy",
+            "port": "S"
+          },
+          "to": {
+            "id": "runtime",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "strategy.S -> runtime.N",
+        "technology": "logical flow",
+        "tags": [
+          "software"
+        ]
+      },
+      {
+        "id": "e6",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 170,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 171,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 172,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 173,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 174,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 175,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 176,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 177,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 178,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 179,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 180,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 181,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 182,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 183,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 184,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 185,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 186,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 187,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 188,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 189,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 190,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "single",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "runtime",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "runtime",
+            "port": "S"
+          },
+          "to": {
+            "id": "single",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "runtime.S -> single.N",
+        "technology": "logical flow",
+        "tags": [
+          "llm"
+        ]
+      },
+      {
+        "id": "e7",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 218,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 219,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 220,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 221,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 222,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 223,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 224,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 225,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 226,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 227,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 228,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 229,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 230,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 231,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 232,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 233,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 234,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 235,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 236,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 237,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 238,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "scale",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "single",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "single",
+            "port": "S"
+          },
+          "to": {
+            "id": "scale",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "single.S -> scale.N",
+        "technology": "logical flow",
+        "tags": [
+          "benchmark"
+        ]
+      },
+      {
+        "id": "e8",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 266,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 267,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 268,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 269,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 270,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 271,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 272,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 273,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 274,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 275,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 276,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 277,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 278,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 279,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 280,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 281,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 282,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 283,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 284,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 285,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 286,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "fleet",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "scale",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "scale",
+            "port": "S"
+          },
+          "to": {
+            "id": "fleet",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "scale.S -> fleet.N",
+        "technology": "logical flow",
+        "tags": [
+          "network"
+        ]
+      },
+      {
+        "id": "e9",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 316,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 317,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 318,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 319,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 320,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 321,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 322,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 323,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 324,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 325,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 326,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 327,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 328,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 329,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 330,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 331,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 332,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 333,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 334,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 335,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 336,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 337,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 338,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 339,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 340,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 341,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 342,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 343,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 344,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 345,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 346,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 347,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 348,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 349,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 350,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 351,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 352,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 353,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 354,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 355,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 356,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 357,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 358,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 359,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 360,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 361,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 362,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 363,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 364,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 365,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 366,
+            "y": 300,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 367,
+            "y": 300,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 368,
+          "y": 300,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "alts",
+            "port": "W",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "fleet",
+          "port": "E"
+        },
+        "relationship": {
+          "from": {
+            "id": "fleet",
+            "port": "E"
+          },
+          "to": {
+            "id": "alts",
+            "port": "W"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "fleet.E -> alts.W",
+        "technology": "logical flow",
+        "tags": [
+          "alternative"
+        ]
+      },
+      {
+        "id": "e10",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 314,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 315,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 316,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 317,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 318,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 319,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 320,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 321,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 322,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 323,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 324,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 325,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 326,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 327,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 328,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 329,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 330,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 331,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 332,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 333,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 334,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 335,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 336,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 337,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 338,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "result",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "fleet",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "fleet",
+            "port": "S"
+          },
+          "to": {
+            "id": "result",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "fleet.S -> result.N",
+        "technology": "logical flow",
+        "tags": [
+          "llm"
+        ]
+      }
+    ]
+  },
+  "theme": {
+    "name": "bc250-local-ai",
+    "tokens": {},
+    "tagStyles": [
+      {
+        "tag": "root",
+        "fill": "#dfe7ff",
+        "stroke": "#455a9c",
+        "text": "#111827"
+      },
+      {
+        "tag": "hardware",
+        "fill": "#dceeff",
+        "stroke": "#2563eb",
+        "text": "#111827"
+      },
+      {
+        "tag": "software",
+        "fill": "#e7f7ee",
+        "stroke": "#2f855a",
+        "text": "#111827"
+      },
+      {
+        "tag": "llm",
+        "fill": "#e8f4ff",
+        "stroke": "#0f766e",
+        "text": "#111827"
+      },
+      {
+        "tag": "network",
+        "fill": "#fff4d8",
+        "stroke": "#a16207",
+        "text": "#111827"
+      },
+      {
+        "tag": "cooling",
+        "fill": "#e7f5ff",
+        "stroke": "#0284c7",
+        "text": "#111827"
+      },
+      {
+        "tag": "optimization",
+        "fill": "#f3e8ff",
+        "stroke": "#7e22ce",
+        "text": "#111827"
+      },
+      {
+        "tag": "risk",
+        "fill": "#ffe8e8",
+        "stroke": "#b91c1c",
+        "text": "#111827"
+      },
+      {
+        "tag": "cost",
+        "fill": "#fff0f6",
+        "stroke": "#be185d",
+        "text": "#111827"
+      },
+      {
+        "tag": "benchmark",
+        "fill": "#eef2f7",
+        "stroke": "#475569",
+        "text": "#111827"
+      },
+      {
+        "tag": "phase",
+        "fill": "#ecfdf5",
+        "stroke": "#047857",
+        "text": "#111827"
+      },
+      {
+        "tag": "alternative",
+        "fill": "#fefce8",
+        "stroke": "#a16207",
+        "text": "#111827"
+      }
+    ],
+    "perspectiveStyles": []
+  },
+  "resources": [
+    {
+      "id": "src-bench",
+      "type": "url",
+      "label": "BC-250 LLM benchmarks",
+      "uri": "https://github.com/akandr/bc250",
+      "description": "Single-board Vulkan and memory tuning notes.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-cores",
+      "type": "url",
+      "label": "8-core / CU helper tooling",
+      "uri": "https://github.com/GabriWar/bc250-core-cu-unlock",
+      "description": "Optional CPU/GPU qualification tooling.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-cu",
+      "type": "url",
+      "label": "40-CU unlock research",
+      "uri": "https://github.com/duggasco/bc250-40cu-unlock",
+      "description": "Optional GPU CU qualification research.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-four",
+      "type": "url",
+      "label": "Four-node cluster reference",
+      "uri": "https://github.com/Cirius1792/bc250-cluster-ansible",
+      "description": "Reference multi-worker RPC deployment.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-h6",
+      "type": "url",
+      "label": "H6 BC-250 docs",
+      "uri": "https://github.com/H6-Technologies/BC-250",
+      "description": "Community hardware and Linux documentation.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-ollama",
+      "type": "url",
+      "label": "BC-250 Ollama + Open WebUI",
+      "uri": "https://github.com/thelamer/bc250-ollama-openwebui",
+      "description": "Headless Vulkan/Ollama deployment.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-two",
+      "type": "url",
+      "label": "Two-node llama.cpp cluster",
+      "uri": "https://github.com/4claps/bc250-llama-cluster",
+      "description": "Validated two-node RPC design with dedicated 2.5 GbE backend.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-video",
+      "type": "url",
+      "label": "Original BC-250 video",
+      "uri": "https://www.youtube.com/watch?v=Ztkh2UfSUxw",
+      "description": "Starting point for this research.",
+      "tags": [
+        "source"
+      ]
+    }
+  ],
+  "acceptances": []
+}

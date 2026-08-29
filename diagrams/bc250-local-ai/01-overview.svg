@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1860" viewBox="0 0 2200 1860" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
+<title id="tp-title">BC-250 Local AI Compute — System Overview</title>
+<desc id="tp-desc">21 diagram elements across 1 visible page(s)</desc>
+<metadata>{"schema":3,"name":"BC-250 Local AI Compute — System Overview","view":null,"elements":21}</metadata>
+<style>
+  .bg { fill: #f4f3ef; }
+  .grid { stroke: #dedbd3; stroke-width: 0.5; }
+  .grid-major { stroke: #cbc7bd; stroke-width: 0.5; }
+  .box { fill: #e9e7e1; stroke: #2b2a26; stroke-width: 1; }
+  .box-label, .key-title, .key-label { fill: #2b2a26; }
+  .stroke { fill: #2b2a26; }
+  .hop { stroke: #2b2a26; }
+  .free-text { fill: #6b6862; }
+  .hit-S0 { fill: #8a5b56; opacity: 0.30; }
+  .hit-S1 { fill: #96755c; opacity: 0.28; }
+  .hit-S2 { fill: #87805a; opacity: 0.24; }
+  .hit-S3 { fill: #4a6572; opacity: 0.20; }
+  .dimmed { fill: url(#tp-stipple); }
+  .dither-run { fill: #2b2a26; }
+  .simplify-run { fill: #2b2a26; }
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #1a1917; }
+    .grid { stroke: #2e2c28; }
+    .grid-major { stroke: #3d3a35; }
+    .box { fill: #232220; stroke: #dedbd3; }
+    .box-label { fill: #dedbd3; }
+    .free-text { fill: #9a968d; }
+    .stroke { fill: #dedbd3; }
+    .hop { stroke: #dedbd3; }
+  }
+
+</style>
+<defs>
+
+  <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
+       5px quadrant so a dimmed element is made of the same units as every
+       other mark on the page. -->
+  <pattern id="tp-stipple" width="10" height="10" patternUnits="userSpaceOnUse">
+    <rect width="5" height="5" fill="#2b2a26"/>
+    <rect x="5" y="5" width="5" height="5" fill="#2b2a26"/>
+  </pattern>
+</defs>
+<rect class="bg" x="0" y="0" width="2200" height="1860"/>
+<g transform="translate(-210,0)">
+<g data-page="base" data-z="0" opacity="1">
+<g data-element="root" role="group" aria-label="box root: BC-250 AS A LOW-COST LOCAL AI COMPUTE APPLIANCE">
+<path class="box" d="M1045,30 H1575 A5,5 0 0 1 1580,35 V165 A5,5 0 0 1 1575,170 H1045 A5,5 0 0 1 1040,165 V35 A5,5 0 0 1 1045,30 Z" data-id="root" style="fill:#e8f4ff;stroke:#0f766e"/><text class="box-label" x="1169" y="104" font-size="10" textLength="282" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">BC-250 AS A LOW-COST LOCAL AI COMPUTE APPLIANCE</text>
+</g>
+<g data-element="stock" role="group" aria-label="box stock: STOCK BASELINE — 16 GB shared GDDR6 / 24 GPU CUs / 6 Zen 2 cores / Linux-first">
+<path class="box" d="M1045,250 H1575 A5,5 0 0 1 1580,255 V385 A5,5 0 0 1 1575,390 H1045 A5,5 0 0 1 1040,385 V255 A5,5 0 0 1 1045,250 Z" data-id="stock" style="fill:#dceeff;stroke:#2563eb"/><text class="box-label" x="1076" y="324" font-size="10" textLength="468" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">STOCK BASELINE — 16 GB shared GDDR6 / 24 GPU CUs / 6 Zen 2 cores / Linux-first</text>
+</g>
+<g data-element="strategy" role="group" aria-label="box strategy: BUILD STRATEGY">
+<path class="box" d="M1045,470 H1575 A5,5 0 0 1 1580,475 V605 A5,5 0 0 1 1575,610 H1045 A5,5 0 0 1 1040,605 V475 A5,5 0 0 1 1045,470 Z" data-id="strategy" style="fill:#ecfdf5;stroke:#047857"/><text class="box-label" x="1268" y="544" font-size="10" textLength="84" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">BUILD STRATEGY</text>
+</g>
+<g data-element="better" role="group" aria-label="box better: BETTER — ducted cooling / TTM-GTT tuning / efficient clocks / optional 40-CU and 8-core qualification">
+<path class="box" d="M245,470 H775 A5,5 0 0 1 780,475 V605 A5,5 0 0 1 775,610 H245 A5,5 0 0 1 240,605 V475 A5,5 0 0 1 245,470 Z" data-id="better" style="fill:#f3e8ff;stroke:#7e22ce"/><text class="box-label" x="249" y="536" font-size="10" textLength="522" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">BETTER — ducted cooling / TTM-GTT tuning / efficient clocks / optional 40-CU and 8-core</text><text class="box-label" x="471" y="551" font-size="10" textLength="78" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">qualification</text>
+</g>
+<g data-element="cheaper" role="group" aria-label="box cheaper: CHEAPER — reuse PSU / SSD / fans / simple frame; spend first on thermals and power quality">
+<path class="box" d="M1845,470 H2375 A5,5 0 0 1 2380,475 V605 A5,5 0 0 1 2375,610 H1845 A5,5 0 0 1 1840,605 V475 A5,5 0 0 1 1845,470 Z" data-id="cheaper" style="fill:#fff0f6;stroke:#be185d"/><text class="box-label" x="1864" y="536" font-size="10" textLength="492" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">CHEAPER — reuse PSU / SSD / fans / simple frame; spend first on thermals and power</text><text class="box-label" x="2089" y="551" font-size="10" textLength="42" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">quality</text>
+</g>
+<g data-element="runtime" role="group" aria-label="box runtime: SOFTWARE — Linux + Mesa/RADV + Vulkan + llama.cpp or Ollama + optional Open WebUI">
+<path class="box" d="M1045,710 H1575 A5,5 0 0 1 1580,715 V845 A5,5 0 0 1 1575,850 H1045 A5,5 0 0 1 1040,845 V715 A5,5 0 0 1 1045,710 Z" data-id="runtime" style="fill:#e8f4ff;stroke:#0f766e"/><text class="box-label" x="1067" y="784" font-size="10" textLength="486" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">SOFTWARE — Linux + Mesa/RADV + Vulkan + llama.cpp or Ollama + optional Open WebUI</text>
+</g>
+<g data-element="single" role="group" aria-label="box single: ONE BOARD — private LAN inference for general chat / coding / RAG / batch / agent work">
+<path class="box" d="M1045,950 H1575 A5,5 0 0 1 1580,955 V1085 A5,5 0 0 1 1575,1090 H1045 A5,5 0 0 1 1040,1085 V955 A5,5 0 0 1 1045,950 Z" data-id="single" style="fill:#e8f4ff;stroke:#0f766e"/><text class="box-label" x="1052" y="1024" font-size="10" textLength="516" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">ONE BOARD — private LAN inference for general chat / coding / RAG / batch / agent work</text>
+</g>
+<g data-element="scale" role="group" aria-label="box scale: SCALE QUESTION — do we need more model capacity or more concurrent work?">
+<path class="box" d="M1045,1190 H1575 A5,5 0 0 1 1580,1195 V1325 A5,5 0 0 1 1575,1330 H1045 A5,5 0 0 1 1040,1325 V1195 A5,5 0 0 1 1045,1190 Z" data-id="scale" style="fill:#eef2f7;stroke:#475569"/><text class="box-label" x="1094" y="1264" font-size="10" textLength="432" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">SCALE QUESTION — do we need more model capacity or more concurrent work?</text>
+</g>
+<g data-element="fleet" role="group" aria-label="box fleet: SCALE — independent specialist workers first; llama.cpp RPC when one model genuinely must span boards">
+<path class="box" d="M1045,1430 H1575 A5,5 0 0 1 1580,1435 V1565 A5,5 0 0 1 1575,1570 H1045 A5,5 0 0 1 1040,1565 V1435 A5,5 0 0 1 1045,1430 Z" data-id="fleet" style="fill:#fff4d8;stroke:#a16207"/><text class="box-label" x="1058" y="1496" font-size="10" textLength="504" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">SCALE — independent specialist workers first; llama.cpp RPC when one model genuinely</text><text class="box-label" x="1262" y="1511" font-size="10" textLength="96" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">must span boards</text>
+</g>
+<g data-element="alts" role="group" aria-label="box alts: ALTERNATIVES — existing CUDA GPU / used high-VRAM accelerator / newer unified-memory AI appliance">
+<path class="box" d="M1845,1430 H2375 A5,5 0 0 1 2380,1435 V1565 A5,5 0 0 1 2375,1570 H1845 A5,5 0 0 1 1840,1565 V1435 A5,5 0 0 1 1845,1430 Z" data-id="alts" style="fill:#fefce8;stroke:#a16207"/><text class="box-label" x="1849" y="1496" font-size="10" textLength="522" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">ALTERNATIVES — existing CUDA GPU / used high-VRAM accelerator / newer unified-memory AI</text><text class="box-label" x="2083" y="1511" font-size="10" textLength="54" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">appliance</text>
+</g>
+<g data-element="result" role="group" aria-label="box result: BEST FIT — cheap private inference appliance / weird-compute lab / agent worker">
+<path class="box" d="M1045,1690 H1575 A5,5 0 0 1 1580,1695 V1825 A5,5 0 0 1 1575,1830 H1045 A5,5 0 0 1 1040,1825 V1695 A5,5 0 0 1 1045,1690 Z" data-id="result" style="fill:#e8f4ff;stroke:#0f766e"/><text class="box-label" x="1073" y="1764" font-size="10" textLength="474" lengthAdjust="spacingAndGlyphs" style="fill:#111827" xml:space="preserve">BEST FIT — cheap private inference appliance / weird-compute lab / agent worker</text>
+</g>
+<g data-element="e1" role="group" aria-label="Relationship e1, from root to stock. root.S -&gt; stock.N">
+<g data-id="e1" data-kind="path" data-role="connector"><polyline points="1312,172 1312,247" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,245 L1312.5,250 L1315,245 Z" fill="#2563eb" stroke="none"/></g>
+</g>
+<g data-element="e2" role="group" aria-label="Relationship e2, from stock to strategy. stock.S -&gt; strategy.N">
+<g data-id="e2" data-kind="path" data-role="connector"><polyline points="1312,392 1312,467" fill="none" stroke="#047857" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,465 L1312.5,470 L1315,465 Z" fill="#047857" stroke="none"/></g>
+</g>
+<g data-element="e3" role="group" aria-label="Relationship e3, from strategy to better. strategy.W -&gt; better.E">
+<g data-id="e3" data-kind="path" data-role="connector"><polyline points="1037,542 782,542" fill="none" stroke="#7e22ce" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M785,540 L780,542.5 L785,545 Z" fill="#7e22ce" stroke="none"/></g>
+</g>
+<g data-element="e4" role="group" aria-label="Relationship e4, from strategy to cheaper. strategy.E -&gt; cheaper.W">
+<g data-id="e4" data-kind="path" data-role="connector"><polyline points="1582,542 1837,542" fill="none" stroke="#be185d" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1835,540 L1840,542.5 L1835,545 Z" fill="#be185d" stroke="none"/></g>
+</g>
+<g data-element="e5" role="group" aria-label="Relationship e5, from strategy to runtime. strategy.S -&gt; runtime.N">
+<g data-id="e5" data-kind="path" data-role="connector"><polyline points="1312,612 1312,707" fill="none" stroke="#2f855a" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,705 L1312.5,710 L1315,705 Z" fill="#2f855a" stroke="none"/></g>
+</g>
+<g data-element="e6" role="group" aria-label="Relationship e6, from runtime to single. runtime.S -&gt; single.N">
+<g data-id="e6" data-kind="path" data-role="connector"><polyline points="1312,852 1312,947" fill="none" stroke="#0f766e" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,945 L1312.5,950 L1315,945 Z" fill="#0f766e" stroke="none"/></g>
+</g>
+<g data-element="e7" role="group" aria-label="Relationship e7, from single to scale. single.S -&gt; scale.N">
+<g data-id="e7" data-kind="path" data-role="connector"><polyline points="1312,1092 1312,1187" fill="none" stroke="#475569" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,1185 L1312.5,1190 L1315,1185 Z" fill="#475569" stroke="none"/></g>
+</g>
+<g data-element="e8" role="group" aria-label="Relationship e8, from scale to fleet. scale.S -&gt; fleet.N">
+<g data-id="e8" data-kind="path" data-role="connector"><polyline points="1312,1332 1312,1427" fill="none" stroke="#a16207" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,1425 L1312.5,1430 L1315,1425 Z" fill="#a16207" stroke="none"/></g>
+</g>
+<g data-element="e9" role="group" aria-label="Relationship e9, from fleet to alts. fleet.E -&gt; alts.W">
+<g data-id="e9" data-kind="path" data-role="connector"><polyline points="1582,1502 1837,1502" fill="none" stroke="#a16207" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1835,1500 L1840,1502.5 L1835,1505 Z" fill="#a16207" stroke="none"/></g>
+</g>
+<g data-element="e10" role="group" aria-label="Relationship e10, from fleet to result. fleet.S -&gt; result.N">
+<g data-id="e10" data-kind="path" data-role="connector"><polyline points="1312,1572 1312,1687" fill="none" stroke="#0f766e" stroke-width="5" stroke-linecap="butt" stroke-linejoin="round"/><path d="M1310,1685 L1312.5,1690 L1315,1685 Z" fill="#0f766e" stroke="none"/></g>
+</g>
+</g>
+</g>
+</svg>

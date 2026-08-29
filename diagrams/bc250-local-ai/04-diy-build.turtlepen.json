@@ -1,0 +1,3664 @@
+{
+  "schema": 3,
+  "name": "BC-250 Local AI Compute — DIY Build Flow",
+  "canvas": {
+    "cols": 300,
+    "rows": 310
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-29T15:34:00.000Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "start",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 6,
+          "w": 108,
+          "h": 28
+        },
+        "label": "DIY BC-250 AI NODE BUILD",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "DIY BC-250 AI NODE BUILD",
+        "tags": [
+          "root",
+          "phase"
+        ]
+      },
+      {
+        "id": "source",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 50,
+          "w": 108,
+          "h": 28
+        },
+        "label": "SOURCE + INSPECT — board / connectors / heatsink / storage / physical condition",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "SOURCE + INSPECT — board / connectors / heatsink / storage / physical condition",
+        "tags": [
+          "hardware",
+          "risk"
+        ]
+      },
+      {
+        "id": "mount",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 94,
+          "w": 108,
+          "h": 28
+        },
+        "label": "MOUNT — simple safe frame / protect underside / define airflow path",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "MOUNT — simple safe frame / protect underside / define airflow path",
+        "tags": [
+          "hardware",
+          "risk"
+        ]
+      },
+      {
+        "id": "power",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 138,
+          "w": 108,
+          "h": 28
+        },
+        "label": "POWER — known-good PSU / verify PCIe power / avoid questionable adapters",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "POWER — known-good PSU / verify PCIe power / avoid questionable adapters",
+        "tags": [
+          "hardware",
+          "risk"
+        ]
+      },
+      {
+        "id": "cool",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 182,
+          "w": 108,
+          "h": 28
+        },
+        "label": "COOLING FIRST — pressure fans / ducting / GDDR6-VRM attention / visible sensors",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "COOLING FIRST — pressure fans / ducting / GDDR6-VRM attention / visible sensors",
+        "tags": [
+          "cooling",
+          "hardware"
+        ]
+      },
+      {
+        "id": "boot",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 226,
+          "w": 108,
+          "h": 28
+        },
+        "label": "BOOT — modern Linux + SSH + management Ethernet + Vulkan check",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "BOOT — modern Linux + SSH + management Ethernet + Vulkan check",
+        "tags": [
+          "software",
+          "network"
+        ]
+      },
+      {
+        "id": "test",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 270,
+          "w": 108,
+          "h": 28
+        },
+        "label": "STOCK QUALIFICATION — stress / memory / Vulkan / thermal validation",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "STOCK QUALIFICATION — stress / memory / Vulkan / thermal validation",
+        "tags": [
+          "benchmark",
+          "risk"
+        ]
+      },
+      {
+        "id": "fix",
+        "kind": "box",
+        "rect": {
+          "x": 368,
+          "y": 270,
+          "w": 108,
+          "h": 28
+        },
+        "label": "IF UNSTABLE — repair cooling / power / storage / firmware / board issue, then repeat stock validation",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "IF UNSTABLE — repair cooling / power / storage / firmware / board issue, then repeat stock validation",
+        "tags": [
+          "risk",
+          "hardware"
+        ]
+      },
+      {
+        "id": "baseline",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 318,
+          "w": 108,
+          "h": 28
+        },
+        "label": "IF STABLE — capture power / clocks / temps / Vulkan-visible memory / inference baseline",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "IF STABLE — capture power / clocks / temps / Vulkan-visible memory / inference baseline",
+        "tags": [
+          "benchmark"
+        ]
+      },
+      {
+        "id": "memory",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 366,
+          "w": 108,
+          "h": 28
+        },
+        "label": "TUNE — TTM/GTT + cooling-efficiency profile; verify repeatable gain",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "TUNE — TTM/GTT + cooling-efficiency profile; verify repeatable gain",
+        "tags": [
+          "software",
+          "optimization"
+        ]
+      },
+      {
+        "id": "llm",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 414,
+          "w": 108,
+          "h": 28
+        },
+        "label": "LLM — install llama.cpp or Ollama; start small; step upward in model size and context",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "LLM — install llama.cpp or Ollama; start small; step upward in model size and context",
+        "tags": [
+          "software",
+          "llm"
+        ]
+      },
+      {
+        "id": "unlock",
+        "kind": "box",
+        "rect": {
+          "x": 368,
+          "y": 414,
+          "w": 108,
+          "h": 28
+        },
+        "label": "OPTIONAL — qualify 40-CU / 8-core path only now; maintain rollback and repeat correctness tests",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "OPTIONAL — qualify 40-CU / 8-core path only now; maintain rollback and repeat correctness tests",
+        "tags": [
+          "optimization",
+          "risk"
+        ]
+      },
+      {
+        "id": "serve",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 462,
+          "w": 108,
+          "h": 28
+        },
+        "label": "SERVE — LAN-only API + optional Open WebUI + firewall + process supervision",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "SERVE — LAN-only API + optional Open WebUI + firewall + process supervision",
+        "tags": [
+          "network",
+          "llm",
+          "risk"
+        ]
+      },
+      {
+        "id": "second",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 510,
+          "w": 108,
+          "h": 28
+        },
+        "label": "EXPAND — add board #2 only after node #1 is boring and reliable",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "EXPAND — add board #2 only after node #1 is boring and reliable",
+        "tags": [
+          "network",
+          "phase"
+        ]
+      },
+      {
+        "id": "done",
+        "kind": "box",
+        "rect": {
+          "x": 208,
+          "y": 558,
+          "w": 108,
+          "h": 28
+        },
+        "label": "RESULT — reproducible AI appliance with measured baseline and rollback path",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "description": "RESULT — reproducible AI appliance with measured baseline and rollback path",
+        "tags": [
+          "root",
+          "benchmark"
+        ]
+      },
+      {
+        "id": "e1",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 34,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 35,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 36,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 37,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 38,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 39,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 40,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 41,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 42,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 43,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 48,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 49,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 50,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "source",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "start",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "start",
+            "port": "S"
+          },
+          "to": {
+            "id": "source",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "start.S -> source.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e2",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 78,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 79,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 80,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 81,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 82,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 83,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 84,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 85,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 86,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 87,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 88,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 89,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 90,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 91,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 92,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 93,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 94,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "mount",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "source",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "source",
+            "port": "S"
+          },
+          "to": {
+            "id": "mount",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "source.S -> mount.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e3",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 122,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 123,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 124,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 125,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 126,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 127,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 128,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 129,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 130,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 131,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 132,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 133,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 134,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 135,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 136,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 137,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 138,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "power",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "mount",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "mount",
+            "port": "S"
+          },
+          "to": {
+            "id": "power",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "mount.S -> power.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e4",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 166,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 167,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 168,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 169,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 170,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 171,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 172,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 173,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 174,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 175,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 176,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 177,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 178,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 179,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 180,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 181,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 182,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "cool",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "power",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "power",
+            "port": "S"
+          },
+          "to": {
+            "id": "cool",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "power.S -> cool.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e5",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 210,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 211,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 212,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 213,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 214,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 215,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 216,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 217,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 218,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 219,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 220,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 221,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 222,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 223,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 224,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 225,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 226,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "boot",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "cool",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "cool",
+            "port": "S"
+          },
+          "to": {
+            "id": "boot",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "cool.S -> boot.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e6",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 254,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 255,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 256,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 257,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 258,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 259,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 260,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 261,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 262,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 263,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 264,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 265,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 266,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 267,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 268,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 269,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 270,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "test",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "boot",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "boot",
+            "port": "S"
+          },
+          "to": {
+            "id": "test",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "boot.S -> test.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e7",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 316,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 317,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 318,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 319,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 320,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 321,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 322,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 323,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 324,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 325,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 326,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 327,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 328,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 329,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 330,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 331,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 332,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 333,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 334,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 335,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 336,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 337,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 338,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 339,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 340,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 341,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 342,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 343,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 344,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 345,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 346,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 347,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 348,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 349,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 350,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 351,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 352,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 353,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 354,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 355,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 356,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 357,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 358,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 359,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 360,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 361,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 362,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 363,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 364,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 365,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 366,
+            "y": 284,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 367,
+            "y": 284,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 368,
+          "y": 284,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "fix",
+            "port": "W",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "test",
+          "port": "E"
+        },
+        "relationship": {
+          "from": {
+            "id": "test",
+            "port": "E"
+          },
+          "to": {
+            "id": "fix",
+            "port": "W"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "test.E -> fix.W",
+        "technology": "logical flow",
+        "tags": [
+          "risk"
+        ]
+      },
+      {
+        "id": "e8",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 298,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 299,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 300,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 301,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 302,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 303,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 304,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 305,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 306,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 307,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 308,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 309,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 310,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 311,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 312,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 313,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 314,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 315,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 316,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 317,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 318,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "baseline",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "test",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "test",
+            "port": "S"
+          },
+          "to": {
+            "id": "baseline",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "test.S -> baseline.N",
+        "technology": "logical flow",
+        "tags": [
+          "benchmark"
+        ]
+      },
+      {
+        "id": "e9",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 346,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 347,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 348,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 349,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 350,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 351,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 352,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 353,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 354,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 355,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 356,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 357,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 358,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 359,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 360,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 361,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 362,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 363,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 364,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 365,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 366,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "memory",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "baseline",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "baseline",
+            "port": "S"
+          },
+          "to": {
+            "id": "memory",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "baseline.S -> memory.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e10",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 394,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 395,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 396,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 397,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 398,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 399,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 400,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 401,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 402,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 403,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 404,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 405,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 406,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 407,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 408,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 409,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 410,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 411,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 412,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 413,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 414,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "llm",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "memory",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "memory",
+            "port": "S"
+          },
+          "to": {
+            "id": "llm",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "memory.S -> llm.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e11",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 316,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 317,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 318,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 319,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 320,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 321,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 322,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 323,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 324,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 325,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 326,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 327,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 328,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 329,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 330,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 331,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 332,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 333,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 334,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 335,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 336,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 337,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 338,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 339,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 340,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 341,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 342,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 343,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 344,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 345,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 346,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 347,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 348,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 349,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 350,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 351,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 352,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 353,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 354,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 355,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 356,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 357,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 358,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 359,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 360,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 361,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 362,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 363,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 364,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 365,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 366,
+            "y": 428,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 367,
+            "y": 428,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 368,
+          "y": 428,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "unlock",
+            "port": "W",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "llm",
+          "port": "E"
+        },
+        "relationship": {
+          "from": {
+            "id": "llm",
+            "port": "E"
+          },
+          "to": {
+            "id": "unlock",
+            "port": "W"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "llm.E -> unlock.W",
+        "technology": "logical flow",
+        "tags": [
+          "optimization",
+          "risk"
+        ]
+      },
+      {
+        "id": "e12",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 442,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 443,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 444,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 445,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 446,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 447,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 448,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 449,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 450,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 451,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 452,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 453,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 454,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 455,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 456,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 457,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 458,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 459,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 460,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 461,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 462,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "serve",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "llm",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "llm",
+            "port": "S"
+          },
+          "to": {
+            "id": "serve",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "llm.S -> serve.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e13",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 490,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 491,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 492,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 493,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 494,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 495,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 496,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 497,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 498,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 499,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 500,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 501,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 502,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 503,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 504,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 505,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 506,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 507,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 508,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 509,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 510,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "second",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "serve",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "serve",
+            "port": "S"
+          },
+          "to": {
+            "id": "second",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "serve.S -> second.N",
+        "technology": "logical flow",
+        "tags": []
+      },
+      {
+        "id": "e14",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 262,
+            "y": 538,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 539,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 540,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 541,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 542,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 543,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 544,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 545,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 546,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 547,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 548,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 549,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 550,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 551,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 552,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 553,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 554,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 555,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 556,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 557,
+            "type": "arrow",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": null,
+        "note": null,
+        "end": {
+          "x": 262,
+          "y": 558,
+          "facing": "down"
+        },
+        "targets": [
+          {
+            "id": "done",
+            "port": "N",
+            "step": 2
+          }
+        ],
+        "source": {
+          "id": "second",
+          "port": "S"
+        },
+        "relationship": {
+          "from": {
+            "id": "second",
+            "port": "S"
+          },
+          "to": {
+            "id": "done",
+            "port": "N"
+          },
+          "routing": "orthogonal",
+          "via": []
+        },
+        "description": "second.S -> done.N",
+        "technology": "logical flow",
+        "tags": []
+      }
+    ]
+  },
+  "theme": {
+    "name": "bc250-local-ai",
+    "tokens": {},
+    "tagStyles": [
+      {
+        "tag": "root",
+        "fill": "#dfe7ff",
+        "stroke": "#455a9c",
+        "text": "#111827"
+      },
+      {
+        "tag": "hardware",
+        "fill": "#dceeff",
+        "stroke": "#2563eb",
+        "text": "#111827"
+      },
+      {
+        "tag": "software",
+        "fill": "#e7f7ee",
+        "stroke": "#2f855a",
+        "text": "#111827"
+      },
+      {
+        "tag": "llm",
+        "fill": "#e8f4ff",
+        "stroke": "#0f766e",
+        "text": "#111827"
+      },
+      {
+        "tag": "network",
+        "fill": "#fff4d8",
+        "stroke": "#a16207",
+        "text": "#111827"
+      },
+      {
+        "tag": "cooling",
+        "fill": "#e7f5ff",
+        "stroke": "#0284c7",
+        "text": "#111827"
+      },
+      {
+        "tag": "optimization",
+        "fill": "#f3e8ff",
+        "stroke": "#7e22ce",
+        "text": "#111827"
+      },
+      {
+        "tag": "risk",
+        "fill": "#ffe8e8",
+        "stroke": "#b91c1c",
+        "text": "#111827"
+      },
+      {
+        "tag": "cost",
+        "fill": "#fff0f6",
+        "stroke": "#be185d",
+        "text": "#111827"
+      },
+      {
+        "tag": "benchmark",
+        "fill": "#eef2f7",
+        "stroke": "#475569",
+        "text": "#111827"
+      },
+      {
+        "tag": "phase",
+        "fill": "#ecfdf5",
+        "stroke": "#047857",
+        "text": "#111827"
+      },
+      {
+        "tag": "alternative",
+        "fill": "#fefce8",
+        "stroke": "#a16207",
+        "text": "#111827"
+      }
+    ],
+    "perspectiveStyles": []
+  },
+  "resources": [
+    {
+      "id": "src-bench",
+      "type": "url",
+      "label": "BC-250 LLM benchmarks",
+      "uri": "https://github.com/akandr/bc250",
+      "description": "Single-board Vulkan and memory tuning notes.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-cores",
+      "type": "url",
+      "label": "8-core / CU helper tooling",
+      "uri": "https://github.com/GabriWar/bc250-core-cu-unlock",
+      "description": "Optional CPU/GPU qualification tooling.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-cu",
+      "type": "url",
+      "label": "40-CU unlock research",
+      "uri": "https://github.com/duggasco/bc250-40cu-unlock",
+      "description": "Optional GPU CU qualification research.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-four",
+      "type": "url",
+      "label": "Four-node cluster reference",
+      "uri": "https://github.com/Cirius1792/bc250-cluster-ansible",
+      "description": "Reference multi-worker RPC deployment.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-h6",
+      "type": "url",
+      "label": "H6 BC-250 docs",
+      "uri": "https://github.com/H6-Technologies/BC-250",
+      "description": "Community hardware and Linux documentation.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-ollama",
+      "type": "url",
+      "label": "BC-250 Ollama + Open WebUI",
+      "uri": "https://github.com/thelamer/bc250-ollama-openwebui",
+      "description": "Headless Vulkan/Ollama deployment.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-two",
+      "type": "url",
+      "label": "Two-node llama.cpp cluster",
+      "uri": "https://github.com/4claps/bc250-llama-cluster",
+      "description": "Validated two-node RPC design with dedicated 2.5 GbE backend.",
+      "tags": [
+        "source"
+      ]
+    },
+    {
+      "id": "src-video",
+      "type": "url",
+      "label": "Original BC-250 video",
+      "uri": "https://www.youtube.com/watch?v=Ztkh2UfSUxw",
+      "description": "Starting point for this research.",
+      "tags": [
+        "source"
+      ]
+    }
+  ],
+  "acceptances": []
+}
