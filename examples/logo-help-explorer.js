@@ -2,6 +2,7 @@
 /**
  * Explore TurtlePen through its own MCP discovery surface before redesigning the logo.
  */
+import { writeFileSync } from 'node:fs';
 import { createMcpClient } from './mcp-client.js';
 
 const mcp = createMcpClient({ createdAt: '2026-08-29T20:20:00.000Z' });
@@ -61,6 +62,32 @@ try {
   for (const query of queries) {
     await call('search_help', { query });
   }
+
+  // The logo is illustration, while validation's L006 rule is primarily a
+  // diagram-line ambiguity detector. Ask TurtlePen itself how to resolve that
+  // distinction instead of guessing or blanket-suppressing findings.
+  const decisionQueries = [
+    'collision review',
+    'decision finding accept',
+    'accept finding',
+    'resolve finding',
+    'L006 stroke overlap',
+    'junction hop',
+    'intent overlay',
+    'artwork overlap',
+    'same page artwork',
+    'page overlay intent',
+    'accepted findings stale acceptances',
+  ];
+  const decisionHelp = [];
+  for (const query of decisionQueries) {
+    const body = await call('search_help', { query });
+    decisionHelp.push(`## ${query}\n\n\`\`\`text\n${body}\n\`\`\``);
+  }
+  writeFileSync(
+    'brand/logo-decision-help.md',
+    '# TurtlePen MCP help — logo collision decisions\n\n' + decisionHelp.join('\n\n') + '\n'
+  );
 } finally {
   await mcp.close();
 }
