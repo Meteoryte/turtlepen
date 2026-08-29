@@ -27,26 +27,26 @@ jobs:
       - name: Explore TurtlePen through MCP help
         run: node examples/logo-help-explorer.js
 
-      - name: Correct trace path and preserve exact quadrant addressing
+      - name: Correct authoring source against live MCP contracts
         run: |
           python - <<'PY'
           from pathlib import Path
           p = Path('examples/logo-redesign-mcp.js')
           s = p.read_text()
           old = "const q = (x, y, pin = 'c') => `${colName(Math.max(1, Math.ceil(x / 2)))}${Math.max(1, Math.ceil(y / 2))}.${pin}`;"
-          new = """const q = (x, y, pin = null) => {
-            const col = Math.floor(x / 2);
-            const row = Math.floor(y / 2);
-            if (pin) return `${colName(col + 1)}${row + 1}.${pin}`;
-            const qx = x - col * 2;
-            const qy = y - row * 2;
-            const part = qy === 0 ? (qx === 0 ? 'q1' : 'q2') : (qx === 0 ? 'q3' : 'q4');
-            return `${colName(col + 1)}${row + 1}.${part}`;
-          };"""
-          if old not in s:
-              raise SystemExit('expected q helper not found')
-          s = s.replace(old, new)
+          if old in s:
+              new = """const q = (x, y, pin = null) => {
+                const col = Math.floor(x / 2);
+                const row = Math.floor(y / 2);
+                if (pin) return `${colName(col + 1)}${row + 1}.${pin}`;
+                const qx = x - col * 2;
+                const qy = y - row * 2;
+                const part = qy === 0 ? (qx === 0 ? 'q1' : 'q2') : (qx === 0 ? 'q3' : 'q4');
+                return `${colName(col + 1)}${row + 1}.${part}`;
+              };"""
+              s = s.replace(old, new)
           s = s.replace("source: 'brand/logo-v2-source-mark.png'", "source: 'logo-v2-source-mark.png'")
+          s = s.replace("maxWidthCells: 78, maxHeightCells: 86", "maxWidthCells: 78")
           p.write_text(s)
           PY
 
