@@ -121,3 +121,29 @@ test('TURTLEPEN_ALLOW_ANY_PATH=1 restores unrestricted access and says so', asyn
   const open = JSON.parse(createTools(session).find((x) => x.name === 'runtime_info').handler({}));
   assert.equal(open.fileAccess, 'unrestricted', 'a client must be able to read the live boundary');
 });
+
+test('a refusal names the path it actually refused, including at a filesystem root', async () => {
+  // Regression: the unresolved tail was computed by slicing at
+  // `parent.length + 1`, which assumes the parent has no trailing separator.
+  // At a drive or filesystem root that separator is already there, so the
+  // slice ate the first character and a refusal for "X:/tmp-probe/..." named
+  // "X:\mp-probe\...". A boundary that misreports what it blocked is
+  // worse than useless: it sends the reader looking for the wrong path.
+  const root = await mkdtemp(resolve(tmpdir(), 'turtlepen-root-'));
+  const atRoot = resolve(root, '..', '..', 'turtlepen-nonexistent-probe', 'doc.turtlepen.json');
+  try {
+    const session = createSession({ cwd: root });
+    await assert.rejects(
+      () => resolveInside(session, root, atRoot),
+      (err) => {
+        assert.ok(
+          err.message.includes(resolve(atRoot)),
+          `the refusal must name ${resolve(atRoot)}, got: ${err.message}`,
+        );
+        return true;
+      },
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});

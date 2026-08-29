@@ -19,6 +19,7 @@ Status: **prototype** — 628 tests green, zero runtime dependencies, 61 MCP too
 | find the owner of version, schema, tools, artifacts, or generated evidence | [`docs/source-of-truth-map.md`](docs/source-of-truth-map.md) |
 | see the flowchart work and what was deliberately not built | [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md) |
 | repair existing lattice geometry | [`docs/lattice-editing.md`](docs/lattice-editing.md) |
+| know exactly which vector-editing operations exist | [`docs/svg-editing-capability-status.md`](docs/svg-editing-capability-status.md) — every capability marked SUPPORTED / PARTIAL / MISSING / OUT OF SCOPE |
 | import a compatible SVG safely | [`docs/svg-import.md`](docs/svg-import.md) |
 | know the current tool surface, authoritatively | call `turtlepen_help` — it outranks every document here |
 | validate/render/bundle without an MCP host | run `node src/cli.js help` or the `turtlepen` bin |

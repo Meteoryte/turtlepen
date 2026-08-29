@@ -9,7 +9,7 @@
 
 import { createHash } from 'node:crypto';
 import { readFile, stat, realpath } from 'node:fs/promises';
-import { dirname, resolve, sep } from 'node:path';
+import { basename, dirname, resolve, sep } from 'node:path';
 import * as core from '../core/index.js';
 import { atomicWriteFile } from '../io.js';
 import { VERSION } from '../version.js';
@@ -51,18 +51,23 @@ export async function resolveInside(session, base, target) {
   // of its own, but its parent directory does, and that is what a symlink
   // would have to subvert.
   let probe = path;
-  let unresolved = '';
+  const unresolvedParts = [];
   for (;;) {
     try {
       probe = await realpath(probe);
       break;
     } catch {
       const parent = dirname(probe);
-      if (parent === probe) { probe = resolve(probe); break; }
-      unresolved = unresolved ? `${probe.slice(parent.length + 1)}${sep}${unresolved}` : probe.slice(parent.length + 1);
+      if (parent === probe) break;
+      // basename, not slice arithmetic: a filesystem root already carries its
+      // separator ("X:\\", "/"), so slicing at parent.length + 1 eats the
+      // first character of the child and "tmp-probe" silently becomes
+      // "mp-probe".
+      unresolvedParts.unshift(basename(probe));
       probe = parent;
     }
   }
+  const unresolved = unresolvedParts.join(sep);
   const real = unresolved ? resolve(probe, unresolved) : probe;
   if (!roots.some((root) => real === root || real.startsWith(root + sep))) {
     throw new Error(
