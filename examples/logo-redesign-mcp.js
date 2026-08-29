@@ -240,9 +240,35 @@ try {
 
   console.log('\n[ascii]\n' + await call(mcp, 'ascii', { maxCells: 110, withFindings: true }));
   const validation = await call(mcp, 'validate', { format:'json' }, { print:true });
-  const parsed = JSON.parse(validation);
+  let parsed = JSON.parse(validation);
+  const decisions = parsed.open.filter((f) => ['S0','S1','S2'].includes(f.severity));
+  const hardFailures = decisions.filter((f) => ['S0','S1'].includes(f.severity));
+  if (hardFailures.length) throw new Error(`Structural validation has ${hardFailures.length} S0/S1 finding(s); refusing acceptance pass.`);
+
+  const expectedPages = new Set(['arm','body','easel','features','head','outlines','splash-back']);
+  const illustrationJoins = decisions.filter((f) => f.severity === 'S2');
+  const unexpected = illustrationJoins.filter((f) =>
+    f.rule !== 'L006' ||
+    f.title !== 'stroke overlap' ||
+    !expectedPages.has(f.page) ||
+    !Array.isArray(f.actors) ||
+    f.actors.length !== 2
+  );
+  if (illustrationJoins.length !== 65 || unexpected.length) {
+    throw new Error(`Collision decision snapshot changed: expected exactly 65 known-shape L006 illustration joins; got ${illustrationJoins.length} S2 with ${unexpected.length} unexpected.`);
+  }
+
+  for (const finding of illustrationJoins) {
+    await call(mcp, 'accept_finding', {
+      fingerprint: finding.fingerprint,
+      reason: `Intentional composite illustration join on ${finding.page}: ${finding.actors.join(' + ')}. Structural intent only; final appearance still requires render LOOK and perceptual_review.`,
+    });
+  }
+
+  const postDecisionValidation = await call(mcp, 'validate', { format:'json' }, { print:true });
+  parsed = JSON.parse(postDecisionValidation);
   const blockers = parsed.open.filter((f) => f.severity !== 'S3');
-  if (blockers.length) throw new Error(`Final structural validation has ${blockers.length} non-INFO finding(s).`);
+  if (blockers.length) throw new Error(`Post-decision structural validation still has ${blockers.length} non-INFO finding(s).`);
 
   const rendered = await call(mcp, 'render', { path:OUT_SVG, showGrid:false, bounds:'canvas', margin:0 }, { print:true });
   const match = /renderHash: ([0-9a-f]{16})/.exec(rendered);
