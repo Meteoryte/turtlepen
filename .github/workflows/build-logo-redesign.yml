@@ -140,7 +140,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add examples/logo-redesign-mcp.js brand/logo-redesign-diagnostic.md brand/logo-redesign-decisions.json
+          git add examples/logo-redesign-mcp.js brand/logo-redesign-diagnostic.md brand/logo-redesign-decisions.json brand/logo-decision-help.md
           if git diff --cached --quiet; then
             echo 'No diagnostic changes to commit.'
           else
@@ -163,7 +163,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add examples/logo-redesign-mcp.js brand/logo-redesign.turtlepen.json brand/logo-redesign.svg
+          git add examples/logo-redesign-mcp.js brand/logo-redesign.turtlepen.json brand/logo-redesign.svg brand/logo-decision-help.md
           if git diff --cached --quiet; then
             echo 'No generated changes to commit.'
             exit 0
