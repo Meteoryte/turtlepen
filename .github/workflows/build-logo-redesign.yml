@@ -27,74 +27,6 @@ jobs:
       - name: Explore TurtlePen through MCP help
         run: node examples/logo-help-explorer.js
 
-      - name: Persist live MCP contract corrections into authoring source
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p = Path('examples/logo-redesign-mcp.js')
-          s = p.read_text()
-          old = "const q = (x, y, pin = 'c') => `${colName(Math.max(1, Math.ceil(x / 2)))}${Math.max(1, Math.ceil(y / 2))}.${pin}`;"
-          if old in s:
-              new = """const q = (x, y, pin = null) => {
-                const col = Math.floor(x / 2);
-                const row = Math.floor(y / 2);
-                if (pin) return `${colName(col + 1)}${row + 1}.${pin}`;
-                const qx = x - col * 2;
-                const qy = y - row * 2;
-                const part = qy === 0 ? (qx === 0 ? 'q1' : 'q2') : (qx === 0 ? 'q3' : 'q4');
-                return `${colName(col + 1)}${row + 1}.${part}`;
-              };"""
-              s = s.replace(old, new)
-          s = s.replace("source: 'brand/logo-v2-source-mark.png'", "source: 'logo-v2-source-mark.png'")
-          s = s.replace("maxWidthCells: 78, maxHeightCells: 86", "maxWidthCells: 78")
-          s = s.replace("span: '78x86'", "span: '78x65'")
-          s = s.replace("line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 6, 'features');", "line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 5, 'features');")
-          s = s.replace("properties:{ referenceUsedOnlyForAuthoring:true, shippedRaster:false }", "properties:{ referenceUsedOnlyForAuthoring:'true', shippedRaster:'false' }")
-
-          old_validation = '\n'.join([
-              "  const validation = await call(mcp, 'validate', { format:'json' }, { print:true });",
-              "  const parsed = JSON.parse(validation);",
-              "  const blockers = parsed.open.filter((f) => f.severity !== 'S3');",
-              "  if (blockers.length) throw new Error(`Final structural validation has ${blockers.length} non-INFO finding(s).`);",
-          ])
-          new_validation = '\n'.join([
-              "  const validation = await call(mcp, 'validate', { format:'json' }, { print:true });",
-              "  let parsed = JSON.parse(validation);",
-              "  const decisions = parsed.open.filter((f) => ['S0','S1','S2'].includes(f.severity));",
-              "  const hardFailures = decisions.filter((f) => ['S0','S1'].includes(f.severity));",
-              "  if (hardFailures.length) throw new Error(`Structural validation has ${hardFailures.length} S0/S1 finding(s); refusing acceptance pass.`);",
-              "",
-              "  const expectedPages = new Set(['arm','body','easel','features','head','outlines','splash-back']);",
-              "  const illustrationJoins = decisions.filter((f) => f.severity === 'S2');",
-              "  const unexpected = illustrationJoins.filter((f) =>",
-              "    f.rule !== 'L006' ||",
-              "    f.title !== 'stroke overlap' ||",
-              "    !expectedPages.has(f.page) ||",
-              "    !Array.isArray(f.actors) ||",
-              "    f.actors.length !== 2",
-              "  );",
-              "  if (illustrationJoins.length !== 65 || unexpected.length) {",
-              "    throw new Error(`Collision decision snapshot changed: expected exactly 65 known-shape L006 illustration joins; got ${illustrationJoins.length} S2 with ${unexpected.length} unexpected.`);",
-              "  }",
-              "",
-              "  for (const finding of illustrationJoins) {",
-              "    await call(mcp, 'accept_finding', {",
-              "      fingerprint: finding.fingerprint,",
-              "      reason: `Intentional composite illustration join on ${finding.page}: ${finding.actors.join(' + ')}. Structural intent only; final appearance still requires render LOOK and perceptual_review.`,",
-              "    });",
-              "  }",
-              "",
-              "  const postDecisionValidation = await call(mcp, 'validate', { format:'json' }, { print:true });",
-              "  parsed = JSON.parse(postDecisionValidation);",
-              "  const blockers = parsed.open.filter((f) => f.severity !== 'S3');",
-              "  if (blockers.length) throw new Error(`Post-decision structural validation still has ${blockers.length} non-INFO finding(s).`);",
-          ])
-          if old_validation not in s:
-              raise SystemExit('validation block to replace was not found')
-          s = s.replace(old_validation, new_validation)
-          p.write_text(s)
-          PY
-
       - name: Build through the real TurtlePen MCP server
         id: build
         continue-on-error: true
@@ -176,13 +108,13 @@ jobs:
           )
           PY
 
-      - name: Commit TurtlePen diagnostic and corrected source on failure
+      - name: Commit TurtlePen diagnostic on failure
         if: steps.build.outcome == 'failure'
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add examples/logo-redesign-mcp.js brand/logo-redesign-diagnostic.md brand/logo-redesign-decisions.json brand/logo-decision-help.md
+          git add brand/logo-redesign-diagnostic.md brand/logo-redesign-decisions.json brand/logo-decision-help.md
           if git diff --cached --quiet; then
             echo 'No diagnostic changes to commit.'
           else
@@ -194,21 +126,30 @@ jobs:
         if: steps.build.outcome == 'failure'
         run: exit 1
 
-      - name: Verify generated artifacts exist
+      - name: Verify TurtlePen artifacts exist
         if: steps.build.outcome == 'success'
         run: |
           test -s brand/logo-redesign.turtlepen.json
           test -s brand/logo-redesign.svg
 
-      - name: Commit corrected source and generated TurtlePen artifacts
+      - name: Rasterize TurtlePen SVG for visual inspection only
+        if: steps.build.outcome == 'success'
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq librsvg2-bin
+          rsvg-convert -w 900 brand/logo-redesign.svg -o brand/logo-redesign-preview.png
+          test -s brand/logo-redesign-preview.png
+
+      - name: Commit TurtlePen artifacts and inspection preview
         if: steps.build.outcome == 'success'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add examples/logo-redesign-mcp.js brand/logo-redesign.turtlepen.json brand/logo-redesign.svg brand/logo-decision-help.md
+          git add brand/logo-redesign.turtlepen.json brand/logo-redesign.svg brand/logo-redesign-preview.png brand/logo-decision-help.md
           if git diff --cached --quiet; then
             echo 'No generated changes to commit.'
             exit 0
           fi
-          git commit -m 'Generate traced TurtlePen MCP logo redesign'
+          git commit -m 'Generate TurtlePen logo and visual inspection preview'
           git push
