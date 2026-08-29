@@ -46,7 +46,10 @@ if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
   process.exit(1);
 }
 
-const session = createSession({ cwd: process.cwd() });
+// The operator named this document on the command line, so its directory is
+// part of what this server was pointed at — even when it sits outside the
+// project. An agent's own path arguments are still confined.
+const session = createSession({ cwd: process.cwd(), roots: [dirname(DOC_PATH)] });
 const tools = createTools(session);
 const byName = new Map(tools.map((tool) => [tool.name, tool]));
 const clients = new Set();

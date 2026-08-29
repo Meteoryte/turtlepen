@@ -1,15 +1,15 @@
 # TurtlePen — status
 
-**As of 2026-08-27.** Prototype, working end to end, 628/628 tests green,
+**As of 2026-08-29.** Prototype, working end to end, 650/650 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **628/628 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **650/650 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe as a child process.
-- **Every external surface has a drift-proof contract.** All 61 MCP tools
+- **Every external surface has a drift-proof contract.** All 73 MCP tools
   complete representative work over the real stdio child process; every JSON-RPC
   method and notification path is asserted; all public viewer routes are tested
   with GET, HEAD, method refusal, and security headers; and every browser-authorized
@@ -192,7 +192,7 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (61 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (73 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls.
 - **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),

@@ -1,0 +1,1922 @@
+{
+  "schema": 3,
+  "name": "Quantum Neural Processor",
+  "canvas": {
+    "cols": 110,
+    "rows": 70
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-08-25T12:00:00.000Z",
+  "pages": [
+    {
+      "id": "die_bg",
+      "z": -1,
+      "intent": "overlay",
+      "title": "die_bg",
+      "visible": true,
+      "opacity": 0.92
+    },
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "overlay",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "die_bg": [
+      {
+        "id": "die-outer",
+        "kind": "box",
+        "rect": {
+          "x": 6,
+          "y": 18,
+          "w": 200,
+          "h": 108
+        },
+        "label": "PROCESSOR DIE (4nm Q-CMOS)",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "left",
+        "fill": "#0f172a",
+        "note": null,
+        "opacity": null,
+        "state": null
+      }
+    ],
+    "base": [
+      {
+        "id": "title",
+        "kind": "box",
+        "rect": {
+          "x": 6,
+          "y": 6,
+          "w": 200,
+          "h": 8
+        },
+        "label": "QN-64X QUANTUM NEURAL PROCESSOR DIE ARCHITECTURE",
+        "fontSize": 12,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "center",
+        "fill": "#1e293b",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "core-q1",
+        "kind": "box",
+        "rect": {
+          "x": 14,
+          "y": 30,
+          "w": 72,
+          "h": 32
+        },
+        "label": "Q-CORE CLUSTER 0 (Cores 0-15)\n16x SQUID Qubits | Cryo-Control",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": "#1e1b4b",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "core-q2",
+        "kind": "box",
+        "rect": {
+          "x": 114,
+          "y": 30,
+          "w": 72,
+          "h": 32
+        },
+        "label": "Q-CORE CLUSTER 1 (Cores 16-31)\n16x SQUID Qubits | Cryo-Control",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": "#1e1b4b",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "core-q3",
+        "kind": "box",
+        "rect": {
+          "x": 14,
+          "y": 86,
+          "w": 72,
+          "h": 32
+        },
+        "label": "Q-CORE CLUSTER 2 (Cores 32-47)\n16x SQUID Qubits | Cryo-Control",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": "#1e1b4b",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "core-q4",
+        "kind": "box",
+        "rect": {
+          "x": 114,
+          "y": 86,
+          "w": 72,
+          "h": 32
+        },
+        "label": "Q-CORE CLUSTER 3 (Cores 48-63)\n16x SQUID Qubits | Cryo-Control",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "center",
+        "fill": "#1e1b4b",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "hub",
+        "kind": "box",
+        "rect": {
+          "x": 90,
+          "y": 66,
+          "w": 32,
+          "h": 16
+        },
+        "label": "PHOTONIC MESH\nINTERCONNECT",
+        "fontSize": 10,
+        "corner": "chamfered",
+        "shape": "process",
+        "align": "center",
+        "fill": "#431407",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "bus-q1",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 50,
+            "y": 62,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 63,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 64,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 65,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 66,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 67,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 68,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 69,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 70,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 71,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 72,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 73,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 74,
+            "type": "corner",
+            "sides": [
+              "right",
+              "top"
+            ],
+            "style": "square",
+            "dir": "right"
+          },
+          {
+            "x": 51,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 52,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 53,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 54,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 55,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 56,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 77,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 78,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 79,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 80,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 83,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 84,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 86,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 87,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 88,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 74,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ff6600",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "end": {
+          "x": 90,
+          "y": 74,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "hub",
+            "port": "W",
+            "step": 2
+          },
+          {
+            "id": "hub",
+            "port": "W",
+            "step": 4
+          }
+        ],
+        "source": {
+          "id": "core-q1",
+          "port": "S"
+        }
+      },
+      {
+        "id": "bus-q2",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 150,
+            "y": 62,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 63,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 64,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 65,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 66,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 67,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 68,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 69,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 70,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 71,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 72,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 73,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 74,
+            "type": "corner",
+            "sides": [
+              "left",
+              "top"
+            ],
+            "style": "square",
+            "dir": "left"
+          },
+          {
+            "x": 149,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 148,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 147,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 146,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 145,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 144,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 142,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 141,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 140,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 139,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 138,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 131,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 130,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 129,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 128,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 127,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 126,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 125,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 124,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 74,
+            "type": "arrow",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ff6600",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "end": {
+          "x": 121,
+          "y": 74,
+          "facing": "left"
+        },
+        "targets": [
+          {
+            "id": "hub",
+            "port": "E",
+            "step": 2
+          },
+          {
+            "id": "hub",
+            "port": "E",
+            "step": 4
+          }
+        ],
+        "source": {
+          "id": "core-q2",
+          "port": "S"
+        }
+      },
+      {
+        "id": "bus-q3",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 50,
+            "y": 85,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 84,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 83,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 82,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 81,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 80,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 79,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 78,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 77,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 76,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 75,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 74,
+            "type": "corner",
+            "sides": [
+              "bottom",
+              "right"
+            ],
+            "style": "square",
+            "dir": "right"
+          },
+          {
+            "x": 51,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 52,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 53,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 54,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 55,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 56,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 77,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 78,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 79,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 80,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 83,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 84,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 86,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 87,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 88,
+            "y": 74,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 74,
+            "type": "arrow",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ff6600",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "end": {
+          "x": 90,
+          "y": 74,
+          "facing": "right"
+        },
+        "targets": [
+          {
+            "id": "hub",
+            "port": "W",
+            "step": 2
+          },
+          {
+            "id": "hub",
+            "port": "W",
+            "step": 4
+          }
+        ],
+        "source": {
+          "id": "core-q3",
+          "port": "N"
+        }
+      },
+      {
+        "id": "bus-q4",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 150,
+            "y": 85,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 84,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 83,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 82,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 81,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 80,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 79,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 78,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 77,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 76,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 75,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 74,
+            "type": "corner",
+            "sides": [
+              "bottom",
+              "left"
+            ],
+            "style": "square",
+            "dir": "left"
+          },
+          {
+            "x": 149,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 148,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 147,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 146,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 145,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 144,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 142,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 141,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 140,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 139,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 138,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 131,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 130,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 129,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 128,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 127,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 126,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 125,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 124,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 74,
+            "type": "line",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 74,
+            "type": "arrow",
+            "dir": "left",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#ff6600",
+          "width": 2,
+          "cap": "butt"
+        },
+        "note": null,
+        "end": {
+          "x": 121,
+          "y": 74,
+          "facing": "left"
+        },
+        "targets": [
+          {
+            "id": "hub",
+            "port": "E",
+            "step": 2
+          },
+          {
+            "id": "hub",
+            "port": "E",
+            "step": 4
+          }
+        ],
+        "source": {
+          "id": "core-q4",
+          "port": "N"
+        }
+      },
+      {
+        "id": "pcie",
+        "kind": "box",
+        "rect": {
+          "x": 6,
+          "y": 128,
+          "w": 90,
+          "h": 6
+        },
+        "label": "HIGH-SPEED CRYOGENIC PCIe Gen 6 INTERFACE",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "center",
+        "fill": "#064e3b",
+        "note": null,
+        "opacity": null,
+        "state": null
+      },
+      {
+        "id": "mem-ctrl",
+        "kind": "box",
+        "rect": {
+          "x": 110,
+          "y": 128,
+          "w": 90,
+          "h": 6
+        },
+        "label": "HBM3e QUANTUM MEMORY CONTROLLER (1 TB/s)",
+        "fontSize": 10,
+        "corner": "square",
+        "shape": "process",
+        "align": "center",
+        "fill": "#064e3b",
+        "note": null,
+        "opacity": null,
+        "state": null
+      }
+    ]
+  },
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
+  },
+  "acceptances": [
+    {
+      "fingerprint": "23df90328f1e",
+      "rule": "L006",
+      "page": "base",
+      "title": "stroke overlap",
+      "reason": "Quantum Processor artwork: L006 on bus-q1 + bus-q3 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-29T16:26:12.491Z"
+    },
+    {
+      "fingerprint": "3759b3962f80",
+      "rule": "L010",
+      "page": "base",
+      "title": "overlay overlap",
+      "reason": "Quantum Processor artwork: L010 on core-q4 + die-outer is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-29T16:26:12.883Z"
+    },
+    {
+      "fingerprint": "553b6fe51df4",
+      "rule": "L006",
+      "page": "base",
+      "title": "stroke overlap",
+      "reason": "Quantum Processor artwork: L006 on bus-q2 + bus-q4 is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-29T16:26:12.546Z"
+    },
+    {
+      "fingerprint": "5cf7aa6d9afa",
+      "rule": "L010",
+      "page": "base",
+      "title": "overlay overlap",
+      "reason": "Quantum Processor artwork: L010 on core-q3 + die-outer is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-29T16:26:12.741Z"
+    },
+    {
+      "fingerprint": "6c5e27c03baf",
+      "rule": "L010",
+      "page": "base",
+      "title": "overlay overlap",
+      "reason": "Quantum Processor artwork: L010 on bus-q2 + die-outer is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-29T16:26:12.933Z"
+    },
+    {
+      "fingerprint": "7c5f364c0bc8",
+      "rule": "L010",
+      "page": "base",
+      "title": "overlay overlap",
+      "reason": "Quantum Processor artwork: L010 on core-q1 + die-outer is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-29T16:26:12.599Z"
+    },
+    {
+      "fingerprint": "7dbb57e28402",
+      "rule": "L010",
+      "page": "base",
+      "title": "overlay overlap",
+      "reason": "Quantum Processor artwork: L010 on bus-q1 + die-outer is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-29T16:26:12.648Z"
+    },
+    {
+      "fingerprint": "97e95326375b",
+      "rule": "L010",
+      "page": "base",
+      "title": "overlay overlap",
+      "reason": "Quantum Processor artwork: L010 on bus-q4 + die-outer is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-29T16:26:12.979Z"
+    },
+    {
+      "fingerprint": "9fa0bf199443",
+      "rule": "L010",
+      "page": "base",
+      "title": "overlay overlap",
+      "reason": "Quantum Processor artwork: L010 on core-q2 + die-outer is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-29T16:26:12.837Z"
+    },
+    {
+      "fingerprint": "bcda8dba9871",
+      "rule": "L010",
+      "page": "base",
+      "title": "overlay overlap",
+      "reason": "Quantum Processor artwork: L010 on bus-q3 + die-outer is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-29T16:26:12.694Z"
+    },
+    {
+      "fingerprint": "bd5590236e59",
+      "rule": "L010",
+      "page": "base",
+      "title": "overlay overlap",
+      "reason": "Quantum Processor artwork: L010 on hub + die-outer is by construction — layered primitives share geometry deliberately at this location",
+      "acceptedAt": "2026-08-29T16:26:12.788Z"
+    }
+  ]
+}

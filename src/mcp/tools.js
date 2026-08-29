@@ -8,24 +8,98 @@
  */
 
 import { createHash } from 'node:crypto';
-import { readFile, stat } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { readFile, stat, realpath } from 'node:fs/promises';
+import { basename, dirname, resolve, sep } from 'node:path';
 import * as core from '../core/index.js';
 import { atomicWriteFile } from '../io.js';
 import { VERSION } from '../version.js';
 import { assertSchema } from './schema.js';
 import { capabilityRegistry, doctorReport, searchCapabilities } from '../capabilities.js';
 
+/**
+ * The file-access boundary.
+ *
+ * An agent chooses these path arguments, so "wherever the user could write" is
+ * too wide a default for a tool the user did not type. Every diagram, render,
+ * image, and SVG path is confined to the directory the server was started in,
+ * and an escape is refused BY NAME rather than silently clamped — a path that
+ * does not mean what it says is the failure this engine exists to prevent.
+ *
+ * Resolution happens on the real path, so a symlink pointing outside the root
+ * is an escape too. The check is opt-out, not opt-in: set
+ * TURTLEPEN_ALLOW_ANY_PATH=1 to restore unrestricted local access for a
+ * workflow that genuinely writes outside its project. `runtime_info` reports
+ * which mode is live, so a client never has to guess.
+ */
+export const pathsAreConfined = () => process.env.TURTLEPEN_ALLOW_ANY_PATH !== '1';
+
+async function realRoot(root) {
+  try {
+    return await realpath(root);
+  } catch {
+    // A root that does not exist yet cannot be escaped through a symlink.
+    return resolve(root);
+  }
+}
+
+/** Resolve `target` under `base`, refusing anything that leaves `session.cwd`. */
+export async function resolveInside(session, base, target) {
+  const path = resolve(base, target);
+  if (!pathsAreConfined()) return path;
+  const roots = await Promise.all((session.roots ?? [session.cwd]).map(realRoot));
+  // Resolve the deepest part that exists: a file being created has no realpath
+  // of its own, but its parent directory does, and that is what a symlink
+  // would have to subvert.
+  let probe = path;
+  const unresolvedParts = [];
+  for (;;) {
+    try {
+      probe = await realpath(probe);
+      break;
+    } catch {
+      const parent = dirname(probe);
+      if (parent === probe) break;
+      // basename, not slice arithmetic: a filesystem root already carries its
+      // separator ("X:\\", "/"), so slicing at parent.length + 1 eats the
+      // first character of the child and "tmp-probe" silently becomes
+      // "mp-probe".
+      unresolvedParts.unshift(basename(probe));
+      probe = parent;
+    }
+  }
+  const unresolved = unresolvedParts.join(sep);
+  const real = unresolved ? resolve(probe, unresolved) : probe;
+  if (!roots.some((root) => real === root || real.startsWith(root + sep))) {
+    throw new Error(
+      `path escapes the workspace root: ${target} resolves to ${real}, outside ${roots.join(' and ')}. `
+      + 'Start the server in the directory you mean to work in, or set TURTLEPEN_ALLOW_ANY_PATH=1 to allow it.',
+    );
+  }
+  return path;
+}
+
 const REQUIRE_DOC = 'no diagram is open — call new_diagram or open_diagram first';
 const HISTORY_SCHEMA = 1;
 const DEFAULT_HISTORY_LIMIT = 100;
 const MAX_HISTORY_LIMIT = 1000;
-// Core owns the mutation vocabulary. Deriving this set means a future
+// Core owns the mutation vocabulary. Deriving these sets means a future
 // operation cannot silently bypass recovery because this file forgot a name.
-const MUTATING_TOOLS = new Set(Object.keys(core.OPERATIONS));
-MUTATING_TOOLS.add('plan');
+//
+// Two different questions are being asked, so they are two different sets.
+// PLAN_OPERATIONS answers "may this name appear inside a plan batch?" and is
+// exactly the core dispatch table, because that is what a batch executes
+// against. MUTATING_TOOLS answers "does this tool change the document, and so
+// need a history checkpoint and an expectedHash guard?" — which is a strictly
+// larger question. `plan` and `repair` mutate through core operations without
+// being one, so they are checkpointed but are not themselves batchable.
+const PLAN_OPERATIONS = new Set(Object.keys(core.OPERATIONS));
+const MUTATING_TOOLS = new Set([...PLAN_OPERATIONS, 'plan', 'repair']);
+// Generated, never hand-listed: a written inventory silently goes stale the
+// first time an operation is added, which is how `wireframe`, `perspective_scene`
+// and `perceptual_review` became invisible to clients that read the schema.
+const PLAN_OPERATION_LIST = [...PLAN_OPERATIONS].sort().join(' ');
 
-export function createSession({ cwd = process.cwd(), createdAt = null, historyLimit = DEFAULT_HISTORY_LIMIT } = {}) {
+export function createSession({ cwd = process.cwd(), createdAt = null, historyLimit = DEFAULT_HISTORY_LIMIT, roots = [] } = {}) {
   if (createdAt != null && Number.isNaN(Date.parse(createdAt))) {
     throw new TypeError(`session createdAt must be an ISO timestamp — got ${JSON.stringify(createdAt)}`);
   }
@@ -34,6 +108,11 @@ export function createSession({ cwd = process.cwd(), createdAt = null, historyLi
   }
   return {
     doc: null, path: null, diskHash: null, cwd, createdAt, startedAt: new Date().toISOString(), historyLimit, progress: core.createProgressLog(),
+    // The file-access boundary is every directory this server was POINTED at,
+    // not just the one it happens to be running in. A viewer launched with an
+    // explicit --doc outside the project was told to work there by a human;
+    // that is a different thing from a path an agent chose mid-conversation.
+    roots: [cwd, ...roots],
     history: [], future: [], historyNotice: 'no diagram is open', reviewCandidate: null,
   };
 }
@@ -66,7 +145,7 @@ async function readImage(session, source) {
     return { bytes: info.bytes, info, dataUri: source };
   }
   const base = session.path ? dirname(session.path) : session.cwd;
-  const path = resolve(base, source);
+  const path = await resolveInside(session, base, source);
   const file = await stat(path);
   if (!file.isFile()) throw new Error(`image source is not a file: ${path}`);
   if (file.size > core.image.MAX_IMAGE_BYTES) {
@@ -90,7 +169,7 @@ async function readSvg(session, source) {
     return source;
   }
   const base = session.path ? dirname(session.path) : session.cwd;
-  const path = resolve(base, source);
+  const path = await resolveInside(session, base, source);
   const file = await stat(path);
   if (!file.isFile()) throw new Error(`SVG source is not a file: ${path}`);
   if (file.size > core.svgImport.MAX_SVG_IMPORT_BYTES) {
@@ -316,6 +395,9 @@ export function createTools(session) {
         capabilityRegistry: capabilityRegistry(tools).fingerprint,
         startedAt: session.startedAt,
         cwd: session.cwd,
+        // The trust boundary is a fact about this run, so a client reads it
+        // rather than inferring it from a refusal.
+        fileAccess: pathsAreConfined() ? 'workspace-root' : 'unrestricted',
         activeDocument: session.doc
           ? {
             name: session.doc.name,
@@ -343,7 +425,7 @@ export function createTools(session) {
         additionalProperties: false,
       },
       handler: async ({ name, path, cols = 160, rows = 100, fontSize = 10 }) => {
-        const target = path ? resolve(session.cwd, path) : resolve(session.cwd, `diagrams/${name.replace(/\W+/g, '-').toLowerCase()}.turtlepen.json`);
+        const target = await resolveInside(session, session.cwd, path ?? `diagrams/${name.replace(/\W+/g, '-').toLowerCase()}.turtlepen.json`);
         session.reviewCandidate = null;
         try {
           const previous = await core.loadDocumentRecord(target);
@@ -369,7 +451,7 @@ export function createTools(session) {
       description: 'Open an existing diagram file and make it active.',
       inputSchema: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'], additionalProperties: false },
       handler: async ({ path }) => {
-        const target = resolve(session.cwd, path);
+        const target = await resolveInside(session, session.cwd, path);
         const opened = await core.loadDocumentRecord(target);
         session.path = target;
         session.doc = opened.document;
@@ -1755,7 +1837,7 @@ ${stalled}` : core.formatLog(result);
         properties: {
           operations: {
             type: 'array',
-            description: 'ordered operations, each { "op": "<name>", ...args }. Names include add_page/update_page/remove_page, place_box/place_image/place_reference, pen/connect/annotate/micro_mask, extend_path/replace_path, import_svg, boolean/slice/offset_path/stroke_to_path/path_edit/normalize_path, reorder/duplicate/array, resize/restyle/move/rename/remove, set_canvas, finding review, groups, and constraints. Args match the same-named tool.',
+            description: `ordered operations, each { "op": "<name>", ...args }. Args match the same-named tool. The batch vocabulary is exactly: ${PLAN_OPERATION_LIST}.`,
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
@@ -1830,7 +1912,7 @@ ${stalled}` : core.formatLog(result);
       },
       handler: async ({ path = null, showGrid = true, markFindings = false, force = false, bounds = 'content', margin = 20 }) => {
         const doc = need(session);
-        const target = resolve(session.cwd, path ?? (session.path ? session.path.replace(/\.turtlepen\.json$/, '.svg') : 'diagram.svg'));
+        const target = await resolveInside(session, session.cwd, path ?? (session.path ? session.path.replace(/\.turtlepen\.json$/, '.svg') : 'diagram.svg'));
         const findings = markFindings ? core.validate(doc).open : null;
         await core.exportSvg(doc, target, { showGrid, findings, force, bounds, margin });
         // The hash of the bytes actually written. A perceptual review binds to
@@ -1981,6 +2063,11 @@ ${r.program}`;
           return lines.join('\n');
         }
         const r = core.applyFix(doc, fingerprint, index, core.OPERATIONS);
+        // A repair is a mutation like any other, so it has to reach disk like
+        // any other. Without this the fix survives only in memory: it looks
+        // applied, then vanishes on reopen. History comes from the shared
+        // wrapper, which repair now reaches through MUTATING_TOOLS.
+        await persist(session);
         return `applied ${r.applied.kind} via ${r.applied.op} ${JSON.stringify(r.applied.args)}\n`
           + `findings ${r.findingsBefore} -> ${r.findingsAfter}`
           + (r.improved ? '' : ' — no reduction; this repair traded one finding for another, or the log is unchanged');
@@ -2382,7 +2469,7 @@ ${r.program}`;
           });
         }
         if (path) {
-          const nextPath = resolve(session.cwd, path);
+          const nextPath = await resolveInside(session, session.cwd, path);
           if (nextPath !== session.path) {
             session.path = nextPath;
             session.diskHash = null;
@@ -2430,7 +2517,7 @@ ${r.program}`;
         if (tool.name === 'plan') {
           argumentsWithoutGuard.operations.forEach((operation, index) => {
             const nested = byName.get(operation?.op);
-            if (!nested || !MUTATING_TOOLS.has(operation.op) || operation.op === 'plan') {
+            if (!nested || !PLAN_OPERATIONS.has(operation.op)) {
               throw new SyntaxError(`plan.operations[${index}].op: unknown operation ${JSON.stringify(operation?.op)}`);
             }
             const { op: _op, ...args } = operation;

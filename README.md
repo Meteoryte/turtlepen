@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 628 tests green, zero runtime dependencies, 61 MCP tools.
+Status: **prototype** — 650 tests green, zero runtime dependencies, 73 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -19,6 +19,7 @@ Status: **prototype** — 628 tests green, zero runtime dependencies, 61 MCP too
 | find the owner of version, schema, tools, artifacts, or generated evidence | [`docs/source-of-truth-map.md`](docs/source-of-truth-map.md) |
 | see the flowchart work and what was deliberately not built | [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md) |
 | repair existing lattice geometry | [`docs/lattice-editing.md`](docs/lattice-editing.md) |
+| know exactly which vector-editing operations exist | [`docs/svg-editing-capability-status.md`](docs/svg-editing-capability-status.md) — every capability marked SUPPORTED / PARTIAL / MISSING / OUT OF SCOPE |
 | import a compatible SVG safely | [`docs/svg-import.md`](docs/svg-import.md) |
 | know the current tool surface, authoritatively | call `turtlepen_help` — it outranks every document here |
 | validate/render/bundle without an MCP host | run `node src/cli.js help` or the `turtlepen` bin |
@@ -535,7 +536,7 @@ There is nothing to install first: no runtime dependencies, Node 20 or newer.
 Clone it, point the config at `src/mcp/server.js`, and run `pnpm test` once to
 confirm the clone is sound.
 
-61 tools. Call `turtlepen_help` first for a compact orientation, use
+73 tools. Call `turtlepen_help` first for a compact orientation, use
 `search_help { query }` for task-focused discovery, and request
 `turtlepen_help { section: "all" }` for the complete grammar and rule manual.
 
@@ -573,11 +574,12 @@ inflating effective ink, and record source plus run hashes in the
 | Group | Tools |
 |---|---|
 | orient | `turtlepen_help` `search_help` `doctor` `runtime_info` `describe` `ascii` `free_space` `history` |
-| author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `connect` `annotate` `plan` `group` `constraint` |
+| author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `connect` `annotate` `plan` `group` `constraint` `import_mermaid` `route` |
 | workspace | `define_view` `remove_view` `configure_theme` `attach_resource` `remove_resource` |
 | check | `validate` `inspect_model` `accept_model_finding` `unaccept_model_finding` `perceptual_review` `accept_finding` `unaccept_finding` |
-| repair | `resize` `restyle` `move` `rename` `update_page` `set_canvas` `extend_path` `replace_path` `remove` |
-| fidelity | `micro_mask` `stroke_text` `stroke_label` `glyph` `font_coverage` |
+| layout | `align` `distribute` `layout` |
+| repair | `repair` `resize` `restyle` `move` `rename` `update_page` `set_canvas` `extend_path` `replace_path` `remove` |
+| fidelity | `micro_mask` `stroke_text` `stroke_label` `glyph` `font_coverage` `set_background` |
 | lattice editing | `boolean` `slice` `offset_path` `stroke_to_path` `path_edit` `normalize_path` `reorder` `duplicate` `array` |
 | inspect geometry | `inspect` |
 | SVG import | `inspect_svg` `import_svg` |

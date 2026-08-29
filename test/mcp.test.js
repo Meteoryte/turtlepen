@@ -44,6 +44,24 @@ test('every core operation has a matching tool, so a plan can be built by hand',
   }
 });
 
+/**
+ * The other direction, and the one that actually rotted: `plan` used to
+ * describe its batch vocabulary with a hand-written list, which silently went
+ * stale and left `wireframe`, `perspective_scene` and `perceptual_review`
+ * dispatchable but undiscoverable to any client reading the schema.
+ */
+test('the plan schema advertises exactly the operations it dispatches', () => {
+  const plan = createTools(createSession()).find((t) => t.name === 'plan');
+  const advertised = plan.inputSchema.properties.operations.description
+    .match(/vocabulary is exactly: (.+)\.$/)?.[1]
+    ?.split(' ') ?? [];
+  assert.deepEqual(
+    [...advertised].sort(),
+    Object.keys(core.OPERATIONS).sort(),
+    'the advertised plan vocabulary drifted from core.OPERATIONS',
+  );
+});
+
 test('runtime diagnostics report the one package version and live capability fingerprint', async () => {
   const tools = createTools(createSession());
   const info = JSON.parse(await tools.find((tool) => tool.name === 'runtime_info').handler({}));
@@ -101,7 +119,7 @@ test('the validate tool surfaces composition findings to the agent', async () =>
   // Write into a temp dir, never the repo — a relative path here lands in the
   // project root and gets committed by accident.
   const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
-  const tools = createTools(createSession());
+  const tools = createTools(createSession({ cwd: dir }));
   await tools.find((t) => t.name === 'new_diagram').handler({
     name: 'sparse', path: resolve(dir, 'sparse.turtlepen.json'), cols: 40, rows: 20,
   });
