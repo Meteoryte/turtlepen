@@ -1,0 +1,45 @@
+name: Render BC-250 Local AI Atlas
+
+on:
+  push:
+    branches:
+      - feature/bc250-ai-compute-map
+    paths:
+      - examples/bc250-local-ai-atlas.js
+      - docs/bc250-local-ai-compute-atlas.md
+      - .github/workflows/bc250-local-ai-atlas.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Syntax check generator
+        run: node --check examples/bc250-local-ai-atlas.js
+
+      - name: Render validated TurtlePen atlas
+        run: node examples/bc250-local-ai-atlas.js
+
+      - name: Commit generated diagrams
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add diagrams/bc250-local-ai
+          if git diff --cached --quiet; then
+            echo "No generated changes to commit."
+            exit 0
+          fi
+          git commit -m "docs: render BC-250 local AI TurtlePen atlas"
+          git push
