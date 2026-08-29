@@ -27,6 +27,29 @@ jobs:
       - name: Explore TurtlePen through MCP help
         run: node examples/logo-help-explorer.js
 
+      - name: Correct trace path and preserve exact quadrant addressing
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('examples/logo-redesign-mcp.js')
+          s = p.read_text()
+          old = "const q = (x, y, pin = 'c') => `${colName(Math.max(1, Math.ceil(x / 2)))}${Math.max(1, Math.ceil(y / 2))}.${pin}`;"
+          new = """const q = (x, y, pin = null) => {
+            const col = Math.floor(x / 2);
+            const row = Math.floor(y / 2);
+            if (pin) return `${colName(col + 1)}${row + 1}.${pin}`;
+            const qx = x - col * 2;
+            const qy = y - row * 2;
+            const part = qy === 0 ? (qx === 0 ? 'q1' : 'q2') : (qx === 0 ? 'q3' : 'q4');
+            return `${colName(col + 1)}${row + 1}.${part}`;
+          };"""
+          if old not in s:
+              raise SystemExit('expected q helper not found')
+          s = s.replace(old, new)
+          s = s.replace("source: 'brand/logo-v2-source-mark.png'", "source: 'logo-v2-source-mark.png'")
+          p.write_text(s)
+          PY
+
       - name: Build through the real TurtlePen MCP server
         run: node examples/logo-redesign-mcp.js
 
@@ -35,14 +58,14 @@ jobs:
           test -s brand/logo-redesign.turtlepen.json
           test -s brand/logo-redesign.svg
 
-      - name: Commit generated TurtlePen artifacts
+      - name: Commit corrected source and generated TurtlePen artifacts
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add brand/logo-redesign.turtlepen.json brand/logo-redesign.svg
+          git add examples/logo-redesign-mcp.js brand/logo-redesign.turtlepen.json brand/logo-redesign.svg
           if git diff --cached --quiet; then
             echo 'No generated changes to commit.'
             exit 0
           fi
-          git commit -m 'Generate TurtlePen MCP logo redesign'
+          git commit -m 'Generate traced TurtlePen MCP logo redesign'
           git push
