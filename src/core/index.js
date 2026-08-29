@@ -22,13 +22,20 @@ import * as pattern_ from './pattern.js';
 import * as wireframe_ from './wireframe.js';
 import * as perspective_ from './perspective.js';
 import * as workspace from './workspace.js';
+import * as edit_ from './edit.js';
+import * as svgImport_ from './svg-import.js';
 import { renderPng, renderPdf, rasterizeDocument, encodePng } from './output.js';
 import { OPPOSITE } from './geometry.js';
 import { approachPoint, parsePortSpec } from './shapes.js';
 import { rayQuads, curveQuads } from './raster.js';
 import { atomicWriteFile, hashBytes, readFileRecord } from '../io.js';
+import {
+  booleanGeometry, sliceGeometry, offsetPath, strokeToPath, editPath, normalizePath,
+  reorderElement, duplicateElement, arrayElements, inspectGeometry,
+} from './edit.js';
+import { compileSvg, inspectSvg } from './svg-import.js';
 
-import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, microMasksOf, addMicroMask, updateMicroMask, microMaskStatus, removeMicroMask, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, SCHEMA_VERSION, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
+import { createDocument, addPage, addBox, addPath, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement, elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement, assertFreeId, groupsOf, findGroup, createGroup, addGroupMembers, removeGroupMembers, deleteGroup, groupBounds, moveGroup, constraintsOf, findConstraint, elementAnchor, reconcileElementChange, createConstraint, deleteConstraint, syncConstraints, microMasksOf, addMicroMask, updateMicroMask, microMaskStatus, removeMicroMask, MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, SCHEMA_VERSION, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign } from './document.js';
 import { runPen } from './pen.js';
 import { validate, formatLog, fingerprintOf, RULES, SEVERITIES, SEVERITY_LABEL } from './collide.js';
 import { renderAscii } from './ascii.js';
@@ -66,6 +73,8 @@ export {
 export { pattern_ as pattern };
 export { wireframe_ as wireframe };
 export { perspective_ as perspective };
+export { edit_ as edit };
+export { svgImport_ as svgImport };
 export {
   createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement,
   elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
@@ -76,6 +85,9 @@ export {
   renderAscii, renderSvg,
   perceptual,
   MIN_OPACITY, DEFAULT_PAGE_OPACITY, PATH_ROLES, PATH_PAINTS, TEXT_ALIGNS, IMAGE_FITS, SCHEMA_VERSION, assertOpacity, normalizeStroke, normalizeColor, assertTextAlign,
+  booleanGeometry, sliceGeometry, offsetPath, strokeToPath, editPath, normalizePath,
+  reorderElement, duplicateElement, arrayElements, inspectGeometry,
+  compileSvg, inspectSvg,
 };
 export { PALETTE, PALETTE_DARK, SEVERITY_CUE } from './svg.js';
 
@@ -464,6 +476,40 @@ export function connectNodes(doc, {
 }
 
 /**
+ * Import a strict, grid-aligned SVG subset as ordinary artwork paths.
+ *
+ * The compiler never preserves source markup. It produces exact quadrant paths
+ * first, then this mutation adds those paths in source order only after every
+ * generated id has been checked. That leaves imported SVG subject to the same
+ * serialization, collision rules, plan rehearsal, and history boundary as
+ * hand-authored geometry.
+ */
+export function importSvg(doc, {
+  source, page = 'base', prefix = 'svg', quantize = 'reject',
+} = {}) {
+  getPage(doc, page);
+  const compiled = compileSvg(source, { prefix, quantize });
+  for (const spec of compiled.elements) assertFreeId(doc, spec.id);
+
+  const draft = structuredClone(doc);
+  const created = [];
+  for (const spec of compiled.elements) {
+    const path = addPath(draft, page, {
+      id: spec.id,
+      pieces: spec.pieces,
+      stroke: spec.stroke,
+      role: spec.role,
+    });
+    if (spec.closed) path.closed = true;
+    path.provenance = structuredClone(spec.provenance);
+    created.push(path.id);
+  }
+  doc.pages = draft.pages;
+  doc.elements = draft.elements;
+  return { page, created, ...compiled.report };
+}
+
+/**
  * Resize a box by cell span, keeping one corner pinned.
  *
  * This is the tool behind the `widen` and `heighten` fixes the text-fit rules
@@ -797,6 +843,16 @@ export const OPERATIONS = Object.freeze({
   annotate: (doc, a) => annotateElement(doc, a.id, a),
   extend_path: (doc, a) => extendPath(doc, a.id, a.program),
   replace_path: (doc, a) => replacePath(doc, a.id, a.program),
+  import_svg: (doc, a) => importSvg(doc, a),
+  boolean: (doc, a) => booleanGeometry(doc, a),
+  slice: (doc, a) => sliceGeometry(doc, a),
+  offset_path: (doc, a) => offsetPath(doc, a),
+  stroke_to_path: (doc, a) => strokeToPath(doc, a),
+  path_edit: (doc, a) => editPath(doc, a),
+  normalize_path: (doc, a) => normalizePath(doc, a),
+  reorder: (doc, a) => reorderElement(doc, a),
+  duplicate: (doc, a) => duplicateElement(doc, a),
+  array: (doc, a) => arrayElements(doc, a),
   resize: (doc, a) => resizeBox(doc, a.id, a),
   restyle: (doc, a) => restyleBox(doc, a.id, a),
   move: (doc, a) => {
