@@ -24,9 +24,9 @@
     }
   },
   "summary": {
-    "artifacts": 70,
+    "artifacts": 71,
     "publishable": 9,
-    "structurallyClear": 50,
+    "structurallyClear": 51,
     "missingSvg": 1,
     "byRole": {
       "example": {
@@ -42,7 +42,7 @@
         "publishable": 8
       },
       "study": {
-        "artifacts": 20,
+        "artifacts": 21,
         "publishable": 0
       }
     },
@@ -53,6 +53,93 @@
     }
   },
   "artifacts": [
+    {
+      "id": "TurtlePen MCP — Native Lattice Mark",
+      "catalog": {
+        "role": "study",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "brand/logo-redesign.turtlepen.json",
+        "schema": 3,
+        "sha256": "9b52f211fb3779d06cc025603417ae9643324eb917ce5bfeefa3247fcf196cc5",
+        "bytes": 927036
+      },
+      "document": {
+        "pages": 8,
+        "elements": 24,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 41,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 41,
+          "total": 41,
+          "accepted": 0,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "brand/logo-redesign.svg",
+          "present": true,
+          "bytes": 48844,
+          "sha256": "b9171e68ed3499999a087ace0d2427a81a140e8e17cee2ed52339b97a5c8e305"
+        },
+        "png": {
+          "path": "brand/logo-redesign.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "brand/logo-redesign.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
     {
       "id": "TurtlePen logo — turtle at easel",
       "catalog": {
