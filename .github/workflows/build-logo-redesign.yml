@@ -1,0 +1,172 @@
+name: Build TurtlePen MCP logo redesign
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'examples/logo-help-explorer.js'
+      - 'examples/logo-redesign-mcp.js'
+      - '.github/workflows/build-logo-redesign.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-logo-redesign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Explore TurtlePen through MCP help
+        run: node examples/logo-help-explorer.js
+
+      - name: Correct authoring source against live MCP contracts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('examples/logo-redesign-mcp.js')
+          s = p.read_text()
+          old = "const q = (x, y, pin = 'c') => `${colName(Math.max(1, Math.ceil(x / 2)))}${Math.max(1, Math.ceil(y / 2))}.${pin}`;"
+          if old in s:
+              new = """const q = (x, y, pin = null) => {
+                const col = Math.floor(x / 2);
+                const row = Math.floor(y / 2);
+                if (pin) return `${colName(col + 1)}${row + 1}.${pin}`;
+                const qx = x - col * 2;
+                const qy = y - row * 2;
+                const part = qy === 0 ? (qx === 0 ? 'q1' : 'q2') : (qx === 0 ? 'q3' : 'q4');
+                return `${colName(col + 1)}${row + 1}.${part}`;
+              };"""
+              s = s.replace(old, new)
+          s = s.replace("source: 'brand/logo-v2-source-mark.png'", "source: 'logo-v2-source-mark.png'")
+          s = s.replace("maxWidthCells: 78, maxHeightCells: 86", "maxWidthCells: 78")
+          s = s.replace("span: '78x86'", "span: '78x65'")
+          s = s.replace("line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 6, 'features');", "line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 5, 'features');")
+          s = s.replace("properties:{ referenceUsedOnlyForAuthoring:true, shippedRaster:false }", "properties:{ referenceUsedOnlyForAuthoring:'true', shippedRaster:'false' }")
+          p.write_text(s)
+          PY
+
+      - name: Build through the real TurtlePen MCP server
+        id: build
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          node examples/logo-redesign-mcp.js 2>&1 | tee /tmp/logo-build.log
+
+      - name: Persist TurtlePen diagnostic on failure
+        if: steps.build.outcome == 'failure'
+        shell: bash
+        run: |
+          mkdir -p brand
+          {
+            echo '# TurtlePen MCP logo build diagnostic'
+            echo
+            echo "Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo
+            echo '```text'
+            tail -n 240 /tmp/logo-build.log || true
+            echo '```'
+          } > brand/logo-redesign-diagnostic.md
+
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          text = Path('/tmp/logo-build.log').read_text(errors='replace')
+          marker = '[validate] '
+          marker_at = text.rfind(marker)
+          result = {
+              'extraction': 'no validation payload found',
+              'summary': None,
+              'findings': []
+          }
+
+          if marker_at >= 0:
+              start = text.find('{', marker_at)
+              depth = 0
+              in_string = False
+              escaped = False
+              end = None
+              for pos in range(start, len(text)):
+                  ch = text[pos]
+                  if in_string:
+                      if escaped:
+                          escaped = False
+                      elif ch == '\\':
+                          escaped = True
+                      elif ch == '"':
+                          in_string = False
+                  else:
+                      if ch == '"':
+                          in_string = True
+                      elif ch == '{':
+                          depth += 1
+                      elif ch == '}':
+                          depth -= 1
+                          if depth == 0:
+                              end = pos + 1
+                              break
+              if start >= 0 and end:
+                  try:
+                      payload = json.loads(text[start:end])
+                      findings = [
+                          f for f in payload.get('findings', [])
+                          if f.get('severity') in {'S0', 'S1', 'S2'}
+                      ]
+                      result = {
+                          'extraction': 'ok',
+                          'summary': payload.get('summary'),
+                          'findings': findings
+                      }
+                  except Exception as exc:
+                      result['extraction'] = f'parse error: {exc}'
+
+          Path('brand/logo-redesign-decisions.json').write_text(
+              json.dumps(result, indent=2, sort_keys=False) + '\n'
+          )
+          PY
+
+      - name: Commit TurtlePen diagnostic on failure
+        if: steps.build.outcome == 'failure'
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add brand/logo-redesign-diagnostic.md brand/logo-redesign-decisions.json
+          if git diff --cached --quiet; then
+            echo 'No diagnostic changes to commit.'
+          else
+            git commit -m 'Capture TurtlePen logo decision findings'
+            git push
+          fi
+
+      - name: Stop after failed TurtlePen build
+        if: steps.build.outcome == 'failure'
+        run: exit 1
+
+      - name: Verify generated artifacts exist
+        if: steps.build.outcome == 'success'
+        run: |
+          test -s brand/logo-redesign.turtlepen.json
+          test -s brand/logo-redesign.svg
+
+      - name: Commit corrected source and generated TurtlePen artifacts
+        if: steps.build.outcome == 'success'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add examples/logo-redesign-mcp.js brand/logo-redesign.turtlepen.json brand/logo-redesign.svg
+          if git diff --cached --quiet; then
+            echo 'No generated changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Generate traced TurtlePen MCP logo redesign'
+          git push
