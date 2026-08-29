@@ -47,6 +47,8 @@ jobs:
               s = s.replace(old, new)
           s = s.replace("source: 'brand/logo-v2-source-mark.png'", "source: 'logo-v2-source-mark.png'")
           s = s.replace("maxWidthCells: 78, maxHeightCells: 86", "maxWidthCells: 78")
+          s = s.replace("span: '78x86'", "span: '78x65'")
+          s = s.replace("line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 6, 'features');", "line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 5, 'features');")
           p.write_text(s)
           PY
 
