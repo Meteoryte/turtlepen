@@ -8,6 +8,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { mkdtemp, rm, readFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { resolve } from 'node:path';
+
+import { createMcpClient } from '../examples/mcp-client.js';
 import { repairPlan, applyFix } from '../src/core/repair.js';
 import { createDocument, placeBox, applyPen, validate, OPERATIONS } from '../src/core/index.js';
 
@@ -83,4 +88,66 @@ test('a repair reports whether it actually helped', () => {
   const r = applyFix(doc, f.fingerprint, plan.fixes.findIndex((x) => x.executable), OPERATIONS);
   assert.equal(typeof r.improved, 'boolean');
   assert.equal(typeof r.findingsBefore, 'number');
+});
+
+/**
+ * A repair applied over the real MCP transport must reach disk and must be
+ * undoable — the two properties the tool description already promises.
+ *
+ * Both were false: `repair` mutated the in-memory document without a
+ * checkpoint and without persisting, so a fix looked applied, survived a
+ * `describe`, and then vanished on the next `open_diagram`. It was also
+ * invisible to undo, because the shared history wrapper only covers tools
+ * named in MUTATING_TOOLS and `repair` is not a core operation.
+ */
+test('a repair over the real wire is saved to disk and undone by one undo', async () => {
+  const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-repair-'));
+  const client = createMcpClient({ cwd: dir });
+  const text = async (name, args = {}) => {
+    const r = await client.call(name, args);
+    assert.equal(r.isError, false, `${name} failed: ${r.error ?? r.text}`);
+    return r.text;
+  };
+
+  try {
+    await client.init();
+    await text('new_diagram', { name: 'repairable', path: 'r.turtlepen.json', cols: 60, rows: 40 });
+    await text('place_box', { id: 'alpha', at: 'C4.tl', span: { w: 6, h: 3 }, label: 'Alpha' });
+    await text('place_box', { id: 'beta', at: 'F4.tl', span: { w: 6, h: 3 }, label: 'Beta' });
+
+    const overlap = JSON.parse(await text('validate', { format: 'json' })).open.find((f) => f.rule === 'L001');
+    assert.ok(overlap, 'two overlapping boxes must raise L001');
+
+    const before = JSON.parse(await text('describe', {}))[0].elements.find((e) => e.id === 'beta').at;
+    const betaBefore = JSON.parse(await readFile(resolve(dir, 'r.turtlepen.json'), 'utf8'))
+      .elements.base.find((e) => e.id === 'beta').rect.x;
+    assert.match(await text('repair', { fingerprint: overlap.fingerprint, index: 0 }), /applied .* via move/);
+    const after = JSON.parse(await text('describe', {}))[0].elements.find((e) => e.id === 'beta').at;
+    assert.notEqual(after, before, 'the repair must actually move the element');
+
+    // The real assertion: the fix is on disk, not only in memory. Reading the
+    // file the session owns is what a reopen would see.
+    // The real property, stated the way the bug was experienced: reopen the
+    // file and the repair is still there. A hard-coded coordinate would only
+    // restate the repair table's current choice of fix.
+    const onDisk = () => readFile(resolve(dir, 'r.turtlepen.json'), 'utf8')
+      .then((raw) => JSON.parse(raw).elements.base.find((e) => e.id === 'beta').rect.x);
+    assert.notEqual(await onDisk(), betaBefore, 'the repair must reach disk, not only memory');
+
+    // And one undo steps back over the repair, not over the placement before it.
+    assert.match(await text('history', { action: 'undo' }), /undid repair/);
+    const undone = JSON.parse(await text('describe', {}))[0].elements.find((e) => e.id === 'beta').at;
+    assert.equal(undone, before, 'one undo must restore the pre-repair position');
+
+    // Reopening proves the undo was persisted too, and closes the loop on the
+    // original symptom: state that looked applied but was not on disk.
+    await text('open_diagram', { path: 'r.turtlepen.json' });
+    assert.equal(JSON.parse(await text('describe', {}))[0].elements.find((e) => e.id === 'beta').at, before,
+      'the undone state must survive a reopen');
+  } finally {
+    // The server holds the temp directory as its cwd; Windows refuses to
+    // remove it until the child has actually exited.
+    await client.close();
+    await rm(dir, { recursive: true, force: true });
+  }
 });

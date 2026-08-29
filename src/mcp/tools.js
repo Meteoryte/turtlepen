@@ -20,10 +20,22 @@ const REQUIRE_DOC = 'no diagram is open — call new_diagram or open_diagram fir
 const HISTORY_SCHEMA = 1;
 const DEFAULT_HISTORY_LIMIT = 100;
 const MAX_HISTORY_LIMIT = 1000;
-// Core owns the mutation vocabulary. Deriving this set means a future
+// Core owns the mutation vocabulary. Deriving these sets means a future
 // operation cannot silently bypass recovery because this file forgot a name.
-const MUTATING_TOOLS = new Set(Object.keys(core.OPERATIONS));
-MUTATING_TOOLS.add('plan');
+//
+// Two different questions are being asked, so they are two different sets.
+// PLAN_OPERATIONS answers "may this name appear inside a plan batch?" and is
+// exactly the core dispatch table, because that is what a batch executes
+// against. MUTATING_TOOLS answers "does this tool change the document, and so
+// need a history checkpoint and an expectedHash guard?" — which is a strictly
+// larger question. `plan` and `repair` mutate through core operations without
+// being one, so they are checkpointed but are not themselves batchable.
+const PLAN_OPERATIONS = new Set(Object.keys(core.OPERATIONS));
+const MUTATING_TOOLS = new Set([...PLAN_OPERATIONS, 'plan', 'repair']);
+// Generated, never hand-listed: a written inventory silently goes stale the
+// first time an operation is added, which is how `wireframe`, `perspective_scene`
+// and `perceptual_review` became invisible to clients that read the schema.
+const PLAN_OPERATION_LIST = [...PLAN_OPERATIONS].sort().join(' ');
 
 export function createSession({ cwd = process.cwd(), createdAt = null, historyLimit = DEFAULT_HISTORY_LIMIT } = {}) {
   if (createdAt != null && Number.isNaN(Date.parse(createdAt))) {
@@ -1755,7 +1767,7 @@ ${stalled}` : core.formatLog(result);
         properties: {
           operations: {
             type: 'array',
-            description: 'ordered operations, each { "op": "<name>", ...args }. Names include add_page/update_page/remove_page, place_box/place_image/place_reference, pen/connect/annotate/micro_mask, extend_path/replace_path, import_svg, boolean/slice/offset_path/stroke_to_path/path_edit/normalize_path, reorder/duplicate/array, resize/restyle/move/rename/remove, set_canvas, finding review, groups, and constraints. Args match the same-named tool.',
+            description: `ordered operations, each { "op": "<name>", ...args }. Args match the same-named tool. The batch vocabulary is exactly: ${PLAN_OPERATION_LIST}.`,
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
@@ -1981,6 +1993,11 @@ ${r.program}`;
           return lines.join('\n');
         }
         const r = core.applyFix(doc, fingerprint, index, core.OPERATIONS);
+        // A repair is a mutation like any other, so it has to reach disk like
+        // any other. Without this the fix survives only in memory: it looks
+        // applied, then vanishes on reopen. History comes from the shared
+        // wrapper, which repair now reaches through MUTATING_TOOLS.
+        await persist(session);
         return `applied ${r.applied.kind} via ${r.applied.op} ${JSON.stringify(r.applied.args)}\n`
           + `findings ${r.findingsBefore} -> ${r.findingsAfter}`
           + (r.improved ? '' : ' — no reduction; this repair traded one finding for another, or the log is unchanged');
@@ -2430,7 +2447,7 @@ ${r.program}`;
         if (tool.name === 'plan') {
           argumentsWithoutGuard.operations.forEach((operation, index) => {
             const nested = byName.get(operation?.op);
-            if (!nested || !MUTATING_TOOLS.has(operation.op) || operation.op === 'plan') {
+            if (!nested || !PLAN_OPERATIONS.has(operation.op)) {
               throw new SyntaxError(`plan.operations[${index}].op: unknown operation ${JSON.stringify(operation?.op)}`);
             }
             const { op: _op, ...args } = operation;
