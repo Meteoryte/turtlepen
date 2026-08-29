@@ -119,7 +119,7 @@ test('the validate tool surfaces composition findings to the agent', async () =>
   // Write into a temp dir, never the repo — a relative path here lands in the
   // project root and gets committed by accident.
   const dir = await mkdtemp(resolve(tmpdir(), 'turtlepen-'));
-  const tools = createTools(createSession());
+  const tools = createTools(createSession({ cwd: dir }));
   await tools.find((t) => t.name === 'new_diagram').handler({
     name: 'sparse', path: resolve(dir, 'sparse.turtlepen.json'), cols: 40, rows: 20,
   });

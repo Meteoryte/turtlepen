@@ -38,6 +38,36 @@ To check it runs before wiring anything up:
 pnpm run mcp        # should sit waiting on stdin; Ctrl-C to exit
 ```
 
+### Where it can write
+
+TurtlePen reads and writes **only inside the directory the server starts in**.
+That directory is its workspace root: diagram paths, renders, image sources, and
+SVG imports all resolve inside it, and a path that leaves it — absolute, `..`,
+or through a symlink — is refused by name rather than quietly redirected.
+
+This matters because an *agent* chooses those path arguments, not you. Start the
+server in the directory you mean it to work in:
+
+```json
+{
+  "mcpServers": {
+    "turtlepen": {
+      "command": "node",
+      "args": ["/absolute/path/to/turtlepen/src/mcp/server.js"],
+      "cwd": "/absolute/path/to/your/drawings"
+    }
+  }
+}
+```
+
+If you genuinely need it to write elsewhere, set `TURTLEPEN_ALLOW_ANY_PATH=1`
+and it runs with your full user authority again. `runtime_info` reports which
+mode is live (`fileAccess: "workspace-root"` or `"unrestricted"`), so an agent
+never has to find out by being refused.
+
+The viewer additionally counts the document you name with `--doc` as part of the
+root, because you named it on the command line.
+
 ## 2. The loop
 
 Six calls, in this order. It is worth doing once by hand.
