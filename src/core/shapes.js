@@ -175,23 +175,36 @@ export function aspectOf(r) {
  * chasing the overflow in the one direction that makes the symbol worse.
  */
 export function spanForShape(shape, measured) {
+  assertNodeShape(shape);
   const w = Math.max(1, measured.cellsWide);
   const h = Math.max(1, measured.cellsTall);
   const spec = SHAPE_PROPORTION[shape];
-  if (!spec) return { w, h };
+  if (isContainer(shape) && h * 2 > TITLE_BAND) {
+    throw new RangeError(
+      `${shape} labels have a ${TITLE_BAND / 2}-cell title band and cannot hold a ${h}-cell text block — `
+      + 'measure it without maxWidthCells or shorten the label to one line',
+    );
+  }
 
-  // Give the text back the room the symbol will carve out of it. The inset is
-  // symmetric, so recovering it means scaling by the fraction that survives.
-  const grow = shape === 'decision' ? 2 : 1 / (1 - SKEW * 2);
-  let outW = Math.max(w, Math.ceil(w * grow));
-  let outH = Math.max(h, shape === 'decision' ? Math.ceil(h * 2) : h);
+  // Start with the raw text span, then grow the actual shape until the exact
+  // aperture returned by shapeTextRect can hold that span. This intentionally
+  // uses the same geometry as validate and render. Formulae based only on
+  // proportions missed fixed insets such as the subprocess side bars: measure
+  // returned 13x3 for createTools(session), while validate correctly found that
+  // a 13x3 subprocess had only 110px of usable width.
+  let outW = w;
+  let outH = h;
+  for (let attempts = 0; attempts < 10_000; attempts++) {
+    const aperture = shapeTextRect(rect(0, 0, outW * 2, outH * 2), shape);
+    const needsWidth = aperture.w < w * 2;
+    const needsHeight = aperture.h < h * 2;
+    const needsProportion = Boolean(spec && outW / outH > spec.maxAspect);
+    if (!needsWidth && !needsHeight && !needsProportion) return { w: outW, h: outH };
 
-  // Then hold the proportion. Growing height is what keeps a wide label from
-  // flattening the symbol; the engine never silently does this to a placed box,
-  // which is exactly why it has to be offered before placement.
-  const minH = Math.ceil(outW / spec.maxAspect);
-  if (outH < minH) outH = minH;
-  return { w: outW, h: outH };
+    if (needsWidth) outW += 1;
+    if (needsHeight || needsProportion) outH += 1;
+  }
+  throw new RangeError(`could not find a finite ${shape} span for ${w}x${h} cells of text`);
 }
 
 export function assertNodeShape(shape) {

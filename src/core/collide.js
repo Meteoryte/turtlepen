@@ -460,11 +460,18 @@ function withinPage(doc, p) {
       out.push(
         finding('L002', p.id, {
           message:
-            `"${b.id}" label "${b.label}" needs ${fit.measuredWidthPx}px but the interior is ${fit.innerWidthPx}px ` +
+            `"${b.id}" label "${b.label}" needs ${fit.requiredUnbrokenWidthPx}px of unbroken width but the interior is ${fit.innerWidthPx}px ` +
             `(${fit.charsPerLine} chars per line at ${b.fontSize}px) — over by ${fit.widthOverflowPx}px`,
           actors: [b.id],
           cells: where,
-          metrics: { overflowPx: fit.widthOverflowPx, charsPerLine: fit.charsPerLine, advance: fit.advance, innerWidthPx: fit.innerWidthPx },
+          metrics: {
+            overflowPx: fit.widthOverflowPx,
+            requiredUnbrokenWidthPx: fit.requiredUnbrokenWidthPx,
+            measuredWidthPx: fit.measuredWidthPx,
+            charsPerLine: fit.charsPerLine,
+            advance: fit.advance,
+            innerWidthPx: fit.innerWidthPx,
+          },
           fixes: fit.fixes.filter((f) => f.kind !== 'heighten'),
         }),
       );

@@ -134,7 +134,7 @@ test('every shape emits an outline the renderer can draw', () => {
 // ---------------------------------------------------------------------------
 
 import { SHAPE_PROPORTION, aspectOf, spanForShape } from '../src/core/shapes.js';
-import { requiredCellsFor } from '../src/core/text.js';
+import { fitReport, requiredCellsFor } from '../src/core/text.js';
 
 test('a shape whose silhouette carries meaning declares a maximum aspect', () => {
   for (const shape of ['decision', 'data', 'document', 'io', 'manual', 'prep', 'terminator']) {
@@ -168,6 +168,36 @@ test('spanForShape fits the label inside the SYMBOL, not the bounding box', () =
   const inner = shapeTextRect(r, 'decision');
   const fit = requiredCellsFor(label, { fontSize: 10, maxWidthCells: Math.floor(inner.w / 2) });
   assert.ok(fit.cellsTall * 2 <= inner.h, `label needs ${fit.cellsTall * 2}q, diamond offers ${inner.h}q`);
+});
+
+test('subprocess measurement includes the side-bar aperture exactly', () => {
+  const label = 'createTools(session)';
+  const flat = requiredCellsFor(label, { fontSize: 10 });
+  assert.deepEqual(
+    { w: flat.cellsWide, h: flat.cellsTall },
+    { w: 13, h: 3 },
+    'the reported defect starts with a raw 13x3 text span',
+  );
+
+  const span = spanForShape('subprocess', flat);
+  assert.deepEqual(span, { w: 14, h: 3 }, 'one cell repays the two one-quadrant side bars');
+
+  const d = createDocument({ name: 'subprocess-measure' });
+  placeBox(d, 'base', { id: 'tools', at: 'C4.tl', span, label, shape: 'subprocess' });
+  const fitFindings = validate(d).open.filter((finding) => ['L002', 'L003'].includes(finding.rule));
+  assert.deepEqual(fitFindings, [], 'the measured span must validate cleanly after placement');
+});
+
+test('every node shape measure result fits its actual label aperture', () => {
+  const label = 'createTools(session)';
+  const flat = requiredCellsFor(label, { fontSize: 10 });
+
+  for (const shape of NODE_SHAPES) {
+    const span = spanForShape(shape, flat);
+    const aperture = shapeTextRect(rect(0, 0, span.w * 2, span.h * 2), shape);
+    const fit = fitReport(label, aperture, { fontSize: 10 });
+    assert.equal(fit.fits, true, `${shape} returned ${span.w}x${span.h}: ${JSON.stringify(fit)}`);
+  }
 });
 
 test('a squashed symbol is reported with a fix that names a proportionate span', () => {

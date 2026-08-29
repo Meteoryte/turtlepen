@@ -36,6 +36,7 @@ test('a label that does not fit reports the exact shortfall and concrete fixes',
   assert.equal(fit.fits, false);
   assert.equal(fit.charsPerLine, 8);
   assert.equal(fit.widthOverflowPx, 4, 'longest word overruns by 54 - 50 = 4px');
+  assert.equal(fit.requiredUnbrokenWidthPx, 54, 'the width named in L002 is the same width used for overflow');
   assert.equal(fit.lineCount, 4);
   assert.equal(fit.visibleLines, 2);
   assert.equal(fit.clippedLines, 2);

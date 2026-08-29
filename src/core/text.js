@@ -230,7 +230,8 @@ export function fitReport(text, boxRect, { fontSize = DEFAULT_FONT.size, padding
   const innerH = boxRect.h * PX_PER_QUAD - padPx;
   const m = measureText(text, { fontSize, availableWidthPx: Math.max(innerW, 0), advanceRatio });
 
-  const widthOverflowPx = Math.max(0, m.longestWord * m.advance - innerW);
+  const requiredUnbrokenWidthPx = m.longestWord * m.advance;
+  const widthOverflowPx = Math.max(0, requiredUnbrokenWidthPx - innerW);
   const heightOverflowPx = Math.max(0, m.heightPx - innerH);
   const visibleLines = Math.max(0, Math.floor(innerH / m.lineHeight));
 
@@ -273,6 +274,7 @@ export function fitReport(text, boxRect, { fontSize = DEFAULT_FONT.size, padding
     innerWidthPx: innerW,
     innerHeightPx: innerH,
     measuredWidthPx: m.widthPx,
+    requiredUnbrokenWidthPx,
     measuredHeightPx: m.heightPx,
     widthOverflowPx,
     heightOverflowPx,

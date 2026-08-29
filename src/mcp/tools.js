@@ -525,6 +525,7 @@ export function createTools(session) {
         core.shapes.assertNodeShape(shape);
         const span = core.shapes.spanForShape(shape, measured);
         const spec = core.shapes.SHAPE_PROPORTION[shape];
+        const apertureAdjusted = span.w !== measured.cellsWide || span.h !== measured.cellsTall;
         return json({
           text,
           fontSize,
@@ -536,7 +537,9 @@ export function createTools(session) {
           // is applied, and widening — the obvious response — makes it worse.
           shapeNote: spec
             ? `a ${shape} inks only part of its box, so this span is larger than the raw text needs; it holds the shape at or under ${spec.maxAspect}:1 (natural proportion ${spec.ideal}:1). Past that limit the symbol reads as a plain box and reports L024.`
-            : `a ${shape} has no proportion constraint — its span is the text's own`,
+            : apertureAdjusted
+              ? `a ${shape} has no proportion constraint, but its exact label aperture is smaller than its bounding box; this span includes that inset`
+              : `a ${shape} has no proportion constraint and its label aperture needs no additional span`,
           note,
         });
       },
@@ -581,7 +584,8 @@ export function createTools(session) {
         const doc = need(session);
         const el = core.placeBox(doc, page, { id, at, span, label, corner, shape, align, fontSize, fill });
         await persist(session);
-        const fit = label ? core.text.fitReport(label, el.rect, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null;
+        const fitRect = core.shapes.shapeTextRect(el.rect, el.shape ?? 'process');
+        const fit = label ? core.text.fitReport(label, fitRect, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null;
         return [
           `placed "${id}" on page "${page}" at ${core.address.quadToAddress(el.rect.x, el.rect.y)}, ${el.rect.w / 2}x${el.rect.h / 2} cells, ${corner} corners`,
           fit ? `label fit: ${fit.fits ? 'OK' : 'OVERFLOW'} — ${fit.charsPerLine} chars/line, ${fit.lineCount} line(s), ${fit.visibleLines} visible` : '',
@@ -2558,7 +2562,10 @@ function describeElement(doc, el) {
     };
   }
   const content = el.kind === 'text' ? el.text : el.label;
-  const fit = content ? core.text.fitReport(content, el.rect, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null;
+  const fitRect = el.kind === 'box'
+    ? core.shapes.shapeTextRect(el.rect, el.shape ?? 'process')
+    : el.rect;
+  const fit = content ? core.text.fitReport(content, fitRect, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null;
   return {
     id: el.id,
     kind: el.kind,

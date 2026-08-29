@@ -30,7 +30,9 @@ test('text overflow is a first-class collision, not a rendering surprise', () =>
   assert.ok(rules(v).includes('L003'), 'height overflow');
   const w = byRule(v, 'L002')[0];
   assert.equal(w.severity, 'S1');
+  assert.match(w.message, /needs 54px of unbroken width but the interior is 50px/);
   assert.match(w.message, /over by 4px/);
+  assert.equal(w.metrics.requiredUnbrokenWidthPx - w.metrics.innerWidthPx, w.metrics.overflowPx);
   assert.equal(w.metrics.charsPerLine, 8);
 });
 

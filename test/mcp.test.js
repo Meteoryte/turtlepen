@@ -113,6 +113,34 @@ test('tools that need a document say so instead of throwing something cryptic', 
   await assert.rejects(async () => validate.handler({}), /no diagram is open/);
 });
 
+test('measure, place_box, describe, and validate agree on subprocess label fit', async () => {
+  const session = createSession();
+  session.doc = core.createDocument({ name: 'subprocess-contract' });
+  const tools = new Map(createTools(session).map((tool) => [tool.name, tool]));
+  const label = 'createTools(session)';
+
+  const measured = JSON.parse(await tools.get('measure').handler({ text: label, shape: 'subprocess' }));
+  assert.deepEqual(measured.span, { w: 14, h: 3 });
+  assert.match(measured.shapeNote, /exact label aperture/);
+
+  const badPlacement = await tools.get('place_box').handler({
+    id: 'too-small', at: 'C4.tl', span: { w: 13, h: 3 }, label, shape: 'subprocess',
+  });
+  assert.match(badPlacement, /label fit: OVERFLOW/);
+  const described = JSON.parse(await tools.get('describe').handler({}));
+  assert.equal(described[0].elements.find((element) => element.id === 'too-small').fit.fits, false);
+
+  const goodPlacement = await tools.get('place_box').handler({
+    id: 'measured', at: 'C10.tl', span: measured.span, label, shape: 'subprocess',
+  });
+  assert.match(goodPlacement, /label fit: OK/);
+  const validation = core.validate(session.doc);
+  assert.equal(
+    validation.open.some((finding) => ['L002', 'L003'].includes(finding.rule) && finding.actors.includes('measured')),
+    false,
+  );
+});
+
 test('the validate tool surfaces composition findings to the agent', async () => {
   // An INFO finding the tool layer filters out cannot change any model's behaviour,
   // which would defeat the point of having it. Drive the real handler, not core.validate.
