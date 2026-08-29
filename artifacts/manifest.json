@@ -24,13 +24,13 @@
     }
   },
   "summary": {
-    "artifacts": 64,
+    "artifacts": 70,
     "publishable": 9,
-    "structurallyClear": 45,
+    "structurallyClear": 50,
     "missingSvg": 1,
     "byRole": {
       "example": {
-        "artifacts": 31,
+        "artifacts": 37,
         "publishable": 1
       },
       "fixture": {
@@ -1276,6 +1276,441 @@
       }
     },
     {
+      "id": "Cyberpunk Tactical HUD",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/custom-01-cyberpunk-hud.turtlepen.json",
+        "schema": 3,
+        "sha256": "c8c3ac64b8b843e9fc02d6bda2895ac1350f1c3df688206af20d119d172f3a19",
+        "bytes": 115132
+      },
+      "document": {
+        "pages": 5,
+        "elements": 25,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 14,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 14,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 8,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 8,
+          "info": 0,
+          "total": 8,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/custom-01-cyberpunk-hud.svg",
+          "present": true,
+          "bytes": 21859,
+          "sha256": "f3bb18c9baa0defc944b7668b36912aa17d889d284987052438bd66808ddab4a"
+        },
+        "png": {
+          "path": "diagrams/custom-01-cyberpunk-hud.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/custom-01-cyberpunk-hud.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Mecha Dragon",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/custom-02-mecha-dragon.turtlepen.json",
+        "schema": 3,
+        "sha256": "62d18d6adceef8dd5fe9d13a4b3b366109b29e75e9e620987bca0b558bf3d8cf",
+        "bytes": 377411
+      },
+      "document": {
+        "pages": 5,
+        "elements": 20,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 18,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 18,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/custom-02-mecha-dragon.svg",
+          "present": true,
+          "bytes": 36737,
+          "sha256": "f7e428c7c3fe8f289a8fdbf1922af037a27f4a0ae1e3f06fe4b82f023b532cc3"
+        },
+        "png": {
+          "path": "diagrams/custom-02-mecha-dragon.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/custom-02-mecha-dragon.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Quantum Neural Processor",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/custom-03-microchip-arch.turtlepen.json",
+        "schema": 3,
+        "sha256": "9b9c05d7f1fb5dff833bfe57946a291df9e6c67bbbf4adbd8d3b959de138b8f1",
+        "bytes": 44470
+      },
+      "document": {
+        "pages": 2,
+        "elements": 13,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 11,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 11,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 22,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 18,
+          "info": 4,
+          "total": 22,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/custom-03-microchip-arch.svg",
+          "present": true,
+          "bytes": 18259,
+          "sha256": "8f7e12552bf38a7f524ae21bb609ea48a11fd8fe92eac826198337d357a2d29f"
+        },
+        "png": {
+          "path": "diagrams/custom-03-microchip-arch.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/custom-03-microchip-arch.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Steampunk Airship",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/custom-04-steampunk-airship.turtlepen.json",
+        "schema": 3,
+        "sha256": "31fabd32573b452ebb7fd706de8bf5b081db187e6a7eb98802e4311a342f6515",
+        "bytes": 409286
+      },
+      "document": {
+        "pages": 5,
+        "elements": 18,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 10,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 10,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 2,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 2,
+          "info": 0,
+          "total": 2,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/custom-04-steampunk-airship.svg",
+          "present": true,
+          "bytes": 31173,
+          "sha256": "f11274db0ee1ebbe7ff5475e5a4e44bb0920724984e308c83f2e15c2024a4691"
+        },
+        "png": {
+          "path": "diagrams/custom-04-steampunk-airship.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/custom-04-steampunk-airship.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "Celestial Starmap",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/custom-05-celestial-map.turtlepen.json",
+        "schema": 3,
+        "sha256": "7c5778f10685c292fa444b76730743db2620602b6013c7eb0d0ed31b762d8056",
+        "bytes": 163693
+      },
+      "document": {
+        "pages": 4,
+        "elements": 17,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 38,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 38,
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear"
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/custom-05-celestial-map.svg",
+          "present": true,
+          "bytes": 15941,
+          "sha256": "7a12804f93748bb828845f6d951fa922049bc254f5e9c864cd377a269d55ac53"
+        },
+        "png": {
+          "path": "diagrams/custom-05-celestial-map.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/custom-05-celestial-map.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
       "id": "Dither proof",
       "catalog": {
         "role": "example",
@@ -2401,6 +2836,93 @@
       },
       "contract": {
         "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "hasPortableVector": true,
+        "publishable": false
+      }
+    },
+    {
+      "id": "important-process",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/important-process.turtlepen.json",
+        "schema": 3,
+        "sha256": "d164f7c16025d5d79a8a23db59d1ac95fd423e8708076c743def7327fd9f44d6",
+        "bytes": 141138
+      },
+      "document": {
+        "pages": 1,
+        "elements": 50,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "blocking-errors",
+        "open": 13,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 2,
+          "S1": 0,
+          "S2": 10,
+          "S3": 1,
+          "total": 13,
+          "accepted": 0,
+          "stale": 0,
+          "clean": false,
+          "state": "blocking-errors"
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 82,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 64,
+          "info": 18,
+          "total": 82,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/important-process.svg",
+          "present": true,
+          "bytes": 63849,
+          "sha256": "d028b1f29a454a2c6d3f8658de3c0af5c1881a17ab8b88b3c1f9b1e268c9cdea"
+        },
+        "png": {
+          "path": "diagrams/important-process.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/important-process.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": false,
         "modelHasNoErrors": true,
         "perceptuallyReviewed": false,
         "perceptualCurrent": false,

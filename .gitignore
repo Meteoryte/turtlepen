@@ -7,3 +7,4 @@ output/playwright/
 *.turtlepen.json.history.json
 *.bak
 *.gdoc
+scratch/
