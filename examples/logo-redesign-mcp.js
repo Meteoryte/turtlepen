@@ -125,6 +125,10 @@ try {
     ids:['turtle-silhouette','shell-ring-left','shell-ring-right','editable-ink'], footprint:'visual',
   }));
 
+  // TurtlePen explicitly requires authors to LOOK after construction. ASCII is
+  // the engine's cheap perceptual view and catches bad silhouettes before render.
+  console.log('\n[ascii]\n' + await call(mcp, 'ascii', { withFindings:false }));
+
   const validation = await call(mcp, 'validate', {}, { print:true });
   if (/\(([1-9]\d*) critical,|, ([1-9]\d*) error,|, ([1-9]\d*) warn,/.test(validation)) throw new Error('final validation has a non-INFO finding');
   await call(mcp, 'render', { path:OUT_SVG }, { print:true });
