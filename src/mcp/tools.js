@@ -53,6 +53,12 @@ const semanticProperties = () => ({
   outcome: { type: 'string', minLength: 1, description: 'result or response associated with a relationship, especially in dynamic views' },
 });
 
+async function applyAndPersist(session, operation, args) {
+  const result = core.applyOperation(need(session), { ...args, op: operation });
+  await persist(session);
+  return result;
+}
+
 /** Read and canonicalise an image relative to the active diagram. */
 async function readImage(session, source) {
   if (String(source).startsWith('data:')) {
@@ -71,6 +77,28 @@ async function readImage(session, source) {
   return { bytes, info, dataUri: `data:${core.image.MIME_BY_FORMAT[info.format]};base64,${bytes.toString('base64')}` };
 }
 
+/** Read bounded SVG source text without ever treating it as executable markup. */
+async function readSvg(session, source) {
+  if (typeof source !== 'string' || !source.trim()) {
+    throw new TypeError('SVG source must be inline <svg> markup or a relative file path');
+  }
+  const inline = source.trim().startsWith('<');
+  if (inline) {
+    if (Buffer.byteLength(source, 'utf8') > core.svgImport.MAX_SVG_IMPORT_BYTES) {
+      throw new RangeError(`SVG source is over the ${core.svgImport.MAX_SVG_IMPORT_BYTES} byte import limit`);
+    }
+    return source;
+  }
+  const base = session.path ? dirname(session.path) : session.cwd;
+  const path = resolve(base, source);
+  const file = await stat(path);
+  if (!file.isFile()) throw new Error(`SVG source is not a file: ${path}`);
+  if (file.size > core.svgImport.MAX_SVG_IMPORT_BYTES) {
+    throw new RangeError(`SVG source is ${file.size} bytes, over the ${core.svgImport.MAX_SVG_IMPORT_BYTES} byte import limit`);
+  }
+  return readFile(path, 'utf8');
+}
+
 /**
  * Turn any file-path image source into a data: URI before the operation reaches
  * core.
@@ -84,7 +112,9 @@ async function readImage(session, source) {
 async function resolveSources(session, operations) {
   const out = [];
   for (const op of operations) {
-    if (['place_image', 'place_reference'].includes(op?.op) && op.source) {
+    if (op?.op === 'import_svg' && op.source) {
+      out.push({ ...op, source: await readSvg(session, op.source) });
+    } else if (['place_image', 'place_reference'].includes(op?.op) && op.source) {
       const resolved = await readImage(session, op.source);
       out.push({ ...op, source: resolved.dataUri });
     } else {
@@ -1483,6 +1513,229 @@ ${stalled}` : core.formatLog(result);
     },
 
     {
+      name: 'inspect_svg',
+      description:
+        'Read a strict SVG import report without changing the diagram. The compiler accepts only solid unstroked lattice rectangles and 5px hex-colour line/polyline/polygon/M-L-H-V-Z strokes; it reports their generated ids, exact quadrant bounds, and any explicitly requested nearest-lattice shifts. It never embeds, executes, or preserves raw SVG markup.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          source: { type: 'string', description: 'inline <svg> markup or a path relative to the active document' },
+          prefix: { type: 'string', description: 'deterministic generated id prefix (default "svg")' },
+          quantize: { type: 'string', enum: [...core.svgImport.SVG_IMPORT_QUANTIZATION], description: 'reject (default) or explicitly nearest-lattice map incompatible coordinates' },
+        },
+        required: ['source'],
+        additionalProperties: false,
+      },
+      handler: async ({ source, prefix = 'svg', quantize = 'reject' }) => json(core.inspectSvg(
+        await readSvg(session, source),
+        { prefix, quantize },
+      )),
+    },
+
+    {
+      name: 'import_svg',
+      description:
+        'Import a strict, exact SVG subset as ordinary editable TurtlePen artwork paths. Source markup is compiled, never embedded or emitted verbatim: solid 5px-lattice rectangles become cell-painted paths, while 5px hex-colour line/polyline/polygon/M-L-H-V-Z strokes become exact rasterized paths. Unsupported curves, transforms, text, resources, styles, filters, masks, and scripts fail by name. Use inspect_svg or plan first; direct import participates in validation, history, save/open, and plan exactly like hand-authored geometry.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          source: { type: 'string', description: 'inline <svg> markup or a path relative to the active document' },
+          page: { type: 'string', description: 'destination page (default base)' },
+          prefix: { type: 'string', description: 'deterministic generated id prefix (default "svg")' },
+          quantize: { type: 'string', enum: [...core.svgImport.SVG_IMPORT_QUANTIZATION], description: 'reject (default) or explicitly nearest-lattice map incompatible coordinates' },
+        },
+        required: ['source'],
+        additionalProperties: false,
+      },
+      handler: async ({ source, page = 'base', prefix = 'svg', quantize = 'reject' }) => json(await applyAndPersist(session, 'import_svg', {
+        source: await readSvg(session, source), page, prefix, quantize,
+      })),
+    },
+
+    {
+      name: 'boolean',
+      description:
+        'Combine two or more elements with exact lattice set algebra. action union, difference, intersection, or xor uses each element’s visual footprint by default and creates a cell-painted artwork path. This is not floating-point Bézier clipping: every output quadrant is explicit, collision-checked, persistent, undoable, and available to plan.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action: { type: 'string', enum: [...core.edit.BOOLEAN_ACTIONS] },
+          ids: { type: 'array', items: { type: 'string' }, minItems: 2, description: 'source element ids, in subtraction order for difference' },
+          id: { type: 'string', description: 'result id; defaults to the first source id when replacing sources' },
+          removeSources: { type: 'boolean', description: 'replace sources (default true), or retain them and create a separate result' },
+          footprint: { type: 'string', enum: [...core.edit.FOOTPRINTS], description: 'visual (default) uses visible shape ink; claimed uses layout reservation geometry' },
+          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$', description: 'optional result colour' },
+        },
+        required: ['action', 'ids'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'boolean', args)),
+    },
+
+    {
+      name: 'slice',
+      description:
+        'Divide one element at an explicit vertical or horizontal lattice boundary. divide (default) returns every edge-connected result in deterministic order; partition returns the two sides. The boundary is an address, never an inferred mouse gesture, so no fractional quadrants are discarded or approximated.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', description: 'element to partition' },
+          axis: { type: 'string', enum: [...core.edit.SLICE_AXES] },
+          at: { type: 'string', description: 'lattice boundary address, such as M1.tl for a vertical slice' },
+          ids: { type: 'array', items: { type: 'string' }, description: 'optional deterministic ids for every result, in returned order' },
+          mode: { type: 'string', enum: [...core.edit.SLICE_MODES] },
+          footprint: { type: 'string', enum: [...core.edit.FOOTPRINTS] },
+          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' },
+        },
+        required: ['id', 'axis', 'at'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'slice', args)),
+    },
+
+    {
+      name: 'offset_path',
+      description:
+        'Offset visible or claimed lattice geometry by a signed whole-quadrant distance. Positive distances dilate and negative distances erode using an exact square-grid (Chebyshev) neighborhood; the operation fails rather than creating an empty or off-grid result.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          distance: { type: 'integer', description: 'signed offset in whole quadrants; positive outward, negative inward' },
+          resultId: { type: 'string', description: 'result id; defaults to the source id when replacing it' },
+          removeSource: { type: 'boolean', description: 'replace the source (default true), or retain it' },
+          footprint: { type: 'string', enum: [...core.edit.FOOTPRINTS] },
+          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' },
+        },
+        required: ['id', 'distance'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'offset_path', args)),
+    },
+
+    {
+      name: 'stroke_to_path',
+      description:
+        'Materialise a path’s exact claimed quadrants as cell-painted artwork geometry. TurtlePen widths are at most one 5px quadrant, so this produces the only honest editable outline instead of inventing sub-lattice fractional geometry.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', description: 'source path id' },
+          resultId: { type: 'string', description: 'result id; defaults to the source id when replacing it' },
+          removeSource: { type: 'boolean', description: 'replace the path (default true), or retain it' },
+          color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' },
+        },
+        required: ['id'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'stroke_to_path', args)),
+    },
+
+    {
+      name: 'path_edit',
+      description:
+        'Edit explicit lattice path pieces. insert/move use an address and piece index; delete removes one piece; reverse flips path order; close draws the exact Bresenham bridge; open removes closure; split returns two paths; join appends an adjacent path. Direct piece edits clear resumable pen-program state so a stale cursor can never silently continue edited geometry.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          action: { type: 'string', enum: [...core.edit.PATH_EDIT_ACTIONS] },
+          index: { type: 'integer', minimum: 0, description: 'piece index for insert, move, delete, or split' },
+          at: { type: 'string', description: 'address for insert or move' },
+          ids: { type: 'array', items: { type: 'string' }, description: 'two result ids for split; defaults to source id and source-part-2' },
+          with: { type: 'string', description: 'adjacent path id to append for join' },
+        },
+        required: ['id', 'action'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'path_edit', args)),
+    },
+
+    {
+      name: 'normalize_path',
+      description:
+        'Remove repeated lattice quadrants from one path while preserving first-occurrence order. This is a narrow, explicit cleanup operation; it never simplifies, moves, or approximates geometry that the caller did not name.',
+      inputSchema: {
+        type: 'object',
+        properties: { id: { type: 'string' } },
+        required: ['id'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'normalize_path', args)),
+    },
+
+    {
+      name: 'reorder',
+      description:
+        'Change an element’s presentation order within its page: bring_to_front, send_to_back, raise, lower, before, or after. Same-page collisions remain validation errors; use an overlay page and an accepted finding for deliberate stacking.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          action: { type: 'string', enum: [...core.edit.REORDER_ACTIONS] },
+          relative: { type: 'string', description: 'required by before and after; must be on the same page' },
+        },
+        required: ['id', 'action'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'reorder', args)),
+    },
+
+    {
+      name: 'duplicate',
+      description:
+        'Deep-copy one element with a caller-chosen deterministic id and exact whole-quadrant delta. A duplicate joins the source’s flat group when it has one, but does not silently clone follow constraints.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          to: { type: 'string', description: 'new element id' },
+          dx: { type: 'integer', description: 'horizontal delta in quadrants (default 0)' },
+          dy: { type: 'integer', description: 'vertical delta in quadrants (default 0)' },
+        },
+        required: ['id', 'to'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'duplicate', args)),
+    },
+
+    {
+      name: 'array',
+      description:
+        'Create a bounded rectangular array of exact copies, retaining the source at row 0 column 0. New ids are deterministic prefix-1, prefix-2, … in row-major order; values are capped at 100 copies and all steps are whole quadrants.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          columns: { type: 'integer', minimum: 1 },
+          rows: { type: 'integer', minimum: 1 },
+          stepX: { type: 'integer', description: 'horizontal copy spacing in quadrants' },
+          stepY: { type: 'integer', description: 'vertical copy spacing in quadrants' },
+          prefix: { type: 'string', description: 'new id prefix; defaults to source-copy' },
+        },
+        required: ['id', 'columns', 'rows', 'stepX', 'stepY'],
+        additionalProperties: false,
+      },
+      handler: async (args) => json(await applyAndPersist(session, 'array', args)),
+    },
+
+    {
+      name: 'inspect',
+      description:
+        'Inspect exact claimed or visual lattice geometry without changing the document. Returns areas, perimeters, integer bounds, rational centers, pairwise shared quadrants, and bounding-box gaps for explicit element ids.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          ids: { type: 'array', items: { type: 'string' }, minItems: 1 },
+          footprint: { type: 'string', enum: [...core.edit.FOOTPRINTS], description: 'claimed (default) or visual geometry' },
+        },
+        required: ['ids'],
+        additionalProperties: false,
+      },
+      handler: ({ ids, footprint = 'claimed' }) => json(core.inspectGeometry(need(session), { ids, footprint })),
+    },
+
+    {
       name: 'unaccept_finding',
       description: 'Withdraw a previously recorded acceptance, putting the finding back in the open log.',
       inputSchema: { type: 'object', properties: { fingerprint: { type: 'string' } }, required: ['fingerprint'], additionalProperties: false },
@@ -1502,7 +1755,7 @@ ${stalled}` : core.formatLog(result);
         properties: {
           operations: {
             type: 'array',
-            description: 'ordered operations, each { "op": "<name>", ...args }. Names include add_page/update_page/remove_page, place_box/place_image/place_reference, pen/connect/annotate/micro_mask, extend_path/replace_path, resize/restyle/move/rename/remove, set_canvas, finding review, groups, and constraints. Args match the same-named tool.',
+            description: 'ordered operations, each { "op": "<name>", ...args }. Names include add_page/update_page/remove_page, place_box/place_image/place_reference, pen/connect/annotate/micro_mask, extend_path/replace_path, import_svg, boolean/slice/offset_path/stroke_to_path/path_edit/normalize_path, reorder/duplicate/array, resize/restyle/move/rename/remove, set_canvas, finding review, groups, and constraints. Args match the same-named tool.',
             items: { type: 'object' },
           },
           commit: { type: 'boolean', description: 'false (default) rehearses; true applies all-or-nothing' },
@@ -2531,6 +2784,60 @@ REGIONAL DESCRIPTION
   rectangles touch that range. Paths are tested piece by piece, not by a loose
   bounding box. Add page to narrow both page and region; the response repeats
   the normalized effective filter.
+
+LATTICE-NATIVE EDITING
+  boolean { action, ids, id?, removeSources?, footprint? }
+    Exact union, difference, intersection, or xor over whole quadrants. visual
+    (default) uses visible shape ink; claimed uses reserved layout geometry.
+    The output is cell-painted artwork with source provenance, not a guessed
+    floating-point Bézier result. Sources must share a page.
+  slice { id, axis: "vertical"|"horizontal", at, mode?, ids? }
+    Divide at an explicit lattice boundary. divide (default) returns every
+    edge-connected result; partition returns one result per side. Default ids
+    are source-part-1, source-part-2, … in stable order.
+  offset_path { id, distance, resultId?, removeSource?, footprint? }
+    Positive distance dilates and negative distance erodes by whole quadrants
+    with a square (Chebyshev) neighborhood. Empty or off-grid results refuse.
+  stroke_to_path { id, resultId?, removeSource? }
+    Makes the path's exact claimed quadrants into editable cell-painted artwork.
+    A 1–5px stroke cannot honestly become fractional quadrant geometry.
+  path_edit { id, action, index?, at?, ids?, with? }
+    actions: insert delete move reverse open close split join. Insert/move use
+    an address; close draws an exact Bresenham bridge; join requires adjacent
+    ends. Direct piece edits clear resumable pen state rather than extending
+    stale geometry.
+  normalize_path { id }                 remove repeated quadrants only
+  reorder { id, action, relative? }     bring_to_front | send_to_back | raise |
+                                         lower | before | after
+  duplicate { id, to, dx?, dy? }        exact quadrant copy; no copied follow link
+  array { id, columns, rows, stepX, stepY, prefix? }
+    Creates at most 100 copies with stable row-major ids. The source is row 0,
+    column 0. reorder changes paint order only; same-page overlap remains an
+    error, so use an overlay page for deliberate stacking.
+  inspect { ids, footprint? }
+    Read exact areas, perimeters, integer bounds, rational centres, intersections,
+    and bounding gaps without changing the document.
+
+STRICT SVG IMPORT
+  inspect_svg { source, prefix?, quantize? }
+    Read what TurtlePen can import before changing the document. source is inline
+    <svg> text or a path relative to the active diagram. It never embeds or
+    executes source markup.
+  import_svg { source, page?, prefix?, quantize? }
+    Compile exact source geometry into ordinary editable artwork paths. Only
+    solid, unstroked <rect> elements on 5px boundaries and 5px hex-colour
+    <line>, <polyline>, <polygon>, and M/L/H/V/Z <path> strokes are accepted.
+    Multi-segment strokes must declare stroke-linejoin="round". Curves, text,
+    transforms, CSS/styles, images/resources, defs, clipping/masks, filters,
+    and scripts refuse by name — no source construct is silently dropped or
+    preserved as unsafe raw SVG.
+
+    Coordinate policy is quantize:"reject" by default: filled boundaries must
+    land on 5px multiples and stroke points on 2.5px quadrant centres. Choose
+    quantize:"nearest" only after inspect_svg reports the exact shift; its
+    output records every changed coordinate. Imports use deterministic
+    prefix-1, prefix-2, … ids, retain source-element provenance, validate and
+    serialize like hand-authored paths, and can be rehearsed in plan.
 
 DIMENSIONED COMPOSITIONS
   wireframe authors a plan/elevation in real inches and measures routed runs;

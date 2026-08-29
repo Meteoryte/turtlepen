@@ -139,6 +139,25 @@ Verified by running it, not by inspection:
   calls consume no entry, divergent edits clear redo, every restoration is
   checkpointed, and partial composite failure rolls back memory, document, and
   sidecar together.
+- **Lattice-native editing is a first-class mutation vocabulary.** `boolean`
+  performs exact union/difference/intersection/XOR over visible or claimed
+  quadrants; `slice` returns deterministic addressable regions; `offset_path`
+  applies square-grid morphology; and `stroke_to_path` materializes the existing
+  path footprint without inventing fractional coordinates. `path_edit`,
+  `normalize_path`, `reorder`, `duplicate`, and `array` provide explicit repair
+  operations, while `inspect` returns exact areas, perimeters, bounds, centers,
+  intersections, and gaps. Every mutation shares the `OPERATIONS`/`plan` path,
+  participates in history, and has real-stdio plus geometry, invalid-input, and
+  persistence coverage.
+- **Compatible SVG is now editable rather than opaque.** `inspect_svg` compiles
+  a bounded source subset without mutating the document, showing deterministic
+  IDs, provenance, exact quadrant bounds, and any opt-in nearest-lattice shifts.
+  `import_svg` turns those solid lattice rectangles and 5px linear strokes into
+  ordinary artwork paths; they then use the same boolean, slice, offset,
+  collision, history, plan, save/open, and renderer paths as hand-authored
+  geometry. Curves, transforms, styles, resources, filters, masks, text, and
+  active SVG are refused by name before mutation; raw source markup never enters
+  a document or the live viewer DOM.
 - **Subsystem grouping is durable and exact.** Flat groups own explicit element
   ids across pages, serialize deterministically, move every member by one exact
   delta, participate in plan and history, follow rename/removal, reject ambiguous

@@ -18,6 +18,8 @@ Status: **prototype** — 628 tests green, zero runtime dependencies, 61 MCP too
 | know what is proven and what is deferred | [`status.md`](status.md) |
 | find the owner of version, schema, tools, artifacts, or generated evidence | [`docs/source-of-truth-map.md`](docs/source-of-truth-map.md) |
 | see the flowchart work and what was deliberately not built | [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md) |
+| repair existing lattice geometry | [`docs/lattice-editing.md`](docs/lattice-editing.md) |
+| import a compatible SVG safely | [`docs/svg-import.md`](docs/svg-import.md) |
 | know the current tool surface, authoritatively | call `turtlepen_help` — it outranks every document here |
 | validate/render/bundle without an MCP host | run `node src/cli.js help` or the `turtlepen` bin |
 
@@ -576,6 +578,9 @@ inflating effective ink, and record source plus run hashes in the
 | check | `validate` `inspect_model` `accept_model_finding` `unaccept_model_finding` `perceptual_review` `accept_finding` `unaccept_finding` |
 | repair | `resize` `restyle` `move` `rename` `update_page` `set_canvas` `extend_path` `replace_path` `remove` |
 | fidelity | `micro_mask` `stroke_text` `stroke_label` `glyph` `font_coverage` |
+| lattice editing | `boolean` `slice` `offset_path` `stroke_to_path` `path_edit` `normalize_path` `reorder` `duplicate` `array` |
+| inspect geometry | `inspect` |
+| SVG import | `inspect_svg` `import_svg` |
 | compose | `wireframe` `perspective_scene` `export_prompt` |
 | image | `measure_image` `place_image` `place_reference` |
 | output | `render` `save` |
@@ -601,7 +606,7 @@ Lowercase marks a claimed-but-not-inked corner cut. `✗` marks a collision.
 
 ```
 src/core/     pure engine, no I/O — geometry, address, text, shapes,
-              document, pen, occupancy, collide, ascii, svg
+              document, pen, edit, svg-import, occupancy, collide, ascii, svg
 src/mcp/      MCP stdio server (hand-rolled JSON-RPC 2.0) + tool definitions
 src/viewer/   local HTTP/WebSocket server + live browser editor and log
 src/quality/  artifact catalog, manifest, and naming/SSOT governance
