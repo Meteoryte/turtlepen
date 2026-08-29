@@ -74,9 +74,10 @@ try {
   // should resolve only to L010 INFO findings, never hidden same-page collisions.
   await call(mcp, 'add_page', { id: 'shell', z: 1, intent: 'overlay' });
   await call(mcp, 'add_page', { id: 'facets', z: 2, intent: 'overlay' });
-  await call(mcp, 'add_page', { id: 'nodes', z: 3, intent: 'overlay' });
-  await call(mcp, 'add_page', { id: 'ink', z: 4, intent: 'overlay' });
-  await call(mcp, 'add_page', { id: 'type', z: 5, intent: 'overlay' });
+  await call(mcp, 'add_page', { id: 'grid', z: 3, intent: 'overlay' });
+  await call(mcp, 'add_page', { id: 'nodes', z: 4, intent: 'overlay' });
+  await call(mcp, 'add_page', { id: 'ink', z: 5, intent: 'overlay' });
+  await call(mcp, 'add_page', { id: 'type', z: 6, intent: 'overlay' });
 
   // -------------------------------------------------------------------------
   // 1. The turtle silhouette is not traced. It is constructed from exact
@@ -145,9 +146,9 @@ try {
   await planCommit(mcp, shellOps, 'shell');
 
   // -------------------------------------------------------------------------
-  // 3. The shell doubles as a vector-editing surface. The facet polygon is a
-  //    direct lattice shape; the control handles come from ARRAY, not eight
-  //    individually hand-placed dots.
+  // 3. The shell doubles as a vector-editing surface. The facet outline and
+  //    crosshair deliberately live on separate overlay pages so their visual
+  //    intersection is explicit rather than a hidden same-page collision.
   // -------------------------------------------------------------------------
   const facetOps = [
     {
@@ -155,7 +156,7 @@ try {
       program: `pen ${at(57, 27)}\npolygon ${at(70, 34)} ${at(70, 48)} ${at(57, 55)} ${at(44, 48)} ${at(44, 34)}`,
     },
     {
-      op: 'pen', id: 'facet-cross', page: 'facets', role: 'artwork', color: CREAM, width: 2, cap: 'round',
+      op: 'pen', id: 'facet-cross', page: 'grid', role: 'artwork', color: CREAM, width: 2, cap: 'round',
       program: `pen ${at(44, 41)}\nray to ${at(70, 41)}\npen ${at(57, 27)}\nray to ${at(57, 55)}`,
     },
   ];
