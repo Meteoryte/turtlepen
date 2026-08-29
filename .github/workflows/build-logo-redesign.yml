@@ -49,6 +49,7 @@ jobs:
           s = s.replace("maxWidthCells: 78, maxHeightCells: 86", "maxWidthCells: 78")
           s = s.replace("span: '78x86'", "span: '78x65'")
           s = s.replace("line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 6, 'features');", "line('pen-outer', polyline([[143,82],[169,97]]), C.navy, 5, 'features');")
+          s = s.replace("properties:{ referenceUsedOnlyForAuthoring:true, shippedRaster:false }", "properties:{ referenceUsedOnlyForAuthoring:'true', shippedRaster:'false' }")
           p.write_text(s)
           PY
 
