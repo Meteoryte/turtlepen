@@ -76,17 +76,75 @@ jobs:
             echo '```'
           } > brand/logo-redesign-diagnostic.md
 
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          text = Path('/tmp/logo-build.log').read_text(errors='replace')
+          marker = '[validate] '
+          marker_at = text.rfind(marker)
+          result = {
+              'extraction': 'no validation payload found',
+              'summary': None,
+              'findings': []
+          }
+
+          if marker_at >= 0:
+              start = text.find('{', marker_at)
+              depth = 0
+              in_string = False
+              escaped = False
+              end = None
+              for pos in range(start, len(text)):
+                  ch = text[pos]
+                  if in_string:
+                      if escaped:
+                          escaped = False
+                      elif ch == '\\':
+                          escaped = True
+                      elif ch == '"':
+                          in_string = False
+                  else:
+                      if ch == '"':
+                          in_string = True
+                      elif ch == '{':
+                          depth += 1
+                      elif ch == '}':
+                          depth -= 1
+                          if depth == 0:
+                              end = pos + 1
+                              break
+              if start >= 0 and end:
+                  try:
+                      payload = json.loads(text[start:end])
+                      findings = [
+                          f for f in payload.get('findings', [])
+                          if f.get('severity') in {'S0', 'S1', 'S2'}
+                      ]
+                      result = {
+                          'extraction': 'ok',
+                          'summary': payload.get('summary'),
+                          'findings': findings
+                      }
+                  except Exception as exc:
+                      result['extraction'] = f'parse error: {exc}'
+
+          Path('brand/logo-redesign-decisions.json').write_text(
+              json.dumps(result, indent=2, sort_keys=False) + '\n'
+          )
+          PY
+
       - name: Commit TurtlePen diagnostic on failure
         if: steps.build.outcome == 'failure'
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add brand/logo-redesign-diagnostic.md
+          git add brand/logo-redesign-diagnostic.md brand/logo-redesign-decisions.json
           if git diff --cached --quiet; then
             echo 'No diagnostic changes to commit.'
           else
-            git commit -m 'Capture TurtlePen logo build diagnostic'
+            git commit -m 'Capture TurtlePen logo decision findings'
             git push
           fi
 
