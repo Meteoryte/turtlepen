@@ -1,18 +1,25 @@
 #!/usr/bin/env node
 /**
- * TurtlePen MCP logo redesign.
+ * Native TurtlePen MCP brand mark.
  *
- * This intentionally authors the redesign through the real stdio MCP server,
- * not by importing the core directly. The existing TurtlePen illustration is
- * simplified back onto TurtlePen's lattice, then native TurtlePen artwork,
- * labels, bubbles, splashes, and type are composed around it.
+ * The previous experiment proved that TurtlePen could compose and render a logo,
+ * but it cheated the interesting part by simplifying an existing PNG mascot.
+ * This version makes the LOGO ITSELF a TurtlePen capability demonstration:
+ *
+ *   - turtle silhouette: native lattice primitives -> boolean union
+ *   - shell ring: native discs -> boolean difference -> vertical slice
+ *   - shell control points: one native dot -> array operation
+ *   - drawing flourish: pen stroke -> stroke_to_path editable artwork
+ *   - every major geometry group: inspectable + semantically annotated
+ *
+ * No raster source is used anywhere.
  */
 
 import { createMcpClient } from './mcp-client.js';
 
 const OUT_JSON = 'brand/logo-redesign.turtlepen.json';
 const OUT_SVG = 'brand/logo-redesign.svg';
-const CREATED_AT = '2026-08-29T19:15:00.000Z';
+const CREATED_AT = '2026-08-29T20:05:00.000Z';
 
 function colName(n) {
   let s = '';
@@ -35,16 +42,21 @@ async function call(mcp, name, args = {}, { print = false } = {}) {
   return body;
 }
 
-const bubbles = [
-  { id: 'svg-editing', label: 'SVG Editing', x: 22, y: 28, r: 18, color: '#12B8A6', stream: [[66, 62], [50, 48], [34, 38]] },
-  { id: 'vector-drawing', label: 'Vector Drawing', x: 58, y: 18, r: 18, color: '#6E49D8', stream: [[76, 60], [69, 42], [62, 30]] },
-  { id: 'image-simplify', label: 'Image Simplify', x: 105, y: 24, r: 18, color: '#EA4C89', stream: [[88, 60], [95, 44], [101, 34]] },
-  { id: 'path-operations', label: 'Path Operations', x: 148, y: 46, r: 18, color: '#F59E0B', stream: [[103, 67], [121, 58], [137, 51]] },
-  { id: 'mcp-tools', label: '73 MCP Tools', x: 150, y: 92, r: 18, color: '#84CC16', stream: [[108, 82], [125, 86], [139, 90]] },
-  { id: 'render-validate', label: 'Render + Validate', x: 125, y: 132, r: 18, color: '#2F80ED', stream: [[103, 98], [112, 113], [120, 123]] },
-  { id: 'layout-routing', label: 'Layout + Routing', x: 45, y: 134, r: 18, color: '#8B5CF6', stream: [[69, 100], [59, 113], [50, 125]] },
-  { id: 'turtle-commands', label: 'Turtle Commands', x: 18, y: 82, r: 18, color: '#0EA5E9', stream: [[61, 82], [44, 81], [29, 81]] },
-];
+async function planCommit(mcp, operations, label) {
+  const rehearsal = await call(mcp, 'plan', { operations }, { print: true });
+  if (/\(([1-9]\d*) critical,|, ([1-9]\d*) error,|, ([1-9]\d*) warn,/.test(rehearsal)) {
+    throw new Error(`${label}: rehearsal produced a non-INFO finding`);
+  }
+  await call(mcp, 'plan', { operations, commit: true });
+}
+
+const NAVY = '#0B1F33';
+const TEAL = '#18B6A4';
+const GREEN = '#8EDB54';
+const CREAM = '#FFF8E8';
+const CORAL = '#FF6B5F';
+const VIOLET = '#7A5AF8';
+const CYAN = '#35C6F4';
 
 const mcp = createMcpClient({ createdAt: CREATED_AT });
 await mcp.init();
@@ -52,160 +64,217 @@ await mcp.init();
 try {
   await call(mcp, 'turtlepen_help');
   await call(mcp, 'new_diagram', {
-    name: 'TurtlePen MCP — Creative Capability Logo',
+    name: 'TurtlePen MCP — Native Lattice Mark',
     path: OUT_JSON,
-    cols: 170,
-    rows: 170,
+    cols: 122,
+    rows: 100,
   }, { print: true });
 
-  // Semantic layers keep deliberate overlap explicit instead of hiding it.
-  await call(mcp, 'add_page', { id: 'splashes', z: 1, intent: 'overlay' });
-  await call(mcp, 'add_page', { id: 'bubbles', z: 2, intent: 'overlay' });
-  await call(mcp, 'add_page', { id: 'highlights', z: 3, intent: 'overlay' });
-  await call(mcp, 'add_page', { id: 'type', z: 4, intent: 'overlay' });
+  // Purposeful visual layers. Overlap between these pages is intentional and
+  // should resolve only to L010 INFO findings, never hidden same-page collisions.
+  await call(mcp, 'add_page', { id: 'shell', z: 1, intent: 'overlay' });
+  await call(mcp, 'add_page', { id: 'facets', z: 2, intent: 'overlay' });
+  await call(mcp, 'add_page', { id: 'nodes', z: 3, intent: 'overlay' });
+  await call(mcp, 'add_page', { id: 'ink', z: 4, intent: 'overlay' });
+  await call(mcp, 'add_page', { id: 'type', z: 5, intent: 'overlay' });
 
-  // Re-resolve TurtlePen's own established mascot/easel mark onto the lattice.
-  // This is the same supported image->lattice path used by the repository's
-  // canonical logo-v2 workflow; the output remains TurtlePen-authored geometry.
-  await call(mcp, 'place_image', {
-    id: 'turtle-artist',
-    at: tl(50, 48),
-    span: { w: 72, h: 72 },
-    source: 'logo-v2-source-mark.png',
-    mode: 'simplify',
-    fit: 'contain',
-    detail: 'high',
-    supersample: 4,
-  }, { print: true });
-
-  // Measurement before placement: prove every capability label fits the same
-  // visual bubble label box before any of those labels are committed.
-  for (const bubble of bubbles) {
-    const measured = JSON.parse(await call(mcp, 'measure', {
-      text: bubble.label,
-      maxWidthCells: 18,
-      fontSize: 18,
-    }));
-    console.log(`[measure] ${bubble.label}: ${measured.lines} line(s), ${measured.cellsTall} cells tall`);
-  }
-
-  // Streams originate around the easel/canvas, visibly throwing color outward.
-  const streamOps = bubbles.map((b, i) => ({
-    op: 'pen',
-    id: `splash-stream-${i + 1}`,
-    page: 'splashes',
-    role: 'artwork',
-    color: b.color,
-    width: 5,
-    cap: 'round',
-    program: [
-      `pen ${at(...b.stream[0])}`,
-      `ray to ${at(...b.stream[1])}`,
-      `ray to ${at(...b.stream[2])}`,
-      `ray to ${at(b.x, b.y)}`,
-    ].join('\n'),
-  }));
-  await call(mcp, 'plan', { operations: streamOps }, { print: true });
-  await call(mcp, 'plan', { operations: streamOps, commit: true });
-
-  // Native filled lattice circles form the capability bubbles.
-  const bubbleOps = bubbles.map((b) => ({
-    op: 'pen',
-    id: `bubble-${b.id}`,
-    page: 'bubbles',
-    role: 'artwork',
-    color: b.color,
-    paint: 'cells',
-    program: `pen ${at(b.x, b.y)}\ndisc ${b.r}`,
-  }));
-  await call(mcp, 'plan', { operations: bubbleOps }, { print: true });
-  await call(mcp, 'plan', { operations: bubbleOps, commit: true });
-
-  // Each bubble gets a gloss mark and two detached droplets so it reads as a
-  // splash emerging from the canvas rather than a static UI badge.
-  const accentOps = [];
-  for (const [i, b] of bubbles.entries()) {
-    const side = b.x < 85 ? 1 : -1;
-    accentOps.push(
-      {
-        op: 'pen',
-        id: `gloss-${b.id}`,
-        page: 'highlights',
-        role: 'artwork',
-        color: '#FFFFFF',
-        width: 3,
-        cap: 'round',
-        program: `pen ${at(b.x - 4, b.y - 5)}\narc ${Math.max(8, b.r - 7)} 205 305`,
-      },
-      {
-        op: 'pen',
-        id: `drop-a-${b.id}`,
-        page: 'highlights',
-        role: 'artwork',
-        color: b.color,
-        paint: 'cells',
-        program: `pen ${at(b.x + side * 11, b.y + 8)}\ndisc 4`,
-      },
-      {
-        op: 'pen',
-        id: `drop-b-${b.id}`,
-        page: 'highlights',
-        role: 'artwork',
-        color: b.color,
-        paint: 'cells',
-        program: `pen ${at(b.x + side * 14, b.y + 11)}\ndisc 2`,
-      },
-    );
-  }
-  await call(mcp, 'plan', { operations: accentOps }, { print: true });
-  await call(mcp, 'plan', { operations: accentOps, commit: true });
-
-  // Capability type sits on its own overlay so the text is deliberately above
-  // the bubbles and is collision-reviewed as presentation, not hidden overlap.
-  const labelOps = bubbles.map((b) => ({
-    op: 'pen',
-    id: `label-${b.id}`,
-    page: 'type',
-    role: 'artwork',
-    program: `text "${b.label}" at ${tl(b.x - 10, b.y - 4)} span 20x8 id label-${b.id} font 18 fill #FFFFFF weight 800 align center`,
-  }));
-  await call(mcp, 'plan', { operations: labelOps }, { print: true });
-  await call(mcp, 'plan', { operations: labelOps, commit: true });
-
-  // Brand lockup and colorful stroke signature below the mascot.
-  const brandOps = [
+  // -------------------------------------------------------------------------
+  // 1. The turtle silhouette is not traced. It is constructed from exact
+  //    lattice primitives and then boolean-unioned into one editable object.
+  // -------------------------------------------------------------------------
+  const silhouetteSeeds = [
     {
-      op: 'pen', id: 'wordmark', page: 'type', role: 'artwork',
-      program: `text "TurtlePen" at ${tl(43, 142)} span 86x12 id turtlepen-wordmark font 60 fill #0B1F3A weight 900 align center`,
+      op: 'pen', id: 'seed-shell', role: 'artwork', color: NAVY, paint: 'cells',
+      program: `pen ${at(57, 41)}\ndisc 34`,
     },
     {
-      op: 'pen', id: 'mcp-wordmark', page: 'type', role: 'artwork',
-      program: `text "MCP" at ${tl(69, 154)} span 34x8 id mcp-wordmark font 34 fill #6E49D8 weight 900 align center`,
+      op: 'pen', id: 'seed-head', role: 'artwork', color: NAVY, paint: 'cells',
+      program: `pen ${at(87, 41)}\ndisc 11`,
     },
     {
-      op: 'pen', id: 'underline-teal', page: 'splashes', role: 'artwork', color: '#12B8A6', width: 5, cap: 'round',
-      program: `pen ${at(52, 158)}\nray to ${at(79, 161)}`,
+      op: 'pen', id: 'seed-neck', role: 'artwork', color: NAVY, paint: 'cells',
+      program: `pen ${at(73, 36)}\npolygon ${at(87, 36)} ${at(87, 46)} ${at(73, 46)}`,
     },
     {
-      op: 'pen', id: 'underline-pink', page: 'splashes', role: 'artwork', color: '#EA4C89', width: 5, cap: 'round',
-      program: `pen ${at(94, 161)}\nray to ${at(120, 158)}`,
+      op: 'pen', id: 'seed-front-leg', role: 'artwork', color: NAVY, paint: 'cells',
+      program: `pen ${at(70, 57)}\npolygon ${at(82, 65)} ${at(67, 64)} ${at(61, 55)}`,
     },
     {
-      op: 'pen', id: 'underline-orange', page: 'splashes', role: 'artwork', color: '#F59E0B', width: 4, cap: 'round',
-      program: `pen ${at(104, 164)}\nray to ${at(126, 161)}`,
+      op: 'pen', id: 'seed-rear-leg', role: 'artwork', color: NAVY, paint: 'cells',
+      program: `pen ${at(42, 57)}\npolygon ${at(35, 65)} ${at(51, 63)} ${at(55, 54)}`,
+    },
+    {
+      op: 'pen', id: 'seed-tail', role: 'artwork', color: NAVY, paint: 'cells',
+      program: `pen ${at(23, 41)}\npolygon ${at(34, 34)} ${at(34, 48)}`,
+    },
+    {
+      op: 'boolean', action: 'union',
+      ids: ['seed-shell', 'seed-head', 'seed-neck', 'seed-front-leg', 'seed-rear-leg', 'seed-tail'],
+      id: 'turtle-silhouette', removeSources: true,
     },
   ];
-  await call(mcp, 'plan', { operations: brandOps }, { print: true });
-  await call(mcp, 'plan', { operations: brandOps, commit: true });
+  await planCommit(mcp, silhouetteSeeds, 'silhouette');
+
+  // -------------------------------------------------------------------------
+  // 2. The shell is also edited geometry: two discs become a boolean ring,
+  //    then slice divides that result through the center. The split is subtle
+  //    visually, but the saved source proves the mark is truly editable.
+  // -------------------------------------------------------------------------
+  const shellOps = [
+    {
+      op: 'pen', id: 'shell-outer', page: 'shell', role: 'artwork', color: GREEN, paint: 'cells',
+      program: `pen ${at(57, 41)}\ndisc 29`,
+    },
+    {
+      op: 'pen', id: 'shell-hole', page: 'shell', role: 'artwork', color: GREEN, paint: 'cells',
+      program: `pen ${at(57, 41)}\ndisc 24`,
+    },
+    {
+      op: 'boolean', action: 'difference', ids: ['shell-outer', 'shell-hole'],
+      id: 'shell-ring', removeSources: true,
+    },
+    {
+      op: 'slice', id: 'shell-ring', axis: 'vertical', at: `${colName(57)}1.tl`, mode: 'partition',
+      ids: ['shell-ring-left', 'shell-ring-right'],
+    },
+    {
+      op: 'pen', id: 'shell-field', page: 'shell', role: 'artwork', color: TEAL, paint: 'cells',
+      program: `pen ${at(57, 41)}\ndisc 22`,
+    },
+  ];
+  await planCommit(mcp, shellOps, 'shell');
+
+  // -------------------------------------------------------------------------
+  // 3. The shell doubles as a vector-editing surface. The facet polygon is a
+  //    direct lattice shape; the control handles come from ARRAY, not eight
+  //    individually hand-placed dots.
+  // -------------------------------------------------------------------------
+  const facetOps = [
+    {
+      op: 'pen', id: 'shell-facet', page: 'facets', role: 'artwork', color: CREAM, width: 3, cap: 'round',
+      program: `pen ${at(57, 27)}\npolygon ${at(70, 34)} ${at(70, 48)} ${at(57, 55)} ${at(44, 48)} ${at(44, 34)}`,
+    },
+    {
+      op: 'pen', id: 'facet-cross', page: 'facets', role: 'artwork', color: CREAM, width: 2, cap: 'round',
+      program: `pen ${at(44, 41)}\nray to ${at(70, 41)}\npen ${at(57, 27)}\nray to ${at(57, 55)}`,
+    },
+  ];
+  await planCommit(mcp, facetOps, 'facets');
+
+  await call(mcp, 'pen', {
+    id: 'anchor-node', page: 'nodes', role: 'artwork', color: CREAM, paint: 'cells',
+    program: `pen ${at(47, 32)}\ndisc 2`,
+  });
+  await call(mcp, 'array', {
+    id: 'anchor-node', columns: 3, rows: 2, stepX: 20, stepY: 18, prefix: 'anchor',
+  }, { print: true });
+
+  // Extra anchor points at the top/bottom reinforce the vector-control motif.
+  await planCommit(mcp, [
+    {
+      op: 'pen', id: 'anchor-top', page: 'nodes', role: 'artwork', color: CREAM, paint: 'cells',
+      program: `pen ${at(57, 27)}\ndisc 2`,
+    },
+    {
+      op: 'pen', id: 'anchor-bottom', page: 'nodes', role: 'artwork', color: CREAM, paint: 'cells',
+      program: `pen ${at(57, 55)}\ndisc 2`,
+    },
+  ], 'extra anchors');
+
+  // -------------------------------------------------------------------------
+  // 4. Pen nib + editable drawing path. The flourish begins as a TurtlePen
+  //    stroke and is then converted through stroke_to_path, so what looks like
+  //    "ink" in the logo is literally editable lattice artwork.
+  // -------------------------------------------------------------------------
+  await planCommit(mcp, [
+    {
+      op: 'pen', id: 'nib', page: 'ink', role: 'artwork', color: CORAL, paint: 'cells',
+      program: `pen ${at(92, 39)}\npolygon ${at(105, 45)} ${at(92, 51)} ${at(95, 45)}`,
+    },
+    {
+      op: 'pen', id: 'nib-hole', page: 'nodes', role: 'artwork', color: NAVY, paint: 'cells',
+      program: `pen ${at(96, 45)}\ndisc 2`,
+    },
+    {
+      op: 'pen', id: 'drawn-stroke', page: 'ink', role: 'artwork', color: VIOLET, width: 4, cap: 'round',
+      program: `pen ${at(105, 45)}\nray to ${at(112, 51)}\nray to ${at(106, 58)}\nray to ${at(114, 65)}\nray to ${at(107, 71)}`,
+    },
+    {
+      op: 'stroke_to_path', id: 'drawn-stroke', resultId: 'editable-ink', removeSource: true,
+    },
+  ], 'pen and editable ink');
+
+  // Eye and three MCP "ports" are minimal but integrated into the mark rather
+  // than floating feature badges.
+  await planCommit(mcp, [
+    {
+      op: 'pen', id: 'eye', page: 'nodes', role: 'artwork', color: CREAM, paint: 'cells',
+      program: `pen ${at(89, 39)}\ndisc 2`,
+    },
+    {
+      op: 'pen', id: 'mcp-port', page: 'nodes', role: 'artwork', color: CYAN, paint: 'cells',
+      program: `pen ${at(48, 61)}\ndisc 2`,
+    },
+  ], 'eye and first MCP port');
+  await call(mcp, 'array', {
+    id: 'mcp-port', columns: 3, rows: 1, stepX: 18, stepY: 0, prefix: 'mcp-port',
+  }, { print: true });
+
+  // -------------------------------------------------------------------------
+  // 5. Brand lockup. Text is measured before placement, keeping the type part
+  //    of the same measurement-first contract as the geometry.
+  // -------------------------------------------------------------------------
+  for (const [text, width, size] of [['TurtlePen', 62, 46], ['MCP', 22, 24]]) {
+    const measured = await call(mcp, 'measure', { text, maxWidthCells: width, fontSize: size });
+    console.log(`[measure] ${text}: ${measured.replaceAll('\n', ' ')}`);
+  }
+
+  await planCommit(mcp, [
+    {
+      op: 'pen', id: 'brand-name', page: 'type', role: 'artwork',
+      program: `text "TurtlePen" at ${tl(24, 78)} span 68x10 id turtlepen-wordmark font 46 fill ${NAVY} weight 900 align center`,
+    },
+    {
+      op: 'pen', id: 'brand-mcp', page: 'type', role: 'artwork',
+      program: `text "MCP" at ${tl(47, 88)} span 22x6 id mcp-wordmark font 24 fill ${VIOLET} weight 900 align center`,
+    },
+    {
+      op: 'pen', id: 'brand-rule', page: 'ink', role: 'artwork', color: TEAL, width: 4, cap: 'round',
+      program: `pen ${at(38, 94)}\nray to ${at(78, 94)}`,
+    },
+  ], 'brand lockup');
+
+  // Semantics make the construction inspectable to another agent instead of
+  // leaving the artwork as a pile of anonymous coordinates.
+  await call(mcp, 'annotate', {
+    id: 'turtle-silhouette',
+    description: 'Native TurtlePen turtle silhouette assembled from primitives with boolean union',
+    technology: 'TurtlePen lattice artwork',
+    tags: ['brand', 'turtle', 'boolean-union', 'native'],
+    properties: { rasterSource: 'none', construction: 'boolean union' },
+  });
+  await call(mcp, 'annotate', {
+    id: 'editable-ink',
+    description: 'Pen flourish converted from a stroke into exact editable lattice artwork',
+    technology: 'stroke_to_path',
+    tags: ['brand', 'pen', 'editable-path', 'native'],
+    properties: { conversion: 'stroke_to_path', rasterSource: 'none' },
+  });
+
+  // Report exact evidence that the mark is built from editable geometry.
+  console.log('\n[inspect]');
+  console.log(await call(mcp, 'inspect', {
+    ids: ['turtle-silhouette', 'shell-ring-left', 'shell-ring-right', 'editable-ink'],
+    footprint: 'visual',
+  }));
 
   const validation = await call(mcp, 'validate', {}, { print: true });
-  const bad = /\(([1-9]\d*) critical,|, ([1-9]\d*) error,|, ([1-9]\d*) warn,/.test(validation);
-  if (bad) {
-    console.warn('Logo rendered with non-INFO validation findings; review the log above before promoting it to canonical brand art.');
+  if (/\(([1-9]\d*) critical,|, ([1-9]\d*) error,|, ([1-9]\d*) warn,/.test(validation)) {
+    throw new Error('final validation has a non-INFO finding');
   }
 
   await call(mcp, 'render', { path: OUT_SVG }, { print: true });
-  console.log(`\nBuilt with TurtlePen MCP:\n  ${OUT_JSON}\n  ${OUT_SVG}`);
+  console.log(`\nNative TurtlePen MCP logo built with no raster source:\n  ${OUT_JSON}\n  ${OUT_SVG}`);
 } finally {
   await mcp.close();
 }
