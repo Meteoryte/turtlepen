@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 650 tests green, zero runtime dependencies, 73 MCP tools.
+Status: **prototype** — 659 tests green, zero runtime dependencies, 73 MCP tools.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -519,6 +519,7 @@ pnpm run logo                          # regenerate the canonical 1200x1200 logo
 pnpm run tree                          # regenerate the 540x960 branching-tree study
 node src/viewer/server.js --doc diagrams/example.turtlepen.json
 node src/mcp/server.js                 # MCP over stdio
+TURTLEPEN_HTTP_BEARER_TOKEN=<secret> pnpm run mcp:http  # stateful MCP over HTTP
 ```
 
 Register the MCP server with any MCP-aware agent. Use the absolute path to your
@@ -535,6 +536,13 @@ paths do not expand:
 There is nothing to install first: no runtime dependencies, Node 20 or newer.
 Clone it, point the config at `src/mcp/server.js`, and run `pnpm test` once to
 confirm the clone is sound.
+
+For remote clients, `src/mcp/http-server.js` exposes the same live registry and
+one active document per `Mcp-Session-Id` over MCP Streamable HTTP. Its default
+bearer-token boundary is for a private preview; a public multi-user endpoint
+still needs TLS, OAuth identity, per-user quotas, and an authenticated file
+bridge. See the [remote MCP transport contract](docs/remote-mcp.md), including
+the required dual `Accept` header and Cloudflare user-agent gotcha.
 
 73 tools. Call `turtlepen_help` first for a compact orientation, use
 `search_help { query }` for task-focused discovery, and request
@@ -609,7 +617,8 @@ Lowercase marks a claimed-but-not-inked corner cut. `✗` marks a collision.
 ```
 src/core/     pure engine, no I/O — geometry, address, text, shapes,
               document, pen, edit, svg-import, occupancy, collide, ascii, svg
-src/mcp/      MCP stdio server (hand-rolled JSON-RPC 2.0) + tool definitions
+src/mcp/      shared MCP protocol/runtime, stdio and Streamable HTTP transports,
+              and the canonical tool definitions
 src/viewer/   local HTTP/WebSocket server + live browser editor and log
 src/quality/  artifact catalog, manifest, and naming/SSOT governance
 test/         node:test, no framework

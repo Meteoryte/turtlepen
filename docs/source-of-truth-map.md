@@ -10,6 +10,7 @@ derived file—never hand-edit both.
 | Document schema and migration | `src/core/document.js` | runtime diagnostics, serialized documents, schema tests |
 | Core mutations | `src/core/index.js` → `OPERATIONS` | plans, MCP mutation history, browser mutation allowlist |
 | MCP schemas and full authoring manual | `src/mcp/tools.js` | `src/capabilities.js`, `docs/turtlepen-help.txt`, endpoint evidence |
+| MCP protocol behavior and transport parity | `src/mcp/protocol.js` | `src/mcp/server.js`, `src/mcp/http-server.js`, endpoint evidence |
 | Artifact role and release scope | `artifacts/artifact-catalog.json` | `artifacts/manifest.json`, README release/study labels |
 | Artifact quality evidence | TurtlePen documents plus their rendered exports | generated `artifacts/manifest.json` hashes and verdicts |
 | Benchmark tasks and partitions | `benchmark/corpus-v1.json` | worksheets, adapter receipts, scored reports |

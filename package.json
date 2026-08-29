@@ -13,9 +13,10 @@
   },
   "scripts": {
     "test": "node --test \"test/**/*.test.js\"",
-    "test:endpoints": "node --test test/endpoints.test.js test/mcp.test.js test/viewer.test.js",
+    "test:endpoints": "node --test test/endpoints.test.js test/http-mcp.test.js test/mcp.test.js test/viewer.test.js",
     "viewer": "node src/viewer/server.js",
     "mcp": "node src/mcp/server.js",
+    "mcp:http": "node src/mcp/http-server.js",
     "cli": "node src/cli.js",
     "doctor": "node src/cli.js doctor",
     "governance": "node src/cli.js governance",
@@ -43,11 +44,14 @@
   "devDependencies": {},
   "bin": {
     "turtlepen-mcp": "src/mcp/server.js",
+    "turtlepen-mcp-http": "src/mcp/http-server.js",
     "turtlepen": "src/cli.js"
   },
   "exports": {
     ".": "./src/core/index.js",
     "./mcp": "./src/mcp/server.js",
+    "./mcp/http": "./src/mcp/http-server.js",
+    "./mcp/protocol": "./src/mcp/protocol.js",
     "./tools": "./src/mcp/tools.js"
   },
   "files": [
@@ -57,6 +61,7 @@
     "llm.md",
     "status.md",
     "docs/QUICKSTART.md",
+    "docs/remote-mcp.md",
     "docs/adr/0001-one-model-many-views.md",
     "docs/adr/0002-conflict-aware-local-persistence.md",
     "docs/adr/0003-deterministic-output-and-micro-masks.md",

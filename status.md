@@ -1,16 +1,19 @@
 # TurtlePen — status
 
-**As of 2026-08-29.** Prototype, working end to end, 650/650 tests green,
+**As of 2026-08-29.** Prototype, working end to end, 659/659 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **650/650 tests pass** (`node --test "test/**/*.test.js"`), including tests
-  that drive the real MCP server over a pipe as a child process.
+- **659/659 tests pass** (`node --test "test/**/*.test.js"`), including tests
+  that drive the real MCP server over a pipe and the stateful Streamable HTTP
+  server over TCP.
 - **Every external surface has a drift-proof contract.** All 73 MCP tools
-  complete representative work over the real stdio child process; every JSON-RPC
+  complete representative work over the real stdio child process; Streamable
+  HTTP exposes that exact live registry and preserves isolated active documents
+  across calls; every JSON-RPC
   method and notification path is asserted; all public viewer routes are tested
   with GET, HEAD, method refusal, and security headers; and every browser-authorized
   tool completes over WebSocket and persists. Frame tests cover ping/pong, clean
@@ -194,7 +197,10 @@ Verified by running it, not by inspection:
   verified by byte-comparing the serialised document before and after.
 - **The MCP server responds over stdio**: `initialize`, `tools/list` (73 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
-  rather than dead calls.
+  rather than dead calls. The Streamable HTTP transport calls that same protocol
+  runtime, returns request-scoped SSE frames, maintains one active document per
+  opaque session, serializes its calls, isolates its filesystem, and purges it
+  on DELETE or expiry.
 - **The lattice draws more than rectangles.** `ray` (Bresenham, any angle),
   `circle`/`disc` (midpoint), `arc`, `polygon`/`triangle`, and `dot`/`dash`
   marks in eight directions. Integer algorithms throughout, so the same command
@@ -525,11 +531,16 @@ added, it is not shipped until `HELP` names it at the moment of need.
   resize. Chuck's call during design.
 - **Proportional fonts.** The monospace model is what makes capacity countable.
 - **Negative addressing.** The grid runs `A1` rightward and downward only.
+- **Open public hosting.** The HTTP server is a verified private-preview
+  transport. Public multi-user use still requires a TLS/OAuth gateway,
+  identity-bound quotas, a session-bound file ingress/egress bridge, and a
+  production recovery/deployment review. Listing 73 tools is not a claim that a
+  remote client can already upload local images or download server artifacts.
 
 ## Gap closure status
 
-Every previously recorded implementation gap is closed: the viewer is a tested
-WebSocket editor, history is durable across restarts, groups move subsystems, and
-explicit follow constraints persist and cascade. No known open implementation
-gap remains inside the intended scope below. Future work needs new observed
-authoring evidence rather than extending this list speculatively.
+Every previously recorded local-engine implementation gap is closed: the viewer
+is a tested WebSocket editor, history is durable across restarts, groups move
+subsystems, and explicit follow constraints persist and cascade. The new hosted
+scope has the explicit public-auth, file-transfer, durable deployment, and site
+integration gaps above; those are not hidden behind the passing local suite.

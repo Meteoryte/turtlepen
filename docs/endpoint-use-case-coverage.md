@@ -1,6 +1,6 @@
 # Endpoint and use-case coverage
 
-**As of 2026-08-26.** This is the executable surface contract for TurtlePen.
+**As of 2026-08-29.** This is the executable surface contract for TurtlePen.
 An endpoint is covered only when a test crosses its real transport or exercises
 the exact shared core path. Name-count checks alone are not considered coverage.
 
@@ -8,14 +8,27 @@ the exact shared core path. Name-count checks alone are not considered coverage.
 
 | Method | Successful case | Failure or boundary case | Evidence |
 |---|---|---|---|
-| `initialize` | supported version and server metadata | unsupported version falls back to the current supported version | `test/mcp.test.js` |
-| `notifications/initialized` | accepted without a reply | notification response suppression | `test/mcp.test.js` |
+| `initialize` | supported version and server metadata | unsupported version falls back to the current supported version | `test/mcp.test.js`, `test/http-mcp.test.js` |
+| `notifications/initialized` | accepted without a reply | notification response suppression | `test/mcp.test.js`, `test/http-mcp.test.js` |
 | `notifications/cancelled` | accepted without a reply | notification response suppression | `test/mcp.test.js` |
 | `ping` | returns an empty result | connection remains ordered | `test/mcp.test.js` |
-| `tools/list` | schemas for the complete live tool set | exact comparison to `createTools` prevents drift | `test/mcp.test.js` |
+| `tools/list` | schemas for the complete live tool set | exact comparison to `createTools` prevents drift | `test/mcp.test.js`, `test/http-mcp.test.js` |
 | `tools/call` | all 73 tools complete over real stdio | unknown tool, schema refusal, and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
 | unknown request | n/a | JSON-RPC `-32601` | `test/mcp.test.js` |
 | malformed JSON | n/a | JSON-RPC `-32700` with null id | `test/mcp.test.js` |
+
+## MCP Streamable HTTP boundary
+
+`test/http-mcp.test.js` starts the real TCP server on an ephemeral port. It
+proves that HTTP is a transport over the canonical 73-tool registry, preserves
+one active document across separate POSTs, isolates simultaneous sessions, and
+uses request-scoped `event: message` / `data:` SSE frames.
+
+The boundary matrix also covers opaque session issuance, explicit DELETE,
+missing/expired sessions, the dual JSON/SSE `Accept` requirement, content type,
+origin allowlisting, supported protocol headers, deny-by-default bearer auth,
+metadata-only audit events, and request-size refusal. GET intentionally returns
+405 because TurtlePen does not advertise a separate long-lived server stream.
 
 ## MCP tools
 
