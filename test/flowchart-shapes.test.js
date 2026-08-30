@@ -133,7 +133,7 @@ test('every shape emits an outline the renderer can draw', () => {
 // same wide bar. Proportion is measurable, so it is a finding, not taste.
 // ---------------------------------------------------------------------------
 
-import { SHAPE_PROPORTION, aspectOf, spanForShape } from '../src/core/shapes.js';
+import { SHAPE_PROPORTION, aspectOf, spanForShape, fitReportForShape } from '../src/core/shapes.js';
 import { fitReport, requiredCellsFor } from '../src/core/text.js';
 
 test('a shape whose silhouette carries meaning declares a maximum aspect', () => {
@@ -186,6 +186,35 @@ test('subprocess measurement includes the side-bar aperture exactly', () => {
   placeBox(d, 'base', { id: 'tools', at: 'C4.tl', span, label, shape: 'subprocess' });
   const fitFindings = validate(d).open.filter((finding) => ['L002', 'L003'].includes(finding.rule));
   assert.deepEqual(fitFindings, [], 'the measured span must validate cleanly after placement');
+});
+
+test('subprocess overflow fixes name the outer box span, not the carved aperture', () => {
+  const label = 'createTools(session)';
+  const outer = rect(0, 0, 13 * 2, 3 * 2);
+  const fit = fitReportForShape(label, outer, 'subprocess', { fontSize: 10 });
+  const widen = fit.fixes.find((fix) => fix.kind === 'widen');
+
+  assert.equal(fit.widthOverflowPx, 10);
+  assert.equal(widen.to, 14);
+  assert.match(widen.description, /widen box to 14 cells/);
+  assert.doesNotMatch(widen.description, /widen box to 13 cells/);
+});
+
+test('every shape resize fix is stated in outer-box cells and clears its reported axis', () => {
+  const label = 'createTools(session)';
+  const outer = rect(0, 0, 6 * 2, 3 * 2);
+
+  for (const shape of NODE_SHAPES) {
+    const fit = fitReportForShape(label, outer, shape, { fontSize: 10 });
+    for (const fix of fit.fixes.filter((candidate) => ['widen', 'heighten'].includes(candidate.kind))) {
+      const repaired = fix.kind === 'widen'
+        ? rect(0, 0, fix.to * 2, outer.h)
+        : rect(0, 0, outer.w, fix.to * 2);
+      const checked = fitReport(label, shapeTextRect(repaired, shape), { fontSize: 10 });
+      const overflow = fix.kind === 'widen' ? checked.widthOverflowPx : checked.heightOverflowPx;
+      assert.equal(overflow, 0, `${shape} ${fix.description} left ${overflow}px overflow`);
+    }
+  }
 });
 
 test('every node shape measure result fits its actual label aperture', () => {

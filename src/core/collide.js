@@ -19,8 +19,8 @@ import { createHash } from 'node:crypto';
 import { rect, rectsOverlap, intersection, expand, right, bottom, quadKey, parseQuadKey } from './geometry.js';
 import { quadToAddress, quadToCell, describeRegion } from './address.js';
 import { elementsOf, elementClaimed, elementVisual, elementRects, findElement } from './document.js';
-import { shapeCutQuads, shapeTextRect, isContainer, SHAPE_PROPORTION, aspectOf } from './shapes.js';
-import { fitReport, layoutTextRuns, MIN_LEGIBLE_FONT_PX } from './text.js';
+import { shapeCutQuads, fitReportForShape, isContainer, SHAPE_PROPORTION, aspectOf } from './shapes.js';
+import { layoutTextRuns, MIN_LEGIBLE_FONT_PX } from './text.js';
 // Cycle with composition.js is deliberate and safe: every use on both sides is inside a
 // function body, so neither module reads the other's bindings during initialisation.
 import { compositionFindings } from './composition.js';
@@ -436,8 +436,7 @@ function withinPage(doc, p) {
     // box. A diamond twice as wide as its label still overflows if the label
     // does not fit the diamond, and reporting otherwise would reintroduce the
     // overflow bug this engine exists to eliminate.
-    const fitRect = shapeTextRect(b.rect, b.shape ?? 'process');
-    const fit = fitReport(b.label, fitRect, { fontSize: b.fontSize, paddingQuads: doc.font.paddingQuads, align: b.align });
+    const fit = fitReportForShape(b.label, b.rect, b.shape ?? 'process', { fontSize: b.fontSize, paddingQuads: doc.font.paddingQuads, align: b.align });
     const where = [quadToCell(b.rect.x, b.rect.y)];
     // L017 — centring that could not be exact. The leftover pixel always goes
     // left, so the drawing is deterministic; this is what says so out loud.

@@ -542,7 +542,7 @@ export function resizeBox(doc, id, { cellsW = null, cellsH = null, anchor = 'tl'
     el.scale = image.scaleReport(source, { cellsWide: r.w / 2, cellsTall: r.h / 2, mode: 'embed', fit: el.fit });
   }
   reconcileElementChange(doc, id);
-  return { element: el, page: found.page, fit: el.label ? text.fitReport(el.label, shapes.shapeTextRect(r, el.shape ?? 'process'), { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
+  return { element: el, page: found.page, fit: el.label ? shapes.fitReportForShape(el.label, r, el.shape ?? 'process', { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
 }
 
 /** Move an element so the named pin of its bounding box lands on an address. */
@@ -581,7 +581,7 @@ export function restyleBox(doc, id, { label = null, corner = null, shape = null,
   if (nextFontSize != null) el.fontSize = nextFontSize;
   if (nextFill != null) el.fill = nextFill;
   const content = el.kind === 'text' ? el.text : el.label;
-  return { element: el, page: found.page, fit: content ? text.fitReport(content, shapes.shapeTextRect(el.rect, el.shape ?? 'process'), { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
+  return { element: el, page: found.page, fit: content ? shapes.fitReportForShape(content, el.rect, el.shape ?? 'process', { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
 }
 
 export function setCanvas(doc, cols, rows) {

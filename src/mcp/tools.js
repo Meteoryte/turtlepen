@@ -584,8 +584,7 @@ export function createTools(session) {
         const doc = need(session);
         const el = core.placeBox(doc, page, { id, at, span, label, corner, shape, align, fontSize, fill });
         await persist(session);
-        const fitRect = core.shapes.shapeTextRect(el.rect, el.shape ?? 'process');
-        const fit = label ? core.text.fitReport(label, fitRect, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null;
+        const fit = label ? core.shapes.fitReportForShape(label, el.rect, el.shape ?? 'process', { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null;
         return [
           `placed "${id}" on page "${page}" at ${core.address.quadToAddress(el.rect.x, el.rect.y)}, ${el.rect.w / 2}x${el.rect.h / 2} cells, ${corner} corners`,
           fit ? `label fit: ${fit.fits ? 'OK' : 'OVERFLOW'} — ${fit.charsPerLine} chars/line, ${fit.lineCount} line(s), ${fit.visibleLines} visible` : '',
@@ -2562,10 +2561,11 @@ function describeElement(doc, el) {
     };
   }
   const content = el.kind === 'text' ? el.text : el.label;
-  const fitRect = el.kind === 'box'
-    ? core.shapes.shapeTextRect(el.rect, el.shape ?? 'process')
-    : el.rect;
-  const fit = content ? core.text.fitReport(content, fitRect, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null;
+  const fit = content
+    ? el.kind === 'box'
+      ? core.shapes.fitReportForShape(content, el.rect, el.shape ?? 'process', { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align })
+      : core.text.fitReport(content, el.rect, { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align })
+    : null;
   return {
     id: el.id,
     kind: el.kind,

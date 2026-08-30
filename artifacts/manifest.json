@@ -54,7 +54,7 @@
   },
   "artifacts": [
     {
-      "id": "TurtlePen MCP — Native Lattice Mark",
+      "id": "TurtlePen MCP — Artist Turtle Capability Splash",
       "catalog": {
         "role": "study",
         "releaseRequired": false
@@ -62,27 +62,27 @@
       "source": {
         "path": "brand/logo-redesign.turtlepen.json",
         "schema": 3,
-        "sha256": "9b52f211fb3779d06cc025603417ae9643324eb917ce5bfeefa3247fcf196cc5",
-        "bytes": 927036
+        "sha256": "a06f9127205d059902fb7d4d5f9d6bac5530a947c635805eb57b186a2f0c4797",
+        "bytes": 4919430
       },
       "document": {
-        "pages": 8,
-        "elements": 24,
+        "pages": 13,
+        "elements": 131,
         "views": 0,
         "resources": 0
       },
       "structural": {
         "state": "structurally-clear",
-        "open": 41,
-        "accepted": 0,
+        "open": 290,
+        "accepted": 65,
         "stale": 0,
         "summary": {
           "S0": 0,
           "S1": 0,
           "S2": 0,
-          "S3": 41,
-          "total": 41,
-          "accepted": 0,
+          "S3": 290,
+          "total": 290,
+          "accepted": 65,
           "stale": 0,
           "clean": true,
           "state": "structurally-clear"
@@ -114,8 +114,8 @@
         "svg": {
           "path": "brand/logo-redesign.svg",
           "present": true,
-          "bytes": 48844,
-          "sha256": "b9171e68ed3499999a087ace0d2427a81a140e8e17cee2ed52339b97a5c8e305"
+          "bytes": 104920,
+          "sha256": "5dc5bcc8878968adc4462b86838164d5ca3e4368c07e434de28033efbd712965"
         },
         "png": {
           "path": "brand/logo-redesign.png",

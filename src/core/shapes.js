@@ -11,6 +11,7 @@
  */
 
 import { rect, quadKey, right, bottom } from './geometry.js';
+import { fitReport as textFitReport } from './text.js';
 export { right, bottom };
 
 export const BOX_CORNER_STYLES = Object.freeze(['square', 'rounded', 'indented', 'chamfered']);
@@ -205,6 +206,64 @@ export function spanForShape(shape, measured) {
     if (needsHeight || needsProportion) outH += 1;
   }
   throw new RangeError(`could not find a finite ${shape} span for ${w}x${h} cells of text`);
+}
+
+/**
+ * Measure a label against a shape and express every resize fix in terms of the
+ * OUTER box, not the carved text aperture. A raw text report can correctly say
+ * that a subprocess needs a 13-cell aperture while still giving the caller the
+ * wrong repair: the subprocess side bars mean that aperture needs a 14-cell
+ * box. The same translation is required for every proportional or inset shape.
+ */
+export function fitReportForShape(text, outerRect, shape = 'process', options = {}) {
+  assertNodeShape(shape);
+  const aperture = shapeTextRect(outerRect, shape);
+  const fit = textFitReport(text, aperture, options);
+  const outerWidthCells = Math.ceil(outerRect.w / 2);
+  const outerHeightCells = Math.ceil(outerRect.h / 2);
+
+  const fixes = fit.fixes.flatMap((fix) => {
+    if (fix.kind === 'widen') {
+      const to = outerCellsForFit(text, shape, 'width', outerWidthCells, outerHeightCells, options, {
+        alsoClearHeight: /wraps into/.test(fix.description),
+      });
+      if (to == null) return [];
+      return [{
+        ...fix,
+        to,
+        description: fix.description.replace(/(widen box to ~?)\d+ cells/, `$1${to} cells`),
+      }];
+    }
+    if (fix.kind === 'heighten') {
+      const to = outerCellsForFit(text, shape, 'height', outerHeightCells, outerWidthCells, options);
+      if (to == null) return [];
+      return [{
+        ...fix,
+        to,
+        description: fix.description.replace(/(heighten box to )\d+ cells/, `$1${to} cells`),
+      }];
+    }
+    return [fix];
+  });
+
+  return { ...fit, fixes };
+}
+
+function outerCellsForFit(text, shape, axis, currentAxisCells, fixedAxisCells, options, { alsoClearHeight = false } = {}) {
+  // Container title bands do not grow with the outer box. If the current band
+  // is too short, heightening the container can never repair the label.
+  if (axis === 'height' && isContainer(shape)) return null;
+
+  for (let candidate = Math.max(1, Math.ceil(currentAxisCells)); candidate < 10_000; candidate++) {
+    const r = axis === 'width'
+      ? rect(0, 0, candidate * 2, fixedAxisCells * 2)
+      : rect(0, 0, fixedAxisCells * 2, candidate * 2);
+    const aperture = shapeTextRect(r, shape);
+    const checked = textFitReport(text, aperture, options);
+    if (axis === 'width' && checked.widthOverflowPx === 0 && (!alsoClearHeight || checked.heightOverflowPx === 0)) return candidate;
+    if (axis === 'height' && checked.heightOverflowPx === 0) return candidate;
+  }
+  return null;
 }
 
 export function assertNodeShape(shape) {

@@ -127,6 +127,8 @@ test('measure, place_box, describe, and validate agree on subprocess label fit',
     id: 'too-small', at: 'C4.tl', span: { w: 13, h: 3 }, label, shape: 'subprocess',
   });
   assert.match(badPlacement, /label fit: OVERFLOW/);
+  assert.match(badPlacement, /widen box to 14 cells/);
+  assert.doesNotMatch(badPlacement, /widen box to 13 cells/);
   const described = JSON.parse(await tools.get('describe').handler({}));
   assert.equal(described[0].elements.find((element) => element.id === 'too-small').fit.fits, false);
 
