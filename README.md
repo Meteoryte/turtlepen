@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 659 tests green, zero runtime dependencies, 73 MCP tools,
+Status: **prototype** — 667 tests green, zero runtime dependencies, 74 MCP tools,
 also live as a hosted MCP server at **`https://brainn.dev/api/mcp/turtlepen`**.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
@@ -39,9 +39,15 @@ A hosted MCP server runs the same engine at:
 https://brainn.dev/api/mcp/turtlepen
 ```
 
-Streamable HTTP, protocol `2025-06-18`, **all 73 tools**, `serverInfo` reporting the real
-engine version. It is stateful: `initialize` returns an `Mcp-Session-Id`, and every later
-call must send that header back — your document lives in that session.
+Streamable HTTP, protocol `2025-06-18`, running the canonical engine and reporting its real
+version in `serverInfo` — not a placeholder. It is stateful: `initialize` returns an
+`Mcp-Session-Id`, and every later call must send that header back, because your document
+lives in that session.
+
+**The hosted server can trail this repository.** At the time of writing it serves `0.3.2`
+with 73 tools while `main` is `0.3.3` with 74. Ask it rather than assuming: `serverInfo`
+gives the version and `tools/list` gives the surface, and `turtlepen_help` outranks any
+document here.
 
 ```bash
 # initialize, keep the Mcp-Session-Id from the response headers

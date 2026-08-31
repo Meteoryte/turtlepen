@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "purpose": "Artifacts exported from a TurtlePen run whose SOURCE DOCUMENT IS NOT IN THIS REPOSITORY. They cannot enter artifact-catalog.json, which binds a local .turtlepen.json source to its exports. Listing them here keeps them hash-verified instead of silently ungoverned.",
+  "rules": [
+    "No entry here may claim a local source.",
+    "An entry is verified by content hash only; it has no release role and can never gate a release.",
+    "Re-deriving one of these with import_svg would produce anonymous artwork paths, not the authoring record, so it must not be catalogued as a source."
+  ],
+  "origin": "Drawn through the hosted MCP server at https://brainn.dev/api/mcp/turtlepen on 2026-08-30; the session state lives server-side.",
+  "generated": "2026-08-31",
+  "entries": [
+    {
+      "path": "docs/gallery/hosted-mcp-architecture.svg",
+      "sha256": "ca6626a09b0575506838e08388a9d7bdd1b198746fcd5bdc82c8fda9866ba520",
+      "bytes": 45815
+    },
+    {
+      "path": "docs/gallery/xbox-controller-input-domain.svg",
+      "sha256": "82710408ec2e0671bcb62b360b5f7ac831401f99e6246fe2d1f0721485fad575",
+      "bytes": 124654
+    }
+  ]
+}
