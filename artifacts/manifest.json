@@ -28,14 +28,14 @@
     }
   },
   "summary": {
-    "artifacts": 71,
-    "publishable": 9,
-    "structurallyClear": 51,
+    "artifacts": 72,
+    "publishable": 10,
+    "structurallyClear": 52,
     "missingSvg": 1,
     "byRole": {
       "example": {
-        "artifacts": 37,
-        "publishable": 1
+        "artifacts": 38,
+        "publishable": 2
       },
       "fixture": {
         "artifacts": 5,
@@ -37914,6 +37914,140 @@
         "reviewedExportMatches": false,
         "hasPortableVector": true,
         "publishable": false
+      }
+    },
+    {
+      "id": "xbox-controller-input-state-map",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/xbox-controller-input-state-map.turtlepen.json",
+        "schema": 3,
+        "sha256": "d4625516cf003bd3efa0444fb625745b6d28adc037a502009e0220174df4de1e",
+        "bytes": 998481
+      },
+      "document": {
+        "pages": 1,
+        "elements": 170,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "acceptedBySeverity": {
+            "S0": 0,
+            "S1": 0,
+            "S2": 0,
+            "S3": 0
+          },
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS",
+          "acceptedDecisions": 0
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 63,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 50,
+          "info": 13,
+          "total": 63,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": true,
+        "reviewer": "claude-opus-5",
+        "findings": 5,
+        "blocking": 0,
+        "clean": true,
+        "stale": false
+      },
+      "release": {
+        "releasable": true,
+        "verdict": "PASS",
+        "blockers": [],
+        "structural": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "acceptedBySeverity": {
+            "S0": 0,
+            "S1": 0,
+            "S2": 0,
+            "S3": 0
+          },
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS",
+          "acceptedDecisions": 0
+        },
+        "perceptual": {
+          "reviewed": true,
+          "reviewer": "claude-opus-5",
+          "findings": 5,
+          "blocking": 0,
+          "clean": true,
+          "stale": false,
+          "currentRenderHash": "c198f8e8f5c27e04"
+        },
+        "exceptions": [],
+        "weakAcceptances": []
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/xbox-controller-input-state-map.svg",
+          "present": true,
+          "bytes": 354514,
+          "sha256": "c198f8e8f5c27e04d507d371a327c8be1393b39b9c8e0a5e4af1c6bd39c1065b",
+          "renderHash": "c198f8e8f5c27e04"
+        },
+        "png": {
+          "path": "diagrams/xbox-controller-input-state-map.png",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        },
+        "pdf": {
+          "path": "diagrams/xbox-controller-input-state-map.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
+        "releaseGatePassed": true,
+        "reviewedExportMatches": true,
+        "hasPortableVector": true,
+        "publishable": true
       }
     }
   ]

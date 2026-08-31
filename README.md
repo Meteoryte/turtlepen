@@ -91,11 +91,20 @@ vector editor, no human nudging a control point.
 
 ### A complete technical reference, drawn in one pass
 
-The Xbox controller input domain — anatomy with callout leaders, a digital-input edge-state
-machine, analog trigger ranges, stick geometry, the motion-gesture vocabulary as lattice
-paths, and the full domain table. Drawn through the **hosted** server.
+The Xbox controller input domain. Inputs are coloured by kind against a legend — digital,
+analog, and system inputs the OS may intercept — and the plan view says out loud that LT
+and RT sit behind LB and RB and are therefore not visible in it.
 
-[![Xbox controller input domain](docs/gallery/xbox-controller-input-domain.svg)](docs/gallery/xbox-controller-input-domain.svg)
+Six panels: anatomy with callout leaders, the digital edge-state machine, the trigger axis
+from dead zone to 255, stick geometry with the real XInput radial deadzone constants, the
+motion-gesture vocabulary as lattice paths carrying both names and numpad notation, and the
+complete input domain table — ending with the combinatorics actually multiplied out.
+
+[![Xbox controller input state map](diagrams/xbox-controller-input-state-map.svg)](diagrams/xbox-controller-input-state-map.svg)
+
+Source: [`xbox-controller-input-state-map.turtlepen.json`](diagrams/xbox-controller-input-state-map.turtlepen.json).
+It validates with zero findings, and the committed SVG hashes identically to a fresh render
+of that source.
 
 ### Real professional documentation
 
@@ -133,12 +142,9 @@ and a vine crossing *in front* of them on a separate Z-page.
 ### Flowcharts with real symbols
 
 Decisions are diamonds, terminators are stadiums, and the distinction is load-bearing —
-each shape carves its own label aperture out of its bounding box.
-
-![Important Process flowchart](diagrams/flowchart-important-process.svg)
-
-Lanes are containers: they reserve only a title band and a border ring, so members sit
-inside without colliding with them, and a connector can cross from one lane to another.
+each shape carves its own label aperture out of its bounding box. Lanes are containers:
+they reserve only a title band and a border ring, so members sit inside without colliding
+with them, and a connector can cross from one lane to another.
 
 ![Swimlane across two lanes](diagrams/showcase-flowchart.svg)
 
@@ -866,7 +872,10 @@ The following were authored using TurtlePen MCP tools by **Claude Opus 5**:
 
 ### Flowcharts — real symbols, not rectangles with labels
 
-*(Shown at the top of this file.)* [SVG](diagrams/flowchart-important-process.svg) · ([JSON](diagrams/flowchart-important-process.turtlepen.json)) · built by [`build-flowchart.js`](build-flowchart.js)
+The shown example is the [two-lane swimlane](diagrams/showcase-flowchart.svg) at the top of
+this file. `build-flowchart.js` also produces
+[`flowchart-important-process`](diagrams/flowchart-important-process.turtlepen.json), which
+exercises the same symbols at length but is not a good advertisement for them.
 
 Decisions are **diamonds**, terminators are **stadiums**, and that distinction is
 load-bearing rather than cosmetic. A node still *claims* its bounding box — so

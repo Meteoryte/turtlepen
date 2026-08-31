@@ -13,11 +13,6 @@
       "path": "docs/gallery/hosted-mcp-architecture.svg",
       "sha256": "ca6626a09b0575506838e08388a9d7bdd1b198746fcd5bdc82c8fda9866ba520",
       "bytes": 45815
-    },
-    {
-      "path": "docs/gallery/xbox-controller-input-domain.svg",
-      "sha256": "82710408ec2e0671bcb62b360b5f7ac831401f99e6246fe2d1f0721485fad575",
-      "bytes": 124654
     }
   ]
 }
