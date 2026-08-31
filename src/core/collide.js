@@ -25,6 +25,7 @@ import { layoutTextRuns, MIN_LEGIBLE_FONT_PX } from './text.js';
 // function body, so neither module reads the other's bindings during initialisation.
 import { compositionFindings, focalFindings } from './composition.js';
 import { flowchartFindings, FLOWCHART_RULES } from './flowchart.js';
+import { swimlaneFindings, SWIMLANE_RULES } from './swimlane.js';
 import { analyseRuns, MAX_READABLE_TRANSITION_RATIO } from './dither.js';
 
 export const SEVERITIES = Object.freeze(['S0', 'S1', 'S2', 'S3']);
@@ -62,6 +63,7 @@ export const RULES = Object.freeze({
   C001: { severity: 'S3', title: 'sparse canvas', blurb: 'the page has so little ink that nothing was really composed' },
   C002: { severity: 'S3', title: 'focal budget spent', blurb: 'so many nodes claim focus that none of them reads as focal' },
   ...FLOWCHART_RULES,
+  ...SWIMLANE_RULES,
 });
 
 /**
@@ -185,6 +187,7 @@ export function validate(doc, { page = null } = {}) {
   found.push(...compositionFindings(doc, pages));
   found.push(...focalFindings(doc, pages));
   found.push(...flowchartFindings(doc, pages));
+  found.push(...swimlaneFindings(doc, pages, elementsOf));
 
   found.sort(
     (a, b) =>

@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 667 tests green, zero runtime dependencies, 74 MCP tools,
+Status: **prototype** — 673 tests green, zero runtime dependencies, 74 MCP tools,
 also live as a hosted MCP server at **`https://brainn.dev/api/mcp/turtlepen`**.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
@@ -21,6 +21,7 @@ also live as a hosted MCP server at **`https://brainn.dev/api/mcp/turtlepen`**.
 | find the owner of version, schema, tools, artifacts, or generated evidence | [`docs/source-of-truth-map.md`](docs/source-of-truth-map.md) |
 | see the flowchart work and what was deliberately not built | [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md) |
 | repair existing lattice geometry | [`docs/lattice-editing.md`](docs/lattice-editing.md) |
+| choose a diagram type, and know what the engine checks about it | [`docs/diagram-types.md`](docs/diagram-types.md) |
 | know exactly which vector-editing operations exist | [`docs/svg-editing-capability-status.md`](docs/svg-editing-capability-status.md) — every capability marked SUPPORTED / PARTIAL / MISSING / OUT OF SCOPE |
 | import a compatible SVG safely | [`docs/svg-import.md`](docs/svg-import.md) |
 | know the current tool surface, authoritatively | call `turtlepen_help` — it outranks every document here |

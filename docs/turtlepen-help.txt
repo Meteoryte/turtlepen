@@ -681,5 +681,15 @@ rules:
     "severity": "S1",
     "title": "decision does not branch",
     "blurb": "a judgement with fewer than two ways out decides nothing"
+  },
+  "W001": {
+    "severity": "S2",
+    "title": "unlabelled lane",
+    "blurb": "a lane that does not say whose it is explains no ownership"
+  },
+  "W002": {
+    "severity": "S1",
+    "title": "step spans two lanes",
+    "blurb": "a step drawn across a lane boundary claims two owners"
   }
 }

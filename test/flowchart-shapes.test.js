@@ -373,3 +373,39 @@ test('C002 counts the focal budget, and only because a role was declared', async
   assert.equal(validate(hex).open.filter((f) => f.rule === 'C002').length, 0,
     'a hex fill makes no claim, so there is nothing to overspend');
 });
+
+// --- swimlane semantics -----------------------------------------------------
+
+test('swimlane rules are self-activating and decide only authored fact', () => {
+  // One lane is a row, not a swimlane. The rules must not fire on a drawing
+  // that merely happens to contain a container.
+  const single = createDocument({ name: 'single' });
+  placeBox(single, 'base', { id: 'only', at: 'B2', span: '40x9', shape: 'lane', label: '' });
+  assert.equal(validate(single).open.filter((f) => f.rule.startsWith('W')).length, 0,
+    'a lone lane is not a swimlane and must not be judged as one');
+
+  const clean = createDocument({ name: 'clean' });
+  placeBox(clean, 'base', { id: 'sales', at: 'B2', span: '60x9', shape: 'lane', label: 'Sales' });
+  placeBox(clean, 'base', { id: 'ops', at: 'B12', span: '60x9', shape: 'lane', label: 'Operations' });
+  placeBox(clean, 'base', { id: 'take', at: 'E6', span: '14x4', label: 'Take order' });
+  placeBox(clean, 'base', { id: 'pack', at: 'E16', span: '14x4', label: 'Pack order' });
+  assert.deepEqual(validate(clean).open, [], 'a correct swimlane reports nothing at all');
+});
+
+test('W001 names an unlabelled lane, W002 names a step that claims two owners', () => {
+  const doc = createDocument({ name: 'bad' });
+  placeBox(doc, 'base', { id: 'sales', at: 'B2', span: '60x9', shape: 'lane', label: 'Sales' });
+  placeBox(doc, 'base', { id: 'ops', at: 'B12', span: '60x9', shape: 'lane', label: '   ' });
+  placeBox(doc, 'base', { id: 'straddle', at: 'T9', span: '14x6', label: 'Handoff' });
+  const open = validate(doc).open;
+
+  const w001 = open.find((f) => f.rule === 'W001');
+  assert.ok(w001, 'whitespace is not a label');
+  assert.deepEqual(w001.actors, ['ops'], 'the labelled lane is not accused');
+
+  const w002 = open.find((f) => f.rule === 'W002');
+  assert.ok(w002, 'a step across a boundary is reported');
+  assert.equal(w002.severity, 'S1', 'two owners is an error, not a nag');
+  assert.ok(w002.actors.includes('straddle') && w002.actors.includes('sales') && w002.actors.includes('ops'),
+    'the finding names the step AND both lanes it straddles');
+});
