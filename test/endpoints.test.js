@@ -199,6 +199,7 @@ test('every advertised MCP tool completes a representative use case over stdio',
     });
     assert.match(reviewed, /structural:/);
     assert.match(reviewed, /perceptual:/);
+    assert.match(await invoke('release_check'), /release: FAIL/, 'the final gate reports the deliberately unfinished endpoint fixture honestly');
     await invoke('save', { path: 'endpoint-copy.turtlepen.json', force: true });
 
     // Layout gets its own document, because it MOVES things: the point of the

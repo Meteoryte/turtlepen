@@ -58,7 +58,7 @@ export { repairPlan, applyFix } from './repair.js';
 export { createProgressLog, recordCheck, stagnationNote, digestOf, STAGNATION_AFTER } from './progress.js';
 export {
   PERCEPTUAL_CATEGORIES, PERCEPTUAL_SEVERITIES, REPAIR_CLASSES,
-  normalizePerceptualFinding, attachPerceptualReview, restorePerceptualReview, renderHash,
+  normalizePerceptualFinding, normalizeRenderProfile, attachPerceptualReview, restorePerceptualReview, renderHash,
   verdicts as perceptualVerdicts,
 } from './perceptual.js';
 
@@ -91,6 +91,17 @@ export {
 };
 export { PALETTE, PALETTE_DARK, SEVERITY_CUE } from './svg.js';
 
+/** Render the exact byte profile a perceptual review names. */
+export function renderSvgForReview(doc, rawProfile = {}) {
+  const profile = perceptual.normalizeRenderProfile(rawProfile);
+  return renderSvg(doc, {
+    showGrid: profile.showGrid,
+    bounds: profile.bounds,
+    margin: profile.margin,
+    findings: profile.markFindings ? validate(doc).open : null,
+  });
+}
+
 /**
  * Carry a perceptual review across a deterministic rebuild only when the newly
  * rendered default SVG is byte-equivalent to the render the review names.
@@ -100,7 +111,7 @@ export { PALETTE, PALETTE_DARK, SEVERITY_CUE } from './svg.js';
 export function preservePerceptualReview(doc, previous) {
   const review = previous?.perceptual ?? null;
   if (!review) return { preserved: false, reason: 'no prior review' };
-  const currentRenderHash = perceptual.renderHash(renderSvg(doc, {}));
+  const currentRenderHash = perceptual.renderHash(renderSvgForReview(doc, review.renderProfile));
   if (review.renderHash !== currentRenderHash) {
     return { preserved: false, reason: 'render changed', previousRenderHash: review.renderHash, currentRenderHash };
   }
@@ -774,9 +785,25 @@ function assertReasonWasConsidered(doc, finding, reason) {
   }
 }
 
-function recordFindingAcceptance(doc, finding, reason) {
+function normalizeAcceptanceEvidence(evidence) {
+  if (evidence == null) return null;
+  if (!evidence || typeof evidence !== 'object' || Array.isArray(evidence)) {
+    throw new Error('acceptance evidence must be an object');
+  }
+  const required = ['renderHash', 'repairAttempt', 'observation', 'consequence'];
+  const normalized = {};
+  for (const key of required) {
+    const value = String(evidence[key] ?? '').trim();
+    if (!value) throw new Error(`acceptance evidence requires ${key}`);
+    normalized[key] = value;
+  }
+  return normalized;
+}
+
+function recordFindingAcceptance(doc, finding, reason, evidence = null) {
   if (!reason || !String(reason).trim()) throw new Error('accepting a finding requires a reason — an unexplained acceptance is indistinguishable from a missed defect');
   assertReasonWasConsidered(doc, finding, String(reason).trim());
+  const normalizedEvidence = normalizeAcceptanceEvidence(evidence);
   const { fingerprint } = finding;
   const existing = doc.acceptances.find((a) => a.fingerprint === fingerprint);
   if (existing) {
@@ -784,6 +811,7 @@ function recordFindingAcceptance(doc, finding, reason) {
     existing.page = finding.page;
     existing.title = finding.title;
     existing.reason = String(reason).trim();
+    if (normalizedEvidence) existing.evidence = normalizedEvidence;
     existing.acceptedAt = new Date().toISOString();
     return existing;
   }
@@ -793,20 +821,21 @@ function recordFindingAcceptance(doc, finding, reason) {
     page: finding.page,
     title: finding.title,
     reason: String(reason).trim(),
+    ...(normalizedEvidence ? { evidence: normalizedEvidence } : {}),
     acceptedAt: new Date().toISOString(),
   };
   doc.acceptances.push(entry);
   return entry;
 }
 
-export function acceptFinding(doc, fingerprint, reason) {
+export function acceptFinding(doc, fingerprint, reason, evidence = null) {
   if (!reason || !String(reason).trim()) throw new Error('accepting a finding requires a reason — an unexplained acceptance is indistinguishable from a missed defect');
   const validation = validate(doc);
   const finding = [...validation.open, ...validation.accepted].find((entry) => entry.fingerprint === fingerprint);
   if (!finding) {
     throw new Error(`cannot accept #${fingerprint}: it is not a current finding; validate again and use an open fingerprint`);
   }
-  return recordFindingAcceptance(doc, finding, reason);
+  return recordFindingAcceptance(doc, finding, reason, evidence);
 }
 
 export function unacceptFinding(doc, fingerprint) {
@@ -900,7 +929,7 @@ export const OPERATIONS = Object.freeze({
   // mutation: rehearsable in plan, undoable in history. A mutation only the
   // tool layer could perform would be invisible to rehearsal.
   perceptual_review: (doc, a) => perceptual.attachPerceptualReview(doc, a),
-  accept_finding: (doc, a) => acceptFinding(doc, a.fingerprint, a.reason),
+  accept_finding: (doc, a) => acceptFinding(doc, a.fingerprint, a.reason, a.evidence),
   unaccept_finding: (doc, a) => unacceptFinding(doc, a.fingerprint),
   group: (doc, a) => {
     switch (a.action) {
@@ -951,7 +980,7 @@ function applyOperationBatch(doc, ops) {
         if (!finding) {
           throw new Error(`cannot accept #${op.fingerprint}: it is not a current finding; validate again and use an open fingerprint`);
         }
-        recordFindingAcceptance(doc, finding, op.reason);
+        recordFindingAcceptance(doc, finding, op.reason, op.evidence);
       } else {
         applyOperation(doc, op);
         currentFindings = null;
@@ -1036,6 +1065,79 @@ export function formatGate({ blocking }, verb = 'save') {
     lines.push('');
   }
   lines.push(`  or ${verb} with force: true to write anyway — the document will record that you did.`);
+  return lines.join('\n');
+}
+
+/**
+ * Final release policy, deliberately later than render.
+ *
+ * Rendering must remain possible while findings are open because the render is
+ * the evidence a reviewer needs. Release is stricter: it requires a current
+ * visual review, no unresolved decision findings, and render-bound evidence for
+ * any accepted critical/error finding. Accepted warnings stay visible as
+ * exceptions instead of being laundered into a bare pass.
+ */
+export function releaseCheck(doc) {
+  const validation = validate(doc);
+  const review = doc.perceptual ?? null;
+  const currentRenderHash = perceptual.renderHash(renderSvgForReview(doc, review?.renderProfile ?? {}));
+  const visual = perceptual.verdicts(doc, { structural: validation, currentRenderHash }).perceptual;
+  const blockers = [];
+
+  if (!validation.summary.clean) {
+    blockers.push(`${validation.summary.S0 + validation.summary.S1 + validation.summary.S2} unresolved structural decision finding(s)`);
+  }
+  if (validation.staleAcceptances.length) {
+    blockers.push(`${validation.staleAcceptances.length} stale acceptance record(s) must be withdrawn or refreshed`);
+  }
+  if (!visual.reviewed) blockers.push('no perceptual review is recorded for the release render');
+  else {
+    if (visual.stale) blockers.push('the perceptual review is stale for the current render profile');
+    if (!visual.clean) blockers.push(`${visual.blocking} blocking perceptual finding(s) remain`);
+  }
+
+  const weakAcceptances = [];
+  for (const finding of validation.accepted.filter((entry) => entry.severity === 'S0' || entry.severity === 'S1')) {
+    const evidence = finding.evidence;
+    if (!evidence) {
+      weakAcceptances.push({ fingerprint: finding.fingerprint, rule: finding.rule, problem: 'missing evidence' });
+      continue;
+    }
+    if (!review || evidence.renderHash !== review.renderHash || evidence.renderHash !== currentRenderHash) {
+      weakAcceptances.push({ fingerprint: finding.fingerprint, rule: finding.rule, problem: 'evidence is not bound to the current reviewed render' });
+    }
+  }
+  if (weakAcceptances.length) {
+    blockers.push(`${weakAcceptances.length} accepted critical/error finding(s) lack current render-bound evidence`);
+  }
+
+  const releasable = blockers.length === 0;
+  const verdict = !releasable
+    ? 'FAIL'
+    : validation.summary.acceptedDecisions > 0
+      ? 'PASS_WITH_EXCEPTIONS'
+      : 'PASS';
+  return {
+    releasable,
+    verdict,
+    blockers,
+    structural: validation.summary,
+    perceptual: { ...visual, currentRenderHash },
+    exceptions: validation.accepted,
+    weakAcceptances,
+  };
+}
+
+export function formatReleaseCheck(result) {
+  const lines = [`release: ${result.verdict}`];
+  if (result.releasable && result.verdict === 'PASS') {
+    lines.push('  structural decisions resolved; current perceptual review has no blockers; no accepted decision exceptions');
+  } else if (result.releasable) {
+    lines.push(`  releasable with ${result.structural.acceptedDecisions} accepted decision exception(s); disclose them with the artifact`);
+  } else {
+    for (const blocker of result.blockers) lines.push(`  BLOCKED — ${blocker}`);
+  }
+  lines.push(`  renderHash: ${result.perceptual.currentRenderHash}`);
   return lines.join('\n');
 }
 

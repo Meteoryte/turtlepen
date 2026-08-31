@@ -88,7 +88,7 @@ rule('4. commit — all of it, or none of it');
 
 const committed = core.commitOperations(doc, composition);
 console.log(`committed ${committed.applied} operation(s); page "base" now holds ${core.elementsOf(doc, 'base').length} elements`);
-console.log(committed.validation.summary.clean ? 'validates CLEAN' : 'NOT CLEAN');
+console.log(`validation: ${committed.validation.summary.verdict}`);
 
 // --- 5. Z-pages: the same geometry, two meanings ---------------------------------
 rule('5. Z-pages — identical overlap, opposite severity');
@@ -121,7 +121,7 @@ console.log(core.renderAscii(doc, { page: 'base', findings: final.open }).text);
 
 core.preservePerceptualReview(doc, previous);
 await core.saveDocument(doc, OUT);
-await core.exportSvg(doc, SVG, { findings: final.open, showGrid: true });
+await core.exportSvg(doc, SVG, { showGrid: true });
 console.log(`\nwrote ${OUT}`);
 console.log(`wrote ${SVG}`);
 console.log(`\nview it:  node src/viewer/server.js --doc ${OUT}`);

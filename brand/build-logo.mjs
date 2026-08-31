@@ -136,10 +136,10 @@ operations.push({
 });
 operations.push({
   op: 'pen', page: 'type',
-  program: `text "M C P" at ${q(90, 211)} span 30x11 id mcp font 74 fill ${C.greenDark} weight 700 align center`,
+  program: `text "M C P" at ${q(90, 214)} span 30x11 id mcp font 74 fill ${C.greenDark} weight 700 align center`,
 });
-line('mcp-rule-left', polyline([[59, 221], [88, 221]]), C.greenDark, 4, 'type');
-line('mcp-rule-right', polyline([[152, 221], [181, 221]]), C.greenDark, 4, 'type');
+line('mcp-rule-left', polyline([[59, 224], [88, 224]]), C.greenDark, 4, 'type');
+line('mcp-rule-right', polyline([[152, 224], [181, 224]]), C.greenDark, 4, 'type');
 
 await tools.new_diagram.handler({
   name: 'TurtlePen logo — turtle at easel',
@@ -185,7 +185,7 @@ console.log(`logo authored with TurtlePen: ${operations.length} composition oper
 console.log(`accepted intentional construction findings: ${blockers.length}`);
 console.log('document: brand/logo.turtlepen.json');
 console.log('render: brand/logo.svg (1200x1200)');
-console.log(`mark: brand/logo-mark.svg; validation CLEAN (${validation.open.length} INFO, ${validation.accepted.length} accepted)`);
+console.log(`mark: brand/logo-mark.svg; validation ${validation.summary.verdict} (${validation.open.length} INFO, ${validation.accepted.length} accepted)`);
 
 function ellipseFill(cx, cy, rx, ry) {
   const rows = [];

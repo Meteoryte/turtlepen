@@ -4494,10 +4494,16 @@
   },
   "acceptances": [],
   "perceptual": {
-    "renderHash": "386d9fdb93ba34df",
+    "renderHash": "f1001b4498e38c53",
+    "renderProfile": {
+      "showGrid": true,
+      "markFindings": false,
+      "bounds": "content",
+      "margin": 24
+    },
     "reviewer": "codex/gpt-5.6",
-    "reviewedAt": "2026-08-26T22:26:30.987Z",
-    "note": "Reviewed the current SVG and parity PNG at native dimensions on 2026-08-26; checked legibility, clipping, silhouettes, connector direction, image fitting, and intended composition.",
+    "reviewedAt": "2026-08-31T05:15:27.993Z",
+    "note": "Inspected the exact exported SVG raster on 2026-08-31. The central decision chain, YES/NO labels, shared remediation region, terminal nodes, and connectors are readable and unclipped.",
     "findings": []
   }
 }

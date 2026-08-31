@@ -1440,45 +1440,18 @@
     "tagStyles": [],
     "perspectiveStyles": []
   },
-  "acceptances": [
-    {
-      "fingerprint": "155995cbffa5",
-      "rule": "L004",
-      "page": "base",
-      "title": "stroke crosses node",
-      "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
-      "acceptedAt": "2026-08-26T22:40:45.170Z"
-    },
-    {
-      "fingerprint": "2b000c28ce08",
-      "rule": "L004",
-      "page": "base",
-      "title": "stroke crosses node",
-      "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
-      "acceptedAt": "2026-08-26T22:40:44.675Z"
-    },
-    {
-      "fingerprint": "807a53ce8158",
-      "rule": "L004",
-      "page": "base",
-      "title": "stroke crosses node",
-      "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
-      "acceptedAt": "2026-08-26T22:40:46.090Z"
-    },
-    {
-      "fingerprint": "f61146bb58fa",
-      "rule": "L004",
-      "page": "base",
-      "title": "stroke crosses node",
-      "reason": "the flow hands over between lanes here — crossing the lane border is what a swimlane depicts",
-      "acceptedAt": "2026-08-26T22:40:45.627Z"
-    }
-  ],
+  "acceptances": [],
   "perceptual": {
-    "renderHash": "d7dfbf5189d5f595",
+    "renderHash": "661aec1e48cd499f",
+    "renderProfile": {
+      "showGrid": true,
+      "markFindings": false,
+      "bounds": "content",
+      "margin": 24
+    },
     "reviewer": "codex/gpt-5.6",
-    "reviewedAt": "2026-08-26T22:26:31.793Z",
-    "note": "Reviewed the current SVG and parity PNG at native dimensions on 2026-08-26; checked legibility, clipping, silhouettes, connector direction, image fitting, and intended composition.",
+    "reviewedAt": "2026-08-31T05:15:28.566Z",
+    "note": "Inspected the exact exported SVG raster on 2026-08-31. The three lanes, cross-lane handoffs, decision branches, labels, and terminal nodes are legible, aligned, and free of stray artifacts.",
     "findings": []
   }
 }

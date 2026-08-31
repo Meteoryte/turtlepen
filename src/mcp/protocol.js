@@ -46,8 +46,8 @@ export function buildInstructions(tools) {
   return [
     'Call turtlepen_help first. Measure text before sizing boxes, draw the whole',
     'composition, then call validate and adjudicate each finding. Nothing is ever',
-    'silently resized. Render the result and LOOK at it — a clean log means the',
-    'drawing is undefective, never that it is finished.',
+    'silently resized. Render the result and LOOK at it — structural PASS means',
+    'the drawing is undefective, never that it is finished. Finish with release_check.',
     '',
     'The canvas is unbounded right and down; a declared size is a starting point,',
     'not a budget. A feature may be more than one stroke, and overlay pages let',
@@ -62,7 +62,9 @@ export function buildInstructions(tools) {
 
 /**
  * Create one stateful MCP runtime. A transport owns its request ordering and
- * lifecycle; this object owns one active TurtlePen document and its 73 tools.
+ * lifecycle; this object owns one active TurtlePen document and the full live
+ * tool registry. The count is derived at runtime so transport documentation
+ * cannot become a smaller, stale contract.
  */
 export function createProtocolRuntime(sessionOptions = {}) {
   const session = createSession(sessionOptions);

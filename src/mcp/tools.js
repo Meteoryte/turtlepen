@@ -113,7 +113,7 @@ export function createSession({ cwd = process.cwd(), createdAt = null, historyLi
     // explicit --doc outside the project was told to work there by a human;
     // that is a different thing from a path an agent chose mid-conversation.
     roots: [cwd, ...roots],
-    history: [], future: [], historyNotice: 'no diagram is open', reviewCandidate: null,
+    history: [], future: [], historyNotice: 'no diagram is open', reviewCandidate: null, lastRender: null,
   };
 }
 
@@ -679,15 +679,30 @@ ${stalled}` : core.formatLog(result);
     {
       name: 'accept_finding',
       description:
-        'Record a current finding as deliberate rather than an error — this is where intent is declared. Unknown or expired fingerprints are refused. The exact fingerprint and finding metadata remain auditable when geometry changes, and unaccept_finding withdraws the record.',
+        'Record a current finding as deliberate rather than an error — this is where intent is declared, not where an exception becomes an ordinary pass. Unknown or expired fingerprints are refused. Accepted findings produce PASS_WITH_EXCEPTIONS. A final release_check additionally requires current render-bound evidence for every accepted critical/error finding.',
       inputSchema: {
         type: 'object',
-        properties: { fingerprint: { type: 'string' }, reason: { type: 'string', description: 'why this overlap is intended' } },
+        properties: {
+          fingerprint: { type: 'string' },
+          reason: { type: 'string', description: 'why this specific finding is intended' },
+          evidence: {
+            description: 'Required by release_check for accepted S0/S1 findings. Bind the decision to a render that was actually reviewed and state what repair was tried, what was observed, and why the remaining effect is acceptable.',
+            type: 'object',
+            properties: {
+              renderHash: { type: 'string' },
+              repairAttempt: { type: 'string' },
+              observation: { type: 'string' },
+              consequence: { type: 'string' },
+            },
+            required: ['renderHash', 'repairAttempt', 'observation', 'consequence'],
+            additionalProperties: false,
+          },
+        },
         required: ['fingerprint', 'reason'],
         additionalProperties: false,
       },
-      handler: async ({ fingerprint, reason }) => {
-        core.acceptFinding(need(session), fingerprint, reason);
+      handler: async ({ fingerprint, reason, evidence = null }) => {
+        core.acceptFinding(need(session), fingerprint, reason, evidence);
         await persist(session);
         const v = core.validate(session.doc);
         return `accepted #${fingerprint} — "${reason}"\n\n${core.formatLog(v)}`;
@@ -1923,6 +1938,10 @@ ${stalled}` : core.formatLog(result);
         // quietly wrong. Returning it here is what makes that loop closeable.
         const { readFile } = await import('node:fs/promises');
         const hash = core.renderHash(await readFile(target, 'utf8'));
+        session.lastRender = {
+          renderHash: hash,
+          renderProfile: { showGrid, markFindings, bounds, margin },
+        };
         return `wrote ${target}\nrenderHash: ${hash}\n\nNow LOOK at it. When you have, record what you saw with perceptual_review — validate cannot tell you whether the drawing depicts what was asked for.`;
       },
     },
@@ -1964,13 +1983,22 @@ ${stalled}` : core.formatLog(result);
       handler: async ({ action = 'record', renderHash = null, reviewer = null, findings = [], note = null }) => {
         const doc = need(session);
         if (action === 'record') {
-          core.OPERATIONS.perceptual_review(doc, { renderHash, reviewer, findings, note });
+          if (!session.lastRender || session.lastRender.renderHash !== renderHash) {
+            throw new Error('perceptual_review must use the renderHash from this session\'s latest render so the exact render profile is known');
+          }
+          core.OPERATIONS.perceptual_review(doc, {
+            renderHash,
+            reviewer,
+            findings,
+            note,
+            renderProfile: session.lastRender.renderProfile,
+          });
         }
-        const current = core.renderHash(core.renderSvg(doc, {}));
+        const current = core.renderHash(core.renderSvgForReview(doc, doc.perceptual?.renderProfile ?? {}));
         const v = core.perceptualVerdicts(doc, { structural: core.validate(doc), currentRenderHash: current });
         const p = v.perceptual;
         const lines = [
-          `structural: ${v.structural.clean ? 'CLEAN' : 'NOT CLEAN'} (${v.structural.open} open finding(s))`,
+          `structural: ${core.validate(doc).summary.verdict} (${v.structural.open} open finding(s))`,
           p.reviewed
             ? `perceptual: ${p.clean ? 'no blocking findings' : `${p.blocking} blocking`} of ${p.findings} recorded by ${p.reviewer}${p.stale ? ' — STALE: the drawing changed since this review, so it describes bytes nobody is looking at now' : ''}`
             : 'perceptual: NOT REVIEWED — render it, look at it, and record what you saw. Absence of a review is not a pass.',
@@ -1978,6 +2006,21 @@ ${stalled}` : core.formatLog(result);
           'These are two answers to two different questions and are deliberately not combined. A clean log over the wrong picture is the case that matters.',
         ];
         return lines.join('\n');
+      },
+    },
+
+    {
+      name: 'release_check',
+      description:
+        'Run the final delivery gate after validate, render, LOOK, and perceptual_review. Returns PASS, PASS_WITH_EXCEPTIONS, or FAIL. It refuses unresolved structural decisions, stale acceptances, missing/stale/blocked perceptual review, and accepted critical/error findings without evidence bound to the current reviewed render.',
+      inputSchema: {
+        type: 'object',
+        properties: { format: { type: 'string', enum: ['log', 'json'] } },
+        additionalProperties: false,
+      },
+      handler: ({ format = 'log' }) => {
+        const result = core.releaseCheck(need(session));
+        return format === 'json' ? json(result) : core.formatReleaseCheck(result);
       },
     },
 

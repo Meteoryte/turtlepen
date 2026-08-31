@@ -75,6 +75,50 @@ test('accepting the finding clears the gate', async () => {
   await core.saveDocument(d, join(dir, 'accepted.turtlepen.json'));
 });
 
+test('release check refuses blind accepted errors and reports the exception honestly', () => {
+  const d = core.createDocument({ name: 'release' });
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 8, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'G4.tl', span: { w: 8, h: 3 } });
+  const finding = core.validate(d).open.find((entry) => entry.rule === 'L001');
+  core.acceptFinding(d, finding.fingerprint, 'the shared boundary is deliberate in this exploded assembly view');
+
+  const result = core.releaseCheck(d);
+  assert.equal(result.verdict, 'FAIL');
+  assert.ok(result.blockers.some((line) => /no perceptual review/.test(line)));
+  assert.ok(result.blockers.some((line) => /lack current render-bound evidence/.test(line)));
+  assert.equal(core.validate(d).summary.verdict, 'PASS_WITH_EXCEPTIONS');
+});
+
+test('release check allows a reviewed accepted error only with current render-bound evidence', () => {
+  const d = core.createDocument({ name: 'reviewed-release' });
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 8, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'G4.tl', span: { w: 8, h: 3 } });
+  const finding = core.validate(d).open.find((entry) => entry.rule === 'L001');
+  const hash = core.renderHash(core.renderSvgForReview(d, {}));
+  core.attachPerceptualReview(d, {
+    renderHash: hash,
+    reviewer: 'test-reviewer',
+    note: 'Inspected the shared seam at normal scale and zoomed scale.',
+    findings: [],
+  });
+  core.acceptFinding(
+    d,
+    finding.fingerprint,
+    'the shared boundary is deliberate in this exploded assembly view',
+    {
+      renderHash: hash,
+      repairAttempt: 'separated the panes, which removed the intended shared-boundary meaning',
+      observation: 'the two outlines remain individually legible and labels do not collide',
+      consequence: 'readers see a shared seam; no control or label becomes ambiguous',
+    },
+  );
+
+  const result = core.releaseCheck(d);
+  assert.equal(result.releasable, true);
+  assert.equal(result.verdict, 'PASS_WITH_EXCEPTIONS');
+  assert.match(core.formatReleaseCheck(result), /releasable with 1 accepted decision exception/);
+});
+
 test('a forced save writes, but records that it was forced', async () => {
   const dir = await tmp();
   const path = join(dir, 'forced.turtlepen.json');

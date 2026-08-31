@@ -26,17 +26,23 @@ export async function inspectArtifact(path, { root = process.cwd(), catalogEntry
   const doc = record.document;
   const validation = core.validate(doc);
   const model = core.inspectModel(doc);
-  const svg = core.renderSvg(doc);
+  const reviewProfile = doc.perceptual?.renderProfile ?? {};
+  const svg = core.renderSvgForReview(doc, reviewProfile);
   const perceptual = core.perceptualVerdicts(doc, {
     structural: validation,
     currentRenderHash: core.renderHash(svg),
   }).perceptual;
+  const release = core.releaseCheck(doc);
   const base = sourcePath.replace(/\.turtlepen\.json$/i, '');
   const exports = {
     svg: await exported(base + '.svg', manifestRoot),
     png: await exported(base + '.png', manifestRoot),
     pdf: await exported(base + '.pdf', manifestRoot),
   };
+  const exportedSvgRenderHash = exports.svg.present
+    ? core.renderHash(await readFile(base + '.svg', 'utf8'))
+    : null;
+  exports.svg.renderHash = exportedSvgRenderHash;
   const blocking = validation.open.filter((finding) => finding.severity !== 'S3');
   const contract = {
     structurallyClear: blocking.length === 0,
@@ -44,10 +50,12 @@ export async function inspectArtifact(path, { root = process.cwd(), catalogEntry
     perceptuallyReviewed: perceptual.reviewed === true,
     perceptualCurrent: perceptual.reviewed === true && perceptual.stale === false,
     perceptualHasNoBlockers: perceptual.reviewed === true && perceptual.blocking === 0,
+    releaseGatePassed: release.releasable === true,
+    reviewedExportMatches: perceptual.reviewed === true && perceptual.stale === false
+      && exportedSvgRenderHash === doc.perceptual?.renderHash,
     hasPortableVector: exports.svg.present,
-    publishable: blocking.length === 0 && model.summary.error === 0
-      && perceptual.reviewed === true && perceptual.stale === false && perceptual.blocking === 0
-      && exports.svg.present,
+    publishable: release.releasable === true && model.summary.error === 0
+      && exports.svg.present && exportedSvgRenderHash === doc.perceptual?.renderHash,
   };
   const catalog = catalogEntry
     ? { role: catalogEntry.role, releaseRequired: catalogEntry.releaseRequired }
@@ -60,6 +68,7 @@ export async function inspectArtifact(path, { root = process.cwd(), catalogEntry
     structural: { state: validation.summary.state, open: validation.open.length, accepted: validation.accepted.length, stale: validation.staleAcceptances.length, summary: validation.summary },
     model: { state: model.summary.state, open: model.open.length, accepted: model.accepted.length, stale: model.stale.length, summary: model.summary },
     perceptual,
+    release,
     exports,
     contract,
   };
@@ -98,8 +107,8 @@ export async function buildArtifactManifest(paths, { generatedAt = null, root = 
     schema: 2,
     generatedAt,
     qualityContract: {
-      required: ['structurallyClear', 'modelHasNoErrors', 'perceptuallyReviewed', 'perceptualCurrent', 'perceptualHasNoBlockers', 'hasPortableVector'],
-      note: 'Every dimension remains visible. A missing perceptual review is not silently treated as a pass.',
+      required: ['structurallyClear', 'modelHasNoErrors', 'perceptuallyReviewed', 'perceptualCurrent', 'perceptualHasNoBlockers', 'releaseGatePassed', 'reviewedExportMatches', 'hasPortableVector'],
+      note: 'Every dimension remains visible. Missing review or weak accepted critical/error evidence is never silently treated as a pass.',
       releasePolicy: catalog?.releasePolicy ?? null,
     },
     summary,

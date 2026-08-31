@@ -101,14 +101,14 @@ of placement and makes every defect a ranked, numeric finding.
   a geometry change is indistinguishable from a missed defect. Only a current
   fingerprint may be accepted; retain rule/page metadata so a lapsed acceptance
   remains auditable, visible, and withdrawable.
-- **A green `validate` is not evidence of a good diagram.** It is evidence of an
-  undefective one. `summary.clean` considers only `S0` and `S1`; composition
-  findings are `S3` and deliberately do not affect it. Adjudicate them like any
-  other finding — compose the page, or declare the page intent `schematic` to
-  state that the sparseness is deliberate. Never suppress one by lowering its
-  severity or widening the threshold to fit the diagram in front of you: the
-  threshold is calibrated against `diagrams/`, and moving it silently
-  reclassifies every past diagram.
+- **A structural `PASS` is not evidence of a good diagram.** It is evidence of
+  an undefective one. `summary.clean` requires no open `S0`, `S1`, or `S2`;
+  accepted decision findings produce `PASS_WITH_EXCEPTIONS`, never a bare pass.
+  Composition findings are `S3` and deliberately do not affect that structural
+  verdict. Finish through render -> LOOK -> perceptual_review -> release_check.
+  Never suppress a composition finding by lowering its severity or widening a
+  threshold to fit the diagram in front of you: thresholds are calibrated
+  against `diagrams/`, and moving one silently reclassifies every past diagram.
 - **Composition is judged per document, on its densest page.** Judging each page
   independently was tried and was wrong — an annotation overlay is legitimately
   sparse, and four of the seven shipped diagrams tripped on their `notes`,

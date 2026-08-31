@@ -88,6 +88,8 @@
       "perceptuallyReviewed",
       "perceptualCurrent",
       "perceptualHasNoBlockers",
+      "releaseGatePassed",
+      "reviewedExportMatches",
       "hasPortableVector"
     ],
     "note": "Only release-role artifacts gate TurtlePen publication. Examples, fixtures, and studies remain visible evidence but cannot silently become release assets."

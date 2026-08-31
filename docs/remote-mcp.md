@@ -1,7 +1,7 @@
 # Remote MCP transport
 
 TurtlePen's Streamable HTTP endpoint is a stateful transport over the same
-runtime and live 73-tool registry as the stdio server. It is not a second
+runtime and live 74-tool registry as the stdio server. It is not a second
 diagram engine. Each successful `initialize` receives an opaque
 `Mcp-Session-Id`; that session owns one active document, a serial request queue,
 and an isolated filesystem root until it expires or the client deletes it.
@@ -98,3 +98,31 @@ untrusted users.
 
 Only enable proxy trust behind a proxy that overwrites untrusted forwarded
 headers.
+
+## Cloudflare / ChatGPT Sites adapter
+
+The public package also owns the production serverless adapter; it is not kept
+in a separate website repository. Import `turtlepen/mcp/cloudflare` (or
+`src/mcp/cloudflare.js` from a clone) and re-export its route handlers:
+
+```ts
+export { dynamic, OPTIONS, GET, POST } from "turtlepen/mcp/cloudflare";
+```
+
+Bind Cloudflare D1 as `DB` and R2 as `ARTIFACTS`. For ChatGPT Sites that is:
+
+```json
+{ "project_id": "<opaque Sites project id>", "d1": "DB", "r2": "ARTIFACTS" }
+```
+
+This adapter uses the same `createTools(session)` registry and core operations
+as stdio and the Node HTTP server. D1 provides session metadata, quotas, expiry,
+and optimistic version commits; R2 stores the versioned document, history,
+confined files, and render artifacts. Defaults are 12 MiB requests, 16 MiB
+responses/files, 24 MiB serialized state and total files, 64 files, 120
+requests/minute, 500 live sessions, one-hour idle expiry, and eight-hour
+absolute expiry. These are explicit hosted caps, not a reduced drawing model.
+
+`createCloudflareHandlers({ getBindings })` is exported for another Worker
+binding layout and for executable adapter tests. The default handlers read
+`DB` and `ARTIFACTS` from `cloudflare:workers`.

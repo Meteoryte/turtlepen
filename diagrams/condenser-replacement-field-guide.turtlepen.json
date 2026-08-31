@@ -1366,10 +1366,16 @@
   },
   "acceptances": [],
   "perceptual": {
-    "renderHash": "29028fa80ee44c30",
+    "renderHash": "acb10161980b8400",
+    "renderProfile": {
+      "showGrid": false,
+      "markFindings": false,
+      "bounds": "canvas",
+      "margin": 20
+    },
     "reviewer": "codex/gpt-5.6",
-    "reviewedAt": "2026-08-26T22:26:29.901Z",
-    "note": "Reviewed the current SVG and parity PNG at native dimensions on 2026-08-26; checked legibility, clipping, silhouettes, connector direction, image fitting, and intended composition.",
+    "reviewedAt": "2026-08-31T05:15:27.793Z",
+    "note": "Inspected the exact exported SVG raster on 2026-08-31. The numbered workflow, hold-point branches, connectors, safety text, and footer are legible, organized, and unclipped.",
     "findings": []
   }
 }

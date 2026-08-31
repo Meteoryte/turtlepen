@@ -70,6 +70,16 @@ test('a stroke through the body of a box is an error whatever the corner style',
   assert.deepEqual(hit.actors.sort(), ['box', 'wire']);
 });
 
+test('crossing a lane boundary is informational, not a node-crossing error', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'lane', at: 'C4.tl', span: { w: 20, h: 8 }, shape: 'lane', label: 'Sales' });
+  core.applyPen(d, 'base', 'pen H2.q1\ndown 12 align left line', { id: 'handoff' });
+  const result = core.validate(d);
+  assert.equal(byRule(result, 'L004').length, 0, 'a lane is a container, not a node to route around');
+  assert.equal(byRule(result, 'L026').length, 1);
+  assert.equal(byRule(result, 'L026')[0].severity, 'S3');
+});
+
 test('page intent decides the severity of the same geometry', () => {
   const overlayDoc = doc();
   core.placeBox(overlayDoc, 'base', { id: 'db', at: 'C4.tl', span: { w: 6, h: 3 }, label: 'db' });
@@ -225,7 +235,7 @@ test('the log renders with severity, fingerprint and fixes', () => {
   const log = core.formatLog(core.validate(d));
   assert.match(log, /CRITICAL/);
   assert.match(log, /L001 node overlap/);
-  assert.match(log, /status: NOT CLEAN/);
+  assert.match(log, /status: FAIL/);
   assert.match(log, /fix:/);
 });
 
@@ -307,6 +317,21 @@ test('re-accepting the same fingerprint with the same reason is an update, not a
   core.acceptFinding(d, f.fingerprint, reason);
   core.acceptFinding(d, f.fingerprint, reason);
   assert.equal(d.acceptances.length, 1);
+});
+
+test('accepted decision findings are PASS_WITH_EXCEPTIONS, never a bare pass', () => {
+  const d = doc();
+  core.placeBox(d, 'base', { id: 'a', at: 'C4.tl', span: { w: 6, h: 3 } });
+  core.placeBox(d, 'base', { id: 'b', at: 'F4.tl', span: { w: 6, h: 3 } });
+  const finding = byRule(core.validate(d), 'L001')[0];
+  core.acceptFinding(d, finding.fingerprint, 'the two panes deliberately overlap to show a shared physical boundary');
+
+  const result = core.validate(d);
+  assert.equal(result.summary.clean, true, 'the unresolved-finding gate is clear');
+  assert.equal(result.summary.verdict, 'PASS_WITH_EXCEPTIONS');
+  assert.equal(result.summary.acceptedBySeverity.S0, 1);
+  assert.match(core.formatLog(result), /PASS WITH EXCEPTIONS/);
+  assert.doesNotMatch(core.formatLog(result), /status: PASS —/);
 });
 
 // ---------------------------------------------------------------------------

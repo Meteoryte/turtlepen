@@ -8771,14 +8771,6 @@
       "acceptedAt": "2026-08-17T23:57:26.873Z"
     },
     {
-      "fingerprint": "35729911a921",
-      "rule": "L006",
-      "page": "base",
-      "title": "stroke overlap",
-      "reason": "a pig's ear flops forward over the skull line — the overlap is the anatomy",
-      "acceptedAt": "2026-08-18T00:01:33.044Z"
-    },
-    {
       "fingerprint": "3ec625f6f7ce",
       "rule": "L006",
       "page": "base",
@@ -8803,14 +8795,6 @@
       "acceptedAt": "2026-08-18T00:02:27.716Z"
     },
     {
-      "fingerprint": "713e7da61e8e",
-      "rule": "L006",
-      "page": "base",
-      "title": "stroke overlap",
-      "reason": "sheep ear attaches at the poll — the join is anatomy, not a crossing",
-      "acceptedAt": "2026-08-17T23:57:26.873Z"
-    },
-    {
       "fingerprint": "78860f6d92b9",
       "rule": "L006",
       "page": "base",
@@ -8819,27 +8803,11 @@
       "acceptedAt": "2026-08-17T23:57:26.873Z"
     },
     {
-      "fingerprint": "7a589572e8cb",
-      "rule": "L006",
-      "page": "base",
-      "title": "stroke overlap",
-      "reason": "mane zigzag meets the neckline where the crest falls",
-      "acceptedAt": "2026-08-17T23:57:26.873Z"
-    },
-    {
       "fingerprint": "7ae9dae820d1",
       "rule": "L006",
       "page": "base",
       "title": "stroke overlap",
       "reason": "rooster wattle hangs from the chin line at both ends",
-      "acceptedAt": "2026-08-17T23:57:26.873Z"
-    },
-    {
-      "fingerprint": "99265dcec83c",
-      "rule": "L006",
-      "page": "base",
-      "title": "stroke overlap",
-      "reason": "cow ear attaches at the poll — the join is anatomy, not a crossing",
       "acceptedAt": "2026-08-17T23:57:26.873Z"
     },
     {
@@ -8867,14 +8835,6 @@
       "acceptedAt": "2026-08-18T00:01:33.044Z"
     },
     {
-      "fingerprint": "d12c0fab571e",
-      "rule": "L006",
-      "page": "base",
-      "title": "stroke overlap",
-      "reason": "horse ears are rooted at the poll vertex",
-      "acceptedAt": "2026-08-17T23:57:26.873Z"
-    },
-    {
       "fingerprint": "e954346fd7dd",
       "rule": "L006",
       "page": "base",
@@ -8893,9 +8853,15 @@
   ],
   "perceptual": {
     "renderHash": "e150cca609f7403e",
+    "renderProfile": {
+      "showGrid": true,
+      "markFindings": false,
+      "bounds": "content",
+      "margin": 20
+    },
     "reviewer": "codex/gpt-5.6",
-    "reviewedAt": "2026-08-26T22:26:30.578Z",
-    "note": "Reviewed the current SVG and parity PNG at native dimensions on 2026-08-26; checked legibility, clipping, silhouettes, connector direction, image fitting, and intended composition.",
+    "reviewedAt": "2026-08-31T05:15:27.880Z",
+    "note": "Inspected the exact exported SVG raster on 2026-08-31. All five labeled animal silhouettes are visually distinct, complete, and unclipped across the composition.",
     "findings": []
   }
 }

@@ -302,7 +302,7 @@ test('overlay text occlusion reaches the agent over the real wire', async () => 
       dir,
     );
     assert.match(textOf(replies, 6), /L021 overlay obscures text/);
-    assert.match(textOf(replies, 6), /status: NOT CLEAN/);
+    assert.match(textOf(replies, 6), /status: FAIL/);
     assert.match(textOf(replies, 6), /move "slow" clear of the text in "checkout"/);
   } finally {
     await rm(dir, { recursive: true, force: true });

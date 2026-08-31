@@ -57,6 +57,7 @@ export const RULES = Object.freeze({
   L023: { severity: 'S2', title: 'heuristic image approximation', blurb: 'continuous-tone source was simplified without semantic understanding' },
   L024: { severity: 'S2', title: 'symbol out of proportion', blurb: 'a shape is stretched until its silhouette no longer distinguishes it' },
   L025: { severity: 'S1', title: 'depth flattened onto one page', blurb: 'things at different depths share a page, so neither can pass behind the other' },
+  L026: { severity: 'S3', title: 'container boundary crossing', blurb: 'a path crosses a lane/group boundary as part of entering or leaving that container' },
   // Composition rules. S3 by design: a taste heuristic must never outrank a real defect.
   C001: { severity: 'S3', title: 'sparse canvas', blurb: 'the page has so little ink that nothing was really composed' },
   ...FLOWCHART_RULES,
@@ -196,21 +197,46 @@ export function validate(doc, { page = null } = {}) {
   const acknowledged = [];
   for (const f of found) {
     const hit = accepted.get(f.fingerprint);
-    if (hit) acknowledged.push({ ...f, accepted: true, reason: hit.reason, acceptedAt: hit.acceptedAt });
+    if (hit) acknowledged.push({
+      ...f,
+      accepted: true,
+      reason: hit.reason,
+      acceptedAt: hit.acceptedAt,
+      ...(hit.evidence ? { evidence: hit.evidence } : {}),
+    });
     else open.push(f);
   }
 
   const live = new Set(found.map((f) => f.fingerprint));
   const stale = doc.acceptances.filter((a) => !live.has(a.fingerprint));
 
-  const summary = { S0: 0, S1: 0, S2: 0, S3: 0, total: open.length, accepted: acknowledged.length, stale: stale.length };
+  const summary = {
+    S0: 0,
+    S1: 0,
+    S2: 0,
+    S3: 0,
+    total: open.length,
+    accepted: acknowledged.length,
+    acceptedBySeverity: { S0: 0, S1: 0, S2: 0, S3: 0 },
+    stale: stale.length,
+  };
   for (const f of open) summary[f.severity]++;
+  for (const f of acknowledged) summary.acceptedBySeverity[f.severity]++;
   summary.clean = summary.S0 === 0 && summary.S1 === 0 && summary.S2 === 0;
   summary.state = summary.S0 || summary.S1
     ? 'blocking-errors'
     : summary.S2
       ? 'needs-decisions'
       : 'structurally-clear';
+  const acceptedDecisions = summary.acceptedBySeverity.S0
+    + summary.acceptedBySeverity.S1
+    + summary.acceptedBySeverity.S2;
+  summary.verdict = !summary.clean
+    ? 'FAIL'
+    : acceptedDecisions > 0
+      ? 'PASS_WITH_EXCEPTIONS'
+      : 'PASS';
+  summary.acceptedDecisions = acceptedDecisions;
 
   return { open, accepted: acknowledged, staleAcceptances: stale, summary };
 }
@@ -505,6 +531,21 @@ function withinPage(doc, p) {
       const cut = shapeCutQuads(b.rect, b.shape ?? 'process', b.corner);
       const hitsBody = intersect(pq, body);
       const hitsCut = intersect(pq, cut);
+      if (isContainer(b.shape)) {
+        const hits = [...new Set([...hitsBody, ...hitsCut])];
+        if (hits.length) {
+          out.push(
+            finding('L026', p.id, {
+              message: `path "${path.id}" crosses the boundary/interior of container "${b.id}" over ${hits.length} quadrant(s) — entering or leaving a lane is expected, but remains visible for review`,
+              actors: [path.id, b.id],
+              cells: addrList(hits),
+              metrics: { quadrants: hits.length },
+              fixes: [],
+            }),
+          );
+        }
+        continue;
+      }
       if (hitsBody.length) {
         out.push(
           finding('L004', p.id, {
@@ -519,9 +560,7 @@ function withinPage(doc, p) {
       if (hitsCut.length && !hitsBody.length) {
         out.push(
           finding('L013', p.id, {
-            message: isContainer(b.shape)
-              ? `path "${path.id}" runs through the interior of "${b.id}" — a container leaves its hole free, so nothing visibly touches`
-              : `path "${path.id}" passes through the ${b.corner} corner cut of "${b.id}" — claimed but not inked, so nothing visibly touches`,
+            message: `path "${path.id}" passes through the ${b.corner} corner cut of "${b.id}" — claimed but not inked, so nothing visibly touches`,
             actors: [path.id, b.id],
             cells: addrList(hitsCut),
             metrics: { quadrants: hitsCut.length, cornerStyle: b.corner },
@@ -782,9 +821,18 @@ export function formatLog(result, { showAccepted = true, showFixes = true } = {}
       `(${s.S0} critical, ${s.S1} error, ${s.S2} warn, ${s.S3} info)` +
       `${s.accepted ? `, ${s.accepted} accepted` : ''}${s.stale ? `, ${s.stale} stale acceptance(s)` : ''}`,
   );
-  lines.push(s.clean
-    ? '  status: CLEAN — STRUCTURALLY CLEAR; no unresolved critical, error, or decision findings'
-    : `  status: NOT CLEAN — ${s.state === 'needs-decisions' ? 'NEEDS DECISIONS' : 'BLOCKING ERRORS'}`);
+  if (s.verdict === 'PASS') {
+    lines.push('  status: PASS — no unresolved or accepted critical, error, or decision findings');
+  } else if (s.verdict === 'PASS_WITH_EXCEPTIONS') {
+    const a = s.acceptedBySeverity;
+    lines.push(
+      '  status: PASS WITH EXCEPTIONS — structurally clear only after accepting '
+      + `${s.acceptedDecisions} decision finding(s) (${a.S0} critical, ${a.S1} error, ${a.S2} warn); `
+      + 'this is not an exception-free pass',
+    );
+  } else {
+    lines.push(`  status: FAIL — ${s.state === 'needs-decisions' ? 'NEEDS DECISIONS' : 'BLOCKING ERRORS'}`);
+  }
   lines.push('');
 
   for (const f of result.open) {

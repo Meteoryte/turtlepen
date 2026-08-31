@@ -33,6 +33,8 @@ test('artifact manifests expose every quality dimension and never call unreviewe
   assert.equal(manifest.artifacts.length, 1);
   assert.equal(manifest.artifacts[0].contract.structurallyClear, true);
   assert.equal(manifest.artifacts[0].contract.perceptuallyReviewed, false);
+  assert.equal(manifest.artifacts[0].contract.releaseGatePassed, false);
+  assert.equal(manifest.artifacts[0].contract.reviewedExportMatches, false);
   assert.equal(manifest.artifacts[0].contract.publishable, false);
   assert.equal(manifest.artifacts[0].exports.svg.present, true);
   assert.equal(manifest.artifacts[0].source.path, 'architecture.turtlepen.json');
@@ -67,11 +69,13 @@ test('a current clean perceptual review satisfies the numeric blocker-count gate
   const catalog = normalizeArtifactCatalog({
     schema: 1,
     roles: { release: ['architecture.turtlepen.json'], example: [], fixture: [], study: [] },
-    releasePolicy: { required: ['structurallyClear', 'modelHasNoErrors', 'perceptuallyReviewed', 'perceptualCurrent', 'perceptualHasNoBlockers', 'hasPortableVector'] },
+    releasePolicy: { required: ['structurallyClear', 'modelHasNoErrors', 'perceptuallyReviewed', 'perceptualCurrent', 'perceptualHasNoBlockers', 'releaseGatePassed', 'reviewedExportMatches', 'hasPortableVector'] },
   });
   const manifest = await buildArtifactManifest([path], { root, catalog });
   assert.equal(manifest.artifacts[0].perceptual.blocking, 0);
   assert.equal(manifest.artifacts[0].contract.perceptualHasNoBlockers, true);
+  assert.equal(manifest.artifacts[0].contract.releaseGatePassed, true);
+  assert.equal(manifest.artifacts[0].contract.reviewedExportMatches, true);
   assert.equal(manifest.artifacts[0].contract.publishable, true);
   assert.deepEqual(manifest.summary.release, { artifacts: 1, ready: 1, blocked: 0 });
 });

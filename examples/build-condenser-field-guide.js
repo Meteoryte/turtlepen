@@ -117,7 +117,7 @@ try {
     markFindings: false,
   });
   await call('save');
-  process.stdout.write(`validation: ${validation.summary.clean ? 'CLEAN' : 'NOT CLEAN'}; open INFO: ${validation.open.length}\n`);
+  process.stdout.write(`validation: ${validation.summary.verdict}; open INFO: ${validation.open.length}\n`);
   process.stdout.write('wrote diagrams/condenser-replacement-field-guide.turtlepen.json\n');
   process.stdout.write('wrote diagrams/condenser-replacement-field-guide.svg\n');
 } finally {

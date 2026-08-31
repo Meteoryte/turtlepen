@@ -80,6 +80,12 @@ export async function governanceReport(root = process.cwd()) {
       roleDrift.length ? `${roleDrift.length} manifest role assignment(s) drifted` : 'generated manifest scope and roles match the catalog', roleDrift),
     check('artifact-hashes', sourceDrift.length === 0 && exportDrift.length === 0,
       sourceDrift.length || exportDrift.length ? 'manifest hashes are stale' : 'manifest source and export hashes match disk', { sourceDrift, exportDrift }),
+    check('release-ready', manifest.summary.release.ready === manifest.summary.release.artifacts,
+      manifest.summary.release.ready === manifest.summary.release.artifacts
+        ? `all ${manifest.summary.release.artifacts} release artifact(s) pass the canonical release gate`
+        : `${manifest.summary.release.blocked} release artifact(s) are blocked`,
+      manifest.artifacts.filter((artifact) => artifact.catalog.releaseRequired && !artifact.contract.publishable)
+        .map((artifact) => ({ path: artifact.source.path, blockers: artifact.release?.blockers ?? [] }))),
     check('help-snapshot', helpSnapshot === fullHelp,
       helpSnapshot === fullHelp ? 'docs/turtlepen-help.txt matches live full help byte-for-byte' : 'generated help snapshot differs from the live tool surface'),
     check('runtime-version', VERSION === JSON.parse(await readFile(resolve(projectRoot, 'package.json'), 'utf8')).version,

@@ -223,13 +223,13 @@
 <text class="free-text" x="240" y="1028" font-size="120" font-weight="800" textLength="720" lengthAdjust="spacingAndGlyphs" style="fill:#001b35" xml:space="preserve">Turtle Pen</text>
 </g>
 <g data-element="mcp" role="group" aria-label="text mcp: M C P">
-<text class="free-text" x="490" y="1134" font-size="74" font-weight="700" textLength="220" lengthAdjust="spacingAndGlyphs" style="fill:#255943" xml:space="preserve">M C P</text>
+<text class="free-text" x="490" y="1149" font-size="74" font-weight="700" textLength="220" lengthAdjust="spacingAndGlyphs" style="fill:#255943" xml:space="preserve">M C P</text>
 </g>
 <g data-element="mcp-rule-left" role="group" aria-label="path mcp-rule-left">
-<g data-id="mcp-rule-left" data-kind="path" data-role="artwork"><polyline points="297,1107 442,1107" fill="none" stroke="#255943" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g data-id="mcp-rule-left" data-kind="path" data-role="artwork"><polyline points="297,1122 442,1122" fill="none" stroke="#255943" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
 </g>
 <g data-element="mcp-rule-right" role="group" aria-label="path mcp-rule-right">
-<g data-id="mcp-rule-right" data-kind="path" data-role="artwork"><polyline points="762,1107 907,1107" fill="none" stroke="#255943" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g data-id="mcp-rule-right" data-kind="path" data-role="artwork"><polyline points="762,1122 907,1122" fill="none" stroke="#255943" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
 </g>
 </g>
 </g>

@@ -2,9 +2,17 @@
 
 ## Unreleased
 
+- Added the canonical Cloudflare/ChatGPT Sites D1+R2 Streamable HTTP adapter to
+  the public package. Hosted deployments now re-export this source instead of
+  maintaining a private second transport implementation.
+- Structural validation now reports `PASS`, `PASS_WITH_EXCEPTIONS`, or `FAIL`;
+  accepted decision findings can no longer be presented as a bare clean pass.
+  Added `release_check`, current render-profile binding, and required
+  render-bound evidence for release with accepted critical/error findings.
+
 - Extracted one transport-independent, stateful MCP protocol runtime so stdio
   and remote HTTP cannot drift into different tool registries or behaviors.
-- Added a zero-dependency MCP 2025-06-18 Streamable HTTP transport with all 73
+- Added a zero-dependency MCP 2025-06-18 Streamable HTTP transport with all 74
   canonical tools, request-scoped SSE replies, isolated stateful sessions,
   serial mutation ordering, explicit teardown, filesystem confinement, bounded
   resources, storage purge on teardown/expiry, origin checks, private-preview
@@ -18,7 +26,8 @@
   14x3 for a subprocess instead of the defective 13x3.
 - Corrected `L002` arithmetic so the width named in its message is the same
   unbroken width used to calculate the reported overflow.
-- 659 tests pass, including the real HTTP transport boundary and an all-12-shape
+- 667 tests pass, including the real HTTP and Cloudflare-hosted transport boundaries, the
+  final release gate, and an all-12-shape
   measurement audit.
 
 ## 0.3.2 — 2026-08-27

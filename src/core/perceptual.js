@@ -57,6 +57,26 @@ export const REPAIR_CLASSES = Object.freeze([
   'resize', 'move', 'restyle', 'reroute', 'redraw', 'remove', 'advice-only',
 ]);
 
+/**
+ * Only options that change rendered bytes belong in a review profile. Paths,
+ * force flags, and filesystem details are transport concerns, not properties
+ * of the image a reviewer saw.
+ */
+export function normalizeRenderProfile(raw = {}) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) fail('render profile must be an object');
+  const profile = {
+    showGrid: raw.showGrid ?? true,
+    markFindings: raw.markFindings ?? false,
+    bounds: raw.bounds ?? 'content',
+    margin: raw.margin ?? 20,
+  };
+  if (typeof profile.showGrid !== 'boolean') fail('render profile showGrid must be boolean');
+  if (typeof profile.markFindings !== 'boolean') fail('render profile markFindings must be boolean');
+  if (!['content', 'canvas'].includes(profile.bounds)) fail('render profile bounds must be content or canvas');
+  if (!Number.isSafeInteger(profile.margin) || profile.margin < 0) fail('render profile margin must be a non-negative whole number');
+  return Object.freeze(profile);
+}
+
 /** The hash of the rendered bytes a critic actually looked at. */
 export function renderHash(svg) {
   return crypto.createHash('sha256').update(String(svg), 'utf8').digest('hex').slice(0, 16);
@@ -132,7 +152,13 @@ export function normalizePerceptualFinding(raw, { knownIds = null } = {}) {
  * in particular cannot be shown to have gone stale, and a stale opinion
  * presented as current is the failure this binding exists to prevent.
  */
-export function attachPerceptualReview(doc, { renderHash: hash, reviewer, findings = [], note = null }) {
+export function attachPerceptualReview(doc, {
+  renderHash: hash,
+  reviewer,
+  findings = [],
+  note = null,
+  renderProfile = {},
+}) {
   if (!hash || typeof hash !== 'string') fail('a review must name the renderHash it describes');
   if (!reviewer || typeof reviewer !== 'string') fail('a review must name its reviewer');
 
@@ -147,6 +173,7 @@ export function attachPerceptualReview(doc, { renderHash: hash, reviewer, findin
 
   doc.perceptual = {
     renderHash: hash,
+    renderProfile: normalizeRenderProfile(renderProfile),
     reviewer,
     reviewedAt: new Date().toISOString(),
     note,
@@ -175,7 +202,14 @@ export function restorePerceptualReview(doc, raw) {
     seen.add(finding.id);
   }
 
-  doc.perceptual = { renderHash: hash, reviewer, reviewedAt, note, findings: normalized };
+  doc.perceptual = {
+    renderHash: hash,
+    renderProfile: normalizeRenderProfile(raw.renderProfile ?? {}),
+    reviewer,
+    reviewedAt,
+    note,
+    findings: normalized,
+  };
   return doc.perceptual;
 }
 

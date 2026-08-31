@@ -657,6 +657,11 @@ rules:
     "title": "depth flattened onto one page",
     "blurb": "things at different depths share a page, so neither can pass behind the other"
   },
+  "L026": {
+    "severity": "S3",
+    "title": "container boundary crossing",
+    "blurb": "a path crosses a lane/group boundary as part of entering or leaving that container"
+  },
   "C001": {
     "severity": "S3",
     "title": "sparse canvas",

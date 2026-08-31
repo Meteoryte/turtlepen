@@ -468,7 +468,7 @@ plan  { operations: [ …place boxes, run pen programs… ] }
 …adjust the plan, not the document, then…
 
 plan  { operations: […], commit: true }
-  → committed 6 operation(s).  status: CLEAN
+  → committed 6 operation(s).  status: PASS
 ```
 
 Placement is never blocked for collision, so sketching roughly and repairing
@@ -544,7 +544,7 @@ still needs TLS, OAuth identity, per-user quotas, and an authenticated file
 bridge. See the [remote MCP transport contract](docs/remote-mcp.md), including
 the required dual `Accept` header and Cloudflare user-agent gotcha.
 
-73 tools. Call `turtlepen_help` first for a compact orientation, use
+74 tools. Call `turtlepen_help` first for a compact orientation, use
 `search_help { query }` for task-focused discovery, and request
 `turtlepen_help { section: "all" }` for the complete grammar and rule manual.
 
@@ -584,7 +584,7 @@ inflating effective ink, and record source plus run hashes in the
 | orient | `turtlepen_help` `search_help` `doctor` `runtime_info` `describe` `ascii` `free_space` `history` |
 | author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `connect` `annotate` `plan` `group` `constraint` `import_mermaid` `route` |
 | workspace | `define_view` `remove_view` `configure_theme` `attach_resource` `remove_resource` |
-| check | `validate` `inspect_model` `accept_model_finding` `unaccept_model_finding` `perceptual_review` `accept_finding` `unaccept_finding` |
+| check | `validate` `inspect_model` `accept_model_finding` `unaccept_model_finding` `perceptual_review` `release_check` `accept_finding` `unaccept_finding` |
 | layout | `align` `distribute` `layout` |
 | repair | `repair` `resize` `restyle` `move` `rename` `update_page` `set_canvas` `extend_path` `replace_path` `remove` |
 | fidelity | `micro_mask` `stroke_text` `stroke_label` `glyph` `font_coverage` `set_background` |
@@ -830,6 +830,17 @@ wrong. Four properties make it safe to have opinions in a deterministic engine:
   discipline applied to opinions.
 - **An unreviewed document is `NOT REVIEWED`, never clean.** Absence of a review
   is not a pass.
+
+Finish with `release_check`. Structural validation reports one of three honest
+states: `PASS`, `PASS_WITH_EXCEPTIONS`, or `FAIL`. Accepting a finding can never
+produce a bare pass. A release also requires a current perceptual review, and an
+accepted critical/error finding needs evidence bound to that reviewed render:
+
+```text
+accept_finding { fingerprint, reason, evidence: {
+  renderHash, repairAttempt, observation, consequence } }
+release_check
+```
 
 Raster output and closed-path filling are implemented and regression-tested.
 Their evidence history and the still-inferred imaging candidates are retained in

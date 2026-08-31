@@ -6,9 +6,9 @@
  * reserves only its title band and border ring and leaves its hole free.
  *
  * Flow runs HORIZONTALLY within a lane and VERTICALLY between them. The
- * vertical hops necessarily cross a lane border, which is a real L004 — the
- * connector does cross inked ink — and is exactly what `accept_finding` is
- * for: handing over is the point of a swimlane, not a defect.
+ * vertical hops necessarily cross a lane border. TurtlePen reports that as
+ * informational L026 container-boundary crossing, not the error-level L004
+ * used for crossing an ordinary node.
  *
  *   node build-swimlane.js
  */
@@ -17,7 +17,7 @@ import path from 'node:path';
 import { statSync } from 'node:fs';
 
 import {
-  createDocument, placeBox, applyPen, validate, acceptFinding, exportSvg, saveDocument, loadDocument, preservePerceptualReview,
+  createDocument, placeBox, applyPen, validate, exportSvg, saveDocument, loadDocument, preservePerceptualReview,
 } from './src/core/index.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -33,12 +33,6 @@ const previous = await loadDocument(documentPath).catch((error) => {
 
 const INK = { lane: '#eef2ee', node: '#2ea685', end: '#c2ed98', start: '#0f766e' };
 const FIXED_CREATED_AT = '2026-08-26T22:40:43.689Z';
-const FIXED_ACCEPTED_AT = new Map([
-  ['155995cbffa5', '2026-08-26T22:40:45.170Z'],
-  ['2b000c28ce08', '2026-08-26T22:40:44.675Z'],
-  ['807a53ce8158', '2026-08-26T22:40:46.090Z'],
-  ['f61146bb58fa', '2026-08-26T22:40:45.627Z'],
-]);
 
 const doc = createDocument({ name: 'Order handling — swimlanes', canvas: { cols: 122, rows: 66 } });
 doc.createdAt = FIXED_CREATED_AT;
@@ -72,17 +66,6 @@ pen('e_pick_ship', 'pen from pick.E\nright line to ship.W arrow');
 
 pen('l_no', 'text "NO" at BM34 span 5x2 align center');
 pen('l_yes', 'text "YES" at AY44 span 5x2 align center');
-
-// Crossing a lane border is the handover a swimlane exists to show.
-for (const f of validate(doc).open) {
-  if (f.rule === 'L004' && f.actors.some((a) => a.startsWith('lane_'))) {
-    acceptFinding(doc, f.fingerprint,
-      'the flow hands over between lanes here — crossing the lane border is what a swimlane depicts');
-  }
-}
-for (const acceptance of doc.acceptances) {
-  acceptance.acceptedAt = FIXED_ACCEPTED_AT.get(acceptance.fingerprint) ?? FIXED_CREATED_AT;
-}
 
 const log = validate(doc);
 const bad = log.open.filter((f) => f.severity !== 'S3');

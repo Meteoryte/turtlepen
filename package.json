@@ -1,6 +1,6 @@
 {
   "name": "turtlepen",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -51,6 +51,7 @@
     ".": "./src/core/index.js",
     "./mcp": "./src/mcp/server.js",
     "./mcp/http": "./src/mcp/http-server.js",
+    "./mcp/cloudflare": "./src/mcp/cloudflare.js",
     "./mcp/protocol": "./src/mcp/protocol.js",
     "./tools": "./src/mcp/tools.js"
   },

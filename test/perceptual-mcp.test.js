@@ -60,7 +60,7 @@ test('an unreviewed document reports NOT REVIEWED, not clean', async () => {
   const tools = createTools(session());
   await drawSomething(tools);
   const out = await call(tools, 'perceptual_review', { action: 'status' });
-  assert.match(out, /structural: CLEAN/);
+  assert.match(out, /structural: PASS/);
   assert.match(out, /NOT REVIEWED/);
 });
 
@@ -85,7 +85,7 @@ test('a recorded review returns both verdicts, unmerged', async () => {
     }],
   });
 
-  assert.match(out, /structural: CLEAN/, 'geometry is fine');
+  assert.match(out, /structural: PASS/, 'geometry is fine');
   assert.match(out, /1 blocking/, 'the picture is not');
   assert.match(out, /deliberately not combined/);
   assert.doesNotMatch(out, /STALE/);
