@@ -919,3 +919,8 @@ original implementation prompts are archived in
 [`docs/imaging-capability-prompts.md`](docs/imaging-capability-prompts.md).
 
 Model used: **Claude Opus 5**
+
+---
+
+TurtlePen is MIT licensed and has no runtime dependencies. If it saved you an afternoon of
+fighting a diagram tool, you can [buy me a coffee](https://buymeacoffee.com/chazles).
