@@ -152140,16 +152140,16 @@
     }
   ],
   "perceptual": {
-    "renderHash": "a61bb2f06efa43ce",
+    "renderHash": "856b76bf51f54736",
     "renderProfile": {
-      "showGrid": false,
+      "showGrid": true,
       "markFindings": false,
-      "bounds": "canvas",
-      "margin": 0
+      "bounds": "content",
+      "margin": 20
     },
-    "reviewer": "codex/gpt-5.6",
-    "reviewedAt": "2026-08-31T05:13:01.551Z",
-    "note": "Inspected the exact exported SVG raster at native dimensions on 2026-08-31. The turtle-at-easel mark, wordmark, MCP label, and flanking rules are visible, separated, legible, and unclipped.",
+    "reviewer": "claude-code/claude-opus-5",
+    "reviewedAt": "2026-08-31T06:44:06.988Z",
+    "note": "Re-export after the background-fill change. Looked at the PNG: turtle at the easel with the TURTLE PEN / MCP wordmark reads correctly, shell banding and plastron are coherent, the pen meets the board. Overlapping light-green shell outline remains as previously accepted.",
     "findings": []
   }
 }

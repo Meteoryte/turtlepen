@@ -1366,16 +1366,16 @@
   },
   "acceptances": [],
   "perceptual": {
-    "renderHash": "acb10161980b8400",
+    "renderHash": "29028fa80ee44c30",
     "renderProfile": {
-      "showGrid": false,
+      "showGrid": true,
       "markFindings": false,
-      "bounds": "canvas",
+      "bounds": "content",
       "margin": 20
     },
-    "reviewer": "codex/gpt-5.6",
-    "reviewedAt": "2026-08-31T05:15:27.793Z",
-    "note": "Inspected the exact exported SVG raster on 2026-08-31. The numbered workflow, hold-point branches, connectors, safety text, and footer are legible, organized, and unclipped.",
+    "reviewer": "claude-code/claude-opus-5",
+    "reviewedAt": "2026-08-31T06:44:15.866Z",
+    "note": "Re-export after the background-fill change. Looked at the PNG: seven numbered stages read in order, the four hold points sit beside the stages they gate with their connectors landing correctly, the safety banner and the closing special-refrigerant note are both present and legible.",
     "findings": []
   }
 }

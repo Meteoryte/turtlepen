@@ -10,6 +10,11 @@
   "generated": "2026-08-31",
   "entries": [
     {
+      "path": "docs/gallery/hosted-mcp-architecture.png",
+      "sha256": "438c2e8468243e5757591fef482e1f6189d015c092fe8f116d9dac66d31a194a",
+      "bytes": 59057
+    },
+    {
       "path": "docs/gallery/hosted-mcp-architecture.svg",
       "sha256": "ca6626a09b0575506838e08388a9d7bdd1b198746fcd5bdc82c8fda9866ba520",
       "bytes": 45815

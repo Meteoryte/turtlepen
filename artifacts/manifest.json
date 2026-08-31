@@ -5614,9 +5614,9 @@
         },
         "png": {
           "path": "brand/logo-v2.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 54031,
+          "sha256": "37c5f7c6d964c0c6e38c678da00615bf1978eecf68452d83ce92a00963bacff1"
         },
         "pdf": {
           "path": "brand/logo-v2.pdf",
@@ -5646,8 +5646,8 @@
       "source": {
         "path": "brand/logo.turtlepen.json",
         "schema": 3,
-        "sha256": "46c0e465faeb250f6b99942b21a181fee0e3e2bef7b3265aefd636826c7673cd",
-        "bytes": 3204066
+        "sha256": "7e5449d8536bd7b41402a59b3eb94540eec7581580086f8c64294f813301d581",
+        "bytes": 3204160
       },
       "document": {
         "pages": 5,
@@ -5697,7 +5697,7 @@
       },
       "perceptual": {
         "reviewed": true,
-        "reviewer": "codex/gpt-5.6",
+        "reviewer": "claude-code/claude-opus-5",
         "findings": 0,
         "blocking": 0,
         "clean": true,
@@ -5728,12 +5728,12 @@
         },
         "perceptual": {
           "reviewed": true,
-          "reviewer": "codex/gpt-5.6",
+          "reviewer": "claude-code/claude-opus-5",
           "findings": 0,
           "blocking": 0,
           "clean": true,
           "stale": false,
-          "currentRenderHash": "a61bb2f06efa43ce"
+          "currentRenderHash": "856b76bf51f54736"
         },
         "exceptions": [
           {
@@ -8602,15 +8602,15 @@
         "svg": {
           "path": "brand/logo.svg",
           "present": true,
-          "bytes": 58777,
-          "sha256": "a61bb2f06efa43ce78c7dffab76180163a7391cd9fb6bf6030972e8694189cff",
-          "renderHash": "a61bb2f06efa43ce"
+          "bytes": 71568,
+          "sha256": "856b76bf51f547369a119271264cd000acd85ca89e86f8c5fe6eb159e5a53432",
+          "renderHash": "856b76bf51f54736"
         },
         "png": {
           "path": "brand/logo.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 51646,
+          "sha256": "9e57c5852881fa15ceed57d15785f30033ac98647275b8d78c613dd8e8b34eaf"
         },
         "pdf": {
           "path": "brand/logo.pdf",
@@ -14354,9 +14354,9 @@
         },
         "png": {
           "path": "diagrams/atlas-marks.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 27285,
+          "sha256": "8601efe59281abd1f91bcde4cc5f083f0291311d1f6c96ebd5dbb7ac98d0a168"
         },
         "pdf": {
           "path": "diagrams/atlas-marks.pdf",
@@ -14646,9 +14646,9 @@
         },
         "png": {
           "path": "diagrams/atlas-nodes.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 20538,
+          "sha256": "a207ac663e53cd2894791a2574ab75768592ecb658f139d1f6ea9ab7a28ca782"
         },
         "pdf": {
           "path": "diagrams/atlas-nodes.pdf",
@@ -15256,8 +15256,8 @@
       "source": {
         "path": "diagrams/condenser-replacement-field-guide.turtlepen.json",
         "schema": 3,
-        "sha256": "7c1b4779c5ab090b3b1bfaac580d91cca02b9b4a39996fddb68156668bee3799",
-        "bytes": 33437
+        "sha256": "3eb73faedaa2adc0681c227c3de5dfbab71059f92de044dde5c361eb88f3f4ef",
+        "bytes": 33558
       },
       "document": {
         "pages": 1,
@@ -15307,7 +15307,7 @@
       },
       "perceptual": {
         "reviewed": true,
-        "reviewer": "codex/gpt-5.6",
+        "reviewer": "claude-code/claude-opus-5",
         "findings": 0,
         "blocking": 0,
         "clean": true,
@@ -15338,12 +15338,12 @@
         },
         "perceptual": {
           "reviewed": true,
-          "reviewer": "codex/gpt-5.6",
+          "reviewer": "claude-code/claude-opus-5",
           "findings": 0,
           "blocking": 0,
           "clean": true,
           "stale": false,
-          "currentRenderHash": "acb10161980b8400"
+          "currentRenderHash": "29028fa80ee44c30"
         },
         "exceptions": [],
         "weakAcceptances": []
@@ -15352,15 +15352,15 @@
         "svg": {
           "path": "diagrams/condenser-replacement-field-guide.svg",
           "present": true,
-          "bytes": 24060,
-          "sha256": "acb10161980b840099b4b50c841fb961d2d088a0af1c39fa53cdbb8d7897ade3",
-          "renderHash": "acb10161980b8400"
+          "bytes": 36278,
+          "sha256": "29028fa80ee44c30c8e25ce2669d0abf8ab436b22255397835b51a747c3f28ff",
+          "renderHash": "29028fa80ee44c30"
         },
         "png": {
           "path": "diagrams/condenser-replacement-field-guide.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 39291,
+          "sha256": "a55d0b312fb7470d61be34186d1397a69c80539202b694d3fb965497f165e222"
         },
         "pdf": {
           "path": "diagrams/condenser-replacement-field-guide.pdf",
@@ -20654,9 +20654,9 @@
         },
         "png": {
           "path": "diagrams/farm-animals.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 19667,
+          "sha256": "4972a80d6761f5c4ade0d4f5a9043c1a8005027e01c62b87b04ea43c3c555b68"
         },
         "pdf": {
           "path": "diagrams/farm-animals.pdf",
@@ -21052,15 +21052,15 @@
         "svg": {
           "path": "diagrams/gemini31-scene-fence.svg",
           "present": true,
-          "bytes": 39972,
-          "sha256": "0552f5610fd428a445ef531a23e83a92a761694df85f707498680e04a2d53755",
-          "renderHash": "0552f5610fd428a4"
+          "bytes": 46439,
+          "sha256": "7ee559a28f25ed4fe6ea95eb3c258278dfeaef653167a3bdac50a0212d315425",
+          "renderHash": "7ee559a28f25ed4f"
         },
         "png": {
           "path": "diagrams/gemini31-scene-fence.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 21528,
+          "sha256": "71b92459c1a719128d6934911f6b10ad93e04fcfca0ca87a492036001cba9c05"
         },
         "pdf": {
           "path": "diagrams/gemini31-scene-fence.pdf",
@@ -21726,15 +21726,15 @@
         "svg": {
           "path": "diagrams/gemini31-technical-analysis.svg",
           "present": true,
-          "bytes": 24443,
-          "sha256": "f7286f68ae36cc02f5a85677f45be722233062187df7c4454c79936d99476637",
-          "renderHash": "f7286f68ae36cc02"
+          "bytes": 30138,
+          "sha256": "e343dea85859184d084abfc889c808166d7fcb32066ebfd490d66f50064195b2",
+          "renderHash": "e343dea85859184d"
         },
         "png": {
           "path": "diagrams/gemini31-technical-analysis.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 27273,
+          "sha256": "70df9b1d4aa61449067cec3af8728998f5f576eadd9f1123ee28d11f495c7b4f"
         },
         "pdf": {
           "path": "diagrams/gemini31-technical-analysis.pdf",
@@ -27308,15 +27308,15 @@
         "svg": {
           "path": "diagrams/postcard-alpine-campfire.svg",
           "present": true,
-          "bytes": 37377,
-          "sha256": "9092705ad050867a4201cd54f35f3c47cddd35ee7b17889182ecb8ff7b9d5800",
-          "renderHash": "9092705ad050867a"
+          "bytes": 47611,
+          "sha256": "e35a36b0e121d116e3ec572faa7fdbb44bfb302fe557686bad1d11be8a668335",
+          "renderHash": "e35a36b0e121d116"
         },
         "png": {
           "path": "diagrams/postcard-alpine-campfire.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 11777,
+          "sha256": "e1eafa6d7a3a811590c17a953e4d44f8c83ca9b34f3643ddc8112b5405cc1641"
         },
         "pdf": {
           "path": "diagrams/postcard-alpine-campfire.pdf",
@@ -27442,15 +27442,15 @@
         "svg": {
           "path": "diagrams/postcard-botanical-terrarium.svg",
           "present": true,
-          "bytes": 22981,
-          "sha256": "3aa7fde710a4afdc49eb102e184a9c98302f0565116ed9f793f51fd80bbe3b7b",
-          "renderHash": "3aa7fde710a4afdc"
+          "bytes": 33044,
+          "sha256": "1658fb02eec60667c20989ff4c0a4ef71748d80a84231278f1c84b8a7e3c16e0",
+          "renderHash": "1658fb02eec60667"
         },
         "png": {
           "path": "diagrams/postcard-botanical-terrarium.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 11387,
+          "sha256": "8eeb53136f52425f8c4ebc6ed92436b0b050ab5530132556e0e65cfefbf4c285"
         },
         "pdf": {
           "path": "diagrams/postcard-botanical-terrarium.pdf",
@@ -27576,15 +27576,15 @@
         "svg": {
           "path": "diagrams/postcard-deep-sea-explorer.svg",
           "present": true,
-          "bytes": 16007,
-          "sha256": "bd1a1fb3210320c463804427e4dc2ea7fb9968767cbdcd779595f73a385394e6",
-          "renderHash": "bd1a1fb3210320c4"
+          "bytes": 26226,
+          "sha256": "f713b2075ec0c54972f6ac351301c8b8dbdada1e8fc44ec7f947c8fbac64cbaa",
+          "renderHash": "f713b2075ec0c549"
         },
         "png": {
           "path": "diagrams/postcard-deep-sea-explorer.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 9122,
+          "sha256": "35f9d9d7966e4a28bc1df1b92c811870c515bafc2ba4eda758f9d2059db6acf1"
         },
         "pdf": {
           "path": "diagrams/postcard-deep-sea-explorer.pdf",
@@ -27710,15 +27710,15 @@
         "svg": {
           "path": "diagrams/postcard-night-observatory.svg",
           "present": true,
-          "bytes": 23252,
-          "sha256": "9e3c407425e966cdee0079b23fed6e1db8b10d60f0d33699c994f5879ff356fa",
-          "renderHash": "9e3c407425e966cd"
+          "bytes": 33401,
+          "sha256": "d552243409ce13affee2b6839f250cf830d45a914967e97d8c6f4ab27825e3cb",
+          "renderHash": "d552243409ce13af"
         },
         "png": {
           "path": "diagrams/postcard-night-observatory.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 10006,
+          "sha256": "47435f91d55e78ce3b911473f5ae2bbd968344cb5d143641700c01c70a56c5da"
         },
         "pdf": {
           "path": "diagrams/postcard-night-observatory.pdf",
@@ -27844,15 +27844,15 @@
         "svg": {
           "path": "diagrams/postcard-rocket-liftoff.svg",
           "present": true,
-          "bytes": 23022,
-          "sha256": "1fcd87a444b07ccadf74d924652f01b3afc3d37b4be4cf6498110943b1827f74",
-          "renderHash": "1fcd87a444b07cca"
+          "bytes": 33230,
+          "sha256": "8b0dcbba7c5f85b6d61d03933d1f45642b705db1b4d6b2f14365eb1fe160dac5",
+          "renderHash": "8b0dcbba7c5f85b6"
         },
         "png": {
           "path": "diagrams/postcard-rocket-liftoff.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 10744,
+          "sha256": "084377aa3a8c19baff98df3fd3f201352c845844e1d9b58514065744b14c8124"
         },
         "pdf": {
           "path": "diagrams/postcard-rocket-liftoff.pdf",
@@ -35167,15 +35167,15 @@
         "svg": {
           "path": "diagrams/showcase-flowchart.svg",
           "present": true,
-          "bytes": 25590,
-          "sha256": "4bcd8eb058cbf5d81bdb4c60d67d9f41c07911bf3f370195d3984f6734ac645e",
-          "renderHash": "4bcd8eb058cbf5d8"
+          "bytes": 26762,
+          "sha256": "ebf88f8e6c0976511a819de935e62d3f53fb90733e37bc2e7b2138d9bda68bec",
+          "renderHash": "ebf88f8e6c097651"
         },
         "png": {
           "path": "diagrams/showcase-flowchart.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 8815,
+          "sha256": "14a7fdc2c3edde97a49e0b30253f053cae0341d1aa58f0e635f0ca1305b0fcd9"
         },
         "pdf": {
           "path": "diagrams/showcase-flowchart.pdf",
@@ -35459,15 +35459,15 @@
         "svg": {
           "path": "diagrams/showcase-pipeline.svg",
           "present": true,
-          "bytes": 20487,
-          "sha256": "ec3cb16c73c14b2b1816288f89ae4052ca9098e2d5dcf77533fcb2f5b302a49a",
-          "renderHash": "ec3cb16c73c14b2b"
+          "bytes": 21775,
+          "sha256": "5c756e69c2a85d2502a3297213b37b2bb580044f32949c822a686f3bb0665b0e",
+          "renderHash": "5c756e69c2a85d25"
         },
         "png": {
           "path": "diagrams/showcase-pipeline.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 7268,
+          "sha256": "52b74cc3e25aab3a251233f9a433414b37c384b5e8a328e7f473a8f3c7fc76e6"
         },
         "pdf": {
           "path": "diagrams/showcase-pipeline.pdf",
@@ -37223,9 +37223,9 @@
         },
         "png": {
           "path": "diagrams/supersample-random-five.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 36897,
+          "sha256": "f7e2b94bea1986c0fb84a387d054f54fa6a464f67e2b42053acd80b3e409ad04"
         },
         "pdf": {
           "path": "diagrams/supersample-random-five.pdf",
@@ -37255,8 +37255,8 @@
       "source": {
         "path": "diagrams/swimlane-order-handling.turtlepen.json",
         "schema": 3,
-        "sha256": "c1b8c76194efae3f88aabb68cdb4c12f0918b3d6e5d12473de331e0c7d471280",
-        "bytes": 32251
+        "sha256": "1166dff8d893ca8dcccb190bfef346ce11dea51bf8cee635755e3c2087c7ac5b",
+        "bytes": 32308
       },
       "document": {
         "pages": 1,
@@ -37306,7 +37306,7 @@
       },
       "perceptual": {
         "reviewed": true,
-        "reviewer": "codex/gpt-5.6",
+        "reviewer": "claude-code/claude-opus-5",
         "findings": 0,
         "blocking": 0,
         "clean": true,
@@ -37337,12 +37337,12 @@
         },
         "perceptual": {
           "reviewed": true,
-          "reviewer": "codex/gpt-5.6",
+          "reviewer": "claude-code/claude-opus-5",
           "findings": 0,
           "blocking": 0,
           "clean": true,
           "stale": false,
-          "currentRenderHash": "661aec1e48cd499f"
+          "currentRenderHash": "d7dfbf5189d5f595"
         },
         "exceptions": [],
         "weakAcceptances": []
@@ -37351,15 +37351,15 @@
         "svg": {
           "path": "diagrams/swimlane-order-handling.svg",
           "present": true,
-          "bytes": 25140,
-          "sha256": "661aec1e48cd499f2d995436368f1996868f8b408bd04f8b90245405330f1a24",
-          "renderHash": "661aec1e48cd499f"
+          "bytes": 25142,
+          "sha256": "d7dfbf5189d5f595f8c63e39d094d617edbe8970247a85d2dee63d583ae1af35",
+          "renderHash": "d7dfbf5189d5f595"
         },
         "png": {
           "path": "diagrams/swimlane-order-handling.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 11107,
+          "sha256": "758d5a6948ab74920e8fc602df50ac5f5ce1507e599397b99c81e30c21ddeff7"
         },
         "pdf": {
           "path": "diagrams/swimlane-order-handling.pdf",
@@ -37753,15 +37753,15 @@
         "svg": {
           "path": "diagrams/turtlefont-specimen.svg",
           "present": true,
-          "bytes": 2166835,
-          "sha256": "7e9f2df18564e6535fb1e5c903b73e8244fe77680e6fc4438fd7687e607141a2",
-          "renderHash": "7e9f2df18564e653"
+          "bytes": 2171898,
+          "sha256": "1eafea17d535a0cd7021e83464798850e15f8de3e19561d6a1a02f79452f0551",
+          "renderHash": "1eafea17d535a0cd"
         },
         "png": {
           "path": "diagrams/turtlefont-specimen.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 668749,
+          "sha256": "6a8e07ca0773b5e0466c4a2a5579cf7f6f696712d014f3d2985e86d58b1c481a"
         },
         "pdf": {
           "path": "diagrams/turtlefont-specimen.pdf",
@@ -38027,9 +38027,9 @@
         },
         "png": {
           "path": "diagrams/xbox-controller-input-state-map.png",
-          "present": false,
-          "bytes": 0,
-          "sha256": null
+          "present": true,
+          "bytes": 176466,
+          "sha256": "1ee0e3591d7e3ec5980b55387cf12d675123cb19454c302969daf168b9718d62"
         },
         "pdf": {
           "path": "diagrams/xbox-controller-input-state-map.pdf",

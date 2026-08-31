@@ -1442,16 +1442,16 @@
   },
   "acceptances": [],
   "perceptual": {
-    "renderHash": "661aec1e48cd499f",
+    "renderHash": "d7dfbf5189d5f595",
     "renderProfile": {
       "showGrid": true,
       "markFindings": false,
       "bounds": "content",
-      "margin": 24
+      "margin": 20
     },
-    "reviewer": "codex/gpt-5.6",
-    "reviewedAt": "2026-08-31T05:15:28.566Z",
-    "note": "Inspected the exact exported SVG raster on 2026-08-31. The three lanes, cross-lane handoffs, decision branches, labels, and terminal nodes are legible, aligned, and free of stray artifacts.",
+    "reviewer": "claude-code/claude-opus-5",
+    "reviewedAt": "2026-08-31T06:44:16.059Z",
+    "note": "Re-export after the background-fill change. Looked at the PNG: three lanes read top to bottom, the IN STOCK? decision branches YES down into WAREHOUSE and NO across to BACK-ORDER IT, and every cross-lane connector lands on its target.",
     "findings": []
   }
 }

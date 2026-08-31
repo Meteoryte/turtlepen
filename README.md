@@ -1,6 +1,6 @@
 # TurtlePen
 
-![TurtlePen — turtle drawing at an easel](brand/logo.svg)
+![TurtlePen — turtle drawing at an easel](brand/logo.png)
 
 An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
@@ -38,6 +38,10 @@ A hosted MCP server runs the same engine at:
 ```
 https://brainn.dev/api/mcp/turtlepen
 ```
+
+![Hosted MCP architecture](docs/gallery/hosted-mcp-architecture.png)
+
+*(That diagram was itself drawn by the server it documents.)*
 
 Streamable HTTP, protocol `2025-06-18`, running the canonical engine and reporting its real
 version in `serverInfo` — not a placeholder. It is stateful: `initialize` returns an
@@ -89,6 +93,12 @@ for a whiteboard. It is a substrate that makes machine-authored drawings checkab
 Every drawing below was authored by a model through the MCP tools. No hand-editing, no
 vector editor, no human nudging a control point.
 
+**Each one is a single prompt, drawn once, with no adjustment afterwards.** Nothing here is
+a best-of from repeated attempts, and nothing was touched up once it came out. That is the
+claim the whole substrate exists to support: if measurement precedes placement and every
+defect is reported with a numeric fix, a model can get a drawing right on the first pass
+instead of being iterated toward it by a human with an eye.
+
 ### A complete technical reference, drawn in one pass
 
 The Xbox controller input domain. Inputs are coloured by kind against a legend — digital,
@@ -100,7 +110,7 @@ from dead zone to 255, stick geometry with the real XInput radial deadzone const
 motion-gesture vocabulary as lattice paths carrying both names and numpad notation, and the
 complete input domain table — ending with the combinatorics actually multiplied out.
 
-[![Xbox controller input state map](diagrams/xbox-controller-input-state-map.svg)](diagrams/xbox-controller-input-state-map.svg)
+[![Xbox controller input state map](diagrams/xbox-controller-input-state-map.png)](diagrams/xbox-controller-input-state-map.png)
 
 Source: [`xbox-controller-input-state-map.turtlepen.json`](diagrams/xbox-controller-input-state-map.turtlepen.json).
 It validates with zero findings, and the committed SVG hashes identically to a fresh render
@@ -112,14 +122,14 @@ An HVAC condenser replacement field workflow: numbered stages, colour-coded hold
 that gate progress, photo capture references, and a safety banner. This is the case the
 project exists for — a document someone has to follow correctly on a roof.
 
-[![Condenser replacement field guide](diagrams/condenser-replacement-field-guide.svg)](diagrams/condenser-replacement-field-guide.svg)
+[![Condenser replacement field guide](diagrams/condenser-replacement-field-guide.png)](diagrams/condenser-replacement-field-guide.png)
 
 ### Data visualisation
 
 BTC/USD hourly candles with wicks, a moving average, and a volume histogram — every
 element on the same integer lattice as everything else.
 
-![BTC/USD candlestick chart](diagrams/gemini31-technical-analysis.svg)
+![BTC/USD candlestick chart](diagrams/gemini31-technical-analysis.png)
 
 ### Illustration — the postcard series
 
@@ -127,17 +137,17 @@ Five full-bleed scenes in one frame size, built from filled regions on the integ
 There is no raster layer in any of them: the graded skies, the layered ridgelines, the
 flame, the moon's shadowed disc and the submarine's portholes are all lattice geometry.
 
-![Alpine campfire](diagrams/postcard-alpine-campfire.svg)
+![Alpine campfire](diagrams/postcard-alpine-campfire.png)
 
 | | |
 |---|---|
-| ![Deep sea explorer](diagrams/postcard-deep-sea-explorer.svg) | ![Night observatory](diagrams/postcard-night-observatory.svg) |
-| ![Botanical terrarium](diagrams/postcard-botanical-terrarium.svg) | ![Rocket liftoff](diagrams/postcard-rocket-liftoff.svg) |
+| ![Deep sea explorer](diagrams/postcard-deep-sea-explorer.png) | ![Night observatory](diagrams/postcard-night-observatory.png) |
+| ![Botanical terrarium](diagrams/postcard-botanical-terrarium.png) | ![Rocket liftoff](diagrams/postcard-rocket-liftoff.png) |
 
 And a weathered picket fence, for texture rather than colour: grain, nail heads, two rails,
 and a vine crossing *in front* of them on a separate Z-page.
 
-![Weathered picket fence](diagrams/gemini31-scene-fence.svg)
+![Weathered picket fence](diagrams/gemini31-scene-fence.png)
 
 ### Flowcharts with real symbols
 
@@ -146,22 +156,22 @@ each shape carves its own label aperture out of its bounding box. Lanes are cont
 they reserve only a title band and a border ring, so members sit inside without colliding
 with them, and a connector can cross from one lane to another.
 
-![Swimlane across two lanes](diagrams/showcase-flowchart.svg)
+![Swimlane across two lanes](diagrams/showcase-flowchart.png)
 
 Synchronisation bars fan several sources into one stage and back out again, with solid and
 dotted edges carrying different meanings.
 
-![Data pipeline with synchronisation bars](diagrams/showcase-pipeline.svg)
+![Data pipeline with synchronisation bars](diagrams/showcase-pipeline.png)
 
 ### The two atlases — what the lattice can draw
 
 Every node shape, corner style, connector pattern, cap and arrowhead:
 
-![Node atlas](diagrams/atlas-nodes.svg)
+![Node atlas](diagrams/atlas-nodes.png)
 
 Every mark primitive, with tone, feather, texture and arc angles:
 
-![Mark atlas](diagrams/atlas-marks.svg)
+![Mark atlas](diagrams/atlas-marks.png)
 
 ### TurtleFont — a stroke typeface on the same lattice
 
@@ -173,7 +183,7 @@ Text stops being a foreign object on the grid. `measureStrokeText` **is**
 `renderStrokeText` with the quadrants discarded — one implementation, so measurement and
 rendering cannot drift apart.
 
-[![TurtleFont specimen](diagrams/turtlefont-specimen.svg)](diagrams/turtlefont-specimen.svg)
+[![TurtleFont specimen](diagrams/turtlefont-specimen.png)](diagrams/turtlefont-specimen.png)
 
 ### Tracing a source image, measured rather than asserted
 
@@ -182,7 +192,7 @@ box-averaged working canvas resampled back down — with ink coverage, edge cove
 partial-cell counts reported per case. The claim that supersampling helps is a number here,
 not an adjective.
 
-![Supersampling trials](diagrams/supersample-random-five.svg)
+![Supersampling trials](diagrams/supersample-random-five.png)
 
 ### Five farm animals, with the working record
 
@@ -190,7 +200,7 @@ Five closed outlines drawn as pen programs. Kept because the record behind the p
 the more interesting artifact: every measurement, finding and adjudication that produced
 them is published in [the 14-page PDF](docs/turtlepen-five-farm-animals.pdf).
 
-![Five Farm Animals](diagrams/farm-animals.svg)
+![Five Farm Animals](diagrams/farm-animals.png)
 
 More — the swimlane flowchart, the perceptual-review study, the wireframe, the depth
 scene, and the logo drawing itself — is further down this file.
@@ -718,7 +728,7 @@ The maintained [endpoint and use-case coverage matrix](docs/endpoint-use-case-co
 maps every transport, tool, viewer route, and known workflow to executable evidence.
 
 The project also ships a practical work product authored through the real MCP
-transport: [Condenser replacement field workflow](diagrams/condenser-replacement-field-guide.svg)
+transport: [Condenser replacement field workflow](diagrams/condenser-replacement-field-guide.png)
 ([editable JSON](diagrams/condenser-replacement-field-guide.turtlepen.json)). Its
 P01-P20 references map to a reviewable
 [LLM photo-shot list](docs/condenser-replacement-photo-shot-list.md) rather than
@@ -737,7 +747,7 @@ hashes, metrics, and usage boundaries are recorded in
 [the image workflow test](docs/image-workflow-test.md); the operational contract
 is [the image scaling procedure](docs/image-scaling-procedure.md).
 
-The [five-case random contact sheet](diagrams/supersample-random-five.svg)
+The [five-case random contact sheet](diagrams/supersample-random-five.png)
 repeats the supersampling path across seeded RGB/RGBA, portrait/landscape,
 contain/cover, and low/medium/high-detail sources. All five cases preserve the
 same final `48x32`-quadrant geometry, preserve partial coverage through
@@ -838,8 +848,8 @@ engine's own findings.
 
 The spread within a single run is the interesting part. Two results from the Gemini 3.1 set
 are good enough to sit in the gallery above: the [candlestick
-chart](diagrams/gemini31-technical-analysis.svg) and the [weathered picket
-fence](diagrams/gemini31-scene-fence.svg). From the same run and the same tool surface, the
+chart](diagrams/gemini31-technical-analysis.png) and the [weathered picket
+fence](diagrams/gemini31-scene-fence.png). From the same run and the same tool surface, the
 [CI/CD pipeline](diagrams/gemini31-workflow.svg) renders three coloured discs with their
 labels floating loose below the lane. Both outcomes are kept: a substrate that only ever
 shows its best output tells you nothing about what a model will actually do with it.
@@ -860,9 +870,9 @@ shows its best output tells you nothing about what a model will actually do with
 
 - [Server structure — load balanced](diagrams/gemini31-server-structure.svg) ([JSON](diagrams/gemini31-server-structure.turtlepen.json))
 - [Teaching — learning feedback loop](diagrams/gemini31-teaching-loop.svg) ([JSON](diagrams/gemini31-teaching-loop.turtlepen.json))
-- [Technical analysis — algorithmic trading engine](diagrams/gemini31-technical-analysis.svg) ([JSON](diagrams/gemini31-technical-analysis.turtlepen.json))
+- [Technical analysis — algorithmic trading engine](diagrams/gemini31-technical-analysis.png) ([JSON](diagrams/gemini31-technical-analysis.turtlepen.json))
 - [Workflow — DevOps CI/CD pipeline](diagrams/gemini31-workflow.svg) ([JSON](diagrams/gemini31-workflow.turtlepen.json))
-- Scenes: [apple](diagrams/gemini31-scene-apple.svg) · [tree](diagrams/gemini31-scene-tree.svg) · [fence](diagrams/gemini31-scene-fence.svg) · [living room](diagrams/gemini31-scene-living-room-family.svg)
+- Scenes: [apple](diagrams/gemini31-scene-apple.svg) · [tree](diagrams/gemini31-scene-tree.svg) · [fence](diagrams/gemini31-scene-fence.png) · [living room](diagrams/gemini31-scene-living-room-family.svg)
 
 </details>
 
@@ -872,7 +882,7 @@ The following were authored using TurtlePen MCP tools by **Claude Opus 5**:
 
 ### Flowcharts — real symbols, not rectangles with labels
 
-The shown example is the [two-lane swimlane](diagrams/showcase-flowchart.svg) at the top of
+The shown example is the [two-lane swimlane](diagrams/showcase-flowchart.png) at the top of
 this file. `build-flowchart.js` also produces
 [`flowchart-important-process`](diagrams/flowchart-important-process.turtlepen.json), which
 exercises the same symbols at length but is not a good advertisement for them.
@@ -896,7 +906,7 @@ place_box { id: "spelling", at: "AT53", span: "30x9",
 Shapes: `process` `decision` `terminator` `subprocess` `io` `prep` `manual`
 `data` `document` `bar` — plus two containers, `lane` and `group`.
 
-![Swimlane flowchart](diagrams/swimlane-order-handling.svg)
+![Swimlane flowchart](diagrams/swimlane-order-handling.png)
 
 **Containers are the one exception to claiming.** A lane reserves only its title
 band and border ring and leaves its hole free, so members placed inside collide
@@ -931,7 +941,7 @@ built are in [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md).
 
 *(Shown at the top of this file.)*
 
-- **Composition**: [Five Farm Animals](diagrams/farm-animals.svg) ([JSON](diagrams/farm-animals.turtlepen.json))
+- **Composition**: [Five Farm Animals](diagrams/farm-animals.png) ([JSON](diagrams/farm-animals.turtlepen.json))
 - **Working record (PDF)**: [**TurtlePen — Five Farm Animals**](docs/turtlepen-five-farm-animals.pdf) · 14 pages
 
 | | | |
@@ -955,9 +965,9 @@ IS NOT A BUDGET` now open `turtlepen_help` instead of sitting 200 lines down.
 
 ### Logo v2 — the mark drawing itself
 
-![TurtlePen logo v2 — the turtle drawing the old logo](brand/logo-v2.svg)
+![TurtlePen logo v2 — the turtle drawing the old logo](brand/logo-v2.png)
 
-[SVG](brand/logo-v2.svg) · ([JSON](brand/logo-v2.turtlepen.json))
+[SVG](brand/logo-v2.png) · ([JSON](brand/logo-v2.turtlepen.json))
 
 The squiggle on the easel is replaced by the **previous logo**, placed with
 `place_image mode:"simplify"` from a raster of `brand/logo-mark.svg` and resolved
