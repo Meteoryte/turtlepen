@@ -319,3 +319,57 @@ test('a drawn cap lands on the lattice and matches the aperture it reserves', ()
       `aperture reserves ${aperture.y - r.y}q but the cap draws ${capQuads(h)}q at h=${h}`);
   }
 });
+
+// --- semantic roles and the focal budget ------------------------------------
+
+test('a role resolves to presentation and never to geometry', async () => {
+  const { treatmentFor, assertNodeRole, contrastRatio, AA_NORMAL } = await import('../src/core/roles.js');
+  const { PALETTE } = await import('../src/core/svg.js');
+
+  // A role is presentation only. Two boxes differing only by role must claim
+  // exactly the same quadrants, or a colour decision has moved the drawing.
+  const plain = createDocument({ name: 'r1' });
+  placeBox(plain, 'base', { id: 'a', at: 'C3', span: '10x4', label: 'x' });
+  const focal = createDocument({ name: 'r2' });
+  placeBox(focal, 'base', { id: 'a', at: 'C3', span: '10x4', label: 'x', role: 'focal' });
+  assert.deepEqual(plain.elements.base[0].rect, focal.elements.base[0].rect);
+
+  assert.throws(() => assertNodeRole('emphasis'), /unknown node role/);
+  for (const role of ['focal', 'store', 'external', 'optional', 'security']) {
+    const t = treatmentFor(role, PALETTE);
+    assert.ok(t.fill && t.stroke, `${role} resolves a fill and a stroke`);
+  }
+
+  // The default skin must be readable, not merely tasteful.
+  assert.ok(contrastRatio(PALETTE.ink, PALETTE.paper) >= AA_NORMAL,
+    `ink on paper is ${contrastRatio(PALETTE.ink, PALETTE.paper)}, below AA ${AA_NORMAL}`);
+});
+
+test('C002 counts the focal budget, and only because a role was declared', async () => {
+  const { FOCAL_BUDGET } = await import('../src/core/roles.js');
+
+  const within = createDocument({ name: 'within' });
+  for (let i = 0; i < FOCAL_BUDGET; i += 1) {
+    placeBox(within, 'base', { id: `f${i}`, at: `C${3 + i * 6}`, span: '8x4', label: 'f', role: 'focal' });
+  }
+  assert.equal(validate(within).open.filter((f) => f.rule === 'C002').length, 0,
+    'the budget itself must not fire');
+
+  const over = createDocument({ name: 'over' });
+  for (let i = 0; i < FOCAL_BUDGET + 1; i += 1) {
+    placeBox(over, 'base', { id: `f${i}`, at: `C${3 + i * 6}`, span: '8x4', label: 'f', role: 'focal' });
+  }
+  const hit = validate(over).open.find((f) => f.rule === 'C002');
+  assert.ok(hit, 'one past the budget fires');
+  assert.equal(hit.severity, 'S3', 'a taste heuristic must never outrank a real defect');
+  assert.equal(hit.actors.length, FOCAL_BUDGET + 1, 'every claimant is named, not just the last');
+
+  // The same drawing with hand-set fills asserts nothing about importance, so
+  // nothing can be counted. This is the argument for roles over colours.
+  const hex = createDocument({ name: 'hex' });
+  for (let i = 0; i < FOCAL_BUDGET + 1; i += 1) {
+    placeBox(hex, 'base', { id: `f${i}`, at: `C${3 + i * 6}`, span: '8x4', label: 'f', fill: '#b47868' });
+  }
+  assert.equal(validate(hex).open.filter((f) => f.rule === 'C002').length, 0,
+    'a hex fill makes no claim, so there is nothing to overspend');
+});

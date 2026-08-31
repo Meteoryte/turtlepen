@@ -15,6 +15,7 @@
 import { rect, rectsOverlap, boundsOf, PX_PER_QUAD } from './geometry.js';
 import { claimedQuads, visualQuads, containerClaimQuads, isContainer, assertCornerStyle, assertNodeShape, parsePortSpec, portPoint } from './shapes.js';
 import { DEFAULT_FONT, resolveFontSize } from './text.js';
+import { assertNodeRole } from './roles.js';
 import { normalizeTone, normalizeFeather, normalizeTexture } from './tone.js';
 import { normalizePattern } from './pattern.js';
 import { assertEmbeddedSource, assertMode as assertImageMode, scaleReport } from './image.js';
@@ -326,7 +327,7 @@ export function assertFreeId(doc, id) {
   if (findConstraint(doc, id)) throw new Error(`id "${id}" already belongs to constraint "${id}" — "${suggestFreeId(doc, id)}" is free`);
 }
 
-export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, corner = 'square', shape = 'process', align = 'left', fill = null, note = null, opacity = null, state = null }) {
+export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, corner = 'square', shape = 'process', align = 'left', fill = null, note = null, opacity = null, state = null, role = 'plain' }) {
   getPage(doc, pageId);
   assertElementId(id);
   assertFreeId(doc, id);
@@ -345,6 +346,9 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
     note,
     opacity: assertOpacity(opacity, 'element opacity'),
     state,
+    // Semantic role. Presentation resolves from it; the collision engine never
+    // reads it, so a role can change how a node LOOKS but never where it IS.
+    role: assertNodeRole(role),
   };
   doc.elements[pageId].push(el);
   return el;

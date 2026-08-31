@@ -15,6 +15,7 @@
 import { PX_PER_QUAD, toPx, right, bottom } from './geometry.js';
 import { elementsOf, contentBounds, microMasksOf } from './document.js';
 import { shapeTextRect, isContainer, containerBand, capQuads, skewQuads } from './shapes.js';
+import { treatmentFor } from './roles.js';
 import { layoutTextRuns } from './text.js';
 import { generatedKey, resolveView, styleForElement } from './workspace.js';
 
@@ -44,6 +45,10 @@ export const PALETTE = Object.freeze({
   gridMajor: '#cbc7bd',
   ink: '#2b2a26',
   inkSoft: '#6b6862',
+  // One accent, deliberately. A second competing hue does not add emphasis, it
+  // removes it from the first — which is why L026 can count focal marks at all.
+  accent: '#b47868',
+  link: '#556c8c',
   critical: '#8a5b56',
   error: '#96755c',
   warn: '#87805a',
@@ -53,6 +58,8 @@ export const PALETTE = Object.freeze({
 export const PALETTE_DARK = Object.freeze({
   paper: '#1a1917',
   paperAlt: '#232220',
+  accent: '#d19a86',
+  link: '#7f9ac0',
   grid: '#2e2c28',
   gridMajor: '#3d3a35',
   ink: '#dedbd3',
@@ -180,10 +187,16 @@ function renderGeneratedKey(key, x, y) {
  * feature is broken.
  */
 function fillAttr(el, themed = {}) {
-  const value = el.fill ?? themed.fill ?? null;
+  // Precedence: an explicit fill, then a theme rule, then the semantic role.
+  // The role is LAST so it never overrides a decision the author made by hand —
+  // it supplies the default that means an author no longer has to.
+  const role = el.role && el.role !== 'plain' ? treatmentFor(el.role, PALETTE) : null;
+  const value = el.fill ?? themed.fill ?? role?.fill ?? null;
   const declarations = [];
   if (value) declarations.push(`fill:${escapeAttr(typeof value === 'string' ? value : `url(#tp-grad-${el.id})`)}`);
-  if (themed.stroke) declarations.push(`stroke:${escapeAttr(themed.stroke)}`);
+  const stroke = themed.stroke ?? role?.stroke ?? null;
+  if (stroke) declarations.push(`stroke:${escapeAttr(stroke)}`);
+  if (role?.dash && !themed.stroke) declarations.push(`stroke-dasharray:${escapeAttr(role.dash)}`);
   return declarations.length ? ` style="${declarations.join(';')}"` : '';
 }
 

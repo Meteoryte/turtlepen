@@ -23,7 +23,7 @@ import { shapeCutQuads, fitReportForShape, isContainer, SHAPE_PROPORTION, aspect
 import { layoutTextRuns, MIN_LEGIBLE_FONT_PX } from './text.js';
 // Cycle with composition.js is deliberate and safe: every use on both sides is inside a
 // function body, so neither module reads the other's bindings during initialisation.
-import { compositionFindings } from './composition.js';
+import { compositionFindings, focalFindings } from './composition.js';
 import { flowchartFindings, FLOWCHART_RULES } from './flowchart.js';
 import { analyseRuns, MAX_READABLE_TRANSITION_RATIO } from './dither.js';
 
@@ -60,6 +60,7 @@ export const RULES = Object.freeze({
   L026: { severity: 'S3', title: 'container boundary crossing', blurb: 'a path crosses a lane/group boundary as part of entering or leaving that container' },
   // Composition rules. S3 by design: a taste heuristic must never outrank a real defect.
   C001: { severity: 'S3', title: 'sparse canvas', blurb: 'the page has so little ink that nothing was really composed' },
+  C002: { severity: 'S3', title: 'focal budget spent', blurb: 'so many nodes claim focus that none of them reads as focal' },
   ...FLOWCHART_RULES,
 });
 
@@ -182,6 +183,7 @@ export function validate(doc, { page = null } = {}) {
   found.push(...documentWide(doc, pages));
   // Document-wide, not per page: a sparse annotation overlay is part of a good diagram.
   found.push(...compositionFindings(doc, pages));
+  found.push(...focalFindings(doc, pages));
   found.push(...flowchartFindings(doc, pages));
 
   found.sort(

@@ -13,6 +13,7 @@ import * as geometry from './geometry.js';
 import * as address from './address.js';
 import * as text from './text.js';
 import * as shapes from './shapes.js';
+import { assertNodeRole } from './roles.js';
 import * as occupancy from './occupancy.js';
 import * as image from './image.js';
 import * as png from './png.js';
@@ -633,14 +634,15 @@ export function normalizeSpan(span, what = 'span') {
 }
 
 /** Place a single box by address and cell span — the non-pen path to a node. */
-export function placeBox(doc, pageId, { id, at, span, label = '', corner = 'square', shape = 'process', align = 'left', fontSize = null, fill = null, opacity = null, state = null }) {
+export function placeBox(doc, pageId, { id, at, span, label = '', corner = 'square', shape = 'process', align = 'left', fontSize = null, fill = null, opacity = null, state = null, role = 'plain' }) {
   const cells = normalizeSpan(span, `span for "${id}"`);
   const a = address.parseAddress(at);
   const p = address.pinPoint(a);
   const w = cells.w * 2, h = cells.h * 2;
   const [px, py] = a.kind === 'pin' ? address.PINS[a.part] : [0, 0];
   const r = address.assertOnGrid(geometry.rect(p.x - (px * w) / 2, p.y - (py * h) / 2, w, h), `box "${id}" pinned at ${at}`);
-  return addBox(doc, pageId, { id, rect: r, label, corner, shape, align, fontSize, fill, opacity, state });
+  assertNodeRole(role);
+  return addBox(doc, pageId, { id, rect: r, label, corner, shape, align, fontSize, fill, opacity, state, role });
 }
 
 /**

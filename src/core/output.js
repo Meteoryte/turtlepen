@@ -7,6 +7,7 @@ import { contentBounds, elementsOf, microMasksOf } from './document.js';
 import { decode as decodePng } from './png.js';
 import { PALETTE } from './svg.js';
 import { capQuads, containerBand, isContainer, shapeTextRect, visualQuads } from './shapes.js';
+import { treatmentFor } from './roles.js';
 import { layoutTextRuns } from './text.js';
 import { generatedKey, resolveView, styleForElement } from './workspace.js';
 
@@ -393,7 +394,17 @@ function paintElement(doc, element, layer, width, height, ox, oy, perspective) {
   const x = element.rect.x * PX_PER_QUAD + ox, y = element.rect.y * PX_PER_QUAD + oy;
   const w = element.rect.w * PX_PER_QUAD, h = element.rect.h * PX_PER_QUAD;
   if (element.kind === 'box') {
-    drawCellShape(layer, width, height, element, ox, oy, element.fill ?? themed.fill ?? PALETTE.paperAlt, ink);
+    // Same precedence as the SVG renderer: explicit fill, theme, then role.
+    // Resolved from the one `treatmentFor` both renderers call, because two
+    // renderers deriving the same look independently is how they drift.
+    const roleStyle = element.role && element.role !== 'plain'
+      ? treatmentFor(element.role, PALETTE)
+      : null;
+    drawCellShape(
+      layer, width, height, element, ox, oy,
+      element.fill ?? themed.fill ?? roleStyle?.fill ?? PALETTE.paperAlt,
+      themed.stroke ?? roleStyle?.stroke ?? ink,
+    );
     if (element.label) {
       paintTextLayout(layer, width, height, element.label, shapeTextRect(element.rect, element.shape ?? 'process'), {
         fontSize: element.fontSize,

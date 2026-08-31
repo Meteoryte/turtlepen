@@ -13,6 +13,7 @@ import { createHash } from 'node:crypto';
 import { QUADS_PER_CELL } from './geometry.js';
 import { elementsOf, elementVisual } from './document.js';
 import { buildFinding } from './collide.js';
+import { FOCAL_BUDGET } from './roles.js';
 
 /**
  * Calibrated 2026-08-09 against all seven diagrams in `diagrams/`. The thinnest real
@@ -95,4 +96,41 @@ export function compositionFindings(doc, pages) {
       extra: `ink:${inkDigest(pageInk(doc, page.id))}`,
     }),
   ];
+}
+
+/**
+ * C002 — the focal budget.
+ *
+ * A focal mark works by contrast with everything around it, so focus is a fixed
+ * quantity a page spends rather than a property each node can be given. The
+ * third `focal` node does not add emphasis; it takes it from the other two.
+ *
+ * This is counted per page and not per document, because focus is a property of
+ * what a reader sees at once. It is S3 for the same reason C001 is: a taste
+ * heuristic must never outrank a real defect, and an author who genuinely wants
+ * three focal nodes can accept the finding and move on.
+ *
+ * Countable only because a role is declared. A hex fill asserts nothing about
+ * importance, so nothing could be said about it — which is the argument for
+ * roles over colours in one sentence.
+ */
+export function focalFindings(doc, pages) {
+  const out = [];
+  for (const page of pages) {
+    const focal = elementsOf(doc, page.id)
+      .filter((el) => el.kind === 'box' && el.role === 'focal');
+    if (focal.length <= FOCAL_BUDGET) continue;
+
+    const ids = focal.map((el) => el.id).sort();
+    out.push(buildFinding('C002', page.id, {
+      message:
+        `${focal.length} nodes on page "${page.id}" claim role "focal" (budget ${FOCAL_BUDGET}) — `
+        + `${ids.join(', ')}. Focus is contrast, so past the budget none of them reads as focal. `
+        + 'Demote all but the one or two the reader must land on first.',
+      actors: ids,
+      metrics: { focal: focal.length, budget: FOCAL_BUDGET },
+      extra: `focal:${ids.join('|')}`,
+    }));
+  }
+  return out;
 }

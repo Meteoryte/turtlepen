@@ -667,6 +667,11 @@ rules:
     "title": "sparse canvas",
     "blurb": "the page has so little ink that nothing was really composed"
   },
+  "C002": {
+    "severity": "S3",
+    "title": "focal budget spent",
+    "blurb": "so many nodes claim focus that none of them reads as focal"
+  },
   "F001": {
     "severity": "S1",
     "title": "more than one start",

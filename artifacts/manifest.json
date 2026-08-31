@@ -28,13 +28,13 @@
     }
   },
   "summary": {
-    "artifacts": 72,
+    "artifacts": 73,
     "publishable": 10,
-    "structurallyClear": 51,
+    "structurallyClear": 52,
     "missingSvg": 1,
     "byRole": {
       "example": {
-        "artifacts": 38,
+        "artifacts": 39,
         "publishable": 2
       },
       "fixture": {
@@ -20810,6 +20810,140 @@
         "reviewedExportMatches": true,
         "hasPortableVector": true,
         "publishable": true
+      }
+    },
+    {
+      "id": "16x16 tileset",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/game-tileset-16.turtlepen.json",
+        "schema": 3,
+        "sha256": "3e64c28b1406778f48f660d5aa07d0507257b37156a749d3f99500a52306c014",
+        "bytes": 2047134
+      },
+      "document": {
+        "pages": 1,
+        "elements": 1040,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "acceptedBySeverity": {
+            "S0": 0,
+            "S1": 0,
+            "S2": 0,
+            "S3": 0
+          },
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS",
+          "acceptedDecisions": 0
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": false,
+        "findings": 0,
+        "blocking": 0,
+        "clean": false,
+        "stale": false
+      },
+      "release": {
+        "releasable": false,
+        "verdict": "FAIL",
+        "blockers": [
+          "no perceptual review is recorded for the release render"
+        ],
+        "structural": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "acceptedBySeverity": {
+            "S0": 0,
+            "S1": 0,
+            "S2": 0,
+            "S3": 0
+          },
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS",
+          "acceptedDecisions": 0
+        },
+        "perceptual": {
+          "reviewed": false,
+          "findings": 0,
+          "blocking": 0,
+          "clean": false,
+          "stale": false,
+          "currentRenderHash": "e98b31788899da53"
+        },
+        "exceptions": [],
+        "weakAcceptances": []
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/game-tileset-16.svg",
+          "present": true,
+          "bytes": 253856,
+          "sha256": "3baa95efa4316e29511f6c65c9b6a32245dbbfb28782ed4b2ba2a136527b2835",
+          "renderHash": "3baa95efa4316e29"
+        },
+        "png": {
+          "path": "diagrams/game-tileset-16.png",
+          "present": true,
+          "bytes": 8164,
+          "sha256": "f7ce07aa8c6c2bb52bfe67608d140cc84934312096e7e26b7787698b600839f8"
+        },
+        "pdf": {
+          "path": "diagrams/game-tileset-16.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": false,
+        "perceptualCurrent": false,
+        "perceptualHasNoBlockers": false,
+        "releaseGatePassed": false,
+        "reviewedExportMatches": false,
+        "hasPortableVector": true,
+        "publishable": false
       }
     },
     {
