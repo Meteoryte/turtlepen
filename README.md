@@ -6,12 +6,14 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 659 tests green, zero runtime dependencies, 73 MCP tools.
+Status: **prototype** — 659 tests green, zero runtime dependencies, 73 MCP tools,
+also live as a hosted MCP server at **`https://brainn.dev/api/mcp/turtlepen`**.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
 | If you want to… | Read |
 |---|---|
+| try it with no install | the hosted server at `https://brainn.dev/api/mcp/turtlepen` — see [below](#try-it-without-installing-anything) |
 | get from clone to a validated drawing | [`docs/QUICKSTART.md`](docs/QUICKSTART.md) |
 | understand the lattice, pen grammar and rules | this file, below |
 | change anything in `src/core/` | [`llm.md`](llm.md) — the invariants, first |
@@ -28,6 +30,83 @@ The one thing worth knowing before anything else: **a clean validation means the
 drawing is undefective, never that it is finished, and never that it depicts what
 you asked for.** Render it and look at it. Everything below exists to make that
 loop cheap and honest.
+
+## Try it without installing anything
+
+A hosted MCP server runs the same engine at:
+
+```
+https://brainn.dev/api/mcp/turtlepen
+```
+
+Streamable HTTP, protocol `2025-06-18`, **all 73 tools**, `serverInfo` reporting the real
+engine version. It is stateful: `initialize` returns an `Mcp-Session-Id`, and every later
+call must send that header back — your document lives in that session.
+
+```bash
+# initialize, keep the Mcp-Session-Id from the response headers
+curl -sD - https://brainn.dev/api/mcp/turtlepen \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{
+       "protocolVersion":"2025-06-18","capabilities":{},
+       "clientInfo":{"name":"you","version":"1.0"}}}'
+```
+
+Two things trip up a hand-rolled client: the `Accept` header must list **both**
+`application/json` and `text/event-stream` — replies come back as `event: message` /
+`data:` frames on the POST itself — and requests after `initialize` fail without the
+session header.
+
+Prefer local? `pnpm mcp` runs the identical tool surface over stdio, with no network.
+
+## What it is for
+
+TurtlePen is for the case where **a model is the author and no human is watching each
+draw**. That is a different problem from a human using a canvas, and it is why the engine
+reports instead of adjusting.
+
+| Use it when | Because |
+|---|---|
+| An agent generates diagrams in a pipeline | Overflow becomes a numeric finding with a fix, not a visual accident nobody sees |
+| Output must be reviewable and diffable | The document is JSON on an integer lattice; two runs differ only where the drawing differs |
+| A diagram must be *verified*, not eyeballed | `validate` returns severity-ranked collisions; `render` emits `textLength` so drawn text cannot disagree with measured text |
+| Rendering must be deterministic and offline | Zero runtime dependencies, no browser, no fonts to install, SVG/PNG/PDF from the same measurement |
+| You need flowcharts with real symbols | Decision, terminator, io, document, lane and group are shapes with apertures, not rectangles with labels |
+| You are drawing technical or spatial content | Z-pages give depth, `place_image` traces a source, and TurtleFont keeps text on the same lattice as the ink |
+
+It is **not** a design tool for humans, not a general illustrator, and not a replacement
+for a whiteboard. It is a substrate that makes machine-authored drawings checkable.
+
+## What it makes
+
+Everything below was drawn by a model through the MCP tools — no hand-editing.
+
+**Flowcharts with real symbols and adjudicated geometry**
+
+![Important Process flowchart](diagrams/flowchart-important-process.svg)
+
+**The mark atlas — primitives, tone, feather, texture and arc angles on one lattice**
+
+![Mark atlas](diagrams/atlas-marks.svg)
+
+**Five farm animals, each with a full authoring record** — five closed outlines drawn as
+pen programs, kept here because the working record is more interesting than the picture:
+every measurement, every finding, and every adjudication that produced them is published
+alongside in [the PDF](docs/turtlepen-five-farm-animals.pdf).
+
+![Five Farm Animals](diagrams/farm-animals.svg)
+
+**Wireframes** — the same lattice, used for layout rather than illustration
+
+![Art deco hero wireframe](diagrams/art-deco-hero.svg)
+
+**Depth** — Z-pages let things pass behind other things instead of flattening
+
+![CRT desk scene](diagrams/crt-desk-scene.svg)
+
+More, including the swimlane flowchart, the perceptual-review study, and the logo drawing
+itself, is further down this file.
 
 ## The problem it solves
 
@@ -666,41 +745,34 @@ release-qualified artifacts. Their authoritative role and quality disposition
 live in [`artifacts/artifact-catalog.json`](artifacts/artifact-catalog.json);
 [`artifacts/manifest.json`](artifacts/manifest.json) is generated evidence.
 
-The following sample diagrams and visual scenes were authored using TurtlePen MCP tools by **Gemini 3.6 Flash (High)**:
+Two model runs drew the same eight briefs — four architecture diagrams and four
+illustrative scenes — so the outputs can be compared against each other and against the
+engine's own findings. They are **evidence, not a showcase**: the Gemini 3.1 CI/CD
+pipeline, for instance, renders three coloured discs with their labels floating loose
+below the lane, which is exactly the kind of result worth keeping visible rather than
+quietly deleting.
 
-### Domain & System Architecture
-- **Server Structure**: [High-Availability Microservices Architecture](diagrams/server-structure-ha-microservices.svg) ([JSON](diagrams/server-structure-ha-microservices.turtlepen.json))
-- **Teaching & Education**: [Adaptive Mastery Learning & Assessment Cycle](diagrams/teaching-mastery-learning-cycle.svg) ([JSON](diagrams/teaching-mastery-learning-cycle.turtlepen.json))
-- **Technical Analysis**: [Quantitative Trading Signal & Risk Engine](diagrams/technical-analysis-quant-engine.svg) ([JSON](diagrams/technical-analysis-quant-engine.turtlepen.json))
-- **Workflow**: [Automated CI/CD Deployment Pipeline](diagrams/workflow-cicd-deployment-pipeline.svg) ([JSON](diagrams/workflow-cicd-deployment-pipeline.turtlepen.json))
+<details>
+<summary><strong>Gemini 3.6 Flash (High)</strong> — 8 studies (<code>build-all-diagrams.js</code>)</summary>
 
-### Illustrative Scenes
-- **Apple**: [Crisp Red Apple Illustration](diagrams/scene-apple.svg) ([JSON](diagrams/scene-apple.turtlepen.json))
-- **Tree**: [Lush Apple Tree Scene](diagrams/scene-tree.svg) ([JSON](diagrams/scene-tree.turtlepen.json))
-- **Fence**: [Wooden Picket Fence Scene](diagrams/scene-fence.svg) ([JSON](diagrams/scene-fence.turtlepen.json))
-- **Living Room**: [Cozy Living Room & Stick Figure Family](diagrams/scene-living-room-family.svg) ([JSON](diagrams/scene-living-room-family.turtlepen.json))
+- [Server structure — HA microservices](diagrams/server-structure-ha-microservices.svg) ([JSON](diagrams/server-structure-ha-microservices.turtlepen.json))
+- [Teaching — adaptive mastery cycle](diagrams/teaching-mastery-learning-cycle.svg) ([JSON](diagrams/teaching-mastery-learning-cycle.turtlepen.json))
+- [Technical analysis — quant signal & risk engine](diagrams/technical-analysis-quant-engine.svg) ([JSON](diagrams/technical-analysis-quant-engine.turtlepen.json))
+- [Workflow — CI/CD deployment pipeline](diagrams/workflow-cicd-deployment-pipeline.svg) ([JSON](diagrams/workflow-cicd-deployment-pipeline.turtlepen.json))
+- Scenes: [apple](diagrams/scene-apple.svg) · [tree](diagrams/scene-tree.svg) · [fence](diagrams/scene-fence.svg) · [living room](diagrams/scene-living-room-family.svg)
 
-Authoring script: `build-all-diagrams.js`
-Model used: **Gemini 3.6 Flash (High)**
+</details>
 
----
+<details>
+<summary><strong>Gemini 3.1 Pro (High)</strong> — 8 studies (<code>build-gemini-3-1-diagrams.js</code>)</summary>
 
-The following sample diagrams and visual scenes were authored using TurtlePen MCP tools by **Gemini 3.1 Pro (High)**:
+- [Server structure — load balanced](diagrams/gemini31-server-structure.svg) ([JSON](diagrams/gemini31-server-structure.turtlepen.json))
+- [Teaching — learning feedback loop](diagrams/gemini31-teaching-loop.svg) ([JSON](diagrams/gemini31-teaching-loop.turtlepen.json))
+- [Technical analysis — algorithmic trading engine](diagrams/gemini31-technical-analysis.svg) ([JSON](diagrams/gemini31-technical-analysis.turtlepen.json))
+- [Workflow — DevOps CI/CD pipeline](diagrams/gemini31-workflow.svg) ([JSON](diagrams/gemini31-workflow.turtlepen.json))
+- Scenes: [apple](diagrams/gemini31-scene-apple.svg) · [tree](diagrams/gemini31-scene-tree.svg) · [fence](diagrams/gemini31-scene-fence.svg) · [living room](diagrams/gemini31-scene-living-room-family.svg)
 
-### Domain & System Architecture
-- **Server Structure**: [Load Balanced Architecture](diagrams/gemini31-server-structure.svg) ([JSON](diagrams/gemini31-server-structure.turtlepen.json))
-- **Teaching & Education**: [Learning Feedback Loop](diagrams/gemini31-teaching-loop.svg) ([JSON](diagrams/gemini31-teaching-loop.turtlepen.json))
-- **Technical Analysis**: [Algorithmic Trading Engine](diagrams/gemini31-technical-analysis.svg) ([JSON](diagrams/gemini31-technical-analysis.turtlepen.json))
-- **Workflow**: [DevOps CI/CD Pipeline](diagrams/gemini31-workflow.svg) ([JSON](diagrams/gemini31-workflow.turtlepen.json))
-
-### Illustrative Scenes
-- **Apple**: [Juicy Apple Illustration](diagrams/gemini31-scene-apple.svg) ([JSON](diagrams/gemini31-scene-apple.turtlepen.json))
-- **Tree**: [Green Tree Scene](diagrams/gemini31-scene-tree.svg) ([JSON](diagrams/gemini31-scene-tree.turtlepen.json))
-- **Fence**: [White Picket Fence Scene](diagrams/gemini31-scene-fence.svg) ([JSON](diagrams/gemini31-scene-fence.turtlepen.json))
-- **Living Room**: [Living Room Family](diagrams/gemini31-scene-living-room-family.svg) ([JSON](diagrams/gemini31-scene-living-room-family.turtlepen.json))
-
-Authoring script: `build-gemini-3-1-diagrams.js`
-Model used: **Gemini 3.1 Pro (High)**
+</details>
 
 ---
 
@@ -708,9 +780,7 @@ The following were authored using TurtlePen MCP tools by **Claude Opus 5**:
 
 ### Flowcharts — real symbols, not rectangles with labels
 
-![Important Process flowchart](diagrams/flowchart-important-process.svg)
-
-[SVG](diagrams/flowchart-important-process.svg) · ([JSON](diagrams/flowchart-important-process.turtlepen.json)) · built by [`build-flowchart.js`](build-flowchart.js)
+*(Shown at the top of this file.)* [SVG](diagrams/flowchart-important-process.svg) · ([JSON](diagrams/flowchart-important-process.turtlepen.json)) · built by [`build-flowchart.js`](build-flowchart.js)
 
 Decisions are **diamonds**, terminators are **stadiums**, and that distinction is
 load-bearing rather than cosmetic. A node still *claims* its bounding box — so
@@ -764,7 +834,7 @@ built are in [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md).
 
 ### Five Farm Animals — with a full working record
 
-![Five Farm Animals](diagrams/farm-animals.svg)
+*(Shown at the top of this file.)*
 
 - **Composition**: [Five Farm Animals](diagrams/farm-animals.svg) ([JSON](diagrams/farm-animals.turtlepen.json))
 - **Working record (PDF)**: [**TurtlePen — Five Farm Animals**](docs/turtlepen-five-farm-animals.pdf) · 14 pages
