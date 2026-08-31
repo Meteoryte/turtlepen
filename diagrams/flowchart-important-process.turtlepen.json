@@ -4494,16 +4494,16 @@
   },
   "acceptances": [],
   "perceptual": {
-    "renderHash": "f1001b4498e38c53",
+    "renderHash": "386d9fdb93ba34df",
     "renderProfile": {
       "showGrid": true,
       "markFindings": false,
       "bounds": "content",
-      "margin": 24
+      "margin": 20
     },
-    "reviewer": "codex/gpt-5.6",
-    "reviewedAt": "2026-08-31T05:15:27.993Z",
-    "note": "Inspected the exact exported SVG raster on 2026-08-31. The central decision chain, YES/NO labels, shared remediation region, terminal nodes, and connectors are readable and unclipped.",
+    "reviewer": "claude-code/claude-opus-5",
+    "reviewedAt": "2026-08-31T07:04:31.237Z",
+    "note": "Re-render after the whole-quadrant cap fix. Looked at it: the decision chain reads top to bottom, every NO branch lands on the shared remediation panel, the two optional-path exits reach the document callout, and the terminators are intact. Depicts what it intends. Separately judged a poor advertisement and removed from the README gallery; that is an aesthetic call, not a structural one.",
     "findings": []
   }
 }

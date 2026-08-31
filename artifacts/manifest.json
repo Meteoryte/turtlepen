@@ -2647,9 +2647,9 @@
         "svg": {
           "path": "brand/logo-redesign.svg",
           "present": true,
-          "bytes": 104920,
-          "sha256": "5dc5bcc8878968adc4462b86838164d5ca3e4368c07e434de28033efbd712965",
-          "renderHash": "5dc5bcc8878968ad"
+          "bytes": 121439,
+          "sha256": "3f0936f857949cb79eace9fa13c8744272f020997443aaf7eb56473f157aede8",
+          "renderHash": "3f0936f857949cb7"
         },
         "png": {
           "path": "brand/logo-redesign.png",
@@ -13547,9 +13547,9 @@
         "svg": {
           "path": "diagrams/anime-waifu.svg",
           "present": true,
-          "bytes": 28271,
-          "sha256": "03d0229f516e4629b8729b7c080b95ab2c4ac9b999ea0c8fd40612f21cf07e11",
-          "renderHash": "03d0229f516e4629"
+          "bytes": 34901,
+          "sha256": "c273b8b1d946ec648d7d03bde7b65bc33fc1577ae2e956875754ea84f74d1f9c",
+          "renderHash": "c273b8b1d946ec64"
         },
         "png": {
           "path": "diagrams/anime-waifu.png",
@@ -14214,9 +14214,9 @@
         "svg": {
           "path": "diagrams/art-deco-hero.svg",
           "present": true,
-          "bytes": 161276,
-          "sha256": "47e22869e366d63e5e44dc5510fb9d57aa453040425f2f214609f839ec4ecfd3",
-          "renderHash": "47e22869e366d63e"
+          "bytes": 163445,
+          "sha256": "65d8688fc7e8f3ee7b6474957638922ee905362db8e367821b39dcf516e07048",
+          "renderHash": "65d8688fc7e8f3ee"
         },
         "png": {
           "path": "diagrams/art-deco-hero.png",
@@ -14474,7 +14474,7 @@
           "blocking": 0,
           "clean": false,
           "stale": false,
-          "currentRenderHash": "b365cdadf454554f"
+          "currentRenderHash": "25aabcd8f74a49f7"
         },
         "exceptions": [
           {
@@ -14640,15 +14640,15 @@
         "svg": {
           "path": "diagrams/atlas-nodes.svg",
           "present": true,
-          "bytes": 34457,
-          "sha256": "b365cdadf454554f98057997007f143aa072e37dfedf42eafcafce07bfef6228",
-          "renderHash": "b365cdadf454554f"
+          "bytes": 34395,
+          "sha256": "25aabcd8f74a49f7053db6daac536413621100706009435b445861b96e95105d",
+          "renderHash": "25aabcd8f74a49f7"
         },
         "png": {
           "path": "diagrams/atlas-nodes.png",
           "present": true,
-          "bytes": 20538,
-          "sha256": "a207ac663e53cd2894791a2574ab75768592ecb658f139d1f6ea9ab7a28ca782"
+          "bytes": 20560,
+          "sha256": "ae636b2ac9bd15d75c2e90794aad2ea7d09ed7005d033b788f16616e10582f9b"
         },
         "pdf": {
           "path": "diagrams/atlas-nodes.pdf",
@@ -14774,9 +14774,9 @@
         "svg": {
           "path": "diagrams/branching-tree.svg",
           "present": true,
-          "bytes": 13393,
-          "sha256": "904e9f08f5045622ad309b5ab4084e4e5061e9faa92cff56085639d495a8bf93",
-          "renderHash": "904e9f08f5045622"
+          "bytes": 18306,
+          "sha256": "5707780975cfd35d3c7a2d78ae01b9734681151aff339c335e6b121806438658",
+          "renderHash": "5707780975cfd35d"
         },
         "png": {
           "path": "diagrams/branching-tree.png",
@@ -14901,7 +14901,7 @@
           "blocking": 0,
           "clean": false,
           "stale": false,
-          "currentRenderHash": "387534d48bcae0a9"
+          "currentRenderHash": "f27a8cf66b002b80"
         },
         "exceptions": [
           {
@@ -14950,9 +14950,9 @@
         "svg": {
           "path": "diagrams/capability-audit.svg",
           "present": true,
-          "bytes": 34889,
-          "sha256": "f1ec06ebc06f03d20d3d91d16b4ca7847253ac28802ba0816c000813439128d4",
-          "renderHash": "f1ec06ebc06f03d2"
+          "bytes": 36671,
+          "sha256": "f27a8cf66b002b805db66124f297697d3a3f5c63e1330777467073a7ead35d4c",
+          "renderHash": "f27a8cf66b002b80"
         },
         "png": {
           "path": "diagrams/capability-audit.png",
@@ -15084,9 +15084,9 @@
         "svg": {
           "path": "diagrams/coffee-ritual.svg",
           "present": true,
-          "bytes": 15065,
-          "sha256": "a5f4fea57c371be71b8761b96136b4c1886c557bef1311fb2a533a49f1695c1e",
-          "renderHash": "a5f4fea57c371be7"
+          "bytes": 17054,
+          "sha256": "e872af52e1f922f98448c6668d963c266635c159fd03806926ad0f68afb4aa41",
+          "renderHash": "e872af52e1f922f9"
         },
         "png": {
           "path": "diagrams/coffee-ritual.png",
@@ -15122,8 +15122,8 @@
       "source": {
         "path": "diagrams/condenser-image-workflow.turtlepen.json",
         "schema": 3,
-        "sha256": "ff82cf5a717fe77b1b7751624736f5ff78ebb56473c68217bba16fa6c1cd3ea4",
-        "bytes": 4647177
+        "sha256": "ee733b221773c3d8474ca5e6cf9d496733ff43c12a14ef90ab6875a24c2b4cee",
+        "bytes": 4647397
       },
       "document": {
         "pages": 1,
@@ -15173,7 +15173,7 @@
       },
       "perceptual": {
         "reviewed": true,
-        "reviewer": "codex/gpt-5.6",
+        "reviewer": "claude-code/claude-opus-5",
         "findings": 0,
         "blocking": 0,
         "clean": true,
@@ -15204,12 +15204,12 @@
         },
         "perceptual": {
           "reviewed": true,
-          "reviewer": "codex/gpt-5.6",
+          "reviewer": "claude-code/claude-opus-5",
           "findings": 0,
           "blocking": 0,
           "clean": true,
           "stale": false,
-          "currentRenderHash": "145cc8e51607576a"
+          "currentRenderHash": "3fa40322380b6e62"
         },
         "exceptions": [],
         "weakAcceptances": []
@@ -15218,9 +15218,9 @@
         "svg": {
           "path": "diagrams/condenser-image-workflow.svg",
           "present": true,
-          "bytes": 4588307,
-          "sha256": "145cc8e51607576ad32987301fa42ca3d8968eba9398703262efca2aa5fe41bf",
-          "renderHash": "145cc8e51607576a"
+          "bytes": 4601097,
+          "sha256": "3fa40322380b6e62282d9b4056bb83fcb92c63f7a9b0ad80d05b603cff70bf00",
+          "renderHash": "3fa40322380b6e62"
         },
         "png": {
           "path": "diagrams/condenser-image-workflow.png",
@@ -20009,9 +20009,9 @@
         "svg": {
           "path": "diagrams/dither-proof.svg",
           "present": true,
-          "bytes": 51929,
-          "sha256": "a65e0ae6077a04e2867c704dc20640391d2d273da0ee51b85a3888dbea34fc4e",
-          "renderHash": "a65e0ae6077a04e2"
+          "bytes": 52378,
+          "sha256": "e40a1002a0d894bb2fbaf359343087ae7f812cabec62734e67d365dae40cc9d9",
+          "renderHash": "e40a1002a0d894bb"
         },
         "png": {
           "path": "diagrams/dither-proof.png",
@@ -20686,8 +20686,8 @@
       "source": {
         "path": "diagrams/flowchart-important-process.turtlepen.json",
         "schema": 3,
-        "sha256": "1afa36aebb0b63db42e595f2475ba3128a2db7acbb4495ba760010dbafa1eeed",
-        "bytes": 100482
+        "sha256": "98d73476469dbc57a67a065d9f40de2acb716d1a771eeaef20b2abd87d4a7d8a",
+        "bytes": 100701
       },
       "document": {
         "pages": 1,
@@ -20737,7 +20737,7 @@
       },
       "perceptual": {
         "reviewed": true,
-        "reviewer": "codex/gpt-5.6",
+        "reviewer": "claude-code/claude-opus-5",
         "findings": 0,
         "blocking": 0,
         "clean": true,
@@ -20768,12 +20768,12 @@
         },
         "perceptual": {
           "reviewed": true,
-          "reviewer": "codex/gpt-5.6",
+          "reviewer": "claude-code/claude-opus-5",
           "findings": 0,
           "blocking": 0,
           "clean": true,
           "stale": false,
-          "currentRenderHash": "f1001b4498e38c53"
+          "currentRenderHash": "386d9fdb93ba34df"
         },
         "exceptions": [],
         "weakAcceptances": []
@@ -20782,9 +20782,9 @@
         "svg": {
           "path": "diagrams/flowchart-important-process.svg",
           "present": true,
-          "bytes": 55265,
-          "sha256": "f1001b4498e38c53ddd85dade7496d5a7bc320f4ba29161c241ce9b1c654cef6",
-          "renderHash": "f1001b4498e38c53"
+          "bytes": 55267,
+          "sha256": "386d9fdb93ba34df38eef06252a68f9aa154bf4e6001721a704c8336700cb5b3",
+          "renderHash": "386d9fdb93ba34df"
         },
         "png": {
           "path": "diagrams/flowchart-important-process.png",
@@ -20917,9 +20917,9 @@
         "svg": {
           "path": "diagrams/gemini31-scene-apple.svg",
           "present": true,
-          "bytes": 23221,
-          "sha256": "5ab6b4554404a12d0db37d74f5223eb8b12bdebdf5a83f9e74d3d48399533a87",
-          "renderHash": "5ab6b4554404a12d"
+          "bytes": 24402,
+          "sha256": "2b2afb109e808dcc88cbf446212ecbf1ae5bea8f03c7663ce85e9eced224b56b",
+          "renderHash": "2b2afb109e808dcc"
         },
         "png": {
           "path": "diagrams/gemini31-scene-apple.png",
@@ -21187,9 +21187,9 @@
         "svg": {
           "path": "diagrams/gemini31-scene-living-room-family.svg",
           "present": true,
-          "bytes": 24845,
-          "sha256": "d9592166c980e3f84d103ae1daf27a4b5ffe9ce5d1152e2ed1713af59d5d48ce",
-          "renderHash": "d9592166c980e3f8"
+          "bytes": 28474,
+          "sha256": "4741fcedc49b053420828dc5cb2fbc68877d52e040f2784301668b966d35a48d",
+          "renderHash": "4741fcedc49b0534"
         },
         "png": {
           "path": "diagrams/gemini31-scene-living-room-family.png",
@@ -21322,9 +21322,9 @@
         "svg": {
           "path": "diagrams/gemini31-scene-tree.svg",
           "present": true,
-          "bytes": 60530,
-          "sha256": "579172bdc82410b95f83c32a0dca22c9811e8c778fc60e9921ae2273d1fce045",
-          "renderHash": "579172bdc82410b9"
+          "bytes": 67996,
+          "sha256": "fdc2e2e5d774fa130aa94a75409f2a746fefd655430f42a3615ed778b8f5bd29",
+          "renderHash": "fdc2e2e5d774fa13"
         },
         "png": {
           "path": "diagrams/gemini31-scene-tree.png",
@@ -21457,9 +21457,9 @@
         "svg": {
           "path": "diagrams/gemini31-server-structure.svg",
           "present": true,
-          "bytes": 31558,
-          "sha256": "065b0255777cfca1e7c56d81a8156e61308d8bfd145aa24c9a3c015bcdea0a35",
-          "renderHash": "065b0255777cfca1"
+          "bytes": 38342,
+          "sha256": "e3d592593eede9c510c025d5e30b27d6f00dd4f0149a735d3d65f71a8af873b4",
+          "renderHash": "e3d592593eede9c5"
         },
         "png": {
           "path": "diagrams/gemini31-server-structure.png",
@@ -21592,9 +21592,9 @@
         "svg": {
           "path": "diagrams/gemini31-teaching-loop.svg",
           "present": true,
-          "bytes": 42908,
-          "sha256": "13add2338549b597140a00a6ba75eb08136b2e7fcf09eeae9da08b2b246de07e",
-          "renderHash": "13add2338549b597"
+          "bytes": 45073,
+          "sha256": "b4bd09a10354c50def57f78f788aeb84c898405ec0996665e8c3894a39b7837f",
+          "renderHash": "b4bd09a10354c50d"
         },
         "png": {
           "path": "diagrams/gemini31-teaching-loop.png",
@@ -21860,9 +21860,9 @@
         "svg": {
           "path": "diagrams/gemini31-workflow.svg",
           "present": true,
-          "bytes": 45824,
-          "sha256": "27e3be66498eecffb65772dadeb380938066301448ad72f81f7e8888f5962460",
-          "renderHash": "27e3be66498eecff"
+          "bytes": 52523,
+          "sha256": "38a1613ee250b39103c1f0c8cc13acb87bd9d56721c4a11370a29b4b41096396",
+          "renderHash": "38a1613ee250b391"
         },
         "png": {
           "path": "diagrams/gemini31-workflow.png",
@@ -22027,9 +22027,9 @@
         "svg": {
           "path": "diagrams/home-lab-network.svg",
           "present": true,
-          "bytes": 10613,
-          "sha256": "721a2f5a3b12883892d793a8fc22f177cdda3b76d4778542caa7797c8b0c87be",
-          "renderHash": "721a2f5a3b128838"
+          "bytes": 12245,
+          "sha256": "d8aff73c056eae5bb1dddab9d8c99383e3bcd2fbcd4fed4ee73572fc0a5f32d2",
+          "renderHash": "d8aff73c056eae5b"
         },
         "png": {
           "path": "diagrams/home-lab-network.png",
@@ -22162,9 +22162,9 @@
         "svg": {
           "path": "diagrams/important-process.svg",
           "present": true,
-          "bytes": 63849,
-          "sha256": "d028b1f29a454a2c6d3f8658de3c0af5c1881a17ab8b88b3c1f9b1e268c9cdea",
-          "renderHash": "d028b1f29a454a2c"
+          "bytes": 66706,
+          "sha256": "3052a6ab6a1dd86212cbdfaf99c9a1a31ef06010c835e73dd3d8b680ee491a45",
+          "renderHash": "3052a6ab6a1dd862"
         },
         "png": {
           "path": "diagrams/important-process.png",
@@ -22297,9 +22297,9 @@
         "svg": {
           "path": "diagrams/inked-diagram.svg",
           "present": true,
-          "bytes": 120567,
-          "sha256": "ecd33afe9f18fad661eba61132116222b77154d56343dfa35deadf0a608f98ef",
-          "renderHash": "ecd33afe9f18fad6"
+          "bytes": 121406,
+          "sha256": "56c2d5d6a97d7e6cd0681723366f8ff461360e2a22515d13c61531233b7f75f8",
+          "renderHash": "56c2d5d6a97d7e6c"
         },
         "png": {
           "path": "diagrams/inked-diagram.png",
@@ -22432,9 +22432,9 @@
         "svg": {
           "path": "diagrams/layout-after.svg",
           "present": true,
-          "bytes": 50495,
-          "sha256": "57d85ea60ecc9d1496ff76a77e37c1356744e282fcc0efb0c77ef48638c01dca",
-          "renderHash": "57d85ea60ecc9d14"
+          "bytes": 51873,
+          "sha256": "15916c2d33590efbec9fb74d3042d5e15253c8eddc479ceb7145fab2cb403a64",
+          "renderHash": "15916c2d33590efb"
         },
         "png": {
           "path": "diagrams/layout-after.png",
@@ -23496,9 +23496,9 @@
         "svg": {
           "path": "diagrams/mechroom.svg",
           "present": true,
-          "bytes": 9843,
-          "sha256": "f5dcc596106407ebe75bcebf21736b2205e703b4b02d3a8293a95c85c0696c45",
-          "renderHash": "f5dcc596106407eb"
+          "bytes": 11144,
+          "sha256": "af56ab1c7cd10f422ef1afdaefbb0d8973662488d08bbefc2b30bc4730a9885f",
+          "renderHash": "af56ab1c7cd10f42"
         },
         "png": {
           "path": "diagrams/mechroom.png",
@@ -24160,9 +24160,9 @@
         "svg": {
           "path": "diagrams/minisplit-elevation.svg",
           "present": true,
-          "bytes": 12406,
-          "sha256": "7249c27375c2f4efbdaff2c6c409e1a5a2c8b781a0c5ef05223309fcd67265c6",
-          "renderHash": "7249c27375c2f4ef"
+          "bytes": 14064,
+          "sha256": "b8878903bfa4132576ba9e7126237f25ad3f76ecbd35daeae4692285ebb51a71",
+          "renderHash": "b8878903bfa41325"
         },
         "png": {
           "path": "diagrams/minisplit-elevation.png",
@@ -28411,9 +28411,9 @@
         "svg": {
           "path": "diagrams/random-01-solar-system.svg",
           "present": true,
-          "bytes": 23564,
-          "sha256": "937ecc5b1944c8f210231dad1e301349fa2040360ba84305cc8af2f0010e9bfd",
-          "renderHash": "937ecc5b1944c8f2"
+          "bytes": 24846,
+          "sha256": "9c62bb5f3f0fafa4a4db317194f8439f8e2816dbedd1d70d2e479f21b6ec2e53",
+          "renderHash": "9c62bb5f3f0fafa4"
         },
         "png": {
           "path": "diagrams/random-01-solar-system.png",
@@ -29248,9 +29248,9 @@
         "svg": {
           "path": "diagrams/random-02-mountains.svg",
           "present": true,
-          "bytes": 26793,
-          "sha256": "5c708b3c6409342b3b7d274a9cca72641c5bcdf08a8c578d7e822f3adc468881",
-          "renderHash": "5c708b3c6409342b"
+          "bytes": 28143,
+          "sha256": "67e02c3ab8a02706e3a03e0358c1a91e7655499f8d62f57fdd7fb6f4d739e8c6",
+          "renderHash": "67e02c3ab8a02706"
         },
         "png": {
           "path": "diagrams/random-02-mountains.png",
@@ -31975,9 +31975,9 @@
         "svg": {
           "path": "diagrams/random-03-abstract.svg",
           "present": true,
-          "bytes": 18046,
-          "sha256": "1194391d9b88dd9fc721d97f26031d202b11844c4eb350263059205f7f416e9a",
-          "renderHash": "1194391d9b88dd9f"
+          "bytes": 19345,
+          "sha256": "086596f56b8c430f192c027e78cff64ed5fb91a3c1aba3c803884fd6f241f783",
+          "renderHash": "086596f56b8c430f"
         },
         "png": {
           "path": "diagrams/random-03-abstract.png",
@@ -32768,9 +32768,9 @@
         "svg": {
           "path": "diagrams/random-04-underwater.svg",
           "present": true,
-          "bytes": 23919,
-          "sha256": "a9714cf29881d8200b355d245aa9b4b9558df851824fd335ea93dde23c181abd",
-          "renderHash": "a9714cf29881d820"
+          "bytes": 25598,
+          "sha256": "ffc5a1765879736be5752a8bd16814a01e085296da7dad10d0d581ef810ddacd",
+          "renderHash": "ffc5a1765879736b"
         },
         "png": {
           "path": "diagrams/random-04-underwater.png",
@@ -33664,9 +33664,9 @@
         "svg": {
           "path": "diagrams/random-05-city-skyline.svg",
           "present": true,
-          "bytes": 31685,
-          "sha256": "7334132ca80614f2c97345008fc8fb465d2d6b8e2df38b39ef3f4d93a0ac4431",
-          "renderHash": "7334132ca80614f2"
+          "bytes": 33798,
+          "sha256": "be55ea5f06f3393aff4ebd253ddc7d5cc31ed095968975a587df2ab99d1f874e",
+          "renderHash": "be55ea5f06f3393a"
         },
         "png": {
           "path": "diagrams/random-05-city-skyline.png",
@@ -33799,9 +33799,9 @@
         "svg": {
           "path": "diagrams/scene-apple.svg",
           "present": true,
-          "bytes": 8046,
-          "sha256": "70a94f2fc2e83ab4836ccd6200e9c13dd0b6f2ce87119459bdfd327521a86327",
-          "renderHash": "70a94f2fc2e83ab4"
+          "bytes": 8788,
+          "sha256": "d03bc7e889e3df84e59a7db735d0a7eb52ccc310bd819a29839cf3068279cf69",
+          "renderHash": "d03bc7e889e3df84"
         },
         "png": {
           "path": "diagrams/scene-apple.png",
@@ -33933,9 +33933,9 @@
         "svg": {
           "path": "diagrams/scene-fence.svg",
           "present": true,
-          "bytes": 7865,
-          "sha256": "28fcbca192174a7b126951731f8f09a35f7fbe0942a06d098f471068bc4d6436",
-          "renderHash": "28fcbca192174a7b"
+          "bytes": 8880,
+          "sha256": "631c82003d06448058dba4059df99b13a9925fd43c0c7ac142c9bfabba14e36d",
+          "renderHash": "631c82003d064480"
         },
         "png": {
           "path": "diagrams/scene-fence.png",
@@ -34068,9 +34068,9 @@
         "svg": {
           "path": "diagrams/scene-living-room-family.svg",
           "present": true,
-          "bytes": 12125,
-          "sha256": "dd408f4040688e0b0aa0622b839aacc6f2801128e2dc0a74152b4cb398b5537e",
-          "renderHash": "dd408f4040688e0b"
+          "bytes": 13695,
+          "sha256": "e2e3b231e8429d2b2235601c87ca6ad638a5d77fc05880c9d5883bdaf50eb6d1",
+          "renderHash": "e2e3b231e8429d2b"
         },
         "png": {
           "path": "diagrams/scene-living-room-family.png",
@@ -34203,9 +34203,9 @@
         "svg": {
           "path": "diagrams/scene-tree.svg",
           "present": true,
-          "bytes": 11134,
-          "sha256": "03ec86b362ca0c4d178be1dbfc6183ff4d26625c1969628d23ce9dfbf19e57e8",
-          "renderHash": "03ec86b362ca0c4d"
+          "bytes": 12167,
+          "sha256": "c2ac49d42ffcad7b877c1e7a987d74494a2bcfc442347c537797e110b6721ca4",
+          "renderHash": "c2ac49d42ffcad7b"
         },
         "png": {
           "path": "diagrams/scene-tree.png",
@@ -34338,9 +34338,9 @@
         "svg": {
           "path": "diagrams/server-structure-ha-microservices.svg",
           "present": true,
-          "bytes": 17965,
-          "sha256": "7e83ccb0163861b626d2b20621e9dc393a4f0ef9ed9627e4e8fe71587aaed1f7",
-          "renderHash": "7e83ccb0163861b6"
+          "bytes": 19713,
+          "sha256": "b8c60cab113f183494812b7db0f78fd7a74b56ea2e201bec441c87e562ffeca7",
+          "renderHash": "b8c60cab113f1834"
         },
         "png": {
           "path": "diagrams/server-structure-ha-microservices.png",
@@ -34950,9 +34950,9 @@
         "svg": {
           "path": "diagrams/showcase-castle.svg",
           "present": true,
-          "bytes": 43741,
-          "sha256": "6140e8a6823227476feefe3894cd89cd990f9852fafe075f6883874ffaf350c8",
-          "renderHash": "6140e8a682322747"
+          "bytes": 53833,
+          "sha256": "75281223662f54ea6848edcf563483e343ec40608fedb524f5856e982914ed8d",
+          "renderHash": "75281223662f54ea"
         },
         "png": {
           "path": "diagrams/showcase-castle.png",
@@ -35076,7 +35076,7 @@
           "blocking": 0,
           "clean": false,
           "stale": false,
-          "currentRenderHash": "ebf88f8e6c097651"
+          "currentRenderHash": "f9a4babadab22d16"
         },
         "exceptions": [
           {
@@ -35167,9 +35167,9 @@
         "svg": {
           "path": "diagrams/showcase-flowchart.svg",
           "present": true,
-          "bytes": 26762,
-          "sha256": "ebf88f8e6c0976511a819de935e62d3f53fb90733e37bc2e7b2138d9bda68bec",
-          "renderHash": "ebf88f8e6c097651"
+          "bytes": 26760,
+          "sha256": "f9a4babadab22d16d3df27683de8b7f2d41306a5f38d197df01094c1f03d348c",
+          "renderHash": "f9a4babadab22d16"
         },
         "png": {
           "path": "diagrams/showcase-flowchart.png",
@@ -35325,9 +35325,9 @@
         "svg": {
           "path": "diagrams/showcase-perspective.svg",
           "present": true,
-          "bytes": 105440,
-          "sha256": "9b49e2e70559d9c595460d539e79910ed4d36f94a04853513474cecbae34270a",
-          "renderHash": "9b49e2e70559d9c5"
+          "bytes": 105936,
+          "sha256": "aee68cf732fbd33bc5dfea9b46db2fec07aa2c7cff99dd9b08700959191c34c1",
+          "renderHash": "aee68cf732fbd33b"
         },
         "png": {
           "path": "diagrams/showcase-perspective.png",
@@ -35450,7 +35450,7 @@
           "blocking": 0,
           "clean": false,
           "stale": false,
-          "currentRenderHash": "5c756e69c2a85d25"
+          "currentRenderHash": "672445dfd427b02e"
         },
         "exceptions": [],
         "weakAcceptances": []
@@ -35459,15 +35459,15 @@
         "svg": {
           "path": "diagrams/showcase-pipeline.svg",
           "present": true,
-          "bytes": 21775,
-          "sha256": "5c756e69c2a85d2502a3297213b37b2bb580044f32949c822a686f3bb0665b0e",
-          "renderHash": "5c756e69c2a85d25"
+          "bytes": 21719,
+          "sha256": "672445dfd427b02ee5cee2a159da91e74d5ee3bf0ede732d32c77b250af81478",
+          "renderHash": "672445dfd427b02e"
         },
         "png": {
           "path": "diagrams/showcase-pipeline.png",
           "present": true,
-          "bytes": 7268,
-          "sha256": "52b74cc3e25aab3a251233f9a433414b37c384b5e8a328e7f473a8f3c7fc76e6"
+          "bytes": 7302,
+          "sha256": "defe026314e0eac681db5d302844cdd58d3d732f8dd92d7d23f05e555e2d36d0"
         },
         "pdf": {
           "path": "diagrams/showcase-pipeline.pdf",
@@ -37083,9 +37083,9 @@
         "svg": {
           "path": "diagrams/showcase-server-room.svg",
           "present": true,
-          "bytes": 31487,
-          "sha256": "339b09d72be0b990a6165ae2287683cf3efb27e90858b7ba236b6a3a635f924f",
-          "renderHash": "339b09d72be0b990"
+          "bytes": 32958,
+          "sha256": "ce250a1cba90f3703e517283d1c746495d46eae42212c682fa0a22c3cc4ce072",
+          "renderHash": "ce250a1cba90f370"
         },
         "png": {
           "path": "diagrams/showcase-server-room.png",
@@ -37485,9 +37485,9 @@
         "svg": {
           "path": "diagrams/teaching-mastery-learning-cycle.svg",
           "present": true,
-          "bytes": 11983,
-          "sha256": "83cfcd40167cf92f4b2e539632bf2206e4451a9ade3318a4a6cee7110a6bbc6f",
-          "renderHash": "83cfcd40167cf92f"
+          "bytes": 13236,
+          "sha256": "693d21bd9bda533cdd2af245d7c822f36cf2c2d537c975fa43c9a1bd35306e18",
+          "renderHash": "693d21bd9bda533c"
         },
         "png": {
           "path": "diagrams/teaching-mastery-learning-cycle.png",
@@ -37619,9 +37619,9 @@
         "svg": {
           "path": "diagrams/technical-analysis-quant-engine.svg",
           "present": true,
-          "bytes": 12939,
-          "sha256": "759660ca5e53f23fcb70a746630e925832bb867e85547e601a87ed0c6e4e6974",
-          "renderHash": "759660ca5e53f23f"
+          "bytes": 14250,
+          "sha256": "cf11c5fed934319286c2e3b1ea1bc8fb2fd724a528b4f5f22d52fc0a1a45b893",
+          "renderHash": "cf11c5fed9343192"
         },
         "png": {
           "path": "diagrams/technical-analysis-quant-engine.png",
@@ -37887,9 +37887,9 @@
         "svg": {
           "path": "diagrams/workflow-cicd-deployment-pipeline.svg",
           "present": true,
-          "bytes": 11894,
-          "sha256": "9a1e368d287123a87b5660fbc73d66e895943c1c28f3b55d3ce8a96389bfcede",
-          "renderHash": "9a1e368d287123a8"
+          "bytes": 13215,
+          "sha256": "be8237d05ebef6f2737003bde98034ca0d3b0e8821935136c82d67c199399cbc",
+          "renderHash": "be8237d05ebef6f2"
         },
         "png": {
           "path": "diagrams/workflow-cicd-deployment-pipeline.png",

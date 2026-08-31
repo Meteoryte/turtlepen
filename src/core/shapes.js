@@ -20,6 +20,29 @@ export const JUNCTION_STYLES = Object.freeze(['square', 'rounded', 'indented', '
 /** Corner cuts are exactly one quadrant — 5px — for every non-square style. */
 export const CORNER_CUT_QUADS = 1;
 
+/**
+ * The cap depth and slant width of a symbol, in WHOLE QUADRANTS.
+ *
+ * These exist because the same two measurements were being computed in four places with
+ * three different rounding policies. For a 18-quadrant-tall `data` node the label aperture
+ * said 4 quadrants (ceil), the SVG outline drew 3.24 (no rounding at all), and the native
+ * PNG/PDF renderer drew 3 (round). Three answers for one shape, and two of them off the
+ * lattice — so the drawn arc could not land on quadrant boundaries and rasterised into
+ * lumpy, asymmetric caps, while `validate` reasoned about a footprint the renderer never
+ * drew.
+ *
+ * `Math.ceil` is the policy, chosen to match the aperture: a label is never allowed to
+ * spill into ink, so the reserved cap must be at least the drawn one. Every caller uses
+ * these; nobody re-derives `h * 0.18`.
+ */
+export function capQuads(heightQuads) {
+  return Math.ceil(heightQuads * CAP);
+}
+
+export function skewQuads(widthQuads) {
+  return Math.ceil(widthQuads * SKEW);
+}
+
 export function assertCornerStyle(style) {
   if (!BOX_CORNER_STYLES.includes(style)) {
     throw new SyntaxError(`unknown corner style "${style}" — expected one of ${BOX_CORNER_STYLES.join(', ')}`);

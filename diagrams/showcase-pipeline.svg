@@ -48,10 +48,10 @@
 <path class="box" d="M55,30 H160 L125,80 H20 Z" data-id="api-source" style="fill:#bee3f8"/><text class="box-label" x="66" y="59" font-size="10" textLength="48" lengthAdjust="spacingAndGlyphs" xml:space="preserve">REST API</text>
 </g>
 <g data-element="db-source" role="group" aria-label="box db-source: PostgreSQL">
-<path class="box" d="M20,122.6 A70,12.6 0 0 1 160,122.6 V167.4 A70,12.6 0 0 1 20,167.4 Z" data-id="db-source" style="fill:#bee3f8"/><path class="box" d="M20,122.6 A70,12.6 0 0 0 160,122.6" fill="none"/><text class="box-label" x="60" y="149" font-size="10" textLength="60" lengthAdjust="spacingAndGlyphs" xml:space="preserve">PostgreSQL</text>
+<path class="box" d="M20,125 A70,15 0 0 1 160,125 V165 A70,15 0 0 1 20,165 Z" data-id="db-source" style="fill:#bee3f8"/><path class="box" d="M20,125 A70,15 0 0 0 160,125" fill="none"/><text class="box-label" x="60" y="149" font-size="10" textLength="60" lengthAdjust="spacingAndGlyphs" xml:space="preserve">PostgreSQL</text>
 </g>
 <g data-element="file-source" role="group" aria-label="box file-source: CSV Files">
-<path class="box" d="M20,210 H160 V280 Q90,254.8 20,280 Z" data-id="file-source" style="fill:#bee3f8"/><text class="box-label" x="63" y="241" font-size="10" textLength="54" lengthAdjust="spacingAndGlyphs" xml:space="preserve">CSV Files</text>
+<path class="box" d="M20,210 H160 V280 Q90,250 20,280 Z" data-id="file-source" style="fill:#bee3f8"/><text class="box-label" x="63" y="241" font-size="10" textLength="54" lengthAdjust="spacingAndGlyphs" xml:space="preserve">CSV Files</text>
 </g>
 <g data-element="validate" role="group" aria-label="box validate: Validate &amp; Clean">
 <path class="box" d="M315,30 H415 A5,5 0 0 1 420,35 V65 A5,5 0 0 1 415,70 H315 A5,5 0 0 1 310,65 V35 A5,5 0 0 1 315,30 Z" data-id="validate" style="fill:#c6f6d5"/><text class="box-label" x="317" y="54" font-size="10" textLength="96" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Validate &amp; Clean</text>
@@ -60,10 +60,10 @@
 <path class="box" d="M315,100 H415 A5,5 0 0 1 420,105 V135 A5,5 0 0 1 415,140 H315 A5,5 0 0 1 310,135 V105 A5,5 0 0 1 315,100 Z" data-id="enrich" style="fill:#c6f6d5"/><path class="box" d="M320,100 V140" fill="none"/><path class="box" d="M410,100 V140" fill="none"/><text class="box-label" x="326" y="124" font-size="10" textLength="78" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Enrich &amp; Join</text>
 </g>
 <g data-element="warehouse" role="group" aria-label="box warehouse: Data Warehouse">
-<path class="box" d="M630,46.2 A100,16.2 0 0 1 830,46.2 V103.8 A100,16.2 0 0 1 630,103.8 Z" data-id="warehouse" style="fill:#fed7d7"/><path class="box" d="M630,46.2 A100,16.2 0 0 0 830,46.2" fill="none"/><text class="box-label" x="688" y="79" font-size="10" textLength="84" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Data Warehouse</text>
+<path class="box" d="M630,50 A100,20 0 0 1 830,50 V100 A100,20 0 0 1 630,100 Z" data-id="warehouse" style="fill:#fed7d7"/><path class="box" d="M630,50 A100,20 0 0 0 830,50" fill="none"/><text class="box-label" x="688" y="79" font-size="10" textLength="84" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Data Warehouse</text>
 </g>
 <g data-element="lake" role="group" aria-label="box lake: Data Lake">
-<path class="box" d="M610,166.2 A100,16.2 0 0 1 810,166.2 V223.8 A100,16.2 0 0 1 610,223.8 Z" data-id="lake" style="fill:#fed7d7"/><path class="box" d="M610,166.2 A100,16.2 0 0 0 810,166.2" fill="none"/><text class="box-label" x="683" y="199" font-size="10" textLength="54" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Data Lake</text>
+<path class="box" d="M610,170 A100,20 0 0 1 810,170 V220 A100,20 0 0 1 610,220 Z" data-id="lake" style="fill:#fed7d7"/><path class="box" d="M610,170 A100,20 0 0 0 810,170" fill="none"/><text class="box-label" x="683" y="199" font-size="10" textLength="54" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Data Lake</text>
 </g>
 <g data-element="extract-join" role="group" aria-label="box extract-join">
 <path class="box" d="M230,30 H240 V280 H230 Z" data-id="extract-join" style="fill:#2d3748"/>

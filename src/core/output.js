@@ -6,7 +6,7 @@ import { PX_PER_QUAD, toPx } from './geometry.js';
 import { contentBounds, elementsOf, microMasksOf } from './document.js';
 import { decode as decodePng } from './png.js';
 import { PALETTE } from './svg.js';
-import { containerBand, isContainer, shapeTextRect, visualQuads } from './shapes.js';
+import { capQuads, containerBand, isContainer, shapeTextRect, visualQuads } from './shapes.js';
 import { layoutTextRuns } from './text.js';
 import { generatedKey, resolveView, styleForElement } from './workspace.js';
 
@@ -278,7 +278,10 @@ function drawCellShape(layer, width, height, element, ox, oy, fill, stroke) {
     rect(layer, width, height, x + w - 10, y, 1, h, stroke);
   }
   if (shape === 'data') {
-    const cap = Math.max(1, Math.round(h * 0.18));
+    // Same whole-quadrant cap the SVG and the aperture use. This rounded where they
+    // did not, so the PNG drew a different shape from the SVG of the same document.
+    // `h` here is already pixels, so the quadrant count is taken from the rect.
+    const cap = Math.max(1, capQuads(r.h) * PX_PER_QUAD);
     let previous = null;
     for (let i = 0; i <= w; i++) {
       const point = { x: x + i, y: Math.round(y + cap - Math.sin((i / Math.max(1, w)) * Math.PI) * cap) };

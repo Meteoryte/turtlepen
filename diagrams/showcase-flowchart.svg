@@ -69,7 +69,7 @@
 <path class="box" d="M550,160 H650 L700,195 L650,230 H550 L500,195 Z" data-id="build"/><text class="box-label" x="558" y="199" font-size="10" textLength="84" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Build Artifact</text>
 </g>
 <g data-element="report" role="group" aria-label="box report: Deploy Report">
-<path class="box" d="M500,260 H700 V350 Q600,317.6 500,350 Z" data-id="report"/><text class="box-label" x="561" y="299" font-size="10" textLength="78" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Deploy Report</text>
+<path class="box" d="M500,260 H700 V350 Q600,310 500,350 Z" data-id="report"/><text class="box-label" x="561" y="299" font-size="10" textLength="78" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Deploy Report</text>
 </g>
 <g data-element="end" role="group" aria-label="box end: Done">
 <path class="box" d="M525,380 H675 A25,25 0 0 1 675,430 H525 A25,25 0 0 1 525,380 Z" data-id="end"/><text class="box-label" x="588" y="409" font-size="10" textLength="24" lengthAdjust="spacingAndGlyphs" xml:space="preserve">Done</text>

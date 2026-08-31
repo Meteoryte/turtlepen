@@ -10,6 +10,7 @@ import assert from 'node:assert/strict';
 
 import {
   NODE_SHAPES, assertNodeShape, shapeCutQuads, shapeTextRect, visualQuads, claimedQuads,
+  capQuads, skewQuads,
 } from '../src/core/shapes.js';
 import { rect } from '../src/core/geometry.js';
 import { shapeOutline } from '../src/core/svg.js';
@@ -279,4 +280,42 @@ test('a document outline scoops the same edge its mask cuts', () => {
     bottom - midY >= bottom * 0.15,
     `scoop is only ${(bottom - midY).toFixed(1)}px on a ${bottom}px box — invisible: ${path}`,
   );
+});
+
+test('a symbol feature is a whole number of quadrants, in every renderer', () => {
+  // The same cap was computed in four places with three rounding policies. On an
+  // 18-quadrant `data` node the aperture reserved 4 quadrants, the SVG drew 3.24 and the
+  // PNG drew 3 — so the drawn arc could not sit on a quadrant boundary, rasterised into
+  // an uneven cap, and validate reasoned about a footprint nothing ever drew.
+  for (const h of [7, 9, 11, 14, 18, 23]) {
+    assert.ok(Number.isInteger(capQuads(h)), `capQuads(${h}) must be whole quadrants`);
+    assert.ok(capQuads(h) >= 1, `capQuads(${h}) must ink something`);
+  }
+  for (const w of [12, 14, 21, 28]) {
+    assert.ok(Number.isInteger(skewQuads(w)), `skewQuads(${w}) must be whole quadrants`);
+  }
+});
+
+test('a drawn cap lands on the lattice and matches the aperture it reserves', () => {
+  for (const h of [7, 9, 11, 14, 18, 23]) {
+    const r = rect(0, 0, 20, h);
+    const path = shapeOutline(r, 'data');
+
+    const fractional = path.match(/\d+\.\d+/g) || [];
+    assert.deepEqual(fractional, [],
+      `data outline at h=${h} emitted off-lattice coordinates: ${path}`);
+
+    // Every COORDINATE must be a whole number of 5px quadrants. The three digits
+    // between an arc's radii and its endpoint are rotation and the two arc flags,
+    // not lengths, so they are stripped before measuring.
+    const coordsOnly = path.replace(/ [01] [01] [01] /g, ' ');
+    for (const n of coordsOnly.match(/-?\d+/g).map(Number)) {
+      assert.equal(n % 5, 0, `data outline at h=${h} has ${n}px, not on the 5px quadrant lattice`);
+    }
+
+    // The reserved label aperture must be at least the ink, or a label sits on the curve.
+    const aperture = shapeTextRect(r, 'data');
+    assert.ok(aperture.y - r.y >= capQuads(h),
+      `aperture reserves ${aperture.y - r.y}q but the cap draws ${capQuads(h)}q at h=${h}`);
+  }
 });

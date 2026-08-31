@@ -14,7 +14,7 @@
 
 import { PX_PER_QUAD, toPx, right, bottom } from './geometry.js';
 import { elementsOf, contentBounds, microMasksOf } from './document.js';
-import { shapeTextRect, isContainer, containerBand } from './shapes.js';
+import { shapeTextRect, isContainer, containerBand, capQuads, skewQuads } from './shapes.js';
 import { layoutTextRuns } from './text.js';
 import { generatedKey, resolveView, styleForElement } from './workspace.js';
 
@@ -357,7 +357,10 @@ export function shapeOutline(r, shape) {
   const { x, y, w, h } = toPx(r);
   const x2 = x + w, y2 = y + h;
   const mx = x + w / 2, my = y + h / 2;
-  const sk = w * 0.25, cap = h * 0.18;
+  // Whole quadrants, from the one authority. A fractional cap cannot land on a
+  // quadrant boundary, so it rasterises into an uneven arc and disagrees with the
+  // aperture validate reasons about.
+  const sk = skewQuads(r.w) * PX_PER_QUAD, cap = capQuads(r.h) * PX_PER_QUAD;
   switch (shape) {
     case 'decision':
       return `M${mx},${y} L${x2},${my} L${mx},${y2} L${x},${my} Z`;
@@ -418,7 +421,7 @@ function box(el, doc, themed = {}) {
     // ends bulge outward and it reads as a barrel rather than stored data. The
     // mask is unchanged — this is a second mark, not a different footprint.
     const { x, y, w } = toPx(el.rect);
-    const capPx = toPx(el.rect).h * 0.18;
+    const capPx = capQuads(el.rect.h) * PX_PER_QUAD;
     out.push(`<path class="box" d="M${x},${y + capPx} A${w / 2},${capPx} 0 0 0 ${x + w},${y + capPx}" fill="none"/>`);
   }
   if (shape === 'subprocess') {

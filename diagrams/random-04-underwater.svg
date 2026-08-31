@@ -1,10 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="975" height="615" viewBox="0 0 975 615" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace">
+<svg xmlns="http://www.w3.org/2000/svg" width="975" height="615" viewBox="0 0 975 615" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
+<title id="tp-title">Underwater Scene</title>
+<desc id="tp-desc">35 diagram elements across 4 visible page(s)</desc>
+<metadata>{"schema":3,"name":"Underwater Scene","view":null,"elements":35}</metadata>
 <style>
   .bg { fill: #f4f3ef; }
   .grid { stroke: #dedbd3; stroke-width: 0.5; }
   .grid-major { stroke: #cbc7bd; stroke-width: 0.5; }
   .box { fill: #e9e7e1; stroke: #2b2a26; stroke-width: 1; }
-  .box-label { fill: #2b2a26; }
+  .box-label, .key-title, .key-label { fill: #2b2a26; }
   .stroke { fill: #2b2a26; }
   .hop { stroke: #2b2a26; }
   .free-text { fill: #6b6862; }
@@ -25,8 +28,10 @@
     .stroke { fill: #dedbd3; }
     .hop { stroke: #dedbd3; }
   }
+
 </style>
 <defs>
+
   <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
        5px quadrant so a dimmed element is made of the same units as every
        other mark on the page. -->
@@ -39,116 +44,117 @@
 <g transform="translate(55,15)"><line class="grid" x1="-80" y1="-35" x2="-80" y2="620"/><line class="grid" x1="-70" y1="-35" x2="-70" y2="620"/><line class="grid" x1="-60" y1="-35" x2="-60" y2="620"/><line class="grid" x1="-50" y1="-35" x2="-50" y2="620"/><line class="grid" x1="-40" y1="-35" x2="-40" y2="620"/><line class="grid" x1="-30" y1="-35" x2="-30" y2="620"/><line class="grid" x1="-20" y1="-35" x2="-20" y2="620"/><line class="grid" x1="-10" y1="-35" x2="-10" y2="620"/><line class="grid-major" x1="0" y1="-35" x2="0" y2="620"/><line class="grid" x1="10" y1="-35" x2="10" y2="620"/><line class="grid" x1="20" y1="-35" x2="20" y2="620"/><line class="grid" x1="30" y1="-35" x2="30" y2="620"/><line class="grid" x1="40" y1="-35" x2="40" y2="620"/><line class="grid" x1="50" y1="-35" x2="50" y2="620"/><line class="grid" x1="60" y1="-35" x2="60" y2="620"/><line class="grid" x1="70" y1="-35" x2="70" y2="620"/><line class="grid" x1="80" y1="-35" x2="80" y2="620"/><line class="grid" x1="90" y1="-35" x2="90" y2="620"/><line class="grid-major" x1="100" y1="-35" x2="100" y2="620"/><line class="grid" x1="110" y1="-35" x2="110" y2="620"/><line class="grid" x1="120" y1="-35" x2="120" y2="620"/><line class="grid" x1="130" y1="-35" x2="130" y2="620"/><line class="grid" x1="140" y1="-35" x2="140" y2="620"/><line class="grid" x1="150" y1="-35" x2="150" y2="620"/><line class="grid" x1="160" y1="-35" x2="160" y2="620"/><line class="grid" x1="170" y1="-35" x2="170" y2="620"/><line class="grid" x1="180" y1="-35" x2="180" y2="620"/><line class="grid" x1="190" y1="-35" x2="190" y2="620"/><line class="grid-major" x1="200" y1="-35" x2="200" y2="620"/><line class="grid" x1="210" y1="-35" x2="210" y2="620"/><line class="grid" x1="220" y1="-35" x2="220" y2="620"/><line class="grid" x1="230" y1="-35" x2="230" y2="620"/><line class="grid" x1="240" y1="-35" x2="240" y2="620"/><line class="grid" x1="250" y1="-35" x2="250" y2="620"/><line class="grid" x1="260" y1="-35" x2="260" y2="620"/><line class="grid" x1="270" y1="-35" x2="270" y2="620"/><line class="grid" x1="280" y1="-35" x2="280" y2="620"/><line class="grid" x1="290" y1="-35" x2="290" y2="620"/><line class="grid-major" x1="300" y1="-35" x2="300" y2="620"/><line class="grid" x1="310" y1="-35" x2="310" y2="620"/><line class="grid" x1="320" y1="-35" x2="320" y2="620"/><line class="grid" x1="330" y1="-35" x2="330" y2="620"/><line class="grid" x1="340" y1="-35" x2="340" y2="620"/><line class="grid" x1="350" y1="-35" x2="350" y2="620"/><line class="grid" x1="360" y1="-35" x2="360" y2="620"/><line class="grid" x1="370" y1="-35" x2="370" y2="620"/><line class="grid" x1="380" y1="-35" x2="380" y2="620"/><line class="grid" x1="390" y1="-35" x2="390" y2="620"/><line class="grid-major" x1="400" y1="-35" x2="400" y2="620"/><line class="grid" x1="410" y1="-35" x2="410" y2="620"/><line class="grid" x1="420" y1="-35" x2="420" y2="620"/><line class="grid" x1="430" y1="-35" x2="430" y2="620"/><line class="grid" x1="440" y1="-35" x2="440" y2="620"/><line class="grid" x1="450" y1="-35" x2="450" y2="620"/><line class="grid" x1="460" y1="-35" x2="460" y2="620"/><line class="grid" x1="470" y1="-35" x2="470" y2="620"/><line class="grid" x1="480" y1="-35" x2="480" y2="620"/><line class="grid" x1="490" y1="-35" x2="490" y2="620"/><line class="grid-major" x1="500" y1="-35" x2="500" y2="620"/><line class="grid" x1="510" y1="-35" x2="510" y2="620"/><line class="grid" x1="520" y1="-35" x2="520" y2="620"/><line class="grid" x1="530" y1="-35" x2="530" y2="620"/><line class="grid" x1="540" y1="-35" x2="540" y2="620"/><line class="grid" x1="550" y1="-35" x2="550" y2="620"/><line class="grid" x1="560" y1="-35" x2="560" y2="620"/><line class="grid" x1="570" y1="-35" x2="570" y2="620"/><line class="grid" x1="580" y1="-35" x2="580" y2="620"/><line class="grid" x1="590" y1="-35" x2="590" y2="620"/><line class="grid-major" x1="600" y1="-35" x2="600" y2="620"/><line class="grid" x1="610" y1="-35" x2="610" y2="620"/><line class="grid" x1="620" y1="-35" x2="620" y2="620"/><line class="grid" x1="630" y1="-35" x2="630" y2="620"/><line class="grid" x1="640" y1="-35" x2="640" y2="620"/><line class="grid" x1="650" y1="-35" x2="650" y2="620"/><line class="grid" x1="660" y1="-35" x2="660" y2="620"/><line class="grid" x1="670" y1="-35" x2="670" y2="620"/><line class="grid" x1="680" y1="-35" x2="680" y2="620"/><line class="grid" x1="690" y1="-35" x2="690" y2="620"/><line class="grid-major" x1="700" y1="-35" x2="700" y2="620"/><line class="grid" x1="710" y1="-35" x2="710" y2="620"/><line class="grid" x1="720" y1="-35" x2="720" y2="620"/><line class="grid" x1="730" y1="-35" x2="730" y2="620"/><line class="grid" x1="740" y1="-35" x2="740" y2="620"/><line class="grid" x1="750" y1="-35" x2="750" y2="620"/><line class="grid" x1="760" y1="-35" x2="760" y2="620"/><line class="grid" x1="770" y1="-35" x2="770" y2="620"/><line class="grid" x1="780" y1="-35" x2="780" y2="620"/><line class="grid" x1="790" y1="-35" x2="790" y2="620"/><line class="grid-major" x1="800" y1="-35" x2="800" y2="620"/><line class="grid" x1="810" y1="-35" x2="810" y2="620"/><line class="grid" x1="820" y1="-35" x2="820" y2="620"/><line class="grid" x1="830" y1="-35" x2="830" y2="620"/><line class="grid" x1="840" y1="-35" x2="840" y2="620"/><line class="grid" x1="850" y1="-35" x2="850" y2="620"/><line class="grid" x1="860" y1="-35" x2="860" y2="620"/><line class="grid" x1="870" y1="-35" x2="870" y2="620"/><line class="grid" x1="880" y1="-35" x2="880" y2="620"/><line class="grid" x1="890" y1="-35" x2="890" y2="620"/><line class="grid-major" x1="900" y1="-35" x2="900" y2="620"/><line class="grid" x1="910" y1="-35" x2="910" y2="620"/><line class="grid" x1="920" y1="-35" x2="920" y2="620"/><line class="grid" x1="930" y1="-35" x2="930" y2="620"/><line class="grid" x1="940" y1="-35" x2="940" y2="620"/><line class="grid" x1="-75" y1="-40" x2="940" y2="-40"/><line class="grid" x1="-75" y1="-30" x2="940" y2="-30"/><line class="grid" x1="-75" y1="-20" x2="940" y2="-20"/><line class="grid" x1="-75" y1="-10" x2="940" y2="-10"/><line class="grid-major" x1="-75" y1="0" x2="940" y2="0"/><line class="grid" x1="-75" y1="10" x2="940" y2="10"/><line class="grid" x1="-75" y1="20" x2="940" y2="20"/><line class="grid" x1="-75" y1="30" x2="940" y2="30"/><line class="grid" x1="-75" y1="40" x2="940" y2="40"/><line class="grid" x1="-75" y1="50" x2="940" y2="50"/><line class="grid" x1="-75" y1="60" x2="940" y2="60"/><line class="grid" x1="-75" y1="70" x2="940" y2="70"/><line class="grid" x1="-75" y1="80" x2="940" y2="80"/><line class="grid" x1="-75" y1="90" x2="940" y2="90"/><line class="grid-major" x1="-75" y1="100" x2="940" y2="100"/><line class="grid" x1="-75" y1="110" x2="940" y2="110"/><line class="grid" x1="-75" y1="120" x2="940" y2="120"/><line class="grid" x1="-75" y1="130" x2="940" y2="130"/><line class="grid" x1="-75" y1="140" x2="940" y2="140"/><line class="grid" x1="-75" y1="150" x2="940" y2="150"/><line class="grid" x1="-75" y1="160" x2="940" y2="160"/><line class="grid" x1="-75" y1="170" x2="940" y2="170"/><line class="grid" x1="-75" y1="180" x2="940" y2="180"/><line class="grid" x1="-75" y1="190" x2="940" y2="190"/><line class="grid-major" x1="-75" y1="200" x2="940" y2="200"/><line class="grid" x1="-75" y1="210" x2="940" y2="210"/><line class="grid" x1="-75" y1="220" x2="940" y2="220"/><line class="grid" x1="-75" y1="230" x2="940" y2="230"/><line class="grid" x1="-75" y1="240" x2="940" y2="240"/><line class="grid" x1="-75" y1="250" x2="940" y2="250"/><line class="grid" x1="-75" y1="260" x2="940" y2="260"/><line class="grid" x1="-75" y1="270" x2="940" y2="270"/><line class="grid" x1="-75" y1="280" x2="940" y2="280"/><line class="grid" x1="-75" y1="290" x2="940" y2="290"/><line class="grid-major" x1="-75" y1="300" x2="940" y2="300"/><line class="grid" x1="-75" y1="310" x2="940" y2="310"/><line class="grid" x1="-75" y1="320" x2="940" y2="320"/><line class="grid" x1="-75" y1="330" x2="940" y2="330"/><line class="grid" x1="-75" y1="340" x2="940" y2="340"/><line class="grid" x1="-75" y1="350" x2="940" y2="350"/><line class="grid" x1="-75" y1="360" x2="940" y2="360"/><line class="grid" x1="-75" y1="370" x2="940" y2="370"/><line class="grid" x1="-75" y1="380" x2="940" y2="380"/><line class="grid" x1="-75" y1="390" x2="940" y2="390"/><line class="grid-major" x1="-75" y1="400" x2="940" y2="400"/><line class="grid" x1="-75" y1="410" x2="940" y2="410"/><line class="grid" x1="-75" y1="420" x2="940" y2="420"/><line class="grid" x1="-75" y1="430" x2="940" y2="430"/><line class="grid" x1="-75" y1="440" x2="940" y2="440"/><line class="grid" x1="-75" y1="450" x2="940" y2="450"/><line class="grid" x1="-75" y1="460" x2="940" y2="460"/><line class="grid" x1="-75" y1="470" x2="940" y2="470"/><line class="grid" x1="-75" y1="480" x2="940" y2="480"/><line class="grid" x1="-75" y1="490" x2="940" y2="490"/><line class="grid-major" x1="-75" y1="500" x2="940" y2="500"/><line class="grid" x1="-75" y1="510" x2="940" y2="510"/><line class="grid" x1="-75" y1="520" x2="940" y2="520"/><line class="grid" x1="-75" y1="530" x2="940" y2="530"/><line class="grid" x1="-75" y1="540" x2="940" y2="540"/><line class="grid" x1="-75" y1="550" x2="940" y2="550"/><line class="grid" x1="-75" y1="560" x2="940" y2="560"/><line class="grid" x1="-75" y1="570" x2="940" y2="570"/><line class="grid" x1="-75" y1="580" x2="940" y2="580"/><line class="grid" x1="-75" y1="590" x2="940" y2="590"/><line class="grid-major" x1="-75" y1="600" x2="940" y2="600"/><line class="grid" x1="-75" y1="610" x2="940" y2="610"/><line class="grid" x1="-75" y1="620" x2="940" y2="620"/></g>
 <g transform="translate(55,15)">
 <g data-page="deep" data-z="-1" opacity="0.92">
-<g data-element="weed-1a">
+<g data-element="weed-1a" role="group" aria-label="path weed-1a">
 <g data-id="weed-1a" data-kind="path" data-role="artwork"><polyline points="107,547 107,492" fill="none" stroke="#228844" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="weed-1b">
+<g data-element="weed-1b" role="group" aria-label="path weed-1b">
 <g data-id="weed-1b" data-kind="path" data-role="artwork"><polyline points="117,497 92,472" fill="none" stroke="#33aa55" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="weed-2a">
+<g data-element="weed-2a" role="group" aria-label="path weed-2a">
 <g data-id="weed-2a" data-kind="path" data-role="artwork"><polyline points="197,557 197,492" fill="none" stroke="#228844" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="weed-2b">
+<g data-element="weed-2b" role="group" aria-label="path weed-2b">
 <g data-id="weed-2b" data-kind="path" data-role="artwork"><polyline points="187,497 212,472" fill="none" stroke="#33aa55" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="weed-3a">
+<g data-element="weed-3a" role="group" aria-label="path weed-3a">
 <g data-id="weed-3a" data-kind="path" data-role="artwork"><polyline points="717,547 717,502" fill="none" stroke="#228844" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="weed-3b">
+<g data-element="weed-3b" role="group" aria-label="path weed-3b">
 <g data-id="weed-3b" data-kind="path" data-role="artwork"><polyline points="727,477 707,457" fill="none" stroke="#33aa55" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="floor">
+<g data-element="floor" role="group" aria-label="path floor">
 <g data-id="floor" data-kind="path" data-role="artwork"><polyline points="7,577 897,577" fill="none" stroke="#ccaa66" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="starfish">
+<g data-element="starfish" role="group" aria-label="path starfish">
 <g data-id="starfish" data-kind="path" data-role="artwork" data-paint="cells"><rect x="475" y="535" width="5" height="5" fill="#ee6644"/><rect x="470" y="540" width="15" height="5" fill="#ee6644"/><rect x="465" y="545" width="25" height="5" fill="#ee6644"/><rect x="470" y="550" width="15" height="5" fill="#ee6644"/><rect x="475" y="555" width="5" height="5" fill="#ee6644"/></g>
 </g>
-<g data-element="starfish-arm1">
+<g data-element="starfish-arm1" role="group" aria-label="path starfish-arm1">
 <g data-id="starfish-arm1" data-kind="path" data-role="artwork"><polyline points="477,547 477,537" fill="none" stroke="#ee6644" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="starfish-arm2">
+<g data-element="starfish-arm2" role="group" aria-label="path starfish-arm2">
 <g data-id="starfish-arm2" data-kind="path" data-role="artwork"><polyline points="477,547 487,557" fill="none" stroke="#ee6644" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="starfish-arm3">
+<g data-element="starfish-arm3" role="group" aria-label="path starfish-arm3">
 <g data-id="starfish-arm3" data-kind="path" data-role="artwork"><polyline points="477,547 467,557" fill="none" stroke="#ee6644" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="starfish-arm4">
+<g data-element="starfish-arm4" role="group" aria-label="path starfish-arm4">
 <g data-id="starfish-arm4" data-kind="path" data-role="artwork"><polyline points="477,547 482,542" fill="none" stroke="#ee6644" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="starfish-arm5">
+<g data-element="starfish-arm5" role="group" aria-label="path starfish-arm5">
 <g data-id="starfish-arm5" data-kind="path" data-role="artwork"><polyline points="477,547 472,542" fill="none" stroke="#ee6644" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
 </g>
 <g data-page="base" data-z="0" opacity="1">
-<g data-element="wave-1">
+<g data-element="wave-1" role="group" aria-label="path wave-1">
 <g data-id="wave-1" data-kind="path" data-role="artwork"><polyline points="47,47 42,67 17,87 -3,87 -13,82 -28,67 -33,47" fill="none" stroke="#4488bb" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="wave-2">
+<g data-element="wave-2" role="group" aria-label="path wave-2">
 <g data-id="wave-2" data-kind="path" data-role="artwork"><polyline points="127,47 132,27 157,7 177,7 187,12 202,27 207,47" fill="none" stroke="#5599cc" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="wave-3">
+<g data-element="wave-3" role="group" aria-label="path wave-3">
 <g data-id="wave-3" data-kind="path" data-role="artwork"><polyline points="367,47 362,67 337,87 317,87 307,82 292,67 287,47" fill="none" stroke="#4488bb" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="wave-4">
+<g data-element="wave-4" role="group" aria-label="path wave-4">
 <g data-id="wave-4" data-kind="path" data-role="artwork"><polyline points="447,47 452,27 477,7 497,7 507,12 522,27 527,47" fill="none" stroke="#5599cc" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="wave-5">
+<g data-element="wave-5" role="group" aria-label="path wave-5">
 <g data-id="wave-5" data-kind="path" data-role="artwork"><polyline points="687,47 682,67 657,87 637,87 627,82 612,67 607,47" fill="none" stroke="#4488bb" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
 </g>
 <g data-page="fish" data-z="1" opacity="0.92">
-<g data-element="fish1-body">
+<g data-element="fish1-body" role="group" aria-label="path fish1-body">
 <g data-id="fish1-body" data-kind="path" data-role="artwork" data-paint="cells"><rect x="355" y="215" width="5" height="5" fill="#ff8833"/><rect x="340" y="220" width="35" height="5" fill="#ff8833"/><rect x="335" y="225" width="45" height="5" fill="#ff8833"/><rect x="330" y="230" width="55" height="5" fill="#ff8833"/><rect x="330" y="235" width="55" height="5" fill="#ff8833"/><rect x="330" y="240" width="55" height="5" fill="#ff8833"/><rect x="325" y="245" width="65" height="5" fill="#ff8833"/><rect x="330" y="250" width="55" height="5" fill="#ff8833"/><rect x="330" y="255" width="55" height="5" fill="#ff8833"/><rect x="330" y="260" width="55" height="5" fill="#ff8833"/><rect x="335" y="265" width="45" height="5" fill="#ff8833"/><rect x="340" y="270" width="35" height="5" fill="#ff8833"/><rect x="355" y="275" width="5" height="5" fill="#ff8833"/></g>
 </g>
-<g data-element="fish1-tail">
+<g data-element="fish1-tail" role="group" aria-label="path fish1-tail">
 <g data-id="fish1-tail" data-kind="path" data-role="artwork" data-paint="cells"><rect x="465" y="215" width="5" height="5" fill="#ff6622"/><rect x="455" y="220" width="15" height="5" fill="#ff6622"/><rect x="450" y="225" width="5" height="5" fill="#ff6622"/><rect x="465" y="225" width="5" height="5" fill="#ff6622"/><rect x="445" y="230" width="5" height="5" fill="#ff6622"/><rect x="465" y="230" width="5" height="5" fill="#ff6622"/><rect x="435" y="235" width="10" height="5" fill="#ff6622"/><rect x="465" y="235" width="5" height="5" fill="#ff6622"/><rect x="430" y="240" width="5" height="5" fill="#ff6622"/><rect x="465" y="240" width="5" height="5" fill="#ff6622"/><rect x="425" y="245" width="5" height="5" fill="#ff6622"/><rect x="465" y="245" width="5" height="5" fill="#ff6622"/><rect x="430" y="250" width="10" height="5" fill="#ff6622"/><rect x="465" y="250" width="5" height="5" fill="#ff6622"/><rect x="440" y="255" width="5" height="5" fill="#ff6622"/><rect x="465" y="255" width="5" height="5" fill="#ff6622"/><rect x="445" y="260" width="5" height="5" fill="#ff6622"/><rect x="465" y="260" width="5" height="5" fill="#ff6622"/><rect x="450" y="265" width="10" height="5" fill="#ff6622"/><rect x="465" y="265" width="5" height="5" fill="#ff6622"/><rect x="460" y="270" width="10" height="5" fill="#ff6622"/><rect x="465" y="275" width="5" height="5" fill="#ff6622"/></g>
 </g>
-<g data-element="fish1-eye">
+<g data-element="fish1-eye" role="group" aria-label="path fish1-eye">
 <g data-id="fish1-eye" data-kind="path" data-role="artwork" data-paint="cells"><rect x="335" y="230" width="5" height="5" fill="#ffffff"/><rect x="330" y="235" width="15" height="5" fill="#ffffff"/><rect x="335" y="240" width="5" height="5" fill="#ffffff"/></g>
 </g>
-<g data-element="fish1-pupil">
+<g data-element="fish1-pupil" role="group" aria-label="path fish1-pupil">
 <g data-id="fish1-pupil" data-kind="path" data-role="artwork"><line x1="327" y1="237" x2="327" y2="237" stroke="#111111" stroke-width="5" stroke-linecap="round"/></g>
 </g>
-<g data-element="fish2-body">
+<g data-element="fish2-body" role="group" aria-label="path fish2-body">
 <g data-id="fish2-body" data-kind="path" data-role="artwork" data-paint="cells"><rect x="675" y="355" width="5" height="5" fill="#4488dd"/><rect x="665" y="360" width="25" height="5" fill="#4488dd"/><rect x="660" y="365" width="35" height="5" fill="#4488dd"/><rect x="660" y="370" width="35" height="5" fill="#4488dd"/><rect x="655" y="375" width="45" height="5" fill="#4488dd"/><rect x="660" y="380" width="35" height="5" fill="#4488dd"/><rect x="660" y="385" width="35" height="5" fill="#4488dd"/><rect x="665" y="390" width="25" height="5" fill="#4488dd"/><rect x="675" y="395" width="5" height="5" fill="#4488dd"/></g>
 </g>
-<g data-element="fish2-tail">
+<g data-element="fish2-tail" role="group" aria-label="path fish2-tail">
 <g data-id="fish2-tail" data-kind="path" data-role="artwork" data-paint="cells"><rect x="755" y="355" width="5" height="5" fill="#3366bb"/><rect x="745" y="360" width="15" height="5" fill="#3366bb"/><rect x="740" y="365" width="5" height="5" fill="#3366bb"/><rect x="755" y="365" width="5" height="5" fill="#3366bb"/><rect x="730" y="370" width="10" height="5" fill="#3366bb"/><rect x="755" y="370" width="5" height="5" fill="#3366bb"/><rect x="725" y="375" width="5" height="5" fill="#3366bb"/><rect x="755" y="375" width="5" height="5" fill="#3366bb"/><rect x="730" y="380" width="10" height="5" fill="#3366bb"/><rect x="755" y="380" width="5" height="5" fill="#3366bb"/><rect x="740" y="385" width="5" height="5" fill="#3366bb"/><rect x="755" y="385" width="5" height="5" fill="#3366bb"/><rect x="745" y="390" width="15" height="5" fill="#3366bb"/><rect x="755" y="395" width="5" height="5" fill="#3366bb"/></g>
 </g>
-<g data-element="fish2-eye">
+<g data-element="fish2-eye" role="group" aria-label="path fish2-eye">
 <g data-id="fish2-eye" data-kind="path" data-role="artwork"><line x1="667" y1="367" x2="667" y2="367" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/></g>
 </g>
-<g data-element="fish3-body">
+<g data-element="fish3-body" role="group" aria-label="path fish3-body">
 <g data-id="fish3-body" data-kind="path" data-role="artwork" data-paint="cells"><rect x="215" y="130" width="5" height="5" fill="#55bb66"/><rect x="205" y="135" width="25" height="5" fill="#55bb66"/><rect x="205" y="140" width="25" height="5" fill="#55bb66"/><rect x="200" y="145" width="35" height="5" fill="#55bb66"/><rect x="205" y="150" width="25" height="5" fill="#55bb66"/><rect x="205" y="155" width="25" height="5" fill="#55bb66"/><rect x="215" y="160" width="5" height="5" fill="#55bb66"/></g>
 </g>
-<g data-element="fish3-tail">
+<g data-element="fish3-tail" role="group" aria-label="path fish3-tail">
 <g data-id="fish3-tail" data-kind="path" data-role="artwork" data-paint="cells"><rect x="165" y="125" width="5" height="5" fill="#449955"/><rect x="165" y="130" width="10" height="5" fill="#449955"/><rect x="165" y="135" width="5" height="5" fill="#449955"/><rect x="175" y="135" width="5" height="5" fill="#449955"/><rect x="165" y="140" width="5" height="5" fill="#449955"/><rect x="180" y="140" width="5" height="5" fill="#449955"/><rect x="165" y="145" width="5" height="5" fill="#449955"/><rect x="185" y="145" width="5" height="5" fill="#449955"/><rect x="165" y="150" width="5" height="5" fill="#449955"/><rect x="180" y="150" width="5" height="5" fill="#449955"/><rect x="165" y="155" width="5" height="5" fill="#449955"/><rect x="175" y="155" width="5" height="5" fill="#449955"/><rect x="165" y="160" width="10" height="5" fill="#449955"/><rect x="165" y="165" width="5" height="5" fill="#449955"/></g>
 </g>
-<g data-element="fish3-eye">
+<g data-element="fish3-eye" role="group" aria-label="path fish3-eye">
 <g data-id="fish3-eye" data-kind="path" data-role="artwork"><line x1="227" y1="137" x2="227" y2="137" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/></g>
 </g>
 </g>
 <g data-page="bubbles" data-z="2" opacity="0.92">
-<g data-element="bub-1">
+<g data-element="bub-1" role="group" aria-label="path bub-1">
 <g data-id="bub-1" data-kind="path" data-role="artwork"><polyline points="407,177 412,167 422,167 427,172 427,182 422,187 412,187 407,182" fill="none" stroke="#88ccee" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="bub-2">
+<g data-element="bub-2" role="group" aria-label="path bub-2">
 <g data-id="bub-2" data-kind="path" data-role="artwork"><polyline points="382,137 382,132 392,122 402,122 412,132 412,142 402,152 392,152 382,142" fill="none" stroke="#99ddff" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="bub-3">
+<g data-element="bub-3" role="group" aria-label="path bub-3">
 <g data-id="bub-3" data-kind="path" data-role="artwork"><polyline points="372,97 377,92 382,97 377,102" fill="none" stroke="#aaddff" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="bub-4">
+<g data-element="bub-4" role="group" aria-label="path bub-4">
 <g data-id="bub-4" data-kind="path" data-role="artwork"><polyline points="697,317 702,307 712,307 717,312 717,322 712,327 702,327 697,322" fill="none" stroke="#88ccee" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="bub-5">
+<g data-element="bub-5" role="group" aria-label="path bub-5">
 <g data-id="bub-5" data-kind="path" data-role="artwork"><polyline points="692,277 697,272 702,277 697,282" fill="none" stroke="#99ddff" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="bub-6">
+<g data-element="bub-6" role="group" aria-label="path bub-6">
 <g data-id="bub-6" data-kind="path" data-role="artwork"><polyline points="67,197 72,187 82,187 87,192 87,202 82,207 72,207 67,202" fill="none" stroke="#88ccee" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
-<g data-element="bub-7">
+<g data-element="bub-7" role="group" aria-label="path bub-7">
 <g data-id="bub-7" data-kind="path" data-role="artwork"><polyline points="92,157 97,152 102,157 97,162" fill="none" stroke="#aaddff" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
 </g>
-</g></svg>
+</g>
+</svg>

@@ -11657,16 +11657,16 @@
   },
   "acceptances": [],
   "perceptual": {
-    "renderHash": "145cc8e51607576a",
+    "renderHash": "3fa40322380b6e62",
     "renderProfile": {
-      "showGrid": false,
+      "showGrid": true,
       "markFindings": false,
-      "bounds": "canvas",
+      "bounds": "content",
       "margin": 20
     },
-    "reviewer": "codex/gpt-5.6",
-    "reviewedAt": "2026-08-31T05:15:27.668Z",
-    "note": "Inspected the exact exported SVG raster on 2026-08-31. The embedded photo, dithered trace, simplified trace, captions, and disclaimer are distinct, legible, and unclipped.",
+    "reviewer": "claude-code/claude-opus-5",
+    "reviewedAt": "2026-08-31T07:04:30.995Z",
+    "note": "Re-render after the whole-quadrant cap fix. Looked at it: the three panels read left to right as embedded source photo, dithered line art, and 4x-supersampled simplification, each with its own caption, and the closing banner still states plainly that this is an illustrative test asset rather than equipment-specific evidence. Cap geometry change did not disturb the composition.",
     "findings": []
   }
 }

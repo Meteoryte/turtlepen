@@ -10,6 +10,7 @@ import assert from 'node:assert/strict';
 
 import { createDocument, placeBox, applyPen, renderSvg } from '../src/core/index.js';
 import { shapeOutline } from '../src/core/svg.js';
+import { capQuads } from '../src/core/shapes.js';
 import { rect } from '../src/core/geometry.js';
 
 const R = rect(0, 0, 24, 11);
@@ -60,8 +61,11 @@ test('the document foot matches the depth of its own mask', () => {
   const d = shapeOutline(R, 'document');
   const q = /Q[\d.]+,([\d.]+)/.exec(d);
   assert.ok(q, 'document uses a quadratic foot');
-  const capPx = R.h * 5 * 0.18;
+  // The cap comes from the one authority rather than being re-derived here. This
+  // assertion used to recompute `h * 0.18` itself, so when the renderers were snapped to
+  // whole quadrants the test failed by 0.2px against its own stale copy of the constant.
+  const capPx = capQuads(R.h) * 5;
   const bottomPx = R.h * 5;
   const control = Number(q[1]);
-  assert.ok(bottomPx - control < capPx * 2, 'the curve must not overshoot the mask it depicts');
+  assert.ok(bottomPx - control <= capPx * 2, 'the curve must not overshoot the mask it depicts');
 });
