@@ -14,6 +14,7 @@ import * as address from './address.js';
 import * as text from './text.js';
 import * as shapes from './shapes.js';
 import { assertNodeRole } from './roles.js';
+import * as scale from './scale.js';
 import * as occupancy from './occupancy.js';
 import * as image from './image.js';
 import * as png from './png.js';
@@ -63,7 +64,7 @@ export {
   verdicts as perceptualVerdicts,
 } from './perceptual.js';
 
-export { geometry, address, text, shapes, occupancy, image, png, dither };
+export { geometry, address, text, shapes, occupancy, image, png, dither, scale };
 export { tone_ as tone };
 export { workspace };
 export { renderPng, renderPdf, rasterizeDocument, encodePng };
@@ -634,7 +635,7 @@ export function normalizeSpan(span, what = 'span') {
 }
 
 /** Place a single box by address and cell span — the non-pen path to a node. */
-export function placeBox(doc, pageId, { id, at, span, label = '', corner = 'square', shape = 'process', align = 'left', fontSize = null, fill = null, opacity = null, state = null, role = 'plain' }) {
+export function placeBox(doc, pageId, { id, at, span, label = '', corner = 'square', shape = 'process', align = 'left', fontSize = null, fill = null, opacity = null, state = null, role = 'plain', value = null }) {
   const cells = normalizeSpan(span, `span for "${id}"`);
   const a = address.parseAddress(at);
   const p = address.pinPoint(a);
@@ -642,7 +643,7 @@ export function placeBox(doc, pageId, { id, at, span, label = '', corner = 'squa
   const [px, py] = a.kind === 'pin' ? address.PINS[a.part] : [0, 0];
   const r = address.assertOnGrid(geometry.rect(p.x - (px * w) / 2, p.y - (py * h) / 2, w, h), `box "${id}" pinned at ${at}`);
   assertNodeRole(role);
-  return addBox(doc, pageId, { id, rect: r, label, corner, shape, align, fontSize, fill, opacity, state, role });
+  return addBox(doc, pageId, { id, rect: r, label, corner, shape, align, fontSize, fill, opacity, state, role, value });
 }
 
 /**
@@ -2021,4 +2022,18 @@ export function placeStrokeLabel(doc, pageId, {
   path.font = { face: 'turtlefont', size: drawn.size, weight: drawn.weight, tracking, align, rotate };
   path.labels = target;
   return { element: path, target, ...drawn, pieces: drawn.pieces.length, area: inner };
+}
+
+
+/**
+ * Declare a value->distance mapping the document can be checked against.
+ *
+ * Stored on the document rather than passed per call, so a chart states its
+ * scale once and every mark on it is compared with the same one.
+ */
+export function addScale(doc, id, spec) {
+  if (doc.scales?.[id]) throw new SyntaxError(`scale "${id}" already exists`);
+  doc.scales = doc.scales ?? {};
+  doc.scales[id] = scale.defineScale(id, spec);
+  return doc.scales[id];
 }

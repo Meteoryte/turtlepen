@@ -48,6 +48,9 @@ export function createDocument({ name = 'untitled', canvas = { cols: 160, rows: 
     groups: [],
     constraints: [],
     microMasks: [],
+    // Declared value->distance mappings. Empty for every drawing that is not
+    // quantitative, which is why the chart rules can self-activate on it.
+    scales: {},
     ...workspace,
     acceptances: [],
     createdAt: new Date().toISOString(),
@@ -327,7 +330,7 @@ export function assertFreeId(doc, id) {
   if (findConstraint(doc, id)) throw new Error(`id "${id}" already belongs to constraint "${id}" — "${suggestFreeId(doc, id)}" is free`);
 }
 
-export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, corner = 'square', shape = 'process', align = 'left', fill = null, note = null, opacity = null, state = null, role = 'plain' }) {
+export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, corner = 'square', shape = 'process', align = 'left', fill = null, note = null, opacity = null, state = null, role = 'plain', value = null }) {
   getPage(doc, pageId);
   assertElementId(id);
   assertFreeId(doc, id);
@@ -346,6 +349,9 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
     note,
     opacity: assertOpacity(opacity, 'element opacity'),
     state,
+    // { scale, value, axis } — binds this mark to a declared scale so the
+    // engine can compare what it says against what it draws.
+    value,
     // Semantic role. Presentation resolves from it; the collision engine never
     // reads it, so a role can change how a node LOOKS but never where it IS.
     role: assertNodeRole(role),

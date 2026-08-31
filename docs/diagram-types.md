@@ -38,11 +38,15 @@ looks. Everything else stays in this document as guidance, and is marked so.
 | `F002` | Flowchart | a decision has at least two ways out |
 | `W001` | Swimlane | every lane is labelled |
 | `W002` | Swimlane | no step lies across two lanes |
+| `V001` | any quantitative | a mark's geometry matches the value it declares |
+| `V002` | Bar · Sankey · treemap | a length-encoded scale starts at zero |
+| `V003` | any quantitative | a value lies inside its declared domain |
 | `C002` | any | the focal budget is not overspent |
 | `L024` | any | a symbol is not stretched past recognition |
 
-Six rules across ~40 types is the honest number, not a shortfall. Most type
-conventions are about meaning the drawing does not contain.
+Nine rules across ~40 types. Most type conventions are about meaning the drawing
+does not contain — but a **declared scale** puts some of that meaning *into* the
+drawing, which is what `V001`–`V003` are built on.
 
 ## Why most conventions cannot be rules
 
@@ -106,22 +110,34 @@ and what the engine can say about it.
 
 | Type | Best for | Engine |
 |---|---|---|
-| Quadrant | two axes, four positions | not modelled |
-| Wardley | evolution against value | not modelled |
-| Radar | several series across axes | not modelled |
-| Bar · Line · Scatter | quantities and trends | not modelled |
-| Sankey | flow with magnitude | not modelled |
-| Treemap | part of a whole, by area | not modelled |
+| Bar | compare quantities | `V001`, `V002`, `V003` |
+| Sankey | flow with magnitude | `V001`, `V002`, `V003` |
+| Treemap | part of a whole, by area | `V001`, `V003` |
+| Line · Scatter | trend, correlation | `V001`, `V003` (position scale) |
+| Quadrant | two axes, four positions | `V003` on each axis |
+| Wardley | evolution against value | `V003` on each axis |
+| Radar | several series across axes | `V003` per spoke |
+| Polar | cyclical quantity | `V003` |
 | Venn | overlap between sets | not modelled |
 | Pyramid | ranked tiers | container shapes |
 | Fishbone | causes of an effect | shapes only |
-| Polar | cyclical quantity | not modelled |
 
-**"Not modelled"** means TurtlePen has no primitive for the type's load-bearing
-idea — an axis, a scale, a magnitude. It does not mean the type cannot be drawn:
-every one of them is reachable with `pen`, and the tileset and postcard examples
-show the lattice will draw anything. It means the engine cannot check whether
-what you drew is a correct instance of that type, and will not pretend to.
+**Scales are what changed here.** These types were all "not modelled" until the
+lattice gained a word for *a mapping from a number to a distance*. Declare one
+with `addScale`, bind a mark to it with `value`, and the engine holds two
+independent statements about the same quantity — the number you declared and the
+geometry you drew — so it can find them in disagreement. That is `V001`, and a
+chart contradicting its own data is the most consequential failure a chart has.
+
+`V002` is the classic misleading chart: a length-encoded axis that misses zero.
+It is decidable because the domain is authored fact, and it is exempt for
+`position` scales, since a scatter axis has no obligation to include zero.
+
+**"Not modelled"** still means TurtlePen has no primitive for the type's
+load-bearing idea. Venn needs set membership; the engine sees two circles that
+overlap and cannot know whether that overlap is the claim. Such a type is still
+perfectly drawable — every one of them is reachable with `pen` — but the engine
+will not pretend to check it.
 
 ## Adding a type
 

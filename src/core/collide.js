@@ -26,6 +26,7 @@ import { layoutTextRuns, MIN_LEGIBLE_FONT_PX } from './text.js';
 import { compositionFindings, focalFindings } from './composition.js';
 import { flowchartFindings, FLOWCHART_RULES } from './flowchart.js';
 import { swimlaneFindings, SWIMLANE_RULES } from './swimlane.js';
+import { quantitativeFindings, QUANTITATIVE_RULES } from './quantitative.js';
 import { analyseRuns, MAX_READABLE_TRANSITION_RATIO } from './dither.js';
 
 export const SEVERITIES = Object.freeze(['S0', 'S1', 'S2', 'S3']);
@@ -64,6 +65,7 @@ export const RULES = Object.freeze({
   C002: { severity: 'S3', title: 'focal budget spent', blurb: 'so many nodes claim focus that none of them reads as focal' },
   ...FLOWCHART_RULES,
   ...SWIMLANE_RULES,
+  ...QUANTITATIVE_RULES,
 });
 
 /**
@@ -188,6 +190,7 @@ export function validate(doc, { page = null } = {}) {
   found.push(...focalFindings(doc, pages));
   found.push(...flowchartFindings(doc, pages));
   found.push(...swimlaneFindings(doc, pages, elementsOf));
+  found.push(...quantitativeFindings(doc, pages, elementsOf));
 
   found.sort(
     (a, b) =>

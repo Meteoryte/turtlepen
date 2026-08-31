@@ -14,7 +14,7 @@ import {
 } from '../src/core/shapes.js';
 import { rect } from '../src/core/geometry.js';
 import { shapeOutline } from '../src/core/svg.js';
-import { createDocument, placeBox, validate } from '../src/core/index.js';
+import { createDocument, placeBox, validate, addScale } from '../src/core/index.js';
 
 const R = rect(0, 0, 22, 11);
 
@@ -408,4 +408,62 @@ test('W001 names an unlabelled lane, W002 names a step that claims two owners', 
   assert.equal(w002.severity, 'S1', 'two owners is an error, not a nag');
   assert.ok(w002.actors.includes('straddle') && w002.actors.includes('sales') && w002.actors.includes('ops'),
     'the finding names the step AND both lanes it straddles');
+});
+
+// --- quantitative semantics: does the drawing agree with its numbers? -------
+
+test('a scale reports the rounding it cannot represent, and never absorbs it', async () => {
+  const { defineScale, project, readBack } = await import('../src/core/scale.js');
+  const s = defineScale('r', { domain: [0, 3], quads: 10 });
+
+  // 1 of 3 over 10 quadrants is 3.33 — not representable. The engine says so
+  // rather than moving the mark and pretending the arithmetic worked.
+  const p = project(s, 1);
+  assert.equal(p.quads, 3);
+  assert.ok(p.residual > 0.3, `residual ${p.residual} must be reported, not hidden`);
+  assert.ok(Math.abs(readBack(s, 3) - 0.9) < 0.001, 'read-back is the inverse mapping');
+
+  assert.throws(() => defineScale('bad', { domain: [5, 5], quads: 10 }), /no extent/);
+  assert.throws(() => defineScale('bad', { domain: [0, 1], quads: 0 }), /positive whole number/);
+  assert.throws(() => defineScale('bad', { domain: [0, 1], quads: 4, kind: 'log' }), /unknown scale kind/);
+});
+
+test('quantitative rules are self-activating and catch a chart that lies', async () => {
+  const { project } = await import('../src/core/scale.js');
+
+  // No scales: not a chart, never judged as one.
+  const plain = createDocument({ name: 'plain' });
+  placeBox(plain, 'base', { id: 'a', at: 'C3', span: '10x4', label: 'x' });
+  assert.equal(validate(plain).open.filter((f) => f.rule.startsWith('V')).length, 0);
+
+  const honest = createDocument({ name: 'honest' });
+  addScale(honest, 'rev', { domain: [0, 100], quads: 40, kind: 'magnitude' });
+  const q = project(honest.scales.rev, 100).quads;
+  placeBox(honest, 'base', { id: 'full', at: 'C4', span: `6x${q / 2}`, label: '100', value: { scale: 'rev', value: 100, axis: 'y' } });
+  assert.equal(validate(honest).open.filter((f) => f.rule.startsWith('V')).length, 0,
+    'a bar drawn at its projection reports nothing');
+
+  // The same bar, drawn wrong. This is the failure nothing could see before.
+  const lying = createDocument({ name: 'lying' });
+  addScale(lying, 'rev', { domain: [0, 100], quads: 40, kind: 'magnitude' });
+  placeBox(lying, 'base', { id: 'short', at: 'C4', span: '6x4', label: '100', value: { scale: 'rev', value: 100, axis: 'y' } });
+  const v001 = validate(lying).open.find((f) => f.rule === 'V001');
+  assert.ok(v001, 'a mark that contradicts its value is reported');
+  assert.equal(v001.severity, 'S1', 'a chart disagreeing with its data is an error');
+  assert.equal(v001.metrics.declared, 100);
+  assert.ok(v001.metrics.drawnValue < 100, 'the finding says what the mark actually draws');
+});
+
+test('V002 fires on a truncated magnitude baseline but never on a position scale', () => {
+  const bar = createDocument({ name: 'bar' });
+  addScale(bar, 'rev', { domain: [80, 100], quads: 40, kind: 'magnitude' });
+  const hit = validate(bar).open.find((f) => f.rule === 'V002');
+  assert.ok(hit, 'length-encoded and missing zero is misleading');
+  assert.match(hit.message, /1\.25:1/, 'it states the true ratio the drawing hides');
+
+  // A scatter axis has no obligation to include zero. Demanding it would be wrong.
+  const scatter = createDocument({ name: 'scatter' });
+  addScale(scatter, 'temp', { domain: [80, 100], quads: 40, kind: 'position' });
+  assert.equal(validate(scatter).open.filter((f) => f.rule === 'V002').length, 0,
+    'position scales are exempt — zero is not meaningful for them');
 });

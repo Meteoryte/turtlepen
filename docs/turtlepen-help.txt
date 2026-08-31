@@ -691,5 +691,20 @@ rules:
     "severity": "S1",
     "title": "step spans two lanes",
     "blurb": "a step drawn across a lane boundary claims two owners"
+  },
+  "V001": {
+    "severity": "S1",
+    "title": "mark contradicts its value",
+    "blurb": "the geometry drawn encodes a different number than the one declared"
+  },
+  "V002": {
+    "severity": "S2",
+    "title": "truncated magnitude baseline",
+    "blurb": "a length-encoded scale that misses zero exaggerates every difference on it"
+  },
+  "V003": {
+    "severity": "S3",
+    "title": "value outside its scale",
+    "blurb": "a value beyond the declared domain is extrapolated, not read"
   }
 }
