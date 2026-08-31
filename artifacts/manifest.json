@@ -30,7 +30,7 @@
   "summary": {
     "artifacts": 72,
     "publishable": 10,
-    "structurallyClear": 52,
+    "structurallyClear": 51,
     "missingSvg": 1,
     "byRole": {
       "example": {
@@ -14396,16 +14396,16 @@
         "resources": 0
       },
       "structural": {
-        "state": "structurally-clear",
-        "open": 0,
+        "state": "blocking-errors",
+        "open": 1,
         "accepted": 4,
         "stale": 0,
         "summary": {
           "S0": 0,
-          "S1": 0,
+          "S1": 1,
           "S2": 0,
           "S3": 0,
-          "total": 0,
+          "total": 1,
           "accepted": 4,
           "acceptedBySeverity": {
             "S0": 0,
@@ -14414,9 +14414,9 @@
             "S3": 0
           },
           "stale": 0,
-          "clean": true,
-          "state": "structurally-clear",
-          "verdict": "PASS_WITH_EXCEPTIONS",
+          "clean": false,
+          "state": "blocking-errors",
+          "verdict": "FAIL",
           "acceptedDecisions": 4
         }
       },
@@ -14446,15 +14446,16 @@
         "releasable": false,
         "verdict": "FAIL",
         "blockers": [
+          "1 unresolved structural decision finding(s)",
           "no perceptual review is recorded for the release render",
           "1 accepted critical/error finding(s) lack current render-bound evidence"
         ],
         "structural": {
           "S0": 0,
-          "S1": 0,
+          "S1": 1,
           "S2": 0,
           "S3": 0,
-          "total": 0,
+          "total": 1,
           "accepted": 4,
           "acceptedBySeverity": {
             "S0": 0,
@@ -14463,9 +14464,9 @@
             "S3": 0
           },
           "stale": 0,
-          "clean": true,
-          "state": "structurally-clear",
-          "verdict": "PASS_WITH_EXCEPTIONS",
+          "clean": false,
+          "state": "blocking-errors",
+          "verdict": "FAIL",
           "acceptedDecisions": 4
         },
         "perceptual": {
@@ -14474,7 +14475,7 @@
           "blocking": 0,
           "clean": false,
           "stale": false,
-          "currentRenderHash": "25aabcd8f74a49f7"
+          "currentRenderHash": "943ee8a996cdffc9"
         },
         "exceptions": [
           {
@@ -14641,14 +14642,14 @@
           "path": "diagrams/atlas-nodes.svg",
           "present": true,
           "bytes": 34395,
-          "sha256": "25aabcd8f74a49f7053db6daac536413621100706009435b445861b96e95105d",
-          "renderHash": "25aabcd8f74a49f7"
+          "sha256": "943ee8a996cdffc9f4531845e0e3f3164f20f1954b1b4cc8375e8073ac1c1c47",
+          "renderHash": "943ee8a996cdffc9"
         },
         "png": {
           "path": "diagrams/atlas-nodes.png",
           "present": true,
-          "bytes": 20560,
-          "sha256": "ae636b2ac9bd15d75c2e90794aad2ea7d09ed7005d033b788f16616e10582f9b"
+          "bytes": 20574,
+          "sha256": "67096907f613dc9d41648d4ea6f93b2d507c307affd818830ea2ff1c06a6e93e"
         },
         "pdf": {
           "path": "diagrams/atlas-nodes.pdf",
@@ -14658,7 +14659,7 @@
         }
       },
       "contract": {
-        "structurallyClear": true,
+        "structurallyClear": false,
         "modelHasNoErrors": true,
         "perceptuallyReviewed": false,
         "perceptualCurrent": false,
@@ -14901,7 +14902,7 @@
           "blocking": 0,
           "clean": false,
           "stale": false,
-          "currentRenderHash": "f27a8cf66b002b80"
+          "currentRenderHash": "088eb42738e32d1e"
         },
         "exceptions": [
           {
@@ -14951,8 +14952,8 @@
           "path": "diagrams/capability-audit.svg",
           "present": true,
           "bytes": 36671,
-          "sha256": "f27a8cf66b002b805db66124f297697d3a3f5c63e1330777467073a7ead35d4c",
-          "renderHash": "f27a8cf66b002b80"
+          "sha256": "088eb42738e32d1edd415d90a077994484d688e283711c491228c96b862a9f63",
+          "renderHash": "088eb42738e32d1e"
         },
         "png": {
           "path": "diagrams/capability-audit.png",
@@ -35450,7 +35451,7 @@
           "blocking": 0,
           "clean": false,
           "stale": false,
-          "currentRenderHash": "672445dfd427b02e"
+          "currentRenderHash": "f8c3e9921bcf92d6"
         },
         "exceptions": [],
         "weakAcceptances": []
@@ -35460,14 +35461,14 @@
           "path": "diagrams/showcase-pipeline.svg",
           "present": true,
           "bytes": 21719,
-          "sha256": "672445dfd427b02ee5cee2a159da91e74d5ee3bf0ede732d32c77b250af81478",
-          "renderHash": "672445dfd427b02e"
+          "sha256": "f8c3e9921bcf92d6eda88d59910396cb1cff98f2328d47754a92fd1081eacb29",
+          "renderHash": "f8c3e9921bcf92d6"
         },
         "png": {
           "path": "diagrams/showcase-pipeline.png",
           "present": true,
-          "bytes": 7302,
-          "sha256": "defe026314e0eac681db5d302844cdd58d3d732f8dd92d7d23f05e555e2d36d0"
+          "bytes": 7378,
+          "sha256": "c29e7d4eb95aec7c9ca084377cee85a8dcb119997e66bf45ab278c69c9ff9717"
         },
         "pdf": {
           "path": "diagrams/showcase-pipeline.pdf",

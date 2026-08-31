@@ -69,7 +69,7 @@
 <path class="box" d="M320,230 H560 L500,340 H380 Z" data-id="s_manual" style="fill:#2ea685"/><text class="box-label" x="422" y="289" font-size="10" textLength="36" lengthAdjust="spacingAndGlyphs" xml:space="preserve">manual</text>
 </g>
 <g data-element="s_data" role="group" aria-label="box s_data: data">
-<path class="box" d="M610,250 A120,20 0 0 1 850,250 V320 A120,20 0 0 1 610,320 Z" data-id="s_data" style="fill:#2ea685"/><path class="box" d="M610,250 A120,20 0 0 0 850,250" fill="none"/><text class="box-label" x="718" y="289" font-size="10" textLength="24" lengthAdjust="spacingAndGlyphs" xml:space="preserve">data</text>
+<path class="box" d="M610,250 A120,20 0 0 1 850,250 V320 A120,20 0 0 1 610,320 Z" data-id="s_data" style="fill:#2ea685"/><path class="box" d="M610,250 A120,20 0 0 0 850,250" fill="none"/><text class="box-label" x="718" y="299" font-size="10" textLength="24" lengthAdjust="spacingAndGlyphs" xml:space="preserve">data</text>
 </g>
 <g data-element="s_document" role="group" aria-label="box s_document: document">
 <path class="box" d="M900,230 H1140 V340 Q1020,300 900,340 Z" data-id="s_document" style="fill:#2ea685"/><text class="box-label" x="996" y="279" font-size="10" textLength="48" lengthAdjust="spacingAndGlyphs" xml:space="preserve">document</text>

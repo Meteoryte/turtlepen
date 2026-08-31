@@ -66,7 +66,7 @@
 <path class="box" d="M1220,30 H1340 L1310,90 H1250 Z" data-id="shape-manual"/><text class="box-label" x="1262" y="64" font-size="10" textLength="36" lengthAdjust="spacingAndGlyphs" xml:space="preserve">manual</text>
 </g>
 <g data-element="shape-data" role="group" aria-label="box shape-data: data">
-<path class="box" d="M1420,45 A60,15 0 0 1 1540,45 V75 A60,15 0 0 1 1420,75 Z" data-id="shape-data"/><path class="box" d="M1420,45 A60,15 0 0 0 1540,45" fill="none"/><text class="box-label" x="1468" y="64" font-size="10" textLength="24" lengthAdjust="spacingAndGlyphs" xml:space="preserve">data</text>
+<path class="box" d="M1420,45 A60,15 0 0 1 1540,45 V75 A60,15 0 0 1 1420,75 Z" data-id="shape-data"/><path class="box" d="M1420,45 A60,15 0 0 0 1540,45" fill="none"/><text class="box-label" x="1468" y="76" font-size="10" textLength="24" lengthAdjust="spacingAndGlyphs" xml:space="preserve">data</text>
 </g>
 <g data-element="shape-document" role="group" aria-label="box shape-document: document">
 <path class="box" d="M1620,30 H1740 V90 Q1680,60 1620,90 Z" data-id="shape-document"/><text class="box-label" x="1656" y="56" font-size="10" textLength="48" lengthAdjust="spacingAndGlyphs" xml:space="preserve">document</text>

@@ -144,6 +144,21 @@ export function containerClaimQuads(r) {
 /** Shapes whose slant or curve is a fixed fraction of the bounding box. */
 const SKEW = 0.25;
 const CAP = 0.18;
+
+/**
+ * The cap is a SUPERELLIPSE, not a true ellipse.
+ *
+ * A true ellipse (exponent 2) is almost vertical where it meets the side wall, so on a
+ * lattice its first row cuts an enormous bite and the rest barely move: a 40-quadrant-wide
+ * cylinder with a 4-quadrant cap stepped 9, 3, 1. That reads as a shoulder with a dent in
+ * it, not as a curve — the defect that made every wide `data` node look broken.
+ *
+ * Lowering the exponent trades the flat middle for even steps. The cap is only ever a few
+ * quadrants deep, so what matters is not fidelity to an ellipse but that consecutive rows
+ * differ by a similar amount; a curve the lattice can actually state beats a curve it has
+ * to round into a notch.
+ */
+const CAP_EXPONENT = 2.0;
 /** How much of a bar's height the bar itself occupies. */
 const BAR_THICKNESS = 0.34;
 
@@ -329,7 +344,7 @@ function insideShape(i, j, w, h, shape) {
     case 'data': {
       if (v > CAP && v < 1 - CAP) return true;
       const cv = v <= CAP ? CAP : 1 - CAP;
-      return du ** 2 + ((v - cv) / CAP) ** 2 <= 1;
+      return du ** CAP_EXPONENT + Math.abs((v - cv) / CAP) ** CAP_EXPONENT <= 1;
     }
     case 'bar':
       // A fork/join bar is a THIN solid bar, not a box. Drawn as a full
@@ -411,8 +426,16 @@ export function shapeTextRect(r, shape = 'process') {
     case 'manual':
     case 'prep':
       return inset(Math.ceil(r.w * SKEW), 0);
-    case 'data':
-      return inset(0, Math.ceil(r.h * CAP));
+    case 'data': {
+      // A cylinder inks TWICE its cap at the top: the rim curves up to the box edge, and
+      // the back edge of that same ellipse curves down an equal distance into the body.
+      // Reserving only one cap put every label across the back edge — visible as a line
+      // struck through the text of every `data` node once the back edge was drawn the
+      // right way round. The foot only inks one cap, so the insets are not symmetric.
+      const cap = capQuads(r.h);
+      const top = Math.min(2 * cap, Math.max(0, r.h - cap - 1));
+      return rect(r.x, r.y + top, r.w, Math.max(1, r.h - top - cap));
+    }
     case 'document':
       return rect(r.x, r.y, r.w, Math.max(1, r.h - Math.ceil(r.h * CAP)));
     case 'subprocess':

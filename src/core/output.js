@@ -284,7 +284,11 @@ function drawCellShape(layer, width, height, element, ox, oy, fill, stroke) {
     const cap = Math.max(1, capQuads(r.h) * PX_PER_QUAD);
     let previous = null;
     for (let i = 0; i <= w; i++) {
-      const point = { x: x + i, y: Math.round(y + cap - Math.sin((i / Math.max(1, w)) * Math.PI) * cap) };
+      // The back edge is the FAR side of the top ellipse, so it bulges DOWN into the
+      // body. This was `- sin`, which bulged up and traced the silhouette instead:
+      // two stacked upward curves, which is what made every cylinder look melted.
+      // The SVG had it right all along — its arc carries sweep flag 0.
+      const point = { x: x + i, y: Math.round(y + cap + Math.sin((i / Math.max(1, w)) * Math.PI) * cap) };
       if (previous) thickLine(layer, width, height, previous, point, stroke);
       previous = point;
     }
