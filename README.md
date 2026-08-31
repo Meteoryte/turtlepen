@@ -80,33 +80,108 @@ for a whiteboard. It is a substrate that makes machine-authored drawings checkab
 
 ## What it makes
 
-Everything below was drawn by a model through the MCP tools — no hand-editing.
+Every drawing below was authored by a model through the MCP tools. No hand-editing, no
+vector editor, no human nudging a control point.
 
-**Flowcharts with real symbols and adjudicated geometry**
+### A complete technical reference, drawn in one pass
+
+The Xbox controller input domain — anatomy with callout leaders, a digital-input edge-state
+machine, analog trigger ranges, stick geometry, the motion-gesture vocabulary as lattice
+paths, and the full domain table. Drawn through the **hosted** server.
+
+[![Xbox controller input domain](docs/gallery/xbox-controller-input-domain.svg)](docs/gallery/xbox-controller-input-domain.svg)
+
+### Real professional documentation
+
+An HVAC condenser replacement field workflow: numbered stages, colour-coded hold points
+that gate progress, photo capture references, and a safety banner. This is the case the
+project exists for — a document someone has to follow correctly on a roof.
+
+[![Condenser replacement field guide](diagrams/condenser-replacement-field-guide.svg)](diagrams/condenser-replacement-field-guide.svg)
+
+### Data visualisation
+
+BTC/USD hourly candles with wicks, a moving average, and a volume histogram — every
+element on the same integer lattice as everything else.
+
+![BTC/USD candlestick chart](diagrams/gemini31-technical-analysis.svg)
+
+### Illustration — the postcard series
+
+Five full-bleed scenes in one frame size, built from filled regions on the integer lattice.
+There is no raster layer in any of them: the graded skies, the layered ridgelines, the
+flame, the moon's shadowed disc and the submarine's portholes are all lattice geometry.
+
+![Alpine campfire](diagrams/postcard-alpine-campfire.svg)
+
+| | |
+|---|---|
+| ![Deep sea explorer](diagrams/postcard-deep-sea-explorer.svg) | ![Night observatory](diagrams/postcard-night-observatory.svg) |
+| ![Botanical terrarium](diagrams/postcard-botanical-terrarium.svg) | ![Rocket liftoff](diagrams/postcard-rocket-liftoff.svg) |
+
+And a weathered picket fence, for texture rather than colour: grain, nail heads, two rails,
+and a vine crossing *in front* of them on a separate Z-page.
+
+![Weathered picket fence](diagrams/gemini31-scene-fence.svg)
+
+### Flowcharts with real symbols
+
+Decisions are diamonds, terminators are stadiums, and the distinction is load-bearing —
+each shape carves its own label aperture out of its bounding box.
 
 ![Important Process flowchart](diagrams/flowchart-important-process.svg)
 
-**The mark atlas — primitives, tone, feather, texture and arc angles on one lattice**
+Lanes are containers: they reserve only a title band and a border ring, so members sit
+inside without colliding with them, and a connector can cross from one lane to another.
+
+![Swimlane across two lanes](diagrams/showcase-flowchart.svg)
+
+Synchronisation bars fan several sources into one stage and back out again, with solid and
+dotted edges carrying different meanings.
+
+![Data pipeline with synchronisation bars](diagrams/showcase-pipeline.svg)
+
+### The two atlases — what the lattice can draw
+
+Every node shape, corner style, connector pattern, cap and arrowhead:
+
+![Node atlas](diagrams/atlas-nodes.svg)
+
+Every mark primitive, with tone, feather, texture and arc angles:
 
 ![Mark atlas](diagrams/atlas-marks.svg)
 
-**Five farm animals, each with a full authoring record** — five closed outlines drawn as
-pen programs, kept here because the working record is more interesting than the picture:
-every measurement, every finding, and every adjudication that produced them is published
-alongside in [the PDF](docs/turtlepen-five-farm-animals.pdf).
+### TurtleFont — a stroke typeface on the same lattice
+
+441 glyphs drawn as pen strokes rather than imported as outlines: Latin with accents and
+Central European, Greek, Cyrillic, arrows, mathematics and marks, plus a size ramp that
+labels each step `exact` or `rounded` and a weight ramp from pen 1 to pen 4.
+
+Text stops being a foreign object on the grid. `measureStrokeText` **is**
+`renderStrokeText` with the quadrants discarded — one implementation, so measurement and
+rendering cannot drift apart.
+
+[![TurtleFont specimen](diagrams/turtlefont-specimen.svg)](diagrams/turtlefont-specimen.svg)
+
+### Tracing a source image, measured rather than asserted
+
+Five seeded-random trials, each showing the source against a direct 1× trace and a 4×
+box-averaged working canvas resampled back down — with ink coverage, edge coverage and
+partial-cell counts reported per case. The claim that supersampling helps is a number here,
+not an adjective.
+
+![Supersampling trials](diagrams/supersample-random-five.svg)
+
+### Five farm animals, with the working record
+
+Five closed outlines drawn as pen programs. Kept because the record behind the picture is
+the more interesting artifact: every measurement, finding and adjudication that produced
+them is published in [the 14-page PDF](docs/turtlepen-five-farm-animals.pdf).
 
 ![Five Farm Animals](diagrams/farm-animals.svg)
 
-**Wireframes** — the same lattice, used for layout rather than illustration
-
-![Art deco hero wireframe](diagrams/art-deco-hero.svg)
-
-**Depth** — Z-pages let things pass behind other things instead of flattening
-
-![CRT desk scene](diagrams/crt-desk-scene.svg)
-
-More, including the swimlane flowchart, the perceptual-review study, and the logo drawing
-itself, is further down this file.
+More — the swimlane flowchart, the perceptual-review study, the wireframe, the depth
+scene, and the logo drawing itself — is further down this file.
 
 ## The problem it solves
 
@@ -747,10 +822,15 @@ live in [`artifacts/artifact-catalog.json`](artifacts/artifact-catalog.json);
 
 Two model runs drew the same eight briefs — four architecture diagrams and four
 illustrative scenes — so the outputs can be compared against each other and against the
-engine's own findings. They are **evidence, not a showcase**: the Gemini 3.1 CI/CD
-pipeline, for instance, renders three coloured discs with their labels floating loose
-below the lane, which is exactly the kind of result worth keeping visible rather than
-quietly deleting.
+engine's own findings.
+
+The spread within a single run is the interesting part. Two results from the Gemini 3.1 set
+are good enough to sit in the gallery above: the [candlestick
+chart](diagrams/gemini31-technical-analysis.svg) and the [weathered picket
+fence](diagrams/gemini31-scene-fence.svg). From the same run and the same tool surface, the
+[CI/CD pipeline](diagrams/gemini31-workflow.svg) renders three coloured discs with their
+labels floating loose below the lane. Both outcomes are kept: a substrate that only ever
+shows its best output tells you nothing about what a model will actually do with it.
 
 <details>
 <summary><strong>Gemini 3.6 Flash (High)</strong> — 8 studies (<code>build-all-diagrams.js</code>)</summary>

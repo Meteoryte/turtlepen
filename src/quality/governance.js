@@ -9,7 +9,10 @@ import * as core from '../core/index.js';
 import { createSession, createTools } from '../mcp/tools.js';
 import { artifactCatalogCoverage, loadArtifactCatalog } from './artifact-catalog.js';
 
-const STANDARD_FILES = new Set(['README.md', 'CHANGELOG.md', 'LICENSE', 'QUICKSTART.md']);
+// Names the ecosystem fixes for us. FUNDING.yml is read by GitHub at that exact path and
+// spelling — renaming it to kebab-case would silently disable the sponsor button, so the
+// convention has to bend for it rather than the other way round.
+const STANDARD_FILES = new Set(['README.md', 'CHANGELOG.md', 'LICENSE', 'QUICKSTART.md', 'FUNDING.yml']);
 const KEBAB_FILE = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 
 export function auditProjectFileNames(paths) {
