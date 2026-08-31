@@ -15224,9 +15224,9 @@
         },
         "png": {
           "path": "diagrams/condenser-image-workflow.png",
-          "present": true,
-          "bytes": 483747,
-          "sha256": "b870b5c43efab5abf80b03a1560910bddb9fea71ebc2daae17a7a02cc393a789"
+          "present": false,
+          "bytes": 0,
+          "sha256": null
         },
         "pdf": {
           "path": "diagrams/condenser-image-workflow.pdf",

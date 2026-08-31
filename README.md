@@ -185,16 +185,6 @@ rendering cannot drift apart.
 
 [![TurtleFont specimen](diagrams/turtlefont-specimen.png)](diagrams/turtlefont-specimen.png)
 
-### Working from a real photograph
-
-Source photo embedded in the document, dithered line art, and a 4×-supersampled
-simplification — the same subject through the whole imaging path, side by side, each panel
-captioned with what it actually is. The closing banner says plainly that this is an
-illustrative test asset and not equipment-specific evidence, which is the kind of thing a
-drawing that ends up in a field document has to state about itself.
-
-[![Real image workflow](diagrams/condenser-image-workflow.png)](diagrams/condenser-image-workflow.png)
-
 ### Tracing a source image, measured rather than asserted
 
 Five seeded-random trials, each showing the source against a direct 1× trace and a 4×
