@@ -121,7 +121,7 @@ try {
   if (!reopened.summary.clean || reopened.open.some((finding) => ['S0', 'S1', 'S2'].includes(finding.severity))) {
     throw new Error('saved image document did not reopen cleanly');
   }
-  await call('render', { path: SVG, bounds: 'canvas', showGrid: false, markFindings: false });
+  await call('render', { path: SVG, bounds: 'content', showGrid: true, markFindings: false, margin: 20 });
 
   process.stdout.write(`measured photo and trace at ${photoMeasurement.width}x${photoMeasurement.height} -> ${photoMeasurement.cellsWide}x${photoMeasurement.cellsTall} cells, ${photoMeasurement.aspectDriftPct}% drift\n`);
   process.stdout.write('dither sampling: 1536x1024 source -> 96x64 quadrants (16x16 source pixels per sample)\n');

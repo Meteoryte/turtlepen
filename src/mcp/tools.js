@@ -546,9 +546,61 @@ export function createTools(session) {
     },
 
     {
+      name: 'scale',
+      description:
+        'Define, update, or remove a document scale. Magnitude scales can be bound to a box length; position scales are projection helpers only. This mutation participates in plan, history, save/open, and approval diffs.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action: { type: 'string', enum: ['define', 'update', 'remove'] },
+          id: { type: 'string', description: 'stable scale id' },
+          domain: {
+            type: 'array', items: { type: 'number' }, minItems: 2, maxItems: 2,
+            description: 'ordered [zero-length value, full-extent value] for magnitude scales',
+          },
+          quads: { type: 'integer', minimum: 1, description: 'full scale extent in 5px quadrants' },
+          kind: { type: 'string', enum: [...core.scale.SCALE_KINDS] },
+        },
+        required: ['action', 'id'],
+        additionalProperties: false,
+      },
+      handler: async (args) => {
+        const doc = need(session);
+        const result = core.OPERATIONS.scale(doc, args);
+        await persist(session);
+        return json({ action: args.action, scale: result, scales: doc.scales });
+      },
+    },
+
+    {
+      name: 'inspect_scale',
+      description:
+        'List declared scales, or project one finite value through a named scale. Projection reports the exact quadrant, rounded quadrant, residual, and whether the value is in-domain; it never clamps or changes the drawing.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          value: { type: 'number' },
+        },
+        additionalProperties: false,
+      },
+      handler: ({ id = null, value = null }) => {
+        const doc = need(session);
+        if (!id) {
+          if (value != null) throw new Error('inspect_scale needs id when value is supplied');
+          return json(doc.scales ?? {});
+        }
+        core.scale.assertScaleId(id);
+        const declared = Object.hasOwn(doc.scales ?? {}, id) ? doc.scales[id] : null;
+        if (!declared) throw new Error(`no scale "${id}" — declared scales: ${Object.keys(doc.scales ?? {}).join(', ') || '(none)'}`);
+        return json(value == null ? declared : { scale: declared, value, projection: core.scale.project(declared, value) });
+      },
+    },
+
+    {
       name: 'place_box',
       description:
-        'Place a box by address and cell span. The address may name a pin point (C4.tl, C4.c, C4.br) which decides which of the box\'s own corners lands there. Measure the label first — this tool reports overflow but never resizes anything.',
+        'Place a box by address and cell span. The address may name a pin point (C4.tl, C4.c, C4.br) which decides which of the box\'s own corners lands there. Measure the label first. Optional role carries skin-independent meaning; value binds one box length to a declared magnitude scale.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -559,6 +611,16 @@ export function createTools(session) {
           page: { type: 'string' },
           corner: { type: 'string', enum: ['square', 'rounded', 'indented', 'chamfered'] },
           shape: { description: 'flowchart symbol: process (default), decision, terminator, subprocess, io, prep, manual, data, document, bar; or a container — lane, group — which reserves only its title band and border ring so members sit inside without colliding', type: 'string', enum: [...core.NODE_SHAPES] },
+          role: { type: 'string', enum: [...core.NODE_ROLES], description: 'semantic presentation role; focal is counted by C002' },
+          value: {
+            type: 'object',
+            properties: {
+              scale: { type: 'string' }, value: { type: 'number' }, axis: { type: 'string', enum: [...core.scale.VALUE_AXES] },
+            },
+            required: ['scale', 'value', 'axis'],
+            additionalProperties: false,
+            description: 'exact rectangular length binding; the scale must already exist and be kind magnitude',
+          },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
           fontSize: { type: 'integer' },
           fill: {
@@ -580,9 +642,9 @@ export function createTools(session) {
         required: ['id', 'at', 'span'],
         additionalProperties: false,
       },
-      handler: async ({ id, at, span, label = '', page = 'base', corner = 'square', shape = 'process', align = 'left', fontSize = null, fill = null }) => {
+      handler: async ({ id, at, span, label = '', page = 'base', corner = 'square', shape = 'process', align = 'left', fontSize = null, fill = null, role = 'plain', value = null }) => {
         const doc = need(session);
-        const el = core.placeBox(doc, page, { id, at, span, label, corner, shape, align, fontSize, fill });
+        const el = core.placeBox(doc, page, { id, at, span, label, corner, shape, align, fontSize, fill, role, value });
         await persist(session);
         const fit = label ? core.shapes.fitReportForShape(label, el.rect, el.shape ?? 'process', { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null;
         return [
@@ -925,7 +987,7 @@ ${stalled}` : core.formatLog(result);
     {
       name: 'restyle',
       description:
-        'Change a box\'s label, node shape, corner style, text alignment, font size, or fill. This is the tool behind the "shorten", "font" and "shape" fixes; it re-measures the label.',
+        'Change a box\'s label, node shape, corner style, text alignment, font size, fill, semantic role, or quantitative value binding. Pass value:null to clear a binding before removing its scale. It re-measures the label.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -937,6 +999,20 @@ ${stalled}` : core.formatLog(result);
           corner: { type: 'string', enum: ['square', 'rounded', 'indented', 'chamfered'] },
           align: { type: 'string', enum: ['left', 'center', 'right'] },
           fontSize: { type: 'integer' },
+          role: { type: 'string', enum: [...core.NODE_ROLES] },
+          value: {
+            oneOf: [
+              {
+                type: 'object',
+                properties: {
+                  scale: { type: 'string' }, value: { type: 'number' }, axis: { type: 'string', enum: [...core.scale.VALUE_AXES] },
+                },
+                required: ['scale', 'value', 'axis'],
+                additionalProperties: false,
+              },
+              { type: 'null' },
+            ],
+          },
           fill: {
             oneOf: [
               { type: 'string', description: '3- or 6-digit hex colour' },
@@ -2622,6 +2698,9 @@ function describeElement(doc, el) {
     perspectives: el.perspectives ?? {},
     microMasks: core.microMasksOf(doc).filter((mask) => mask.target === el.id),
     corner: el.corner,
+    shape: el.shape ?? null,
+    role: el.role ?? null,
+    value: el.value ?? null,
     fontSize: el.fontSize,
     fit: fit ? { fits: fit.fits, charsPerLine: fit.charsPerLine, lines: fit.lineCount, visibleLines: fit.visibleLines } : null,
     groups: core.groupsOf(doc).filter((group) => group.members.includes(el.id)).map((group) => group.id),
@@ -3021,6 +3100,22 @@ SEMANTIC MODEL AND NODE CONNECTIONS
   describe returns both. Semantic inspection is separate from collision
   validation, so missing metadata can never masquerade as broken geometry.
 
+SEMANTIC NODE ROLES AND EXACT LENGTH SCALES
+  place_box { ..., role: "focal|backend|store|external|input|optional|security" }
+  scale { action: "define", id: "revenue", domain: [0,100], quads: 40,
+          kind: "magnitude" }
+  inspect_scale { id: "revenue", value: 50 }  see exact projection + residual
+  place_box { ..., value: { scale: "revenue", value: 50, axis: "y" } }
+  restyle { id, value: null }                  clear a length binding
+
+  Roles carry skin-independent meaning; C002 counts focal nodes. Optional and
+  security dashes render in SVG, PNG, and PDF. A value binding checks one
+  rectangular width or height only. Position, treemap-area, radial, and Sankey
+  ribbon-width encodings are drawable but are not inferred from box size.
+  V001 catches a wrong length, V002 a non-zero magnitude baseline, V003 an
+  out-of-domain value, and V004 a projection that cannot land exactly on a
+  positive whole-cell box extent.
+
 1PX ERASER / MICRO-MASK
   micro_mask { action: "add", id, target, points: [{x,y}], width: 1 }
   micro_mask { action: "remove", id }
@@ -3064,9 +3159,8 @@ FLOWCHART NODES — the symbol carries the meaning
   CONTAINERS ARE THE EXCEPTION. lane and group reserve only their title band
   and border ring and leave their hole FREE, so members placed inside collide
   with nothing. A node straddling the frame still reports L001, because it
-  really does cross the border. Flow crossing a lane border is a real L004 and
-  is exactly what accept_finding is for — handing over between lanes is what a
-  swimlane depicts, not a defect.
+  really does cross the border. Flow crossing a lane/group frame is L026
+  information, not L004 — handing over between lanes is what a swimlane depicts.
 
   A shape still CLAIMS its whole bounding box, so gutters, free_space and
   layout are unchanged; it only INKS the symbol. A stroke clipping a diamond's

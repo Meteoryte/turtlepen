@@ -18,6 +18,7 @@ function typeOf(value) {
 }
 
 function matchesType(expected, value) {
+  if (expected === 'null') return value === null;
   if (expected === 'number') return typeof value === 'number' && Number.isFinite(value);
   if (expected === 'integer') return Number.isInteger(value);
   if (expected === 'object') return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -76,6 +77,9 @@ export function assertSchema(schema, value, path = 'arguments') {
   if (Array.isArray(value)) {
     if (schema.minItems != null && value.length < schema.minItems) {
       schemaError(path, `must contain at least ${schema.minItems} item(s)`);
+    }
+    if (schema.maxItems != null && value.length > schema.maxItems) {
+      schemaError(path, `must contain at most ${schema.maxItems} item(s)`);
     }
     if (schema.items) value.forEach((item, index) => assertSchema(schema.items, item, `${path}[${index}]`));
   }

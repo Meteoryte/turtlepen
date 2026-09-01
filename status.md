@@ -1,16 +1,16 @@
 # TurtlePen — status
 
-**As of 2026-08-31.** Prototype, working end to end, 667/667 tests green,
+**As of 2026-09-01.** Prototype, working end to end, 691/691 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **667/667 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **691/691 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe and the stateful Streamable HTTP
   server over TCP.
-- **Every external surface has a drift-proof contract.** All 74 MCP tools
+- **Every external surface has a drift-proof contract.** All 76 MCP tools
   complete representative work over the real stdio child process; Streamable
   HTTP exposes that exact live registry and preserves isolated active documents
   across calls; every JSON-RPC
@@ -32,6 +32,12 @@ Verified by running it, not by inspection:
   and ordered dynamic views project shared elements; document-owned tokens,
   tag/perspective styles, generated keys, linked documentation/ADR/runbook
   resources, and fingerprinted model acceptances survive migration and reopen.
+- **Diagram-type semantics are usable through every endpoint, not only direct
+  imports.** The 76-tool registry exposes semantic node roles plus durable,
+  plan-aware scale define/update/remove and exact projection inspection.
+  Rectangular length bindings survive save/open and are checked by `V001`–`V004`;
+  unsupported position, area, radial, and ribbon-width encodings remain
+  explicitly unmodelled instead of receiving a false clean verdict.
 - **Native, dependency-free output is available outside MCP.** The `turtlepen`
   CLI validates and inspects, renders deterministic SVG/PNG/PDF, generates
   architecture documentation bundles and artifact contracts, and executes or
@@ -63,6 +69,17 @@ Verified by running it, not by inspection:
   artwork paths and images, persists through plan/history/save/viewer flows,
   moves with its target, changes SVG/render hash, and leaves structural
   validation byte-identical.
+- **Dense native artwork remains honest and practical.** `applyPen` preserves
+  all-or-nothing mutation with an append checkpoint instead of cloning the
+  growing document, while L006 rejects geometrically separated path pairs by
+  cached bounds before building quadrant sets. The v3 Brainn mascot corpus
+  keeps all 2,982 scholar strokes as independent paths, builds in about 0.1s,
+  and validates CLEAN in about 0.07s; its five-pose 14,034-stroke sheet builds
+  and validates in under two seconds on the verification machine. Native PNG
+  output now paints fully opaque, unmasked elements directly instead of
+  allocating and compositing a full-canvas layer per element; the 17-million-
+  pixel sheet publishes in about 3.5s instead of timing out after three minutes.
+  Mascot builders validate before export and produce no-grid PNG previews.
 - **TurtlePen has produced a field work product, not only test fixtures.**
   `pnpm run field-guide` authors a complete condenser replacement workflow over
   the real MCP stdio transport, rehearses 27 operations, commits atomically,
@@ -195,14 +212,14 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (74 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (76 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls. The Streamable HTTP transport calls that same protocol
   runtime, returns request-scoped SSE frames, maintains one active document per
   opaque session, serializes its calls, isolates its filesystem, and purges it
   on DELETE or expiry.
 - **The public Cloudflare/Sites adapter is canonical source.**
-  `src/mcp/cloudflare.js` exposes the same 74-tool registry with D1 session
+  `src/mcp/cloudflare.js` exposes the same 76-tool registry with D1 session
   indexing, optimistic version commits, R2 document/history/artifact storage,
   explicit quotas, SSE responses, and an injectable binding factory covered by
   an end-to-end in-memory D1/R2 test. Brainn.dev re-exports this adapter rather

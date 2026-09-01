@@ -22,6 +22,14 @@
 
 /** Scale kinds. `magnitude` is length-encoded, so its baseline is load-bearing. */
 export const SCALE_KINDS = Object.freeze(['magnitude', 'position']);
+export const VALUE_AXES = Object.freeze(['x', 'y']);
+
+export function assertScaleId(id) {
+  if (!id || !/^[A-Za-z0-9_-]+$/.test(String(id))) {
+    throw new SyntaxError(`scale id ${JSON.stringify(id)} must be non-empty and alphanumeric (dashes and underscores allowed)`);
+  }
+  return String(id);
+}
 
 export function assertScaleKind(kind) {
   if (!SCALE_KINDS.includes(kind)) {
@@ -39,6 +47,7 @@ export function assertScaleKind(kind) {
  *        full domain is allowed to occupy.
  */
 export function defineScale(id, { domain, quads, kind = 'magnitude' }) {
+  id = assertScaleId(id);
   if (!Array.isArray(domain) || domain.length !== 2 || !domain.every(Number.isFinite)) {
     throw new SyntaxError(`scale "${id}": domain must be two finite numbers`);
   }
@@ -48,6 +57,26 @@ export function defineScale(id, { domain, quads, kind = 'magnitude' }) {
     throw new RangeError(`scale "${id}": quads must be a positive whole number of quadrants`);
   }
   return { id, domain: [lo, hi], quads, kind: assertScaleKind(kind) };
+}
+
+/**
+ * A value binding currently means one exact thing: the length of a rectangular
+ * mark along x or y. Position, area and ribbon-width encodings need different
+ * geometry and are deliberately not smuggled through this shape.
+ */
+export function normalizeValueBinding(binding, what = 'value binding') {
+  if (binding == null) return null;
+  if (!binding || typeof binding !== 'object' || Array.isArray(binding)) {
+    throw new TypeError(`${what} must be { scale, value, axis } or null`);
+  }
+  const unknown = Object.keys(binding).filter((key) => !['scale', 'value', 'axis'].includes(key));
+  if (unknown.length) throw new SyntaxError(`${what} has unknown field${unknown.length === 1 ? '' : 's'} ${unknown.join(', ')}`);
+  const scale = assertScaleId(binding.scale);
+  if (!Number.isFinite(binding.value)) throw new TypeError(`${what} value must be a finite number`);
+  if (!VALUE_AXES.includes(binding.axis)) {
+    throw new SyntaxError(`${what} axis must be ${VALUE_AXES.join(' or ')} — got ${JSON.stringify(binding.axis)}`);
+  }
+  return { scale, value: binding.value, axis: binding.axis };
 }
 
 /**
@@ -98,5 +127,7 @@ export function readBack(scale, quads) {
  * obligation to include zero, and demanding it would be wrong.
  */
 export function baselineIsTruncated(scale) {
-  return scale.kind === 'magnitude' && Math.min(...scale.domain) !== 0;
+  // Length is measured from the first domain value. Zero therefore has to be
+  // that endpoint; merely appearing elsewhere in the domain is not enough.
+  return scale.kind === 'magnitude' && scale.domain[0] !== 0;
 }

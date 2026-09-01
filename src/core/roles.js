@@ -9,7 +9,7 @@
  * Two things follow that a raw `fill` could never give:
  *
  *   1. A role is CHECKABLE. `focal` is the one role whose whole job is to be
- *      scarce, so `L026` can count it. A hex fill carries no such claim and
+ *      scarce, so `C002` can count it. A hex fill carries no such claim and
  *      nothing can be said about it.
  *   2. A role is SKIN-INDEPENDENT. Light and dark resolve the same role to
  *      different values, so a document does not encode one theme.
@@ -20,18 +20,6 @@
  * mechanical enforcement: the same rules, but as findings the engine reports
  * rather than advice a reader has to remember. Palette values are TurtlePen's
  * own — the source's brand colours are its identity, not a spec to copy.
- */
-
-/**
- * KNOWN LIMIT — dash is SVG-only.
- *
- * `optional` and `security` carry a dashed stroke. The SVG renderer emits it;
- * the native PNG/PDF rasteriser draws strokes as per-quadrant edge rects and has
- * no dash concept, so those two roles differ between the formats. Recorded here
- * rather than left to be discovered, because an undocumented divergence between
- * two renderers is the exact defect that made every `data` cylinder wrong.
- * Until it is closed, do not rely on the dash alone to carry meaning — the fill
- * and stroke colour distinguish both roles without it.
  */
 
 /** Roles a box may declare. `plain` is the default and asserts nothing. */

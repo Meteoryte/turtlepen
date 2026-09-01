@@ -40,10 +40,16 @@ test('every advertised MCP tool completes a representative use case over stdio',
     assert.equal(runtime.toolCount, advertised.length);
     await invoke('measure', { text: 'Outdoor condensing unit', fontSize: 10, maxWidthCells: 12 });
     await invoke('new_diagram', { name: 'endpoint matrix', path: 'endpoint.turtlepen.json', cols: 80, rows: 50 });
+    await invoke('scale', { action: 'define', id: 'capacity', domain: [0, 100], quads: 40, kind: 'magnitude' });
+    const projection = JSON.parse(await invoke('inspect_scale', { id: 'capacity', value: 15 }));
+    assert.equal(projection.projection.quads, 6);
 
     await invoke('add_page', { id: 'notes', z: 2, intent: 'overlay', title: 'Field notes' });
     await invoke('update_page', { id: 'notes', title: 'Verified field notes', visible: false });
-    await invoke('place_box', { id: 'unit', at: 'C4.tl', span: { w: 6, h: 3 }, label: 'Condenser' });
+    await invoke('place_box', {
+      id: 'unit', at: 'C4.tl', span: { w: 6, h: 3 }, label: 'Condenser', role: 'backend',
+      value: { scale: 'capacity', value: 15, axis: 'y' },
+    });
     await invoke('place_box', { id: 'tag', at: 'M4.tl', span: { w: 4, h: 2 }, label: 'Disconnect' });
     await invoke('place_box', { id: 'overlap', at: 'F4.tl', span: { w: 6, h: 3 }, label: 'Conflict' });
     await invoke('annotate', {

@@ -395,6 +395,33 @@ test('a pen program that fails while adding elements applies nothing', () => {
   assert.equal(core.serialize(d), before, 'the first box must not leak out of the failed pen operation');
 });
 
+test('applyPen commits in place instead of cloning all prior document state', () => {
+  const d = core.createDocument({ name: 'linear-pen' });
+  const pages = d.pages;
+  const elements = d.elements;
+  const base = d.elements.base;
+
+  core.applyPen(d, 'base', 'pen C4.q1\nright 4 align top line', { id: 'stroke', role: 'artwork' });
+
+  assert.equal(d.pages, pages, 'adding a stroke must not replace the page model');
+  assert.equal(d.elements, elements, 'adding a stroke must not replace the element map');
+  assert.equal(d.elements.base, base, 'adding a stroke must append to the existing page array');
+  assert.equal(base.at(-1).id, 'stroke');
+});
+
+test('createDocument honors legacy top-level dimensions and refuses ambiguous options', () => {
+  assert.deepEqual(core.createDocument({ cols: 80, rows: 40 }).canvas, { cols: 80, rows: 40 });
+  assert.deepEqual(
+    core.createDocument({ canvas: { cols: 80, rows: 40 } }).canvas,
+    { cols: 80, rows: 40 },
+  );
+  assert.throws(
+    () => core.createDocument({ canvas: { cols: 80, rows: 40 }, cols: 80, rows: 40 }),
+    /or top-level cols\/rows, not both/,
+  );
+  assert.throws(() => core.createDocument({ width: 80, height: 40 }), /unknown createDocument options: width, height/);
+});
+
 // ---------------------------------------------------------------------------
 // Plan / commit
 // ---------------------------------------------------------------------------

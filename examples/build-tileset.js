@@ -140,7 +140,7 @@ const cols = MARGIN * 2 + COLS * TILE + (COLS - 1) * GUTTER;
 const rowsTotal = MARGIN * 2 + sheetRows * TILE + (sheetRows - 1) * GUTTER;
 
 const doc = core.createDocument({
-  name: '16x16 tileset', cols, rows: rowsTotal, createdAt: '2026-08-31T00:00:00.000Z',
+  name: '16x16 tileset', canvas: { cols, rows: rowsTotal }, createdAt: '2026-08-31T00:00:00.000Z',
 });
 core.OPERATIONS.set_background(doc, { color: '#171a1f' });
 

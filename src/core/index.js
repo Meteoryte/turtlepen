@@ -13,7 +13,7 @@ import * as geometry from './geometry.js';
 import * as address from './address.js';
 import * as text from './text.js';
 import * as shapes from './shapes.js';
-import { assertNodeRole } from './roles.js';
+import { assertNodeRole, NODE_ROLES } from './roles.js';
 import * as scale from './scale.js';
 import * as occupancy from './occupancy.js';
 import * as image from './image.js';
@@ -65,6 +65,7 @@ export {
 } from './perceptual.js';
 
 export { geometry, address, text, shapes, occupancy, image, png, dither, scale };
+export { NODE_ROLES };
 export { tone_ as tone };
 export { workspace };
 export { renderPng, renderPdf, rasterizeDocument, encodePng };
@@ -162,14 +163,21 @@ export function isClosedPath(pieces) {
 }
 
 export function applyPen(doc, pageId, program, options = {}) {
-  // A pen program can add multiple elements. Rehearse on a clone first so a
-  // duplicate id or malformed later element cannot leak an earlier element
-  // into the live document.
-  const draft = structuredClone(doc);
-  const result = applyPenMutable(draft, pageId, program, options);
-  doc.pages = draft.pages;
-  doc.elements = draft.elements;
-  return result;
+  // A pen program can add multiple elements. Its document mutation is strictly
+  // append-only on one page: runPen reads existing geometry, then addBox,
+  // addText and addPath append their results. Remember that one array boundary
+  // so a later duplicate id or invalid style can roll the whole program back
+  // without cloning every element already in the document. The old full clone
+  // made N successive artwork strokes quadratic in document size.
+  getPage(doc, pageId);
+  const elements = doc.elements[pageId];
+  const before = elements.length;
+  try {
+    return applyPenMutable(doc, pageId, program, options);
+  } catch (error) {
+    elements.length = before;
+    throw error;
+  }
 }
 
 function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', stroke = null, color = null, fillColor = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null } = {}) {
@@ -573,26 +581,47 @@ export function moveElementTo(doc, id, at, pin = 'tl') {
 }
 
 /** Change a box's label or styling, re-measuring the label as it goes. */
-export function restyleBox(doc, id, { label = null, corner = null, shape = null, align = null, fontSize = null, fill = null } = {}) {
+export function restyleBox(doc, id, changes = {}) {
+  const { label = null, corner = null, shape = null, align = null, fontSize = null, fill = null, role = null } = changes;
+  const valueWasSupplied = Object.hasOwn(changes, 'value');
   const found = findElement(doc, id);
   if (!found) throw new Error(`no element "${id}" to restyle`);
   const el = found.element;
   if (el.kind === 'path') throw new Error(`"${id}" is a path and carries no label`);
   if (el.kind === 'image') throw new Error(`"${id}" is an image — restyle changes box or text presentation only`);
-  if (el.kind === 'text' && (corner != null || fill != null)) throw new Error(`"${id}" is text — corner and fill apply to boxes only`);
+  if (el.kind === 'text' && (corner != null || fill != null || role != null || valueWasSupplied)) {
+    throw new Error(`"${id}" is text — corner, fill, role, and value binding apply to boxes only`);
+  }
   // Validate the whole request before touching the element. A repair operation
   // is as atomic as a plan even when called directly.
   const nextCorner = corner != null ? shapes.assertCornerStyle(corner) : null;
   const nextShape = shape != null ? shapes.assertNodeShape(shape) : null;
   const nextAlign = align != null ? assertTextAlign(align) : null;
   const nextFontSize = fontSize != null ? text.resolveFontSize(fontSize) : null;
-  const nextFill = fill != null ? normalizeColor(fill, 'box fill') : null;
+  const nextFill = fill != null ? normalizeFill(fill, 'box fill') : null;
+  const nextRole = role != null ? assertNodeRole(role) : null;
+  const nextValue = valueWasSupplied ? scale.normalizeValueBinding(changes.value, `box "${id}" value binding`) : undefined;
+  if (nextValue) {
+    const declared = Object.hasOwn(doc.scales ?? {}, nextValue.scale) ? doc.scales[nextValue.scale] : null;
+    if (!declared) throw new Error(`box "${id}" binds scale "${nextValue.scale}", but that scale is not declared — define it first`);
+    if (declared.kind !== 'magnitude') {
+      throw new Error(`box "${id}" uses length geometry, but scale "${nextValue.scale}" is ${declared.kind}`);
+    }
+  }
   if (label != null) el.kind === 'text' ? (el.text = label) : (el.label = label);
   if (nextCorner != null) el.corner = nextCorner;
   if (nextShape != null) el.shape = nextShape;
   if (nextAlign != null) el.align = nextAlign;
   if (nextFontSize != null) el.fontSize = nextFontSize;
   if (nextFill != null) el.fill = nextFill;
+  if (nextRole != null) {
+    if (nextRole === 'plain') delete el.role;
+    else el.role = nextRole;
+  }
+  if (valueWasSupplied) {
+    if (nextValue == null) delete el.value;
+    else el.value = nextValue;
+  }
   const content = el.kind === 'text' ? el.text : el.label;
   return { element: el, page: found.page, fit: content ? shapes.fitReportForShape(content, el.rect, el.shape ?? 'process', { fontSize: el.fontSize, paddingQuads: doc.font.paddingQuads, align: el.align }) : null };
 }
@@ -907,6 +936,14 @@ export const OPERATIONS = Object.freeze({
   remove: (doc, a) => removeElement(doc, a.id, a.page ?? null),
   set_canvas: (doc, a) => setCanvas(doc, a.cols, a.rows),
   set_background: (doc, a) => setBackground(doc, a.color ?? null),
+  scale: (doc, a) => {
+    switch (a.action) {
+      case 'define': return addScale(doc, a.id, a);
+      case 'update': return updateScale(doc, a.id, a);
+      case 'remove': return removeScale(doc, a.id);
+      default: throw new SyntaxError(`scale action must be define, update, or remove — got ${JSON.stringify(a.action)}`);
+    }
+  },
   align: (doc, a) => alignElements(doc, a.ids, a.edge),
   distribute: (doc, a) => distributeElements(doc, a.ids, a.axis),
   layout: (doc, a) => layoutElements(doc, a),
@@ -1189,13 +1226,15 @@ export function documentDiff(before, after) {
   const pages = compare(before.pages ?? [], after.pages ?? [], 'id');
   const views = compare(before.views ?? [], after.views ?? [], 'key');
   const resources = compare(before.resources ?? [], after.resources ?? [], 'id');
+  const scales = compare(Object.values(before.scales ?? {}), Object.values(after.scales ?? {}), 'id');
   const themeChanged = JSON.stringify(before.theme ?? null) !== JSON.stringify(after.theme ?? null);
   const changed = [...elements.added, ...elements.removed, ...elements.changed].length
     + [...pages.added, ...pages.removed, ...pages.changed].length
     + [...views.added, ...views.removed, ...views.changed].length
     + [...resources.added, ...resources.removed, ...resources.changed].length
+    + [...scales.added, ...scales.removed, ...scales.changed].length
     + Number(themeChanged);
-  return { changed, elements, pages, views, resources, themeChanged };
+  return { changed, elements, pages, views, resources, scales, themeChanged };
 }
 
 export async function checkpointDocumentRecord(doc, path, { expectedHash = undefined, backup = true } = {}) {
@@ -2032,8 +2071,49 @@ export function placeStrokeLabel(doc, pageId, {
  * scale once and every mark on it is compared with the same one.
  */
 export function addScale(doc, id, spec) {
-  if (doc.scales?.[id]) throw new SyntaxError(`scale "${id}" already exists`);
+  id = scale.assertScaleId(id);
+  if (Object.hasOwn(doc.scales ?? {}, id)) throw new SyntaxError(`scale "${id}" already exists`);
   doc.scales = doc.scales ?? {};
-  doc.scales[id] = scale.defineScale(id, spec);
-  return doc.scales[id];
+  const defined = scale.defineScale(id, spec);
+  // Assignment to a plain object's magic `__proto__` accessor changes the
+  // object's prototype instead of creating a scale. Define an own data
+  // property so every ID accepted by assertScaleId has identical semantics.
+  Object.defineProperty(doc.scales, id, {
+    value: defined, enumerable: true, writable: true, configurable: true,
+  });
+  return defined;
+}
+
+/** Replace selected facts on an existing scale without changing its id. */
+export function updateScale(doc, id, spec) {
+  id = scale.assertScaleId(id);
+  const current = Object.hasOwn(doc.scales ?? {}, id) ? doc.scales[id] : null;
+  if (!current) throw new Error(`no scale "${id}" to update`);
+  const next = scale.defineScale(id, {
+    domain: spec.domain ?? current.domain,
+    quads: spec.quads ?? current.quads,
+    kind: spec.kind ?? current.kind,
+  });
+  const bound = Object.values(doc.elements ?? {}).flat().filter((element) => element.value?.scale === id);
+  if (next.kind !== 'magnitude' && bound.length) {
+    throw new Error(`scale "${id}" is bound as rectangular length by ${bound.map((element) => `"${element.id}"`).join(', ')} and cannot become ${next.kind}`);
+  }
+  doc.scales[id] = next;
+  return next;
+}
+
+/** Remove only an unreferenced scale; bindings are never silently discarded. */
+export function removeScale(doc, id) {
+  id = scale.assertScaleId(id);
+  const current = Object.hasOwn(doc.scales ?? {}, id) ? doc.scales[id] : null;
+  if (!current) throw new Error(`no scale "${id}" to remove`);
+  const bound = Object.values(doc.elements ?? {}).flat().filter((element) => element.value?.scale === id);
+  if (bound.length) {
+    throw new Error(
+      `scale "${id}" is still bound by ${bound.map((element) => `"${element.id}"`).join(', ')}. `
+      + 'Clear each binding with restyle value:null before removing it.',
+    );
+  }
+  delete doc.scales[id];
+  return current;
 }

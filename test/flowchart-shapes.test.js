@@ -459,11 +459,23 @@ test('V002 fires on a truncated magnitude baseline but never on a position scale
   addScale(bar, 'rev', { domain: [80, 100], quads: 40, kind: 'magnitude' });
   const hit = validate(bar).open.find((f) => f.rule === 'V002');
   assert.ok(hit, 'length-encoded and missing zero is misleading');
-  assert.match(hit.message, /1\.25:1/, 'it states the true ratio the drawing hides');
+  assert.match(hit.message, /begins at 80, not zero/, 'it states the actual scale defect without inventing a ratio');
 
   // A scatter axis has no obligation to include zero. Demanding it would be wrong.
   const scatter = createDocument({ name: 'scatter' });
   addScale(scatter, 'temp', { domain: [80, 100], quads: 40, kind: 'position' });
   assert.equal(validate(scatter).open.filter((f) => f.rule === 'V002').length, 0,
     'position scales are exempt — zero is not meaningful for them');
+});
+
+test('V004 reports a value that no whole-cell box can encode exactly', () => {
+  const doc = createDocument({ name: 'unrepresentable' });
+  addScale(doc, 'thirds', { domain: [0, 3], quads: 10, kind: 'magnitude' });
+  placeBox(doc, 'base', {
+    id: 'one', at: 'C4', span: '4x2', value: { scale: 'thirds', value: 1, axis: 'y' },
+  });
+  const hit = validate(doc).open.find((f) => f.rule === 'V004');
+  assert.ok(hit, 'fractional projection is not silently rounded clean');
+  assert.equal(hit.metrics.roundedQuads, 3);
+  assert.ok(hit.metrics.residual > 0);
 });

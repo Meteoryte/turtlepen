@@ -220,6 +220,22 @@ SEMANTIC MODEL AND NODE CONNECTIONS
   describe returns both. Semantic inspection is separate from collision
   validation, so missing metadata can never masquerade as broken geometry.
 
+SEMANTIC NODE ROLES AND EXACT LENGTH SCALES
+  place_box { ..., role: "focal|backend|store|external|input|optional|security" }
+  scale { action: "define", id: "revenue", domain: [0,100], quads: 40,
+          kind: "magnitude" }
+  inspect_scale { id: "revenue", value: 50 }  see exact projection + residual
+  place_box { ..., value: { scale: "revenue", value: 50, axis: "y" } }
+  restyle { id, value: null }                  clear a length binding
+
+  Roles carry skin-independent meaning; C002 counts focal nodes. Optional and
+  security dashes render in SVG, PNG, and PDF. A value binding checks one
+  rectangular width or height only. Position, treemap-area, radial, and Sankey
+  ribbon-width encodings are drawable but are not inferred from box size.
+  V001 catches a wrong length, V002 a non-zero magnitude baseline, V003 an
+  out-of-domain value, and V004 a projection that cannot land exactly on a
+  positive whole-cell box extent.
+
 1PX ERASER / MICRO-MASK
   micro_mask { action: "add", id, target, points: [{x,y}], width: 1 }
   micro_mask { action: "remove", id }
@@ -263,9 +279,8 @@ FLOWCHART NODES — the symbol carries the meaning
   CONTAINERS ARE THE EXCEPTION. lane and group reserve only their title band
   and border ring and leave their hole FREE, so members placed inside collide
   with nothing. A node straddling the frame still reports L001, because it
-  really does cross the border. Flow crossing a lane border is a real L004 and
-  is exactly what accept_finding is for — handing over between lanes is what a
-  swimlane depicts, not a defect.
+  really does cross the border. Flow crossing a lane/group frame is L026
+  information, not L004 — handing over between lanes is what a swimlane depicts.
 
   A shape still CLAIMS its whole bounding box, so gutters, free_space and
   layout are unchanged; it only INKS the symbol. A stroke clipping a diamond's
@@ -706,5 +721,10 @@ rules:
     "severity": "S3",
     "title": "value outside its scale",
     "blurb": "a value beyond the declared domain is extrapolated, not read"
+  },
+  "V004": {
+    "severity": "S1",
+    "title": "value cannot land on box lattice",
+    "blurb": "the declared value projects to a fractional, odd, or zero box extent"
   }
 }

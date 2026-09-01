@@ -7,6 +7,7 @@
  * embedded in the result.
  */
 import { fileURLToPath } from 'node:url';
+import { mkdtemp, rm } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
 import * as core from '../src/core/index.js';
@@ -17,6 +18,15 @@ const project = resolve(here, '..');
 const session = createSession({ cwd: project });
 const tools = Object.fromEntries(createTools(session).map((tool) => [tool.name, tool]));
 const q = (x, y) => core.address.quadToAddress(x, y);
+const finalDocumentPath = resolve(project, 'brand/logo.turtlepen.json');
+let previous = null;
+try {
+  previous = await core.loadDocumentRecord(finalDocumentPath);
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+const stagingDirectory = await mkdtemp(resolve(here, '.build-logo-'));
+const stagingDocumentPath = resolve(stagingDirectory, 'logo.turtlepen.json');
 
 const C = Object.freeze({
   navy: '#001b35',
@@ -141,51 +151,66 @@ operations.push({
 line('mcp-rule-left', polyline([[59, 224], [88, 224]]), C.greenDark, 4, 'type');
 line('mcp-rule-right', polyline([[152, 224], [181, 224]]), C.greenDark, 4, 'type');
 
-await tools.new_diagram.handler({
-  name: 'TurtlePen logo — turtle at easel',
-  path: 'brand/logo.turtlepen.json',
-  cols: 120,
-  rows: 120,
-});
-session.doc.createdAt = '2026-08-08T00:00:00.000Z';
-session.doc.font.family = '"Segoe UI", Arial, sans-serif';
+try {
+  // Build against a private checkpoint. Creating a new diagram persists its
+  // empty starting state immediately, so pointing it at the reviewed source
+  // makes an interrupted build capable of replacing a finished logo with an
+  // empty document. Only the completed, validated document is installed below.
+  await tools.new_diagram.handler({
+    name: 'TurtlePen logo — turtle at easel',
+    path: stagingDocumentPath,
+    cols: 120,
+    rows: 120,
+  });
+  session.doc.createdAt = '2026-08-08T00:00:00.000Z';
+  session.doc.font.family = '"Segoe UI", Arial, sans-serif';
 
-const rehearsal = await tools.plan.handler({ operations, commit: false });
-if (/FAILED/.test(rehearsal)) throw new Error(rehearsal);
-const committed = await tools.plan.handler({ operations, commit: true });
-if (/FAILED/.test(committed)) throw new Error(committed);
+  const rehearsal = await tools.plan.handler({ operations, commit: false });
+  if (/FAILED/.test(rehearsal)) throw new Error(rehearsal);
+  const committed = await tools.plan.handler({ operations, commit: true });
+  if (/FAILED/.test(committed)) throw new Error(committed);
 
-// Cartoon construction intentionally layers touching silhouettes. Adjudicate
-// every non-INFO collision by its exact fingerprint so any geometry change
-// invalidates the acceptance and makes the build fail visibly again.
-const beforeAcceptance = core.validate(session.doc);
-const blockers = beforeAcceptance.open.filter((finding) => finding.severity !== 'S3');
-if (blockers.length) {
-  const acceptanceOps = blockers.map((finding) => ({
-    op: 'accept_finding',
-    fingerprint: finding.fingerprint,
-    reason: `Intentional logo construction: ${finding.rule} between ${finding.actors.join(' and ')} is required by the supplied turtle-at-easel composition.`,
-  }));
-  const accepted = await tools.plan.handler({ operations: acceptanceOps, commit: true });
-  if (/FAILED/.test(accepted)) throw new Error(accepted);
+  // Cartoon construction intentionally layers touching silhouettes. Adjudicate
+  // every non-INFO collision by its exact fingerprint so any geometry change
+  // invalidates the acceptance and makes the build fail visibly again.
+  const beforeAcceptance = core.validate(session.doc);
+  const blockers = beforeAcceptance.open.filter((finding) => finding.severity !== 'S3');
+  if (blockers.length) {
+    const acceptanceOps = blockers.map((finding) => ({
+      op: 'accept_finding',
+      fingerprint: finding.fingerprint,
+      reason: `Intentional logo construction: ${finding.rule} between ${finding.actors.join(' and ')} is required by the supplied turtle-at-easel composition.`,
+    }));
+    const accepted = await tools.plan.handler({ operations: acceptanceOps, commit: true });
+    if (/FAILED/.test(accepted)) throw new Error(accepted);
+  }
+
+  const validation = core.validate(session.doc);
+  const remainingBlockers = validation.open.filter((finding) => finding.severity !== 'S3');
+  if (remainingBlockers.length) throw new Error(core.formatLog(validation));
+  for (const acceptance of session.doc.acceptances) acceptance.acceptedAt = '2026-08-08T00:00:00.000Z';
+
+  const reviewCarry = core.preservePerceptualReview(session.doc, previous?.document);
+  await core.saveDocument(session.doc, finalDocumentPath, {
+    expectedHash: previous?.hash ?? null,
+    backup: true,
+  });
+  await core.exportSvg(session.doc, resolve(project, 'brand/logo.svg'), {
+    showGrid: true, bounds: 'content', margin: 20,
+  });
+  await core.exportSvg(session.doc, resolve(project, 'brand/logo-mark.svg'), {
+    pages: ['fills', 'outlines', 'features'], showGrid: false, bounds: 'content', margin: 20,
+  });
+
+  console.log(`logo authored with TurtlePen: ${operations.length} composition operations`);
+  console.log(`accepted intentional construction findings: ${blockers.length}`);
+  console.log(`perceptual review: ${reviewCarry.preserved ? `preserved ${reviewCarry.renderHash}` : reviewCarry.reason}`);
+  console.log('document: brand/logo.turtlepen.json');
+  console.log('render: brand/logo.svg (canonical reviewed profile)');
+  console.log(`mark: brand/logo-mark.svg; validation ${validation.summary.verdict} (${validation.open.length} INFO, ${validation.accepted.length} accepted)`);
+} finally {
+  await rm(stagingDirectory, { recursive: true, force: true });
 }
-
-const validation = core.validate(session.doc);
-const remainingBlockers = validation.open.filter((finding) => finding.severity !== 'S3');
-if (remainingBlockers.length) throw new Error(core.formatLog(validation));
-for (const acceptance of session.doc.acceptances) acceptance.acceptedAt = '2026-08-08T00:00:00.000Z';
-
-await tools.save.handler({});
-await tools.render.handler({ path: 'brand/logo.svg', showGrid: false, bounds: 'canvas', margin: 0 });
-await core.exportSvg(session.doc, resolve(project, 'brand/logo-mark.svg'), {
-  pages: ['fills', 'outlines', 'features'], showGrid: false, bounds: 'content', margin: 20,
-});
-
-console.log(`logo authored with TurtlePen: ${operations.length} composition operations`);
-console.log(`accepted intentional construction findings: ${blockers.length}`);
-console.log('document: brand/logo.turtlepen.json');
-console.log('render: brand/logo.svg (1200x1200)');
-console.log(`mark: brand/logo-mark.svg; validation ${validation.summary.verdict} (${validation.open.length} INFO, ${validation.accepted.length} accepted)`);
 
 function ellipseFill(cx, cy, rx, ry) {
   const rows = [];

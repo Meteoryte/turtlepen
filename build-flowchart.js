@@ -98,7 +98,7 @@ for (const f of log.open) console.log(`  [${f.severity}] ${f.rule} ${f.actors.jo
 // exportSvg writes; renderSvg only returns a string. Awaiting it — and
 // reporting the byte count — is the difference between saying "wrote" and
 // having written.
-const svgPath = await exportSvg(doc, out('flowchart-important-process.svg'), { margin: 24 });
+const svgPath = await exportSvg(doc, out('flowchart-important-process.svg'), { showGrid: true, bounds: 'content', margin: 20 });
 preservePerceptualReview(doc, previous);
 await saveDocument(doc, documentPath);
 const { statSync } = await import('node:fs');

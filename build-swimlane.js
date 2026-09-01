@@ -73,7 +73,7 @@ console.log(`elements: ${Object.values(doc.elements).flat().length}`);
 console.log(`findings: ${log.open.length} open (${bad.length} above INFO), ${log.accepted.length} accepted`);
 for (const f of log.open) console.log(`  [${f.severity}] ${f.rule} ${f.actors.join(', ')} — ${f.message.slice(0, 110)}`);
 
-const svg = await exportSvg(doc, out('swimlane-order-handling.svg'), { margin: 24 });
+const svg = await exportSvg(doc, out('swimlane-order-handling.svg'), { showGrid: true, bounds: 'content', margin: 20 });
 preservePerceptualReview(doc, previous);
 await saveDocument(doc, documentPath);
 console.log(`wrote ${path.basename(svg)} (${statSync(svg).size} bytes) + .turtlepen.json`);

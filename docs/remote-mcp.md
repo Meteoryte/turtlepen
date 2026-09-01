@@ -1,7 +1,7 @@
 # Remote MCP transport
 
 TurtlePen's Streamable HTTP endpoint is a stateful transport over the same
-runtime and live 74-tool registry as the stdio server. It is not a second
+runtime and live 76-tool registry as the stdio server. It is not a second
 diagram engine. Each successful `initialize` receives an opaque
 `Mcp-Session-Id`; that session owns one active document, a serial request queue,
 and an isolated filesystem root until it expires or the client deletes it.

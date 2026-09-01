@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 676 tests green, zero runtime dependencies, 74 MCP tools,
+Status: **prototype** — 691 tests green, zero runtime dependencies, 76 MCP tools,
 also live as a hosted MCP server at **`https://brainn.dev/api/mcp/turtlepen`**.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
@@ -49,10 +49,9 @@ version in `serverInfo` — not a placeholder. It is stateful: `initialize` retu
 `Mcp-Session-Id`, and every later call must send that header back, because your document
 lives in that session.
 
-**The hosted server can trail this repository.** At the time of writing it serves `0.3.2`
-with 73 tools while `main` is `0.3.3` with 74. Ask it rather than assuming: `serverInfo`
-gives the version and `tools/list` gives the surface, and `turtlepen_help` outranks any
-document here.
+**The hosted server can trail this repository.** Ask it rather than assuming:
+`serverInfo` gives the deployed version, `tools/list` gives the deployed surface,
+and `turtlepen_help` outranks any document here.
 
 ```bash
 # initialize, keep the Mcp-Session-Id from the response headers
@@ -721,7 +720,7 @@ still needs TLS, OAuth identity, per-user quotas, and an authenticated file
 bridge. See the [remote MCP transport contract](docs/remote-mcp.md), including
 the required dual `Accept` header and Cloudflare user-agent gotcha.
 
-74 tools. Call `turtlepen_help` first for a compact orientation, use
+76 tools. Call `turtlepen_help` first for a compact orientation, use
 `search_help { query }` for task-focused discovery, and request
 `turtlepen_help { section: "all" }` for the complete grammar and rule manual.
 

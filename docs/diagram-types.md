@@ -38,15 +38,16 @@ looks. Everything else stays in this document as guidance, and is marked so.
 | `F002` | Flowchart | a decision has at least two ways out |
 | `W001` | Swimlane | every lane is labelled |
 | `W002` | Swimlane | no step lies across two lanes |
-| `V001` | any quantitative | a mark's geometry matches the value it declares |
-| `V002` | Bar · Sankey · treemap | a length-encoded scale starts at zero |
-| `V003` | any quantitative | a value lies inside its declared domain |
+| `V001` | rectangular length marks | a box's width or height matches the value it declares |
+| `V002` | rectangular length marks | a magnitude scale's zero-length endpoint is zero |
+| `V003` | rectangular length marks | a bound value lies inside its declared domain |
+| `V004` | rectangular length marks | a value lands exactly on a positive whole-cell extent |
 | `C002` | any | the focal budget is not overspent |
 | `L024` | any | a symbol is not stretched past recognition |
 
-Nine rules across ~40 types. Most type conventions are about meaning the drawing
+Ten rules across ~40 types. Most type conventions are about meaning the drawing
 does not contain — but a **declared scale** puts some of that meaning *into* the
-drawing, which is what `V001`–`V003` are built on.
+drawing, which is what `V001`–`V004` are built on.
 
 ## Why most conventions cannot be rules
 
@@ -110,28 +111,39 @@ and what the engine can say about it.
 
 | Type | Best for | Engine |
 |---|---|---|
-| Bar | compare quantities | `V001`, `V002`, `V003` |
-| Sankey | flow with magnitude | `V001`, `V002`, `V003` |
-| Treemap | part of a whole, by area | `V001`, `V003` |
-| Line · Scatter | trend, correlation | `V001`, `V003` (position scale) |
-| Quadrant | two axes, four positions | `V003` on each axis |
-| Wardley | evolution against value | `V003` on each axis |
-| Radar | several series across axes | `V003` per spoke |
-| Polar | cyclical quantity | `V003` |
+| Bar | compare quantities | `V001`–`V004` for rectangular bars |
+| Sankey | flow with magnitude | drawable; ribbon-width validation is not modelled |
+| Treemap | part of a whole, by area | drawable; area validation is not modelled |
+| Line · Scatter | trend, correlation | drawable; point-position validation is not modelled |
+| Quadrant | two axes, four positions | drawable; point-position validation is not modelled |
+| Wardley | evolution against value | drawable; point-position validation is not modelled |
+| Radar | several series across axes | drawable; radial validation is not modelled |
+| Polar | cyclical quantity | drawable; radial validation is not modelled |
 | Venn | overlap between sets | not modelled |
 | Pyramid | ranked tiers | container shapes |
 | Fishbone | causes of an effect | shapes only |
 
-**Scales are what changed here.** These types were all "not modelled" until the
-lattice gained a word for *a mapping from a number to a distance*. Declare one
-with `addScale`, bind a mark to it with `value`, and the engine holds two
-independent statements about the same quantity — the number you declared and the
-geometry you drew — so it can find them in disagreement. That is `V001`, and a
-chart contradicting its own data is the most consequential failure a chart has.
+**Scales are what changed here.** The lattice now stores a mapping from a number
+to a distance. Through MCP, declare it with
+`scale { action:"define", id, domain, quads, kind }`, inspect the rounding with
+`inspect_scale { id, value }`, and bind a rectangular box length through
+`place_box.value { scale, value, axis }` (or `restyle.value`). The engine then
+holds two independent statements about the same quantity — the number and the
+box extent — so it can find them in disagreement. `V004` also blocks the false
+assurance of a value that only *rounds* onto the whole-cell box lattice.
 
-`V002` is the classic misleading chart: a length-encoded axis that misses zero.
-It is decidable because the domain is authored fact, and it is exempt for
-`position` scales, since a scatter axis has no obligation to include zero.
+That binding deliberately means **rectangular length only**. A scatter value is
+encoded by a point's position, a treemap value by area, and a Sankey value by
+ribbon width. Treating all three as a box width or height was a category error,
+so TurtlePen now says those encodings are not modelled instead of certifying the
+wrong geometry. A `position` scale remains useful through `inspect_scale`, but
+cannot be bound to a box length.
+
+`V002` is the classic misleading chart: a length-encoded axis whose zero-length
+endpoint is not zero. It is decidable because the domain is authored fact.
+`position` scales are exempt, since a coordinate axis has no obligation to
+include zero — and, separately, TurtlePen does not infer coordinates from box
+extent.
 
 **"Not modelled"** still means TurtlePen has no primitive for the type's
 load-bearing idea. Venn needs set membership; the engine sees two circles that

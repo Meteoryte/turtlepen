@@ -16,6 +16,7 @@ import { rect, rectsOverlap, boundsOf, PX_PER_QUAD } from './geometry.js';
 import { claimedQuads, visualQuads, containerClaimQuads, isContainer, assertCornerStyle, assertNodeShape, parsePortSpec, portPoint } from './shapes.js';
 import { DEFAULT_FONT, resolveFontSize } from './text.js';
 import { assertNodeRole } from './roles.js';
+import { defineScale, normalizeValueBinding } from './scale.js';
 import { normalizeTone, normalizeFeather, normalizeTexture } from './tone.js';
 import { normalizePattern } from './pattern.js';
 import { assertEmbeddedSource, assertMode as assertImageMode, scaleReport } from './image.js';
@@ -32,12 +33,31 @@ export const TEXT_ALIGNS = Object.freeze(['left', 'center', 'right']);
 export const IMAGE_FITS = Object.freeze(['contain', 'cover']);
 export const SCHEMA_VERSION = 3;
 
-export function createDocument({ name = 'untitled', canvas = { cols: 160, rows: 100 }, font = {} } = {}) {
+export function createDocument(options = {}) {
+  if (!options || typeof options !== 'object' || Array.isArray(options)) {
+    throw new TypeError('createDocument options must be an object');
+  }
+  const {
+    name = 'untitled', canvas = null, cols = null, rows = null, font = {}, ...unknown
+  } = options;
+  const unknownKeys = Object.keys(unknown);
+  if (unknownKeys.length) {
+    throw new SyntaxError(`unknown createDocument option${unknownKeys.length === 1 ? '' : 's'}: ${unknownKeys.join(', ')}`);
+  }
+  if (canvas != null && (cols != null || rows != null)) {
+    throw new SyntaxError('createDocument accepts canvas:{cols,rows} or top-level cols/rows, not both');
+  }
+  const dimensions = canvas ?? { cols: cols ?? 160, rows: rows ?? 100 };
+  if (!dimensions || typeof dimensions !== 'object' || Array.isArray(dimensions)
+      || !Number.isInteger(dimensions.cols) || dimensions.cols < 1
+      || !Number.isInteger(dimensions.rows) || dimensions.rows < 1) {
+    throw new RangeError(`document canvas must be whole positive cell counts, got ${dimensions?.cols}x${dimensions?.rows}`);
+  }
   const workspace = createWorkspaceState();
   const doc = {
     schema: SCHEMA_VERSION,
     name,
-    canvas: { cols: canvas.cols, rows: canvas.rows },
+    canvas: { cols: dimensions.cols, rows: dimensions.rows },
     // Null means "use the palette". Paper is document state rather than a
     // render option because a drawing composed against dark paper is a
     // different drawing, and re-rendering it light would be a lie about it.
@@ -336,6 +356,9 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
   assertFreeId(doc, id);
   assertCornerStyle(corner);
   assertNodeShape(shape);
+  const nodeRole = assertNodeRole(role);
+  const binding = normalizeValueBinding(value, `box "${id}" value binding`);
+  if (binding) assertValueBindingScale(doc, id, binding);
   const el = {
     id,
     kind: 'box',
@@ -349,15 +372,27 @@ export function addBox(doc, pageId, { id, rect: r, label = '', fontSize = null, 
     note,
     opacity: assertOpacity(opacity, 'element opacity'),
     state,
-    // { scale, value, axis } — binds this mark to a declared scale so the
-    // engine can compare what it says against what it draws.
-    value,
-    // Semantic role. Presentation resolves from it; the collision engine never
-    // reads it, so a role can change how a node LOOKS but never where it IS.
-    role: assertNodeRole(role),
+    // Keep defaults implicit so enabling semantics does not rewrite every
+    // legacy document. Non-default values remain first-class persisted data.
+    ...(binding ? { value: binding } : {}),
+    ...(nodeRole !== 'plain' ? { role: nodeRole } : {}),
   };
   doc.elements[pageId].push(el);
   return el;
+}
+
+function assertValueBindingScale(doc, elementId, binding) {
+  const declared = Object.hasOwn(doc.scales ?? {}, binding.scale) ? doc.scales[binding.scale] : null;
+  if (!declared) {
+    throw new Error(`box "${elementId}" binds scale "${binding.scale}", but that scale is not declared — define it first`);
+  }
+  if (declared.kind !== 'magnitude') {
+    throw new Error(
+      `box "${elementId}" uses a rectangular length binding, but scale "${binding.scale}" is ${declared.kind}. `
+      + 'Position, area, and ribbon-width encodings need their own geometry and are not inferred from box size.',
+    );
+  }
+  return declared;
 }
 
 export function addImage(doc, pageId, { id, rect: r, source, mode = 'embed', fit = 'contain', detail = null, supersample = null, opacity = null, note = null, runs = null, scale = null, ditherStats = null, processing = null }) {
@@ -942,6 +977,9 @@ export function serialize(doc) {
       createdAt: doc.createdAt,
       pages: [...doc.pages].sort((a, b) => a.z - b.z),
       elements: Object.fromEntries(doc.pages.map((p) => [p.id, elementsOf(doc, p.id)])),
+      ...(Object.keys(doc.scales ?? {}).length ? {
+        scales: Object.fromEntries(Object.keys(doc.scales).sort().map((id) => [id, doc.scales[id]])),
+      } : {}),
       ...(groupsOf(doc).length ? {
         groups: groupsOf(doc)
           .map((group) => ({ ...group, members: [...group.members].sort() }))
@@ -984,6 +1022,9 @@ export function deserialize(json) {
   const raw = parsed.schema < SCHEMA_VERSION ? { ...parsed, schema: SCHEMA_VERSION } : parsed;
   if (raw.groups != null && !Array.isArray(raw.groups)) throw new TypeError('document groups must be an array');
   if (raw.constraints != null && !Array.isArray(raw.constraints)) throw new TypeError('document constraints must be an array');
+  if (raw.scales != null && (!raw.scales || typeof raw.scales !== 'object' || Array.isArray(raw.scales))) {
+    throw new TypeError('document scales must be an object keyed by scale id');
+  }
   const workspace = restoreWorkspaceState(raw);
   const doc = {
     schema: SCHEMA_VERSION,
@@ -995,6 +1036,7 @@ export function deserialize(json) {
     font: { ...DEFAULT_FONT, ...raw.font },
     pages: raw.pages,
     elements: raw.elements,
+    scales: Object.fromEntries(Object.entries(raw.scales ?? {}).map(([id, spec]) => [id, defineScale(id, spec)])),
     groups: (raw.groups ?? []).map((group) => ({ ...group, members: [...(group.members ?? [])] })),
     constraints: (raw.constraints ?? []).map((constraint) => ({
       ...constraint,
@@ -1013,7 +1055,7 @@ export function deserialize(json) {
   for (const [page, elements] of Object.entries(doc.elements ?? {})) {
     if (!Array.isArray(elements)) throw new TypeError(`document elements for page "${page}" must be an array`);
     for (const element of elements) {
-      validateLoadedSemantics(element);
+      validateLoadedSemantics(doc, element);
       if (element?.kind !== 'image') continue;
       assertImageMode(element.mode ?? 'embed');
       assertImageFit(element.fit ?? 'contain');
@@ -1059,7 +1101,14 @@ export function deserialize(json) {
   return validateLoadedRelationships(doc);
 }
 
-function validateLoadedSemantics(element) {
+function validateLoadedSemantics(doc, element) {
+  if (element?.kind === 'box') {
+    if (element.role != null) element.role = assertNodeRole(element.role);
+    if (element.value != null) {
+      element.value = normalizeValueBinding(element.value, `box "${element.id}" value binding`);
+      assertValueBindingScale(doc, element.id, element.value);
+    }
+  }
   for (const key of ['description', 'technology', 'relationshipLabel', 'outcome']) {
     if (element?.[key] != null && (typeof element[key] !== 'string' || !element[key].trim())) {
       throw new TypeError(`element "${element?.id ?? '(unknown)'}" ${key} must be a non-empty string`);

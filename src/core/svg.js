@@ -114,7 +114,15 @@ export function renderSvg(doc, {
   parts.push(`<title id="tp-title">${escapeText(titleText)}</title>`);
   parts.push(`<desc id="tp-desc">${escapeText(descriptionText)}</desc>`);
   parts.push(`<metadata>${escapeText(JSON.stringify({ schema: doc.schema, name: doc.name, view: view ?? null, elements: resolved.elements.length }))}</metadata>`);
-  parts.push(style(doc.background ?? null, gradients(projected), microMaskDefs(projected), doc.theme?.tokens));
+  const semanticRoles = [...new Set(
+    projected.pages.flatMap((page) => elementsOf(projected, page.id))
+      // Paths also use a separate execution role vocabulary (artwork,
+      // connector, label). Only box roles resolve through NODE_ROLES.
+      .filter((element) => element.kind === 'box')
+      .map((element) => element.role)
+      .filter((role) => role && role !== 'plain'),
+  )].sort();
+  parts.push(style(doc.background ?? null, gradients(projected), microMaskDefs(projected), doc.theme?.tokens, semanticRoles));
   parts.push(`<rect class="bg" x="0" y="0" width="${width}" height="${height}"/>`);
   if (showGrid) parts.push(gridPattern(b, ox, oy));
   parts.push(`<g transform="translate(${ox},${oy})">`);
@@ -188,16 +196,26 @@ function renderGeneratedKey(key, x, y) {
  */
 function fillAttr(el, themed = {}) {
   // Precedence: an explicit fill, then a theme rule, then the semantic role.
-  // The role is LAST so it never overrides a decision the author made by hand —
-  // it supplies the default that means an author no longer has to.
-  const role = el.role && el.role !== 'plain' ? treatmentFor(el.role, PALETTE) : null;
-  const value = el.fill ?? themed.fill ?? role?.fill ?? null;
+  // Roles live in the generated stylesheet so dark-mode and document-token
+  // palettes can resolve them. Inline author/theme decisions still win.
+  const value = el.fill ?? themed.fill ?? null;
   const declarations = [];
   if (value) declarations.push(`fill:${escapeAttr(typeof value === 'string' ? value : `url(#tp-grad-${el.id})`)}`);
-  const stroke = themed.stroke ?? role?.stroke ?? null;
+  const stroke = themed.stroke ?? null;
   if (stroke) declarations.push(`stroke:${escapeAttr(stroke)}`);
-  if (role?.dash && !themed.stroke) declarations.push(`stroke-dasharray:${escapeAttr(role.dash)}`);
+  if (themed.stroke && ['optional', 'security'].includes(el.role)) declarations.push('stroke-dasharray:none');
   return declarations.length ? ` style="${declarations.join(';')}"` : '';
+}
+
+function roleStyles(palette, roles, indent = '  ') {
+  return roles
+    .map((role) => {
+      const treatment = treatmentFor(role, palette);
+      const declarations = [`fill: ${treatment.fill}`, `stroke: ${treatment.stroke}`];
+      if (treatment.dash) declarations.push(`stroke-dasharray: ${treatment.dash}`);
+      return `${indent}.box.role-${role} { ${declarations.join('; ')}; }`;
+    })
+    .join('\n');
 }
 
 function gradients(doc) {
@@ -247,10 +265,12 @@ function microMaskDefs(doc) {
   return out.join('\n');
 }
 
-function style(background = null, gradientDefs = '', microMaskDefinitions = '', tokens = {}) {
+function style(background = null, gradientDefs = '', microMaskDefinitions = '', tokens = {}, semanticRoles = []) {
   const definitions = [gradientDefs, microMaskDefinitions].filter(Boolean).join('\n');
   const palette = { ...PALETTE, ...tokens };
   const custom = Object.keys(tokens ?? {}).length > 0;
+  const lightRoleRules = roleStyles(palette, semanticRoles);
+  const darkRoleRules = roleStyles(PALETTE_DARK, semanticRoles, '    ');
   const darkMode = custom ? '' : `  @media (prefers-color-scheme: dark) {
     .bg { fill: ${background ?? PALETTE_DARK.paper}; }
     .grid { stroke: ${PALETTE_DARK.grid}; }
@@ -260,7 +280,7 @@ function style(background = null, gradientDefs = '', microMaskDefinitions = '', 
     .free-text { fill: ${PALETTE_DARK.inkSoft}; }
     .stroke { fill: ${PALETTE_DARK.ink}; }
     .hop { stroke: ${PALETTE_DARK.ink}; }
-  }
+${darkRoleRules ? `${darkRoleRules}\n` : ''}  }
 `;
   return `<style>
   .bg { fill: ${background ?? palette.paper}; }
@@ -271,7 +291,7 @@ function style(background = null, gradientDefs = '', microMaskDefinitions = '', 
   .stroke { fill: ${palette.ink}; }
   .hop { stroke: ${palette.ink}; }
   .free-text { fill: ${palette.inkSoft}; }
-  .hit-S0 { fill: ${palette.critical}; opacity: 0.30; }
+${lightRoleRules ? `${lightRoleRules}\n` : ''}  .hit-S0 { fill: ${palette.critical}; opacity: 0.30; }
   .hit-S1 { fill: ${palette.error}; opacity: 0.28; }
   .hit-S2 { fill: ${palette.warn}; opacity: 0.24; }
   .hit-S3 { fill: ${palette.info}; opacity: 0.20; }
@@ -421,13 +441,14 @@ function box(el, doc, themed = {}) {
   const shape = el.shape ?? 'process';
   const d = shapeOutline(el.rect, shape) ?? boxOutline(el.rect, el.corner);
   const effectiveOpacity = el.opacity ?? themed.opacity ?? null;
-  const out = [`<path class="box${el.state === 'dimmed' ? ' dimmed' : ''}" d="${d}" data-id="${escapeAttr(el.id)}"${effectiveOpacity != null ? ` opacity="${effectiveOpacity}"` : ''}${fillAttr(el, themed)}/>`];
+  const className = `box${el.role && el.role !== 'plain' ? ` role-${el.role}` : ''}${el.state === 'dimmed' ? ' dimmed' : ''}`;
+  const out = [`<path class="${className}" d="${d}" data-id="${escapeAttr(el.id)}"${effectiveOpacity != null ? ` opacity="${effectiveOpacity}"` : ''}${fillAttr(el, themed)}/>`];
   if (isContainer(shape)) {
     // A rule under the title band, so the band reads as a heading rather than
     // as empty space at the top of a big rectangle.
     const { x, y, w } = toPx(el.rect);
     const bandPx = containerBand(el.rect) * PX_PER_QUAD;
-    out.push(`<path class="box" d="M${x},${y + bandPx} H${x + w}" fill="none"/>`);
+    out.push(`<path class="${className}" d="M${x},${y + bandPx} H${x + w}" fill="none"/>`);
   }
   if (shape === 'data') {
     // The back edge of the top ellipse. Without it the outline is a drum: both
@@ -435,13 +456,13 @@ function box(el, doc, themed = {}) {
     // mask is unchanged — this is a second mark, not a different footprint.
     const { x, y, w } = toPx(el.rect);
     const capPx = capQuads(el.rect.h) * PX_PER_QUAD;
-    out.push(`<path class="box" d="M${x},${y + capPx} A${w / 2},${capPx} 0 0 0 ${x + w},${y + capPx}" fill="none"/>`);
+    out.push(`<path class="${className}" d="M${x},${y + capPx} A${w / 2},${capPx} 0 0 0 ${x + w},${y + capPx}" fill="none"/>`);
   }
   if (shape === 'subprocess') {
     // Double side bars — the mark that says "this step is another process".
     const { x, y, w, h } = toPx(el.rect);
-    out.push(`<path class="box" d="M${x + 10},${y} V${y + h}" fill="none"/>`);
-    out.push(`<path class="box" d="M${x + w - 10},${y} V${y + h}" fill="none"/>`);
+    out.push(`<path class="${className}" d="M${x + 10},${y} V${y + h}" fill="none"/>`);
+    out.push(`<path class="${className}" d="M${x + w - 10},${y} V${y + h}" fill="none"/>`);
   }
   if (el.label) out.push(label(el, doc, themed));
   return out.join('');

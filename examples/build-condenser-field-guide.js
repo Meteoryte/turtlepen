@@ -112,9 +112,10 @@ try {
 
   await call('render', {
     path: 'diagrams/condenser-replacement-field-guide.svg',
-    bounds: 'canvas',
-    showGrid: false,
+    bounds: 'content',
+    showGrid: true,
     markFindings: false,
+    margin: 20,
   });
   await call('save');
   process.stdout.write(`validation: ${validation.summary.verdict}; open INFO: ${validation.open.length}\n`);

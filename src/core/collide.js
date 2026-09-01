@@ -18,7 +18,7 @@
 import { createHash } from 'node:crypto';
 import { rect, rectsOverlap, intersection, expand, right, bottom, quadKey, parseQuadKey } from './geometry.js';
 import { quadToAddress, quadToCell, describeRegion } from './address.js';
-import { elementsOf, elementClaimed, elementVisual, elementRects, findElement } from './document.js';
+import { elementsOf, elementClaimed, elementVisual, elementRects, elementBounds, findElement } from './document.js';
 import { shapeCutQuads, fitReportForShape, isContainer, SHAPE_PROPORTION, aspectOf } from './shapes.js';
 import { layoutTextRuns, MIN_LEGIBLE_FONT_PX } from './text.js';
 // Cycle with composition.js is deliberate and safe: every use on both sides is inside a
@@ -581,13 +581,26 @@ function withinPage(doc, p) {
 
   // L006 — stroke against stroke, excluding quadrants either path marked as a
   // deliberate hop. An intended crossing is not a defect.
+  //
+  // Bounds are a necessary condition for shared quadrants. Cache them once and
+  // reject separated paths before materialising either claimed-quadrant set.
+  // Pixel artwork commonly contains thousands of short, disjoint paths; doing
+  // two set builds for every possible pair made validation quadratic even when
+  // no pair could geometrically meet.
+  const pathBounds = paths.map((path) => elementBounds(path));
+  const pathClaims = new Map();
+  const claimsFor = (path) => {
+    if (!pathClaims.has(path)) pathClaims.set(path, elementClaimed(path));
+    return pathClaims.get(path);
+  };
   for (let i = 0; i < paths.length; i++) {
     for (let j = i + 1; j < paths.length; j++) {
       const a = paths[i], b = paths[j];
+      if (!rectsOverlap(pathBounds[i], pathBounds[j])) continue;
       const hops = new Set(
         [...a.pieces, ...b.pieces].filter((piece) => piece.type === 'hop').map((piece) => quadKey(piece.x, piece.y)),
       );
-      const shared = intersect(elementClaimed(a), elementClaimed(b)).filter((k) => !hops.has(k));
+      const shared = intersect(claimsFor(a), claimsFor(b)).filter((k) => !hops.has(k));
       if (!shared.length) continue;
       out.push(
         finding('L006', p.id, {

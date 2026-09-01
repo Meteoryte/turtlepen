@@ -30,7 +30,7 @@
   "summary": {
     "artifacts": 73,
     "publishable": 10,
-    "structurallyClear": 52,
+    "structurallyClear": 53,
     "missingSvg": 1,
     "byRole": {
       "example": {
@@ -14386,7 +14386,7 @@
       "source": {
         "path": "diagrams/atlas-nodes.turtlepen.json",
         "schema": 3,
-        "sha256": "599a0530913fa0a1f60896b83bc43e4517211ed46eb431179631b8a2512b6ad4",
+        "sha256": "91dbb7310d8c112731ae55ea3955bf3ac18c537fb5fec05d3db4bcdd5809ed11",
         "bytes": 47488
       },
       "document": {
@@ -14396,16 +14396,16 @@
         "resources": 0
       },
       "structural": {
-        "state": "blocking-errors",
-        "open": 1,
+        "state": "structurally-clear",
+        "open": 0,
         "accepted": 4,
         "stale": 0,
         "summary": {
           "S0": 0,
-          "S1": 1,
+          "S1": 0,
           "S2": 0,
           "S3": 0,
-          "total": 1,
+          "total": 0,
           "accepted": 4,
           "acceptedBySeverity": {
             "S0": 0,
@@ -14414,9 +14414,9 @@
             "S3": 0
           },
           "stale": 0,
-          "clean": false,
-          "state": "blocking-errors",
-          "verdict": "FAIL",
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS_WITH_EXCEPTIONS",
           "acceptedDecisions": 4
         }
       },
@@ -14446,16 +14446,15 @@
         "releasable": false,
         "verdict": "FAIL",
         "blockers": [
-          "1 unresolved structural decision finding(s)",
           "no perceptual review is recorded for the release render",
           "1 accepted critical/error finding(s) lack current render-bound evidence"
         ],
         "structural": {
           "S0": 0,
-          "S1": 1,
+          "S1": 0,
           "S2": 0,
           "S3": 0,
-          "total": 1,
+          "total": 0,
           "accepted": 4,
           "acceptedBySeverity": {
             "S0": 0,
@@ -14464,9 +14463,9 @@
             "S3": 0
           },
           "stale": 0,
-          "clean": false,
-          "state": "blocking-errors",
-          "verdict": "FAIL",
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS_WITH_EXCEPTIONS",
           "acceptedDecisions": 4
         },
         "perceptual": {
@@ -14475,7 +14474,7 @@
           "blocking": 0,
           "clean": false,
           "stale": false,
-          "currentRenderHash": "943ee8a996cdffc9"
+          "currentRenderHash": "a36ce2d4ca21f20c"
         },
         "exceptions": [
           {
@@ -14512,21 +14511,21 @@
             "acceptedAt": "2026-08-26T00:00:00.000Z"
           },
           {
-            "fingerprint": "c467b48b8d5e",
+            "fingerprint": "7531bbe0d8a1",
             "rule": "L008",
             "severity": "S2",
             "severityLabel": "WARN",
             "title": "dangling path end",
             "page": "base",
-            "message": "path \"stroke-5\" touches nothing at either end (AG40.q1 and AR40.q2) — the connector is free-floating",
+            "message": "path \"stroke-5\" touches nothing at either end (AG42.q1 and AR42.q2) — the connector is free-floating",
             "actors": [
               "stroke-5"
             ],
             "cells": [
-              "AG40.q1",
-              "AR40.q2"
+              "AG42.q1",
+              "AR42.q2"
             ],
-            "cellSummary": "AG40 AR40",
+            "cellSummary": "AG42 AR42",
             "metrics": {
               "looseEnds": [
                 "start",
@@ -14551,21 +14550,21 @@
             "acceptedAt": "2026-08-26T00:00:00.000Z"
           },
           {
-            "fingerprint": "86e1df0a8622",
+            "fingerprint": "65c07e5a13df",
             "rule": "L008",
             "severity": "S2",
             "severityLabel": "WARN",
             "title": "dangling path end",
             "page": "base",
-            "message": "path \"stroke-6\" touches nothing at either end (BK40.q1 and BV40.q2) — the connector is free-floating",
+            "message": "path \"stroke-6\" touches nothing at either end (BK42.q1 and BV42.q2) — the connector is free-floating",
             "actors": [
               "stroke-6"
             ],
             "cells": [
-              "BK40.q1",
-              "BV40.q2"
+              "BK42.q1",
+              "BV42.q2"
             ],
-            "cellSummary": "BK40 BV40",
+            "cellSummary": "BK42 BV42",
             "metrics": {
               "looseEnds": [
                 "start",
@@ -14590,21 +14589,21 @@
             "acceptedAt": "2026-08-26T00:00:00.000Z"
           },
           {
-            "fingerprint": "18be8ea3ed1a",
+            "fingerprint": "7eea2479bf2f",
             "rule": "L008",
             "severity": "S2",
             "severityLabel": "WARN",
             "title": "dangling path end",
             "page": "base",
-            "message": "path \"stroke-7\" touches nothing at either end (CO40.q1 and CZ40.q2) — the connector is free-floating",
+            "message": "path \"stroke-7\" touches nothing at either end (CO42.q1 and CZ42.q2) — the connector is free-floating",
             "actors": [
               "stroke-7"
             ],
             "cells": [
-              "CO40.q1",
-              "CZ40.q2"
+              "CO42.q1",
+              "CZ42.q2"
             ],
-            "cellSummary": "CO40 CZ40",
+            "cellSummary": "CO42 CZ42",
             "metrics": {
               "looseEnds": [
                 "start",
@@ -14641,9 +14640,9 @@
         "svg": {
           "path": "diagrams/atlas-nodes.svg",
           "present": true,
-          "bytes": 34395,
-          "sha256": "943ee8a996cdffc9f4531845e0e3f3164f20f1954b1b4cc8375e8073ac1c1c47",
-          "renderHash": "943ee8a996cdffc9"
+          "bytes": 34509,
+          "sha256": "a36ce2d4ca21f20c0e59994b6348b74fed3377a9e713a3ef4365084445fddbdd",
+          "renderHash": "a36ce2d4ca21f20c"
         },
         "png": {
           "path": "diagrams/atlas-nodes.png",
@@ -14659,7 +14658,7 @@
         }
       },
       "contract": {
-        "structurallyClear": false,
+        "structurallyClear": true,
         "modelHasNoErrors": true,
         "perceptuallyReviewed": false,
         "perceptualCurrent": false,
@@ -14775,9 +14774,9 @@
         "svg": {
           "path": "diagrams/branching-tree.svg",
           "present": true,
-          "bytes": 18306,
-          "sha256": "5707780975cfd35d3c7a2d78ae01b9734681151aff339c335e6b121806438658",
-          "renderHash": "5707780975cfd35d"
+          "bytes": 13393,
+          "sha256": "904e9f08f5045622ad309b5ab4084e4e5061e9faa92cff56085639d495a8bf93",
+          "renderHash": "904e9f08f5045622"
         },
         "png": {
           "path": "diagrams/branching-tree.png",

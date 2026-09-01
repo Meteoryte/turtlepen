@@ -2,6 +2,42 @@
 
 ## Unreleased
 
+- Completed the Diagram Design adaptation instead of leaving its semantics in
+  direct-core-only state: `role` and exact rectangular `value` bindings are now
+  available through `place_box`/`restyle`, while `scale` and `inspect_scale`
+  expose the same definitions through MCP, plan, history, stdio, HTTP, and the
+  Cloudflare adapter.
+- Persisted and validated document scales during save/open, added scale changes
+  to approval diffs, refused dangling/malformed bindings and silent bound-scale
+  deletion, and added regression coverage for round trips and plans.
+- Narrowed quantitative assurance to the geometry TurtlePen can actually prove:
+  rectangular length. Scatter position, treemap area, radial distance, and
+  Sankey ribbon width are no longer falsely certified as box extents. `V004`
+  reports values that cannot land exactly on a positive whole-cell box extent,
+  and `V001` no longer hides a one-quadrant disagreement.
+- Closed semantic-role renderer parity: optional/security dashes now survive
+  SVG, PNG, and PDF; native strokes now receive real RGBA bytes; and role
+  treatments follow custom tokens plus SVG dark mode instead of remaining tied
+  to the light default palette. The strict runtime schema validator now
+  enforces `maxItems` and correctly accepts explicit JSON null where a tool
+  schema permits it.
+- Made document creation fail loudly instead of clipping silently: canonical
+  `canvas:{cols,rows}` and legacy top-level `cols`/`rows` are both supported,
+  mixing the forms is rejected, and unknown or invalid options no longer fall
+  through to the 160x100 default.
+- Removed the dense-artwork quadratic path without weakening pen atomicity or
+  collision findings. `applyPen` now rolls back to an append checkpoint, and
+  L006 uses cached path bounds before claimed-quadrant intersections. Added the
+  versioned Brainn mascot corpus, clean individual previews, and an all-pose
+  sheet builder that validates before publication.
+- Removed a second dense-artwork bottleneck in native PNG/PDF output: fully
+  opaque, unmasked elements now paint directly onto the document buffer, while
+  alpha, page opacity, embedded PNGs, and micro-masks retain exact layer
+  compositing. The 14,034-element mascot sheet now exports in seconds rather
+  than allocating and scanning a full 17-million-pixel layer per stroke.
+- Aligned the five canonical release builders with the reviewed render profile
+  (content bounds, visible grid, 20px margin), so `pnpm run check` no longer
+  replaces reviewed SVGs with different canvas/no-grid exports.
 - Added the canonical Cloudflare/ChatGPT Sites D1+R2 Streamable HTTP adapter to
   the public package. Hosted deployments now re-export this source instead of
   maintaining a private second transport implementation.
@@ -12,7 +48,7 @@
 
 - Extracted one transport-independent, stateful MCP protocol runtime so stdio
   and remote HTTP cannot drift into different tool registries or behaviors.
-- Added a zero-dependency MCP 2025-06-18 Streamable HTTP transport with all 74
+- Added a zero-dependency MCP 2025-06-18 Streamable HTTP transport with all 76
   canonical tools, request-scoped SSE replies, isolated stateful sessions,
   serial mutation ordering, explicit teardown, filesystem confinement, bounded
   resources, storage purge on teardown/expiry, origin checks, private-preview
@@ -26,7 +62,7 @@
   14x3 for a subprocess instead of the defective 13x3.
 - Corrected `L002` arithmetic so the width named in its message is the same
   unbroken width used to calculate the reported overflow.
-- 667 tests pass, including the real HTTP and Cloudflare-hosted transport boundaries, the
+- 691 tests pass, including the real HTTP and Cloudflare-hosted transport boundaries, the
   final release gate, and an all-12-shape
   measurement audit.
 

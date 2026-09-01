@@ -78,12 +78,12 @@ async function initialize(url, options = {}) {
   return { session, message: await sseMessage(response) };
 }
 
-test('Streamable HTTP exposes the canonical 74-tool registry with SSE framing', async () => {
+test('Streamable HTTP exposes the canonical 76-tool registry with SSE framing', async () => {
   const fixture = await start();
   try {
     const initialized = await initialize(fixture.url);
     assert.equal(initialized.message.result.protocolVersion, '2025-06-18');
-    assert.match(initialized.message.result.instructions, /EVERY TOOL \(74\):/);
+    assert.match(initialized.message.result.instructions, /EVERY TOOL \(76\):/);
 
     const notification = await post(fixture.url, {
       jsonrpc: '2.0', method: 'notifications/initialized',
@@ -98,7 +98,7 @@ test('Streamable HTTP exposes the canonical 74-tool registry with SSE framing', 
     const listed = await sseMessage(listedResponse);
     const remoteNames = listed.result.tools.map((tool) => tool.name).sort();
     const localNames = createTools(createSession()).map((tool) => tool.name).sort();
-    assert.equal(remoteNames.length, 74);
+    assert.equal(remoteNames.length, 76);
     assert.deepEqual(remoteNames, localNames, 'HTTP is a transport over the same registry, not a subset');
   } finally {
     await fixture.close();
@@ -122,7 +122,7 @@ test('one remote session keeps an active document across separate POST requests'
 
     const runtime = await sseMessage(await post(fixture.url, call(4, 'runtime_info'), { session }));
     const runtimeInfo = JSON.parse(runtime.result.content[0].text);
-    assert.equal(runtimeInfo.toolCount, 74);
+    assert.equal(runtimeInfo.toolCount, 76);
     assert.equal(runtimeInfo.activeDocument.name, 'stateful remote');
 
     const described = await sseMessage(await post(fixture.url, call(5, 'describe'), { session }));

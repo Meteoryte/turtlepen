@@ -106,6 +106,19 @@ function rect(pixels, width, height, x, y, w, h, color) {
   }
 }
 
+function patternedSegment(pixels, width, height, x, y, length, vertical, color, dash = null, phase = 0) {
+  if (!dash) {
+    rect(pixels, width, height, x, y, vertical ? 1 : length, vertical ? length : 1, color);
+    return;
+  }
+  const [on, off] = String(dash).split(',').map(Number);
+  const period = on + off;
+  for (let offset = 0; offset < length; offset++) {
+    if ((phase + offset) % period >= on) continue;
+    put(pixels, width, height, x + (vertical ? 0 : offset), y + (vertical ? offset : 0), color);
+  }
+}
+
 function paintedRect(pixels, width, height, x, y, w, h, paint, originX = x, originY = y, paintW = w, paintH = h) {
   for (let py = Math.max(0, y); py < Math.min(height, y + h); py++) {
     for (let px = Math.max(0, x); px < Math.min(width, x + w); px++) {
@@ -243,7 +256,7 @@ function fillPolygon(pixels, width, height, points, color) {
   }
 }
 
-function drawCellShape(layer, width, height, element, ox, oy, fill, stroke) {
+function drawCellShape(layer, width, height, element, ox, oy, fill, stroke, dash = null) {
   const r = element.rect;
   const x = r.x * PX_PER_QUAD + ox, y = r.y * PX_PER_QUAD + oy;
   const w = r.w * PX_PER_QUAD, h = r.h * PX_PER_QUAD;
@@ -251,12 +264,12 @@ function drawCellShape(layer, width, height, element, ox, oy, fill, stroke) {
 
   if (isContainer(shape)) {
     paintedRect(layer, width, height, x, y, w, h, fill);
-    rect(layer, width, height, x, y, w, 1, stroke);
-    rect(layer, width, height, x, y + h - 1, w, 1, stroke);
-    rect(layer, width, height, x, y, 1, h, stroke);
-    rect(layer, width, height, x + w - 1, y, 1, h, stroke);
+    patternedSegment(layer, width, height, x, y, w, false, stroke, dash);
+    patternedSegment(layer, width, height, x, y + h - 1, w, false, stroke, dash);
+    patternedSegment(layer, width, height, x, y, h, true, stroke, dash);
+    patternedSegment(layer, width, height, x + w - 1, y, h, true, stroke, dash);
     const bandY = y + containerBand(r) * PX_PER_QUAD;
-    rect(layer, width, height, x, bandY, w, 1, stroke);
+    patternedSegment(layer, width, height, x, bandY, w, false, stroke, dash);
     return;
   }
 
@@ -267,16 +280,18 @@ function drawCellShape(layer, width, height, element, ox, oy, fill, stroke) {
       if (!has(qx, qy)) continue;
       const px = qx * PX_PER_QUAD + ox, py = qy * PX_PER_QUAD + oy;
       paintedRect(layer, width, height, px, py, PX_PER_QUAD, PX_PER_QUAD, fill, x, y, w, h);
-      if (!has(qx, qy - 1)) rect(layer, width, height, px, py, PX_PER_QUAD, 1, stroke);
-      if (!has(qx, qy + 1)) rect(layer, width, height, px, py + PX_PER_QUAD - 1, PX_PER_QUAD, 1, stroke);
-      if (!has(qx - 1, qy)) rect(layer, width, height, px, py, 1, PX_PER_QUAD, stroke);
-      if (!has(qx + 1, qy)) rect(layer, width, height, px + PX_PER_QUAD - 1, py, 1, PX_PER_QUAD, stroke);
+      const horizontalPhase = px - x;
+      const verticalPhase = py - y;
+      if (!has(qx, qy - 1)) patternedSegment(layer, width, height, px, py, PX_PER_QUAD, false, stroke, dash, horizontalPhase);
+      if (!has(qx, qy + 1)) patternedSegment(layer, width, height, px, py + PX_PER_QUAD - 1, PX_PER_QUAD, false, stroke, dash, horizontalPhase);
+      if (!has(qx - 1, qy)) patternedSegment(layer, width, height, px, py, PX_PER_QUAD, true, stroke, dash, verticalPhase);
+      if (!has(qx + 1, qy)) patternedSegment(layer, width, height, px + PX_PER_QUAD - 1, py, PX_PER_QUAD, true, stroke, dash, verticalPhase);
     }
   }
 
   if (shape === 'subprocess') {
-    rect(layer, width, height, x + 10, y, 1, h, stroke);
-    rect(layer, width, height, x + w - 10, y, 1, h, stroke);
+    patternedSegment(layer, width, height, x + 10, y, h, true, stroke, dash);
+    patternedSegment(layer, width, height, x + w - 10, y, h, true, stroke, dash);
   }
   if (shape === 'data') {
     // Same whole-quadrant cap the SVG and the aperture use. This rounded where they
@@ -386,7 +401,8 @@ function eraseMasks(layer, width, height, masks, ox, oy) {
 
 function paintElement(doc, element, layer, width, height, ox, oy, perspective) {
   const themed = styleForElement(doc, element, perspective);
-  const ink = rgba(themed.stroke ?? PALETTE.ink);
+  const palette = { ...PALETTE, ...(doc.theme?.tokens ?? {}) };
+  const ink = rgba(themed.stroke ?? palette.ink);
   if (element.kind === 'path') {
     paintPath(element, layer, width, height, ox, oy, themed);
     return themed.opacity ?? 1;
@@ -398,12 +414,13 @@ function paintElement(doc, element, layer, width, height, ox, oy, perspective) {
     // Resolved from the one `treatmentFor` both renderers call, because two
     // renderers deriving the same look independently is how they drift.
     const roleStyle = element.role && element.role !== 'plain'
-      ? treatmentFor(element.role, PALETTE)
+      ? treatmentFor(element.role, palette)
       : null;
     drawCellShape(
       layer, width, height, element, ox, oy,
-      element.fill ?? themed.fill ?? roleStyle?.fill ?? PALETTE.paperAlt,
-      themed.stroke ?? roleStyle?.stroke ?? ink,
+      element.fill ?? themed.fill ?? roleStyle?.fill ?? palette.paperAlt,
+      rgba(themed.stroke ?? roleStyle?.stroke ?? palette.ink),
+      roleStyle?.dash && !themed.stroke ? roleStyle.dash : null,
     );
     if (element.label) {
       paintTextLayout(layer, width, height, element.label, shapeTextRect(element.rect, element.shape ?? 'process'), {
@@ -411,7 +428,7 @@ function paintElement(doc, element, layer, width, height, ox, oy, perspective) {
         paddingQuads: doc.font.paddingQuads,
         align: element.align,
         verticalAlign: 'center',
-        color: rgba(themed.text ?? PALETTE.ink),
+        color: rgba(themed.text ?? palette.ink),
         ox,
         oy,
       });
@@ -421,7 +438,7 @@ function paintElement(doc, element, layer, width, height, ox, oy, perspective) {
     paintTextLayout(layer, width, height, element.text, element.rect, {
       fontSize: element.fontSize,
       align: element.align,
-      color: rgba(element.color ?? themed.text ?? PALETTE.inkSoft),
+      color: rgba(element.color ?? themed.text ?? palette.inkSoft),
       weight: element.weight ?? 400,
       ox,
       oy,
@@ -437,12 +454,39 @@ function paintElement(doc, element, layer, width, height, ox, oy, perspective) {
     paintEmbeddedImage(layer, width, height, source, x, y, w, h, element.fit ?? 'contain');
     return element.opacity ?? 1;
   } else if (element.kind === 'image') {
-    rect(layer, width, height, x, y, w, h, rgba(PALETTE.paperAlt));
+    rect(layer, width, height, x, y, w, h, rgba(palette.paperAlt));
     for (const point of linePoints({ x, y }, { x: x + w - 1, y: y + h - 1 })) put(layer, width, height, point.x, point.y, ink);
     for (const point of linePoints({ x: x + w - 1, y }, { x, y: y + h - 1 })) put(layer, width, height, point.x, point.y, ink);
     return element.opacity ?? 1;
   }
   return 1;
+}
+
+/**
+ * Opaque elements can paint straight onto the already-opaque document buffer.
+ * A full-canvas temporary layer is only needed when alpha, page opacity, an
+ * embedded image, or a micro-mask must be composited. This distinction is
+ * material for lattice artwork: thousands of small opaque paths on a large
+ * sheet otherwise allocate and scan the entire canvas once per path.
+ */
+function needsCompositingLayer(doc, element, perspective, pageOpacity, masks) {
+  if (pageOpacity !== 1 || masks.length) return true;
+  const themed = styleForElement(doc, element, perspective);
+  const opacity = element.kind === 'path'
+    ? themed.opacity ?? 1
+    : element.kind === 'box'
+      ? element.opacity ?? themed.opacity ?? 1
+      : element.kind === 'image'
+        ? element.opacity ?? 1
+        : 1;
+  if (opacity !== 1) return true;
+  if (element.kind === 'path' && element.pieces.some((piece) => piece.opacity != null && piece.opacity !== 1)) return true;
+  if (element.kind === 'image' && element.mode !== 'embed'
+      && (element.runs ?? []).some((run) => run.opacity != null && run.opacity !== 1)) return true;
+  // Source pixels may carry their own alpha even when the image element does
+  // not, so embedded PNGs retain the normal layer/composite path.
+  if (element.kind === 'image' && element.source?.startsWith('data:image/png;base64,')) return true;
+  return false;
 }
 
 export function rasterizeDocument(doc, { view = null, pages = null, showGrid = true, margin = 20, bounds = 'content' } = {}) {
@@ -472,11 +516,17 @@ export function rasterizeDocument(doc, { view = null, pages = null, showGrid = t
     for (let y = Math.floor(px.y / 10) * 10; y <= px.y + px.h; y += 10) rect(pixels, width, height, 0, y + oy, width, 1, y % 100 === 0 ? major : minor);
   }
   for (const page of visible) {
+    const pageOpacity = page.opacity ?? 1;
     for (const element of elementsOf(doc, page.id).filter((entry) => resolved.elementIds.has(entry.id))) {
+      const masks = microMasksOf(doc).filter((mask) => mask.target === element.id);
+      if (!needsCompositingLayer(doc, element, resolved.view?.perspective ?? null, pageOpacity, masks)) {
+        paintElement(doc, element, pixels, width, height, ox, oy, resolved.view?.perspective ?? null);
+        continue;
+      }
       const layer = new Uint8Array(pixels.length);
       const opacity = paintElement(doc, element, layer, width, height, ox, oy, resolved.view?.perspective ?? null);
-      eraseMasks(layer, width, height, microMasksOf(doc).filter((mask) => mask.target === element.id), ox, oy);
-      composite(pixels, layer, (page.opacity ?? 1) * opacity);
+      eraseMasks(layer, width, height, masks, ox, oy);
+      composite(pixels, layer, pageOpacity * opacity);
     }
   }
   if (key?.entries.length) {
