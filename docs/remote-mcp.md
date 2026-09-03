@@ -15,6 +15,13 @@ Accept: application/json, text/event-stream
 Content-Type: application/json
 ```
 
+Every entry returned by `tools/list` includes a strict object `outputSchema`.
+Successful `tools/call` results include a matching `structuredContent` envelope
+with `schemaVersion`, `ok`, `tool`, `format`, and `result`, alongside the
+established text `content`. JSON handler output is parsed into `result`; other
+output is preserved exactly as text. See the
+[output schema contract](mcp-output-schema-contract.md).
+
 Python's default `urllib` user agent may be rejected by Cloudflare before a
 request reaches TurtlePen. Send a descriptive `User-Agent`; `curl` already
 sends one.

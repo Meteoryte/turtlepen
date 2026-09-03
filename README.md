@@ -6,7 +6,8 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 691 tests green, zero runtime dependencies, 76 MCP tools,
+Status: **prototype** — 691 tests green, zero runtime dependencies, 76 MCP tools
+with versioned structured-output schemas,
 also live as a hosted MCP server at **`https://brainn.dev/api/mcp/turtlepen`**.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
@@ -720,7 +721,9 @@ still needs TLS, OAuth identity, per-user quotas, and an authenticated file
 bridge. See the [remote MCP transport contract](docs/remote-mcp.md), including
 the required dual `Accept` header and Cloudflare user-agent gotcha.
 
-76 tools. Call `turtlepen_help` first for a compact orientation, use
+76 tools. Every tool advertises a strict object `outputSchema` and returns a
+matching, versioned `structuredContent` envelope while preserving its original
+text response for existing clients. Call `turtlepen_help` first for a compact orientation, use
 `search_help { query }` for task-focused discovery, and request
 `turtlepen_help { section: "all" }` for the complete grammar and rule manual.
 

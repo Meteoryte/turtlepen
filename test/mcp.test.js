@@ -14,7 +14,7 @@ import { dirname, resolve } from 'node:path';
 import { mkdtemp, readFile, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 
-import { createSession, createTools } from '../src/mcp/tools.js';
+import { createSession, createTools, TOOL_OUTPUT_SCHEMA_VERSION } from '../src/mcp/tools.js';
 import * as core from '../src/core/index.js';
 import { VERSION } from '../src/version.js';
 
@@ -32,6 +32,11 @@ test('the tool module loads and every tool is well formed', () => {
     assert.match(t.name, /^[a-z_]+$/, `bad tool name "${t.name}"`);
     assert.ok(t.description.length > 30, `${t.name} needs a real description`);
     assert.equal(t.inputSchema.type, 'object', `${t.name} schema`);
+    assert.equal(t.outputSchema.type, 'object', `${t.name} output schema`);
+    assert.equal(t.outputSchema.additionalProperties, false, `${t.name} output schema is strict`);
+    assert.deepEqual(t.outputSchema.properties.schemaVersion.enum, [TOOL_OUTPUT_SCHEMA_VERSION]);
+    assert.deepEqual(t.outputSchema.properties.tool.enum, [t.name]);
+    assert.deepEqual(t.outputSchema.required, ['schemaVersion', 'ok', 'tool', 'format', 'result']);
     assert.equal(typeof t.handler, 'function', `${t.name} handler`);
   }
   assert.equal(new Set(tools.map((t) => t.name)).size, tools.length, 'names are unique');
@@ -230,8 +235,10 @@ test('the JSON-RPC method and notification contract is complete over stdio', asy
     assert.deepEqual(replies.find((reply) => reply.id === 2).result, {});
 
     const liveNames = createTools(createSession()).map((tool) => tool.name).sort();
-    const listedNames = replies.find((reply) => reply.id === 3).result.tools.map((tool) => tool.name).sort();
+    const listedTools = replies.find((reply) => reply.id === 3).result.tools;
+    const listedNames = listedTools.map((tool) => tool.name).sort();
     assert.deepEqual(listedNames, liveNames);
+    assert.ok(listedTools.every((tool) => tool.outputSchema?.type === 'object'));
     assert.equal(replies.find((reply) => reply.id === 4).error.code, -32601);
     for (const reply of replies) assert.equal(reply.jsonrpc, '2.0');
   } finally {
@@ -281,6 +288,14 @@ test('the server initializes, lists tools, and answers calls in order', async ()
     assert.match(textOf(replies, 3), /created "rpc"/);
     assert.match(textOf(replies, 4), /path "demo": 7 quadrant\(s\)/);
     assert.match(textOf(replies, 5), /collision log/);
+    const created = replies.find((reply) => reply.id === 3).result;
+    assert.deepEqual(created.structuredContent, {
+      schemaVersion: TOOL_OUTPUT_SCHEMA_VERSION,
+      ok: true,
+      tool: 'new_diagram',
+      format: 'text',
+      result: created.content[0].text,
+    });
     assert.equal(replies.find((r) => r.id === 6).error.code, -32602, 'unknown tool is a protocol error');
   } finally {
     await rm(dir, { recursive: true, force: true });
@@ -848,6 +863,7 @@ test('a tool error comes back as a readable result, not a dead call', async () =
     );
     const reply = replies.find((r) => r.id === 3);
     assert.equal(reply.result.isError, true);
+    assert.equal(reply.result.structuredContent, undefined, 'the success schema is never attached to a failed call');
     assert.match(reply.result.content[0].text, /do not include "bottom"/, 'the model can read why and fix it');
   } finally {
     await rm(dir, { recursive: true, force: true });

@@ -7,7 +7,7 @@
  * TurtlePen's name.
  */
 
-import { createSession, createTools } from './tools.js';
+import { createSession, createTools, structuredToolOutput } from './tools.js';
 import { VERSION } from '../version.js';
 
 export const SERVER_INFO = Object.freeze({ name: 'turtlepen', version: VERSION });
@@ -109,6 +109,7 @@ export function createProtocolRuntime(sessionOptions = {}) {
               name: tool.name,
               description: tool.description,
               inputSchema: tool.inputSchema,
+              outputSchema: tool.outputSchema,
             })),
           });
 
@@ -120,8 +121,11 @@ export function createProtocolRuntime(sessionOptions = {}) {
             });
           }
           try {
-            const text = await tool.handler(params.arguments ?? {});
-            return result(id, { content: [{ type: 'text', text: String(text) }] });
+            const text = String(await tool.handler(params.arguments ?? {}));
+            return result(id, {
+              content: [{ type: 'text', text }],
+              structuredContent: structuredToolOutput(tool, text),
+            });
           } catch (caught) {
             return result(id, {
               content: [{ type: 'text', text: `error: ${caught.message}` }],

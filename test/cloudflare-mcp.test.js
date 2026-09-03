@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { createCloudflareHandlers } from '../src/mcp/cloudflare.js';
+import { VERSION } from '../src/version.js';
 
 class MemoryBucket {
   constructor() { this.objects = new Map(); }
@@ -129,7 +130,17 @@ test('the Cloudflare adapter exposes and preserves the canonical registry throug
   const tools = (await message(listed)).result.tools;
   assert.equal(tools.length, 76);
   assert.ok(tools.some((tool) => tool.name === 'release_check'));
-  assert.equal(db.sessions.get(session).version, 3, 'each request commits one optimistic state version');
+  assert.ok(tools.every((tool) => tool.outputSchema?.type === 'object'));
+
+  const runtimeResponse = await handlers.POST(rpcRequest({
+    jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'runtime_info', arguments: {} },
+  }, session));
+  const runtime = (await message(runtimeResponse)).result;
+  assert.equal(runtime.structuredContent.tool, 'runtime_info');
+  assert.equal(runtime.structuredContent.format, 'json');
+  assert.equal(runtime.structuredContent.result.toolCount, 76);
+  assert.equal(runtime.structuredContent.result.version, VERSION);
+  assert.equal(db.sessions.get(session).version, 4, 'each request commits one optimistic state version');
 });
 
 test('the Cloudflare adapter refuses bad content negotiation before touching storage', async () => {

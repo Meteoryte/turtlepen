@@ -1,6 +1,6 @@
 # TurtlePen — status
 
-**As of 2026-09-01.** Prototype, working end to end, 691/691 tests green,
+**As of 2026-09-03.** Prototype, working end to end, 691/691 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
@@ -20,6 +20,13 @@ Verified by running it, not by inspection:
   close, masking, UTF-8, fragmentation, binary and reserved frames, control sizes,
   and the 64 KiB limit. The executable map is
   `docs/endpoint-use-case-coverage.md`.
+- **ChatGPT and other schema-aware clients receive structured results.** Every
+  tool publishes a strict, versioned object `outputSchema`; successful calls
+  return matching `structuredContent` over stdio, HTTP, and Cloudflare while
+  retaining their original text response for compatibility. JSON output is
+  parsed, plain-language receipts stay exact, failed calls remain explicit
+  `isError` results, and hosted SVG source is not duplicated into the structured
+  envelope.
 - **Runtime and persistence truth are explicit.** Schema-1 and schema-2
   documents migrate to schema 3; perceptual review survives save/open; direct and nested-plan calls
   are validated against the same schemas; `runtime_info` reports version,

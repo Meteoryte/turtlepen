@@ -338,6 +338,81 @@ async function withHistory(session, name, args, handler) {
 
 const json = (o) => JSON.stringify(o, null, 2);
 
+/**
+ * Versioned, transport-independent result envelope advertised by every tool.
+ *
+ * MCP requires an output schema to describe an object. TurtlePen handlers
+ * intentionally retain their established text contract, so transports expose
+ * this envelope as `structuredContent` while keeping the original text in
+ * `content` for older clients.
+ */
+export const TOOL_OUTPUT_SCHEMA_VERSION = '1.0.0';
+
+export function toolOutputSchema(toolName) {
+  return {
+    $schema: 'https://json-schema.org/draft/2020-12/schema',
+    title: `TurtlePen ${toolName} result`,
+    description: 'A versioned TurtlePen tool result. JSON results are parsed; human-readable results preserve their exact text.',
+    type: 'object',
+    properties: {
+      schemaVersion: {
+        type: 'string',
+        enum: [TOOL_OUTPUT_SCHEMA_VERSION],
+        description: 'Version of this MCP output envelope.',
+      },
+      ok: {
+        type: 'boolean',
+        enum: [true],
+        description: 'True for successful tool calls. Failed calls use MCP isError and do not emit structuredContent.',
+      },
+      tool: {
+        type: 'string',
+        enum: [toolName],
+        description: 'The canonical TurtlePen tool that produced this result.',
+      },
+      format: {
+        type: 'string',
+        enum: ['json', 'text'],
+        description: 'json when the complete tool result was valid JSON; otherwise text.',
+      },
+      result: {
+        oneOf: [
+          { type: 'object' },
+          { type: 'array' },
+          { type: 'string' },
+          { type: 'number' },
+          { type: 'boolean' },
+          { type: 'null' },
+        ],
+        description: 'The parsed JSON value or the exact human-readable text returned by the tool.',
+      },
+    },
+    required: ['schemaVersion', 'ok', 'tool', 'format', 'result'],
+    additionalProperties: false,
+  };
+}
+
+export function structuredToolOutput(tool, output) {
+  const text = String(output);
+  let format = 'text';
+  let result = text;
+  try {
+    result = JSON.parse(text);
+    format = 'json';
+  } catch {
+    // Plain-language receipts and manuals are first-class TurtlePen outputs.
+  }
+  const structured = {
+    schemaVersion: TOOL_OUTPUT_SCHEMA_VERSION,
+    ok: true,
+    tool: tool.name,
+    format,
+    result,
+  };
+  assertSchema(tool.outputSchema ?? toolOutputSchema(tool.name), structured, `${tool.name}.result`);
+  return structured;
+}
+
 export function createTools(session) {
   const tools = [
     {
@@ -389,7 +464,7 @@ export function createTools(session) {
         schemaVersion: core.SCHEMA_VERSION,
         toolCount: tools.length,
         capabilityFingerprint: createHash('sha256')
-          .update(JSON.stringify(tools.map(({ name, inputSchema }) => ({ name, inputSchema }))))
+          .update(JSON.stringify(tools.map(({ name, inputSchema, outputSchema }) => ({ name, inputSchema, outputSchema }))))
           .digest('hex')
           .slice(0, 16),
         capabilityRegistry: capabilityRegistry(tools).fingerprint,
@@ -2613,6 +2688,7 @@ ${r.program}`;
     },
   ];
 
+  for (const tool of tools) tool.outputSchema = toolOutputSchema(tool.name);
   const byName = new Map(tools.map((tool) => [tool.name, tool]));
   return tools.map((tool) => {
     const isMutation = MUTATING_TOOLS.has(tool.name);

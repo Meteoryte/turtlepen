@@ -8,7 +8,7 @@ import { createHttpMcpServer } from '../src/mcp/http-server.js';
 import { createSession, createTools } from '../src/mcp/tools.js';
 
 const ACCEPT = 'application/json, text/event-stream';
-const USER_AGENT = 'TurtlePen-Remote-Contract-Test/0.3.3';
+const USER_AGENT = 'TurtlePen-Remote-Contract-Test/0.3.4';
 
 function request(id, method, params = {}) {
   return { jsonrpc: '2.0', id, method, params };
@@ -100,6 +100,7 @@ test('Streamable HTTP exposes the canonical 76-tool registry with SSE framing', 
     const localNames = createTools(createSession()).map((tool) => tool.name).sort();
     assert.equal(remoteNames.length, 76);
     assert.deepEqual(remoteNames, localNames, 'HTTP is a transport over the same registry, not a subset');
+    assert.ok(listed.result.tools.every((tool) => tool.outputSchema?.type === 'object'));
   } finally {
     await fixture.close();
   }
@@ -124,6 +125,9 @@ test('one remote session keeps an active document across separate POST requests'
     const runtimeInfo = JSON.parse(runtime.result.content[0].text);
     assert.equal(runtimeInfo.toolCount, 76);
     assert.equal(runtimeInfo.activeDocument.name, 'stateful remote');
+    assert.equal(runtime.result.structuredContent.tool, 'runtime_info');
+    assert.equal(runtime.result.structuredContent.format, 'json');
+    assert.deepEqual(runtime.result.structuredContent.result, runtimeInfo);
 
     const described = await sseMessage(await post(fixture.url, call(5, 'describe'), { session }));
     const pages = JSON.parse(described.result.content[0].text);

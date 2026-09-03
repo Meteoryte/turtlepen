@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added a strict, versioned MCP `outputSchema` to all 76 tools and matching
+  `structuredContent` to stdio, Streamable HTTP, and the canonical Cloudflare
+  adapter. Existing text content remains available for compatibility, tool
+  failures stay explicit through `isError`, and hosted render artifacts are not
+  duplicated into the structured envelope.
 - Completed the Diagram Design adaptation instead of leaving its semantics in
   direct-core-only state: `role` and exact rectangular `value` bindings are now
   available through `place_box`/`restyle`, while `scale` and `inspect_scale`

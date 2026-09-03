@@ -19,7 +19,8 @@ import {
 } from "./protocol.js";
 import {
   createSession,
-  createTools
+  createTools,
+  structuredToolOutput
 } from "./tools.js";
 const dynamic = "force-dynamic";
 const MiB = 1024 * 1024;
@@ -412,7 +413,8 @@ async function invoke(message, session, root) {
           tools: tools.map((tool) => ({
             name: tool.name,
             description: tool.description,
-            inputSchema: tool.inputSchema
+            inputSchema: tool.inputSchema,
+            outputSchema: tool.outputSchema
           }))
         }
       };
@@ -424,11 +426,13 @@ async function invoke(message, session, root) {
       const tool = byName.get(name);
       if (!tool) return errorPayload(id, -32602, `unknown tool "${name}"`);
       try {
-        let text = String(await tool.handler(
+        const canonicalText = String(await tool.handler(
           params.arguments && typeof params.arguments === "object" && !Array.isArray(params.arguments) ? params.arguments : {}
         ));
+        const structuredContent = structuredToolOutput(tool, canonicalText);
+        let text = canonicalText;
         if (name === "render") text = await inlineRenderArtifact(text, root);
-        return { jsonrpc: "2.0", id, result: { content: [{ type: "text", text }] } };
+        return { jsonrpc: "2.0", id, result: { content: [{ type: "text", text }], structuredContent } };
       } catch (error) {
         const text = error instanceof Error ? error.message : "Tool execution failed";
         return { jsonrpc: "2.0", id, result: { content: [{ type: "text", text: `error: ${text}` }], isError: true } };

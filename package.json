@@ -1,6 +1,6 @@
 {
   "name": "turtlepen",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -63,6 +63,7 @@
     "status.md",
     "docs/QUICKSTART.md",
     "docs/remote-mcp.md",
+    "docs/mcp-output-schema-contract.md",
     "docs/adr/0001-one-model-many-views.md",
     "docs/adr/0002-conflict-aware-local-persistence.md",
     "docs/adr/0003-deterministic-output-and-micro-masks.md",
