@@ -14,7 +14,7 @@ import { dirname, resolve } from 'node:path';
 import { mkdtemp, readFile, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 
-import { createSession, createTools, TOOL_OUTPUT_SCHEMA_VERSION } from '../src/mcp/tools.js';
+import { createSession, createTools, structuredToolOutput, TOOL_OUTPUT_SCHEMA_VERSION } from '../src/mcp/tools.js';
 import * as core from '../src/core/index.js';
 import { VERSION } from '../src/version.js';
 
@@ -40,6 +40,46 @@ test('the tool module loads and every tool is well formed', () => {
     assert.equal(typeof t.handler, 'function', `${t.name} handler`);
   }
   assert.equal(new Set(tools.map((t) => t.name)).size, tools.length, 'names are unique');
+});
+
+test('timeline is a schema-validated MCP operation with structured results and plan support', async (t) => {
+  const cwd = await mkdtemp(resolve(tmpdir(), 'turtlepen-timeline-mcp-'));
+  t.after(() => rm(cwd, { recursive: true, force: true }));
+  const session = createSession({ cwd });
+  const tools = new Map(createTools(session).map((tool) => [tool.name, tool]));
+  await tools.get('new_diagram').handler({ name: 'timeline MCP' });
+  const operation = {
+    op: 'timeline',
+    action: 'create',
+    id: 'history',
+    title: 'Connection history',
+    events: [
+      { id: 'local', title: 'Local stdio', date: '2025-08', type: 'milestone' },
+      { id: 'hosted', title: 'Hosted MCP', date: '2026-08-28', type: 'release' },
+    ],
+  };
+  const rehearsal = JSON.parse(await tools.get('plan').handler({ operations: [operation], commit: false, format: 'json' }));
+  assert.equal(rehearsal.ok, true);
+  assert.equal(session.doc.timelines.length, 0, 'rehearsal must not mutate the live document');
+
+  const { op: _op, ...arguments_ } = operation;
+  const resultText = await tools.get('timeline').handler(arguments_);
+  const result = JSON.parse(resultText);
+  assert.equal(result.timeline.id, 'history');
+  assert.equal(result.validation.verdict, 'PASS');
+  const structured = structuredToolOutput(tools.get('timeline'), resultText);
+  assert.equal(structured.format, 'json');
+  assert.equal(structured.result.timeline.generated.spacingResolved, 'ordinal');
+  assert.ok(session.doc.elements.base.some((element) => element.id === 'history__local__card'));
+  const described = JSON.parse(await tools.get('describe').handler({}));
+  assert.equal(described[0].timelines[0].id, 'history');
+
+  await tools.get('history').handler({ action: 'undo' });
+  assert.equal(session.doc.timelines.length, 0);
+  assert.equal(core.findElement(session.doc, 'history__local__card'), null);
+  await tools.get('history').handler({ action: 'redo' });
+  assert.equal(session.doc.timelines[0].id, 'history');
+  assert.ok(core.findElement(session.doc, 'history__local__card'));
 });
 
 test('every core operation has a matching tool, so a plan can be built by hand', () => {
@@ -71,7 +111,7 @@ test('runtime diagnostics report the one package version and live capability fin
   const tools = createTools(createSession());
   const info = JSON.parse(await tools.find((tool) => tool.name === 'runtime_info').handler({}));
   assert.equal(info.version, VERSION);
-  assert.equal(info.schemaVersion, 3);
+  assert.equal(info.schemaVersion, 4);
   assert.equal(info.toolCount, tools.length);
   assert.match(info.capabilityFingerprint, /^[0-9a-f]{16}$/);
   assert.equal(info.activeDocument, null);

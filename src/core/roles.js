@@ -25,6 +25,8 @@
 /** Roles a box may declare. `plain` is the default and asserts nothing. */
 export const NODE_ROLES = Object.freeze([
   'plain', 'focal', 'backend', 'store', 'external', 'input', 'optional', 'security',
+  'timeline-event', 'timeline-milestone', 'timeline-release', 'timeline-deadline',
+  'timeline-current', 'timeline-planned', 'timeline-phase',
 ]);
 
 /**
@@ -77,6 +79,20 @@ export function treatmentFor(role, skin) {
       return { fill: on(ink, 0.02), stroke: on(ink, 0.20), dash: '4,3' };
     case 'security':
       return { fill: on(skin.accent, 0.05), stroke: on(skin.accent, 0.50), dash: '4,4' };
+    case 'timeline-event':
+      return { fill: skin.paperAlt, stroke: ink };
+    case 'timeline-milestone':
+      return { fill: on(skin.accent, 0.07), stroke: skin.accent };
+    case 'timeline-release':
+      return { fill: on(skin.accent, 0.14), stroke: skin.accent };
+    case 'timeline-deadline':
+      return { fill: skin.paper, stroke: ink, dash: '2,2' };
+    case 'timeline-current':
+      return { fill: on(skin.accent, 0.18), stroke: skin.accent };
+    case 'timeline-planned':
+      return { fill: on(ink, 0.02), stroke: on(ink, 0.45), dash: '5,3' };
+    case 'timeline-phase':
+      return { fill: on(ink, 0.015), stroke: on(ink, 0.28), dash: '6,4' };
     default:
       return { fill: skin.paperAlt, stroke: ink };
   }

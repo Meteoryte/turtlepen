@@ -87,7 +87,7 @@ test('documentation bundles derive model, view, resource, and machine-readable f
   assert.match(bundle['model.md'], /browser/);
   assert.match(bundle['views/system.md'], /System context/);
   assert.match(bundle['resources.md'], /adr-1/);
-  assert.equal(JSON.parse(bundle['workspace.json']).schema, 3);
+  assert.equal(JSON.parse(bundle['workspace.json']).schema, 4);
 });
 
 test('benchmark scoring keeps four dimensions separate and preserves unreviewed truth', async (t) => {

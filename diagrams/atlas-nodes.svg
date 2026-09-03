@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1820" height="480" viewBox="0 0 1820 480" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
 <title id="tp-title">Node Atlas</title>
 <desc id="tp-desc">43 diagram elements across 2 visible page(s)</desc>
-<metadata>{"schema":3,"name":"Node Atlas","view":null,"elements":43}</metadata>
+<metadata>{"schema":4,"name":"Node Atlas","view":null,"elements":43}</metadata>
 <style>
   .bg { fill: #f4f3ef; }
   .grid { stroke: #dedbd3; stroke-width: 0.5; }

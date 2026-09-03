@@ -6,7 +6,7 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 691 tests green, zero runtime dependencies, 76 MCP tools
+Status: **prototype** — 706 tests green, zero runtime dependencies, 77 MCP tools
 with versioned structured-output schemas,
 also live as a hosted MCP server at **`https://brainn.dev/api/mcp/turtlepen`**.
 
@@ -21,6 +21,7 @@ also live as a hosted MCP server at **`https://brainn.dev/api/mcp/turtlepen`**.
 | know what is proven and what is deferred | [`status.md`](status.md) |
 | find the owner of version, schema, tools, artifacts, or generated evidence | [`docs/source-of-truth-map.md`](docs/source-of-truth-map.md) |
 | see the flowchart work and what was deliberately not built | [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md) |
+| create histories, roadmaps, incident chronologies, or phase bands | [`docs/semantic-timelines.md`](docs/semantic-timelines.md) |
 | repair existing lattice geometry | [`docs/lattice-editing.md`](docs/lattice-editing.md) |
 | choose a diagram type, and know what the engine checks about it | [`docs/diagram-types.md`](docs/diagram-types.md) |
 | know exactly which vector-editing operations exist | [`docs/svg-editing-capability-status.md`](docs/svg-editing-capability-status.md) — every capability marked SUPPORTED / PARTIAL / MISSING / OUT OF SCOPE |
@@ -721,11 +722,20 @@ still needs TLS, OAuth identity, per-user quotas, and an authenticated file
 bridge. See the [remote MCP transport contract](docs/remote-mcp.md), including
 the required dual `Accept` header and Cloudflare user-agent gotcha.
 
-76 tools. Every tool advertises a strict object `outputSchema` and returns a
+77 tools. Every tool advertises a strict object `outputSchema` and returns a
 matching, versioned `structuredContent` envelope while preserving its original
 text response for existing clients. Call `turtlepen_help` first for a compact orientation, use
 `search_help { query }` for task-focused discovery, and request
 `turtlepen_help { section: "all" }` for the complete grammar and rule manual.
+
+`timeline` turns dated and undated events, ranges, phases, tracks, milestones,
+releases, deadlines, current/planned states, resources, and relationships into
+ordinary editable TurtlePen primitives. It supports vertical or horizontal
+orientation, ordinal or time-proportional spacing, deterministic event updates
+and reflow, and Mermaid `timeline` import. See the
+[semantic timeline contract](docs/semantic-timelines.md) and the reviewed
+[vertical](diagrams/turtlepen-connection-history-vertical.svg) / [horizontal](diagrams/turtlepen-connection-history-horizontal.svg)
+connection-history fixtures.
 
 The maintained [endpoint and use-case coverage matrix](docs/endpoint-use-case-coverage.md)
 maps every transport, tool, viewer route, and known workflow to executable evidence.
@@ -761,7 +771,7 @@ inflating effective ink, and record source plus run hashes in the
 | Group | Tools |
 |---|---|
 | orient | `turtlepen_help` `search_help` `doctor` `runtime_info` `describe` `ascii` `free_space` `history` |
-| author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `connect` `annotate` `plan` `group` `constraint` `import_mermaid` `route` |
+| author | `new_diagram` `open_diagram` `add_page` `remove_page` `measure` `place_box` `pen` `connect` `annotate` `plan` `group` `constraint` `timeline` `import_mermaid` `route` |
 | workspace | `define_view` `remove_view` `configure_theme` `attach_resource` `remove_resource` |
 | check | `validate` `inspect_model` `accept_model_finding` `unaccept_model_finding` `perceptual_review` `release_check` `accept_finding` `unaccept_finding` |
 | layout | `align` `distribute` `layout` |

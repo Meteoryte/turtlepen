@@ -2,7 +2,13 @@
 
 ## Unreleased
 
-- Added a strict, versioned MCP `outputSchema` to all 76 tools and matching
+- Added first-class semantic timelines with a schema-4 durable model, one native
+  compiler for vertical/horizontal and ordinal/temporal layout policies,
+  deterministic create/update/event/reflow actions, stable generated IDs,
+  timeline-specific validation, semantic inspection, monochrome marker/role
+  cues, Mermaid timeline import, and reviewed vertical/horizontal reference
+  fixtures. Generated output remains ordinary editable TurtlePen primitives.
+- Added a strict, versioned MCP `outputSchema` to all 77 tools and matching
   `structuredContent` to stdio, Streamable HTTP, and the canonical Cloudflare
   adapter. Existing text content remains available for compatibility, tool
   failures stay explicit through `isError`, and hosted render artifacts are not
@@ -53,7 +59,7 @@
 
 - Extracted one transport-independent, stateful MCP protocol runtime so stdio
   and remote HTTP cannot drift into different tool registries or behaviors.
-- Added a zero-dependency MCP 2025-06-18 Streamable HTTP transport with all 76
+- Added a zero-dependency MCP 2025-06-18 Streamable HTTP transport with all 77
   canonical tools, request-scoped SSE replies, isolated stateful sessions,
   serial mutation ordering, explicit teardown, filesystem confinement, bounded
   resources, storage purge on teardown/expiry, origin checks, private-preview
@@ -67,7 +73,7 @@
   14x3 for a subprocess instead of the defective 13x3.
 - Corrected `L002` arithmetic so the width named in its message is the same
   unbroken width used to calculate the reported overflow.
-- 691 tests pass, including the real HTTP and Cloudflare-hosted transport boundaries, the
+- 706 tests pass, including the real HTTP and Cloudflare-hosted transport boundaries, the
   final release gate, and an all-12-shape
   measurement audit.
 

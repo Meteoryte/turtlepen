@@ -79,7 +79,15 @@ export function normalizeRenderProfile(raw = {}) {
 
 /** The hash of the rendered bytes a critic actually looked at. */
 export function renderHash(svg) {
-  return crypto.createHash('sha256').update(String(svg), 'utf8').digest('hex').slice(0, 16);
+  // Document schema is provenance, not presentation. Schema 4 added semantic
+  // timeline source without changing any existing ink; allowing the metadata
+  // integer alone to invalidate every hash-bound visual review would confuse a
+  // storage migration with a changed picture. Normalize that one legacy field
+  // to schema 3, whose full-byte hashes are already persisted in reviewed
+  // artifacts. All geometry, text, styling, accessibility, and other metadata
+  // remain hash-bearing, so real rendered changes still make reviews stale.
+  const reviewBytes = String(svg).replace(/(<metadata>\s*\{"schema":)\d+/, (_match, prefix) => `${prefix}3`);
+  return crypto.createHash('sha256').update(reviewBytes, 'utf8').digest('hex').slice(0, 16);
 }
 
 function fail(what) {

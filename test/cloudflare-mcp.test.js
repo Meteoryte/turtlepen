@@ -128,7 +128,7 @@ test('the Cloudflare adapter exposes and preserves the canonical registry throug
 
   const listed = await handlers.POST(rpcRequest({ jsonrpc: '2.0', id: 2, method: 'tools/list' }, session));
   const tools = (await message(listed)).result.tools;
-  assert.equal(tools.length, 76);
+  assert.equal(tools.length, 77);
   assert.ok(tools.some((tool) => tool.name === 'release_check'));
   assert.ok(tools.every((tool) => tool.outputSchema?.type === 'object'));
 
@@ -138,7 +138,7 @@ test('the Cloudflare adapter exposes and preserves the canonical registry throug
   const runtime = (await message(runtimeResponse)).result;
   assert.equal(runtime.structuredContent.tool, 'runtime_info');
   assert.equal(runtime.structuredContent.format, 'json');
-  assert.equal(runtime.structuredContent.result.toolCount, 76);
+  assert.equal(runtime.structuredContent.result.toolCount, 77);
   assert.equal(runtime.structuredContent.result.version, VERSION);
   assert.equal(db.sessions.get(session).version, 4, 'each request commits one optimistic state version');
 });

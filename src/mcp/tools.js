@@ -132,6 +132,80 @@ const semanticProperties = () => ({
   outcome: { type: 'string', minLength: 1, description: 'result or response associated with a relationship, especially in dynamic views' },
 });
 
+const TIMELINE_ID_SCHEMA = { type: 'string', pattern: '^[A-Za-z0-9_-]+$' };
+const TIMELINE_DATE_SCHEMA = { type: 'string', pattern: '^\\d{4}(-\\d{2}(-\\d{2})?)?$' };
+
+function timelineRelationshipSchema() {
+  return {
+    type: 'object',
+    properties: {
+      to: { ...TIMELINE_ID_SCHEMA, description: 'target event id' },
+      type: { type: 'string', minLength: 1, description: 'relationship kind, e.g. enables, supersedes, depends-on' },
+      label: { type: 'string', minLength: 1 },
+    },
+    required: ['to'],
+    additionalProperties: false,
+  };
+}
+
+function timelineEventSchema({ partial = false } = {}) {
+  return {
+    type: 'object',
+    properties: {
+      id: { ...TIMELINE_ID_SCHEMA, description: 'stable semantic id; generated primitives use <timeline>__<event>__<role>' },
+      type: { type: 'string', enum: [...core.TIMELINE_EVENT_TYPES] },
+      title: { type: 'string', minLength: 1 },
+      description: { type: 'string', minLength: 1 },
+      date: { ...TIMELINE_DATE_SCHEMA, description: 'canonical ISO point/start date; use displayDate for human wording' },
+      startDate: { ...TIMELINE_DATE_SCHEMA, description: 'canonical ISO range start; alias of date for period-shaped input' },
+      endDate: { ...TIMELINE_DATE_SCHEMA, description: 'canonical ISO range end; requires date or startDate' },
+      displayDate: { type: 'string', minLength: 1, description: 'human label such as "Late 2024"; never converted into an invented machine date' },
+      approximate: { type: 'boolean', description: 'marks date/period as approximate and renders a dotted marker/link' },
+      current: { type: 'boolean', description: 'marks the single current event with a filled marker' },
+      status: { type: 'string', enum: [...core.TIMELINE_STATUSES] },
+      sequence: { type: 'integer', description: 'ordering aid for undated events; dates still sort chronologically by default' },
+      phase: { ...TIMELINE_ID_SCHEMA, description: 'declared phase id' },
+      track: { ...TIMELINE_ID_SCHEMA, description: 'declared track id' },
+      category: { type: 'string', minLength: 1 },
+      parent: { ...TIMELINE_ID_SCHEMA, description: 'parent event id for semantic hierarchy' },
+      resources: { type: 'array', items: { type: 'string', minLength: 1 }, description: 'resource ids, URLs, or local reference labels' },
+      relationships: { type: 'array', items: timelineRelationshipSchema() },
+    },
+    ...(partial ? {} : { required: ['id', 'title'] }),
+    additionalProperties: false,
+  };
+}
+
+function timelinePhaseSchema() {
+  return {
+    type: 'object',
+    properties: {
+      id: TIMELINE_ID_SCHEMA,
+      title: { type: 'string', minLength: 1 },
+      description: { type: 'string', minLength: 1 },
+      startDate: TIMELINE_DATE_SCHEMA,
+      endDate: TIMELINE_DATE_SCHEMA,
+      displayDate: { type: 'string', minLength: 1 },
+      status: { type: 'string', enum: [...core.TIMELINE_STATUSES] },
+    },
+    required: ['id', 'title'],
+    additionalProperties: false,
+  };
+}
+
+function timelineTrackSchema() {
+  return {
+    type: 'object',
+    properties: {
+      id: TIMELINE_ID_SCHEMA,
+      title: { type: 'string', minLength: 1 },
+      description: { type: 'string', minLength: 1 },
+    },
+    required: ['id', 'title'],
+    additionalProperties: false,
+  };
+}
+
 async function applyAndPersist(session, operation, args) {
   const result = core.applyOperation(need(session), { ...args, op: operation });
   await persist(session);
@@ -941,6 +1015,9 @@ ${stalled}` : core.formatLog(result);
               .filter((constraint) => [constraint.dependent, constraint.target]
                 .some((id) => core.findElement(doc, id)?.page === p.id))
               .map((constraint) => formatConstraint(doc, constraint)),
+            timelines: core.timelinesOf(doc)
+              .filter((timeline) => timeline.page === p.id || (timeline.generated?.pageIds ?? []).includes(p.id))
+              .map((timeline) => core.timelineSummary(timeline)),
             elements: core.elementsOf(doc, p.id)
               .filter((el) => !area || core.elementRects(el).some((footprint) => core.geometry.rectsOverlap(footprint, area)))
               .map((el) => describeElement(doc, el)),
@@ -2176,25 +2253,79 @@ ${stalled}` : core.formatLog(result);
     },
 
     {
-      name: 'import_mermaid',
+      name: 'timeline',
       description:
-        'Compile a Mermaid flowchart into TurtlePen operations. Returns the operations; it does NOT change the document. Feed them to "plan" to rehearse, read the collision log, then commit — so an import is subject to exactly the same validation as anything drawn by hand, and cannot produce geometry the normal path could not. Node brackets map onto the symbol vocabulary: ([x]) terminator, {x} decision, [/x/] io, {{x}} prep, [(x)] data, [[x]] subprocess, backslash-delimited manual, [x] process. It lays out a top-to-bottom spine; it does NOT route, and says so when an edge is not a straight drop. Unsupported syntax (subgraph, classDef, style, click) is refused by name rather than silently dropped.',
+        'Create, update, inspect, and reflow a semantic timeline. Dates stay canonical ISO values while displayDate preserves human wording; undated events remain undated. Chronological ordering is the default and equal dates retain input order. Layout is a policy (vertical/horizontal, alternating, single-sided, multi-track, phase-band, compact, or detailed), not a custom element: the tool compiles to ordinary editable boxes, text, paths, overlay pages, annotations, a flat group, and an optional position scale with stable <timeline>__<event>__<role> ids. Use plan with a timeline operation to rehearse before commit. Reflow carries safe presentation overrides forward and names any manual geometry/content it must invalidate.',
       inputSchema: {
         type: 'object',
         properties: {
-          source: { description: 'the mermaid flowchart text, including its "flowchart TD" header', type: 'string' },
+          action: { type: 'string', enum: [...core.TIMELINE_ACTIONS], description: 'create (default), update semantic source, add/update/remove one event, reflow layout only, or inspect' },
+          id: { ...TIMELINE_ID_SCHEMA, description: 'stable timeline id' },
+          title: { type: 'string', minLength: 1 },
+          page: { ...TIMELINE_ID_SCHEMA, description: 'existing page for cards and text; generated guides/links/markers use stable overlay pages' },
+          at: { type: 'string', description: 'top-left lattice address, e.g. C4' },
+          orientation: { type: 'string', enum: [...core.TIMELINE_ORIENTATIONS] },
+          layout: { type: 'string', enum: [...core.TIMELINE_LAYOUTS], description: 'layout policy; compact/detailed change information density, multi-track requires track choices when several tracks exist' },
+          side: { type: 'string', enum: [...core.TIMELINE_SIDES], description: 'start=left/above, end=right/below for single-sided and multi-track layouts' },
+          spacing: { type: 'string', enum: [...core.TIMELINE_SPACING], description: 'ordinal (default) gives equal event rhythm; temporal uses a quantitative date scale and refuses spans below the computed minimum' },
+          order: { type: 'string', enum: [...core.TIMELINE_ORDERS], description: 'chronological (default) sorts dated events and keeps equal dates in input order; input preserves the entire authored order' },
+          spanCells: { type: 'integer', minimum: 4, description: 'primary-axis span; omit for the measured minimum. Too-small explicit spans fail with the minimum viable value.' },
+          cardWidthCells: { type: 'integer', minimum: 10, maximum: 80, description: 'measured wrap width; omit for layout-aware default' },
+          gapCells: { type: 'integer', minimum: 1, maximum: 20, description: 'minimum event/card rhythm' },
+          fitCanvas: { type: 'boolean', description: 'expand, never shrink, canvas bounds to fit generated content; default true' },
+          currentDate: { ...TIMELINE_DATE_SCHEMA, description: 'optional canonical ISO current-date fact; current markers are still selected explicitly on events' },
+          events: { type: 'array', minItems: 1, items: timelineEventSchema(), description: 'required for create; replaces the event set on update' },
+          phases: { type: 'array', items: timelinePhaseSchema() },
+          tracks: { type: 'array', items: timelineTrackSchema() },
+          eventId: { ...TIMELINE_ID_SCHEMA, description: 'target for update_event or remove_event' },
+          event: { ...timelineEventSchema({ partial: true }), description: 'full event for add_event; changed fields for update_event' },
+          format: { type: 'string', enum: ['json', 'text'] },
+        },
+        required: ['id'],
+        additionalProperties: false,
+      },
+      handler: async ({ format = 'json', ...args }) => {
+        const doc = need(session);
+        const result = core.applyOperation(doc, { op: 'timeline', ...args });
+        if ((args.action ?? 'create') !== 'inspect') await persist(session);
+        if (format === 'json') return json(result);
+        if ((args.action ?? 'create') === 'inspect') {
+          return `${result.title} — ${result.events.length} events, ${result.orientation} ${result.layout}, ${result.spacing} spacing`;
+        }
+        const invalidated = result.invalidatedOverrides.length
+          ? `; ${result.invalidatedOverrides.length} manual override(s) invalidated — inspect JSON for exact ids and reasons`
+          : '';
+        return `timeline "${result.timeline.id}" ${result.action}: ${result.timeline.events.length} events, ${result.generated.elements} editable primitives, ${result.timeline.generated.spanCells} cells${invalidated}`;
+      },
+    },
+
+    {
+      name: 'import_mermaid',
+      description:
+        'Compile Mermaid flowchart OR timeline syntax into TurtlePen operations. Returns operations and does NOT change the document: feed them to plan to rehearse, read the collision log, then commit. Flowchart brackets map onto TurtlePen node shapes. A Mermaid timeline preserves title, period labels, canonical ISO dates, sections as phases, same-period input order, and every text field in a normal timeline operation that expands into editable primitives. Human period labels remain displayDate rather than becoming invented machine dates. Unsupported directives are refused by name rather than silently dropped.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          source: { description: 'Mermaid text including a flowchart/graph or timeline header', type: 'string' },
           page: { type: 'string' },
           nodeWidth: { type: 'integer' },
           nodeHeight: { type: 'integer' },
+          timelineId: { ...TIMELINE_ID_SCHEMA, description: 'stable id for a Mermaid timeline import; defaults from its title' },
+          orientation: { type: 'string', enum: [...core.TIMELINE_ORIENTATIONS] },
+          timelineLayout: { type: 'string', enum: [...core.TIMELINE_LAYOUTS] },
+          spacing: { type: 'string', enum: [...core.TIMELINE_SPACING] },
+          at: { type: 'string' },
+          spanCells: { type: 'integer', minimum: 4 },
         },
         required: ['source'],
         additionalProperties: false,
       },
-      handler: async ({ source, page = 'base', nodeWidth = 26, nodeHeight = 8 }) => {
-        const result = core.mermaidToOperations(source, { page, nodeWidth, nodeHeight });
+      handler: async ({ source, page = 'base', nodeWidth = 26, nodeHeight = 8, timelineId = null, orientation = 'vertical', timelineLayout = 'alternating', spacing = 'ordinal', at = 'C4', spanCells = null }) => {
+        const result = core.mermaidToOperations(source, { page, nodeWidth, nodeHeight, timelineId, orientation, timelineLayout, spacing, at, spanCells });
         return JSON.stringify({
           nodes: result.nodes,
           edges: result.edges,
+          timeline: result.timeline ?? null,
           notes: result.notes,
           next: 'Pass these to plan (commit:false) and read the log before committing.',
           operations: result.operations,
@@ -2943,6 +3074,7 @@ DISCOVERY
   turtlepen_help { section: "all" }        full pen grammar and rule manual
   doctor                                     runtime/schema/registry checks
   runtime_info                               version, hashes, and tool count
+  timeline { action: "create", ... }         semantic histories and roadmaps
 
 RECOVERY AND OUTPUT
   plan with format:"json" returns an exact object diff before commit.
@@ -3012,8 +3144,9 @@ WORKFLOW
   Findings are ranked S0 critical, S1 error, S2 warn, S3 info. Accepting a
   finding records intent; it lapses automatically if the geometry changes.
 
-IMPORTING A MERMAID FLOWCHART
+IMPORTING MERMAID FLOWCHARTS AND TIMELINES
   import_mermaid { source: "flowchart TD ..." }  ->  operations, NOT a change
+  import_mermaid { source: "timeline ..." }      ->  one timeline operation
 
   It compiles onto operations you already have and hands them back. Feed them
   to plan, read the log, then commit — so an import faces exactly the same
@@ -3028,6 +3161,22 @@ IMPORTING A MERMAID FLOWCHART
   edges are not a straight drop so you can reroute them yourself. subgraph,
   classDef, style and click are refused by name rather than silently dropped —
   half a diagram reported as a success is worse than an error.
+
+SEMANTIC TIMELINES
+  timeline { id, title, events: [{ id, title, date?, displayDate?, ... }] }
+  timeline { action: "reflow", id, orientation: "horizontal" }
+  timeline { action: "inspect", id }
+
+  Timelines retain canonical ISO dates separately from human display wording,
+  never invent dates for undated labels, and keep stable
+  <timeline>__<event>__<role> primitive ids across reflow. Chronological order
+  is the default; equal dates retain authored input order. Ordinal spacing
+  prioritizes legibility, while temporal spacing defines an exact position
+  scale and refuses spans below its measured minimum. Layout policies include
+  alternating, single-sided, multi-track, phase-band, compact, and detailed.
+  Reflow preserves safe presentation overrides and reports geometry or content
+  overrides it invalidates. The result remains ordinary editable TurtlePen
+  pages, boxes, paths, annotations, groups, and scales.
 
 PERCEPTUAL REVIEW — the half validate cannot see
   render  ->  LOOK  ->  perceptual_review
@@ -3177,7 +3326,7 @@ SEMANTIC MODEL AND NODE CONNECTIONS
   validation, so missing metadata can never masquerade as broken geometry.
 
 SEMANTIC NODE ROLES AND EXACT LENGTH SCALES
-  place_box { ..., role: "focal|backend|store|external|input|optional|security" }
+  place_box { ..., role: "focal|backend|store|external|input|optional|security|timeline-event|timeline-milestone|timeline-release|timeline-deadline|timeline-current|timeline-planned|timeline-phase" }
   scale { action: "define", id: "revenue", domain: [0,100], quads: 40,
           kind: "magnitude" }
   inspect_scale { id: "revenue", value: 50 }  see exact projection + residual

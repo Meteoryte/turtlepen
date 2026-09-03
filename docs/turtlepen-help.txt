@@ -56,8 +56,9 @@ WORKFLOW
   Findings are ranked S0 critical, S1 error, S2 warn, S3 info. Accepting a
   finding records intent; it lapses automatically if the geometry changes.
 
-IMPORTING A MERMAID FLOWCHART
+IMPORTING MERMAID FLOWCHARTS AND TIMELINES
   import_mermaid { source: "flowchart TD ..." }  ->  operations, NOT a change
+  import_mermaid { source: "timeline ..." }      ->  one timeline operation
 
   It compiles onto operations you already have and hands them back. Feed them
   to plan, read the log, then commit — so an import faces exactly the same
@@ -72,6 +73,22 @@ IMPORTING A MERMAID FLOWCHART
   edges are not a straight drop so you can reroute them yourself. subgraph,
   classDef, style and click are refused by name rather than silently dropped —
   half a diagram reported as a success is worse than an error.
+
+SEMANTIC TIMELINES
+  timeline { id, title, events: [{ id, title, date?, displayDate?, ... }] }
+  timeline { action: "reflow", id, orientation: "horizontal" }
+  timeline { action: "inspect", id }
+
+  Timelines retain canonical ISO dates separately from human display wording,
+  never invent dates for undated labels, and keep stable
+  <timeline>__<event>__<role> primitive ids across reflow. Chronological order
+  is the default; equal dates retain authored input order. Ordinal spacing
+  prioritizes legibility, while temporal spacing defines an exact position
+  scale and refuses spans below its measured minimum. Layout policies include
+  alternating, single-sided, multi-track, phase-band, compact, and detailed.
+  Reflow preserves safe presentation overrides and reports geometry or content
+  overrides it invalidates. The result remains ordinary editable TurtlePen
+  pages, boxes, paths, annotations, groups, and scales.
 
 PERCEPTUAL REVIEW — the half validate cannot see
   render  ->  LOOK  ->  perceptual_review
@@ -221,7 +238,7 @@ SEMANTIC MODEL AND NODE CONNECTIONS
   validation, so missing metadata can never masquerade as broken geometry.
 
 SEMANTIC NODE ROLES AND EXACT LENGTH SCALES
-  place_box { ..., role: "focal|backend|store|external|input|optional|security" }
+  place_box { ..., role: "focal|backend|store|external|input|optional|security|timeline-event|timeline-milestone|timeline-release|timeline-deadline|timeline-current|timeline-planned|timeline-phase" }
   scale { action: "define", id: "revenue", domain: [0,100], quads: 40,
           kind: "magnitude" }
   inspect_scale { id: "revenue", value: 50 }  see exact projection + residual
@@ -726,5 +743,45 @@ rules:
     "severity": "S1",
     "title": "value cannot land on box lattice",
     "blurb": "the declared value projects to a fractional, odd, or zero box extent"
+  },
+  "T001": {
+    "severity": "S1",
+    "title": "timeline primitive missing",
+    "blurb": "semantic timeline source names a generated primitive that no longer exists"
+  },
+  "T002": {
+    "severity": "S1",
+    "title": "timeline association broken",
+    "blurb": "a generated primitive no longer identifies the timeline event it represents"
+  },
+  "T003": {
+    "severity": "S1",
+    "title": "timeline order contradiction",
+    "blurb": "dated markers run backward or same-date events no longer preserve input order"
+  },
+  "T004": {
+    "severity": "S1",
+    "title": "timeline reference missing",
+    "blurb": "an event names a phase, track, parent, or related event that does not exist"
+  },
+  "T005": {
+    "severity": "S2",
+    "title": "current state conflict",
+    "blurb": "more than one event claims to be the single current point"
+  },
+  "T006": {
+    "severity": "S2",
+    "title": "approximation styling lost",
+    "blurb": "an approximate event is rendered without a non-exact visual treatment"
+  },
+  "T007": {
+    "severity": "S1",
+    "title": "temporal position contradiction",
+    "blurb": "a marker no longer matches the declared quantitative time scale"
+  },
+  "T008": {
+    "severity": "S2",
+    "title": "empty timeline phase",
+    "blurb": "a declared phase contains no events and communicates no interval"
   }
 }

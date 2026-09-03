@@ -1,0 +1,5283 @@
+{
+  "schema": 4,
+  "name": "TurtlePen connection history",
+  "canvas": {
+    "cols": 230,
+    "rows": 55
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-09-03T12:00:00.000Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    },
+    {
+      "id": "turtlepen-history__guides",
+      "z": 1,
+      "intent": "overlay",
+      "title": "TurtlePen connection history — guides",
+      "visible": true,
+      "opacity": 0.92
+    },
+    {
+      "id": "turtlepen-history__links",
+      "z": 2,
+      "intent": "overlay",
+      "title": "TurtlePen connection history — links",
+      "visible": true,
+      "opacity": 0.92
+    },
+    {
+      "id": "turtlepen-history__markers",
+      "z": 3,
+      "intent": "overlay",
+      "title": "TurtlePen connection history — markers",
+      "visible": true,
+      "opacity": 0.92
+    }
+  ],
+  "elements": {
+    "base": [
+      {
+        "id": "turtlepen-history__title",
+        "kind": "text",
+        "rect": {
+          "x": 4,
+          "y": 6,
+          "w": 70,
+          "h": 6
+        },
+        "text": "TurtlePen connection history",
+        "fontSize": 20,
+        "align": "left",
+        "color": null,
+        "weight": 700,
+        "description": "Title for timeline TurtlePen connection history",
+        "tags": [
+          "timeline",
+          "timeline-title"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "title"
+        }
+      },
+      {
+        "id": "turtlepen-history__original-prototype__card",
+        "kind": "box",
+        "rect": {
+          "x": 8,
+          "y": 18,
+          "w": 60,
+          "h": 18
+        },
+        "label": "August 29, 2026\nOriginal hosted prototype\nThe first hosted connector exposed five stateless TurtlePen tools.\ncomplete",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "role": "timeline-milestone",
+        "description": "The first hosted connector exposed five stateless TurtlePen tools.",
+        "tags": [
+          "timeline",
+          "timeline-card",
+          "timeline-milestone",
+          "timeline-complete"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-card",
+          "eventId": "original-prototype",
+          "eventType": "milestone",
+          "date": "2026-08-29",
+          "displayDate": "August 29, 2026",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "false",
+          "status": "complete",
+          "phase": "engine"
+        }
+      },
+      {
+        "id": "turtlepen-history__canonical-engine__card",
+        "kind": "box",
+        "rect": {
+          "x": 76,
+          "y": 48,
+          "w": 60,
+          "h": 18
+        },
+        "label": "Later that day\nCanonical stateful engine\nThe hosted route adopted the full stateful TurtlePen tool inventory.\ncomplete",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "role": "timeline-release",
+        "description": "The hosted route adopted the full stateful TurtlePen tool inventory.",
+        "tags": [
+          "timeline",
+          "timeline-card",
+          "timeline-release",
+          "timeline-complete"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-card",
+          "eventId": "canonical-engine",
+          "eventType": "release",
+          "date": "2026-08-29",
+          "displayDate": "Later that day",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "false",
+          "status": "complete",
+          "phase": "engine",
+          "relationships": "[{\"to\":\"original-prototype\",\"type\":\"supersedes\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__stale-beta-connector__card",
+        "kind": "box",
+        "rect": {
+          "x": 144,
+          "y": 16,
+          "w": 60,
+          "h": 20
+        },
+        "label": "After the engine upgrade\nInstalled beta connector stayed stale\nChatGPT retained the original five-tool schema instead of rediscovering the canonical inventory.\ndelayed",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "role": "timeline-deadline",
+        "description": "ChatGPT retained the original five-tool schema instead of rediscovering the canonical inventory.",
+        "tags": [
+          "timeline",
+          "timeline-card",
+          "timeline-transition",
+          "timeline-delayed"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-card",
+          "eventId": "stale-beta-connector",
+          "eventType": "transition",
+          "displayDate": "After the engine upgrade",
+          "approximate": "false",
+          "current": "false",
+          "status": "delayed",
+          "sequence": "1",
+          "phase": "connection",
+          "relationships": "[{\"to\":\"canonical-engine\",\"type\":\"lags\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__unsupported-sites-key__card",
+        "kind": "box",
+        "rect": {
+          "x": 212,
+          "y": 48,
+          "w": 60,
+          "h": 14
+        },
+        "label": "Before restoration\nSites declaration removed\nAn unsupported discovery key was removed rather than left as a misleading capability claim.",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "role": "timeline-event",
+        "description": "An unsupported discovery key was removed rather than left as a misleading capability claim.",
+        "tags": [
+          "timeline",
+          "timeline-card",
+          "timeline-transition"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-card",
+          "eventId": "unsupported-sites-key",
+          "eventType": "transition",
+          "displayDate": "Before restoration",
+          "approximate": "false",
+          "current": "false",
+          "sequence": "2",
+          "phase": "connection",
+          "relationships": "[{\"to\":\"stale-beta-connector\",\"type\":\"diagnoses\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__capability-restored__card",
+        "kind": "box",
+        "rect": {
+          "x": 280,
+          "y": 18,
+          "w": 60,
+          "h": 18
+        },
+        "label": "September 3, 2026\nSupported MCP capability published\nBrainn.dev declared the supported Sites MCP capability and restored native discovery.\ncomplete",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "role": "timeline-release",
+        "description": "Brainn.dev declared the supported Sites MCP capability and restored native discovery.",
+        "tags": [
+          "timeline",
+          "timeline-card",
+          "timeline-release",
+          "timeline-complete"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-card",
+          "eventId": "capability-restored",
+          "eventType": "release",
+          "date": "2026-09-03",
+          "displayDate": "September 3, 2026",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "false",
+          "status": "complete",
+          "phase": "connection",
+          "relationships": "[{\"to\":\"unsupported-sites-key\",\"type\":\"resolves\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__account-feature-setting__card",
+        "kind": "box",
+        "rect": {
+          "x": 348,
+          "y": 48,
+          "w": 60,
+          "h": 18
+        },
+        "label": "Current\nAccount setting still controls access\nNative Sites MCP availability remains controlled by the user account feature setting.\ncurrent",
+        "fontSize": 10,
+        "corner": "rounded",
+        "shape": "process",
+        "align": "left",
+        "fill": null,
+        "note": null,
+        "opacity": null,
+        "state": null,
+        "role": "timeline-current",
+        "description": "Native Sites MCP availability remains controlled by the user account feature setting.",
+        "tags": [
+          "timeline",
+          "timeline-card",
+          "timeline-point",
+          "timeline-current"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-card",
+          "eventId": "account-feature-setting",
+          "eventType": "point",
+          "date": "2026-09-03",
+          "displayDate": "Current",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "true",
+          "status": "current",
+          "phase": "availability",
+          "relationships": "[{\"to\":\"capability-restored\",\"type\":\"depends-on\"}]"
+        }
+      }
+    ],
+    "turtlepen-history__guides": [
+      {
+        "id": "turtlepen-history__axis",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 34,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 35,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 40,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 41,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 42,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 43,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 44,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 45,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 46,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 47,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 48,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 49,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 50,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 51,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 52,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 53,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 54,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 55,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 56,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 57,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 58,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 59,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 60,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 61,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 62,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 63,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 64,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 65,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 66,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 67,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 68,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 69,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 70,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 71,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 72,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 73,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 74,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 75,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 76,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 77,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 78,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 79,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 80,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 81,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 82,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 83,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 84,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 85,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 86,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 87,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 88,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 89,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 90,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 91,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 92,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 93,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 94,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 95,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 96,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 97,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 98,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 99,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 100,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 101,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 102,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 103,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 104,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 105,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 107,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 109,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 110,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 111,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 112,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 113,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 114,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 115,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 116,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 117,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 118,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 119,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 120,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 121,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 122,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 123,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 124,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 125,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 126,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 127,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 128,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 129,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 130,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 131,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 132,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 133,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 134,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 135,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 136,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 137,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 138,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 139,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 140,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 141,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 142,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 143,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 144,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 145,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 146,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 147,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 148,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 149,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 150,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 151,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 152,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 153,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 154,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 155,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 156,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 157,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 158,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 159,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 160,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 161,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 162,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 163,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 164,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 165,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 166,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 167,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 168,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 169,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 170,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 171,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 172,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 173,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 174,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 175,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 176,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 177,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 178,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 179,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 180,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 181,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 182,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 183,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 184,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 185,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 186,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 187,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 188,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 189,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 190,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 191,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 192,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 193,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 194,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 195,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 196,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 197,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 198,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 199,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 200,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 201,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 202,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 203,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 204,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 205,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 206,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 207,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 208,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 209,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 210,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 211,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 212,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 213,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 214,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 215,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 216,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 217,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 218,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 219,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 220,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 221,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 222,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 223,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 224,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 225,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 226,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 227,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 228,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 229,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 230,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 231,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 232,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 233,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 234,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 235,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 236,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 237,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 238,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 239,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 240,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 241,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 242,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 243,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 244,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 245,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 246,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 247,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 248,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 249,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 250,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 251,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 252,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 253,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 254,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 255,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 256,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 257,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 258,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 259,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 260,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 261,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 262,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 263,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 264,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 265,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 266,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 267,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 268,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 269,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 270,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 271,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 272,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 273,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 274,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 275,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 276,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 277,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 278,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 279,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 280,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 281,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 282,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 283,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 284,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 285,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 286,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 287,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 288,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 289,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 290,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 291,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 292,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 293,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 294,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 295,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 296,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 297,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 298,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 299,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 300,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 301,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 302,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 303,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 304,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 305,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 306,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 307,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 308,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 309,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 310,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 311,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 312,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 313,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 314,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 315,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 316,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 317,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 318,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 319,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 320,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 321,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 322,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 323,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 324,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 325,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 326,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 327,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 328,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 329,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 330,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 331,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 332,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 333,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 334,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 335,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 336,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 337,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 338,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 339,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 340,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 341,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 342,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 343,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 344,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 345,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 346,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 347,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 348,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 349,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 350,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 351,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 352,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 353,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 354,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 355,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 356,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 357,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 358,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 359,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 360,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 361,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 362,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 363,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 364,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 365,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 366,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 367,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 368,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 369,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 370,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 371,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 372,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 373,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 374,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 375,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 376,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 377,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 378,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 379,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 380,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          },
+          {
+            "x": 381,
+            "y": 42,
+            "type": "line",
+            "dir": "right",
+            "align": "top",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 3,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 382,
+          "y": 42,
+          "facing": "right"
+        },
+        "tags": [
+          "timeline",
+          "timeline-axis"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "axis",
+          "track": "main"
+        }
+      }
+    ],
+    "turtlepen-history__links": [
+      {
+        "id": "turtlepen-history__original-prototype__link",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 38,
+            "y": 42,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 41,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 40,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 39,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 38,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 37,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 38,
+          "y": 36,
+          "facing": "up"
+        },
+        "tags": [
+          "timeline",
+          "timeline-link"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-link",
+          "eventId": "original-prototype",
+          "eventType": "milestone",
+          "date": "2026-08-29",
+          "displayDate": "August 29, 2026",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "false",
+          "status": "complete",
+          "phase": "engine"
+        }
+      },
+      {
+        "id": "turtlepen-history__canonical-engine__link",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 106,
+            "y": 42,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 43,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 106,
+          "y": 48,
+          "facing": "down"
+        },
+        "tags": [
+          "timeline",
+          "timeline-link"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-link",
+          "eventId": "canonical-engine",
+          "eventType": "release",
+          "date": "2026-08-29",
+          "displayDate": "Later that day",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "false",
+          "status": "complete",
+          "phase": "engine",
+          "relationships": "[{\"to\":\"original-prototype\",\"type\":\"supersedes\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__stale-beta-connector__link",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 174,
+            "y": 42,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 174,
+            "y": 41,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 174,
+            "y": 40,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 174,
+            "y": 39,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 174,
+            "y": 38,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 174,
+            "y": 37,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 174,
+          "y": 36,
+          "facing": "up"
+        },
+        "tags": [
+          "timeline",
+          "timeline-link"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-link",
+          "eventId": "stale-beta-connector",
+          "eventType": "transition",
+          "displayDate": "After the engine upgrade",
+          "approximate": "false",
+          "current": "false",
+          "status": "delayed",
+          "sequence": "1",
+          "phase": "connection",
+          "relationships": "[{\"to\":\"canonical-engine\",\"type\":\"lags\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__unsupported-sites-key__link",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 242,
+            "y": 42,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 242,
+            "y": 43,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 242,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 242,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 242,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 242,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 242,
+          "y": 48,
+          "facing": "down"
+        },
+        "tags": [
+          "timeline",
+          "timeline-link"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-link",
+          "eventId": "unsupported-sites-key",
+          "eventType": "transition",
+          "displayDate": "Before restoration",
+          "approximate": "false",
+          "current": "false",
+          "sequence": "2",
+          "phase": "connection",
+          "relationships": "[{\"to\":\"stale-beta-connector\",\"type\":\"diagnoses\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__capability-restored__link",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 310,
+            "y": 42,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 310,
+            "y": 41,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 310,
+            "y": 40,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 310,
+            "y": 39,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 310,
+            "y": 38,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 310,
+            "y": 37,
+            "type": "line",
+            "dir": "up",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 310,
+          "y": 36,
+          "facing": "up"
+        },
+        "tags": [
+          "timeline",
+          "timeline-link"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-link",
+          "eventId": "capability-restored",
+          "eventType": "release",
+          "date": "2026-09-03",
+          "displayDate": "September 3, 2026",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "false",
+          "status": "complete",
+          "phase": "connection",
+          "relationships": "[{\"to\":\"unsupported-sites-key\",\"type\":\"resolves\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__account-feature-setting__link",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 378,
+            "y": 42,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 378,
+            "y": 43,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 378,
+            "y": 44,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 378,
+            "y": 45,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 378,
+            "y": 46,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          },
+          {
+            "x": 378,
+            "y": 47,
+            "type": "line",
+            "dir": "down",
+            "align": "left",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 1,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 378,
+          "y": 48,
+          "facing": "down"
+        },
+        "tags": [
+          "timeline",
+          "timeline-link"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-link",
+          "eventId": "account-feature-setting",
+          "eventType": "point",
+          "date": "2026-09-03",
+          "displayDate": "Current",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "true",
+          "status": "current",
+          "phase": "availability",
+          "relationships": "[{\"to\":\"capability-restored\",\"type\":\"depends-on\"}]"
+        }
+      }
+    ],
+    "turtlepen-history__markers": [
+      {
+        "id": "turtlepen-history__original-prototype__marker",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 40,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 36,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 37,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 38,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 39,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 3,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 39,
+          "y": 42,
+          "facing": "right"
+        },
+        "description": "Marker for Original hosted prototype",
+        "tags": [
+          "timeline",
+          "timeline-marker",
+          "timeline-milestone"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-marker",
+          "eventId": "original-prototype",
+          "eventType": "milestone",
+          "date": "2026-08-29",
+          "displayDate": "August 29, 2026",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "false",
+          "status": "complete",
+          "phase": "engine"
+        }
+      },
+      {
+        "id": "turtlepen-history__canonical-engine__marker",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 108,
+            "y": 40,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 107,
+            "y": 41,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 41,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 107,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 105,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 107,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 104,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 105,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 106,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 107,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 108,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 3,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 108,
+          "y": 44,
+          "facing": "right"
+        },
+        "description": "Marker for Canonical stateful engine",
+        "tags": [
+          "timeline",
+          "timeline-marker",
+          "timeline-release"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-marker",
+          "eventId": "canonical-engine",
+          "eventType": "release",
+          "date": "2026-08-29",
+          "displayDate": "Later that day",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "false",
+          "status": "complete",
+          "phase": "engine",
+          "relationships": "[{\"to\":\"original-prototype\",\"type\":\"supersedes\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__stale-beta-connector__marker",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 176,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 175,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 174,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 173,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 172,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 173,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 174,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 175,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 3,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 175,
+          "y": 42,
+          "facing": "right"
+        },
+        "description": "Marker for Installed beta connector stayed stale",
+        "tags": [
+          "timeline",
+          "timeline-marker",
+          "timeline-transition"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-marker",
+          "eventId": "stale-beta-connector",
+          "eventType": "transition",
+          "displayDate": "After the engine upgrade",
+          "approximate": "false",
+          "current": "false",
+          "status": "delayed",
+          "sequence": "1",
+          "phase": "connection",
+          "relationships": "[{\"to\":\"canonical-engine\",\"type\":\"lags\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__unsupported-sites-key__marker",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 244,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 243,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 242,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 241,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 240,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 241,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 242,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 243,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 3,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "closed": true,
+        "end": {
+          "x": 243,
+          "y": 42,
+          "facing": "right"
+        },
+        "description": "Marker for Sites declaration removed",
+        "tags": [
+          "timeline",
+          "timeline-marker",
+          "timeline-transition"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-marker",
+          "eventId": "unsupported-sites-key",
+          "eventType": "transition",
+          "displayDate": "Before restoration",
+          "approximate": "false",
+          "current": "false",
+          "sequence": "2",
+          "phase": "connection",
+          "relationships": "[{\"to\":\"stale-beta-connector\",\"type\":\"diagnoses\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__capability-restored__marker",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 312,
+            "y": 40,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 311,
+            "y": 41,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 312,
+            "y": 41,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 310,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 311,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 312,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 309,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 310,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 311,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 312,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 308,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 309,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 310,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 311,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 312,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 3,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 312,
+          "y": 44,
+          "facing": "right"
+        },
+        "description": "Marker for Supported MCP capability published",
+        "tags": [
+          "timeline",
+          "timeline-marker",
+          "timeline-release"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-marker",
+          "eventId": "capability-restored",
+          "eventType": "release",
+          "date": "2026-09-03",
+          "displayDate": "September 3, 2026",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "false",
+          "status": "complete",
+          "phase": "connection",
+          "relationships": "[{\"to\":\"unsupported-sites-key\",\"type\":\"resolves\"}]"
+        }
+      },
+      {
+        "id": "turtlepen-history__account-feature-setting__marker",
+        "kind": "path",
+        "pieces": [
+          {
+            "x": 378,
+            "y": 40,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 377,
+            "y": 41,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 378,
+            "y": 41,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 379,
+            "y": 41,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 376,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 377,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 378,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 379,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 380,
+            "y": 42,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 377,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 378,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 379,
+            "y": 43,
+            "type": "mark",
+            "style": "square"
+          },
+          {
+            "x": 378,
+            "y": 44,
+            "type": "mark",
+            "style": "square"
+          }
+        ],
+        "stroke": {
+          "color": "#2b2a26",
+          "width": 3,
+          "cap": "butt"
+        },
+        "note": null,
+        "role": "artwork",
+        "end": {
+          "x": 378,
+          "y": 44,
+          "facing": "right"
+        },
+        "description": "Marker for Account setting still controls access",
+        "tags": [
+          "timeline",
+          "timeline-marker",
+          "timeline-point"
+        ],
+        "properties": {
+          "generatedBy": "timeline",
+          "timelineId": "turtlepen-history",
+          "timelineRole": "event-marker",
+          "eventId": "account-feature-setting",
+          "eventType": "point",
+          "date": "2026-09-03",
+          "displayDate": "Current",
+          "datePrecision": "day",
+          "approximate": "false",
+          "current": "true",
+          "status": "current",
+          "phase": "availability",
+          "relationships": "[{\"to\":\"capability-restored\",\"type\":\"depends-on\"}]"
+        }
+      }
+    ]
+  },
+  "timelines": [
+    {
+      "schema": 1,
+      "id": "turtlepen-history",
+      "title": "TurtlePen connection history",
+      "page": "base",
+      "at": "C4",
+      "orientation": "horizontal",
+      "layout": "detailed",
+      "side": "end",
+      "spacing": "ordinal",
+      "order": "input",
+      "cardWidthCells": 30,
+      "gapCells": 4,
+      "fitCanvas": true,
+      "events": [
+        {
+          "id": "original-prototype",
+          "title": "Original hosted prototype",
+          "type": "milestone",
+          "description": "The first hosted connector exposed five stateless TurtlePen tools.",
+          "displayDate": "August 29, 2026",
+          "phase": "engine",
+          "status": "complete",
+          "date": "2026-08-29",
+          "datePrecision": "day",
+          "dateValue": 1787961600000,
+          "inputIndex": 0
+        },
+        {
+          "id": "canonical-engine",
+          "title": "Canonical stateful engine",
+          "type": "release",
+          "description": "The hosted route adopted the full stateful TurtlePen tool inventory.",
+          "displayDate": "Later that day",
+          "phase": "engine",
+          "status": "complete",
+          "relationships": [
+            {
+              "to": "original-prototype",
+              "type": "supersedes"
+            }
+          ],
+          "date": "2026-08-29",
+          "datePrecision": "day",
+          "dateValue": 1787961600000,
+          "inputIndex": 1
+        },
+        {
+          "id": "stale-beta-connector",
+          "title": "Installed beta connector stayed stale",
+          "type": "transition",
+          "description": "ChatGPT retained the original five-tool schema instead of rediscovering the canonical inventory.",
+          "displayDate": "After the engine upgrade",
+          "phase": "connection",
+          "status": "delayed",
+          "sequence": 1,
+          "relationships": [
+            {
+              "to": "canonical-engine",
+              "type": "lags"
+            }
+          ],
+          "inputIndex": 2
+        },
+        {
+          "id": "unsupported-sites-key",
+          "title": "Sites declaration removed",
+          "type": "transition",
+          "description": "An unsupported discovery key was removed rather than left as a misleading capability claim.",
+          "displayDate": "Before restoration",
+          "phase": "connection",
+          "sequence": 2,
+          "relationships": [
+            {
+              "to": "stale-beta-connector",
+              "type": "diagnoses"
+            }
+          ],
+          "inputIndex": 3
+        },
+        {
+          "id": "capability-restored",
+          "title": "Supported MCP capability published",
+          "type": "release",
+          "description": "Brainn.dev declared the supported Sites MCP capability and restored native discovery.",
+          "displayDate": "September 3, 2026",
+          "phase": "connection",
+          "status": "complete",
+          "relationships": [
+            {
+              "to": "unsupported-sites-key",
+              "type": "resolves"
+            }
+          ],
+          "date": "2026-09-03",
+          "datePrecision": "day",
+          "dateValue": 1788393600000,
+          "inputIndex": 4
+        },
+        {
+          "id": "account-feature-setting",
+          "title": "Account setting still controls access",
+          "type": "point",
+          "description": "Native Sites MCP availability remains controlled by the user account feature setting.",
+          "displayDate": "Current",
+          "phase": "availability",
+          "status": "current",
+          "current": true,
+          "relationships": [
+            {
+              "to": "capability-restored",
+              "type": "depends-on"
+            }
+          ],
+          "date": "2026-09-03",
+          "datePrecision": "day",
+          "dateValue": 1788393600000,
+          "inputIndex": 5
+        }
+      ],
+      "phases": [
+        {
+          "id": "engine",
+          "title": "Engine foundation",
+          "description": "The hosted implementation became canonical."
+        },
+        {
+          "id": "connection",
+          "title": "Connector correction",
+          "description": "Discovery was made truthful and current."
+        },
+        {
+          "id": "availability",
+          "title": "Account availability",
+          "description": "Capability and user enablement remain separate states."
+        }
+      ],
+      "tracks": [],
+      "generated": {
+        "elementIds": [
+          "turtlepen-history__title",
+          "turtlepen-history__axis",
+          "turtlepen-history__original-prototype__card",
+          "turtlepen-history__original-prototype__marker",
+          "turtlepen-history__original-prototype__link",
+          "turtlepen-history__canonical-engine__card",
+          "turtlepen-history__canonical-engine__marker",
+          "turtlepen-history__canonical-engine__link",
+          "turtlepen-history__stale-beta-connector__card",
+          "turtlepen-history__stale-beta-connector__marker",
+          "turtlepen-history__stale-beta-connector__link",
+          "turtlepen-history__unsupported-sites-key__card",
+          "turtlepen-history__unsupported-sites-key__marker",
+          "turtlepen-history__unsupported-sites-key__link",
+          "turtlepen-history__capability-restored__card",
+          "turtlepen-history__capability-restored__marker",
+          "turtlepen-history__capability-restored__link",
+          "turtlepen-history__account-feature-setting__card",
+          "turtlepen-history__account-feature-setting__marker",
+          "turtlepen-history__account-feature-setting__link"
+        ],
+        "pageIds": [
+          "turtlepen-history__guides",
+          "turtlepen-history__links",
+          "turtlepen-history__markers"
+        ],
+        "groupId": "turtlepen-history__group",
+        "scaleId": null,
+        "spacingRequested": "ordinal",
+        "spacingResolved": "ordinal",
+        "spanCells": 174,
+        "minimumSpanCells": 174,
+        "orientation": "horizontal",
+        "layout": "detailed",
+        "events": [
+          {
+            "eventId": "original-prototype",
+            "track": "main",
+            "side": "start",
+            "axisQuad": 38,
+            "expectedAxisQuad": null,
+            "clusterOffsetQuads": 0,
+            "markerAt": "T22.q1",
+            "cardAt": "E10.q1",
+            "cardSpan": {
+              "w": 30,
+              "h": 9
+            }
+          },
+          {
+            "eventId": "canonical-engine",
+            "track": "main",
+            "side": "end",
+            "axisQuad": 106,
+            "expectedAxisQuad": null,
+            "clusterOffsetQuads": 0,
+            "markerAt": "BB22.q1",
+            "cardAt": "AM25.q1",
+            "cardSpan": {
+              "w": 30,
+              "h": 9
+            }
+          },
+          {
+            "eventId": "stale-beta-connector",
+            "track": "main",
+            "side": "start",
+            "axisQuad": 174,
+            "expectedAxisQuad": null,
+            "clusterOffsetQuads": 0,
+            "markerAt": "CJ22.q1",
+            "cardAt": "BU9.q1",
+            "cardSpan": {
+              "w": 30,
+              "h": 10
+            }
+          },
+          {
+            "eventId": "unsupported-sites-key",
+            "track": "main",
+            "side": "end",
+            "axisQuad": 242,
+            "expectedAxisQuad": null,
+            "clusterOffsetQuads": 0,
+            "markerAt": "DR22.q1",
+            "cardAt": "DC25.q1",
+            "cardSpan": {
+              "w": 30,
+              "h": 7
+            }
+          },
+          {
+            "eventId": "capability-restored",
+            "track": "main",
+            "side": "start",
+            "axisQuad": 310,
+            "expectedAxisQuad": null,
+            "clusterOffsetQuads": 0,
+            "markerAt": "EZ22.q1",
+            "cardAt": "EK10.q1",
+            "cardSpan": {
+              "w": 30,
+              "h": 9
+            }
+          },
+          {
+            "eventId": "account-feature-setting",
+            "track": "main",
+            "side": "end",
+            "axisQuad": 378,
+            "expectedAxisQuad": null,
+            "clusterOffsetQuads": 0,
+            "markerAt": "GH22.q1",
+            "cardAt": "FS25.q1",
+            "cardSpan": {
+              "w": 30,
+              "h": 9
+            }
+          }
+        ],
+        "baselines": {
+          "turtlepen-history__account-feature-setting__card": {
+            "kind": "box",
+            "geometryHash": "5072835e0060f8f3928e303a8c6ca23071076e3774a831cc8b31fb14759db6e0",
+            "presentation": {
+              "role": "timeline-current",
+              "fill": null,
+              "opacity": null,
+              "fontSize": 10,
+              "align": "left",
+              "corner": "rounded",
+              "shape": "process",
+              "state": null
+            },
+            "content": {
+              "label": "Current\nAccount setting still controls access\nNative Sites MCP availability remains controlled by the user account feature setting.\ncurrent",
+              "description": "Native Sites MCP availability remains controlled by the user account feature setting.",
+              "tags": [
+                "timeline",
+                "timeline-card",
+                "timeline-point",
+                "timeline-current"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-card",
+                "eventId": "account-feature-setting",
+                "eventType": "point",
+                "date": "2026-09-03",
+                "displayDate": "Current",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "true",
+                "status": "current",
+                "phase": "availability",
+                "relationships": "[{\"to\":\"capability-restored\",\"type\":\"depends-on\"}]"
+              }
+            }
+          },
+          "turtlepen-history__account-feature-setting__link": {
+            "kind": "path",
+            "geometryHash": "d88c35a2e74f467dee7a73d5cec3df537e57338834c448dafda066cf49a7033b",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 1,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "tags": [
+                "timeline",
+                "timeline-link"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-link",
+                "eventId": "account-feature-setting",
+                "eventType": "point",
+                "date": "2026-09-03",
+                "displayDate": "Current",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "true",
+                "status": "current",
+                "phase": "availability",
+                "relationships": "[{\"to\":\"capability-restored\",\"type\":\"depends-on\"}]"
+              }
+            }
+          },
+          "turtlepen-history__account-feature-setting__marker": {
+            "kind": "path",
+            "geometryHash": "c737c470717b33f82f3617eeb0c5c1f6ca1294b3e070502e02a3728d95b6aefd",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 3,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "description": "Marker for Account setting still controls access",
+              "tags": [
+                "timeline",
+                "timeline-marker",
+                "timeline-point"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-marker",
+                "eventId": "account-feature-setting",
+                "eventType": "point",
+                "date": "2026-09-03",
+                "displayDate": "Current",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "true",
+                "status": "current",
+                "phase": "availability",
+                "relationships": "[{\"to\":\"capability-restored\",\"type\":\"depends-on\"}]"
+              }
+            }
+          },
+          "turtlepen-history__axis": {
+            "kind": "path",
+            "geometryHash": "b8b7301601949dc7be78247381ba440230c730d0e0ecde06a830d7a0a5d8e56b",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 3,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "tags": [
+                "timeline",
+                "timeline-axis"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "axis",
+                "track": "main"
+              }
+            }
+          },
+          "turtlepen-history__canonical-engine__card": {
+            "kind": "box",
+            "geometryHash": "1a2973f2c81b622466f6c93ca1c9bbed21c2a2cc980dd182762c93dc050e844a",
+            "presentation": {
+              "role": "timeline-release",
+              "fill": null,
+              "opacity": null,
+              "fontSize": 10,
+              "align": "left",
+              "corner": "rounded",
+              "shape": "process",
+              "state": null
+            },
+            "content": {
+              "label": "Later that day\nCanonical stateful engine\nThe hosted route adopted the full stateful TurtlePen tool inventory.\ncomplete",
+              "description": "The hosted route adopted the full stateful TurtlePen tool inventory.",
+              "tags": [
+                "timeline",
+                "timeline-card",
+                "timeline-release",
+                "timeline-complete"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-card",
+                "eventId": "canonical-engine",
+                "eventType": "release",
+                "date": "2026-08-29",
+                "displayDate": "Later that day",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "false",
+                "status": "complete",
+                "phase": "engine",
+                "relationships": "[{\"to\":\"original-prototype\",\"type\":\"supersedes\"}]"
+              }
+            }
+          },
+          "turtlepen-history__canonical-engine__link": {
+            "kind": "path",
+            "geometryHash": "165ce3b57de798ad7aa9c0671af5995b920499261b2f6bb8cc355ded102eb7b2",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 1,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "tags": [
+                "timeline",
+                "timeline-link"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-link",
+                "eventId": "canonical-engine",
+                "eventType": "release",
+                "date": "2026-08-29",
+                "displayDate": "Later that day",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "false",
+                "status": "complete",
+                "phase": "engine",
+                "relationships": "[{\"to\":\"original-prototype\",\"type\":\"supersedes\"}]"
+              }
+            }
+          },
+          "turtlepen-history__canonical-engine__marker": {
+            "kind": "path",
+            "geometryHash": "5defccba082ef0d9b1e50d2b3e0190a155038ebd0de30fe9740a08f85de20a47",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 3,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "description": "Marker for Canonical stateful engine",
+              "tags": [
+                "timeline",
+                "timeline-marker",
+                "timeline-release"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-marker",
+                "eventId": "canonical-engine",
+                "eventType": "release",
+                "date": "2026-08-29",
+                "displayDate": "Later that day",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "false",
+                "status": "complete",
+                "phase": "engine",
+                "relationships": "[{\"to\":\"original-prototype\",\"type\":\"supersedes\"}]"
+              }
+            }
+          },
+          "turtlepen-history__capability-restored__card": {
+            "kind": "box",
+            "geometryHash": "88c8c071368fff3d490916b03488b64d55d8f95c0b2c43e3e0d1cf4c0bf7bce6",
+            "presentation": {
+              "role": "timeline-release",
+              "fill": null,
+              "opacity": null,
+              "fontSize": 10,
+              "align": "left",
+              "corner": "rounded",
+              "shape": "process",
+              "state": null
+            },
+            "content": {
+              "label": "September 3, 2026\nSupported MCP capability published\nBrainn.dev declared the supported Sites MCP capability and restored native discovery.\ncomplete",
+              "description": "Brainn.dev declared the supported Sites MCP capability and restored native discovery.",
+              "tags": [
+                "timeline",
+                "timeline-card",
+                "timeline-release",
+                "timeline-complete"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-card",
+                "eventId": "capability-restored",
+                "eventType": "release",
+                "date": "2026-09-03",
+                "displayDate": "September 3, 2026",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "false",
+                "status": "complete",
+                "phase": "connection",
+                "relationships": "[{\"to\":\"unsupported-sites-key\",\"type\":\"resolves\"}]"
+              }
+            }
+          },
+          "turtlepen-history__capability-restored__link": {
+            "kind": "path",
+            "geometryHash": "b70b5bcd9490f0b6e1b2bc086417d529e792d8e123ba72483dc29653868f8ec5",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 1,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "tags": [
+                "timeline",
+                "timeline-link"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-link",
+                "eventId": "capability-restored",
+                "eventType": "release",
+                "date": "2026-09-03",
+                "displayDate": "September 3, 2026",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "false",
+                "status": "complete",
+                "phase": "connection",
+                "relationships": "[{\"to\":\"unsupported-sites-key\",\"type\":\"resolves\"}]"
+              }
+            }
+          },
+          "turtlepen-history__capability-restored__marker": {
+            "kind": "path",
+            "geometryHash": "d86d99338cc9793d65c3be75ea4883d73c52ff4d9e48b119c5b102d842877528",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 3,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "description": "Marker for Supported MCP capability published",
+              "tags": [
+                "timeline",
+                "timeline-marker",
+                "timeline-release"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-marker",
+                "eventId": "capability-restored",
+                "eventType": "release",
+                "date": "2026-09-03",
+                "displayDate": "September 3, 2026",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "false",
+                "status": "complete",
+                "phase": "connection",
+                "relationships": "[{\"to\":\"unsupported-sites-key\",\"type\":\"resolves\"}]"
+              }
+            }
+          },
+          "turtlepen-history__original-prototype__card": {
+            "kind": "box",
+            "geometryHash": "aecaf1a8cd7b3ce6d56bfde084aec9aae5fdd87e65a7d0510cf905c1f4bbe73c",
+            "presentation": {
+              "role": "timeline-milestone",
+              "fill": null,
+              "opacity": null,
+              "fontSize": 10,
+              "align": "left",
+              "corner": "rounded",
+              "shape": "process",
+              "state": null
+            },
+            "content": {
+              "label": "August 29, 2026\nOriginal hosted prototype\nThe first hosted connector exposed five stateless TurtlePen tools.\ncomplete",
+              "description": "The first hosted connector exposed five stateless TurtlePen tools.",
+              "tags": [
+                "timeline",
+                "timeline-card",
+                "timeline-milestone",
+                "timeline-complete"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-card",
+                "eventId": "original-prototype",
+                "eventType": "milestone",
+                "date": "2026-08-29",
+                "displayDate": "August 29, 2026",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "false",
+                "status": "complete",
+                "phase": "engine"
+              }
+            }
+          },
+          "turtlepen-history__original-prototype__link": {
+            "kind": "path",
+            "geometryHash": "3a8fd63430b59957c1b9525387be20113f0b68e1fca62a5283b41240c7cc3f47",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 1,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "tags": [
+                "timeline",
+                "timeline-link"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-link",
+                "eventId": "original-prototype",
+                "eventType": "milestone",
+                "date": "2026-08-29",
+                "displayDate": "August 29, 2026",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "false",
+                "status": "complete",
+                "phase": "engine"
+              }
+            }
+          },
+          "turtlepen-history__original-prototype__marker": {
+            "kind": "path",
+            "geometryHash": "0dceb786af7b9d56f60fa19f2459704eedc8c55af7a49ebe484b960a9b91c586",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 3,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "description": "Marker for Original hosted prototype",
+              "tags": [
+                "timeline",
+                "timeline-marker",
+                "timeline-milestone"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-marker",
+                "eventId": "original-prototype",
+                "eventType": "milestone",
+                "date": "2026-08-29",
+                "displayDate": "August 29, 2026",
+                "datePrecision": "day",
+                "approximate": "false",
+                "current": "false",
+                "status": "complete",
+                "phase": "engine"
+              }
+            }
+          },
+          "turtlepen-history__stale-beta-connector__card": {
+            "kind": "box",
+            "geometryHash": "53888c79aeb7561be5ecf11ca32a95b6a4ab185a63493ccb515900a34b2521fb",
+            "presentation": {
+              "role": "timeline-deadline",
+              "fill": null,
+              "opacity": null,
+              "fontSize": 10,
+              "align": "left",
+              "corner": "rounded",
+              "shape": "process",
+              "state": null
+            },
+            "content": {
+              "label": "After the engine upgrade\nInstalled beta connector stayed stale\nChatGPT retained the original five-tool schema instead of rediscovering the canonical inventory.\ndelayed",
+              "description": "ChatGPT retained the original five-tool schema instead of rediscovering the canonical inventory.",
+              "tags": [
+                "timeline",
+                "timeline-card",
+                "timeline-transition",
+                "timeline-delayed"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-card",
+                "eventId": "stale-beta-connector",
+                "eventType": "transition",
+                "displayDate": "After the engine upgrade",
+                "approximate": "false",
+                "current": "false",
+                "status": "delayed",
+                "sequence": "1",
+                "phase": "connection",
+                "relationships": "[{\"to\":\"canonical-engine\",\"type\":\"lags\"}]"
+              }
+            }
+          },
+          "turtlepen-history__stale-beta-connector__link": {
+            "kind": "path",
+            "geometryHash": "996af055103aa6d62d2a222ffcc7a857385573c62c663caacba5d8dbcb7c932b",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 1,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "tags": [
+                "timeline",
+                "timeline-link"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-link",
+                "eventId": "stale-beta-connector",
+                "eventType": "transition",
+                "displayDate": "After the engine upgrade",
+                "approximate": "false",
+                "current": "false",
+                "status": "delayed",
+                "sequence": "1",
+                "phase": "connection",
+                "relationships": "[{\"to\":\"canonical-engine\",\"type\":\"lags\"}]"
+              }
+            }
+          },
+          "turtlepen-history__stale-beta-connector__marker": {
+            "kind": "path",
+            "geometryHash": "84184fca035dfa6e7a8201b22b072f589b97a4f2374eb7006cfa57f3712ebb33",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 3,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "description": "Marker for Installed beta connector stayed stale",
+              "tags": [
+                "timeline",
+                "timeline-marker",
+                "timeline-transition"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-marker",
+                "eventId": "stale-beta-connector",
+                "eventType": "transition",
+                "displayDate": "After the engine upgrade",
+                "approximate": "false",
+                "current": "false",
+                "status": "delayed",
+                "sequence": "1",
+                "phase": "connection",
+                "relationships": "[{\"to\":\"canonical-engine\",\"type\":\"lags\"}]"
+              }
+            }
+          },
+          "turtlepen-history__title": {
+            "kind": "text",
+            "geometryHash": "795ddff2fb3e8c62d05d9846501afa36e19f8920f69d509cebb9efe3ff814410",
+            "presentation": {
+              "fontSize": 20,
+              "weight": 700,
+              "align": "left"
+            },
+            "content": {
+              "text": "TurtlePen connection history",
+              "description": "Title for timeline TurtlePen connection history",
+              "tags": [
+                "timeline",
+                "timeline-title"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "title"
+              }
+            }
+          },
+          "turtlepen-history__unsupported-sites-key__card": {
+            "kind": "box",
+            "geometryHash": "6707046badd5bf94d39a610c55f76f1e60027d95343efe9e3ea2437ee91af688",
+            "presentation": {
+              "role": "timeline-event",
+              "fill": null,
+              "opacity": null,
+              "fontSize": 10,
+              "align": "left",
+              "corner": "rounded",
+              "shape": "process",
+              "state": null
+            },
+            "content": {
+              "label": "Before restoration\nSites declaration removed\nAn unsupported discovery key was removed rather than left as a misleading capability claim.",
+              "description": "An unsupported discovery key was removed rather than left as a misleading capability claim.",
+              "tags": [
+                "timeline",
+                "timeline-card",
+                "timeline-transition"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-card",
+                "eventId": "unsupported-sites-key",
+                "eventType": "transition",
+                "displayDate": "Before restoration",
+                "approximate": "false",
+                "current": "false",
+                "sequence": "2",
+                "phase": "connection",
+                "relationships": "[{\"to\":\"stale-beta-connector\",\"type\":\"diagnoses\"}]"
+              }
+            }
+          },
+          "turtlepen-history__unsupported-sites-key__link": {
+            "kind": "path",
+            "geometryHash": "29c51d7da8847ad938f73dd407d90e5b114a88b87f22483ecc6fb376d16ade5d",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 1,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "tags": [
+                "timeline",
+                "timeline-link"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-link",
+                "eventId": "unsupported-sites-key",
+                "eventType": "transition",
+                "displayDate": "Before restoration",
+                "approximate": "false",
+                "current": "false",
+                "sequence": "2",
+                "phase": "connection",
+                "relationships": "[{\"to\":\"stale-beta-connector\",\"type\":\"diagnoses\"}]"
+              }
+            }
+          },
+          "turtlepen-history__unsupported-sites-key__marker": {
+            "kind": "path",
+            "geometryHash": "ff4ff674dda572436d1941871e9b778991efccfd0a25a2aa2243c4d74b7a1a7e",
+            "presentation": {
+              "role": "artwork",
+              "stroke": {
+                "color": "#2b2a26",
+                "width": 3,
+                "cap": "butt"
+              }
+            },
+            "content": {
+              "description": "Marker for Sites declaration removed",
+              "tags": [
+                "timeline",
+                "timeline-marker",
+                "timeline-transition"
+              ],
+              "properties": {
+                "generatedBy": "timeline",
+                "timelineId": "turtlepen-history",
+                "timelineRole": "event-marker",
+                "eventId": "unsupported-sites-key",
+                "eventType": "transition",
+                "displayDate": "Before restoration",
+                "approximate": "false",
+                "current": "false",
+                "sequence": "2",
+                "phase": "connection",
+                "relationships": "[{\"to\":\"stale-beta-connector\",\"type\":\"diagnoses\"}]"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "turtlepen-history__group",
+      "label": "TurtlePen connection history",
+      "members": [
+        "turtlepen-history__account-feature-setting__card",
+        "turtlepen-history__account-feature-setting__link",
+        "turtlepen-history__account-feature-setting__marker",
+        "turtlepen-history__axis",
+        "turtlepen-history__canonical-engine__card",
+        "turtlepen-history__canonical-engine__link",
+        "turtlepen-history__canonical-engine__marker",
+        "turtlepen-history__capability-restored__card",
+        "turtlepen-history__capability-restored__link",
+        "turtlepen-history__capability-restored__marker",
+        "turtlepen-history__original-prototype__card",
+        "turtlepen-history__original-prototype__link",
+        "turtlepen-history__original-prototype__marker",
+        "turtlepen-history__stale-beta-connector__card",
+        "turtlepen-history__stale-beta-connector__link",
+        "turtlepen-history__stale-beta-connector__marker",
+        "turtlepen-history__title",
+        "turtlepen-history__unsupported-sites-key__card",
+        "turtlepen-history__unsupported-sites-key__link",
+        "turtlepen-history__unsupported-sites-key__marker"
+      ]
+    }
+  ],
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
+  },
+  "resources": [
+    {
+      "id": "timeline-contract",
+      "type": "documentation",
+      "label": "Semantic timeline contract",
+      "uri": "docs/semantic-timelines.md",
+      "description": "",
+      "tags": []
+    }
+  ],
+  "acceptances": [],
+  "perceptual": {
+    "renderHash": "925bf401545021fa",
+    "renderProfile": {
+      "showGrid": true,
+      "markFindings": false,
+      "bounds": "content",
+      "margin": 20
+    },
+    "reviewer": "codex/gpt-5.6",
+    "reviewedAt": "2026-09-03T05:28:04.195Z",
+    "note": "Horizontal detailed history is legible, balanced, and keeps event descriptions associated with the correct markers with no blocking perceptual findings. Hash updated only for schema-metadata normalization; rendered pixels are unchanged.",
+    "findings": []
+  }
+}

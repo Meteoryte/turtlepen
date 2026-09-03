@@ -27,6 +27,7 @@ import { compositionFindings, focalFindings } from './composition.js';
 import { flowchartFindings, FLOWCHART_RULES } from './flowchart.js';
 import { swimlaneFindings, SWIMLANE_RULES } from './swimlane.js';
 import { quantitativeFindings, QUANTITATIVE_RULES } from './quantitative.js';
+import { timelineFindings, TIMELINE_RULES } from './timeline.js';
 import { analyseRuns, MAX_READABLE_TRANSITION_RATIO } from './dither.js';
 
 export const SEVERITIES = Object.freeze(['S0', 'S1', 'S2', 'S3']);
@@ -66,6 +67,7 @@ export const RULES = Object.freeze({
   ...FLOWCHART_RULES,
   ...SWIMLANE_RULES,
   ...QUANTITATIVE_RULES,
+  ...TIMELINE_RULES,
 });
 
 /**
@@ -191,6 +193,7 @@ export function validate(doc, { page = null } = {}) {
   found.push(...flowchartFindings(doc, pages));
   found.push(...swimlaneFindings(doc, pages, elementsOf));
   found.push(...quantitativeFindings(doc, pages, elementsOf));
+  found.push(...timelineFindings(doc, pages, finding));
 
   found.sort(
     (a, b) =>

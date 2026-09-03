@@ -123,7 +123,7 @@ export async function governanceReport(root = process.cwd()) {
       `${registry.count} live tools; capability fingerprint ${registry.fingerprint}`),
     check('source-map', await fileHash(resolve(projectRoot, 'docs/source-of-truth-map.md')) != null,
       'docs/source-of-truth-map.md exists as the ownership map'),
-    check('schema-owner', core.SCHEMA_VERSION === 3,
+    check('schema-owner', core.SCHEMA_VERSION === 4,
       `src/core/document.js owns document schema ${core.SCHEMA_VERSION}`),
     check('external-exports',
       externalDrift.length === 0 && externalMissing.length === 0 && externalUnlisted.length === 0,

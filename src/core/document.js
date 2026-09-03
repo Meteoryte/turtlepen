@@ -31,7 +31,31 @@ export const PATH_ROLES = Object.freeze(['connector', 'artwork']);
 export const PATH_PAINTS = Object.freeze(['line', 'cells']);
 export const TEXT_ALIGNS = Object.freeze(['left', 'center', 'right']);
 export const IMAGE_FITS = Object.freeze(['contain', 'cover']);
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
+
+function restoreTimelineRecords(value) {
+  if (value == null) return [];
+  if (!Array.isArray(value)) throw new TypeError('document timelines must be an array');
+  const timelines = structuredClone(value);
+  const ids = new Set();
+  for (const timeline of timelines) {
+    if (!timeline || typeof timeline !== 'object' || Array.isArray(timeline)) throw new TypeError('saved timeline must be an object');
+    if (timeline.schema !== 1) throw new Error(`saved timeline "${timeline.id ?? '(unknown)'}" has unsupported schema ${JSON.stringify(timeline.schema)}`);
+    assertElementId(timeline.id);
+    if (ids.has(timeline.id)) throw new Error(`saved timeline id "${timeline.id}" is duplicated`);
+    ids.add(timeline.id);
+    if (!Array.isArray(timeline.events) || !timeline.events.length) throw new TypeError(`saved timeline "${timeline.id}" needs events`);
+    const eventIds = new Set();
+    for (const event of timeline.events) {
+      if (!event || typeof event !== 'object' || Array.isArray(event)) throw new TypeError(`saved timeline "${timeline.id}" event must be an object`);
+      assertElementId(event.id);
+      if (eventIds.has(event.id)) throw new Error(`saved timeline "${timeline.id}" event id "${event.id}" is duplicated`);
+      eventIds.add(event.id);
+      if (typeof event.title !== 'string' || !event.title.trim()) throw new TypeError(`saved timeline "${timeline.id}" event "${event.id}" needs a title`);
+    }
+  }
+  return timelines.sort((a, b) => a.id.localeCompare(b.id));
+}
 
 export function createDocument(options = {}) {
   if (!options || typeof options !== 'object' || Array.isArray(options)) {
@@ -71,6 +95,10 @@ export function createDocument(options = {}) {
     // Declared value->distance mappings. Empty for every drawing that is not
     // quantitative, which is why the chart rules can self-activate on it.
     scales: {},
+    // Semantic source for first-class timelines. Generated geometry remains in
+    // ordinary pages/elements; this record exists so update and reflow never
+    // have to reverse-engineer meaning from pixels.
+    timelines: [],
     ...workspace,
     acceptances: [],
     createdAt: new Date().toISOString(),
@@ -980,6 +1008,9 @@ export function serialize(doc) {
       ...(Object.keys(doc.scales ?? {}).length ? {
         scales: Object.fromEntries(Object.keys(doc.scales).sort().map((id) => [id, doc.scales[id]])),
       } : {}),
+      ...(doc.timelines?.length ? {
+        timelines: [...doc.timelines].sort((a, b) => a.id.localeCompare(b.id)),
+      } : {}),
       ...(groupsOf(doc).length ? {
         groups: groupsOf(doc)
           .map((group) => ({ ...group, members: [...group.members].sort() }))
@@ -1013,12 +1044,12 @@ export function serialize(doc) {
 
 export function deserialize(json) {
   const parsed = typeof json === 'string' ? JSON.parse(json) : json;
-  if (![1, 2, SCHEMA_VERSION].includes(parsed.schema)) {
-    throw new Error(`document schema ${parsed.schema} is not supported by this build (expected 1, 2, or ${SCHEMA_VERSION})`);
+  if (![1, 2, 3, SCHEMA_VERSION].includes(parsed.schema)) {
+    throw new Error(`document schema ${parsed.schema} is not supported by this build (expected 1, 2, 3, or ${SCHEMA_VERSION})`);
   }
-  // Schema 2 added durable perceptual review. Schema 3 adds workspace views,
-  // themes, resources, and semantic finding acceptances. Neither migration
-  // rewrites geometry.
+  // Schema 2 added durable perceptual review. Schema 3 added workspace views,
+  // themes, resources, and semantic finding acceptances. Schema 4 adds durable
+  // semantic timeline source. None of these migrations rewrites geometry.
   const raw = parsed.schema < SCHEMA_VERSION ? { ...parsed, schema: SCHEMA_VERSION } : parsed;
   if (raw.groups != null && !Array.isArray(raw.groups)) throw new TypeError('document groups must be an array');
   if (raw.constraints != null && !Array.isArray(raw.constraints)) throw new TypeError('document constraints must be an array');
@@ -1037,6 +1068,7 @@ export function deserialize(json) {
     pages: raw.pages,
     elements: raw.elements,
     scales: Object.fromEntries(Object.entries(raw.scales ?? {}).map(([id, spec]) => [id, defineScale(id, spec)])),
+    timelines: restoreTimelineRecords(raw.timelines),
     groups: (raw.groups ?? []).map((group) => ({ ...group, members: [...(group.members ?? [])] })),
     constraints: (raw.constraints ?? []).map((constraint) => ({
       ...constraint,

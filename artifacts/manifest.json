@@ -28,14 +28,14 @@
     }
   },
   "summary": {
-    "artifacts": 73,
-    "publishable": 10,
-    "structurallyClear": 53,
+    "artifacts": 75,
+    "publishable": 12,
+    "structurallyClear": 55,
     "missingSvg": 1,
     "byRole": {
       "example": {
-        "artifacts": 39,
-        "publishable": 2
+        "artifacts": 41,
+        "publishable": 4
       },
       "fixture": {
         "artifacts": 5,
@@ -65,7 +65,7 @@
       },
       "source": {
         "path": "brand/logo-redesign.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "a06f9127205d059902fb7d4d5f9d6bac5530a947c635805eb57b186a2f0c4797",
         "bytes": 4919430
       },
@@ -2684,7 +2684,7 @@
       },
       "source": {
         "path": "brand/logo-v2.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "b4dbee82daac21cc56d9d2eb51928dfe18e5f5b0505ad409afcceb6127d06911",
         "bytes": 3245625
       },
@@ -5645,8 +5645,8 @@
       },
       "source": {
         "path": "brand/logo.turtlepen.json",
-        "schema": 3,
-        "sha256": "7e5449d8536bd7b41402a59b3eb94540eec7581580086f8c64294f813301d581",
+        "schema": 4,
+        "sha256": "5c96843fbb3f0e989af261f41bb3981207448ad8f74b1adb63afb7ea00d8ab9a",
         "bytes": 3204160
       },
       "document": {
@@ -8603,7 +8603,7 @@
           "path": "brand/logo.svg",
           "present": true,
           "bytes": 71568,
-          "sha256": "856b76bf51f547369a119271264cd000acd85ca89e86f8c5fe6eb159e5a53432",
+          "sha256": "1b0c4c22865a32aa79f1a130bfee15b466f63f040721ca50c4034db882728c2d",
           "renderHash": "856b76bf51f54736"
         },
         "png": {
@@ -8639,8 +8639,8 @@
       },
       "source": {
         "path": "diagrams/agent-session.turtlepen.json",
-        "schema": 3,
-        "sha256": "70925a2d4c636d7e52e4b058e2667f95e64bc807e9ff5ef37be158d969b42fb5",
+        "schema": 4,
+        "sha256": "0522c06ce2dfe6758f118522c055683132f4b1179ecdcc3bcb71846188296e47",
         "bytes": 20800
       },
       "document": {
@@ -8737,7 +8737,7 @@
           "path": "diagrams/agent-session.svg",
           "present": true,
           "bytes": 14900,
-          "sha256": "f5af0b2731e3470ced8f08891c9b3769b0c41bc22e9c8e29f638e60c262228d4",
+          "sha256": "cadb139d3b24f586389fb57958c23da46bdf31ab385a4456896a32218d21e482",
           "renderHash": "f5af0b2731e3470c"
         },
         "png": {
@@ -8773,7 +8773,7 @@
       },
       "source": {
         "path": "diagrams/anime-waifu.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "1f96d25f3bcbb750af13727e3a8bb458784699fe938aef73a0df2df3c4aa80f3",
         "bytes": 706171
       },
@@ -13584,7 +13584,7 @@
       },
       "source": {
         "path": "diagrams/art-deco-hero.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "e1850073ddee906cd74a0adf02fb96766ff47a5a764cddced8eefe92fe96783e",
         "bytes": 449312
       },
@@ -14251,8 +14251,8 @@
       },
       "source": {
         "path": "diagrams/atlas-marks.turtlepen.json",
-        "schema": 3,
-        "sha256": "04246185511c89a9c4363b44bea1990a3836db8131b46deabe5ea40e2e908789",
+        "schema": 4,
+        "sha256": "53c8449ee819a4b26a6b95c7369177af78d6357cf539c87c54a326e120d8fa95",
         "bytes": 152074
       },
       "document": {
@@ -14349,7 +14349,7 @@
           "path": "diagrams/atlas-marks.svg",
           "present": true,
           "bytes": 64994,
-          "sha256": "b5344d442386ab34704bc2302757962c9159d3683f12b08eee3b142c93d0fc2d",
+          "sha256": "5ee2fd04b0585ce22821ee4bca16f388c7551c4b55aa48b51653e5e6b7bbcebf",
           "renderHash": "b5344d442386ab34"
         },
         "png": {
@@ -14385,8 +14385,8 @@
       },
       "source": {
         "path": "diagrams/atlas-nodes.turtlepen.json",
-        "schema": 3,
-        "sha256": "91dbb7310d8c112731ae55ea3955bf3ac18c537fb5fec05d3db4bcdd5809ed11",
+        "schema": 4,
+        "sha256": "b4229a11ea066d901ab20ab7416349f6e7eac7fecd0e306545bf79c2c8d051e3",
         "bytes": 47488
       },
       "document": {
@@ -14641,7 +14641,7 @@
           "path": "diagrams/atlas-nodes.svg",
           "present": true,
           "bytes": 34509,
-          "sha256": "a36ce2d4ca21f20c0e59994b6348b74fed3377a9e713a3ef4365084445fddbdd",
+          "sha256": "c888e6dd32e33af4af7d5b7a218d69529923097e72593ddc54c5f8704f5a4e42",
           "renderHash": "a36ce2d4ca21f20c"
         },
         "png": {
@@ -14677,8 +14677,8 @@
       },
       "source": {
         "path": "diagrams/branching-tree.turtlepen.json",
-        "schema": 3,
-        "sha256": "ba0b99fa2e044be84722b3e27509750e76bf6370070a7727be71d5157131e679",
+        "schema": 4,
+        "sha256": "3c01e807af39fe6a99930acd0fc56c91eeda6553488524bead6107d5ce803be5",
         "bytes": 71131
       },
       "document": {
@@ -14775,7 +14775,7 @@
           "path": "diagrams/branching-tree.svg",
           "present": true,
           "bytes": 13393,
-          "sha256": "904e9f08f5045622ad309b5ab4084e4e5061e9faa92cff56085639d495a8bf93",
+          "sha256": "4cebafbc31cd666449e0114c8359551f2a5a84fcee2b28e69499b9f439c06e69",
           "renderHash": "904e9f08f5045622"
         },
         "png": {
@@ -14811,7 +14811,7 @@
       },
       "source": {
         "path": "diagrams/capability-audit.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "d01f32e503a78322d4a9820f765a54d83622c7d95adb3e6fd532dc835af626d0",
         "bytes": 66448
       },
@@ -14987,7 +14987,7 @@
       },
       "source": {
         "path": "diagrams/coffee-ritual.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "e013a91a817076f881713c7017b610804bc4e1b95940db3207ec5028176dc7e3",
         "bytes": 24517
       },
@@ -15121,8 +15121,8 @@
       },
       "source": {
         "path": "diagrams/condenser-image-workflow.turtlepen.json",
-        "schema": 3,
-        "sha256": "ee733b221773c3d8474ca5e6cf9d496733ff43c12a14ef90ab6875a24c2b4cee",
+        "schema": 4,
+        "sha256": "351b6a7df4e0bd1c306d372253494fc986d303fa503f9332e509edb48be121fa",
         "bytes": 4647397
       },
       "document": {
@@ -15219,7 +15219,7 @@
           "path": "diagrams/condenser-image-workflow.svg",
           "present": true,
           "bytes": 4601097,
-          "sha256": "3fa40322380b6e62282d9b4056bb83fcb92c63f7a9b0ad80d05b603cff70bf00",
+          "sha256": "4b6744d8fb9392c0857186d1b474a0bdee0865c829f3af769f6aa411309304d8",
           "renderHash": "3fa40322380b6e62"
         },
         "png": {
@@ -15255,8 +15255,8 @@
       },
       "source": {
         "path": "diagrams/condenser-replacement-field-guide.turtlepen.json",
-        "schema": 3,
-        "sha256": "3eb73faedaa2adc0681c227c3de5dfbab71059f92de044dde5c361eb88f3f4ef",
+        "schema": 4,
+        "sha256": "9ff30629ad1c490463abda21d043835739be5b4a616d74fbf37738fe099cc503",
         "bytes": 33558
       },
       "document": {
@@ -15353,7 +15353,7 @@
           "path": "diagrams/condenser-replacement-field-guide.svg",
           "present": true,
           "bytes": 36278,
-          "sha256": "29028fa80ee44c30c8e25ce2669d0abf8ab436b22255397835b51a747c3f28ff",
+          "sha256": "8be41ad4fd00bff0dab10b55b183b9155c3c9ab6932d013c2393175b91ab689d",
           "renderHash": "29028fa80ee44c30"
         },
         "png": {
@@ -15389,8 +15389,8 @@
       },
       "source": {
         "path": "diagrams/constraint-stress.turtlepen.json",
-        "schema": 3,
-        "sha256": "33451c558baca7c980db73d381d49728db59d938356542a7cf0d6e86d414c2a5",
+        "schema": 4,
+        "sha256": "e84bc283d332989847e7a377bad938fd945f4d38407becb65f1488e12f4a6b11",
         "bytes": 70006
       },
       "document": {
@@ -15487,7 +15487,7 @@
           "path": "diagrams/constraint-stress.svg",
           "present": true,
           "bytes": 31692,
-          "sha256": "e165868469eaed2e38434e242894a00c1408cc03d192a50741c9bd76577f705c",
+          "sha256": "c9a45aa7f5077dbaa120b392cea390faa97eda03130348d1662ff29656cce6d6",
           "renderHash": "e165868469eaed2e"
         },
         "png": {
@@ -15523,8 +15523,8 @@
       },
       "source": {
         "path": "diagrams/crt-desk-scene.turtlepen.json",
-        "schema": 3,
-        "sha256": "042c6fd8b3fed71b3fdbe0853832d704d69df2bb56ea0dfb8bfb174e043cef99",
+        "schema": 4,
+        "sha256": "72a12c444f78535237a8b33c4b426399773b5312e8b2b2dcf929cb07b14a6cb1",
         "bytes": 204683
       },
       "document": {
@@ -15775,7 +15775,7 @@
           "path": "diagrams/crt-desk-scene.svg",
           "present": true,
           "bytes": 99074,
-          "sha256": "d5806cbf6d333c9d4c7264f6b20b63694eff9baba17a7718cadcc02b34074cfb",
+          "sha256": "6ce0a1fd32202f0677e83925c45410fb0f68cc8dc4bd58db9793d3f6246b2348",
           "renderHash": "d5806cbf6d333c9d"
         },
         "png": {
@@ -15811,7 +15811,7 @@
       },
       "source": {
         "path": "diagrams/custom-01-cyberpunk-hud.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "c8c3ac64b8b843e9fc02d6bda2895ac1350f1c3df688206af20d119d172f3a19",
         "bytes": 115132
       },
@@ -16394,7 +16394,7 @@
       },
       "source": {
         "path": "diagrams/custom-02-mecha-dragon.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "62d18d6adceef8dd5fe9d13a4b3b366109b29e75e9e620987bca0b558bf3d8cf",
         "bytes": 377411
       },
@@ -17250,7 +17250,7 @@
       },
       "source": {
         "path": "diagrams/custom-03-microchip-arch.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "9b9c05d7f1fb5dff833bfe57946a291df9e6c67bbbf4adbd8d3b959de138b8f1",
         "bytes": 44470
       },
@@ -17947,7 +17947,7 @@
       },
       "source": {
         "path": "diagrams/custom-04-steampunk-airship.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "31fabd32573b452ebb7fd706de8bf5b081db187e6a7eb98802e4311a342f6515",
         "bytes": 409286
       },
@@ -18505,7 +18505,7 @@
       },
       "source": {
         "path": "diagrams/custom-05-celestial-map.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "7c5778f10685c292fa444b76730743db2620602b6013c7eb0d0ed31b762d8056",
         "bytes": 163693
       },
@@ -19912,7 +19912,7 @@
       },
       "source": {
         "path": "diagrams/dither-proof.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "1ad55b1f15a80e7763565afc2279c8bff1d504c23aa57a125b90359e4ef66914",
         "bytes": 67948
       },
@@ -20046,8 +20046,8 @@
       },
       "source": {
         "path": "diagrams/example.turtlepen.json",
-        "schema": 3,
-        "sha256": "9531db92d28c100c02fb33dd4d82db845fe1a645339a274d423069a394807551",
+        "schema": 4,
+        "sha256": "61db8dcecb47a3211a4dfdf52eb3ae8d70acf201651022fb4025cc9f3b238ce2",
         "bytes": 9984
       },
       "document": {
@@ -20144,7 +20144,7 @@
           "path": "diagrams/example.svg",
           "present": true,
           "bytes": 11102,
-          "sha256": "2f87ca0d99756d47596f72d162f3b2347b4aeca19bc8b460c2cf6e40ff2ee4b6",
+          "sha256": "1b6c8e961507e5f6b7e12650180d22696ae1a743ddeb9d3fbb61ed04fc64a12e",
           "renderHash": "2f87ca0d99756d47"
         },
         "png": {
@@ -20180,7 +20180,7 @@
       },
       "source": {
         "path": "diagrams/farm-animals.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "7e9861208988574f728b88d9fb8b1da18673741d128fbac02606c91aec2d8076",
         "bytes": 185535
       },
@@ -20685,8 +20685,8 @@
       },
       "source": {
         "path": "diagrams/flowchart-important-process.turtlepen.json",
-        "schema": 3,
-        "sha256": "98d73476469dbc57a67a065d9f40de2acb716d1a771eeaef20b2abd87d4a7d8a",
+        "schema": 4,
+        "sha256": "532c08e5cc87d5f4ab123a217779210bdc2eea23fb0f45aa1c2c4cd763dad01f",
         "bytes": 100701
       },
       "document": {
@@ -20783,7 +20783,7 @@
           "path": "diagrams/flowchart-important-process.svg",
           "present": true,
           "bytes": 55267,
-          "sha256": "386d9fdb93ba34df38eef06252a68f9aa154bf4e6001721a704c8336700cb5b3",
+          "sha256": "1c31cf907a3fa1bb82403a4e7c69367dd7a87503f6ed1588e49d9ec0f8f569e9",
           "renderHash": "386d9fdb93ba34df"
         },
         "png": {
@@ -20819,7 +20819,7 @@
       },
       "source": {
         "path": "diagrams/game-tileset-16.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "3e64c28b1406778f48f660d5aa07d0507257b37156a749d3f99500a52306c014",
         "bytes": 2047134
       },
@@ -20953,7 +20953,7 @@
       },
       "source": {
         "path": "diagrams/gemini31-scene-apple.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "4dc1637cae02c4859f54b9fec21a4c3df894b1d182df88077e314b18b430da55",
         "bytes": 674686
       },
@@ -21088,7 +21088,7 @@
       },
       "source": {
         "path": "diagrams/gemini31-scene-fence.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "c7dc4cad33f229383fe3026e6b00d7c1dc2c831b189d61b4b601b3b6f35cfd3a",
         "bytes": 230443
       },
@@ -21223,7 +21223,7 @@
       },
       "source": {
         "path": "diagrams/gemini31-scene-living-room-family.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "d1de8e20f6f01a966f3c2840b6c0186775b6f6c7260a6f323523a47df22d4b6e",
         "bytes": 169433
       },
@@ -21358,7 +21358,7 @@
       },
       "source": {
         "path": "diagrams/gemini31-scene-tree.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "0295be773e4686b1bb34303c8e1be117d11db47caf573a9fbca1baccbbe89660",
         "bytes": 704802
       },
@@ -21493,7 +21493,7 @@
       },
       "source": {
         "path": "diagrams/gemini31-server-structure.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "d19167605e1c8e3bf79416997321ac35f6f73ab1318f276fb6e9bcb5d69818b4",
         "bytes": 193361
       },
@@ -21628,7 +21628,7 @@
       },
       "source": {
         "path": "diagrams/gemini31-teaching-loop.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "8134ab724b5e6d13c8d23fea831bd0ad79ebca5ed6c2019151d9de2a44b31438",
         "bytes": 628026
       },
@@ -21763,7 +21763,7 @@
       },
       "source": {
         "path": "diagrams/gemini31-technical-analysis.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "23a7621cd8ce525da0b4d64e39a7fa9901d9fe0401370f049cc02a7c5550ba84",
         "bytes": 318213
       },
@@ -21897,7 +21897,7 @@
       },
       "source": {
         "path": "diagrams/gemini31-workflow.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "5e26442fdd799128c44605070e6449a0d7099a9a914c791e520edfcbffa17629",
         "bytes": 337719
       },
@@ -22031,7 +22031,7 @@
       },
       "source": {
         "path": "diagrams/home-lab-network.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "15fff56926e22362841736212005907a742fbbba95a348761aa015509243b7da",
         "bytes": 13074
       },
@@ -22198,7 +22198,7 @@
       },
       "source": {
         "path": "diagrams/important-process.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "d164f7c16025d5d79a8a23db59d1ac95fd423e8708076c743def7327fd9f44d6",
         "bytes": 141138
       },
@@ -22333,7 +22333,7 @@
       },
       "source": {
         "path": "diagrams/inked-diagram.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "469b8e404b51966793a06901a0c540bc3012cb0c2bad142cece5ee76171119c2",
         "bytes": 165994
       },
@@ -22468,7 +22468,7 @@
       },
       "source": {
         "path": "diagrams/layout-after.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "fa99fbf167c3cf5839a6d06f5845eb806148e39cb8e7e482a95be99d17424aff",
         "bytes": 120560
       },
@@ -22603,7 +22603,7 @@
       },
       "source": {
         "path": "diagrams/m2.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "a02687850995420f613a28fe26899834306962dacef046db58910b6765a6e5cc",
         "bytes": 7484
       },
@@ -23003,7 +23003,7 @@
       },
       "source": {
         "path": "diagrams/mechroom.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "b9a2fa3fef66187e014a4e073840920b44c9b6b8eb6dbc6166a1497121f315b1",
         "bytes": 9123
       },
@@ -23667,7 +23667,7 @@
       },
       "source": {
         "path": "diagrams/minisplit-elevation.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "dc8359faafa5201e44a8e878f629821e6708e6721532192ed45e46acbdf1b54e",
         "bytes": 17092
       },
@@ -24331,7 +24331,7 @@
       },
       "source": {
         "path": "diagrams/mona/mona-01-flowchart.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "64dbc6b341f0a41c577a9123633246fdfcb604d3349267b388392d4d769c560f",
         "bytes": 59134
       },
@@ -24506,7 +24506,7 @@
       },
       "source": {
         "path": "diagrams/mona/mona-02-cartoon.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "ea11e5801a3bec775f3445caf804840ed9e8d014a339923c7a4bc32edd2cf624",
         "bytes": 2224460
       },
@@ -25148,7 +25148,7 @@
       },
       "source": {
         "path": "diagrams/mona/mona-03-coloring.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "2ebc28621db6987be90d8d4f5cf07853cf286b9064809360a0bfba84c54a610f",
         "bytes": 894313
       },
@@ -25790,7 +25790,7 @@
       },
       "source": {
         "path": "diagrams/mona/mona-04-abstract.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "551e02270ffda4d6a9701b20a147541daf59c0d458daf0dc7e883602f78088bf",
         "bytes": 1971425
       },
@@ -26605,7 +26605,7 @@
       },
       "source": {
         "path": "diagrams/mona/mona-05-sculpture.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "967b7f9f76cbdcc7dba187a53e72d0dff34e33083d47e47c44d2608faff116d3",
         "bytes": 1335567
       },
@@ -27345,7 +27345,7 @@
       },
       "source": {
         "path": "diagrams/postcard-alpine-campfire.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "ed3d4fc7725f55b0de786ded5d00e740d9de95aea6c74186547af287d43ba47b",
         "bytes": 2258948
       },
@@ -27479,7 +27479,7 @@
       },
       "source": {
         "path": "diagrams/postcard-botanical-terrarium.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "8ba205b449fb02dce4f8350da78c42ff6ec240834d42bde6202b59d30a011688",
         "bytes": 1084189
       },
@@ -27613,7 +27613,7 @@
       },
       "source": {
         "path": "diagrams/postcard-deep-sea-explorer.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "f40383a6c2056f73c419af7e6cd458874723099238b3f79af6d53cdc6cfb0a57",
         "bytes": 905989
       },
@@ -27747,7 +27747,7 @@
       },
       "source": {
         "path": "diagrams/postcard-night-observatory.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "bf8a72bfb0f30b7bc59ccee9c8f0e111cde185c99525f980878b4943e349301a",
         "bytes": 1818016
       },
@@ -27881,7 +27881,7 @@
       },
       "source": {
         "path": "diagrams/postcard-rocket-liftoff.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "8ab4e1244bcb56035c960ffb3172b3228d1ccebd701af98c175271ec31e8e354",
         "bytes": 803536
       },
@@ -28015,7 +28015,7 @@
       },
       "source": {
         "path": "diagrams/random-01-solar-system.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "b9e0f0c95dc26557050a12ee792329d3a5aef9e26aba337cd0eabbd518fa04c8",
         "bytes": 160330
       },
@@ -28582,7 +28582,7 @@
       },
       "source": {
         "path": "diagrams/random-02-mountains.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "aa8143740916734fedd6c70b0b7e049d8ac27c764b5048ae2bf58e527da4e736",
         "bytes": 406834
       },
@@ -29419,7 +29419,7 @@
       },
       "source": {
         "path": "diagrams/random-03-abstract.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "104fafd607b9ee318a780208d035049e947548b1e635cbeb0cca60c86f1ecd71",
         "bytes": 195680
       },
@@ -32146,7 +32146,7 @@
       },
       "source": {
         "path": "diagrams/random-04-underwater.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "3887f1a4961e7af50826120f67ffe1f6a37f78e6f3b6b4189d62040edd29d837",
         "bytes": 108385
       },
@@ -32939,7 +32939,7 @@
       },
       "source": {
         "path": "diagrams/random-05-city-skyline.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "ad115edd497e3b864bddfe2505ed738b37dfbfe9b815bce2ac876376d914d228",
         "bytes": 467181
       },
@@ -33835,7 +33835,7 @@
       },
       "source": {
         "path": "diagrams/scene-apple.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "a94c29caaa82bec926fc72b94d16f1b33aebfc7aab0b03b6eff688025f6fb426",
         "bytes": 46121
       },
@@ -33970,7 +33970,7 @@
       },
       "source": {
         "path": "diagrams/scene-fence.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "7b2771867c760d292c9bf8513737809e9c95fa0727901525b721cf5300ac764d",
         "bytes": 50358
       },
@@ -34104,7 +34104,7 @@
       },
       "source": {
         "path": "diagrams/scene-living-room-family.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "8d2e4d84254359afeec5e5538b92bce6571f6bee26ca01e92b6d16f9c68a782b",
         "bytes": 28011
       },
@@ -34239,7 +34239,7 @@
       },
       "source": {
         "path": "diagrams/scene-tree.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "a8dea5bc170227aa836eff8bec6b0bbf5bdb775fb7d5e623c92db6b7585a0494",
         "bytes": 84525
       },
@@ -34374,7 +34374,7 @@
       },
       "source": {
         "path": "diagrams/server-structure-ha-microservices.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "dcc5f9443d49f8548da2fb61f42a23467e917e935459f36f6947b1ce2c41a2b4",
         "bytes": 29300
       },
@@ -34509,7 +34509,7 @@
       },
       "source": {
         "path": "diagrams/showcase-castle.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "9e55ce8aac7cac3544963d7a4d6ae7dca6fe844094adb44e3c2e94274259f68a",
         "bytes": 189704
       },
@@ -35121,7 +35121,7 @@
       },
       "source": {
         "path": "diagrams/showcase-flowchart.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "827d605881cafc11a60fb5d39f792422e40737907cc7dad84f3f1f941d5269b2",
         "bytes": 48754
       },
@@ -35338,7 +35338,7 @@
       },
       "source": {
         "path": "diagrams/showcase-perspective.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "179e778bcf8cbcb48e944ed5be8652b5890f7c4de94fad7fce9387874b4e829e",
         "bytes": 211100
       },
@@ -35496,7 +35496,7 @@
       },
       "source": {
         "path": "diagrams/showcase-pipeline.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "efa6c53675c17a8e99e663b4b64fa9c96ee0d9841efe22398f581e3d9540eefc",
         "bytes": 34870
       },
@@ -35630,8 +35630,8 @@
       },
       "source": {
         "path": "diagrams/showcase-revision.turtlepen.json",
-        "schema": 3,
-        "sha256": "d1aa95e728f34ef592807924a882c4e3d1a4e2e4f2340f3f93f3f66c26f3d16a",
+        "schema": 4,
+        "sha256": "7af28744343ccf5592ef08a492d37912f977917c23709a29f8078ee54f34a6e9",
         "bytes": 24194
       },
       "document": {
@@ -35728,7 +35728,7 @@
           "path": "diagrams/showcase-revision.svg",
           "present": true,
           "bytes": 15087,
-          "sha256": "a17e40c0ebdae680a6bc8caea42773a0ba8e82cac9b397f94ef75b2e3cb913e5",
+          "sha256": "19924ffef978fa46be279497d3b194af1acaa8c22becae344b6ec58f240b7812",
           "renderHash": "a17e40c0ebdae680"
         },
         "png": {
@@ -35764,7 +35764,7 @@
       },
       "source": {
         "path": "diagrams/showcase-server-room.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "15dd7db1e6a8991e5d86f1b624c294d37450862aa5c35bd6c7631fb1ce0a9704",
         "bytes": 71636
       },
@@ -37254,8 +37254,8 @@
       },
       "source": {
         "path": "diagrams/supersample-random-five.turtlepen.json",
-        "schema": 3,
-        "sha256": "0d48ea1a5364d8734525014febbf40ea98a5ec3ff4b7e4657074664709ca1465",
+        "schema": 4,
+        "sha256": "4ac7435edbfe15a13865e811748fb77afbd48fbb51e8df5888be237dad1cddb7",
         "bytes": 256848
       },
       "document": {
@@ -37352,7 +37352,7 @@
           "path": "diagrams/supersample-random-five.svg",
           "present": true,
           "bytes": 191866,
-          "sha256": "fe66a2abb8acb1abc298c4ea79ed985e5813051340d84396fa4cecbbc5810813",
+          "sha256": "958d0b1b17db9d8aa7de3cff10da04ece9595124ddc38510145e511906f55070",
           "renderHash": "fe66a2abb8acb1ab"
         },
         "png": {
@@ -37388,8 +37388,8 @@
       },
       "source": {
         "path": "diagrams/swimlane-order-handling.turtlepen.json",
-        "schema": 3,
-        "sha256": "1166dff8d893ca8dcccb190bfef346ce11dea51bf8cee635755e3c2087c7ac5b",
+        "schema": 4,
+        "sha256": "469d018bbbe544da3dd9b58bada71cf647cd88ab23066074473b96f27ae16a98",
         "bytes": 32308
       },
       "document": {
@@ -37486,7 +37486,7 @@
           "path": "diagrams/swimlane-order-handling.svg",
           "present": true,
           "bytes": 25142,
-          "sha256": "d7dfbf5189d5f595f8c63e39d094d617edbe8970247a85d2dee63d583ae1af35",
+          "sha256": "4cd5ca62ba9e83218adb24b748948f1413924c507685c5ef5ad0d0a8986b4c96",
           "renderHash": "d7dfbf5189d5f595"
         },
         "png": {
@@ -37522,7 +37522,7 @@
       },
       "source": {
         "path": "diagrams/teaching-mastery-learning-cycle.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "769f3f9e9e6964f93ce02ed19ec71c16a45c380f69a3843ba3b2a053d61ba3a9",
         "bytes": 15282
       },
@@ -37656,7 +37656,7 @@
       },
       "source": {
         "path": "diagrams/technical-analysis-quant-engine.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "64456a0084102a81ba2372fad914fbb31e1f3678b84459875ad9c14c5eca312b",
         "bytes": 14209
       },
@@ -37790,7 +37790,7 @@
       },
       "source": {
         "path": "diagrams/turtlefont-specimen.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "bb85f31f52f79748855a4d0cd832fb5e97b9b8d8cdbc830904a863f91502fdd0",
         "bytes": 2405689
       },
@@ -37917,6 +37917,274 @@
       }
     },
     {
+      "id": "TurtlePen connection history",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/turtlepen-connection-history-horizontal.turtlepen.json",
+        "schema": 4,
+        "sha256": "9aed3f734b0549ef8ee9d26e852b33c9f20dc31f278e30cebc79ae01c85e22de",
+        "bytes": 137904
+      },
+      "document": {
+        "pages": 4,
+        "elements": 20,
+        "views": 0,
+        "resources": 1
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 18,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 18,
+          "total": 18,
+          "accepted": 0,
+          "acceptedBySeverity": {
+            "S0": 0,
+            "S1": 0,
+            "S2": 0,
+            "S3": 0
+          },
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS",
+          "acceptedDecisions": 0
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 6,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 6,
+          "info": 0,
+          "total": 6,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": true,
+        "reviewer": "codex/gpt-5.6",
+        "findings": 0,
+        "blocking": 0,
+        "clean": true,
+        "stale": false
+      },
+      "release": {
+        "releasable": true,
+        "verdict": "PASS",
+        "blockers": [],
+        "structural": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 18,
+          "total": 18,
+          "accepted": 0,
+          "acceptedBySeverity": {
+            "S0": 0,
+            "S1": 0,
+            "S2": 0,
+            "S3": 0
+          },
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS",
+          "acceptedDecisions": 0
+        },
+        "perceptual": {
+          "reviewed": true,
+          "reviewer": "codex/gpt-5.6",
+          "findings": 0,
+          "blocking": 0,
+          "clean": true,
+          "stale": false,
+          "currentRenderHash": "925bf401545021fa"
+        },
+        "exceptions": [],
+        "weakAcceptances": []
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/turtlepen-connection-history-horizontal.svg",
+          "present": true,
+          "bytes": 31560,
+          "sha256": "c9350842368336c1326a3454b03f92d9dcdc45f1f2203a7437ba6c61e37c0132",
+          "renderHash": "925bf401545021fa"
+        },
+        "png": {
+          "path": "diagrams/turtlepen-connection-history-horizontal.png",
+          "present": true,
+          "bytes": 21155,
+          "sha256": "c65d319698884df6a0a94d947758df96b9d024984bd00d107ac22811b98d1c39"
+        },
+        "pdf": {
+          "path": "diagrams/turtlepen-connection-history-horizontal.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
+        "releaseGatePassed": true,
+        "reviewedExportMatches": true,
+        "hasPortableVector": true,
+        "publishable": true
+      }
+    },
+    {
+      "id": "TurtlePen connection history",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/turtlepen-connection-history-vertical.turtlepen.json",
+        "schema": 4,
+        "sha256": "9b0f171bac56d1408848a06c143babe160567aff169b51d4a236265afbe22a4d",
+        "bytes": 100629
+      },
+      "document": {
+        "pages": 4,
+        "elements": 26,
+        "views": 0,
+        "resources": 1
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 24,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 24,
+          "total": 24,
+          "accepted": 0,
+          "acceptedBySeverity": {
+            "S0": 0,
+            "S1": 0,
+            "S2": 0,
+            "S3": 0
+          },
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS",
+          "acceptedDecisions": 0
+        }
+      },
+      "model": {
+        "state": "model-incomplete",
+        "open": 9,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 9,
+          "info": 0,
+          "total": 9,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-incomplete"
+        }
+      },
+      "perceptual": {
+        "reviewed": true,
+        "reviewer": "codex/gpt-5.6",
+        "findings": 0,
+        "blocking": 0,
+        "clean": true,
+        "stale": false
+      },
+      "release": {
+        "releasable": true,
+        "verdict": "PASS",
+        "blockers": [],
+        "structural": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 24,
+          "total": 24,
+          "accepted": 0,
+          "acceptedBySeverity": {
+            "S0": 0,
+            "S1": 0,
+            "S2": 0,
+            "S3": 0
+          },
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS",
+          "acceptedDecisions": 0
+        },
+        "perceptual": {
+          "reviewed": true,
+          "reviewer": "codex/gpt-5.6",
+          "findings": 0,
+          "blocking": 0,
+          "clean": true,
+          "stale": false,
+          "currentRenderHash": "f5705020386e3d12"
+        },
+        "exceptions": [],
+        "weakAcceptances": []
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/turtlepen-connection-history-vertical.svg",
+          "present": true,
+          "bytes": 23797,
+          "sha256": "09b4db04d45e6317848d86521af2b2c8451c0e0bb11f0387c4e5354de21de3db",
+          "renderHash": "f5705020386e3d12"
+        },
+        "png": {
+          "path": "diagrams/turtlepen-connection-history-vertical.png",
+          "present": true,
+          "bytes": 10482,
+          "sha256": "fb7976613805392b645a0a1c6d7fd5628d54a8e6a8729ee3ede72998b32b205c"
+        },
+        "pdf": {
+          "path": "diagrams/turtlepen-connection-history-vertical.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
+        "releaseGatePassed": true,
+        "reviewedExportMatches": true,
+        "hasPortableVector": true,
+        "publishable": true
+      }
+    },
+    {
       "id": "Workflow - Automated CI/CD Pipeline",
       "catalog": {
         "role": "example",
@@ -37924,7 +38192,7 @@
       },
       "source": {
         "path": "diagrams/workflow-cicd-deployment-pipeline.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "8baeb9be824e66c41d3fc2aad98dfe43e9c2a0d4f0250bda520dacd06e34988d",
         "bytes": 12762
       },
@@ -38058,7 +38326,7 @@
       },
       "source": {
         "path": "diagrams/xbox-controller-input-state-map.turtlepen.json",
-        "schema": 3,
+        "schema": 4,
         "sha256": "d4625516cf003bd3efa0444fb625745b6d28adc037a502009e0220174df4de1e",
         "bytes": 998481
       },

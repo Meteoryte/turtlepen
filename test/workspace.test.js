@@ -16,12 +16,12 @@ function architecture() {
   return doc;
 }
 
-test('schema 3 migrates old models and round-trips workspace state', () => {
+test('schema 4 migrates old models and round-trips workspace state', () => {
   const old = JSON.parse(core.serialize(architecture()));
   delete old.views; delete old.theme; delete old.resources; delete old.modelAcceptances;
   old.schema = 2;
   const migrated = core.deserialize(old);
-  assert.equal(migrated.schema, 3);
+  assert.equal(migrated.schema, 4);
   assert.deepEqual(migrated.views, []);
   assert.equal(migrated.theme.name, 'TurtlePen');
   assert.deepEqual(migrated.resources, []);

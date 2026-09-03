@@ -1,16 +1,16 @@
 # TurtlePen — status
 
-**As of 2026-09-03.** Prototype, working end to end, 691/691 tests green,
+**As of 2026-09-03.** Prototype, working end to end, 706/706 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **691/691 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **706/706 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe and the stateful Streamable HTTP
   server over TCP.
-- **Every external surface has a drift-proof contract.** All 76 MCP tools
+- **Every external surface has a drift-proof contract.** All 77 MCP tools
   complete representative work over the real stdio child process; Streamable
   HTTP exposes that exact live registry and preserves isolated active documents
   across calls; every JSON-RPC
@@ -27,8 +27,8 @@ Verified by running it, not by inspection:
   parsed, plain-language receipts stay exact, failed calls remain explicit
   `isError` results, and hosted SVG source is not duplicated into the structured
   envelope.
-- **Runtime and persistence truth are explicit.** Schema-1 and schema-2
-  documents migrate to schema 3; perceptual review survives save/open; direct and nested-plan calls
+- **Runtime and persistence truth are explicit.** Schema-1, schema-2, and
+  schema-3 documents migrate to schema 4; perceptual review survives save/open; direct and nested-plan calls
   are validated against the same schemas; `runtime_info` reports version,
   schema, tool count, capability fingerprint, session start, and document hash.
 - **Local writes are conflict-aware and recoverable.** Document checkpoints,
@@ -40,11 +40,22 @@ Verified by running it, not by inspection:
   tag/perspective styles, generated keys, linked documentation/ADR/runbook
   resources, and fingerprinted model acceptances survive migration and reopen.
 - **Diagram-type semantics are usable through every endpoint, not only direct
-  imports.** The 76-tool registry exposes semantic node roles plus durable,
+  imports.** The 77-tool registry exposes semantic node roles plus durable,
   plan-aware scale define/update/remove and exact projection inspection.
   Rectangular length bindings survive save/open and are checked by `V001`–`V004`;
   unsupported position, area, radial, and ribbon-width encodings remain
   explicitly unmodelled instead of receiving a false clean verdict.
+- **Semantic timelines compile onto the native engine.** The `timeline` tool
+  creates, updates, adds/removes events, reflows, and inspects one durable
+  semantic source while emitting ordinary boxes, paths, text, overlay pages,
+  annotations, groups, and position scales. Vertical/horizontal,
+  ordinal/temporal, alternating, single-sided, multi-track, phase-band,
+  compact, and detailed policies share one compiler. ISO date precision stays
+  separate from display wording, undated events receive no invented dates,
+  stable primitive IDs survive reflow, and unsafe manual overrides are
+  reported. Mermaid timeline syntax compiles to the same normal operation. The
+  vertical and horizontal connection-history fixtures validate structurally
+  and carry current, hash-bound perceptual reviews with zero blocking findings.
 - **Native, dependency-free output is available outside MCP.** The `turtlepen`
   CLI validates and inspects, renders deterministic SVG/PNG/PDF, generates
   architecture documentation bundles and artifact contracts, and executes or
@@ -53,7 +64,7 @@ Verified by running it, not by inspection:
   returns the exact SVG hash a reviewer saw, and `review` records a guarded,
   hash-bound perceptual verdict without opening an MCP host.
 - **Artifact scope has one owner and release evidence is complete.** The
-  authored catalog classifies 71 tracked documents as release, example,
+  authored catalog classifies 75 tracked documents as release, example,
   fixture, or study; the generated manifest reports all 8 release artifacts
   ready and keeps non-release evidence from blocking that claim. The governance
   gate checks catalog coverage, filenames, hashes, help parity, runtime version,
@@ -219,14 +230,14 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (76 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (77 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls. The Streamable HTTP transport calls that same protocol
   runtime, returns request-scoped SSE frames, maintains one active document per
   opaque session, serializes its calls, isolates its filesystem, and purges it
   on DELETE or expiry.
 - **The public Cloudflare/Sites adapter is canonical source.**
-  `src/mcp/cloudflare.js` exposes the same 76-tool registry with D1 session
+  `src/mcp/cloudflare.js` exposes the same 77-tool registry with D1 session
   indexing, optimistic version commits, R2 document/history/artifact storage,
   explicit quotas, SSE responses, and an injectable binding factory covered by
   an end-to-end in-memory D1/R2 test. Brainn.dev re-exports this adapter rather
@@ -561,6 +572,10 @@ added, it is not shipped until `HELP` names it at the moment of need.
 
 ## What is deferred, deliberately
 
+- **Lossless Mermaid timeline export.** Import is supported. Export remains
+  deliberately deferred because TurtlePen tracks, typed relationships, parents,
+  resources, layout policies, and preserved presentation overrides do not fit
+  Mermaid timeline syntax without loss; a misleading partial export is not emitted.
 - **Auto-fit.** The engine reports the shortfall and the fixes; it does not
   resize. Chuck's call during design.
 - **Proportional fonts.** The monospace model is what makes capacity countable.

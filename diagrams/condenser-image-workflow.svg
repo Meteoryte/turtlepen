@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1550" height="580" viewBox="0 0 1550 580" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
 <title id="tp-title">Condenser image workflow test</title>
 <desc id="tp-desc">8 diagram elements across 1 visible page(s)</desc>
-<metadata>{"schema":3,"name":"Condenser image workflow test","view":null,"elements":8}</metadata>
+<metadata>{"schema":4,"name":"Condenser image workflow test","view":null,"elements":8}</metadata>
 <style>
   .bg { fill: #f4f3ef; }
   .grid { stroke: #dedbd3; stroke-width: 0.5; }

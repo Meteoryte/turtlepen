@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="1320" viewBox="0 0 800 1320" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
 <title id="tp-title">Five seeded-random supersampling trials</title>
 <desc id="tp-desc">31 diagram elements across 1 visible page(s)</desc>
-<metadata>{"schema":3,"name":"Five seeded-random supersampling trials","view":null,"elements":31}</metadata>
+<metadata>{"schema":4,"name":"Five seeded-random supersampling trials","view":null,"elements":31}</metadata>
 <style>
   .bg { fill: #f4f3ef; }
   .grid { stroke: #dedbd3; stroke-width: 0.5; }

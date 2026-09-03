@@ -115,6 +115,13 @@ test('editing the drawing makes an existing review visibly stale', () => {
   assert.equal(v.perceptual.stale, true, 'the critic reviewed bytes nobody is looking at now');
 });
 
+test('a document-schema metadata bump does not pretend unchanged ink was re-reviewed', () => {
+  const svg3 = '<svg><metadata>{"schema":3,"name":"same"}</metadata><path d="M0 0"/></svg>';
+  const svg4 = '<svg><metadata>{"schema":4,"name":"same"}</metadata><path d="M0 0"/></svg>';
+  assert.equal(renderHash(svg4), renderHash(svg3));
+  assert.notEqual(renderHash(svg4.replace('M0 0', 'M0 1')), renderHash(svg3));
+});
+
 test('an unreviewed document is not clean — it is unreviewed', () => {
   const doc = docWithSheep();
   const v = verdicts(doc, { structural: validate(doc) });
@@ -162,10 +169,10 @@ test('a deterministic rebuild preserves review provenance only for byte-matched 
   assert.equal(changed.perceptual, undefined);
 });
 
-test('schema 1 documents migrate to schema 3 and unknown future schemas are refused', () => {
+test('schema 1 documents migrate to schema 4 and unknown future schemas are refused', () => {
   const current = JSON.parse(serialize(docWithSheep()));
   const migrated = deserialize({ ...current, schema: 1 });
-  assert.equal(migrated.schema, 3);
-  assert.match(serialize(migrated), /"schema": 3/);
+  assert.equal(migrated.schema, 4);
+  assert.match(serialize(migrated), /"schema": 4/);
   assert.throws(() => deserialize({ ...current, schema: 999 }), /schema 999 is not supported/);
 });

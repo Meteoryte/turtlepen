@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 
 const CATEGORY_RULES = Object.freeze([
   ['workspace', /view|theme|resource|model|annotate|connect/],
-  ['authoring', /place|pen|stroke|wireframe|perspective|mermaid/],
+  ['authoring', /place|pen|stroke|wireframe|timeline|perspective|mermaid/],
   ['layout', /layout|align|distribute|route|constraint|group|move|resize/],
   ['review', /validate|inspect|finding|perceptual|repair|progress/],
   ['file', /diagram|save|render|image|export|history/],

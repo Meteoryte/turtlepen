@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="370" height="400" viewBox="0 0 370 400" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
 <title id="tp-title">Revision Session</title>
 <desc id="tp-desc">9 diagram elements across 1 visible page(s)</desc>
-<metadata>{"schema":3,"name":"Revision Session","view":null,"elements":9}</metadata>
+<metadata>{"schema":4,"name":"Revision Session","view":null,"elements":9}</metadata>
 <style>
   .bg { fill: #f4f3ef; }
   .grid { stroke: #dedbd3; stroke-width: 0.5; }

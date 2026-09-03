@@ -76,7 +76,7 @@ export function parseNodeRef(text) {
  * dropping half a diagram and reporting success is exactly the behaviour this
  * project treats as a defect.
  */
-export function parseMermaid(source) {
+export function parseMermaidFlowchart(source) {
   const nodes = new Map();
   const edges = [];
   let seenHeader = false;
@@ -121,7 +121,119 @@ export function parseMermaid(source) {
     throw new SyntaxError('mermaid: expected a "flowchart" or "graph" header line');
   }
   if (!nodes.size) throw new SyntaxError('mermaid: no nodes found');
-  return { nodes: [...nodes.values()], edges };
+  return { kind: 'flowchart', nodes: [...nodes.values()], edges };
+}
+
+function semanticId(value, fallback, used) {
+  const base = String(value ?? '').toLowerCase()
+    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '') || fallback;
+  let id = base;
+  let suffix = 2;
+  while (used.has(id)) id = `${base}-${suffix++}`;
+  used.add(id);
+  return id;
+}
+
+function timelinePeriod(value) {
+  const parts = String(value).split(/\s+(?:--|to|–|—)\s+/i).map((entry) => entry.trim()).filter(Boolean);
+  if (parts.length !== 2) return null;
+  const iso = /^\d{4}(?:-\d{2}(?:-\d{2})?)?$/;
+  return parts.every((entry) => iso.test(entry)) ? parts : null;
+}
+
+/** Parse Mermaid's semantic timeline syntax without inventing machine dates. */
+export function parseMermaidTimeline(source) {
+  const lines = String(source).split(/\r?\n/);
+  const first = lines.findIndex((raw) => raw.replace(/%%.*$/, '').trim());
+  if (first < 0 || !/^timeline\s*$/i.test(lines[first].replace(/%%.*$/, '').trim())) {
+    throw new SyntaxError('mermaid: expected a "timeline" header line');
+  }
+  const events = [];
+  const phases = [];
+  const eventIds = new Set();
+  const phaseIds = new Set();
+  let title = 'Mermaid timeline';
+  let currentPhase = null;
+  let previousPeriod = null;
+
+  const addEvent = (period, details, lineNumber) => {
+    if (!period) throw new SyntaxError(`mermaid timeline line ${lineNumber}: an indented ": event" needs a dated or labelled period before it`);
+    if (!details.length || !details[0]) throw new SyntaxError(`mermaid timeline line ${lineNumber}: event text is required after ":"`);
+    const eventTitle = details[0];
+    const event = {
+      id: semanticId(eventTitle, `event-${events.length + 1}`, eventIds),
+      title: eventTitle,
+      ...(details.length > 1 ? { description: details.slice(1).join(' · ') } : {}),
+      ...(currentPhase ? { phase: currentPhase } : {}),
+      sequence: events.length + 1,
+    };
+    const range = timelinePeriod(period);
+    if (range) {
+      event.type = 'period';
+      event.startDate = range[0];
+      event.endDate = range[1];
+      event.displayDate = period;
+    } else if (/^\d{4}(?:-\d{2}(?:-\d{2})?)?$/.test(period)) {
+      event.date = period;
+      event.displayDate = period;
+    } else {
+      event.displayDate = period;
+      if (/^current|now$/i.test(period)) {
+        event.current = true;
+        event.status = 'current';
+      }
+    }
+    events.push(event);
+  };
+
+  for (let index = first + 1; index < lines.length; index++) {
+    const line = lines[index].replace(/%%.*$/, '').trim();
+    if (!line) continue;
+    if (/^(classDef|class|style|linkStyle|click|accTitle|accDescr)\b/i.test(line)) {
+      throw new SyntaxError(
+        `mermaid timeline: "${line.split(/\s+/)[0]}" is not supported. `
+        + 'The importer refuses directives it cannot preserve instead of silently dropping them.',
+      );
+    }
+    const titleMatch = /^title\s+(.+)$/i.exec(line);
+    if (titleMatch) {
+      title = stripQuotes(titleMatch[1]);
+      continue;
+    }
+    const sectionMatch = /^section\s+(.+)$/i.exec(line);
+    if (sectionMatch) {
+      const sectionTitle = stripQuotes(sectionMatch[1]);
+      currentPhase = semanticId(sectionTitle, `phase-${phases.length + 1}`, phaseIds);
+      phases.push({ id: currentPhase, title: sectionTitle });
+      continue;
+    }
+    if (/^section\s*$/i.test(line)) throw new SyntaxError(`mermaid timeline line ${index + 1}: section needs a title`);
+
+    const continuation = /^:\s*(.+)$/.exec(line);
+    if (continuation) {
+      const details = continuation[1].split(/\s*:\s*/).map(stripQuotes).filter(Boolean);
+      addEvent(previousPeriod, details, index + 1);
+      continue;
+    }
+    const parts = line.split(/\s*:\s*/).map(stripQuotes);
+    if (parts.length < 2 || !parts[0] || !parts[1]) {
+      throw new SyntaxError(`mermaid timeline line ${index + 1}: expected "period : event" — got "${line}"`);
+    }
+    previousPeriod = parts[0];
+    addEvent(previousPeriod, parts.slice(1), index + 1);
+  }
+  if (!events.length) throw new SyntaxError('mermaid timeline: no events found');
+  return { kind: 'timeline', title, events, phases };
+}
+
+/** Dispatch by the Mermaid header so callers have one import entry point. */
+export function parseMermaid(source) {
+  const header = String(source).split(/\r?\n/)
+    .map((line) => line.replace(/%%.*$/, '').trim())
+    .find(Boolean) ?? '';
+  return /^timeline\s*$/i.test(header) ? parseMermaidTimeline(source) : parseMermaidFlowchart(source);
 }
 
 /** Longest-path rank, so an edge always points from a lower rank to a higher. */
@@ -148,8 +260,27 @@ function ranksOf(nodes, edges) {
  */
 export function mermaidToOperations(source, {
   page = 'base', nodeWidth = 26, nodeHeight = 8, gapY = 5, gapX = 4, originCol = 3, originRow = 3,
+  timelineId = null, orientation = 'vertical', timelineLayout = 'alternating', spacing = 'ordinal', at = 'C4', spanCells = null,
 } = {}) {
-  const { nodes, edges } = parseMermaid(source);
+  const parsed = parseMermaid(source);
+  if (parsed.kind === 'timeline') {
+    const used = new Set();
+    const id = timelineId ?? semanticId(parsed.title, 'mermaid-timeline', used);
+    return {
+      operations: [{
+        op: 'timeline', action: 'create', id, title: parsed.title, page, at,
+        orientation, layout: timelineLayout, spacing,
+        ...(spanCells != null ? { spanCells } : {}),
+        events: parsed.events,
+        phases: parsed.phases,
+      }],
+      timeline: { id, title: parsed.title, events: parsed.events.length, phases: parsed.phases.length },
+      nodes: 0,
+      edges: 0,
+      notes: ['Mermaid timeline semantics were preserved as one timeline operation. Rehearse it with plan; it expands into ordinary editable TurtlePen primitives.'],
+    };
+  }
+  const { nodes, edges } = parsed;
   const rank = ranksOf(nodes, edges);
 
   const byRank = new Map();

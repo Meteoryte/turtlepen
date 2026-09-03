@@ -169,6 +169,17 @@ test('every advertised MCP tool completes a representative use case over stdio',
     assert.match(await invoke('plan', { operations }), /rehearsed 1 operation/);
     assert.match(await invoke('plan', { operations, commit: true }), /committed 1 operation/);
     await invoke('set_canvas', { cols: 100, rows: 60 });
+    const timeline = JSON.parse(await invoke('timeline', {
+      id: 'connection-history',
+      title: 'Connection history',
+      at: 'BR4',
+      layout: 'single-sided',
+      events: [
+        { id: 'local', title: 'Local stdio', date: '2025-08', type: 'milestone' },
+        { id: 'hosted', title: 'Hosted endpoint', date: '2026-08-28', type: 'release', status: 'complete' },
+      ],
+    }));
+    assert.equal(timeline.timeline.id, 'connection-history');
     // Paper is document state, so it has to survive the same round trip as the
     // geometry does.
     await invoke('set_background', { color: '#0b1020' });

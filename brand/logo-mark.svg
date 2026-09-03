@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1040" height="1100" viewBox="0 0 1040 1100" font-family="&quot;Segoe UI&quot;, Arial, sans-serif" role="img" aria-labelledby="tp-title tp-desc">
 <title id="tp-title">TurtlePen logo — turtle at easel</title>
 <desc id="tp-desc">60 diagram elements across 3 visible page(s)</desc>
-<metadata>{"schema":3,"name":"TurtlePen logo — turtle at easel","view":null,"elements":60}</metadata>
+<metadata>{"schema":4,"name":"TurtlePen logo — turtle at easel","view":null,"elements":60}</metadata>
 <style>
   .bg { fill: #f4f3ef; }
   .grid { stroke: #dedbd3; stroke-width: 0.5; }

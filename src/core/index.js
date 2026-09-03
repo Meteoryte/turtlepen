@@ -26,6 +26,7 @@ import * as perspective_ from './perspective.js';
 import * as workspace from './workspace.js';
 import * as edit_ from './edit.js';
 import * as svgImport_ from './svg-import.js';
+import * as timeline_ from './timeline.js';
 import { renderPng, renderPdf, rasterizeDocument, encodePng } from './output.js';
 import { OPPOSITE } from './geometry.js';
 import { approachPoint, parsePortSpec } from './shapes.js';
@@ -50,7 +51,7 @@ import * as turtlefont from './turtlefont.js';
 export { turtlefont };
 import { routeProgram as routeProgram_ } from './route.js';
 export { inspectModel, formatInspection, acceptModelFinding, unacceptModelFinding, INSPECTION_RULES, INSPECTION_SEVERITIES } from './inspect.js';
-export { mermaidToOperations, parseMermaid } from './mermaid.js';
+export { mermaidToOperations, parseMermaid, parseMermaidFlowchart, parseMermaidTimeline } from './mermaid.js';
 
 // Perceptual review is a sibling of validate, not a part of it: same document,
 // separate verdict, and nothing here is consulted by the collision engine.
@@ -78,6 +79,14 @@ export { wireframe_ as wireframe };
 export { perspective_ as perspective };
 export { edit_ as edit };
 export { svgImport_ as svgImport };
+export { timeline_ as timeline };
+export {
+  TIMELINE_SCHEMA_VERSION, TIMELINE_ACTIONS, TIMELINE_ORIENTATIONS, TIMELINE_LAYOUTS,
+  TIMELINE_SPACING, TIMELINE_ORDERS, TIMELINE_SIDES, TIMELINE_EVENT_TYPES,
+  TIMELINE_STATUSES, TIMELINE_RULES, parseTimelineDate, normalizeTimelineDefinition,
+  normalizeTimelineEvent, timelinesOf, findTimeline, orderedTimelineEvents, compileTimeline,
+  timelineSummary,
+} from './timeline.js';
 export {
   createDocument, addPage, addBox, addText, addImage, removeElement, moveElement, moveElementToPage, setBackground, normalizeFill, findElement,
   elementsOf, elementRects, elementClaimed, serialize, deserialize, contentBounds, getPage, updatePage, removePage, renameElement,
@@ -634,6 +643,67 @@ export function setCanvas(doc, cols, rows) {
   return doc.canvas;
 }
 
+/**
+ * Apply a semantic timeline atomically through the ordinary operation table.
+ *
+ * Reflow replaces generated geometry, but presentation overrides are carried
+ * forward when the primitive kind survives. Manual geometry is intentionally
+ * not guessed at: the receipt names every invalidated override.
+ */
+export function applyTimeline(doc, args = {}) {
+  const mutation = timeline_.timelineMutation(doc, args);
+  if (mutation.action === 'inspect') return timeline_.timelineSummary(mutation.next);
+
+  const preserveContent = ['reflow', 'add_event', 'remove_event'].includes(mutation.action);
+  const captured = mutation.previous
+    ? timeline_.captureTimelineOverrides(doc, mutation.previous, { preserveContent })
+    : { overrides: [], invalidated: [] };
+  const draft = structuredClone(doc);
+  const previous = mutation.previous ? timeline_.findTimeline(draft, mutation.previous.id) : null;
+
+  if (previous?.generated) {
+    for (const id of previous.generated.elementIds ?? []) {
+      if (findElement(draft, id)) removeElement(draft, id);
+    }
+    if (previous.generated.groupId && findGroup(draft, previous.generated.groupId)) deleteGroup(draft, previous.generated.groupId);
+    if (previous.generated.scaleId && Object.hasOwn(draft.scales ?? {}, previous.generated.scaleId)) removeScale(draft, previous.generated.scaleId);
+  }
+
+  getPage(draft, mutation.next.page);
+  const compiled = timeline_.compileTimeline(draft, mutation.next);
+  for (const operation of compiled.operations) applyOperation(draft, operation);
+
+  // Baselines describe the compiler's output BEFORE safe manual overrides are
+  // restored. That way the same override remains detectable on the next reflow
+  // instead of being silently absorbed into generated source.
+  const baselines = timeline_.timelineBaselines(draft, compiled.receipt.elementIds);
+  const overrideResult = timeline_.applyTimelineOverrides(draft, captured.overrides);
+  const next = { ...mutation.next, generated: { ...compiled.receipt, baselines } };
+  const timelines = timeline_.timelinesOf(draft);
+  const index = timelines.findIndex((entry) => entry.id === next.id);
+  if (index >= 0) timelines[index] = next;
+  else timelines.push(next);
+  timelines.sort((a, b) => a.id.localeCompare(b.id));
+
+  for (const key of Object.keys(doc)) delete doc[key];
+  Object.assign(doc, draft);
+  const validation = validate(doc);
+  return {
+    action: mutation.action,
+    timeline: timeline_.timelineSummary(next),
+    generated: {
+      operations: compiled.operations.length,
+      elements: compiled.receipt.elementIds.length,
+      pages: compiled.receipt.pageIds,
+      group: compiled.receipt.groupId,
+      scale: compiled.receipt.scaleId,
+    },
+    preservedOverrides: overrideResult.preserved,
+    invalidatedOverrides: [...captured.invalidated, ...overrideResult.invalidated],
+    validation: validation.summary,
+  };
+}
+
 function nextId(doc, prefix, offset) {
   let n = 1 + offset;
   while (findElement(doc, `${prefix}-${n}`)) n++;
@@ -950,6 +1020,7 @@ export const OPERATIONS = Object.freeze({
   stroke_text: (doc, a) => placeStrokeText(doc, a.page ?? 'base', a),
   stroke_label: (doc, a) => placeStrokeLabel(doc, a.page ?? null, a),
   wireframe: (doc, a) => applyWireframe(doc, a),
+  timeline: (doc, a) => applyTimeline(doc, a),
   perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
   micro_mask: (doc, a) => {
     if (a.action === 'add') return addMicroMask(doc, a);

@@ -13,14 +13,14 @@ the exact shared core path. Name-count checks alone are not considered coverage.
 | `notifications/cancelled` | accepted without a reply | notification response suppression | `test/mcp.test.js` |
 | `ping` | returns an empty result | connection remains ordered | `test/mcp.test.js` |
 | `tools/list` | schemas for the complete live tool set | exact comparison to `createTools` prevents drift | `test/mcp.test.js`, `test/http-mcp.test.js` |
-| `tools/call` | all 76 tools complete over real stdio | unknown tool, schema refusal, and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
+| `tools/call` | all 77 tools complete over real stdio | unknown tool, schema refusal, and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
 | unknown request | n/a | JSON-RPC `-32601` | `test/mcp.test.js` |
 | malformed JSON | n/a | JSON-RPC `-32700` with null id | `test/mcp.test.js` |
 
 ## MCP Streamable HTTP boundary
 
 `test/http-mcp.test.js` starts the real TCP server on an ephemeral port. It
-proves that HTTP is a transport over the canonical 76-tool registry, preserves
+proves that HTTP is a transport over the canonical 77-tool registry, preserves
 one active document across separate POSTs, isolates simultaneous sessions, and
 uses request-scoped `event: message` / `data:` SSE frames.
 
@@ -49,6 +49,7 @@ tool without a successful transport case fails the suite.
 | `pen` | author an exact artwork path |
 | `connect` | author direct, orthogonal, and node-attached curved semantic relationships |
 | `annotate` | persist descriptions, technology, tags, properties, and perspectives |
+| `timeline` | create a measured semantic history as editable primitives and return its structured compilation receipt |
 | `validate` | obtain structured current findings and fingerprints |
 | `inspect_model` | enumerate missing semantics, disconnected nodes, and broken relationship references |
 | `accept_finding` | record an auditable reason for a current finding |

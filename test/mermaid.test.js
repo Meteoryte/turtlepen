@@ -10,7 +10,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { parseMermaid, parseNodeRef, mermaidToOperations } from '../src/core/mermaid.js';
-import { createDocument, OPERATIONS, validate } from '../src/core/index.js';
+import { createDocument, OPERATIONS, validate, planOperations } from '../src/core/index.js';
 
 // A linear chart: one start, no decision, so it lays out as a straight spine.
 // It is deliberately NOT branching — a decision with one way out is an invalid
@@ -120,4 +120,43 @@ test('a decision imported from mermaid still has to branch', () => {
   const doc = createDocument({ name: 'oneway', canvas: { cols: 120, rows: 90 } });
   for (const op of operations) OPERATIONS[op.op](doc, op);
   assert.equal(validate(doc).open.filter((f) => f.rule === 'F002').length, 1);
+});
+
+test('Mermaid timeline preserves title, sections, ISO dates, repeated periods, and text', () => {
+  const source = [
+    'timeline',
+    '  title TurtlePen connection history',
+    '  section Local',
+    '    2025-08 : Local stdio server',
+    '            : Streamable HTTP : Same registry',
+    '  section Hosted',
+    '    Current : ChatGPT MCP : Structured output schemas',
+  ].join('\n');
+  const parsed = parseMermaid(source);
+  assert.equal(parsed.kind, 'timeline');
+  assert.equal(parsed.title, 'TurtlePen connection history');
+  assert.deepEqual(parsed.phases.map((phase) => phase.title), ['Local', 'Hosted']);
+  assert.equal(parsed.events[0].date, '2025-08');
+  assert.equal(parsed.events[1].date, '2025-08', 'an indented continuation keeps the preceding period');
+  assert.equal(parsed.events[1].description, 'Same registry');
+  assert.equal(parsed.events[2].date, undefined, 'human period labels do not become invented machine dates');
+  assert.equal(parsed.events[2].current, true);
+});
+
+test('Mermaid timeline compiles to a normal rehearsable timeline operation', () => {
+  const result = mermaidToOperations('timeline\n  title Releases\n  2026-01 : Alpha\n  2026-09 : Stable');
+  assert.equal(result.operations.length, 1);
+  assert.equal(result.operations[0].op, 'timeline');
+  assert.ok(OPERATIONS.timeline);
+  const doc = createDocument({ name: 'mermaid timeline' });
+  const rehearsal = planOperations(doc, result.operations);
+  assert.equal(rehearsal.ok, true);
+  assert.equal(rehearsal.validation.summary.verdict, 'PASS');
+});
+
+test('Mermaid timeline refuses unsupported directives rather than dropping them', () => {
+  assert.throws(
+    () => parseMermaid('timeline\n  2026 : Alpha\n  click Alpha "https://example.com"'),
+    /not supported/,
+  );
 });
