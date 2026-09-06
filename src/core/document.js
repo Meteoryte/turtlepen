@@ -163,6 +163,9 @@ export function normalizeStroke(stroke) {
   const feather = normalizeFeather(stroke.feather, 'path feather');
   const texture = normalizeTexture(stroke.texture, 'path texture');
   const pattern = normalizePattern(stroke.pattern, 'path pattern');
+  const patternOffset = stroke.patternOffset ?? 0;
+  if (!Number.isSafeInteger(patternOffset)) throw new RangeError('path patternOffset must be an integer in quadrants');
+  if (patternOffset && !pattern) throw new Error('patternOffset needs a dashed or dotted pattern');
   return {
     color,
     ...(ramp ? { ramp } : {}),
@@ -173,6 +176,7 @@ export function normalizeStroke(stroke) {
     ...(feather > 0 ? { feather } : {}),
     ...(texture ? { texture } : {}),
     ...(pattern ? { pattern } : {}),
+    ...(patternOffset ? { patternOffset } : {}),
   };
 }
 
@@ -810,6 +814,16 @@ export function reconcileElementChange(doc, id) {
   const incoming = constraintsOf(doc).find((constraint) => constraint.dependent === id);
   if (incoming) incoming.offset = currentConstraintOffset(doc, incoming);
   propagateConstraints(doc, [id], new Set([id]));
+}
+
+/** Re-anchor an explicitly transformed selection before following its descendants. */
+export function reconcileSelectionChange(doc, ids) {
+  const selected = new Set(ids);
+  for (const id of selected) if (!findElement(doc, id)) throw new Error(`no element "${id}" to reconcile`);
+  for (const constraint of constraintsOf(doc)) {
+    if (selected.has(constraint.dependent)) constraint.offset = currentConstraintOffset(doc, constraint);
+  }
+  propagateConstraints(doc, selected, new Set(selected));
 }
 
 export function createConstraint(doc, {

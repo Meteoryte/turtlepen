@@ -1,12 +1,13 @@
 import { createHash } from 'node:crypto';
 
 const CATEGORY_RULES = Object.freeze([
+  ['editing', /^(transform|paint_path|guide|cleanup|page|array|boolean|slice|path_edit|normalize_path|offset_path|duplicate|reorder)$/],
   ['workspace', /view|theme|resource|model|annotate|connect/],
   ['authoring', /place|pen|stroke|wireframe|timeline|perspective|mermaid/],
   ['layout', /layout|align|distribute|route|constraint|group|move|resize/],
   ['review', /validate|inspect|finding|perceptual|repair|progress/],
   ['file', /diagram|save|render|image|export|history/],
-  ['discovery', /help|runtime|doctor|describe|measure|coverage|free_space/],
+  ['discovery', /help|runtime|doctor|describe|measure|coverage|free_space|query/],
 ]);
 
 function categoryOf(name) {
@@ -22,7 +23,7 @@ export function capabilityRegistry(tools) {
     properties: Object.keys(tool.inputSchema.properties ?? {}),
     structuredOutput: tool.outputSchema?.type === 'object',
     outputSchemaVersion: tool.outputSchema?.properties?.schemaVersion?.enum?.[0] ?? null,
-    mutating: !/^(turtlepen_help|search_help|doctor|runtime_info|validate|inspect|describe|measure|font_|ascii|render|free_space|route|export_prompt)/.test(tool.name),
+    mutating: tool.annotations ? !tool.annotations.readOnlyHint : !/^(turtlepen_help|search_help|doctor|runtime_info|validate|inspect|describe|measure|font_|ascii|render|free_space|route|export_prompt|export_timeline|query)/.test(tool.name),
   })).sort((a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name));
   const fingerprint = createHash('sha256').update(JSON.stringify(entries)).digest('hex');
   return { count: entries.length, fingerprint, categories: [...new Set(entries.map((entry) => entry.category))], entries };

@@ -28,14 +28,14 @@
     }
   },
   "summary": {
-    "artifacts": 75,
-    "publishable": 12,
-    "structurallyClear": 55,
+    "artifacts": 76,
+    "publishable": 13,
+    "structurallyClear": 56,
     "missingSvg": 1,
     "byRole": {
       "example": {
-        "artifacts": 41,
-        "publishable": 4
+        "artifacts": 42,
+        "publishable": 5
       },
       "fixture": {
         "artifacts": 5,
@@ -27335,6 +27335,140 @@
         "reviewedExportMatches": false,
         "hasPortableVector": true,
         "publishable": false
+      }
+    },
+    {
+      "id": "TurtlePen native editing",
+      "catalog": {
+        "role": "example",
+        "releaseRequired": false
+      },
+      "source": {
+        "path": "diagrams/native-editing-workflows.turtlepen.json",
+        "schema": 4,
+        "sha256": "24d8ab083a6a8e4bec085fa4e0762d43ebe35639a966580650885cfe97cf5d76",
+        "bytes": 79156
+      },
+      "document": {
+        "pages": 3,
+        "elements": 22,
+        "views": 0,
+        "resources": 0
+      },
+      "structural": {
+        "state": "structurally-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "acceptedBySeverity": {
+            "S0": 0,
+            "S1": 0,
+            "S2": 0,
+            "S3": 0
+          },
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS",
+          "acceptedDecisions": 0
+        }
+      },
+      "model": {
+        "state": "model-clear",
+        "open": 0,
+        "accepted": 0,
+        "stale": 0,
+        "summary": {
+          "error": 0,
+          "warning": 0,
+          "info": 0,
+          "total": 0,
+          "accepted": 0,
+          "stale": 0,
+          "state": "model-clear"
+        }
+      },
+      "perceptual": {
+        "reviewed": true,
+        "reviewer": "codex/gpt-6",
+        "findings": 0,
+        "blocking": 0,
+        "clean": true,
+        "stale": false
+      },
+      "release": {
+        "releasable": true,
+        "verdict": "PASS",
+        "blockers": [],
+        "structural": {
+          "S0": 0,
+          "S1": 0,
+          "S2": 0,
+          "S3": 0,
+          "total": 0,
+          "accepted": 0,
+          "acceptedBySeverity": {
+            "S0": 0,
+            "S1": 0,
+            "S2": 0,
+            "S3": 0
+          },
+          "stale": 0,
+          "clean": true,
+          "state": "structurally-clear",
+          "verdict": "PASS",
+          "acceptedDecisions": 0
+        },
+        "perceptual": {
+          "reviewed": true,
+          "reviewer": "codex/gpt-6",
+          "findings": 0,
+          "blocking": 0,
+          "clean": true,
+          "stale": false,
+          "currentRenderHash": "918e65559eb189eb"
+        },
+        "exceptions": [],
+        "weakAcceptances": []
+      },
+      "exports": {
+        "svg": {
+          "path": "diagrams/native-editing-workflows.svg",
+          "present": true,
+          "bytes": 25752,
+          "sha256": "a9e52cce087897c812e57b500fa68fccf3a65108e33430b09e2120a16b96e69b",
+          "renderHash": "918e65559eb189eb"
+        },
+        "png": {
+          "path": "diagrams/native-editing-workflows.png",
+          "present": true,
+          "bytes": 10289,
+          "sha256": "ce1afc48ab69a521f76b603873e94df9fec37a8d313ad445fdcbfee33b9a00a2"
+        },
+        "pdf": {
+          "path": "diagrams/native-editing-workflows.pdf",
+          "present": false,
+          "bytes": 0,
+          "sha256": null
+        }
+      },
+      "contract": {
+        "structurallyClear": true,
+        "modelHasNoErrors": true,
+        "perceptuallyReviewed": true,
+        "perceptualCurrent": true,
+        "perceptualHasNoBlockers": true,
+        "releaseGatePassed": true,
+        "reviewedExportMatches": true,
+        "hasPortableVector": true,
+        "publishable": true
       }
     },
     {

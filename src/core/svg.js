@@ -525,7 +525,21 @@ function styledPath(el, themed = {}, order = null) {
   const color = escapeAttr(themed.stroke ?? stroke.color);
   const width = stroke.width;
   const cap = stroke.cap;
-  const ink = groups.map((pieces) => {
+  const ink = groups.map((pieces, groupIndex) => {
+    if (pieces.some(piece => piece.color)) {
+      const xy = piece => ({ x: piece.x * PX_PER_QUAD + 2, y: piece.y * PX_PER_QUAD + 2 });
+      if (pieces.length === 1) {
+        const p = xy(pieces[0]);
+        return `<line x1="${p.x}" y1="${p.y}" x2="${p.x}" y2="${p.y}" stroke="${escapeAttr(pieces[0].color ?? themed.stroke ?? stroke.color)}" stroke-width="${width}" stroke-linecap="${cap === 'butt' ? 'round' : cap}"/>`;
+      }
+      return pieces.slice(1).map((piece, index) => {
+        const previous = pieces[index], a = xy(previous), b = xy(piece);
+        const from = escapeAttr(previous.color ?? themed.stroke ?? stroke.color), to = escapeAttr(piece.color ?? themed.stroke ?? stroke.color);
+        const id = `tp.paint.${escapeAttr(el.id)}.${groupIndex}.${index}`;
+        const gradient = from === to ? '' : `<defs><linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient></defs>`;
+        return `${gradient}<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${from === to ? from : `url(#${id})`}" stroke-width="${width}" stroke-linecap="${cap}"/>`;
+      }).join('');
+    }
     // The collision model deliberately keeps every Bresenham quadrant. Painting
     // every one of those cell centres, however, turns a straight diagonal into
     // a visible staircase. Simplify only the presentation polyline: the stored

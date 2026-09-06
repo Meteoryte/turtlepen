@@ -18,7 +18,7 @@ import {
 export const BOOLEAN_ACTIONS = Object.freeze(['union', 'difference', 'intersection', 'xor']);
 export const SLICE_AXES = Object.freeze(['vertical', 'horizontal']);
 export const SLICE_MODES = Object.freeze(['divide', 'partition']);
-export const PATH_EDIT_ACTIONS = Object.freeze(['insert', 'delete', 'move', 'reverse', 'open', 'close', 'split', 'join']);
+export const PATH_EDIT_ACTIONS = Object.freeze(['insert', 'delete', 'move', 'move_many', 'align_nodes', 'trim', 'extend_to', 'interpolate', 'reverse', 'open', 'close', 'split', 'join']);
 export const REORDER_ACTIONS = Object.freeze(['bring_to_front', 'send_to_back', 'raise', 'lower', 'before', 'after']);
 export const FOOTPRINTS = Object.freeze(['visual', 'claimed']);
 export const MAX_ARRAY_COPIES = 100;
@@ -307,9 +307,10 @@ function connectedComponents(cells) {
  * discarded, or split fractionally.
  */
 export function sliceGeometry(doc, {
-  id, axis, at, ids = null, mode = 'divide', footprint = 'visual', color = null,
+  id, axis, at, cutter = null, ids = null, mode = 'divide', footprint = 'visual', color = null,
 } = {}) {
-  if (!SLICE_AXES.includes(axis)) {
+  if (cutter != null && (axis != null || at != null)) throw new Error('slice needs either cutter or axis/at, not both');
+  if (cutter == null && !SLICE_AXES.includes(axis)) {
     throw new SyntaxError(`slice axis must be ${SLICE_AXES.join(' or ')} — got ${JSON.stringify(axis)}`);
   }
   if (!SLICE_MODES.includes(mode)) {
@@ -317,18 +318,21 @@ export function sliceGeometry(doc, {
   }
   assertFootprint(footprint);
   const source = foundElements(doc, [id], { samePage: true, what: 'slice id' })[0];
-  const point = pointAtAddress(at, 'slice boundary');
+  if (cutter === id) throw new Error('slice cutter must differ from the source');
+  const knife = cutter == null ? null : foundElements(doc, [cutter], { what: 'slice cutter' })[0];
+  const knifeCells = knife ? cellsOf(knife.element, footprint) : null;
+  const point = knife ? null : pointAtAddress(at, 'slice boundary');
   const cells = cellsOf(source.element, footprint);
   const before = new Set();
   const after = new Set();
   for (const cell of cells) {
     const point_ = parseQuadKey(cell);
-    const isBefore = axis === 'vertical' ? point_.x < point.x : point_.y < point.y;
+    const isBefore = knifeCells ? !knifeCells.has(cell) : axis === 'vertical' ? point_.x < point.x : point_.y < point.y;
     (isBefore ? before : after).add(cell);
   }
   if (!before.size || !after.size) {
     throw new RangeError(
-      `slice boundary ${at} does not pass through "${source.element.id}" — it must leave lattice geometry on both sides`,
+      `slice boundary ${cutter ?? at} does not partition "${source.element.id}" — it must leave geometry in both partitions`,
     );
   }
 
@@ -350,6 +354,7 @@ export function sliceGeometry(doc, {
     provenance: {
       operation: 'slice',
       source: source.element.id,
+      ...(cutter ? { cutter } : {}),
       axis,
       at,
       mode,
@@ -360,6 +365,7 @@ export function sliceGeometry(doc, {
   return {
     page,
     source: source.element.id,
+    ...(cutter ? { cutter } : {}),
     axis,
     at,
     created: created.map((path) => path.id),
@@ -502,6 +508,7 @@ function pathSpecFrom(path, id, pieces, provenance) {
 /** Edit explicit lattice path pieces; edits intentionally clear resumable pen state. */
 export function editPath(doc, {
   id, action, index = null, at = null, ids = null, with: joinWith = null,
+  indices = null, dx = 0, dy = 0, axis = null, endIndex = null, cutter = null,
 } = {}) {
   if (!PATH_EDIT_ACTIONS.includes(action)) {
     throw new SyntaxError(`path_edit action must be ${PATH_EDIT_ACTIONS.join(', ')} — got ${JSON.stringify(action)}`);
@@ -509,6 +516,51 @@ export function editPath(doc, {
   const found = foundPath(doc, id);
   const path = found.element;
   const pieces = path.pieces.map((piece) => ({ ...piece }));
+
+  if (['move_many', 'align_nodes'].includes(action)) {
+    if (!Array.isArray(indices) || !indices.length || new Set(indices).size !== indices.length) throw new Error(`${action} needs unique piece indices`);
+    for (const i of indices) assertPieceIndex(i, pieces.length);
+    assertInteger(dx, 'node dx'); assertInteger(dy, 'node dy');
+    const target = action === 'align_nodes' ? pointAtAddress(at, 'node alignment') : null;
+    if (target && !SLICE_AXES.includes(axis)) throw new Error('align_nodes axis must be horizontal or vertical');
+    for (const i of indices) {
+      pieces[i].x = target && axis === 'vertical' ? target.x : pieces[i].x + (target ? 0 : dx);
+      pieces[i].y = target && axis === 'horizontal' ? target.y : pieces[i].y + (target ? 0 : dy);
+    }
+    updatePathPieces(doc, found, pieces);
+    return { id, action, indices, changed: indices.length };
+  }
+  if (action === 'trim' || action === 'interpolate') {
+    assertPieceIndex(index, pieces.length); assertPieceIndex(endIndex, pieces.length);
+    if (endIndex <= index) throw new Error(`${action} needs endIndex after index`);
+    let result = pieces.slice(index, endIndex + 1);
+    if (action === 'interpolate') {
+      const a = pieces[index], b = pieces[endIndex];
+      if (Math.max(Math.abs(b.x - a.x), Math.abs(b.y - a.y)) > MAX_DERIVED_QUADS - pieces.length) throw new RangeError('interpolation exceeds derived geometry limit');
+      const bridge = rayQuads(a.x, a.y, b.x, b.y).map(p => ({ ...a, ...p, type: 'line' }));
+      result = [...pieces.slice(0, index + 1), ...bridge.slice(1, -1), ...pieces.slice(endIndex)];
+    }
+    updatePathPieces(doc, found, result, { closed: false });
+    return { id, action, quadrants: result.length };
+  }
+  if (action === 'extend_to') {
+    const other = foundElements(doc, [cutter], { what: 'extension cutter' })[0];
+    if (cutter === id || pieces.length < 2) throw new Error('extend_to needs another object and a path with a terminal direction');
+    const tip = pieces.at(-1);
+    const previous = pieces.slice(0, -1).reverse().find(p => p.x !== tip.x || p.y !== tip.y);
+    if (!previous) throw new Error('extend_to cannot infer a direction from coincident pieces');
+    const vx = tip.x - previous.x, vy = tip.y - previous.y;
+    const hits = [...elementClaimed(other.element)].map(parseQuadKey).filter(p => {
+      const x = p.x - tip.x, y = p.y - tip.y;
+      return x * vy === y * vx && x * vx + y * vy > 0;
+    }).sort((a, b) => (a.x - tip.x) ** 2 + (a.y - tip.y) ** 2 - ((b.x - tip.x) ** 2 + (b.y - tip.y) ** 2));
+    if (!hits.length) throw new Error('terminal ray has no forward lattice intersection with the cutter');
+    const target = hits[0];
+    if (Math.max(Math.abs(target.x - tip.x), Math.abs(target.y - tip.y)) + pieces.length > MAX_DERIVED_QUADS) throw new RangeError('extension exceeds derived geometry limit');
+    const extension = rayQuads(tip.x, tip.y, target.x, target.y).slice(1).map(p => ({ ...p, type: 'line' }));
+    updatePathPieces(doc, found, [...pieces, ...extension], { closed: false });
+    return { id, action, cutter, at: quadToAddress(target.x, target.y), added: extension.length };
+  }
 
   if (action === 'insert') {
     const position = assertPieceIndex(index, pieces.length, { allowEnd: true });
@@ -586,9 +638,22 @@ export function editPath(doc, {
 /** Remove repeated path quadrants without changing the first-occurrence drawing order. */
 export function normalizePath(doc, { id } = {}) {
   const found = foundPath(doc, id);
+  const appearance = piece => {
+    const fields = { ...piece };
+    if (piece.type === 'line') delete fields.dir;
+    return JSON.stringify(Object.fromEntries(Object.keys(fields).sort().map(key => [key, fields[key]])));
+  };
+  const appearances = new Map();
+  for (const piece of found.element.pieces) {
+    const key = quadKey(piece.x, piece.y);
+    if (!appearances.has(key)) appearances.set(key, new Set());
+    appearances.get(key).add(appearance(piece));
+  }
   const seen = new Set();
   const pieces = found.element.pieces.filter((piece) => {
     const key = quadKey(piece.x, piece.y);
+    // Different colors/markers at one location may intentionally overpaint.
+    if (appearances.get(key).size > 1) return true;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -751,16 +816,44 @@ function boundsGap(a, b) {
 }
 
 /** Return exact lattice measurements and pairwise intersections without mutating state. */
-export function inspectGeometry(doc, { ids, footprint = 'claimed' } = {}) {
+export function inspectGeometry(doc, { ids, footprint = 'claimed', nearest = null, pieceOffset = 0, pieceLimit = 100 } = {}) {
   assertFootprint(footprint);
+  assertInteger(pieceOffset, 'pieceOffset'); assertInteger(pieceLimit, 'pieceLimit');
+  if (pieceOffset < 0 || pieceLimit < 1 || pieceLimit > 500) throw new RangeError('pieceOffset must be nonnegative and pieceLimit between 1 and 500');
+  const target = nearest == null ? null : pointAtAddress(nearest, 'nearest point');
   const found = foundElements(doc, ids, { what: 'inspect ids' });
   const entries = found.map(({ element, page }) => {
     const cells = cellsOf(element, footprint);
     const bounds = setBounds(cells);
+    const path = element.kind === 'path' ? element.pieces : null;
+    let pathDetail = null;
+    if (path) {
+      const segments = [];
+      let totalLengthQuads = 0, connectedLengthQuads = 0, subpaths = path.length ? 1 : 0;
+      for (let i = 1; i < path.length; i++) {
+        const dx = path[i].x - path[i - 1].x, dy = path[i].y - path[i - 1].y;
+        const squared = dx * dx + dy * dy, length = Math.sqrt(squared), connected = Math.max(Math.abs(dx), Math.abs(dy)) <= 1;
+        totalLengthQuads += length;
+        if (connected) connectedLengthQuads += length; else subpaths++;
+        if (i - 1 >= pieceOffset && segments.length < pieceLimit) segments.push({ fromIndex: i - 1, toIndex: i, dx, dy, lengthSquaredQuads: squared, lengthQuads: length, angleDegrees: Math.atan2(dy, dx) * 180 / Math.PI, connected });
+      }
+      pathDetail = { pieceCount: path.length, segmentCount: Math.max(0, path.length - 1), subpaths, totalLengthQuads, connectedLengthQuads,
+        measurement: 'ordered piece centers; discontinuous steps are reported, not assumed to be drawn ink', segments,
+        nextOffset: pieceOffset + segments.length < path.length - 1 ? pieceOffset + segments.length : null };
+    }
+    let nearestPoint = null;
+    if (target) {
+      for (const p of sortedPoints(cells)) {
+        const distanceSquared = (p.x - target.x) ** 2 + (p.y - target.y) ** 2;
+        if (!nearestPoint || distanceSquared < nearestPoint.distanceSquared) nearestPoint = { ...p, at: quadToAddress(p.x, p.y), distanceSquared };
+      }
+    }
     return {
       id: element.id,
       page,
       kind: element.kind,
+      ...(pathDetail ? { path: pathDetail } : {}),
+      ...(target ? { nearestPoint } : {}),
       quadrants: cells.size,
       areaPx2: cells.size * 25,
       perimeterEdges: perimeterEdges(cells),

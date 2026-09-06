@@ -98,10 +98,13 @@ export function parseTimelineDate(value, label = 'timeline date') {
   const month = match[2] == null ? 1 : Number(match[2]);
   const day = match[3] == null ? 1 : Number(match[3]);
   if (year < 1 || month < 1 || month > 12) throw new RangeError(`${label} is not a real calendar date: ${iso}`);
-  const days = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  const calendar = new Date(0);
+  calendar.setUTCFullYear(year, month, 0);
+  const days = calendar.getUTCDate();
   if (day < 1 || day > days) throw new RangeError(`${label} is not a real calendar date: ${iso}`);
   const precision = match[3] != null ? 'day' : match[2] != null ? 'month' : 'year';
-  return { iso, precision, value: Date.UTC(year, month - 1, day) };
+  calendar.setUTCFullYear(year, month - 1, day);
+  return { iso, precision, value: calendar.getTime() };
 }
 
 function normalizeRelationship(value, label) {
@@ -234,7 +237,7 @@ export function normalizeTimelineDefinition(value, { allowGenerated = false } = 
   const allowed = [
     'schema', 'id', 'title', 'page', 'at', 'orientation', 'layout', 'side', 'spacing', 'order',
     'spanCells', 'cardWidthCells', 'gapCells', 'fitCanvas', 'currentDate', 'currentDateValue', 'events', 'phases',
-    'tracks', ...(allowGenerated ? ['generated'] : []),
+    'tracks', 'showRelationships', ...(allowGenerated ? ['generated'] : []),
   ];
   unknownFields(value, allowed, 'timeline');
   const id = safeId(value.id, 'timeline id');
@@ -255,6 +258,7 @@ export function normalizeTimelineDefinition(value, { allowGenerated = false } = 
   const gapCells = value.gapCells ?? 4;
   if (!Number.isInteger(gapCells) || gapCells < 1 || gapCells > 20) throw new RangeError(`timeline "${id}" gapCells must be a whole number from 1 to 20`);
   if (value.fitCanvas != null && typeof value.fitCanvas !== 'boolean') throw new TypeError(`timeline "${id}" fitCanvas must be boolean`);
+  if (value.showRelationships != null && typeof value.showRelationships !== 'boolean') throw new TypeError('timeline showRelationships must be boolean');
   const currentDate = value.currentDate == null ? null : parseTimelineDate(value.currentDate, `timeline "${id}" currentDate`);
 
   return {
@@ -272,6 +276,7 @@ export function normalizeTimelineDefinition(value, { allowGenerated = false } = 
     ...(cardWidthCells != null ? { cardWidthCells } : {}),
     gapCells,
     fitCanvas: value.fitCanvas !== false,
+    ...(value.showRelationships ? { showRelationships: true } : {}),
     ...(currentDate ? { currentDate: currentDate.iso, currentDateValue: currentDate.value } : {}),
     events,
     phases,
@@ -299,9 +304,9 @@ export function findTimeline(doc, id) {
 
 const DEFINITION_FIELDS = Object.freeze([
   'id', 'title', 'page', 'at', 'orientation', 'layout', 'side', 'spacing', 'order', 'spanCells',
-  'cardWidthCells', 'gapCells', 'fitCanvas', 'currentDate', 'events', 'phases', 'tracks',
+  'cardWidthCells', 'gapCells', 'fitCanvas', 'currentDate', 'events', 'phases', 'tracks', 'showRelationships',
 ]);
-const REFLOW_FIELDS = new Set(['page', 'at', 'orientation', 'layout', 'side', 'spacing', 'order', 'spanCells', 'cardWidthCells', 'gapCells', 'fitCanvas']);
+const REFLOW_FIELDS = new Set(['page', 'at', 'orientation', 'layout', 'side', 'spacing', 'order', 'spanCells', 'cardWidthCells', 'gapCells', 'fitCanvas', 'showRelationships']);
 
 function picked(value, fields) {
   return Object.fromEntries(fields.filter((key) => Object.hasOwn(value, key)).map((key) => [key, value[key]]));
@@ -761,6 +766,57 @@ export function compileTimeline(doc, timeline) {
     }
   }
 
+  const relationships = [];
+  for (const event of (timeline.showRelationships ? events : [])) {
+    for (const [index, relation] of (event.relationships ?? []).entries()) {
+      if (!events.some(e => e.id === relation.to) || relation.to === event.id) continue;
+      const source = placed.find(p => p.eventId === event.id), target = placed.find(p => p.eventId === relation.to);
+      const id = `${timeline.id}__${event.id}__relation_${index + 1}`;
+      const forward = source.axisQuad <= target.axisQuad;
+      const ports = timeline.orientation === 'vertical' ? (forward ? ['S', 'N'] : ['N', 'S']) : (forward ? ['E', 'W'] : ['W', 'E']);
+      operations.push({ op: 'connect', id, page, from: `${timeline.id}__${event.id}__card.${ports[0]}`, to: `${timeline.id}__${relation.to}__card.${ports[1]}`,
+        routing: 'orthogonal', width: 1, color: '#475569', description: relation.label ?? `${event.title}: ${relation.type}`, relationshipLabel: relation.label ?? relation.type });
+      operations.push({ op: 'move', id, toPage: linkPage });
+      operations.push(annotation(id, { generatedBy: 'timeline', timelineId: timeline.id, timelineRole: 'event-relationship', fromEvent: event.id, toEvent: relation.to, relationshipType: relation.type }, { tags: ['timeline-relationship'] }));
+      elementIds.push(id); relationships.push({ id, from: event.id, to: relation.to, type: relation.type });
+    }
+  }
+
+  let currentDateMarker = null;
+  if (timeline.currentDate) {
+    const inDomain = primary.scale && timeline.currentDateValue >= primary.scale.domain[0] && timeline.currentDateValue <= primary.scale.domain[1];
+    const mode = inDomain ? 'temporal-axis' : primary.scale ? 'outside-domain' : 'context-only';
+    let markerAxis = null;
+    if (inDomain) {
+      const first = placed.find(entry => entry.expectedAxisQuad != null);
+      const date = events.find(event => event.id === first.eventId).dateValue;
+      const delta = (timeline.currentDateValue - date) / (primary.scale.domain[1] - primary.scale.domain[0]) * primary.scale.quads;
+      markerAxis = first.expectedAxisQuad + Math.round(delta);
+      const seenTracks = new Set();
+      for (const entry of placed) {
+        if (seenTracks.has(entry.track)) continue;
+        seenTracks.add(entry.track);
+        const p = pinPoint(parseAddress(entry.markerAt));
+        const markerId = `${timeline.id}__current__${entry.track}`;
+        const vertical = timeline.orientation === 'vertical';
+        operations.push({ op: 'pen', page: markerPage, id: markerId, role: 'artwork', color: '#b91c1c', width: 3,
+          program: vertical ? lineProgram(p.x - 3, markerAxis, p.x + 3, markerAxis) : lineProgram(markerAxis, p.y - 3, markerAxis, p.y + 3) });
+        operations.push(annotation(markerId, { generatedBy: 'timeline', timelineId: timeline.id, timelineRole: 'current-date-marker', currentDate: timeline.currentDate, placementMode: mode }, { tags: ['timeline-current-date'] }));
+        elementIds.push(markerId);
+      }
+    }
+    const label = `Current date: ${timeline.currentDate}${mode === 'outside-domain' ? ' (outside axis range)' : mode === 'context-only' ? ' (ordinal axis; context only)' : ''}`;
+    const width = requiredCellsFor(label, { fontSize: 10 }).cellsWide;
+    const labelId = `${timeline.id}__current_date`;
+    const x = inDomain && timeline.orientation === 'vertical' ? maxX + 4 : origin.x;
+    const y = inDomain && timeline.orientation === 'vertical' ? Math.max(origin.y, markerAxis - 1) : maxY + 4;
+    operations.push(textOperation(labelId, guidePage, label, x, y, width, 3, 10, 700));
+    operations.push(annotation(labelId, { generatedBy: 'timeline', timelineId: timeline.id, timelineRole: 'current-date-label', currentDate: timeline.currentDate, placementMode: mode }, { tags: ['timeline-current-date'] }));
+    elementIds.push(labelId);
+    maxX = Math.max(maxX, x + width * 2); maxY = Math.max(maxY, y + 6);
+    currentDateMarker = { date: timeline.currentDate, mode, axisQuad: markerAxis, labelId };
+  }
+
   if (primary.scale) {
     operations.push({ op: 'scale', action: 'define', id: scaleId, domain: primary.scale.domain, quads: primary.scale.quads, kind: 'position' });
   }
@@ -785,6 +841,8 @@ export function compileTimeline(doc, timeline) {
       orientation: timeline.orientation,
       layout: timeline.layout,
       events: placed,
+      ...(relationships.length ? { relationships } : {}),
+      ...(currentDateMarker ? { currentDateMarker } : {}),
       ...(primary.note ? { note: primary.note } : {}),
     },
   };

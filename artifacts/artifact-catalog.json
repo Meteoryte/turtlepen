@@ -12,6 +12,7 @@
       "diagrams/swimlane-order-handling.turtlepen.json"
     ],
     "example": [
+      "diagrams/native-editing-workflows.turtlepen.json",
       "diagrams/agent-session.turtlepen.json",
       "diagrams/anime-waifu.turtlepen.json",
       "diagrams/art-deco-hero.turtlepen.json",

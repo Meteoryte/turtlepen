@@ -115,11 +115,12 @@ operation without changing the document. Human period labels remain
 `displayDate`; unsupported directives are refused by name. Feed the returned
 operation to `plan` and commit only after reviewing the normal validation log.
 
-Export back to Mermaid is intentionally deferred. TurtlePen can represent
-tracks, typed relationships, parents, semantic resources, exact layout policy,
-and safe manual presentation overrides that Mermaid timeline syntax cannot
-round-trip without loss. Producing a lossy export would be less honest than
-stating that boundary.
+`export_timeline` returns complete semantic source with `format:"json"`.
+`format:"mermaid"` returns a content projection for representable point/period
+events and section headings, with identity mapping and explicit layout omissions.
+Tracks, typed relationships, parents, resources, current/approximate state, and
+other unrepresentable event fields produce `exported:false` and a precise
+`unsupported` list. Mermaid output never claims to be a lossless native document.
 
 ## Reference fixtures
 
@@ -132,10 +133,10 @@ not meaning; its perceptual review is hash-bound to the exact rendered bytes.
 
 ## Current limits
 
-- Timeline relationships are semantic annotations; they do not yet draw a
-  second relationship graph over the chronology axis.
+- `showRelationships:true` draws stable native orthogonal relationship paths and
+  labels. Existing layouts default to annotations; unavailable routes refuse.
 - Phase membership is validated, but a phase without exact bounds does not
   imply dates. This avoids false precision.
-- A `currentDate` is persisted as a machine-readable fact; the emphasized
-  visible marker still comes from the explicitly current event.
-- Mermaid export is deferred for the lossiness reason above.
+- `currentDate` has a visible temporal-axis marker when it falls in the declared
+  domain; ordinal/outside-domain dates are explicit contextual labels.
+- Full native layout and primitive overrides require the native document.

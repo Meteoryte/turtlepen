@@ -55,10 +55,11 @@ export function normalizePattern(value, what = 'pattern') {
  */
 const STRUCTURAL = new Set(['arrow', 'hop', 'corner']);
 
-export function patternMask(quads, pattern) {
+export function patternMask(quads, pattern, offset = 0) {
+  if (!Number.isSafeInteger(offset)) throw new RangeError('pattern offset must be an integer in quadrants');
   const p = normalizePattern(pattern);
   if (!p) return quads;
   const { on, off } = CYCLES[p];
   const period = on + off;
-  return quads.filter((q, i) => STRUCTURAL.has(q.type) || i % period < on);
+  return quads.filter((q, i) => STRUCTURAL.has(q.type) || ((i + offset) % period + period) % period < on);
 }

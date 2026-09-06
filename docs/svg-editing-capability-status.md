@@ -1,6 +1,6 @@
 # SVG editing capability status
 
-The answer to [the SVG editing capability audit RFC](svg-editing-capability-audit.md).
+The answer to [the SVG editing capability audit RFC](https://github.com/Meteoryte/turtlepen/pull/6).
 Every capability that RFC lists carries exactly one status:
 
 | Status | Meaning |
@@ -10,7 +10,9 @@ Every capability that RFC lists carries exactly one status:
 | **MISSING** | no reliable operation exists; compatible with the lattice and worth building |
 | **OUT OF SCOPE** | conflicts with the integer-exact model, or belongs outside TurtlePen |
 
-Audited against 73 live tools and 48 plan operations. Where a row says
+Updated 2026-09-05 against 84 live tools and 55 native operations.
+The broader catalog retains explicit unimplemented items; this is not a claim
+that every conventional SVG-editor feature ships in TurtlePen. Where a row says
 SUPPORTED, `search_help { query }` will find the tool that does it.
 
 **The one thing that governs every row below.** TurtlePen stores geometry as
@@ -51,17 +53,17 @@ the engine refuses to guess which one was meant.
 
 | Capability | Status | Notes |
 |---|---|---|
-| Slice object with another path | **MISSING** | compatible with the lattice; `boolean difference` is today's workaround |
+| Slice object with another path | **SUPPORTED** | `slice { id, cutter }` partitions exact intersection and complement; cutter retained |
 | Knife cut | **PARTIAL** | axis-aligned only, via `slice` |
 | Scissors / cut at node | **SUPPORTED** | `path_edit { action: "split", index }` |
-| Cut at path intersection | **MISSING** | `inspect` already *reports* intersections; nothing cuts at them |
+| Cut at path intersection | **SUPPORTED** | `slice { cutter, mode:"divide" }` emits connected intersection/complement partitions |
 | Straight-line cut | **PARTIAL** | vertical and horizontal only; a diagonal cut has no exact lattice form on both sides |
 | Polyline / freeform cut | **MISSING** | needs a cutting-path model |
 | Shape-based cut | **MISSING** | see the first row |
 | Divide into closed regions | **SUPPORTED** | `slice { mode: "divide" }` |
 | Delete segment between intersections | **MISSING** | |
 | Trim segment | **PARTIAL** | `path_edit { action: "delete", index }` removes a piece, not a measured length |
-| Extend segment to intersection | **MISSING** | `extend_path` extends by program, not to a computed meeting point |
+| Extend segment to intersection | **SUPPORTED** | `path_edit { action:"extend_to", cutter }` finds the nearest forward lattice intersection |
 | Deterministic new object ids | **SUPPORTED** | `source-part-1`, `source-part-2`, …, overridable via `ids` |
 
 ## 3. Direct path and node editing
@@ -74,7 +76,7 @@ rather than Bézier nodes.
 | Add node | **SUPPORTED** | `path_edit { action: "insert", index, at }` |
 | Delete node | **SUPPORTED** | `action: "delete"` |
 | Move node | **SUPPORTED** | `action: "move"` |
-| Move multiple nodes | **MISSING** | one piece per call today |
+| Move multiple nodes | **SUPPORTED** | `path_edit { action:"move_many", indices, dx, dy }` |
 | Join nodes / join endpoints | **SUPPORTED** | `action: "join", with` |
 | Break node | **SUPPORTED** | `action: "split"` |
 | Split path at node | **SUPPORTED** | `action: "split", index` |
@@ -90,9 +92,9 @@ rather than Bézier nodes.
 | Simplify path | **MISSING** | needs a stated error tolerance, which needs a definition of "close enough" on a lattice |
 | Smooth path | **OUT OF SCOPE** | |
 | Remove redundant / duplicate nodes | **SUPPORTED** | `normalize_path` |
-| Merge collinear segments | **MISSING** | compatible and worth doing; `normalize_path` deduplicates only |
+| Merge collinear segments | **PARTIAL** | SVG rendering already coalesces collinear runs; stored occupancy retains every quadrant. No geometry-deleting storage operation is claimed |
 | Resample path | **MISSING** | |
-| Interpolate nodes / path | **MISSING** | |
+| Interpolate nodes / path | **SUPPORTED** | `path_edit { action:"interpolate", index, endIndex }` replaces the segment with an exact Bresenham bridge |
 
 ## 4. Shape construction / primitives
 
@@ -116,25 +118,25 @@ rather than Bézier nodes.
 
 ## 5. Transforms
 
-**This is the largest real gap in the document.** Translation and resizing
-exist; rotation, reflection and scaling do not — and three of them are exactly
-expressible on the lattice.
+Exact artwork transforms are now native operations. Quarter turns, reflections,
+and integer cell magnification keep the lattice model; unsupported semantic or
+pixel-mask transformations refuse before mutation.
 
 | Capability | Status | Notes |
 |---|---|---|
 | Translate / move | **SUPPORTED** | `move` by address, cells, or page |
-| Scale uniformly / X only / Y only | **PARTIAL** | `resize` changes a box's cell span; there is no scale for path geometry |
-| Rotate | **MISSING** | 90/180/270 are exact on a lattice and should exist; arbitrary angles are OUT OF SCOPE |
-| Rotate around arbitrary pivot | **PARTIAL** | would follow from quarter-turn rotation |
-| Flip horizontal | **MISSING** | exactly expressible; with flip vertical, the clearest missing operation here |
-| Flip vertical | **MISSING** | as above |
+| Scale uniformly / X only / Y only | **SUPPORTED** | `transform { scaleX, scaleY }` magnifies explicit cell-painted artwork; ordinary box sizing remains `resize` |
+| Rotate | **SUPPORTED** | `transform { rotate:90|180|270 }`; arbitrary angles remain outside the exact model |
+| Rotate around arbitrary pivot | **SUPPORTED** | `transform { rotate, pivot }` with an explicit lattice address |
+| Flip horizontal | **SUPPORTED** | `transform { flip:"horizontal" }` |
+| Flip vertical | **SUPPORTED** | `transform { flip:"vertical" }` |
 | Reflect across arbitrary line | **PARTIAL** | exact only for lattice-aligned axes |
 | Skew / shear X or Y | **OUT OF SCOPE** | no exact lattice form |
 | Numeric transform | **SUPPORTED** | every operation is numeric; there is no other kind |
 | Transform matrix import / export | **OUT OF SCOPE** | `import_svg` refuses `transform` by name rather than baking an approximation |
 | Bake / flatten transform into geometry | **SUPPORTED** | vacuously — geometry is always already baked |
 | Reset transform | **OUT OF SCOPE** | nothing carries a pending transform |
-| Transform group | **PARTIAL** | `group { cellsX, cellsY }` translates; there is no group rotate or flip |
+| Transform group | **SUPPORTED** | `transform { group }` for path artwork; `paint_path` styles artwork and `group restyle` styles box/text groups |
 | Transform selection, relative positions preserved | **SUPPORTED** | `group` moves every member by one exact delta |
 
 ## 6. Alignment and distribution
@@ -143,14 +145,14 @@ expressible on the lattice.
 |---|---|---|
 | Align left / right / top / bottom | **SUPPORTED** | `align { ids, edge }` |
 | Align horizontal / vertical centre | **SUPPORTED** | `align` |
-| Align to canvas / page | **PARTIAL** | alignment is relative to the selection's bounds |
+| Align to canvas / page | **SUPPORTED** | `align { reference:"canvas" }` uses the shared canvas |
 | Align to selection bounds | **SUPPORTED** | this is `align`'s model |
-| Align to key / reference object | **PARTIAL** | achievable by including only the reference and one target |
-| Align nodes | **MISSING** | `path_edit { action: "move" }` moves one piece at a time |
+| Align to key / reference object | **SUPPORTED** | `align { reference:elementId }` leaves an unselected reference unchanged |
+| Align nodes | **SUPPORTED** | `path_edit { action:"align_nodes", indices, axis, at }` |
 | Align text baselines | **PARTIAL** | `stroke_label` and box `align` cover the common cases |
 | Distribute horizontally / vertically | **SUPPORTED** | `distribute { ids, axis }` |
-| Equal centre spacing | **SUPPORTED** | `distribute` equalises centres |
-| Equal edge gaps | **PARTIAL** | centres, not gaps |
+| Equal centre spacing | **PARTIAL** | Use explicit `move`/plan for centers; `distribute` owns edge gaps, correcting the previous description |
+| Equal edge gaps | **SUPPORTED** | `distribute { gap?, exact? }`; computed fractional gaps can be explicitly refused |
 | Space around / pack objects | **SUPPORTED** | `layout` is a real auto-layout with gaps and direction |
 | Explicit collision-aware distribution | **SUPPORTED** | `validate` judges the result; `layout` reroutes connectors |
 
@@ -165,8 +167,8 @@ sub-lattice position to snap *from*. Addresses are the snap.
 | Snap to node / path / midpoint | **SUPPORTED** | anchors and ports — `unit.N`, `.q1`, `.tl` |
 | Snap to intersection | **SUPPORTED** | `inspect` returns exact intersection cells |
 | Snap to bounding box / object centre | **SUPPORTED** | `inspect` returns integer bounds and rational centres |
-| Snap to guide | **MISSING** | see §21 — there are no guides to snap to |
-| Snap to angle increment / snap rotation | **OUT OF SCOPE** | no rotation to constrain |
+| Snap to guide | **SUPPORTED** | `guide { action:"snap", id, ids, anchor }` |
+| Snap to angle increment / snap rotation | **SUPPORTED** | `transform` only accepts exact quarter turns |
 | Tangential / perpendicular / handle snap | **OUT OF SCOPE** | |
 | Smart-guide equivalent | **SUPPORTED** | `free_space` answers "where does this fit" directly |
 
@@ -178,7 +180,7 @@ sub-lattice position to snap *from*. Addresses are the snap.
 | Stroke colour | **SUPPORTED** | `pen { color }` |
 | Stroke opacity | **SUPPORTED** | element and page opacity |
 | Dash pattern | **SUPPORTED** | `pen { pattern: "dashed" \| "dotted" }`, keyed to distance travelled so a dash survives a corner |
-| Dash offset | **MISSING** | |
+| Dash offset | **SUPPORTED** | `pen { pattern, patternOffset }` shifts whole-quadrant cycles and retains structural pieces |
 | Butt / round / square cap | **SUPPORTED** | `pen { cap }` |
 | Miter / round / bevel join, miter limit | **OUT OF SCOPE** | a quadrant corner has one form |
 | Variable-width stroke | **OUT OF SCOPE** | |
@@ -197,7 +199,7 @@ sub-lattice position to snap *from*. Addresses are the snap.
 | No fill | **SUPPORTED** | `fill: null` |
 | Fill opacity | **SUPPORTED** | per element and per page |
 | Linear gradient, stops, angle | **SUPPORTED** | `fill: { from, to, angle }` on a box; `pen { fillColor: { from, to } }` gradates across a filled region |
-| Radial gradient | **MISSING** | |
+| Radial gradient | **SUPPORTED** | `paint_path { gradient:{type:"radial",from,to,...} }` bakes colors into native pieces |
 | Gradient transform | **OUT OF SCOPE** | |
 | Mesh gradient | **OUT OF SCOPE** | |
 | Pattern fill | **SUPPORTED** | `pen { texture }`, plus `tone` and `feather` |
@@ -231,8 +233,8 @@ that refuses.
 | Nested groups | **OUT OF SCOPE** | groups are deliberately flat; membership is explicit ids |
 | Add / remove group members | **SUPPORTED** | |
 | Move group | **SUPPORTED** | `group { cellsX, cellsY }` |
-| Transform group | **PARTIAL** | translation only — see §5 |
-| Restyle group | **MISSING** | `restyle` takes one id |
+| Transform group | **SUPPORTED** | `transform { group }` for path artwork; `paint_path` styles artwork and `group restyle` styles box/text groups |
+| Restyle group | **SUPPORTED** | Atomic `group { action:"restyle", style }` for box/text presentation; `paint_path {group}` for artwork |
 | Select parent / children | **SUPPORTED** | `group { action: "inspect" }` |
 | Move object into / out of a group | **SUPPORTED** | |
 | Group bounds | **SUPPORTED** | |
@@ -247,12 +249,12 @@ that refuses.
 | Create layer / page | **SUPPORTED** | `add_page` |
 | Rename layer / page | **SUPPORTED** | `update_page { title }` |
 | Delete layer / page | **SUPPORTED** | `remove_page` |
-| Duplicate layer / page | **MISSING** | |
+| Duplicate layer / page | **PARTIAL** | `page duplicate` copies independent artwork; refuses generated semantics, relationships, guides, and pixel masks explicitly |
 | Reorder layer / page | **SUPPORTED** | `update_page { z }` |
 | Lock layer / page | **MISSING** | |
 | Hide / show layer / page | **SUPPORTED** | `update_page { visible }` |
-| Solo layer / page | **PARTIAL** | expressible by hiding the others |
-| Merge layers / pages | **MISSING** | |
+| Solo layer / page | **SUPPORTED** | `page {action:"solo"|"show_all",id}` |
+| Merge layers / pages | **PARTIAL** | `page merge` retains ids; timeline-owned pages require a semantic source update first |
 | Move selection to layer / page | **SUPPORTED** | `move { toPage }` |
 | Bring to front / send to back | **SUPPORTED** | `reorder` |
 | Raise one step / lower one step | **SUPPORTED** | `reorder { action: "raise" \| "lower" }` |
@@ -272,10 +274,10 @@ Intentional stacking uses an overlay page, and validation still reports it.
 | Paste in place | **SUPPORTED** | `duplicate` with a zero delta |
 | Linked clone / instance / reference | **OUT OF SCOPE** | a live reference conflicts with explicit geometry; `constraint` covers the useful part |
 | Break clone link | **OUT OF SCOPE** | |
-| Repeat last transform | **MISSING** | |
+| Repeat last transform | **SUPPORTED** | `array { mode:"repeat", ... }` repeats explicit transform values; no hidden last-action state |
 | Step-and-repeat / grid array / linear array | **SUPPORTED** | `array { columns, rows, stepX, stepY }`, row-major ids |
-| Radial array | **MISSING** | needs rotation — §5 |
-| Mirror duplication | **MISSING** | needs flip — §5 |
+| Radial array | **SUPPORTED** | `array { mode:"radial",count,rotate,pivot }`, at most one revolution of quarter turns |
+| Mirror duplication | **SUPPORTED** | `transform { flip, copyPrefix }` |
 | Pattern / scatter duplication | **OUT OF SCOPE** | |
 | Deterministic generated ids | **SUPPORTED** | throughout |
 
@@ -349,15 +351,15 @@ is the honest form of "will this render".
 | Find by id | **SUPPORTED** | `describe` |
 | Find by kind / type | **SUPPORTED** | `describe` |
 | Find by page / layer | **SUPPORTED** | `describe { page }` |
-| Find by fill / stroke | **PARTIAL** | `define_view { includeTags }` filters by tag, not by colour |
+| Find by fill / stroke | **SUPPORTED** | `query {color}` matches normalized flat colors, gradient stops, and piece colors |
 | Find by bounds / region | **SUPPORTED** | `describe { region }`, `free_space { region }` |
 | Find intersecting a region | **SUPPORTED** | `free_space` |
 | Find overlapping another object | **SUPPORTED** | `inspect` returns shared quadrants |
-| Find contained objects | **PARTIAL** | derivable from `inspect` bounds |
-| Find nearest object / node | **PARTIAL** | `inspect` reports gaps between named ids |
+| Find contained objects | **SUPPORTED** | `query {within:{x,y,w,h}}` |
+| Find nearest object / node | **SUPPORTED** | `query {nearest}` sorts by explicitly reported bounding-rectangle distance |
 | Find by group membership | **SUPPORTED** | `group { action: "inspect" }` |
-| Select-all equivalent | **MISSING** | as an explicit query form |
-| Invert query result against scope | **MISSING** | |
+| Select-all equivalent | **SUPPORTED** | `query {}` returns a bounded ordered page with total and nextOffset |
+| Invert query result against scope | **SUPPORTED** | `query {invert:true,page?,...}` |
 | Return deterministic ordered id sets | **SUPPORTED** | throughout |
 | No hidden selection state | **SUPPORTED** | there is no selection state at all; every operation takes explicit ids |
 
@@ -370,53 +372,53 @@ placement is the engine's central rule rather than a feature.
 |---|---|---|
 | Bounding box | **SUPPORTED** | integer bounds |
 | Geometric bounds vs visual / stroke bounds | **SUPPORTED** | `footprint: "claimed"` vs `"visual"` — the distinction is first-class |
-| Path length | **SUPPORTED** | `perimeterEdges`, `perimeterPx` |
+| Path length | **SUPPORTED** | `inspect` reports ordered piece-center lengths separately from occupied perimeter and discontinuous jumps |
 | Perimeter | **SUPPORTED** | as above |
-| Segment length | **PARTIAL** | derivable from piece addresses; not returned directly |
-| Angle | **PARTIAL** | same |
+| Segment length | **SUPPORTED** | `inspect` returns bounded segment pages, squared and Euclidean lengths |
+| Angle | **SUPPORTED** | `inspect` reports segment angles; coordinates remain integer |
 | Node coordinates | **SUPPORTED** | addresses |
 | Radius / diameter | **PARTIAL** | derivable from bounds |
 | Area | **SUPPORTED** | `quadrants` and `areaPx2` |
 | Distance between objects | **SUPPORTED** | pairwise bounding gaps |
-| Distance between nodes | **PARTIAL** | derivable from addresses |
+| Distance between nodes | **SUPPORTED** | `inspect` reports segment deltas and lengths; `nearest` measures occupied quadrants |
 | Object centre | **SUPPORTED** | exact rational centre, never rounded |
-| Transform origin | **OUT OF SCOPE** | no transforms to originate |
+| Transform origin | **SUPPORTED** | `transform` returns the effective pivot |
 | Intersection points | **SUPPORTED** | exact shared cells |
-| Nearest point on path | **MISSING** | |
+| Nearest point on path | **SUPPORTED** | `inspect {nearest}` returns the actual nearest occupied quadrant with deterministic ties |
 | Signed offset distance | **SUPPORTED** | `offset_path` takes it and reports the result |
-| Count nodes / segments / subpaths | **PARTIAL** | `describe` reports elements; per-path piece counts are not returned |
+| Count nodes / segments / subpaths | **SUPPORTED** | `inspect` reports counts and continuity; disconnected jumps are explicit |
 | Text fit | **SUPPORTED** | `measure` — beyond what the RFC asks |
 
 ## 21. Guides / construction geometry
 
 | Capability | Status | Notes |
 |---|---|---|
-| Horizontal / vertical / angled / named guide | **MISSING** | the whole category |
+| Horizontal / vertical / angled / named guide | **PARTIAL** | `guide` supports named horizontal/vertical construction lines; arbitrary angled guide behavior is not shipped |
 | Grid / lattice query | **SUPPORTED** | `turtlepen_help` returns live lattice constants; `free_space` queries it |
 | Isometric / axonometric construction helper | **SUPPORTED** | `perspective_scene` |
-| Baseline guide / grid | **PARTIAL** | the lattice is the baseline grid |
+| Baseline guide / grid | **SUPPORTED** | Horizontal named guide and explicit anchor snapping |
 | Ruler / measurement line | **SUPPORTED** | `annotate`, and `wireframe` dimensions |
 | Hide / show construction geometry | **SUPPORTED** | overlay pages with `visible: false` |
-| Mark construction geometry as non-deliverable scaffolding | **MISSING** | an overlay page carries the convention, but nothing enforces it |
-| Validation warning when temporary guides ship | **MISSING** | follows from the row above |
+| Mark construction geometry as non-deliverable scaffolding | **SUPPORTED** | Persisted constructionGuide property and hard release blocker |
+| Validation warning when temporary guides ship | **SUPPORTED** | `release_check` blocks even hidden guides, independent of acceptance records |
 
-Guides are the most coherent MISSING cluster in this document: a guide is a
-named lattice line that renders only on request and is refused in a
-deliverable. Nothing about it fights the model.
+Named guides are persisted native overlay paths. Authors create them explicitly,
+snap explicit anchors, then remove them. Remaining guides block release even
+when their page is hidden.
 
 ## 22. Cleanup / normalization
 
 | Capability | Status | Notes |
 |---|---|---|
 | Remove duplicate nodes | **SUPPORTED** | `normalize_path` |
-| Remove duplicate paths | **MISSING** | `inspect` can prove two footprints identical; nothing acts on it |
-| Merge collinear segments | **MISSING** | compatible, and worth building |
+| Remove duplicate paths | **SUPPORTED** | `cleanup` removes equivalent paths only when semantics, references, opacity and compositing are preserved |
+| Merge collinear segments | **PARTIAL** | SVG rendering already coalesces collinear runs; stored occupancy retains every quadrant. No geometry-deleting storage operation is claimed |
 | Simplify curves / path | **OUT OF SCOPE** | see §3 |
 | Flatten transforms | **SUPPORTED** | vacuous; nothing is deferred |
 | Flatten groups | **SUPPORTED** | groups are already flat |
 | Remove hidden objects | **PARTIAL** | no sweep operation |
 | Remove unused definitions | **OUT OF SCOPE** | there are no `<defs>` in the model |
-| Remove empty groups | **PARTIAL** | removal cascades correctly; there is no sweep |
+| Remove empty groups | **SUPPORTED** | `cleanup {ids,emptyGroups:true}` |
 | Remove stale ids / references | **SUPPORTED** | rename and removal cascade through groups and constraints |
 | Normalize path commands | **OUT OF SCOPE** | the pen program is the representation |
 | Relative ↔ absolute path commands | **OUT OF SCOPE** | same |
@@ -508,7 +510,7 @@ called something else.
 | P0 item | Status |
 |---|---|
 | 1. Boolean union / difference / intersection / XOR | **done** |
-| 2. Slice / divide / knife | **done** for axis-aligned cuts; shape-based cutting remains MISSING |
+| 2. Slice / divide / knife | **done** for axis and exact shape-intersection partitions |
 | 3. Path split / join / open / close / reverse | **done** |
 | 4. Node / segment editing, in lattice terms | **done** |
 | 5. Offset / inset / outset | **done** |
@@ -516,26 +518,20 @@ called something else.
 | 7. Z-order / reorder operations | **done** |
 | 8. Duplicate / array operations | **done** |
 | 9. Exact measurement / intersection queries | **done** |
-| 10. Cleanup / normalization | **partial** — deduplication only; collinear merge and duplicate-path removal remain |
+| 10. Cleanup / normalization | **native exact workflow implemented** — duplicate cleanup protects meaning and compositing; rendering coalesces runs without deleting claimed quadrants |
 
-## The next four things worth building
+## Native completion and remaining catalog
 
-Ranked by "exactly expressible on the lattice, and something an AI cannot
-currently work around":
+The four prioritized clusters now have native workflows: exact transforms and
+copies, named guides with a release gate, shape/intersection cuts, and protected
+duplicate cleanup. SVG presentation already merges collinear runs; removing
+those quadrants from storage would change collision geometry.
 
-1. **Flip horizontal, flip vertical, and quarter-turn rotation** (§5). Exact,
-   and their absence also blocks mirror duplication and radial arrays. This is
-   the single largest gap in this document.
-2. **Guides as first-class construction geometry** (§21), including refusing a
-   deliverable that still carries scaffolding.
-3. **Cut with a shape, and cut at a computed intersection** (§2). `inspect`
-   already returns the intersection cells; nothing consumes them.
-4. **Merge collinear segments, and remove duplicate paths** (§22) — the
-   remainder of P0 item 10.
-
-Each is deterministic, testable, and needs no coordinate the engine cannot
-already name. Everything else marked MISSING is either lower value or waits on
-one of these four.
+See [native editing workflows](native-editing-workflows.md) for executable
+examples and boundaries. Remaining MISSING/PARTIAL rows are still real ideas,
+not silently relabeled complete. Live clipping/effect stacks, enforced page
+locks, generalized markers, tracing/codecs, and arbitrary geometry need their
+own implementation/model contracts. Hosted identity is separate product work.
 
 ## Worked example
 

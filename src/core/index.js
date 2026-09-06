@@ -27,6 +27,9 @@ import * as workspace from './workspace.js';
 import * as edit_ from './edit.js';
 import * as svgImport_ from './svg-import.js';
 import * as timeline_ from './timeline.js';
+import { queryElements, transformElements, editGuide, cleanupElements, editPages, paintPaths, repeatTransforms, atomicEdit, moveSelection, isConstructionGuide } from './advanced-edit.js';
+export { queryElements, transformElements, editGuide, cleanupElements, editPages } from './advanced-edit.js';
+export { exportTimeline } from './timeline-export.js';
 import { renderPng, renderPdf, rasterizeDocument, encodePng } from './output.js';
 import { OPPOSITE } from './geometry.js';
 import { approachPoint, parsePortSpec } from './shapes.js';
@@ -189,8 +192,10 @@ export function applyPen(doc, pageId, program, options = {}) {
   }
 }
 
-function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', stroke = null, color = null, fillColor = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null } = {}) {
+function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', stroke = null, color = null, fillColor = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null, patternOffset = 0 } = {}) {
   getPage(doc, pageId);
+  if (!Number.isSafeInteger(patternOffset)) throw new RangeError('patternOffset must be an integer in quadrants');
+  if (patternOffset && !(stroke?.pattern ?? pattern)) throw new Error('patternOffset needs a dashed or dotted pattern');
   const result = runPen(program, {
     resolveElement: (name) => findElement(doc, name)?.element ?? null,
     corridorAt: (axis, along, perp) => corridorAt(doc, pageId, axis, along, perp),
@@ -221,7 +226,7 @@ function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', 
       ? {
         color: color ?? undefined, width: width ?? undefined, cap: cap ?? undefined, paint: paint ?? undefined,
         tone: tone ?? undefined, feather: feather ?? undefined, texture: texture ?? undefined,
-        pattern: pattern ?? undefined,
+        pattern: pattern ?? undefined, patternOffset,
       }
       : null);
     const pathId = id ?? nextId(doc, 'path', 0);
@@ -250,7 +255,7 @@ function applyPenMutable(doc, pageId, program, { id = null, role = 'connector', 
         feather: presentation.feather ?? 0,
         texture: presentation.texture ?? null,
         seed: pathId,
-      }), presentation.pattern ?? null)
+      }), presentation.pattern ?? null, presentation.patternOffset ?? 0)
       : result.pieces;
     // The ramp is spread AFTER tone and pattern have removed quadrants, so the
     // colour runs end to end across what actually survives rather than across
@@ -968,7 +973,7 @@ export const OPERATIONS = Object.freeze({
   place_reference: (doc, a) => placeReference(doc, a),
   pen: (doc, a) => applyPen(doc, a.page ?? 'base', a.program, {
     id: a.id, role: a.role, stroke: a.stroke, color: a.color, width: a.width, cap: a.cap, paint: a.paint,
-    tone: a.tone, feather: a.feather, texture: a.texture, pattern: a.pattern,
+    tone: a.tone, feather: a.feather, texture: a.texture, pattern: a.pattern, patternOffset: a.patternOffset, fillColor: a.fillColor,
   }),
   connect: (doc, a) => connectNodes(doc, a),
   annotate: (doc, a) => annotateElement(doc, a.id, a),
@@ -983,7 +988,12 @@ export const OPERATIONS = Object.freeze({
   normalize_path: (doc, a) => normalizePath(doc, a),
   reorder: (doc, a) => reorderElement(doc, a),
   duplicate: (doc, a) => duplicateElement(doc, a),
-  array: (doc, a) => arrayElements(doc, a),
+  array: (doc, a) => a.mode && a.mode !== 'rectangular' ? repeatTransforms(doc, a) : arrayElements(doc, a),
+  transform: (doc, a) => transformElements(doc, a),
+  guide: (doc, a) => editGuide(doc, a),
+  cleanup: (doc, a) => cleanupElements(doc, a),
+  page: (doc, a) => editPages(doc, a),
+  paint_path: (doc, a) => paintPaths(doc, a),
   resize: (doc, a) => resizeBox(doc, a.id, a),
   restyle: (doc, a) => restyleBox(doc, a.id, a),
   move: (doc, a) => {
@@ -1014,8 +1024,8 @@ export const OPERATIONS = Object.freeze({
       default: throw new SyntaxError(`scale action must be define, update, or remove — got ${JSON.stringify(a.action)}`);
     }
   },
-  align: (doc, a) => alignElements(doc, a.ids, a.edge),
-  distribute: (doc, a) => distributeElements(doc, a.ids, a.axis),
+  align: (doc, a) => alignElements(doc, a.ids, a.edge, a),
+  distribute: (doc, a) => distributeElements(doc, a.ids, a.axis, a),
   layout: (doc, a) => layoutElements(doc, a),
   stroke_text: (doc, a) => placeStrokeText(doc, a.page ?? 'base', a),
   stroke_label: (doc, a) => placeStrokeLabel(doc, a.page ?? null, a),
@@ -1049,6 +1059,14 @@ export const OPERATIONS = Object.freeze({
       case 'remove': return removeGroupMembers(doc, a.id, a.members);
       case 'delete': return deleteGroup(doc, a.id);
       case 'move': return moveGroup(doc, a.id, (a.cellsX ?? 0) * 2, (a.cellsY ?? 0) * 2);
+      case 'restyle': return atomicEdit(doc, draft => {
+        const group = findGroup(draft, a.id);
+        if (!group) throw new Error(`no group "${a.id}"`);
+        if (!a.style || typeof a.style !== 'object' || Array.isArray(a.style)) throw new Error('group restyle needs a style object');
+        for (const key of Object.keys(a.style)) if (!['label', 'corner', 'shape', 'align', 'fontSize', 'fill', 'role', 'value'].includes(key)) throw new Error(`unsupported group restyle field "${key}"`);
+        for (const member of group.members) restyleBox(draft, member, a.style);
+        return { group: a.id, restyled: [...group.members] };
+      });
       default: throw new SyntaxError(`group action must be create, add, remove, delete, or move — got ${JSON.stringify(a.action)}`);
     }
   },
@@ -1194,6 +1212,9 @@ export function releaseCheck(doc) {
   const currentRenderHash = perceptual.renderHash(renderSvgForReview(doc, review?.renderProfile ?? {}));
   const visual = perceptual.verdicts(doc, { structural: validation, currentRenderHash }).perceptual;
   const blockers = [];
+
+  const guides = Object.values(doc.elements).flat().filter(isConstructionGuide).map(e => e.id);
+  if (guides.length) blockers.push(`construction guides remain: ${guides.join(', ')}`);
 
   if (!validation.summary.clean) {
     blockers.push(`${validation.summary.S0 + validation.summary.S1 + validation.summary.S2} unresolved structural decision finding(s)`);
@@ -1558,18 +1579,26 @@ const rectOfElement = (el) => (el.kind === 'path'
  * The engine still decides nothing: the caller names the elements and the edge,
  * and the target is taken from those elements rather than invented.
  */
-export function alignElements(doc, ids, edge) {
+export function alignElements(doc, ids, edge, { reference = null, exact = false } = {}) {
   if (!ALIGN_EDGES.includes(edge)) {
     throw new SyntaxError(`align edge must be one of ${ALIGN_EDGES.join(', ')} — got ${JSON.stringify(edge)}`);
   }
+  if (!Array.isArray(ids) || !ids.length || new Set(ids).size !== ids.length) throw new Error('align needs unique element ids');
   const found = ids.map((id) => {
     const hit = findElement(doc, id);
     if (!hit) throw new Error(`no element "${id}" to align`);
     return { id, el: hit.element, rect: rectOfElement(hit.element) };
   });
-  if (found.length < 2) throw new Error('aligning needs at least two elements to have anything to agree on');
+  if (found.length < 2 && reference == null) throw new Error('aligning needs at least two elements or an explicit reference');
+  let referenceRect = null;
+  if (reference === 'canvas') referenceRect = { x: 0, y: 0, w: doc.canvas.cols * 2, h: doc.canvas.rows * 2 };
+  else if (reference != null) {
+    const hit = findElement(doc, reference);
+    if (!hit) throw new Error(`no align reference "${reference}"`);
+    referenceRect = rectOfElement(hit.element);
+  }
 
-  const target = {
+  let target = {
     left: Math.min(...found.map((f) => f.rect.x)),
     right: Math.max(...found.map((f) => f.rect.x + f.rect.w)),
     top: Math.min(...found.map((f) => f.rect.y)),
@@ -1578,22 +1607,31 @@ export function alignElements(doc, ids, edge) {
     centerY: Math.round(found.reduce((s, f) => s + f.rect.y + f.rect.h / 2, 0) / found.length),
   }[edge];
 
+  if (referenceRect) target = { left: referenceRect.x, right: referenceRect.x + referenceRect.w, top: referenceRect.y,
+    bottom: referenceRect.y + referenceRect.h, centerX: referenceRect.x + referenceRect.w / 2, centerY: referenceRect.y + referenceRect.h / 2 }[edge];
+  if (exact && !referenceRect && edge === 'centerX') target = found.reduce((sum, f) => sum + f.rect.x + f.rect.w / 2, 0) / found.length;
+  if (exact && !referenceRect && edge === 'centerY') target = found.reduce((sum, f) => sum + f.rect.y + f.rect.h / 2, 0) / found.length;
+  const center = value => exact || referenceRect ? value : Math.round(value);
+  const moves = [];
+
   for (const f of found) {
     const dx = {
       left: target - f.rect.x,
       right: target - (f.rect.x + f.rect.w),
-      centerX: target - Math.round(f.rect.x + f.rect.w / 2),
+      centerX: target - center(f.rect.x + f.rect.w / 2),
     }[edge] ?? 0;
     const dy = {
       top: target - f.rect.y,
       bottom: target - (f.rect.y + f.rect.h),
-      centerY: target - Math.round(f.rect.y + f.rect.h / 2),
+      centerY: target - center(f.rect.y + f.rect.h / 2),
     }[edge] ?? 0;
     // Whole quadrants, not whole cells. Snapping these to even numbers was a
     // habit borrowed from cell arithmetic; it cost up to a quadrant per element
     // and left centred boxes visibly off from each other.
-    if (dx || dy) moveElement(doc, f.id, dx, dy);
+    if (!Number.isInteger(dx) || !Number.isInteger(dy)) throw new RangeError('exact alignment needs fractional movement; choose compatible element spans or another edge');
+    moves.push({ id: f.id, dx, dy });
   }
+  moveSelection(doc, moves, { allowNegative: reference == null && !exact });
   return found.length;
 }
 
@@ -1602,16 +1640,18 @@ export function alignElements(doc, ids, edge) {
  * apart. The ends anchor the span and never move, so distributing is a
  * tightening of what the author already laid out rather than a re-layout.
  */
-export function distributeElements(doc, ids, axis) {
+export function distributeElements(doc, ids, axis, { gap: explicitGap = null, exact = false } = {}) {
   if (!DISTRIBUTE_AXES.includes(axis)) {
     throw new SyntaxError(`distribute axis must be ${DISTRIBUTE_AXES.join(' or ')} — got ${JSON.stringify(axis)}`);
   }
+  if (!Array.isArray(ids) || !ids.length || new Set(ids).size !== ids.length) throw new Error('distribute needs unique element ids');
+  if (explicitGap != null && (!Number.isSafeInteger(explicitGap) || explicitGap < 0)) throw new RangeError('distribute gap must be a non-negative integer in quadrants');
   const found = ids.map((id) => {
     const hit = findElement(doc, id);
     if (!hit) throw new Error(`no element "${id}" to distribute`);
     return { id, rect: rectOfElement(hit.element) };
   });
-  if (found.length < 3) {
+  if (found.length < (explicitGap == null ? 3 : 2)) {
     throw new Error('distributing needs at least three elements — with two there is no middle to move');
   }
 
@@ -1624,16 +1664,19 @@ export function distributeElements(doc, ids, axis) {
   const last = found[found.length - 1];
   const span = pos(last.rect) - (pos(first.rect) + size(first.rect));
   const occupied = found.slice(1, -1).reduce((s, f) => s + size(f.rect), 0);
-  const gap = (span - occupied) / (found.length - 1);
+  const gap = explicitGap ?? (span - occupied) / (found.length - 1);
+  if (exact && !Number.isInteger(gap)) throw new RangeError('equal gaps need fractional quadrants; change the outer span or supply an explicit integer gap');
 
   let cursor = pos(first.rect) + size(first.rect);
-  for (const f of found.slice(1, -1)) {
+  const moves = [];
+  for (const f of (explicitGap == null ? found.slice(1, -1) : found.slice(1))) {
     cursor += gap;
     const want = Math.round(cursor);
     const delta = want - pos(f.rect);
-    if (delta) moveElement(doc, f.id, horizontal ? delta : 0, horizontal ? 0 : delta);
+    moves.push({ id: f.id, dx: horizontal ? delta : 0, dy: horizontal ? 0 : delta });
     cursor += size(f.rect);
   }
+  if (moves.length) moveSelection(doc, moves);
   return found.length;
 }
 

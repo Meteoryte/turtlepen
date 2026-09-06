@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+/** Reproducible native editing proof; no handwritten SVG or alternative renderer. */
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import * as core from '../src/core/index.js';
+
+const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const doc = core.createDocument({ name: 'TurtlePen native editing', canvas: { cols: 112, rows: 77 } });
+doc.createdAt = '2026-09-05T12:00:00.000Z';
+core.setBackground(doc, '#f8fafc');
+core.addPage(doc, { id: 'labels', intent: 'overlay', opacity: 1 });
+const label = (id, text, at, size = 12, span = '46x4') => core.applyPen(doc, 'labels', `text "${text}" at ${at} span ${span} id ${id} font ${size}`, { role: 'artwork' });
+label('title', 'Exact edits. Recoverable work.', 'E3', 20, '92x5');
+label('subtitle', 'Every shape below comes from native TurtlePen operations.', 'E9', 10, '100x3');
+label('transform-label', '01  Mirror and quarter turns', 'E14', 12);
+core.applyPen(doc, 'base', 'pen H21.q1\nright 5 line\ndown 3 line', { id: 'elbow', role: 'artwork', color: '#1d4ed8', width: 4 });
+core.applyOperation(doc, { op: 'transform', ids: ['elbow'], flip: 'horizontal', copyPrefix: 'mirror', dx: 20 });
+core.applyOperation(doc, { op: 'transform', ids: ['elbow'], rotate: 90, pivot: 'K23.q1', copyPrefix: 'turn', dx: 40 });
+label('transform-caption', 'One source. Explicit copies. Exact lattice pivots.', 'E29', 9, '52x3');
+label('cut-label', '02  Shape cut and radial color', 'BE14', 12);
+core.placeBox(doc, 'base', { id: 'material', at: 'BH21', span: '17x5' });
+core.placeBox(doc, 'base', { id: 'cutter', at: 'BO19', span: '3x9' });
+const cut = core.applyOperation(doc, { op: 'slice', id: 'material', cutter: 'cutter', mode: 'partition', footprint: 'claimed' });
+core.removeElement(doc, 'cutter');
+core.applyOperation(doc, { op: 'paint_path', ids: [cut.created[0]], gradient: { type: 'radial', from: '#60a5fa', to: '#1e3a8a' } });
+core.applyOperation(doc, { op: 'paint_path', ids: [cut.created[1]], color: '#ea580c' });
+core.moveElement(doc, cut.created[1], 0, 4);
+label('cut-caption', 'Both partitions survive. Color is stored in the pieces.', 'BE29', 9, '52x3');
+label('guide-label', '03  Construct, snap, remove', 'E37', 12);
+core.applyPen(doc, 'base', 'pen J43.q1\nright 5 line', { id: 'snap-me', role: 'artwork', color: '#0f766e', width: 4 });
+core.applyOperation(doc, { op: 'guide', id: 'baseline', from: 'F48.q1', to: 'AU48.q1' });
+core.applyOperation(doc, { op: 'guide', action: 'snap', id: 'baseline', ids: ['snap-me'], anchor: 'S' });
+const blocked = core.releaseCheck(doc).blockers.some(message => message.includes('construction guides'));
+if (!blocked) throw new Error('guide failed to block release');
+core.applyOperation(doc, { op: 'guide', action: 'remove', id: 'baseline' });
+label('guide-caption', 'The guide is gone; the snapped artwork stays.', 'E52', 9, '52x3');
+label('array-label', '04  Four exact orientations', 'BE37', 12);
+core.applyPen(doc, 'base', 'pen BL43.q1\nright 3 line\ndown 2 line', { id: 'radial-source', role: 'artwork', color: '#7c3aed', width: 3 });
+core.applyOperation(doc, { op: 'array', mode: 'radial', id: 'radial-source', count: 4, pivot: 'BS48.q1', rotate: 90 });
+label('array-caption', 'Named quarter-turn copies; the source is retained.', 'BE57', 9, '52x3');
+label('footer', 'Plan -> edit -> inspect -> undo / redo -> reopen -> verify', 'E66', 12, '101x4');
+label('footer-note', 'Construction guides prevent release even when hidden. Rich timeline exports report unsupported fields.', 'E71', 9, '102x3');
+
+const stem = resolve(project, 'diagrams/native-editing-workflows');
+const previous = await core.loadDocument(`${stem}.turtlepen.json`).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
+const validation = core.validate(doc);
+if (!validation.summary.clean) throw new Error(core.formatLog(validation));
+core.preservePerceptualReview(doc, previous);
+await core.saveDocument(doc, `${stem}.turtlepen.json`);
+await core.exportSvg(doc, `${stem}.svg`, { showGrid: false });
+await core.exportPng(doc, `${stem}.png`, { showGrid: false });
+process.stdout.write(`native-editing-workflows: ${validation.summary.verdict}; construction gate exercised; ${core.queryElements(doc).total} native elements\n`);

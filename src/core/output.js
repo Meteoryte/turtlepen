@@ -232,10 +232,20 @@ function linePoints(a, b) {
   return points;
 }
 
-function thickLine(pixels, width, height, a, b, color, thickness = 1) {
+function thickLine(pixels, width, height, a, b, color, thickness = 1, endColor = null) {
   const size = Math.max(1, Math.round(thickness));
   const offset = Math.floor(size / 2);
-  for (const point of linePoints(a, b)) rect(pixels, width, height, point.x - offset, point.y - offset, size, size, color);
+  const points = linePoints(a, b);
+  if (!endColor) {
+    for (const point of points) rect(pixels, width, height, point.x - offset, point.y - offset, size, size, color);
+    return;
+  }
+  const dx = b.x - a.x, dy = b.y - a.y, distanceSquared = dx * dx + dy * dy;
+  // Shade by the pixel's projection, not by the last overlapping brush sample.
+  for (const point of points) for (let y = point.y - offset; y < point.y - offset + size; y++) for (let x = point.x - offset; x < point.x - offset + size; x++) {
+    const t = distanceSquared ? ((x - a.x) * dx + (y - a.y) * dy) / distanceSquared : 0;
+    rect(pixels, width, height, x, y, 1, 1, mix(color, endColor, t));
+  }
 }
 
 function fillPolygon(pixels, width, height, points, color) {
@@ -346,14 +356,14 @@ function paintPath(element, layer, width, height, ox, oy, themed) {
     for (const pieces of groups) {
       if (pieces.length === 1) {
         const p = pieces[0];
-        rect(layer, width, height, p.x * PX_PER_QUAD + ox, p.y * PX_PER_QUAD + oy, PX_PER_QUAD, PX_PER_QUAD, defaultColor);
+        rect(layer, width, height, p.x * PX_PER_QUAD + ox, p.y * PX_PER_QUAD + oy, PX_PER_QUAD, PX_PER_QUAD, p.color ? rgba(p.color) : defaultColor);
       } else {
         for (let i = 1; i < pieces.length; i++) {
           const a = pieces[i - 1], b = pieces[i];
           thickLine(layer, width, height,
             { x: a.x * PX_PER_QUAD + ox + 2, y: a.y * PX_PER_QUAD + oy + 2 },
             { x: b.x * PX_PER_QUAD + ox + 2, y: b.y * PX_PER_QUAD + oy + 2 },
-            defaultColor, stroke.width);
+            a.color ? rgba(a.color) : defaultColor, stroke.width, a.color || b.color ? (b.color ? rgba(b.color) : defaultColor) : null);
         }
       }
     }

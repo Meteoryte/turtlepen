@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+### 0.5.0 — native editing completion
+
+- Added seven tools: `query`, `transform`, `guide`, `cleanup`, `page`,
+  `paint_path`, and `export_timeline`, bringing the canonical inventory to 84.
+- Added exact reflections/quarter turns, integer cell magnification, radial
+  copies, baked color fields, shape/intersection cuts, bulk path nodes,
+  interpolation/trimming, computed extension, segment metrics, pattern offset,
+  reference alignment, fixed gaps, and atomic group/page editing.
+- Construction guides persist and block release even when hidden. Duplicate
+  cleanup protects semantics, references and compositing. New mutations share
+  plan, expected-hash guards, persisted history, and every MCP transport.
+- Current-date display and optional event connectors compile to native timeline
+  primitives. JSON exports preserve semantic source; Mermaid projections report
+  omissions and refuse unsupported meaning. Corrected years before 0100.
+- Added MCP tool annotations and 2025-11-25 protocol negotiation. Colored line
+  samples now render in SVG and raster output as well as cell-painted artwork.
+- Added a reviewed native editing example and workflow/negative/recovery tests.
+  Broader SVG/editor and hosted-account concepts remain explicitly classified.
+
 - Added first-class semantic timelines with a schema-4 durable model, one native
   compiler for vertical/horizontal and ordinal/temporal layout policies,
   deterministic create/update/event/reflow actions, stable generated IDs,

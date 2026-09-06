@@ -145,9 +145,11 @@ LATTICE-NATIVE EDITING
     The output is cell-painted artwork with source provenance, not a guessed
     floating-point Bézier result. Sources must share a page.
   slice { id, axis: "vertical"|"horizontal", at, mode?, ids? }
+  slice { id, cutter, mode?, footprint?, ids? }
     Divide at an explicit lattice boundary. divide (default) returns every
     edge-connected result; partition returns one result per side. Default ids
-    are source-part-1, source-part-2, … in stable order.
+    are source-part-1, source-part-2, … in stable order. A cutter partitions by
+    exact intersection and is retained; never combine cutter with axis/at.
   offset_path { id, distance, resultId?, removeSource?, footprint? }
     Positive distance dilates and negative distance erodes by whole quadrants
     with a square (Chebyshev) neighborhood. Empty or off-grid results refuse.
@@ -155,10 +157,15 @@ LATTICE-NATIVE EDITING
     Makes the path's exact claimed quadrants into editable cell-painted artwork.
     A 1–5px stroke cannot honestly become fractional quadrant geometry.
   path_edit { id, action, index?, at?, ids?, with? }
-    actions: insert delete move reverse open close split join. Insert/move use
+    actions: insert delete move move_many align_nodes trim extend_to interpolate
+    reverse open close split join. Insert/move use
     an address; close draws an exact Bresenham bridge; join requires adjacent
     ends. Direct piece edits clear resumable pen state rather than extending
     stale geometry.
+    move_many uses indices and dx/dy in quadrants; align_nodes uses indices,
+    axis and at. trim keeps index..endIndex. interpolate replaces that segment
+    with exact Bresenham pieces. extend_to finds the first forward intersection
+    of the terminal ray with a named cutter. No meeting point is guessed.
   normalize_path { id }                 remove repeated quadrants only
   reorder { id, action, relative? }     bring_to_front | send_to_back | raise |
                                          lower | before | after
@@ -170,6 +177,54 @@ LATTICE-NATIVE EDITING
   inspect { ids, footprint? }
     Read exact areas, perimeters, integer bounds, rational centres, intersections,
     and bounding gaps without changing the document.
+    nearest finds an actual occupied quadrant; pieceOffset/pieceLimit page
+    path segment lengths, angles, continuity and counts. Perimeter is not path length.
+
+SELECTION, TRANSFORMS, AND CONSTRUCTION
+  query { page?, kind?, ids?, tags?, properties?, text?, color?, within?,
+          intersecting?, nearest?, invert?, offset?, limit? }
+    Stateless AND filters; invert within the page scope. Returns stable ids,
+    total and nextOffset. Bounds use quadrant x/y/w/h; at most 500 results.
+  transform { ids?|group?, rotate?, flip?, scaleX?, scaleY?, pivot?,
+              copyPrefix?, dx?, dy? }
+    Exact path artwork: quarter turns, horizontal/vertical/both reflections,
+    integer cell magnification. Scale requires stroke_to_path first. A default
+    pivot is bounding cell center (top-left for scale); incompatible half-grid
+    centers refuse and request an explicit pivot. Copies use prefix-originalId.
+    Pixel micro-masks and semantic connectors refuse rather than lose meaning.
+  array { id, mode: "radial"|"repeat", count, rotate?, pivot?, stepX?, stepY? }
+    Count includes the retained source. Radial needs an explicit pivot and at
+    most one revolution of exact quarter turns. Repeat has explicit inputs;
+    there is no hidden last-transform state.
+  paint_path { ids?|group?, color?, width?, cap?, gradient? }
+    gradient { type: "linear"|"radial", from, to, center?, radius?, angle? }
+    Color fields are baked into pieces; SVG and raster use the same colors.
+  guide { id, action?: "create"|"snap"|"remove", from?, to?, ids?, anchor? }
+    Named horizontal/vertical construction paths on an overlay. Snap moves
+    explicit anchors to the nearest occupied guide quadrant. Query properties
+    { constructionGuide: "true" } to inspect. Hidden guides still block release.
+  cleanup { ids, removeDuplicates?, emptyGroups? }
+    Keeps distinct semantics, references, opacity and intervening paint order.
+    Every deletion and protected duplicate is returned. No approximate cleanup.
+  align { ids, edge, reference?: "canvas"|elementId, exact? }
+  distribute { ids, axis, gap?, exact? }
+    Exact mode refuses fractional movement/gaps. Explicit gap anchors the first.
+  group { action: "restyle", id, style }
+    Apply box/text presentation atomically; mixed incompatible groups refuse.
+  page { action: "duplicate"|"merge"|"solo"|"show_all", id, to? }
+    Copies use destination-originalId; duplication of semantic relationships,
+    guides, generated content or pixel masks refuses explicitly.
+
+TIMELINE INTERCHANGE
+  timeline { ..., currentDate?, showRelationships? }
+    Current dates on a temporal domain get a visible scale marker. Ordinal or
+    out-of-range dates get a labelled context fact, never a fabricated position.
+    showRelationships opts into native orthogonal event connectors; existing
+    layouts keep semantic annotations unless requested. Routing failures refuse.
+  export_timeline { id, format: "json"|"mermaid" }
+    Native JSON preserves the complete semantic source. Mermaid is a projection:
+    identity mapping and layout omissions are reported; unsupported event fields
+    return exported:false and exact reasons. Save the native document for recovery.
 
 STRICT SVG IMPORT
   inspect_svg { source, prefix?, quantize? }

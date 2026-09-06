@@ -124,6 +124,18 @@ test('every advertised MCP tool completes a representative use case over stdio',
     await invoke('array', {
       id: 'run-outline-copy', columns: 2, rows: 1, stepX: 12, stepY: 0, prefix: 'run-array',
     });
+    await invoke('transform', { ids: ['run-outline-copy'], flip: 'horizontal' });
+    assert.match(await invoke('history', { action: 'undo' }), /undid transform/);
+    assert.match(await invoke('history', { action: 'redo' }), /redid transform/);
+    await invoke('paint_path', { ids: ['run-outline-copy'], gradient: { type: 'radial', from: '#abc', to: '#123' } });
+    const query = JSON.parse(await invoke('query', { ids: ['run-outline-copy'], kind: 'path' }));
+    assert.deepEqual(query.ids, ['run-outline-copy']);
+    await invoke('guide', { id: 'baseline', from: 'A80.q1', to: 'Z80.q1' });
+    assert.match(await invoke('release_check', {}), /construction guides remain: baseline/);
+    await invoke('guide', { action: 'remove', id: 'baseline' });
+    await invoke('cleanup', { ids: ['run-outline', 'run-outline-copy'], removeDuplicates: true });
+    await invoke('page', { action: 'solo', id: 'base' });
+    await invoke('page', { action: 'show_all', id: 'base' });
 
     await invoke('place_box', { id: 'boolean-left', at: 'A30.tl', span: { w: 2, h: 2 } });
     await invoke('place_box', { id: 'boolean-right', at: 'B30.tl', span: { w: 2, h: 2 } });
@@ -180,6 +192,8 @@ test('every advertised MCP tool completes a representative use case over stdio',
       ],
     }));
     assert.equal(timeline.timeline.id, 'connection-history');
+    const timelineExport = JSON.parse(await invoke('export_timeline', { id: 'connection-history', format: 'json' }));
+    assert.equal(JSON.parse(timelineExport.source).events.length, 2);
     // Paper is document state, so it has to survive the same round trip as the
     // geometry does.
     await invoke('set_background', { color: '#0b1020' });

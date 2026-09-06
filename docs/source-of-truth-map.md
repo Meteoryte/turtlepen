@@ -9,8 +9,10 @@ derived file—never hand-edit both.
 | Package and runtime version | `package.json` | `src/version.js`, MCP handshake, CLI/doctor output, release history |
 | Document schema and migration | `src/core/document.js` | runtime diagnostics, serialized documents, schema tests |
 | Core mutations | `src/core/index.js` → `OPERATIONS` | plans, MCP mutation history, browser mutation allowlist |
+| Exact selection editing and construction | `src/core/advanced-edit.js`, `src/core/edit.js` | MCP editing tools, workflow example, history |
 | Semantic timeline model, compilation, stable IDs, and timeline findings | `src/core/timeline.js` | document schema, MCP tool, Mermaid import, help, fixtures |
-| MCP input/output schemas and full authoring manual | `src/mcp/tools.js` | `src/capabilities.js`, `docs/mcp-output-schema-contract.md`, `docs/turtlepen-help.txt`, endpoint evidence |
+| MCP input/output schemas and full authoring manual | `src/mcp/tools.js`, `src/mcp/editing-tools.js` | `src/capabilities.js`, `docs/mcp-output-schema-contract.md`, `docs/turtlepen-help.txt`, endpoint evidence |
+| Timeline interchange | `src/core/timeline-export.js` | export tool, native JSON and Mermaid projection receipts |
 | MCP protocol behavior and transport parity | `src/mcp/protocol.js` | `src/mcp/server.js`, `src/mcp/http-server.js`, endpoint evidence |
 | Artifact role and release scope | `artifacts/artifact-catalog.json` | `artifacts/manifest.json`, README release/study labels |
 | Artifact quality evidence | TurtlePen documents plus their rendered exports | generated `artifacts/manifest.json` hashes and verdicts |

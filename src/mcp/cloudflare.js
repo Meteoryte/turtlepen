@@ -414,7 +414,8 @@ async function invoke(message, session, root) {
             name: tool.name,
             description: tool.description,
             inputSchema: tool.inputSchema,
-            outputSchema: tool.outputSchema
+            outputSchema: tool.outputSchema,
+            annotations: tool.annotations
           }))
         }
       };

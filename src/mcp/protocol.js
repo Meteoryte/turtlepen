@@ -13,6 +13,7 @@ import { VERSION } from '../version.js';
 export const SERVER_INFO = Object.freeze({ name: 'turtlepen', version: VERSION });
 export const DEFAULT_PROTOCOL = '2025-06-18';
 export const SUPPORTED_PROTOCOLS = Object.freeze([
+  '2025-11-25',
   DEFAULT_PROTOCOL,
   '2025-03-26',
   '2024-11-05',
@@ -110,6 +111,7 @@ export function createProtocolRuntime(sessionOptions = {}) {
               description: tool.description,
               inputSchema: tool.inputSchema,
               outputSchema: tool.outputSchema,
+              annotations: tool.annotations,
             })),
           });
 

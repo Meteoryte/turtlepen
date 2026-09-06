@@ -15,6 +15,7 @@ import { atomicWriteFile } from '../io.js';
 import { VERSION } from '../version.js';
 import { assertSchema } from './schema.js';
 import { capabilityRegistry, doctorReport, searchCapabilities } from '../capabilities.js';
+import { editingTools } from './editing-tools.js';
 
 /**
  * The file-access boundary.
@@ -825,13 +826,14 @@ export function createTools(session) {
           feather: { type: 'integer', minimum: 0, description: 'quadrants of tone falloff inward from the region boundary' },
           texture: { type: 'string', enum: ['eroded'], description: 'seeded roughening of the boundary; deterministic from the path id' },
           pattern: { type: 'string', enum: ['dashed', 'dotted'], description: 'rhythm ALONG the path — a projected trendline or an inferred boundary. Keyed to distance travelled, so a dash survives a corner' },
+          patternOffset: { type: 'integer', description: 'shift the dash/dot cycle by whole quadrants; structural corners/arrows are retained' },
         },
         required: ['program'],
         additionalProperties: false,
       },
-      handler: async ({ program, page = 'base', id = null, role = 'connector', color = null, fillColor = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null }) => {
+      handler: async ({ program, page = 'base', id = null, role = 'connector', color = null, fillColor = null, width = null, cap = null, paint = null, tone = null, feather = null, texture = null, pattern = null, patternOffset = 0 }) => {
         const doc = need(session);
-        const r = core.applyPen(doc, page, program, { id, role, color, fillColor, width, cap, paint, tone, feather, texture, pattern });
+        const r = core.applyPen(doc, page, program, { id, role, color, fillColor, width, cap, paint, tone, feather, texture, pattern, patternOffset });
         await persist(session);
         const lines = [`pen program applied to page "${page}" as ${role}`];
         if (r.path) {
@@ -1033,23 +1035,25 @@ ${stalled}` : core.formatLog(result);
       inputSchema: {
         type: 'object',
         properties: {
-          action: { type: 'string', enum: ['list', 'create', 'add', 'remove', 'delete', 'move'] },
+          action: { type: 'string', enum: ['list', 'create', 'add', 'remove', 'delete', 'move', 'restyle'] },
           id: { type: 'string', description: 'group id; required except for list' },
           label: { type: 'string', description: 'human-readable label when creating' },
           members: { type: 'array', items: { type: 'string' }, description: 'element ids for create, add, or remove' },
           cellsX: { type: 'integer', description: 'relative horizontal movement in cells' },
           cellsY: { type: 'integer', description: 'relative vertical movement in cells' },
+          style: { type: 'object', description: 'presentation fields accepted by restyle, applied atomically to every group member' },
         },
         required: ['action'],
         additionalProperties: false,
       },
-      handler: async ({ action, id = null, label = null, members = null, cellsX = 0, cellsY = 0 }) => {
+      handler: async ({ action, id = null, label = null, members = null, cellsX = 0, cellsY = 0, style }) => {
         const doc = need(session);
         if (action === 'list') return json(core.groupsOf(doc).map((entry) => formatGroup(doc, entry)));
         if (!id) throw new Error(`group action "${action}" needs id`);
         if (action === 'move' && !cellsX && !cellsY) throw new Error('group move needs a non-zero cellsX or cellsY');
-        const result = core.applyOperation(doc, { op: 'group', action, id, label, members, cellsX, cellsY });
+        const result = core.applyOperation(doc, { op: 'group', action, id, label, members, cellsX, cellsY, style });
         await persist(session);
+        if (action === 'restyle') return json(result);
         if (action === 'delete') return `deleted group "${id}"; its elements remain unchanged`;
         return json(formatGroup(doc, result));
       },
@@ -1267,15 +1271,17 @@ ${stalled}` : core.formatLog(result);
       inputSchema: {
         type: 'object',
         properties: {
-          ids: { type: 'array', items: { type: 'string' }, minItems: 2 },
+          ids: { type: 'array', items: { type: 'string' }, minItems: 1 },
           edge: { type: 'string', enum: ['left', 'right', 'top', 'bottom', 'centerX', 'centerY'] },
+          reference: { type: 'string', description: 'canvas or an element id; absent uses selection bounds/centers' },
+          exact: { type: 'boolean', description: 'refuse fractional center alignment rather than rounding' },
         },
         required: ['ids', 'edge'],
         additionalProperties: false,
       },
-      handler: async ({ ids, edge }) => {
+      handler: async ({ ids, edge, reference, exact }) => {
         const doc = need(session);
-        const n = core.OPERATIONS.align(doc, { ids, edge });
+        const n = core.OPERATIONS.align(doc, { ids, edge, reference, exact });
         await persist(session);
         return `aligned ${n} element(s) to ${edge}`;
       },
@@ -1290,15 +1296,17 @@ ${stalled}` : core.formatLog(result);
       inputSchema: {
         type: 'object',
         properties: {
-          ids: { type: 'array', items: { type: 'string' }, minItems: 3 },
+          ids: { type: 'array', items: { type: 'string' }, minItems: 2 },
           axis: { type: 'string', enum: ['horizontal', 'vertical'] },
+          gap: { type: 'integer', minimum: 0, description: 'exact quadrant gap; anchors the first and moves subsequent objects' },
+          exact: { type: 'boolean', description: 'refuse fractional equal gaps between fixed endpoints' },
         },
         required: ['ids', 'axis'],
         additionalProperties: false,
       },
-      handler: async ({ ids, axis }) => {
+      handler: async ({ ids, axis, gap, exact }) => {
         const doc = need(session);
-        const n = core.OPERATIONS.distribute(doc, { ids, axis });
+        const n = core.OPERATIONS.distribute(doc, { ids, axis, gap, exact });
         await persist(session);
         return `distributed ${n} element(s) ${axis}ly with equal gaps`;
       },
@@ -1909,13 +1917,14 @@ ${stalled}` : core.formatLog(result);
         properties: {
           id: { type: 'string', description: 'element to partition' },
           axis: { type: 'string', enum: [...core.edit.SLICE_AXES] },
+          cutter: { type: 'string', description: 'shape id to cut by its intersection; mutually exclusive with axis/at, cutter retained' },
           at: { type: 'string', description: 'lattice boundary address, such as M1.tl for a vertical slice' },
           ids: { type: 'array', items: { type: 'string' }, description: 'optional deterministic ids for every result, in returned order' },
           mode: { type: 'string', enum: [...core.edit.SLICE_MODES] },
           footprint: { type: 'string', enum: [...core.edit.FOOTPRINTS] },
           color: { type: 'string', pattern: '^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$' },
         },
-        required: ['id', 'axis', 'at'],
+        required: ['id'],
         additionalProperties: false,
       },
       handler: async (args) => json(await applyAndPersist(session, 'slice', args)),
@@ -1968,6 +1977,11 @@ ${stalled}` : core.formatLog(result);
         properties: {
           id: { type: 'string' },
           action: { type: 'string', enum: [...core.edit.PATH_EDIT_ACTIONS] },
+          indices: { type: 'array', items: { type: 'integer', minimum: 0 }, minItems: 1 },
+          dx: { type: 'integer' }, dy: { type: 'integer' },
+          axis: { type: 'string', enum: ['horizontal', 'vertical'] },
+          endIndex: { type: 'integer', minimum: 0 },
+          cutter: { type: 'string', description: 'extend_to follows the terminal ray to its nearest forward occupied intersection' },
           index: { type: 'integer', minimum: 0, description: 'piece index for insert, move, delete, or split' },
           at: { type: 'string', description: 'address for insert or move' },
           ids: { type: 'array', items: { type: 'string' }, description: 'two result ids for split; defaults to source id and source-part-2' },
@@ -2036,12 +2050,16 @@ ${stalled}` : core.formatLog(result);
         properties: {
           id: { type: 'string' },
           columns: { type: 'integer', minimum: 1 },
+          mode: { type: 'string', enum: ['rectangular', 'radial', 'repeat'] },
+          count: { type: 'integer', minimum: 2, maximum: 101, description: 'radial/repeat total including source' },
+          rotate: { type: 'integer', enum: [0, 90, 180, 270, -90, -180, -270] },
+          pivot: { type: 'string', description: 'required explicit lattice pivot for radial copies' },
           rows: { type: 'integer', minimum: 1 },
           stepX: { type: 'integer', description: 'horizontal copy spacing in quadrants' },
           stepY: { type: 'integer', description: 'vertical copy spacing in quadrants' },
           prefix: { type: 'string', description: 'new id prefix; defaults to source-copy' },
         },
-        required: ['id', 'columns', 'rows', 'stepX', 'stepY'],
+        required: ['id'],
         additionalProperties: false,
       },
       handler: async (args) => json(await applyAndPersist(session, 'array', args)),
@@ -2056,11 +2074,14 @@ ${stalled}` : core.formatLog(result);
         properties: {
           ids: { type: 'array', items: { type: 'string' }, minItems: 1 },
           footprint: { type: 'string', enum: [...core.edit.FOOTPRINTS], description: 'claimed (default) or visual geometry' },
+          nearest: { type: 'string', description: 'address to measure the nearest occupied quadrant' },
+          pieceOffset: { type: 'integer', minimum: 0 },
+          pieceLimit: { type: 'integer', minimum: 1, maximum: 500 },
         },
         required: ['ids'],
         additionalProperties: false,
       },
-      handler: ({ ids, footprint = 'claimed' }) => json(core.inspectGeometry(need(session), { ids, footprint })),
+      handler: args => json(core.inspectGeometry(need(session), args)),
     },
 
     {
@@ -2273,7 +2294,8 @@ ${stalled}` : core.formatLog(result);
           cardWidthCells: { type: 'integer', minimum: 10, maximum: 80, description: 'measured wrap width; omit for layout-aware default' },
           gapCells: { type: 'integer', minimum: 1, maximum: 20, description: 'minimum event/card rhythm' },
           fitCanvas: { type: 'boolean', description: 'expand, never shrink, canvas bounds to fit generated content; default true' },
-          currentDate: { ...TIMELINE_DATE_SCHEMA, description: 'optional canonical ISO current-date fact; current markers are still selected explicitly on events' },
+          currentDate: { ...TIMELINE_DATE_SCHEMA, description: 'visible date marker on an in-range temporal axis; otherwise an explicit context-only/outside-range label' },
+          showRelationships: { type: 'boolean', description: 'render event relationships as native orthogonal connectors; default false preserves existing layouts; routing failures are explicit' },
           events: { type: 'array', minItems: 1, items: timelineEventSchema(), description: 'required for create; replaces the event set on update' },
           phases: { type: 'array', items: timelinePhaseSchema() },
           tracks: { type: 'array', items: timelineTrackSchema() },
@@ -2819,7 +2841,17 @@ ${r.program}`;
     },
   ];
 
-  for (const tool of tools) tool.outputSchema = toolOutputSchema(tool.name);
+  tools.push(...editingTools({ core, session, need, applyAndPersist, json }));
+  const readOnlyTools = new Set(['turtlepen_help', 'search_help', 'runtime_info', 'doctor', 'measure', 'measure_image', 'describe', 'validate', 'inspect', 'inspect_svg', 'inspect_scale', 'query', 'inspect_model', 'release_check', 'font_coverage', 'ascii', 'free_space', 'route', 'import_mermaid', 'export_prompt', 'export_timeline']);
+  const restyleProperties = { ...tools.find(tool => tool.name === 'restyle').inputSchema.properties };
+  delete restyleProperties.id;
+  tools.find(tool => tool.name === 'group').inputSchema.properties.style = { type: 'object', properties: restyleProperties, additionalProperties: false };
+  for (const tool of tools) {
+    tool.outputSchema = toolOutputSchema(tool.name);
+    // File-writing render tools are deliberately excluded even when they leave document state alone.
+    const readOnlyHint = readOnlyTools.has(tool.name) && tool.name !== 'render';
+    tool.annotations = { readOnlyHint, destructiveHint: !readOnlyHint, idempotentHint: readOnlyHint, openWorldHint: false };
+  }
   const byName = new Map(tools.map((tool) => [tool.name, tool]));
   return tools.map((tool) => {
     const isMutation = MUTATING_TOOLS.has(tool.name);
@@ -3233,9 +3265,11 @@ LATTICE-NATIVE EDITING
     The output is cell-painted artwork with source provenance, not a guessed
     floating-point Bézier result. Sources must share a page.
   slice { id, axis: "vertical"|"horizontal", at, mode?, ids? }
+  slice { id, cutter, mode?, footprint?, ids? }
     Divide at an explicit lattice boundary. divide (default) returns every
     edge-connected result; partition returns one result per side. Default ids
-    are source-part-1, source-part-2, … in stable order.
+    are source-part-1, source-part-2, … in stable order. A cutter partitions by
+    exact intersection and is retained; never combine cutter with axis/at.
   offset_path { id, distance, resultId?, removeSource?, footprint? }
     Positive distance dilates and negative distance erodes by whole quadrants
     with a square (Chebyshev) neighborhood. Empty or off-grid results refuse.
@@ -3243,10 +3277,15 @@ LATTICE-NATIVE EDITING
     Makes the path's exact claimed quadrants into editable cell-painted artwork.
     A 1–5px stroke cannot honestly become fractional quadrant geometry.
   path_edit { id, action, index?, at?, ids?, with? }
-    actions: insert delete move reverse open close split join. Insert/move use
+    actions: insert delete move move_many align_nodes trim extend_to interpolate
+    reverse open close split join. Insert/move use
     an address; close draws an exact Bresenham bridge; join requires adjacent
     ends. Direct piece edits clear resumable pen state rather than extending
     stale geometry.
+    move_many uses indices and dx/dy in quadrants; align_nodes uses indices,
+    axis and at. trim keeps index..endIndex. interpolate replaces that segment
+    with exact Bresenham pieces. extend_to finds the first forward intersection
+    of the terminal ray with a named cutter. No meeting point is guessed.
   normalize_path { id }                 remove repeated quadrants only
   reorder { id, action, relative? }     bring_to_front | send_to_back | raise |
                                          lower | before | after
@@ -3258,6 +3297,54 @@ LATTICE-NATIVE EDITING
   inspect { ids, footprint? }
     Read exact areas, perimeters, integer bounds, rational centres, intersections,
     and bounding gaps without changing the document.
+    nearest finds an actual occupied quadrant; pieceOffset/pieceLimit page
+    path segment lengths, angles, continuity and counts. Perimeter is not path length.
+
+SELECTION, TRANSFORMS, AND CONSTRUCTION
+  query { page?, kind?, ids?, tags?, properties?, text?, color?, within?,
+          intersecting?, nearest?, invert?, offset?, limit? }
+    Stateless AND filters; invert within the page scope. Returns stable ids,
+    total and nextOffset. Bounds use quadrant x/y/w/h; at most 500 results.
+  transform { ids?|group?, rotate?, flip?, scaleX?, scaleY?, pivot?,
+              copyPrefix?, dx?, dy? }
+    Exact path artwork: quarter turns, horizontal/vertical/both reflections,
+    integer cell magnification. Scale requires stroke_to_path first. A default
+    pivot is bounding cell center (top-left for scale); incompatible half-grid
+    centers refuse and request an explicit pivot. Copies use prefix-originalId.
+    Pixel micro-masks and semantic connectors refuse rather than lose meaning.
+  array { id, mode: "radial"|"repeat", count, rotate?, pivot?, stepX?, stepY? }
+    Count includes the retained source. Radial needs an explicit pivot and at
+    most one revolution of exact quarter turns. Repeat has explicit inputs;
+    there is no hidden last-transform state.
+  paint_path { ids?|group?, color?, width?, cap?, gradient? }
+    gradient { type: "linear"|"radial", from, to, center?, radius?, angle? }
+    Color fields are baked into pieces; SVG and raster use the same colors.
+  guide { id, action?: "create"|"snap"|"remove", from?, to?, ids?, anchor? }
+    Named horizontal/vertical construction paths on an overlay. Snap moves
+    explicit anchors to the nearest occupied guide quadrant. Query properties
+    { constructionGuide: "true" } to inspect. Hidden guides still block release.
+  cleanup { ids, removeDuplicates?, emptyGroups? }
+    Keeps distinct semantics, references, opacity and intervening paint order.
+    Every deletion and protected duplicate is returned. No approximate cleanup.
+  align { ids, edge, reference?: "canvas"|elementId, exact? }
+  distribute { ids, axis, gap?, exact? }
+    Exact mode refuses fractional movement/gaps. Explicit gap anchors the first.
+  group { action: "restyle", id, style }
+    Apply box/text presentation atomically; mixed incompatible groups refuse.
+  page { action: "duplicate"|"merge"|"solo"|"show_all", id, to? }
+    Copies use destination-originalId; duplication of semantic relationships,
+    guides, generated content or pixel masks refuses explicitly.
+
+TIMELINE INTERCHANGE
+  timeline { ..., currentDate?, showRelationships? }
+    Current dates on a temporal domain get a visible scale marker. Ordinal or
+    out-of-range dates get a labelled context fact, never a fabricated position.
+    showRelationships opts into native orthogonal event connectors; existing
+    layouts keep semantic annotations unless requested. Routing failures refuse.
+  export_timeline { id, format: "json"|"mermaid" }
+    Native JSON preserves the complete semantic source. Mermaid is a projection:
+    identity mapping and layout omissions are reported; unsupported event fields
+    return exported:false and exact reasons. Save the native document for recovery.
 
 STRICT SVG IMPORT
   inspect_svg { source, prefix?, quantize? }

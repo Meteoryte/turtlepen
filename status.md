@@ -1,16 +1,16 @@
 # TurtlePen — status
 
-**As of 2026-09-03.** Prototype, working end to end, 706/706 tests green,
+**As of 2026-09-05.** Prototype, working end to end, 728/728 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
 ## What is proven
 
 Verified by running it, not by inspection:
 
-- **706/706 tests pass** (`node --test "test/**/*.test.js"`), including tests
+- **728/728 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe and the stateful Streamable HTTP
   server over TCP.
-- **Every external surface has a drift-proof contract.** All 77 MCP tools
+- **Every external surface has a drift-proof contract.** All 84 MCP tools
   complete representative work over the real stdio child process; Streamable
   HTTP exposes that exact live registry and preserves isolated active documents
   across calls; every JSON-RPC
@@ -40,7 +40,7 @@ Verified by running it, not by inspection:
   tag/perspective styles, generated keys, linked documentation/ADR/runbook
   resources, and fingerprinted model acceptances survive migration and reopen.
 - **Diagram-type semantics are usable through every endpoint, not only direct
-  imports.** The 77-tool registry exposes semantic node roles plus durable,
+  imports.** The 84-tool registry exposes semantic node roles plus durable,
   plan-aware scale define/update/remove and exact projection inspection.
   Rectangular length bindings survive save/open and are checked by `V001`–`V004`;
   unsupported position, area, radial, and ribbon-width encodings remain
@@ -230,14 +230,14 @@ Verified by running it, not by inspection:
   as information on an overlay.
 - **plan/commit is transactional**: a batch that fails part-way applies nothing,
   verified by byte-comparing the serialised document before and after.
-- **The MCP server responds over stdio**: `initialize`, `tools/list` (77 tools),
+- **The MCP server responds over stdio**: `initialize`, `tools/list` (84 tools),
   `tools/call`, ordered mutations, and tool errors returned as readable results
   rather than dead calls. The Streamable HTTP transport calls that same protocol
   runtime, returns request-scoped SSE frames, maintains one active document per
   opaque session, serializes its calls, isolates its filesystem, and purges it
   on DELETE or expiry.
 - **The public Cloudflare/Sites adapter is canonical source.**
-  `src/mcp/cloudflare.js` exposes the same 77-tool registry with D1 session
+  `src/mcp/cloudflare.js` exposes the same 84-tool registry with D1 session
   indexing, optimistic version commits, R2 document/history/artifact storage,
   explicit quotas, SSE responses, and an injectable binding factory covered by
   an end-to-end in-memory D1/R2 test. Brainn.dev re-exports this adapter rather
@@ -572,10 +572,9 @@ added, it is not shipped until `HELP` names it at the moment of need.
 
 ## What is deferred, deliberately
 
-- **Lossless Mermaid timeline export.** Import is supported. Export remains
-  deliberately deferred because TurtlePen tracks, typed relationships, parents,
-  resources, layout policies, and preserved presentation overrides do not fit
-  Mermaid timeline syntax without loss; a misleading partial export is not emitted.
+- **Full native-to-Mermaid fidelity.** `export_timeline` now supports native JSON
+  and explicit representable Mermaid projections. Rich event semantics refuse
+  with field-level reasons; native identity/layout/overrides require the document.
 - **Auto-fit.** The engine reports the shortfall and the fixes; it does not
   resize. Chuck's call during design.
 - **Proportional fonts.** The monospace model is what makes capacity countable.
@@ -588,8 +587,13 @@ added, it is not shipped until `HELP` names it at the moment of need.
 
 ## Gap closure status
 
-Every previously recorded local-engine implementation gap is closed: the viewer
-is a tested WebSocket editor, history is durable across restarts, groups move
-subsystems, and explicit follow constraints persist and cascade. The new hosted
-scope has the explicit public-auth, file-transfer, durable deployment, and site
-integration gaps above; those are not hidden behind the passing local suite.
+The 0.5 native editing workflows are implemented: seven new MCP tools, exact
+artwork transforms, radial arrays, color fields, shape cuts, bulk path editing,
+construction gates, protected cleanup, page/group/layout support, and timeline
+display/interchange. See [native workflows](docs/native-editing-workflows.md)
+and [completion evidence](docs/2026-09-05-completion-report.md).
+
+The SVG RFC remains a broader capability catalog. Live clipping effects, page
+locks, generalized markers, advanced tracing/codecs, and new geometry models
+are not represented as shipped. The hosted account/storage product and actual
+Sites publication remain separate from a passing local engine and GitHub push.
