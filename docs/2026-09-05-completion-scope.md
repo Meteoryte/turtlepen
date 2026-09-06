@@ -104,3 +104,7 @@ Run the full project check, transport suite, and one clean stabilization pass.
 - ACCP: full native-MCP completion sweep; medium risk, with persistence, file
   handling, tool integration, recovery, and rendering modules active. Production
   release and identity/account modules are not activated by local verification.
+- Release extension: the user explicitly requested updating TurtlePen on Sites.
+  PSORR and SAPF release checks were applied to the existing public site; version
+  22 and its live evidence are recorded in the completion report. Account-owned
+  diagrams and private ACLs remain outside the anonymous session product.

@@ -3,6 +3,11 @@
 **As of 2026-09-05.** Prototype, working end to end, 728/728 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 
+TurtlePen 0.5.0 is also live on Brainn.dev Sites version 22: 84 tools with
+verified persistent editing, undo/redo, isolated sessions, timeline interchange
+and self-contained rendering. See `docs/2026-09-05-completion-report.md` for the
+exact release source, evidence and remaining catalog ideas.
+
 ## What is proven
 
 Verified by running it, not by inspection:
@@ -595,5 +600,6 @@ and [completion evidence](docs/2026-09-05-completion-report.md).
 
 The SVG RFC remains a broader capability catalog. Live clipping effects, page
 locks, generalized markers, advanced tracing/codecs, and new geometry models
-are not represented as shipped. The hosted account/storage product and actual
-Sites publication remain separate from a passing local engine and GitHub push.
+are not represented as shipped. The hosted account/storage product remains
+separate from the anonymous session engine. Sites publication has now been
+verified independently of the passing local engine and GitHub push.

@@ -40,7 +40,8 @@ the visual review does not silently promote it into the release catalog.
 - ACCP native implementation checks: discovery, source ownership, supported
   input choices, mutation scope, atomic failure, persistence, recovery, matching
   transports, visual review, and truthful remaining-work labels are exercised.
-  Hosted-account and actual production-publication gates are not claimed passed.
+  Hosted-account gates remain separate. The authorized anonymous Sites release
+  and its production checks are recorded below.
 
 ## Remaining ideas and deployment boundary
 
@@ -51,9 +52,26 @@ this change. Some require a different source/effect or geometry contract; none
 is hidden behind the local test count. Account-owned cloud diagrams, OAuth,
 private artifact ACLs and uploads remain a separate hosted product.
 
-The canonical source and vendored site candidate can be synchronized and pushed
-to GitHub without publishing the site's unrelated pending redesign. Production
-parity requires a separate Sites build/publication and live endpoint evidence.
+Canonical implementation `ed23b839c2bf333b231fc44b65a9daad04a77e60` is pushed to
+GitHub. The user subsequently requested the Sites update. The website candidate
+preserves the already-published navigation/signup revision and vendors all 62
+canonical source files, including executable modes, without differences.
+
+Sites version **22** built and published successfully from website source
+`36f3a170c3e13d4e115ddcf30162c1604dd85eb0`. Deployment:
+`appgdep_6a9cda90ca908191ac6179f022613e22`. The public endpoint
+<https://brainn.dev/api/mcp/turtlepen> reports 0.5.0 and 84 tools, negotiates MCP
+2025-11-25, and passes native mutation/reopen/undo/redo, isolation, guide removal,
+color/page/cleanup, shape-aware measurement, deliberate overflow, self-contained
+SVG, temporal marker, relationship reflow and timeline-export checks. Fourteen
+grouped live checks and ten desktop/phone navigation scenarios pass.
+
+The website release also blocks unused Server Action/form write paths before
+framework decoding. Its dependency review identifies remaining development-graph
+advisories; the containment does not claim to patch those packages. The local
+website TypeScript check remains limited by its missing declared Supabase
+dependency; Sites performed the successful production build. These are recorded
+in the website's `docs/turtlepen-0.5-source-validation.md`.
 
 ## Final validation
 
@@ -64,5 +82,6 @@ parity requires a separate Sites build/publication and live endpoint evidence.
 - Governance: READY; 76 cataloged native documents, all eight release artifacts
   pass, two source-less exports remain explicitly classified.
 - New example: structural PASS, current perceptual review, release-check PASS.
-- Hosted source synchronization and validation are recorded separately in the
-  website's vendored provenance. No production deployment is claimed here.
+- Hosted source synchronization, build identity and observed production behavior
+  are recorded in the website's vendored provenance and release report. Sites
+  version 20 remains available for rollback; no storage migration was made.
