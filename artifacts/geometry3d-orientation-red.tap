@@ -86,9 +86,9 @@ not ok 14 - orientation checks distinguish a reversed disconnected shell from a 
   failureType: 'testCodeFailure'
   error: |-
     Expected values to be strictly equal:
-    
+
     true !== false
-    
+
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
   expected: false
