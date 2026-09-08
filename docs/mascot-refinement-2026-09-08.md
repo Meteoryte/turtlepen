@@ -52,3 +52,40 @@ final bytes. No physical print, slicing, support design or printer profile is cl
 The artwork files and reproduction commands are documented in
 `artifacts/turtlepen-mascot-v2/README.md`. Rendering is evidence for review; the
 user's aesthetic acceptance is not assumed.
+
+## Publication
+
+All local and fetched remote TurtlePen branches were consolidated into main and
+pushed, including the earlier art studies, recovered plan, first prototype and
+historical audits. Final engine source is commit
+`798f254a3f9742fa0683e7c3758ab25039da4822`, with `src/` tree
+`bd4d3daf4888f34c2f78259bc23976dd157c569a`. This documentation follow-up does not
+change the tested runtime or artwork.
+
+[Brainn.dev's 3D gallery](https://brainn.dev/turtlepen#3d-prototype) is live on
+Sites version 37. The deployed website source is
+`866e075b21267115ff53f1c5f0b73412da17d007`; publication succeeded at
+`2026-09-08T20:34:22.976072+00:00`. Its 71 vendored source blobs exactly match
+the canonical engine. Website build, 46 tests, TypeScript and changed-source
+lint pass. Desktop/phone views, gallery links and browser Back were verified.
+
+Ten grouped production checks pass, including version 0.6.0/87 tools; canonical
+measurement; sweep/loft creation, persisted save/reopen and undo/redo; atomic
+invalid-edit rejection; independent session isolation; actual GLB normals,
+editable TPF and binary STL; existing labeled SVG and overflow findings; and
+the model download. Live capability registry:
+`415e5ac221d1548a690555def9df7048ca540d76a4a7d8edc7f5ac5390f8b511`.
+
+The [public package](https://brainn.dev/work/turtlepen/turtlepen-3d-files.zip)
+contains editable source, colored models, sculpture/badge STL and receipts.
+Its 23,609,076 downloaded bytes match SHA-256
+`0d1b81ae5da0df724a0da1ffee8f31121b55b82d4bc132ee0876b4b105669bbe`.
+The sculpture STL has one connected component, 723,908 triangles, zero
+nonmanifold edges, winding errors or degenerate faces, and no discarded debris.
+Its physical size is approximately 128×70×83 mm. Slicing, supports and physical
+printing remain untested.
+
+The website repository retains exact provider IDs, rollback version 36 and
+compact live receipts in `docs/turtlepen-0.6-release-2026-09-08.md` and
+`docs/releases/turtlepen-0.6-*.json`. No audience, environment, campaign,
+database schema or permission changes were made.

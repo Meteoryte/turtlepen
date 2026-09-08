@@ -1,5 +1,9 @@
 # TurtlePen 3D first-prototype implementation and verification
 
+Historical first-prototype evidence. The subsequent 0.6 release adds native
+sweeps/lofts and a live hosted deployment; its current results are recorded in
+[mascot refinement and publication](mascot-refinement-2026-09-08.md).
+
 Verified locally on 2026-09-08, following Chuck's instruction to implement and
 test the recovered [fabrication concept](plans/turtlepen-3d-geometry-fabrication-concept.md).
 The [usage guide](3d-geometry.md) contains commands, format contracts and limits.

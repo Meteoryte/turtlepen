@@ -49,8 +49,10 @@ The dependency-free spatial engine uses physical floating-point coordinates in
 an independent scene. Existing 2D geometry stays integer-exact. The first
 prototype has bounded box booleans and simple profile extrusion, not a general
 CAD kernel. The curved robot is a GLB assembly with declared overlapping parts;
-it is not exported as a joined printable STL. No hosted deployment or physical
-printer operation was performed.
+it is not exported as a joined printable STL. That first prototype was local.
+The subsequent 0.6 release adds sweeps/lofts, a revised mascot and a verified
+hosted deployment; see [current evidence](mascot-refinement-2026-09-08.md).
+Physical printer operation remains untested.
 
 The exact source remains in the permanent Drive mirror and in the linked
 project plan; source receipt and the full batch inventory are recorded in
