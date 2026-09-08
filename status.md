@@ -1,14 +1,17 @@
 # TurtlePen — status
 
-**0.6.0 candidate, 2026-09-08:** the complete local check passes **758/758 tests**,
+**0.6.0 published, 2026-09-08:** the complete local check passes **758/758 tests**,
 all eight release artifacts, and governance **READY**. The spatial layer now
 includes joined cubic Bezier sweeps, explicit elliptical/superelliptical lofts,
 and smooth GLB normals through core, CLI and the existing 87-tool MCP registry.
 The revised mascot uses those native operations and preserves the accepted
 turtle/nib brand mark. Its TPF/GLB and independently verified joined STL live in
 `artifacts/turtlepen-mascot-v2/`. Aesthetic review and topology evidence are
-recorded separately. Physical printing remains untested. Publication evidence
-will be recorded after the exact source is merged and deployed.
+recorded separately. Physical printing remains untested. All TurtlePen work is
+merged into main and pushed. Brainn.dev Sites v37 exposes the complete 87-tool
+engine and revised gallery; live creation, persistence, history, isolation,
+GLB/TPF/STL export and download integrity pass. See the
+[publication evidence](docs/mascot-refinement-2026-09-08.md#publication).
 
 **Local unreleased implementation, 2026-09-08:** the recovered
 [3D geometry / fabrication prototype](docs/3d-geometry-plan-status.md) is implemented:
@@ -43,7 +46,8 @@ exact release source, evidence and remaining catalog ideas.
 
 ## What is proven
 
-Verified by running it, not by inspection:
+Historical detailed verification as of September 5 follows; the current release
+and its expanded inventory are recorded above. Verified by running it:
 
 - **728/728 tests pass** (`node --test "test/**/*.test.js"`), including tests
   that drive the real MCP server over a pipe and the stateful Streamable HTTP
