@@ -1,0 +1,31 @@
+{
+  "source": "mascot.glb",
+  "sourceSha256": "4ece3dd0b05faf392630ba8ba64925e5a966f3e9be6e1b86781783a4c32735aa",
+  "file": "mascot-solid.stl",
+  "sha256": "9f67e70205d246676718af7182c64620d09c11911164c2088ab24a082a59e6ee",
+  "blender": "5.0.1",
+  "operation": "explicit 0.35 mm voxel union of native TurtlePen assembly",
+  "units": "mm",
+  "voxelSizeMillimeters": 0.35,
+  "bedTranslationZ": 2.2351741790771484e-08,
+  "triangles": 723908,
+  "connectedComponents": 1,
+  "removedVoxelDebris": [],
+  "nonManifoldEdges": 0,
+  "nonManifoldVertices": 0,
+  "volumeCubicMillimeters": 122796.12862512385,
+  "boundsMillimeters": {
+    "min": [
+      -62.9964599609375,
+      -34.99924087524414,
+      0.0
+    ],
+    "max": [
+      64.99835205078125,
+      34.99924087524414,
+      82.9908676147461
+    ]
+  },
+  "physicalPrint": "not_tested",
+  "slicerAcceptance": "not_tested"
+}

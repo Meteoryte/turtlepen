@@ -1,0 +1,114 @@
+TAP version 13
+# Subtest: box is a closed outward solid with analytic bounds and volume
+ok 1 - box is a closed outward solid with analytic bounds and volume
+  ---
+  duration_ms: 6.2957
+  type: 'test'
+  ...
+# Subtest: curved primitives produce watertight meshes and converge to analytic volume
+ok 2 - curved primitives produce watertight meshes and converge to analytic volume
+  ---
+  duration_ms: 88.6857
+  type: 'test'
+  ...
+# Subtest: concave polygon extrusion preserves concavity and winding
+ok 3 - concave polygon extrusion preserves concavity and winding
+  ---
+  duration_ms: 8.7683
+  type: 'test'
+  ...
+# Subtest: scene transactions reject malformed profiles, unsupported inputs and excessive detail atomically
+ok 4 - scene transactions reject malformed profiles, unsupported inputs and excessive detail atomically
+  ---
+  duration_ms: 4.1508
+  type: 'test'
+  ...
+# Subtest: flat groups transform members once and mirrored scaling retains outward orientation
+ok 5 - flat groups transform members once and mirrored scaling retains outward orientation
+  ---
+  duration_ms: 2.9389
+  type: 'test'
+  ...
+# Subtest: orthogonal booleans produce one joined boundary and correct subtraction/intersection volume
+ok 6 - orthogonal booleans produce one joined boundary and correct subtraction/intersection volume
+  ---
+  duration_ms: 10.6434
+  type: 'test'
+  ...
+# Subtest: overlapping assemblies cannot be mislabeled as printable STL
+ok 7 - overlapping assemblies cannot be mislabeled as printable STL
+  ---
+  duration_ms: 4.367
+  type: 'test'
+  ...
+# Subtest: TPF round trips are deterministic, strict and do not accept nonfinite or unknown data
+ok 8 - TPF round trips are deterministic, strict and do not accept nonfinite or unknown data
+  ---
+  duration_ms: 1.3807
+  type: 'test'
+  ...
+# Subtest: binary STL emits millimeters and deterministic outward triangle records
+ok 9 - binary STL emits millimeters and deterministic outward triangle records
+  ---
+  duration_ms: 3.0253
+  type: 'test'
+  ...
+# Subtest: GLB uses glTF 2.0 aligned chunks, meters and right-handed Y-up coordinates
+ok 10 - GLB uses glTF 2.0 aligned chunks, meters and right-handed Y-up coordinates
+  ---
+  duration_ms: 2.0869
+  type: 'test'
+  ...
+# Subtest: named profiles, transforms and groups survive TPF and produce physical extrusions
+ok 11 - named profiles, transforms and groups survive TPF and produce physical extrusions
+  ---
+  duration_ms: 3.8304
+  type: 'test'
+  ...
+# Subtest: mesh defects and corner-only unions are reported and cannot escape through STL
+ok 12 - mesh defects and corner-only unions are reported and cannot escape through STL
+  ---
+  duration_ms: 2.4326
+  type: 'test'
+  ...
+# Subtest: exports reject float32 feature collapse and booleans reject unsupported rotation or empty results
+ok 13 - exports reject float32 feature collapse and booleans reject unsupported rotation or empty results
+  ---
+  duration_ms: 2.0098
+  type: 'test'
+  ...
+# Subtest: orientation checks distinguish a reversed disconnected shell from a legitimate cavity
+not ok 14 - orientation checks distinguish a reversed disconnected shell from a legitimate cavity
+  ---
+  duration_ms: 2.2572
+  type: 'test'
+  location: 'X:\\Python Projects\\Home Base - Brainn.dev\\03_EXPERIMENTS\\TurtlePen\\test\\geometry3d.test.js:108:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d.test.js:112:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 13
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 275.1374

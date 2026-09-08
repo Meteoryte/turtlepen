@@ -1,0 +1,4517 @@
+TAP version 13
+# Subtest: quarter turns and reflections preserve exact artwork and are reversible
+ok 1 - quarter turns and reflections preserve exact artwork and are reversible
+  ---
+  duration_ms: 15.6079
+  type: 'test'
+  ...
+# Subtest: transform groups and integer cell scaling share plan and persisted state
+ok 2 - transform groups and integer cell scaling share plan and persisted state
+  ---
+  duration_ms: 15.3873
+  type: 'test'
+  ...
+# Subtest: invalid or destructive-to-semantics transforms refuse atomically
+ok 3 - invalid or destructive-to-semantics transforms refuse atomically
+  ---
+  duration_ms: 1.5264
+  type: 'test'
+  ...
+# Subtest: shape cuts consume exact intersections and retain all source quadrants
+ok 4 - shape cuts consume exact intersections and retain all source quadrants
+  ---
+  duration_ms: 4.1204
+  type: 'test'
+  ...
+# Subtest: queries are explicit, bounded, stable, and non-mutating
+ok 5 - queries are explicit, bounded, stable, and non-mutating
+  ---
+  duration_ms: 2.1361
+  type: 'test'
+  ...
+# Subtest: guides are native persisted scaffolding and remain release blockers when hidden
+ok 6 - guides are native persisted scaffolding and remain release blockers when hidden
+  ---
+  duration_ms: 10.1223
+  type: 'test'
+  ...
+# Subtest: guide snapping reports exact movement and cleanup preserves distinct semantics
+ok 7 - guide snapping reports exact movement and cleanup preserves distinct semantics
+  ---
+  duration_ms: 6.4871
+  type: 'test'
+  ...
+# Subtest: an anchor names a point ON an element, where a seat names one outside it
+ok 8 - an anchor names a point ON an element, where a seat names one outside it
+  ---
+  duration_ms: 10.8769
+  type: 'test'
+  ...
+# Subtest: the cursor can be placed at an element anchor instead of an address
+ok 9 - the cursor can be placed at an element anchor instead of an address
+  ---
+  duration_ms: 40.8743
+  type: 'test'
+  ...
+# Subtest: a shape can be placed from an element anchor instead of hand-computed coordinates
+ok 10 - a shape can be placed from an element anchor instead of hand-computed coordinates
+  ---
+  duration_ms: 3.2675
+  type: 'test'
+  ...
+# Subtest: an offset moves the execution-time anchor by whole quadrants
+ok 11 - an offset moves the execution-time anchor by whole quadrants
+  ---
+  duration_ms: 2.0123
+  type: 'test'
+  ...
+# Subtest: anchoring to something that does not exist is refused by name
+ok 12 - anchoring to something that does not exist is refused by name
+  ---
+  duration_ms: 0.9626
+  type: 'test'
+  ...
+# Subtest: an unknown anchor names the ones that exist
+ok 13 - an unknown anchor names the ones that exist
+  ---
+  duration_ms: 0.4544
+  type: 'test'
+  ...
+# Subtest: the head is placed overlapping the shell when resolved from its anchor
+ok 14 - the head is placed overlapping the shell when resolved from its anchor
+  ---
+  duration_ms: 0.9292
+  type: 'test'
+  ...
+# Subtest: a reference underlay sits below the drawing, faint, and is marked as scaffolding
+ok 15 - a reference underlay sits below the drawing, faint, and is marked as scaffolding
+  ---
+  duration_ms: 11.8787
+  type: 'test'
+  ...
+# Subtest: a reference still in the document is reported — it is scaffolding, not artwork
+ok 16 - a reference still in the document is reported — it is scaffolding, not artwork
+  ---
+  duration_ms: 12.6809
+  type: 'test'
+  ...
+# Subtest: removing the reference clears the finding
+ok 17 - removing the reference clears the finding
+  ---
+  duration_ms: 11.1699
+  type: 'test'
+  ...
+# Subtest: drawing over a tracing reference does not create a false exclusive-page collision
+ok 18 - drawing over a tracing reference does not create a false exclusive-page collision
+  ---
+  duration_ms: 6.5068
+  type: 'test'
+  ...
+# Subtest: a failed reference placement leaves the document byte-identical
+ok 19 - a failed reference placement leaves the document byte-identical
+  ---
+  duration_ms: 1.805
+  type: 'test'
+  ...
+# Subtest: place_reference inside a plan resolves a local image exactly as the direct tool does
+ok 20 - place_reference inside a plan resolves a local image exactly as the direct tool does
+  ---
+  duration_ms: 1131.8134
+  type: 'test'
+  ...
+# Subtest: a drawn shape is anchorable too — it is the thing you most want to anchor to
+ok 21 - a drawn shape is anchorable too — it is the thing you most want to anchor to
+  ---
+  duration_ms: 1.5019
+  type: 'test'
+  ...
+# Subtest: anchoring to a path with no footprint is still refused clearly
+ok 22 - anchoring to a path with no footprint is still refused clearly
+  ---
+  duration_ms: 1.0746
+  type: 'test'
+  ...
+# Subtest: open artwork is not judged as a dangling connector or a retraced connector
+ok 23 - open artwork is not judged as a dangling connector or a retraced connector
+  ---
+  duration_ms: 36.5681
+  type: 'test'
+  ...
+# Subtest: styled artwork renders as a coloured round line while claiming exact quadrants
+ok 24 - styled artwork renders as a coloured round line while claiming exact quadrants
+  ---
+  duration_ms: 6.2043
+  type: 'test'
+  ...
+# Subtest: path styling refuses CSS injection and out-of-range widths by name
+ok 25 - path styling refuses CSS injection and out-of-range widths by name
+  ---
+  duration_ms: 2.8131
+  type: 'test'
+  ...
+# Subtest: box presentation accepts safe hex colour and refuses CSS injection
+ok 26 - box presentation accepts safe hex colour and refuses CSS injection
+  ---
+  duration_ms: 2.3236
+  type: 'test'
+  ...
+# Subtest: cell paint colours every claimed quadrant without changing its footprint
+ok 27 - cell paint colours every claimed quadrant without changing its footprint
+  ---
+  duration_ms: 1.8429
+  type: 'test'
+  ...
+# Subtest: a stroke given two colours interpolates along its own length
+ok 28 - a stroke given two colours interpolates along its own length
+  ---
+  duration_ms: 1.7406
+  type: 'test'
+  ...
+# Subtest: a ramped stroke renders its own colours rather than one flat fill
+ok 29 - a ramped stroke renders its own colours rather than one flat fill
+  ---
+  duration_ms: 1.8668
+  type: 'test'
+  ...
+# Subtest: a single colour still stores nothing per piece
+ok 30 - a single colour still stores nothing per piece
+  ---
+  duration_ms: 0.5522
+  type: 'test'
+  ...
+# Subtest: a ramp survives save and reopen
+ok 31 - a ramp survives save and reopen
+  ---
+  duration_ms: 2.7417
+  type: 'test'
+  ...
+# Subtest: a ramp with a bad stop is refused by name
+ok 32 - a ramp with a bad stop is refused by name
+  ---
+  duration_ms: 1.3403
+  type: 'test'
+  ...
+# Subtest: a filled shape claims its interior, not just its outline
+ok 33 - a filled shape claims its interior, not just its outline
+  ---
+  duration_ms: 2.5423
+  type: 'test'
+  ...
+# Subtest: a filled shape hides what is behind it, which is the whole point
+ok 34 - a filled shape hides what is behind it, which is the whole point
+  ---
+  duration_ms: 1.474
+  type: 'test'
+  ...
+# Subtest: a fill can carry its own colour, independent of the outline
+ok 35 - a fill can carry its own colour, independent of the outline
+  ---
+  duration_ms: 3.6335
+  type: 'test'
+  ...
+# Subtest: a fill can gradate across the region — tone without hatching
+ok 36 - a fill can gradate across the region — tone without hatching
+  ---
+  duration_ms: 35.1152
+  type: 'test'
+  ...
+# Subtest: filling an open shape is refused rather than leaking across the sheet
+ok 37 - filling an open shape is refused rather than leaking across the sheet
+  ---
+  duration_ms: 2.1864
+  type: 'test'
+  ...
+# Subtest: the corpus is frozen
+ok 38 - the corpus is frozen
+  ---
+  duration_ms: 1.7558
+  type: 'test'
+  ...
+# Subtest: every task is fully specified
+ok 39 - every task is fully specified
+  ---
+  duration_ms: 0.6114
+  type: 'test'
+  ...
+# Subtest: task ids are unique and stable in shape
+ok 40 - task ids are unique and stable in shape
+  ---
+  duration_ms: 1.4901
+  type: 'test'
+  ...
+# Subtest: there is a holdout partition that is not merely decorative
+ok 41 - there is a holdout partition that is not merely decorative
+  ---
+  duration_ms: 0.7105
+  type: 'test'
+  ...
+# Subtest: negative cases exist and state what a correct scorer should do
+ok 42 - negative cases exist and state what a correct scorer should do
+  ---
+  duration_ms: 0.5513
+  type: 'test'
+  ...
+# Subtest: the rubric refuses to let a sparse artifact win
+ok 43 - the rubric refuses to let a sparse artifact win
+  ---
+  duration_ms: 0.2927
+  type: 'test'
+  ...
+# Subtest: every version declares a palette, a size and at least one pose
+ok 44 - every version declares a palette, a size and at least one pose
+  ---
+  duration_ms: 1.6813
+  type: 'test'
+  ...
+# Subtest: every pose paints inside its own declared bounds
+ok 45 - every pose paints inside its own declared bounds
+  ---
+  duration_ms: 190.5949
+  type: 'test'
+  ...
+# Subtest: the document canvas holds the sprite plus its margin
+ok 46 - the document canvas holds the sprite plus its margin
+  ---
+  duration_ms: 5.9838
+  type: 'test'
+  ...
+# Subtest: poses are deterministic
+ok 47 - poses are deterministic
+  ---
+  duration_ms: 188.6259
+  type: 'test'
+  ...
+# Subtest: the newest full pose validates clean and merges its horizontal runs
+ok 48 - the newest full pose validates clean and merges its horizontal runs
+  ---
+  duration_ms: 863.1439
+  type: 'test'
+  ...
+# Subtest: canonical root builders are byte-identical on a second isolated run
+ok 49 - canonical root builders are byte-identical on a second isolated run
+  ---
+  duration_ms: 13286.6706
+  type: 'test'
+  ...
+# Subtest: CLI doctor and searchable help expose the live registry
+ok 50 - CLI doctor and searchable help expose the live registry
+  ---
+  duration_ms: 3798.8711
+  type: 'test'
+  ...
+# Subtest: CLI governance verifies naming and source-of-truth ownership
+ok 51 - CLI governance verifies naming and source-of-truth ownership
+  ---
+  duration_ms: 4535.4299
+  type: 'test'
+  ...
+# Subtest: CLI renders deterministic native PNG and PDF
+ok 52 - CLI renders deterministic native PNG and PDF
+  ---
+  duration_ms: 918.7738
+  type: 'test'
+  ...
+# Subtest: CLI render receipt and review command close the perceptual-review loop
+ok 53 - CLI render receipt and review command close the perceptual-review loop
+  ---
+  duration_ms: 2521.6002
+  type: 'test'
+  ...
+# Subtest: CLI creates an architecture documentation bundle
+ok 54 - CLI creates an architecture documentation bundle
+  ---
+  duration_ms: 458.6567
+  type: 'test'
+  ...
+# Subtest: the Cloudflare adapter exposes and preserves the canonical registry through D1/R2
+ok 55 - the Cloudflare adapter exposes and preserves the canonical registry through D1/R2
+  ---
+  duration_ms: 466.0695
+  type: 'test'
+  ...
+# Subtest: the Cloudflare adapter refuses bad content negotiation before touching storage
+ok 56 - the Cloudflare adapter refuses bad content negotiation before touching storage
+  ---
+  duration_ms: 1.0588
+  type: 'test'
+  ...
+# Subtest: hosted geometry survives separate D1/R2 requests and exports actual binary payloads
+ok 57 - hosted geometry survives separate D1/R2 requests and exports actual binary payloads
+  ---
+  duration_ms: 5848.6759
+  type: 'test'
+  ...
+# Subtest: same-page overlap is critical and names the exact quadrants
+ok 58 - same-page overlap is critical and names the exact quadrants
+  ---
+  duration_ms: 42.5007
+  type: 'test'
+  ...
+# Subtest: text overflow is a first-class collision, not a rendering surprise
+ok 59 - text overflow is a first-class collision, not a rendering surprise
+  ---
+  duration_ms: 19.9241
+  type: 'test'
+  ...
+# Subtest: a well-sized box produces no fit findings
+ok 60 - a well-sized box produces no fit findings
+  ---
+  duration_ms: 1.6297
+  type: 'test'
+  ...
+# Subtest: corner style decides whether a crossing stroke is an error or a note
+ok 61 - corner style decides whether a crossing stroke is an error or a note
+  ---
+  duration_ms: 27.6607
+  type: 'test'
+  ...
+# Subtest: a stroke through the body of a box is an error whatever the corner style
+ok 62 - a stroke through the body of a box is an error whatever the corner style
+  ---
+  duration_ms: 3.4497
+  type: 'test'
+  ...
+# Subtest: crossing a lane boundary is informational, not a node-crossing error
+ok 63 - crossing a lane boundary is informational, not a node-crossing error
+  ---
+  duration_ms: 3.546
+  type: 'test'
+  ...
+# Subtest: page intent decides the severity of the same geometry
+ok 64 - page intent decides the severity of the same geometry
+  ---
+  duration_ms: 52.3778
+  type: 'test'
+  ...
+# Subtest: an overlay that crosses a lower label is an error, not harmless layering
+ok 65 - an overlay that crosses a lower label is an error, not harmless layering
+  ---
+  duration_ms: 1.5164
+  type: 'test'
+  ...
+# Subtest: an overlay may cross a box border without obscuring its label
+ok 66 - an overlay may cross a box border without obscuring its label
+  ---
+  duration_ms: 1.4292
+  type: 'test'
+  ...
+# Subtest: the AI adjudicates intent, and the acceptance lapses when geometry changes
+ok 67 - the AI adjudicates intent, and the acceptance lapses when geometry changes
+  ---
+  duration_ms: 7.1609
+  type: 'test'
+  ...
+# Subtest: accepting without a reason is refused
+ok 68 - accepting without a reason is refused
+  ---
+  duration_ms: 0.8243
+  type: 'test'
+  ...
+# Subtest: accepting an unknown or expired fingerprint is refused without leaving a stale record
+ok 69 - accepting an unknown or expired fingerprint is refused without leaving a stale record
+  ---
+  duration_ms: 0.4027
+  type: 'test'
+  ...
+# Subtest: touching boxes are flagged for having no gutter
+ok 70 - touching boxes are flagged for having no gutter
+  ---
+  duration_ms: 0.4606
+  type: 'test'
+  ...
+# Subtest: a free-floating connector is reported once, not once per end
+ok 71 - a free-floating connector is reported once, not once per end
+  ---
+  duration_ms: 0.4748
+  type: 'test'
+  ...
+# Subtest: a connector anchored at one end reports only the loose end
+ok 72 - a connector anchored at one end reports only the loose end
+  ---
+  duration_ms: 0.8219
+  type: 'test'
+  ...
+# Subtest: findings are ranked most severe first
+ok 73 - findings are ranked most severe first
+  ---
+  duration_ms: 1.3537
+  type: 'test'
+  ...
+# Subtest: a duplicate id is critical because targets become ambiguous
+ok 74 - a duplicate id is critical because targets become ambiguous
+  ---
+  duration_ms: 0.7087
+  type: 'test'
+  ...
+# Subtest: the log renders with severity, fingerprint and fixes
+ok 75 - the log renders with severity, fingerprint and fixes
+  ---
+  duration_ms: 4.7462
+  type: 'test'
+  ...
+# Subtest: a reason that only restates the finding rule is refused
+ok 76 - a reason that only restates the finding rule is refused
+  ---
+  duration_ms: 8.3466
+  type: 'test'
+  ...
+# Subtest: citing the rule is fine when the reason also explains it
+ok 77 - citing the rule is fine when the reason also explains it
+  ---
+  duration_ms: 4.2579
+  type: 'test'
+  ...
+# Subtest: a reason naming a different rule than the one accepted is not a restatement
+ok 78 - a reason naming a different rule than the one accepted is not a restatement
+  ---
+  duration_ms: 1.6056
+  type: 'test'
+  ...
+# Subtest: one reason cannot be spread verbatim across an unlimited number of findings
+ok 79 - one reason cannot be spread verbatim across an unlimited number of findings
+  ---
+  duration_ms: 961.3307
+  type: 'test'
+  ...
+# Subtest: re-accepting the same fingerprint with the same reason is an update, not a repeat
+ok 80 - re-accepting the same fingerprint with the same reason is an update, not a repeat
+  ---
+  duration_ms: 5.0441
+  type: 'test'
+  ...
+# Subtest: accepted decision findings are PASS_WITH_EXCEPTIONS, never a bare pass
+ok 81 - accepted decision findings are PASS_WITH_EXCEPTIONS, never a bare pass
+  ---
+  duration_ms: 4.2178
+  type: 'test'
+  ...
+# Subtest: two things at different depths sharing a page cannot occlude each other
+ok 82 - two things at different depths sharing a page cannot occlude each other
+  ---
+  duration_ms: 17.8047
+  type: 'test'
+  ...
+# Subtest: the same overlap on separate pages is depth working, not a finding
+ok 83 - the same overlap on separate pages is depth working, not a finding
+  ---
+  duration_ms: 0.7699
+  type: 'test'
+  ...
+# Subtest: things at the same depth sharing a page are not a depth conflict
+ok 84 - things at the same depth sharing a page are not a depth conflict
+  ---
+  duration_ms: 4.5552
+  type: 'test'
+  ...
+# Subtest: elements with no depth recorded are never judged on depth
+ok 85 - elements with no depth recorded are never judged on depth
+  ---
+  duration_ms: 4.417
+  type: 'test'
+  ...
+# Subtest: selected constrained artwork rotates once and followers remain attached after reload
+ok 86 - selected constrained artwork rotates once and followers remain attached after reload
+  ---
+  duration_ms: 50.5461
+  type: 'test'
+  ...
+# Subtest: transform rejects masked geometry atomically and radial copies preserve the original
+ok 87 - transform rejects masked geometry atomically and radial copies preserve the original
+  ---
+  duration_ms: 17.2434
+  type: 'test'
+  ...
+# Subtest: group styling rolls back a mixed selection and accepts measured box presentation
+ok 88 - group styling rolls back a mixed selection and accepts measured box presentation
+  ---
+  duration_ms: 6.9466
+  type: 'test'
+  ...
+# Subtest: explicit canvas alignment and fixed edge gaps preserve the chosen reference
+ok 89 - explicit canvas alignment and fixed edge gaps preserve the chosen reference
+  ---
+  duration_ms: 3.3345
+  type: 'test'
+  ...
+# Subtest: page duplicate and merge preserve ids and refuse overwriting destinations
+ok 90 - page duplicate and merge preserve ids and refuse overwriting destinations
+  ---
+  duration_ms: 19.1732
+  type: 'test'
+  ...
+# Subtest: cleanup preserves compositing and semantic references
+ok 91 - cleanup preserves compositing and semantic references
+  ---
+  duration_ms: 3.1557
+  type: 'test'
+  ...
+# Subtest: bulk path nodes, interpolation, trim and forward intersection remain exact
+ok 92 - bulk path nodes, interpolation, trim and forward intersection remain exact
+  ---
+  duration_ms: 5.5085
+  type: 'test'
+  ...
+# Subtest: pattern offset and region color mean the same thing in direct and planned pen calls
+ok 93 - pattern offset and region color mean the same thing in direct and planned pen calls
+  ---
+  duration_ms: 12.1717
+  type: 'test'
+  ...
+# Subtest: current-date markers are projected only on a temporal domain and survive reflow
+ok 94 - current-date markers are projected only on a temporal domain and survive reflow
+  ---
+  duration_ms: 128.2963
+  type: 'test'
+  ...
+# Subtest: timeline relationships become stable native semantic connectors
+ok 95 - timeline relationships become stable native semantic connectors
+  ---
+  duration_ms: 21.9917
+  type: 'test'
+  ...
+# Subtest: native timeline export preserves rich fields; Mermaid refuses unsupported meaning
+ok 96 - native timeline export preserves rich fields; Mermaid refuses unsupported meaning
+  ---
+  duration_ms: 5.2492
+  type: 'test'
+  ...
+# Subtest: Mermaid projection reports identity mapping and round-trips point and period content
+ok 97 - Mermaid projection reports identity mapping and round-trips point and period content
+  ---
+  duration_ms: 8.7572
+  type: 'test'
+  ...
+# Subtest: dates before year 100 retain their true Gregorian year
+ok 98 - dates before year 100 retain their true Gregorian year
+  ---
+  duration_ms: 0.2337
+  type: 'test'
+  ...
+# Subtest: radial color fields preserve geometry and replace cleanly with a solid color
+ok 99 - radial color fields preserve geometry and replace cleanly with a solid color
+  ---
+  duration_ms: 36.2351
+  type: 'test'
+  ...
+# Subtest: new MCP operations persist with undo/redo across reopen and reject malformed plans
+ok 100 - new MCP operations persist with undo/redo across reopen and reject malformed plans
+  ---
+  duration_ms: 2454.1052
+  type: 'test'
+  ...
+# Subtest: extra material changes the fingerprint
+ok 101 - extra material changes the fingerprint
+  ---
+  duration_ms: 2.8003
+  type: 'test'
+  ...
+# Subtest: omitting extra preserves existing fingerprints
+ok 102 - omitting extra preserves existing fingerprints
+  ---
+  duration_ms: 0.4126
+  type: 'test'
+  ...
+# Subtest: schematic is a declarable page intent
+ok 103 - schematic is a declarable page intent
+  ---
+  duration_ms: 4.3331
+  type: 'test'
+  ...
+# Subtest: an unknown intent is still rejected
+ok 104 - an unknown intent is still rejected
+  ---
+  duration_ms: 0.6466
+  type: 'test'
+  ...
+# Subtest: density is ink over canvas quadrants, using the engine ink definition
+ok 105 - density is ink over canvas quadrants, using the engine ink definition
+  ---
+  duration_ms: 2.4945
+  type: 'test'
+  ...
+# Subtest: the sparse threshold is the calibrated value
+ok 106 - the sparse threshold is the calibrated value
+  ---
+  duration_ms: 0.5589
+  type: 'test'
+  ...
+# Subtest: a near-empty page produces one S3 finding with no fixes
+ok 107 - a near-empty page produces one S3 finding with no fixes
+  ---
+  duration_ms: 1.9496
+  type: 'test'
+  ...
+# Subtest: a schematic page opts out entirely
+ok 108 - a schematic page opts out entirely
+  ---
+  duration_ms: 0.3473
+  type: 'test'
+  ...
+# Subtest: a sparse overlay does not drag down a composed base page
+ok 109 - a sparse overlay does not drag down a composed base page
+  ---
+  duration_ms: 2.2796
+  type: 'test'
+  ...
+# Subtest: composition findings are S3 and do not affect summary.clean
+ok 110 - composition findings are S3 and do not affect summary.clean
+  ---
+  duration_ms: 5.835
+  type: 'test'
+  ...
+# Subtest: no shipped diagram trips a composition finding
+ok 111 - no shipped diagram trips a composition finding
+  ---
+  duration_ms: 11693.0837
+  type: 'test'
+  ...
+# Subtest: accepting a composition finding lapses once the drawing changes
+ok 112 - accepting a composition finding lapses once the drawing changes
+  ---
+  duration_ms: 16.8636
+  type: 'test'
+  ...
+# Subtest: a seat sits outside the box on every face, which is not symmetric
+ok 113 - a seat sits outside the box on every face, which is not symmetric
+  ---
+  duration_ms: 3.2679
+  type: 'test'
+  ...
+# Subtest: a corner is not a seat, because it does not say which way to leave
+ok 114 - a corner is not a seat, because it does not say which way to leave
+  ---
+  duration_ms: 0.5687
+  type: 'test'
+  ...
+# Subtest: pen from <id>.<face> seats the cursor and faces it outward
+ok 115 - pen from <id>.<face> seats the cursor and faces it outward
+  ---
+  duration_ms: 6.8944
+  type: 'test'
+  ...
+# Subtest: indexed face seats alternate by one cell around the midpoint
+ok 116 - indexed face seats alternate by one cell around the midpoint
+  ---
+  duration_ms: 0.7161
+  type: 'test'
+  ...
+# Subtest: indexed seats preserve the seat-to-port invariant and reject overflow
+ok 117 - indexed seats preserve the seat-to-port invariant and reject overflow
+  ---
+  duration_ms: 1.5924
+  type: 'test'
+  ...
+# Subtest: an indexed source and target produce a clean dedicated track
+ok 118 - an indexed source and target produce a clean dedicated track
+  ---
+  duration_ms: 9.8522
+  type: 'test'
+  ...
+# Subtest: a connector seated at a port and left to its defaults lands on the port
+ok 119 - a connector seated at a port and left to its defaults lands on the port
+  ---
+  duration_ms: 7.2783
+  type: 'test'
+  ...
+# Subtest: an explicit alignment still wins over the carried track
+ok 120 - an explicit alignment still wins over the carried track
+  ---
+  duration_ms: 0.67
+  type: 'test'
+  ...
+# Subtest: the carried track is followed when no alignment is given
+ok 121 - the carried track is followed when no alignment is given
+  ---
+  duration_ms: 0.7564
+  type: 'test'
+  ...
+# Subtest: a path that names a target but stops short of it is reported
+ok 122 - a path that names a target but stops short of it is reported
+  ---
+  duration_ms: 17.7302
+  type: 'test'
+  ...
+# Subtest: targeting a box on an intermediate leg is not a miss
+ok 123 - targeting a box on an intermediate leg is not a miss
+  ---
+  duration_ms: 2.4682
+  type: 'test'
+  ...
+# Subtest: a path aiming at a bare address is not target-checked
+ok 124 - a path aiming at a bare address is not target-checked
+  ---
+  duration_ms: 0.9295
+  type: 'test'
+  ...
+# Subtest: a port resolves to the box's own edge quadrant on every side
+ok 125 - a port resolves to the box's own edge quadrant on every side
+  ---
+  duration_ms: 0.3695
+  type: 'test'
+  ...
+# Subtest: a corner port resolves inside the box, not diagonally outside it
+ok 126 - a corner port resolves inside the box, not diagonally outside it
+  ---
+  duration_ms: 0.2317
+  type: 'test'
+  ...
+# Subtest: a connector arrives cleanly travelling in any of the four directions
+ok 127 - a connector arrives cleanly travelling in any of the four directions
+  ---
+  duration_ms: 6.0381
+  type: 'test'
+  ...
+# Subtest: an arrowhead travelling left or up lands on the seat, not past it
+ok 128 - an arrowhead travelling left or up lands on the seat, not past it
+  ---
+  duration_ms: 0.5787
+  type: 'test'
+  ...
+# Subtest: a span may be written either way, wherever it is accepted
+ok 129 - a span may be written either way, wherever it is accepted
+  ---
+  duration_ms: 0.4159
+  type: 'test'
+  ...
+# Subtest: a malformed span says what it wanted, including the object form
+ok 130 - a malformed span says what it wanted, including the object form
+  ---
+  duration_ms: 0.3561
+  type: 'test'
+  ...
+# Subtest: a realistic two-column diagram authors clean with no hand-computed addresses
+ok 131 - a realistic two-column diagram authors clean with no hand-computed addresses
+  ---
+  duration_ms: 12.8945
+  type: 'test'
+  ...
+# Subtest: align center is still refused when there is nothing to measure against
+ok 132 - align center is still refused when there is nothing to measure against
+  ---
+  duration_ms: 0.3073
+  type: 'test'
+  ...
+# Subtest: a stroke centres in the corridor between two boxes
+ok 133 - a stroke centres in the corridor between two boxes
+  ---
+  duration_ms: 2.5069
+  type: 'test'
+  ...
+# Subtest: an even corridor has no exact middle, and says so rather than absorbing it
+ok 134 - an even corridor has no exact middle, and says so rather than absorbing it
+  ---
+  duration_ms: 1.2281
+  type: 'test'
+  ...
+# Subtest: a dashed connector keeps its arrowhead and still reaches its target
+ok 135 - a dashed connector keeps its arrowhead and still reaches its target
+  ---
+  duration_ms: 8.5631
+  type: 'test'
+  ...
+# Subtest: every face of every shape seats a connector against its ink
+ok 136 - every face of every shape seats a connector against its ink
+  ---
+  duration_ms: 19.1795
+  type: 'test'
+  ...
+# Subtest: a shape-aware port still faces outward, so a path leaves the way it should
+ok 137 - a shape-aware port still faces outward, so a path leaves the way it should
+  ---
+  duration_ms: 0.466
+  type: 'test'
+  ...
+# Subtest: a shape that fills its box is seated exactly where it always was
+ok 138 - a shape that fills its box is seated exactly where it always was
+  ---
+  duration_ms: 0.2132
+  type: 'test'
+  ...
+# Subtest: containers are named and recognised
+ok 139 - containers are named and recognised
+  ---
+  duration_ms: 2.3944
+  type: 'test'
+  ...
+# Subtest: a container claims a ring and a title band, never its hole
+ok 140 - a container claims a ring and a title band, never its hole
+  ---
+  duration_ms: 0.6577
+  type: 'test'
+  ...
+# Subtest: the interior a container leaves free is exactly what it does not claim
+ok 141 - the interior a container leaves free is exactly what it does not claim
+  ---
+  duration_ms: 0.7729
+  type: 'test'
+  ...
+# Subtest: elementClaimed reports the ring for a container box
+ok 142 - elementClaimed reports the ring for a container box
+  ---
+  duration_ms: 0.5274
+  type: 'test'
+  ...
+# Subtest: a member sitting inside a lane collides with nothing
+ok 143 - a member sitting inside a lane collides with nothing
+  ---
+  duration_ms: 32.2853
+  type: 'test'
+  ...
+# Subtest: a node straddling the frame still reports L001
+ok 144 - a node straddling the frame still reports L001
+  ---
+  duration_ms: 13.0688
+  type: 'test'
+  ...
+# Subtest: two lanes side by side do not collide, and nesting is allowed
+ok 145 - two lanes side by side do not collide, and nesting is allowed
+  ---
+  duration_ms: 24.2863
+  type: 'test'
+  ...
+# Subtest: a container label belongs in its title band
+ok 146 - a container label belongs in its title band
+  ---
+  duration_ms: 0.2493
+  type: 'test'
+  ...
+# Subtest: the band is tall enough for the label it is given
+ok 147 - the band is tall enough for the label it is given
+  ---
+  duration_ms: 2.2138
+  type: 'test'
+  ...
+# Subtest: two ordinary boxes still collide exactly as before
+ok 148 - two ordinary boxes still collide exactly as before
+  ---
+  duration_ms: 7.404
+  type: 'test'
+  ...
+# Subtest: a container too small to read stays an ordinary rectangle
+ok 149 - a container too small to read stays an ordinary rectangle
+  ---
+  duration_ms: 0.2479
+  type: 'test'
+  ...
+# Subtest: roles, scales, and length bindings survive deterministic serialization
+ok 150 - roles, scales, and length bindings survive deterministic serialization
+  ---
+  duration_ms: 10.3788
+  type: 'test'
+  ...
+# Subtest: scale ids do not collide with object prototype names
+ok 151 - scale ids do not collide with object prototype names
+  ---
+  duration_ms: 1.6485
+  type: 'test'
+  ...
+# Subtest: loaded and direct bindings refuse malformed, dangling, or position-scale claims
+ok 152 - loaded and direct bindings refuse malformed, dangling, or position-scale claims
+  ---
+  duration_ms: 0.8659
+  type: 'test'
+  ...
+# Subtest: scale mutations rehearse, diff, commit, and remain removable only when unbound
+ok 153 - scale mutations rehearse, diff, commit, and remain removable only when unbound
+  ---
+  duration_ms: 25.2107
+  type: 'test'
+  ...
+# Subtest: quantitative validation permits no hidden quadrant tolerance
+ok 154 - quantitative validation permits no hidden quadrant tolerance
+  ---
+  duration_ms: 4.9041
+  type: 'test'
+  ...
+# Subtest: optional and security role dashes survive SVG, PNG, and PDF rendering paths
+ok 155 - optional and security role dashes survive SVG, PNG, and PDF rendering paths
+  ---
+  duration_ms: 89.6911
+  type: 'test'
+  ...
+# Subtest: semantic roles resolve through custom and dark renderer skins
+ok 156 - semantic roles resolve through custom and dark renderer skins
+  ---
+  duration_ms: 3.8062
+  type: 'test'
+  ...
+# Subtest: solid black turns every quadrant on
+ok 157 - solid black turns every quadrant on
+  ---
+  duration_ms: 5.2479
+  type: 'test'
+  ...
+# Subtest: solid white turns every quadrant off
+ok 158 - solid white turns every quadrant off
+  ---
+  duration_ms: 1.7398
+  type: 'test'
+  ...
+# Subtest: mid grey lands on exactly half, which is what a threshold matrix promises
+ok 159 - mid grey lands on exactly half, which is what a threshold matrix promises
+  ---
+  duration_ms: 2.5467
+  type: 'test'
+  ...
+# Subtest: the threshold matrix is a proper Bayer ordering
+ok 160 - the threshold matrix is a proper Bayer ordering
+  ---
+  duration_ms: 1.2522
+  type: 'test'
+  ...
+# Subtest: a gradient produces a gradient of ink, not a flat field
+ok 161 - a gradient produces a gradient of ink, not a flat field
+  ---
+  duration_ms: 2.5019
+  type: 'test'
+  ...
+# Subtest: transparent pixels read as ground, not as black
+ok 162 - transparent pixels read as ground, not as black
+  ---
+  duration_ms: 1.0084
+  type: 'test'
+  ...
+# Subtest: downscaling area-averages source pixels and upscaling repeats nearest samples
+ok 163 - downscaling area-averages source pixels and upscaling repeats nearest samples
+  ---
+  duration_ms: 0.8732
+  type: 'test'
+  ...
+# Subtest: dither contain pads and cover crops without stretching the source aspect
+ok 164 - dither contain pads and cover crops without stretching the source aspect
+  ---
+  duration_ms: 0.473
+  type: 'test'
+  ...
+# Subtest: readability analysis identifies checkerboard noise and accepts sparse structure
+ok 165 - readability analysis identifies checkerboard noise and accepts sparse structure
+  ---
+  duration_ms: 24.8249
+  type: 'test'
+  ...
+# Subtest: supersample resolve preserves weighted coverage through runs and analysis
+ok 166 - supersample resolve preserves weighted coverage through runs and analysis
+  ---
+  duration_ms: 1.3978
+  type: 'test'
+  ...
+# Subtest: simplify preserves near-binary structure without reproducing Bayer checker tone
+ok 167 - simplify preserves near-binary structure without reproducing Bayer checker tone
+  ---
+  duration_ms: 98.4354
+  type: 'test'
+  ...
+# Subtest: simplify can process at 4x linear resolution and reduce to the unchanged 1x lattice
+ok 168 - simplify can process at 4x linear resolution and reduce to the unchanged 1x lattice
+  ---
+  duration_ms: 229.9956
+  type: 'test'
+  ...
+# Subtest: simplify supersampling is bounded and auto resolves without silent explicit fallback
+ok 169 - simplify supersampling is bounded and auto resolves without silent explicit fallback
+  ---
+  duration_ms: 0.7201
+  type: 'test'
+  ...
+# Subtest: simplify reports heuristic continuous-tone processing and refuses meaningless or tiny output
+ok 170 - simplify reports heuristic continuous-tone processing and refuses meaningless or tiny output
+  ---
+  duration_ms: 239.3618
+  type: 'test'
+  ...
+# Subtest: simplify upscales transparent icon structure without inventing detail
+ok 171 - simplify upscales transparent icon structure without inventing detail
+  ---
+  duration_ms: 8.6697
+  type: 'test'
+  ...
+# Subtest: simplify detail presets change the continuous-tone ink budget monotonically
+ok 172 - simplify detail presets change the continuous-tone ink budget monotonically
+  ---
+  duration_ms: 407.854
+  type: 'test'
+  ...
+# Subtest: continuous-tone simplify creates an explicit semantic-review finding
+ok 173 - continuous-tone simplify creates an explicit semantic-review finding
+  ---
+  duration_ms: 75.6935
+  type: 'test'
+  ...
+# Subtest: mode dither no longer refuses
+ok 174 - mode dither no longer refuses
+  ---
+  duration_ms: 1.6316
+  type: 'test'
+  ...
+# Subtest: busy dither blocks publication with an actionable L022 finding
+ok 175 - busy dither blocks publication with an actionable L022 finding
+  ---
+  duration_ms: 49.5184
+  type: 'test'
+  ...
+# Subtest: a dithered image claims exactly its footprint, and collides normally
+ok 176 - a dithered image claims exactly its footprint, and collides normally
+  ---
+  duration_ms: 7.872
+  type: 'test'
+  ...
+# Subtest: a dithered image draws quadrants, not an embedded bitmap
+ok 177 - a dithered image draws quadrants, not an embedded bitmap
+  ---
+  duration_ms: 4.0332
+  type: 'test'
+  ...
+# Subtest: the same image dithers to byte-identical output every time
+ok 178 - the same image dithers to byte-identical output every time
+  ---
+  duration_ms: 3.1164
+  type: 'test'
+  ...
+# Subtest: a large dithered image merges runs rather than emitting a rect per quadrant
+ok 179 - a large dithered image merges runs rather than emitting a rect per quadrant
+  ---
+  duration_ms: 48.0709
+  type: 'test'
+  ...
+# Subtest: embed mode still embeds — dither did not become the default
+ok 180 - embed mode still embeds — dither did not become the default
+  ---
+  duration_ms: 1.397
+  type: 'test'
+  ...
+# Subtest: dithering a format that cannot be decoded refuses by name
+ok 181 - dithering a format that cannot be decoded refuses by name
+  ---
+  duration_ms: 0.4654
+  type: 'test'
+  ...
+# Subtest: dither refuses a footprint large enough to exhaust memory
+ok 182 - dither refuses a footprint large enough to exhaust memory
+  ---
+  duration_ms: 0.2131
+  type: 'test'
+  ...
+# Subtest: every fix kind the engine emits is covered by an operation
+ok 183 - every fix kind the engine emits is covered by an operation
+  ---
+  duration_ms: 54.5409
+  type: 'test'
+  ...
+# Subtest: every rule that carries fixes names at least one
+ok 184 - every rule that carries fixes names at least one
+  ---
+  duration_ms: 0.3863
+  type: 'test'
+  ...
+# Subtest: resize applies the widen fix and clears the finding
+ok 185 - resize applies the widen fix and clears the finding
+  ---
+  duration_ms: 5.291
+  type: 'test'
+  ...
+# Subtest: resize keeps the anchored corner pinned
+ok 186 - resize keeps the anchored corner pinned
+  ---
+  duration_ms: 0.5781
+  type: 'test'
+  ...
+# Subtest: move to an address repositions by pin
+ok 187 - move to an address repositions by pin
+  ---
+  duration_ms: 2.1579
+  type: 'test'
+  ...
+# Subtest: moving a path shifts every piece together
+ok 188 - moving a path shifts every piece together
+  ---
+  duration_ms: 3.3017
+  type: 'test'
+  ...
+# Subtest: moving a path also moves its resumable end state
+ok 189 - moving a path also moves its resumable end state
+  ---
+  duration_ms: 0.8445
+  type: 'test'
+  ...
+# Subtest: restyle relabels and re-measures
+ok 190 - restyle relabels and re-measures
+  ---
+  duration_ms: 1.6177
+  type: 'test'
+  ...
+# Subtest: a failed restyle validates every field before changing any of them
+ok 191 - a failed restyle validates every field before changing any of them
+  ---
+  duration_ms: 2.2245
+  type: 'test'
+  ...
+# Subtest: a failed page update is atomic across intent and stacking changes
+ok 192 - a failed page update is atomic across intent and stacking changes
+  ---
+  duration_ms: 1.6633
+  type: 'test'
+  ...
+# Subtest: update_page turns an exclusive error into an overlay note
+ok 193 - update_page turns an exclusive error into an overlay note
+  ---
+  duration_ms: 3.8748
+  type: 'test'
+  ...
+# Subtest: rename frees the duplicate-id finding, and refuses a name already taken
+ok 194 - rename frees the duplicate-id finding, and refuses a name already taken
+  ---
+  duration_ms: 0.7392
+  type: 'test'
+  ...
+# Subtest: set_canvas clears an out-of-bounds finding
+ok 195 - set_canvas clears an out-of-bounds finding
+  ---
+  duration_ms: 0.878
+  type: 'test'
+  ...
+# Subtest: a flat group moves a cross-page subsystem as one exact delta and survives serialisation
+ok 196 - a flat group moves a cross-page subsystem as one exact delta and survives serialisation
+  ---
+  duration_ms: 6.4934
+  type: 'test'
+  ...
+# Subtest: group membership follows rename and removal without leaving dangling ids
+ok 197 - group membership follows rename and removal without leaving dangling ids
+  ---
+  duration_ms: 1.3147
+  type: 'test'
+  ...
+# Subtest: groups reject ambiguous ownership and invalid moves before changing the document
+ok 198 - groups reject ambiguous ownership and invalid moves before changing the document
+  ---
+  duration_ms: 1.6441
+  type: 'test'
+  ...
+# Subtest: follow constraints cascade through chains, preserve manual offsets, and survive serialisation
+ok 199 - follow constraints cascade through chains, preserve manual offsets, and survive serialisation
+  ---
+  duration_ms: 2.9288
+  type: 'test'
+  ...
+# Subtest: constraints reconcile target resizing and path extension at named anchors
+ok 200 - constraints reconcile target resizing and path extension at named anchors
+  ---
+  duration_ms: 1.4675
+  type: 'test'
+  ...
+# Subtest: group movement and follow propagation move every constrained element exactly once
+ok 201 - group movement and follow propagation move every constrained element exactly once
+  ---
+  duration_ms: 2.1579
+  type: 'test'
+  ...
+# Subtest: constraints reject cycles, duplicate parents, and invalid offsets atomically, then track rename and removal
+ok 202 - constraints reject cycles, duplicate parents, and invalid offsets atomically, then track rename and removal
+  ---
+  duration_ms: 1.4998
+  type: 'test'
+  ...
+# Subtest: deserialisation rejects corrupt relationship topology before it can partially propagate
+ok 203 - deserialisation rejects corrupt relationship topology before it can partially propagate
+  ---
+  duration_ms: 1.5838
+  type: 'test'
+  ...
+# Subtest: a manually changed dependent loads honestly as unsynchronised and can be resynchronised
+ok 204 - a manually changed dependent loads honestly as unsynchronised and can be resynchronised
+  ---
+  duration_ms: 0.7633
+  type: 'test'
+  ...
+# Subtest: a path can be extended from where its pen stopped
+ok 205 - a path can be extended from where its pen stopped
+  ---
+  duration_ms: 0.9584
+  type: 'test'
+  ...
+# Subtest: extending resolves the dangling-end finding
+ok 206 - extending resolves the dangling-end finding
+  ---
+  duration_ms: 5.8667
+  type: 'test'
+  ...
+# Subtest: extend_path refuses to place boxes — that is a different operation
+ok 207 - extend_path refuses to place boxes — that is a different operation
+  ---
+  duration_ms: 0.8971
+  type: 'test'
+  ...
+# Subtest: replace_path keeps the id and the draw order
+ok 208 - replace_path keeps the id and the draw order
+  ---
+  duration_ms: 1.3407
+  type: 'test'
+  ...
+# Subtest: a failed replacement preserves the original path
+ok 209 - a failed replacement preserves the original path
+  ---
+  duration_ms: 0.5583
+  type: 'test'
+  ...
+# Subtest: a pen program that fails while adding elements applies nothing
+ok 210 - a pen program that fails while adding elements applies nothing
+  ---
+  duration_ms: 0.7078
+  type: 'test'
+  ...
+# Subtest: applyPen commits in place instead of cloning all prior document state
+ok 211 - applyPen commits in place instead of cloning all prior document state
+  ---
+  duration_ms: 0.6035
+  type: 'test'
+  ...
+# Subtest: createDocument honors legacy top-level dimensions and refuses ambiguous options
+ok 212 - createDocument honors legacy top-level dimensions and refuses ambiguous options
+  ---
+  duration_ms: 0.3682
+  type: 'test'
+  ...
+# Subtest: plan rehearses on a copy and leaves the document untouched
+ok 213 - plan rehearses on a copy and leaves the document untouched
+  ---
+  duration_ms: 9.6018
+  type: 'test'
+  ...
+# Subtest: a batch that fails part-way applies nothing
+ok 214 - a batch that fails part-way applies nothing
+  ---
+  duration_ms: 2.2411
+  type: 'test'
+  ...
+# Subtest: commit applies the whole batch and revalidates
+ok 215 - commit applies the whole batch and revalidates
+  ---
+  duration_ms: 2.549
+  type: 'test'
+  ...
+# Subtest: an unknown operation is rejected by name with the valid list
+ok 216 - an unknown operation is rejected by name with the valid list
+  ---
+  duration_ms: 0.3027
+  type: 'test'
+  ...
+# Subtest: plan covers accept_finding, so intent can be rehearsed too
+ok 217 - plan covers accept_finding, so intent can be rehearsed too
+  ---
+  duration_ms: 5.2432
+  type: 'test'
+  ...
+# Subtest: acceptance batches keep exact failure indexes and invalidate their finding snapshot after geometry changes
+ok 218 - acceptance batches keep exact failure indexes and invalidate their finding snapshot after geometry changes
+  ---
+  duration_ms: 6.3527
+  type: 'test'
+  ...
+# Subtest: an element can move to another page without changing its geometry
+ok 219 - an element can move to another page without changing its geometry
+  ---
+  duration_ms: 0.5169
+  type: 'test'
+  ...
+# Subtest: moving to a page that does not exist is refused before anything changes
+ok 220 - moving to a page that does not exist is refused before anything changes
+  ---
+  duration_ms: 0.3913
+  type: 'test'
+  ...
+# Subtest: moving an element to the page it is already on is a no-op, not an error
+ok 221 - moving an element to the page it is already on is a no-op, not an error
+  ---
+  duration_ms: 0.1646
+  type: 'test'
+  ...
+# Subtest: the move operation carries the page change, so plan and tools share it
+ok 222 - the move operation carries the page change, so plan and tools share it
+  ---
+  duration_ms: 0.1994
+  type: 'test'
+  ...
+# Subtest: every fix the engine emits is either executable or declared advisory
+ok 223 - every fix the engine emits is either executable or declared advisory
+  ---
+  duration_ms: 418.3163
+  type: 'test'
+  ...
+# Subtest: align moves the named elements onto one edge and leaves the others alone
+ok 224 - align moves the named elements onto one edge and leaves the others alone
+  ---
+  duration_ms: 8.5866
+  type: 'test'
+  ...
+# Subtest: centring aligns the middles, not the edges
+ok 225 - centring aligns the middles, not the edges
+  ---
+  duration_ms: 1.3811
+  type: 'test'
+  ...
+# Subtest: distribute gives equal gaps and never moves the two end elements
+ok 226 - distribute gives equal gaps and never moves the two end elements
+  ---
+  duration_ms: 1.8055
+  type: 'test'
+  ...
+# Subtest: distribute needs three elements to have a middle to move
+ok 227 - distribute needs three elements to have a middle to move
+  ---
+  duration_ms: 0.7214
+  type: 'test'
+  ...
+# Subtest: align refuses an unknown element by name rather than skipping it
+ok 228 - align refuses an unknown element by name rather than skipping it
+  ---
+  duration_ms: 0.2622
+  type: 'test'
+  ...
+# Subtest: align and distribute are operations, so plan and the tools share them
+ok 229 - align and distribute are operations, so plan and the tools share them
+  ---
+  duration_ms: 0.4491
+  type: 'test'
+  ...
+# Subtest: every advertised MCP tool completes a representative use case over stdio
+ok 230 - every advertised MCP tool completes a representative use case over stdio
+  ---
+  duration_ms: 12028.057
+  type: 'test'
+  ...
+# Subtest: a path outside the workspace root is refused by name, not clamped
+ok 231 - a path outside the workspace root is refused by name, not clamped
+  ---
+  duration_ms: 92.555
+  type: 'test'
+  ...
+# Subtest: a relative .. escape is refused just like an absolute one
+ok 232 - a relative .. escape is refused just like an absolute one
+  ---
+  duration_ms: 17.0531
+  type: 'test'
+  ...
+# Subtest: a symlink pointing out of the root is an escape, because the real path is
+ok 233 - a symlink pointing out of the root is an escape, because the real path is
+  ---
+  duration_ms: 22.5976
+  type: 'test'
+  ...
+# Subtest: an explicitly declared extra root is inside the boundary
+ok 234 - an explicitly declared extra root is inside the boundary
+  ---
+  duration_ms: 19.2103
+  type: 'test'
+  ...
+# Subtest: TURTLEPEN_ALLOW_ANY_PATH=1 restores unrestricted access and says so
+ok 235 - TURTLEPEN_ALLOW_ANY_PATH=1 restores unrestricted access and says so
+  ---
+  duration_ms: 231.6004
+  type: 'test'
+  ...
+# Subtest: a refusal names the path it actually refused, including at a filesystem root
+ok 236 - a refusal names the path it actually refused, including at a filesystem root
+  ---
+  duration_ms: 254.709
+  type: 'test'
+  ...
+# Subtest: a well-formed chart raises no flowchart findings
+ok 237 - a well-formed chart raises no flowchart findings
+  ---
+  duration_ms: 76.5796
+  type: 'test'
+  ...
+# Subtest: F001 fires when a second terminator has nothing leading into it
+ok 238 - F001 fires when a second terminator has nothing leading into it
+  ---
+  duration_ms: 12.339
+  type: 'test'
+  ...
+# Subtest: F002 fires on a decision with only one way out
+ok 239 - F002 fires on a decision with only one way out
+  ---
+  duration_ms: 9.0325
+  type: 'test'
+  ...
+# Subtest: F002 offers a fix that is actually applicable
+ok 240 - F002 offers a fix that is actually applicable
+  ---
+  duration_ms: 1.4392
+  type: 'test'
+  ...
+# Subtest: the rules stay out of documents that are not flowcharts
+ok 241 - the rules stay out of documents that are not flowcharts
+  ---
+  duration_ms: 1.0886
+  type: 'test'
+  ...
+# Subtest: edges come from what the author stated, not from proximity
+ok 242 - edges come from what the author stated, not from proximity
+  ---
+  duration_ms: 5.8975
+  type: 'test'
+  ...
+# Subtest: every named shape is accepted and anything else is refused by name
+ok 243 - every named shape is accepted and anything else is refused by name
+  ---
+  duration_ms: 2.4826
+  type: 'test'
+  ...
+# Subtest: a decision inks exactly half its bounding box on even dimensions
+ok 244 - a decision inks exactly half its bounding box on even dimensions
+  ---
+  duration_ms: 1.3
+  type: 'test'
+  ...
+# Subtest: an odd dimension costs the diamond exactly one row, and says so
+ok 245 - an odd dimension costs the diamond exactly one row, and says so
+  ---
+  duration_ms: 0.4217
+  type: 'test'
+  ...
+# Subtest: a decision is symmetric on both axes
+ok 246 - a decision is symmetric on both axes
+  ---
+  duration_ms: 0.664
+  type: 'test'
+  ...
+# Subtest: a decision keeps its four cardinal vertices and drops its four corners
+ok 247 - a decision keeps its four cardinal vertices and drops its four corners
+  ---
+  duration_ms: 1.4702
+  type: 'test'
+  ...
+# Subtest: claimed footprint is identical whatever the shape
+ok 248 - claimed footprint is identical whatever the shape
+  ---
+  duration_ms: 4.7438
+  type: 'test'
+  ...
+# Subtest: a shape too small to read stays a rectangle instead of becoming a blob
+ok 249 - a shape too small to read stays a rectangle instead of becoming a blob
+  ---
+  duration_ms: 0.9448
+  type: 'test'
+  ...
+# Subtest: shape masks are deterministic
+ok 250 - shape masks are deterministic
+  ---
+  duration_ms: 0.7159
+  type: 'test'
+  ...
+# Subtest: a diamond offers a label about half the bounding box
+ok 251 - a diamond offers a label about half the bounding box
+  ---
+  duration_ms: 0.7376
+  type: 'test'
+  ...
+# Subtest: a label that fits a rectangle can still overflow the diamond
+ok 252 - a label that fits a rectangle can still overflow the diamond
+  ---
+  duration_ms: 120.3824
+  type: 'test'
+  ...
+# Subtest: a stroke clipping a carved corner is information, not an error
+ok 253 - a stroke clipping a carved corner is information, not an error
+  ---
+  duration_ms: 6.1009
+  type: 'test'
+  ...
+# Subtest: every shape emits an outline the renderer can draw
+ok 254 - every shape emits an outline the renderer can draw
+  ---
+  duration_ms: 0.8029
+  type: 'test'
+  ...
+# Subtest: a shape whose silhouette carries meaning declares a maximum aspect
+ok 255 - a shape whose silhouette carries meaning declares a maximum aspect
+  ---
+  duration_ms: 0.2183
+  type: 'test'
+  ...
+# Subtest: aspect is measured in quadrants, which are square
+ok 256 - aspect is measured in quadrants, which are square
+  ---
+  duration_ms: 0.154
+  type: 'test'
+  ...
+# Subtest: spanForShape fits the label inside the SYMBOL, not the bounding box
+ok 257 - spanForShape fits the label inside the SYMBOL, not the bounding box
+  ---
+  duration_ms: 0.6188
+  type: 'test'
+  ...
+# Subtest: subprocess measurement includes the side-bar aperture exactly
+ok 258 - subprocess measurement includes the side-bar aperture exactly
+  ---
+  duration_ms: 2.1507
+  type: 'test'
+  ...
+# Subtest: subprocess overflow fixes name the outer box span, not the carved aperture
+ok 259 - subprocess overflow fixes name the outer box span, not the carved aperture
+  ---
+  duration_ms: 0.708
+  type: 'test'
+  ...
+# Subtest: every shape resize fix is stated in outer-box cells and clears its reported axis
+ok 260 - every shape resize fix is stated in outer-box cells and clears its reported axis
+  ---
+  duration_ms: 183.0268
+  type: 'test'
+  ...
+# Subtest: every node shape measure result fits its actual label aperture
+ok 261 - every node shape measure result fits its actual label aperture
+  ---
+  duration_ms: 2.4425
+  type: 'test'
+  ...
+# Subtest: a squashed symbol is reported with a fix that names a proportionate span
+ok 262 - a squashed symbol is reported with a fix that names a proportionate span
+  ---
+  duration_ms: 25.3704
+  type: 'test'
+  ...
+# Subtest: a well-proportioned symbol raises nothing
+ok 263 - a well-proportioned symbol raises nothing
+  ---
+  duration_ms: 67.0343
+  type: 'test'
+  ...
+# Subtest: a plain process box is never judged on proportion
+ok 264 - a plain process box is never judged on proportion
+  ---
+  duration_ms: 1.0746
+  type: 'test'
+  ...
+# Subtest: a document outline scoops the same edge its mask cuts
+ok 265 - a document outline scoops the same edge its mask cuts
+  ---
+  duration_ms: 0.3553
+  type: 'test'
+  ...
+# Subtest: a symbol feature is a whole number of quadrants, in every renderer
+ok 266 - a symbol feature is a whole number of quadrants, in every renderer
+  ---
+  duration_ms: 0.2121
+  type: 'test'
+  ...
+# Subtest: a drawn cap lands on the lattice and matches the aperture it reserves
+ok 267 - a drawn cap lands on the lattice and matches the aperture it reserves
+  ---
+  duration_ms: 0.6159
+  type: 'test'
+  ...
+# Subtest: a role resolves to presentation and never to geometry
+ok 268 - a role resolves to presentation and never to geometry
+  ---
+  duration_ms: 4.5105
+  type: 'test'
+  ...
+# Subtest: C002 counts the focal budget, and only because a role was declared
+ok 269 - C002 counts the focal budget, and only because a role was declared
+  ---
+  duration_ms: 3.7605
+  type: 'test'
+  ...
+# Subtest: swimlane rules are self-activating and decide only authored fact
+ok 270 - swimlane rules are self-activating and decide only authored fact
+  ---
+  duration_ms: 61.4254
+  type: 'test'
+  ...
+# Subtest: W001 names an unlabelled lane, W002 names a step that claims two owners
+ok 271 - W001 names an unlabelled lane, W002 names a step that claims two owners
+  ---
+  duration_ms: 215.4395
+  type: 'test'
+  ...
+# Subtest: a scale reports the rounding it cannot represent, and never absorbs it
+ok 272 - a scale reports the rounding it cannot represent, and never absorbs it
+  ---
+  duration_ms: 2.3073
+  type: 'test'
+  ...
+# Subtest: quantitative rules are self-activating and catch a chart that lies
+ok 273 - quantitative rules are self-activating and catch a chart that lies
+  ---
+  duration_ms: 2.2555
+  type: 'test'
+  ...
+# Subtest: V002 fires on a truncated magnitude baseline but never on a position scale
+ok 274 - V002 fires on a truncated magnitude baseline but never on a position scale
+  ---
+  duration_ms: 0.8922
+  type: 'test'
+  ...
+# Subtest: V004 reports a value that no whole-cell box can encode exactly
+ok 275 - V004 reports a value that no whole-cell box can encode exactly
+  ---
+  duration_ms: 0.4844
+  type: 'test'
+  ...
+# Subtest: MCP exposes core page opacity directly and in plans for solid layered artwork
+ok 276 - MCP exposes core page opacity directly and in plans for solid layered artwork
+  ---
+  duration_ms: 1133.2735
+  type: 'test'
+  ...
+# Subtest: filled geometry stays solid with thin ink, while an adjacent open stroke stays thin
+ok 277 - filled geometry stays solid with thin ink, while an adjacent open stroke stays thin
+  ---
+  duration_ms: 29.2295
+  type: 'test'
+  ...
+# Subtest: uniform baked colors use compact vector ink without changing claimed geometry
+ok 278 - uniform baked colors use compact vector ink without changing claimed geometry
+  ---
+  duration_ms: 2.8801
+  type: 'test'
+  ...
+# Subtest: transparent game assets preserve empty alpha and opaque ink, with review-bound output
+ok 279 - transparent game assets preserve empty alpha and opaque ink, with review-bound output
+  ---
+  duration_ms: 23.8708
+  type: 'test'
+  ...
+# Subtest: a clean document passes the gate untouched
+ok 280 - a clean document passes the gate untouched
+  ---
+  duration_ms: 17.9038
+  type: 'test'
+  ...
+# Subtest: an open finding above INFO blocks the gate
+ok 281 - an open finding above INFO blocks the gate
+  ---
+  duration_ms: 7.9606
+  type: 'test'
+  ...
+# Subtest: INFO never gates — gating on information trains the reflex the gate prevents
+ok 282 - INFO never gates — gating on information trains the reflex the gate prevents
+  ---
+  duration_ms: 26.0905
+  type: 'test'
+  ...
+# Subtest: the refusal is phrased as a question, and names both ways out
+ok 283 - the refusal is phrased as a question, and names both ways out
+  ---
+  duration_ms: 2.7393
+  type: 'test'
+  ...
+# Subtest: saving a blocked document refuses rather than writing
+ok 284 - saving a blocked document refuses rather than writing
+  ---
+  duration_ms: 60.9201
+  type: 'test'
+  ...
+# Subtest: accepting the finding clears the gate
+ok 285 - accepting the finding clears the gate
+  ---
+  duration_ms: 20.4563
+  type: 'test'
+  ...
+# Subtest: release check refuses blind accepted errors and reports the exception honestly
+ok 286 - release check refuses blind accepted errors and reports the exception honestly
+  ---
+  duration_ms: 15.9169
+  type: 'test'
+  ...
+# Subtest: release check allows a reviewed accepted error only with current render-bound evidence
+ok 287 - release check allows a reviewed accepted error only with current render-bound evidence
+  ---
+  duration_ms: 10.2797
+  type: 'test'
+  ...
+# Subtest: a forced save writes, but records that it was forced
+ok 288 - a forced save writes, but records that it was forced
+  ---
+  duration_ms: 46.0417
+  type: 'test'
+  ...
+# Subtest: rendering a blocked document refuses too — an image is a deliverable
+ok 289 - rendering a blocked document refuses too — an image is a deliverable
+  ---
+  duration_ms: 3.3906
+  type: 'test'
+  ...
+# Subtest: a path that returns to its start is marked closed
+ok 290 - a path that returns to its start is marked closed
+  ---
+  duration_ms: 0.7911
+  type: 'test'
+  ...
+# Subtest: an ordinary connector is not marked closed
+ok 291 - an ordinary connector is not marked closed
+  ---
+  duration_ms: 0.2434
+  type: 'test'
+  ...
+# Subtest: a closed shape is never reported as a dangling end
+ok 292 - a closed shape is never reported as a dangling end
+  ---
+  duration_ms: 0.9651
+  type: 'test'
+  ...
+# Subtest: a closed shape is not reported as self-overlapping where it joins
+ok 293 - a closed shape is not reported as self-overlapping where it joins
+  ---
+  duration_ms: 0.6079
+  type: 'test'
+  ...
+# Subtest: a genuinely dangling connector is still caught — the rule is narrowed, not disabled
+ok 294 - a genuinely dangling connector is still caught — the rule is narrowed, not disabled
+  ---
+  duration_ms: 0.3587
+  type: 'test'
+  ...
+# Subtest: a path that really does cross itself is still caught
+ok 295 - a path that really does cross itself is still caught
+  ---
+  duration_ms: 1.6876
+  type: 'test'
+  ...
+# Subtest: 3D document data persists, old schemas migrate and failed batches leave both spaces untouched
+ok 296 - 3D document data persists, old schemas migrate and failed batches leave both spaces untouched
+  ---
+  duration_ms: 19.9473
+  type: 'test'
+  ...
+# Subtest: drawing extrusion snapshots exact cell artwork with explicit physical scale
+ok 297 - drawing extrusion snapshots exact cell artwork with explicit physical scale
+  ---
+  duration_ms: 19.9753
+  type: 'test'
+  ...
+# Subtest: MCP geometry supports rehearsal, rollback, undo/redo, reopen and bounded export paths
+ok 298 - MCP geometry supports rehearsal, rollback, undo/redo, reopen and bounded export paths
+  ---
+  duration_ms: 1687.8603
+  type: 'test'
+  ...
+# TurtlePen: geometry3d needs --out with an extension matching --format
+# Subtest: CLI recipes and saved TPF use the same deterministic geometry pipeline
+ok 299 - CLI recipes and saved TPF use the same deterministic geometry pipeline
+  ---
+  duration_ms: 3091.6228
+  type: 'test'
+  ...
+# Subtest: box is a closed outward solid with analytic bounds and volume
+ok 300 - box is a closed outward solid with analytic bounds and volume
+  ---
+  duration_ms: 9.0853
+  type: 'test'
+  ...
+# Subtest: curved primitives produce watertight meshes and converge to analytic volume
+ok 301 - curved primitives produce watertight meshes and converge to analytic volume
+  ---
+  duration_ms: 388.3846
+  type: 'test'
+  ...
+# Subtest: concave polygon extrusion preserves concavity and winding
+ok 302 - concave polygon extrusion preserves concavity and winding
+  ---
+  duration_ms: 64.0557
+  type: 'test'
+  ...
+# Subtest: scene transactions reject malformed profiles, unsupported inputs and excessive detail atomically
+ok 303 - scene transactions reject malformed profiles, unsupported inputs and excessive detail atomically
+  ---
+  duration_ms: 6.8457
+  type: 'test'
+  ...
+# Subtest: flat groups transform members once and mirrored scaling retains outward orientation
+ok 304 - flat groups transform members once and mirrored scaling retains outward orientation
+  ---
+  duration_ms: 3.1489
+  type: 'test'
+  ...
+# Subtest: orthogonal booleans produce one joined boundary and correct subtraction/intersection volume
+ok 305 - orthogonal booleans produce one joined boundary and correct subtraction/intersection volume
+  ---
+  duration_ms: 15.2734
+  type: 'test'
+  ...
+# Subtest: overlapping assemblies cannot be mislabeled as printable STL
+ok 306 - overlapping assemblies cannot be mislabeled as printable STL
+  ---
+  duration_ms: 27.1208
+  type: 'test'
+  ...
+# Subtest: TPF round trips are deterministic, strict and do not accept nonfinite or unknown data
+ok 307 - TPF round trips are deterministic, strict and do not accept nonfinite or unknown data
+  ---
+  duration_ms: 1.7571
+  type: 'test'
+  ...
+# Subtest: binary STL emits millimeters and deterministic outward triangle records
+ok 308 - binary STL emits millimeters and deterministic outward triangle records
+  ---
+  duration_ms: 3.4449
+  type: 'test'
+  ...
+# Subtest: GLB uses glTF 2.0 aligned chunks, meters and right-handed Y-up coordinates
+ok 309 - GLB uses glTF 2.0 aligned chunks, meters and right-handed Y-up coordinates
+  ---
+  duration_ms: 5.0511
+  type: 'test'
+  ...
+# Subtest: named profiles, transforms and groups survive TPF and produce physical extrusions
+ok 310 - named profiles, transforms and groups survive TPF and produce physical extrusions
+  ---
+  duration_ms: 9.2581
+  type: 'test'
+  ...
+# Subtest: mesh defects and corner-only unions are reported and cannot escape through STL
+ok 311 - mesh defects and corner-only unions are reported and cannot escape through STL
+  ---
+  duration_ms: 5.2566
+  type: 'test'
+  ...
+# Subtest: exports reject float32 feature collapse and booleans reject unsupported rotation or empty results
+ok 312 - exports reject float32 feature collapse and booleans reject unsupported rotation or empty results
+  ---
+  duration_ms: 3.1853
+  type: 'test'
+  ...
+# Subtest: orientation checks distinguish a reversed disconnected shell from a legitimate cavity
+ok 313 - orientation checks distinguish a reversed disconnected shell from a legitimate cavity
+  ---
+  duration_ms: 206.2064
+  type: 'test'
+  ...
+# Subtest: naming audit applies kebab-case and preserves standard project documents
+ok 314 - naming audit applies kebab-case and preserves standard project documents
+  ---
+  duration_ms: 3.686
+  type: 'test'
+  ...
+# Subtest: catalog coverage reports both unowned and missing documents
+ok 315 - catalog coverage reports both unowned and missing documents
+  ---
+  duration_ms: 0.6635
+  type: 'test'
+  ...
+# Subtest: repository governance explains its source-checkout boundary
+ok 316 - repository governance explains its source-checkout boundary
+  ---
+  duration_ms: 588.4869
+  type: 'test'
+  ...
+# Subtest: Streamable HTTP exposes the complete canonical tool registry with SSE framing
+ok 317 - Streamable HTTP exposes the complete canonical tool registry with SSE framing
+  ---
+  duration_ms: 257.2298
+  type: 'test'
+  ...
+# Subtest: one remote session keeps an active document across separate POST requests
+ok 318 - one remote session keeps an active document across separate POST requests
+  ---
+  duration_ms: 750.0416
+  type: 'test'
+  ...
+# Subtest: remote sessions are isolated and can be explicitly terminated
+ok 319 - remote sessions are isolated and can be explicitly terminated
+  ---
+  duration_ms: 288.3368
+  type: 'test'
+  ...
+# Subtest: HTTP boundary enforces content negotiation, sessions, origins, and protocol versions
+ok 320 - HTTP boundary enforces content negotiation, sessions, origins, and protocol versions
+  ---
+  duration_ms: 54.7035
+  type: 'test'
+  ...
+# Subtest: bearer authentication is deny-by-default and never appears in audit events
+ok 321 - bearer authentication is deny-by-default and never appears in audit events
+  ---
+  duration_ms: 115.8116
+  type: 'test'
+  ...
+# Subtest: request bodies are bounded before JSON parsing
+ok 322 - request bodies are bounded before JSON parsing
+  ---
+  duration_ms: 62.5527
+  type: 'test'
+  ...
+# Subtest: real MCP image workflow rejects unsafe input and recovers through publication
+ok 323 - real MCP image workflow rejects unsafe input and recovers through publication
+  ---
+  duration_ms: 5091.3303
+  type: 'test'
+  ...
+# Subtest: image dimensions are read from the header, not guessed
+ok 324 - image dimensions are read from the header, not guessed
+  ---
+  duration_ms: 3.9189
+  type: 'test'
+  ...
+# Subtest: a non-image is refused by name rather than placed as a broken element
+ok 325 - a non-image is refused by name rather than placed as a broken element
+  ---
+  duration_ms: 0.6906
+  type: 'test'
+  ...
+# Subtest: measuring an image gives a whole-cell footprint that preserves aspect
+ok 326 - measuring an image gives a whole-cell footprint that preserves aspect
+  ---
+  duration_ms: 0.3735
+  type: 'test'
+  ...
+# Subtest: aspect drift forced by whole cells is reported, never absorbed
+ok 327 - aspect drift forced by whole cells is reported, never absorbed
+  ---
+  duration_ms: 0.3057
+  type: 'test'
+  ...
+# Subtest: image measurement accepts exactly one positive whole-cell limit
+ok 328 - image measurement accepts exactly one positive whole-cell limit
+  ---
+  duration_ms: 0.5925
+  type: 'test'
+  ...
+# Subtest: scale reports distinguish rendered pixels from dither sampling resolution
+ok 329 - scale reports distinguish rendered pixels from dither sampling resolution
+  ---
+  duration_ms: 2.426
+  type: 'test'
+  ...
+# Subtest: scale reports make contain padding, cover cropping, and upscaling explicit
+ok 330 - scale reports make contain padding, cover cropping, and upscaling explicit
+  ---
+  duration_ms: 0.6534
+  type: 'test'
+  ...
+# Subtest: a placed image claims its quadrants like anything else
+ok 331 - a placed image claims its quadrants like anything else
+  ---
+  duration_ms: 5.0247
+  type: 'test'
+  ...
+# Subtest: an image overlapping a box is an ordinary collision, not a special case
+ok 332 - an image overlapping a box is an ordinary collision, not a special case
+  ---
+  duration_ms: 18.1575
+  type: 'test'
+  ...
+# Subtest: an image renders inside its measured footprint, embedded not linked
+ok 333 - an image renders inside its measured footprint, embedded not linked
+  ---
+  duration_ms: 3.1761
+  type: 'test'
+  ...
+# Subtest: an unknown render mode is refused rather than silently embedded
+ok 334 - an unknown render mode is refused rather than silently embedded
+  ---
+  duration_ms: 2.1426
+  type: 'test'
+  ...
+# Subtest: embedded sources are verified from their bytes, not their declared MIME type
+ok 335 - embedded sources are verified from their bytes, not their declared MIME type
+  ---
+  duration_ms: 1.4354
+  type: 'test'
+  ...
+# Subtest: dither stores deterministic runs without duplicating the source bitmap
+ok 336 - dither stores deterministic runs without duplicating the source bitmap
+  ---
+  duration_ms: 5.2556
+  type: 'test'
+  ...
+# Subtest: simplify stores an auditable approximation without retaining duplicate source bytes
+ok 337 - simplify stores an auditable approximation without retaining duplicate source bytes
+  ---
+  duration_ms: 73.1909
+  type: 'test'
+  ...
+# Subtest: saved coverage runs reject malformed opacity instead of rendering ambiguous ink
+ok 338 - saved coverage runs reject malformed opacity instead of rendering ambiguous ink
+  ---
+  duration_ms: 32.6988
+  type: 'test'
+  ...
+# Subtest: embed resize recomputes scale while rasterized image resize refuses without mutation
+ok 339 - embed resize recomputes scale while rasterized image resize refuses without mutation
+  ---
+  duration_ms: 46.0433
+  type: 'test'
+  ...
+# Subtest: deserialization recomputes image reports rather than trusting saved metrics
+ok 340 - deserialization recomputes image reports rather than trusting saved metrics
+  ---
+  duration_ms: 1.4143
+  type: 'test'
+  ...
+# Subtest: saved simplify without processing provenance defaults to semantic review
+ok 341 - saved simplify without processing provenance defaults to semantic review
+  ---
+  duration_ms: 39.2026
+  type: 'test'
+  ...
+# Subtest: saved documents refuse linked or unsupported embedded image sources
+ok 342 - saved documents refuse linked or unsupported embedded image sources
+  ---
+  duration_ms: 2.9045
+  type: 'test'
+  ...
+# Subtest: place_image inside a plan resolves a file path exactly as the tool does
+ok 343 - place_image inside a plan resolves a file path exactly as the tool does
+  ---
+  duration_ms: 668.5647
+  type: 'test'
+  ...
+# Subtest: plan cannot bypass image validation with an inline SVG data URI
+ok 344 - plan cannot bypass image validation with an inline SVG data URI
+  ---
+  duration_ms: 226.7647
+  type: 'test'
+  ...
+# Subtest: model inspections enumerate semantic omissions without changing geometry validation
+ok 345 - model inspections enumerate semantic omissions without changing geometry validation
+  ---
+  duration_ms: 39.1094
+  type: 'test'
+  ...
+# Subtest: annotations clear the relevant inspections and severity filtering is exact
+ok 346 - annotations clear the relevant inspections and severity filtering is exact
+  ---
+  duration_ms: 2.0107
+  type: 'test'
+  ...
+# Subtest: a broken semantic endpoint is an inspection error, not a crash
+ok 347 - a broken semantic endpoint is an inspection error, not a crash
+  ---
+  duration_ms: 1.9728
+  type: 'test'
+  ...
+# Subtest: boolean set algebra creates exact deterministic lattice geometry
+ok 348 - boolean set algebra creates exact deterministic lattice geometry
+  ---
+  duration_ms: 9.6635
+  type: 'test'
+  ...
+# Subtest: an empty boolean result is rejected before source geometry changes
+ok 349 - an empty boolean result is rejected before source geometry changes
+  ---
+  duration_ms: 1.3304
+  type: 'test'
+  ...
+# Subtest: slice divides at an explicit lattice boundary, persists deterministic part ids
+ok 350 - slice divides at an explicit lattice boundary, persists deterministic part ids
+  ---
+  duration_ms: 3.0316
+  type: 'test'
+  ...
+# Subtest: offset performs exact lattice morphology and rejects off-grid expansion
+ok 351 - offset performs exact lattice morphology and rejects off-grid expansion
+  ---
+  duration_ms: 1.2485
+  type: 'test'
+  ...
+# Subtest: path editing clears stale pen state, joins adjacent paths, and splits them deterministically
+ok 352 - path editing clears stale pen state, joins adjacent paths, and splits them deterministically
+  ---
+  duration_ms: 6.5147
+  type: 'test'
+  ...
+# Subtest: normalization only removes duplicate path quadrants
+ok 353 - normalization only removes duplicate path quadrants
+  ---
+  duration_ms: 0.8463
+  type: 'test'
+  ...
+# Subtest: reorder, duplicate, and arrays preserve explicit order, group ownership, and quadrant deltas
+ok 354 - reorder, duplicate, and arrays preserve explicit order, group ownership, and quadrant deltas
+  ---
+  duration_ms: 1.6768
+  type: 'test'
+  ...
+# Subtest: inspect returns exact areas, rational centers, intersections, and gaps
+ok 355 - inspect returns exact areas, rational centers, intersections, and gaps
+  ---
+  duration_ms: 1.4773
+  type: 'test'
+  ...
+# Subtest: new mutations have dry-run parity and leave failed plans unchanged
+ok 356 - new mutations have dry-run parity and leave failed plans unchanged
+  ---
+  duration_ms: 13.5631
+  type: 'test'
+  ...
+# Subtest: cells are 10px and quadrants are 5px
+ok 357 - cells are 10px and quadrants are 5px
+  ---
+  duration_ms: 3.2663
+  type: 'test'
+  ...
+# Subtest: rects reject non-integer coordinates — the lattice is exact by construction
+ok 358 - rects reject non-integer coordinates — the lattice is exact by construction
+  ---
+  duration_ms: 1.0996
+  type: 'test'
+  ...
+# Subtest: column letters round-trip through Excel bijective base-26
+ok 359 - column letters round-trip through Excel bijective base-26
+  ---
+  duration_ms: 0.5849
+  type: 'test'
+  ...
+# Subtest: addresses parse at all three precisions
+ok 360 - addresses parse at all three precisions
+  ---
+  duration_ms: 1.8763
+  type: 'test'
+  ...
+# Subtest: all nine pin points land on integer lattice coordinates
+ok 361 - all nine pin points land on integer lattice coordinates
+  ---
+  duration_ms: 1.4309
+  type: 'test'
+  ...
+# Subtest: quadrant addressing is invertible
+ok 362 - quadrant addressing is invertible
+  ---
+  duration_ms: 0.8565
+  type: 'test'
+  ...
+# Subtest: overlap and intersection are exact
+ok 363 - overlap and intersection are exact
+  ---
+  duration_ms: 0.688
+  type: 'test'
+  ...
+# Subtest: pixel conversion never rounds
+ok 364 - pixel conversion never rounds
+  ---
+  duration_ms: 0.2438
+  type: 'test'
+  ...
+# Subtest: longest-path ranking puts a node below its deepest predecessor
+ok 365 - longest-path ranking puts a node below its deepest predecessor
+  ---
+  duration_ms: 1.7632
+  type: 'test'
+  ...
+# Subtest: a cycle is broken by reversing exactly one edge, and the reversal is reported
+ok 366 - a cycle is broken by reversing exactly one edge, and the reversal is reported
+  ---
+  duration_ms: 1.4729
+  type: 'test'
+  ...
+# Subtest: a self loop is set aside rather than ranked
+ok 367 - a self loop is set aside rather than ranked
+  ---
+  duration_ms: 0.1998
+  type: 'test'
+  ...
+# Subtest: an edge spanning three ranks gains exactly two virtual nodes
+ok 368 - an edge spanning three ranks gains exactly two virtual nodes
+  ---
+  duration_ms: 0.4328
+  type: 'test'
+  ...
+# Subtest: crossings between two ranks are counted exactly
+ok 369 - crossings between two ranks are counted exactly
+  ---
+  duration_ms: 0.5425
+  type: 'test'
+  ...
+# Subtest: ordering removes a crossing that declaration order creates
+ok 370 - ordering removes a crossing that declaration order creates
+  ---
+  duration_ms: 0.8768
+  type: 'test'
+  ...
+# Subtest: ordering never returns a worse arrangement than it was given
+ok 371 - ordering never returns a worse arrangement than it was given
+  ---
+  duration_ms: 0.266
+  type: 'test'
+  ...
+# Subtest: x positions are whole cells and keep the declared gap
+ok 372 - x positions are whole cells and keep the declared gap
+  ---
+  duration_ms: 0.5656
+  type: 'test'
+  ...
+# Subtest: a parent is centred over its children rather than sitting above the first
+ok 373 - a parent is centred over its children rather than sitting above the first
+  ---
+  duration_ms: 1.7741
+  type: 'test'
+  ...
+# Subtest: ranks step down the page by the tallest node on the rank
+ok 374 - ranks step down the page by the tallest node on the rank
+  ---
+  duration_ms: 0.8019
+  type: 'test'
+  ...
+# Subtest: a long edge reports the lane it travels through
+ok 375 - a long edge reports the lane it travels through
+  ---
+  duration_ms: 0.8386
+  type: 'test'
+  ...
+# Subtest: layout reduces crossings on a graph whose declaration order is adversarial
+ok 376 - layout reduces crossings on a graph whose declaration order is adversarial
+  ---
+  duration_ms: 0.4553
+  type: 'test'
+  ...
+# Subtest: layout refuses an edge naming a node it was not given
+ok 377 - layout refuses an edge naming a node it was not given
+  ---
+  duration_ms: 0.6107
+  type: 'test'
+  ...
+# Subtest: layout refuses an empty graph rather than returning an empty drawing
+ok 378 - layout refuses an empty graph rather than returning an empty drawing
+  ---
+  duration_ms: 0.1823
+  type: 'test'
+  ...
+# Subtest: every returned coordinate is an integer cell, dummies included
+ok 379 - every returned coordinate is an integer cell, dummies included
+  ---
+  duration_ms: 1.2726
+  type: 'test'
+  ...
+# Subtest: laying out the same graph twice gives the same answer
+ok 380 - laying out the same graph twice gives the same answer
+  ---
+  duration_ms: 1.7769
+  type: 'test'
+  ...
+# Subtest: no two boxes on a rank overlap after layout
+ok 381 - no two boxes on a rank overlap after layout
+  ---
+  duration_ms: 0.4715
+  type: 'test'
+  ...
+# Subtest: document layout supports all reading directions, explicit pins, and semantic rerouting
+ok 382 - document layout supports all reading directions, explicit pins, and semantic rerouting
+  ---
+  duration_ms: 29.0651
+  type: 'test'
+  ...
+# Subtest: the tool module loads and every tool is well formed
+ok 383 - the tool module loads and every tool is well formed
+  ---
+  duration_ms: 15.0436
+  type: 'test'
+  ...
+# Subtest: timeline is a schema-validated MCP operation with structured results and plan support
+ok 384 - timeline is a schema-validated MCP operation with structured results and plan support
+  ---
+  duration_ms: 1493.9941
+  type: 'test'
+  ...
+# Subtest: every core operation has a matching tool, so a plan can be built by hand
+ok 385 - every core operation has a matching tool, so a plan can be built by hand
+  ---
+  duration_ms: 4.5229
+  type: 'test'
+  ...
+# Subtest: the plan schema advertises exactly the operations it dispatches
+ok 386 - the plan schema advertises exactly the operations it dispatches
+  ---
+  duration_ms: 2.8028
+  type: 'test'
+  ...
+# Subtest: runtime diagnostics report the one package version and live capability fingerprint
+ok 387 - runtime diagnostics report the one package version and live capability fingerprint
+  ---
+  duration_ms: 8.8315
+  type: 'test'
+  ...
+# Subtest: runtime schemas refuse unknown direct fields and name their exact location
+ok 388 - runtime schemas refuse unknown direct fields and name their exact location
+  ---
+  duration_ms: 2.3858
+  type: 'test'
+  ...
+# Subtest: plan validates nested operation arguments against the same tool schema
+ok 389 - plan validates nested operation arguments against the same tool schema
+  ---
+  duration_ms: 1.6114
+  type: 'test'
+  ...
+# Subtest: plan JSON exposes an approval diff and rehearsal never mutates
+ok 390 - plan JSON exposes an approval diff and rehearsal never mutates
+  ---
+  duration_ms: 4.8747
+  type: 'test'
+  ...
+# Subtest: tools that need a document say so instead of throwing something cryptic
+ok 391 - tools that need a document say so instead of throwing something cryptic
+  ---
+  duration_ms: 1.7366
+  type: 'test'
+  ...
+# Subtest: measure, place_box, describe, and validate agree on subprocess label fit
+ok 392 - measure, place_box, describe, and validate agree on subprocess label fit
+  ---
+  duration_ms: 5.1242
+  type: 'test'
+  ...
+# Subtest: the validate tool surfaces composition findings to the agent
+ok 393 - the validate tool surfaces composition findings to the agent
+  ---
+  duration_ms: 351.6211
+  type: 'test'
+  ...
+# Subtest: help documents the lattice, the grammar and every rule
+ok 394 - help documents the lattice, the grammar and every rule
+  ---
+  duration_ms: 1.761
+  type: 'test'
+  ...
+# Subtest: the JSON-RPC method and notification contract is complete over stdio
+ok 395 - the JSON-RPC method and notification contract is complete over stdio
+  ---
+  duration_ms: 890.2385
+  type: 'test'
+  ...
+# Subtest: the server accepts an injected creation time for reproducible builds
+ok 396 - the server accepts an injected creation time for reproducible builds
+  ---
+  duration_ms: 650.955
+  type: 'test'
+  ...
+# Subtest: the server initializes, lists tools, and answers calls in order
+ok 397 - the server initializes, lists tools, and answers calls in order
+  ---
+  duration_ms: 581.7447
+  type: 'test'
+  ...
+# Subtest: overlay text occlusion reaches the agent over the real wire
+ok 398 - overlay text occlusion reaches the agent over the real wire
+  ---
+  duration_ms: 474.4438
+  type: 'test'
+  ...
+# Subtest: free_space defaults to the whole stack and exposes a page-only override over the real wire
+ok 399 - free_space defaults to the whole stack and exposes a page-only override over the real wire
+  ---
+  duration_ms: 465.0791
+  type: 'test'
+  ...
+# Subtest: describe filters by exact region over the real wire without path bounding-box false positives
+ok 400 - describe filters by exact region over the real wire without path bounding-box false positives
+  ---
+  duration_ms: 431.6933
+  type: 'test'
+  ...
+# Subtest: a saved wireframe can still export its composition prompt after reopen
+ok 401 - a saved wireframe can still export its composition prompt after reopen
+  ---
+  duration_ms: 1951.3589
+  type: 'test'
+  ...
+# Subtest: history undoes and redoes successful edits over the real wire
+ok 402 - history undoes and redoes successful edits over the real wire
+  ---
+  duration_ms: 595.0219
+  type: 'test'
+  ...
+# Subtest: failed and no-op mutations do not consume history or destroy redo
+ok 403 - failed and no-op mutations do not consume history or destroy redo
+  ---
+  duration_ms: 581.5057
+  type: 'test'
+  ...
+# Subtest: history rolls back a partially applied composite mutation in memory and on disk
+ok 404 - history rolls back a partially applied composite mutation in memory and on disk
+  ---
+  duration_ms: 438.0122
+  type: 'test'
+  ...
+# Subtest: history honors a configured retention bound and reports exhaustion honestly
+ok 405 - history honors a configured retention bound and reports exhaustion honestly
+  ---
+  duration_ms: 1294.225
+  type: 'test'
+  ...
+# Subtest: undo and redo history survive reopen and separate MCP server processes
+ok 406 - undo and redo history survive reopen and separate MCP server processes
+  ---
+  duration_ms: 735.3712
+  type: 'test'
+  ...
+# Subtest: an externally changed document invalidates its stale history sidecar without applying it
+ok 407 - an externally changed document invalidates its stale history sidecar without applying it
+  ---
+  duration_ms: 426.9253
+  type: 'test'
+  ...
+# Subtest: a subsystem group moves atomically, survives reopen, and participates in history over the real wire
+ok 408 - a subsystem group moves atomically, survives reopen, and participates in history over the real wire
+  ---
+  duration_ms: 283.6307
+  type: 'test'
+  ...
+# Subtest: durable follow constraints cascade, describe themselves, reject cycles, and survive reopen over the real wire
+ok 409 - durable follow constraints cascade, describe themselves, reject cycles, and survive reopen over the real wire
+  ---
+  duration_ms: 333.635
+  type: 'test'
+  ...
+# Subtest: five indexed seats on one face survive a dense real MCP session
+ok 410 - five indexed seats on one face survive a dense real MCP session
+  ---
+  duration_ms: 532.4145
+  type: 'test'
+  ...
+# Subtest: mutations are applied in the order they arrive, not as they schedule
+ok 411 - mutations are applied in the order they arrive, not as they schedule
+  ---
+  duration_ms: 310.5513
+  type: 'test'
+  ...
+# Subtest: plan rehearses over the wire and commit applies
+ok 412 - plan rehearses over the wire and commit applies
+  ---
+  duration_ms: 316.7217
+  type: 'test'
+  ...
+# Subtest: a tool error comes back as a readable result, not a dead call
+ok 413 - a tool error comes back as a readable result, not a dead call
+  ---
+  duration_ms: 273.7123
+  type: 'test'
+  ...
+# Subtest: initialize instructions name every tool and its modes
+ok 414 - initialize instructions name every tool and its modes
+  ---
+  duration_ms: 250.7012
+  type: 'test'
+  ...
+# Subtest: mermaid node brackets map onto the symbol vocabulary
+ok 415 - mermaid node brackets map onto the symbol vocabulary
+  ---
+  duration_ms: 1.9443
+  type: 'test'
+  ...
+# Subtest: longer delimiters win, so ([x]) is not read as [x]
+ok 416 - longer delimiters win, so ([x]) is not read as [x]
+  ---
+  duration_ms: 0.2595
+  type: 'test'
+  ...
+# Subtest: labels are read, quotes stripped, and a bare id keeps its own name
+ok 417 - labels are read, quotes stripped, and a bare id keeps its own name
+  ---
+  duration_ms: 0.9076
+  type: 'test'
+  ...
+# Subtest: a later mention refines an earlier bare reference
+ok 418 - a later mention refines an earlier bare reference
+  ---
+  duration_ms: 0.3429
+  type: 'test'
+  ...
+# Subtest: edge labels are captured
+ok 419 - edge labels are captured
+  ---
+  duration_ms: 0.3734
+  type: 'test'
+  ...
+# Subtest: unsupported syntax is refused by name, never silently dropped
+ok 420 - unsupported syntax is refused by name, never silently dropped
+  ---
+  duration_ms: 0.799
+  type: 'test'
+  ...
+# Subtest: a missing header is refused
+ok 421 - a missing header is refused
+  ---
+  duration_ms: 0.3076
+  type: 'test'
+  ...
+# Subtest: comments and blank lines are ignored
+ok 422 - comments and blank lines are ignored
+  ---
+  duration_ms: 0.1876
+  type: 'test'
+  ...
+# Subtest: compiled operations are ordinary operations the engine already has
+ok 423 - compiled operations are ordinary operations the engine already has
+  ---
+  duration_ms: 1.3399
+  type: 'test'
+  ...
+# Subtest: an imported chart validates like anything drawn by hand
+ok 424 - an imported chart validates like anything drawn by hand
+  ---
+  duration_ms: 36.446
+  type: 'test'
+  ...
+# Subtest: the importer says when it has laid out something it cannot route
+ok 425 - the importer says when it has laid out something it cannot route
+  ---
+  duration_ms: 0.5027
+  type: 'test'
+  ...
+# Subtest: a decision imported from mermaid still has to branch
+ok 426 - a decision imported from mermaid still has to branch
+  ---
+  duration_ms: 9.3884
+  type: 'test'
+  ...
+# Subtest: Mermaid timeline preserves title, sections, ISO dates, repeated periods, and text
+ok 427 - Mermaid timeline preserves title, sections, ISO dates, repeated periods, and text
+  ---
+  duration_ms: 1.6297
+  type: 'test'
+  ...
+# Subtest: Mermaid timeline compiles to a normal rehearsable timeline operation
+ok 428 - Mermaid timeline compiles to a normal rehearsable timeline operation
+  ---
+  duration_ms: 43.2797
+  type: 'test'
+  ...
+# Subtest: Mermaid timeline refuses unsupported directives rather than dropping them
+ok 429 - Mermaid timeline refuses unsupported directives rather than dropping them
+  ---
+  duration_ms: 0.4667
+  type: 'test'
+  ...
+# Subtest: a 1px micro-mask changes presentation and render hash, never structural validation
+ok 430 - a 1px micro-mask changes presentation and render hash, never structural validation
+  ---
+  duration_ms: 18.2193
+  type: 'test'
+  ...
+# Subtest: micro-masks persist, move with their target, and can be restored
+ok 431 - micro-masks persist, move with their target, and can be restored
+  ---
+  duration_ms: 4.8005
+  type: 'test'
+  ...
+# Subtest: v1 refuses semantic marks and widths larger than one pixel
+ok 432 - v1 refuses semantic marks and widths larger than one pixel
+  ---
+  duration_ms: 1.9103
+  type: 'test'
+  ...
+# Subtest: ASCII states that sub-quadrant masks are not represented
+ok 433 - ASCII states that sub-quadrant masks are not represented
+  ---
+  duration_ms: 32.9386
+  type: 'test'
+  ...
+# Subtest: a continuous mask can be extended or replaced and reports full coverage
+ok 434 - a continuous mask can be extended or replaced and reports full coverage
+  ---
+  duration_ms: 6.9902
+  type: 'test'
+  ...
+# Subtest: native PNG output is deterministic, decodable, and dimensionally exact
+ok 435 - native PNG output is deterministic, decodable, and dimensionally exact
+  ---
+  duration_ms: 56.6091
+  type: 'test'
+  ...
+# Subtest: native PNG applies the same 1px eraser coordinates as SVG
+ok 436 - native PNG applies the same 1px eraser coordinates as SVG
+  ---
+  duration_ms: 24.8776
+  type: 'test'
+  ...
+# Subtest: native PNG preserves flowchart silhouettes instead of flattening every node to a rectangle
+ok 437 - native PNG preserves flowchart silhouettes instead of flattening every node to a rectangle
+  ---
+  duration_ms: 3.2537
+  type: 'test'
+  ...
+# Subtest: native PNG honors measured font size and alignment
+ok 438 - native PNG honors measured font size and alignment
+  ---
+  duration_ms: 43.9095
+  type: 'test'
+  ...
+# Subtest: native PNG rasterizes authored gradients instead of substituting a flat fill
+ok 439 - native PNG rasterizes authored gradients instead of substituting a flat fill
+  ---
+  duration_ms: 8.4306
+  type: 'test'
+  ...
+# Subtest: native PNG contain mode preserves embedded-image aspect ratio
+ok 440 - native PNG contain mode preserves embedded-image aspect ratio
+  ---
+  duration_ms: 2.4383
+  type: 'test'
+  ...
+# Subtest: native PDF is deterministic and has a valid single-page object graph
+ok 441 - native PDF is deterministic and has a valid single-page object graph
+  ---
+  duration_ms: 12.6211
+  type: 'test'
+  ...
+# Subtest: file exporters write gated PNG and PDF artifacts atomically
+ok 442 - file exporters write gated PNG and PDF artifacts atomically
+  ---
+  duration_ms: 73.1347
+  type: 'test'
+  ...
+# Subtest: the original phrasing parses, token order and all
+ok 443 - the original phrasing parses, token order and all
+  ---
+  duration_ms: 2.983
+  type: 'test'
+  ...
+# Subtest: a bare address is a location — the (location) form
+ok 444 - a bare address is a location — the (location) form
+  ---
+  duration_ms: 0.5544
+  type: 'test'
+  ...
+# Subtest: free text carries explicit alignment, safe colour, and weight through the pen grammar
+ok 445 - free text carries explicit alignment, safe colour, and weight through the pen grammar
+  ---
+  duration_ms: 4.1016
+  type: 'test'
+  ...
+# Subtest: align centre is rejected because it would leave the lattice
+ok 446 - align centre is rejected because it would leave the lattice
+  ---
+  duration_ms: 1.3409
+  type: 'test'
+  ...
+# Subtest: the worked example draws a continuous path with exact footprints
+ok 447 - the worked example draws a continuous path with exact footprints
+  ---
+  duration_ms: 0.8461
+  type: 'test'
+  ...
+# Subtest: every quadrant is contiguous with the one before it
+ok 448 - every quadrant is contiguous with the one before it
+  ---
+  duration_ms: 0.8605
+  type: 'test'
+  ...
+# Subtest: a corner must include the side the path arrives on
+ok 449 - a corner must include the side the path arrives on
+  ---
+  duration_ms: 0.4992
+  type: 'test'
+  ...
+# Subtest: a mismatched track is reported, not silently corrected
+ok 450 - a mismatched track is reported, not silently corrected
+  ---
+  duration_ms: 0.5605
+  type: 'test'
+  ...
+# Subtest: self-overlap within one path is caught
+ok 451 - self-overlap within one path is caught
+  ---
+  duration_ms: 0.7567
+  type: 'test'
+  ...
+# Subtest: to <address> computes the distance rather than making the AI count
+ok 452 - to <address> computes the distance rather than making the AI count
+  ---
+  duration_ms: 1.7898
+  type: 'test'
+  ...
+# Subtest: to <id>.<port> resolves against placed boxes
+ok 453 - to <id>.<port> resolves against placed boxes
+  ---
+  duration_ms: 1.0338
+  type: 'test'
+  ...
+# Subtest: indexed face grammar has an exact, dedicated quadrant footprint
+ok 454 - indexed face grammar has an exact, dedicated quadrant footprint
+  ---
+  duration_ms: 0.6272
+  type: 'test'
+  ...
+# Subtest: a target that is not ahead of the cursor fails loudly
+ok 455 - a target that is not ahead of the cursor fails loudly
+  ---
+  duration_ms: 0.3519
+  type: 'test'
+  ...
+# Subtest: box commands accept a pin so the AI picks which corner lands on the address
+ok 456 - box commands accept a pin so the AI picks which corner lands on the address
+  ---
+  duration_ms: 0.6001
+  type: 'test'
+  ...
+# Subtest: a placement pushed off the origin fails with an explanation, not an index error
+ok 457 - a placement pushed off the origin fails with an explanation, not an index error
+  ---
+  duration_ms: 0.2477
+  type: 'test'
+  ...
+# Subtest: a compass word used as a movement verb names the primitives that do it
+ok 458 - a compass word used as a movement verb names the primitives that do it
+  ---
+  duration_ms: 2.4624
+  type: 'test'
+  ...
+# Subtest: hop refuses a destination instead of silently ignoring it
+ok 459 - hop refuses a destination instead of silently ignoring it
+  ---
+  duration_ms: 1.1278
+  type: 'test'
+  ...
+# Subtest: arrow puts a head on the final quadrant and nothing else
+ok 460 - arrow puts a head on the final quadrant and nothing else
+  ---
+  duration_ms: 0.5653
+  type: 'test'
+  ...
+# Subtest: arrow both puts a head on each end, pointing outward
+ok 461 - arrow both puts a head on each end, pointing outward
+  ---
+  duration_ms: 0.5157
+  type: 'test'
+  ...
+# Subtest: arrow start puts a head only at the origin
+ok 462 - arrow start puts a head only at the origin
+  ---
+  duration_ms: 0.2148
+  type: 'test'
+  ...
+# Subtest: the shortest run a cell can express still carries two heads
+ok 463 - the shortest run a cell can express still carries two heads
+  ---
+  duration_ms: 0.1926
+  type: 'test'
+  ...
+# Subtest: a single-quadrant run has one end, not two
+ok 464 - a single-quadrant run has one end, not two
+  ---
+  duration_ms: 0.3664
+  type: 'test'
+  ...
+# Subtest: a semicolon inside quotes is text, not a command separator
+ok 465 - a semicolon inside quotes is text, not a command separator
+  ---
+  duration_ms: 0.18
+  type: 'test'
+  ...
+# Subtest: a semicolon outside quotes still separates commands
+ok 466 - a semicolon outside quotes still separates commands
+  ---
+  duration_ms: 0.1839
+  type: 'test'
+  ...
+# Subtest: the tool surface exposes perceptual review
+ok 467 - the tool surface exposes perceptual review
+  ---
+  duration_ms: 14.2763
+  type: 'test'
+  ...
+# Subtest: help names the capability
+ok 468 - help names the capability
+  ---
+  duration_ms: 7.7221
+  type: 'test'
+  ...
+# Subtest: render reports a renderHash so a review has something to bind to
+ok 469 - render reports a renderHash so a review has something to bind to
+  ---
+  duration_ms: 350.8932
+  type: 'test'
+  ...
+# Subtest: an unreviewed document reports NOT REVIEWED, not clean
+ok 470 - an unreviewed document reports NOT REVIEWED, not clean
+  ---
+  duration_ms: 928.1572
+  type: 'test'
+  ...
+# Subtest: a recorded review returns both verdicts, unmerged
+ok 471 - a recorded review returns both verdicts, unmerged
+  ---
+  duration_ms: 1156.7771
+  type: 'test'
+  ...
+# Subtest: editing after a review marks it stale through the tool surface
+ok 472 - editing after a review marks it stale through the tool surface
+  ---
+  duration_ms: 826.3875
+  type: 'test'
+  ...
+# Subtest: a bad category is refused at the tool boundary
+ok 473 - a bad category is refused at the tool boundary
+  ---
+  duration_ms: 114.9164
+  type: 'test'
+  ...
+# Subtest: recording a review is a rehearsable operation, not a tool-only mutation
+ok 474 - recording a review is a rehearsable operation, not a tool-only mutation
+  ---
+  duration_ms: 0.2764
+  type: 'test'
+  ...
+# Subtest: a byte-identical new-diagram rebuild preserves the original review provenance on save
+ok 475 - a byte-identical new-diagram rebuild preserves the original review provenance on save
+  ---
+  duration_ms: 323.0198
+  type: 'test'
+  ...
+# Subtest: a well-formed finding round-trips
+ok 476 - a well-formed finding round-trips
+  ---
+  duration_ms: 2.1138
+  type: 'test'
+  ...
+# Subtest: an invented category is refused by name
+ok 477 - an invented category is refused by name
+  ---
+  duration_ms: 1.3904
+  type: 'test'
+  ...
+# Subtest: an invented severity is refused by name
+ok 478 - an invented severity is refused by name
+  ---
+  duration_ms: 0.294
+  type: 'test'
+  ...
+# Subtest: a finding must say what it looks like AND what it costs the reader
+ok 479 - a finding must say what it looks like AND what it costs the reader
+  ---
+  duration_ms: 1.4553
+  type: 'test'
+  ...
+# Subtest: a finding naming an element that does not exist is refused
+ok 480 - a finding naming an element that does not exist is refused
+  ---
+  duration_ms: 4.9918
+  type: 'test'
+  ...
+# Subtest: a review must name the render it describes and its reviewer
+ok 481 - a review must name the render it describes and its reviewer
+  ---
+  duration_ms: 0.5329
+  type: 'test'
+  ...
+# Subtest: duplicate finding ids are refused
+ok 482 - duplicate finding ids are refused
+  ---
+  duration_ms: 1.4764
+  type: 'test'
+  ...
+# Subtest: a perceptual review never changes the collision log
+ok 483 - a perceptual review never changes the collision log
+  ---
+  duration_ms: 45.9079
+  type: 'test'
+  ...
+# Subtest: the two verdicts are reported separately and never merged
+ok 484 - the two verdicts are reported separately and never merged
+  ---
+  duration_ms: 6.8836
+  type: 'test'
+  ...
+# Subtest: editing the drawing makes an existing review visibly stale
+ok 485 - editing the drawing makes an existing review visibly stale
+  ---
+  duration_ms: 3.5317
+  type: 'test'
+  ...
+# Subtest: a document-schema metadata bump does not pretend unchanged ink was re-reviewed
+ok 486 - a document-schema metadata bump does not pretend unchanged ink was re-reviewed
+  ---
+  duration_ms: 0.3099
+  type: 'test'
+  ...
+# Subtest: an unreviewed document is not clean — it is unreviewed
+ok 487 - an unreviewed document is not clean — it is unreviewed
+  ---
+  duration_ms: 1.5139
+  type: 'test'
+  ...
+# Subtest: every category and severity is usable
+ok 488 - every category and severity is usable
+  ---
+  duration_ms: 0.3959
+  type: 'test'
+  ...
+# Subtest: perceptual review survives a save/reopen round trip with its original timestamp
+ok 489 - perceptual review survives a save/reopen round trip with its original timestamp
+  ---
+  duration_ms: 3.952
+  type: 'test'
+  ...
+# Subtest: a deterministic rebuild preserves review provenance only for byte-matched renders
+ok 490 - a deterministic rebuild preserves review provenance only for byte-matched renders
+  ---
+  duration_ms: 2.3796
+  type: 'test'
+  ...
+# Subtest: schema 1 documents migrate to schema 5 and unknown future schemas are refused
+ok 491 - schema 1 documents migrate to schema 5 and unknown future schemas are refused
+  ---
+  duration_ms: 0.7344
+  type: 'test'
+  ...
+# Subtest: an interrupted staged write leaves the destination byte-identical
+ok 492 - an interrupted staged write leaves the destination byte-identical
+  ---
+  duration_ms: 249.9024
+  type: 'test'
+  ...
+# Subtest: an atomic checkpoint preserves the prior version as a recoverable backup
+ok 493 - an atomic checkpoint preserves the prior version as a recoverable backup
+  ---
+  duration_ms: 584.3744
+  type: 'test'
+  ...
+# Subtest: two sessions cannot silently overwrite each other
+ok 494 - two sessions cannot silently overwrite each other
+  ---
+  duration_ms: 1325.3466
+  type: 'test'
+  ...
+# Subtest: save-as refuses to replace an existing target without an explicit new-diagram workflow
+ok 495 - save-as refuses to replace an existing target without an explicit new-diagram workflow
+  ---
+  duration_ms: 461.9106
+  type: 'test'
+  ...
+# Subtest: a 2x2 image decodes to the exact pixels it was built from
+ok 496 - a 2x2 image decodes to the exact pixels it was built from
+  ---
+  duration_ms: 5.2021
+  type: 'test'
+  ...
+# Subtest: every scanline filter reverses to the same pixels
+ok 497 - every scanline filter reverses to the same pixels
+  ---
+  duration_ms: 4.7598
+  type: 'test'
+  ...
+# Subtest: filters may vary per scanline, as real encoders emit them
+ok 498 - filters may vary per scanline, as real encoders emit them
+  ---
+  duration_ms: 1.9281
+  type: 'test'
+  ...
+# Subtest: greyscale, greyscale+alpha and RGBA all normalise to RGBA
+ok 499 - greyscale, greyscale+alpha and RGBA all normalise to RGBA
+  ---
+  duration_ms: 1.4199
+  type: 'test'
+  ...
+# Subtest: a palette image resolves its indices
+ok 500 - a palette image resolves its indices
+  ---
+  duration_ms: 0.5173
+  type: 'test'
+  ...
+# Subtest: a solid image decodes uniformly at size
+ok 501 - a solid image decodes uniformly at size
+  ---
+  duration_ms: 0.6736
+  type: 'test'
+  ...
+# Subtest: an interlaced PNG is refused by name, not decoded into garbage
+ok 502 - an interlaced PNG is refused by name, not decoded into garbage
+  ---
+  duration_ms: 0.955
+  type: 'test'
+  ...
+# Subtest: a non-PNG is refused
+ok 503 - a non-PNG is refused
+  ---
+  duration_ms: 0.2551
+  type: 'test'
+  ...
+# Subtest: declared PNG dimensions are bounded before pixel allocation
+ok 504 - declared PNG dimensions are bounded before pixel allocation
+  ---
+  duration_ms: 1.6637
+  type: 'test'
+  ...
+# Subtest: a PNG chunk that extends beyond the file is refused by location
+ok 505 - a PNG chunk that extends beyond the file is refused by location
+  ---
+  duration_ms: 1.0366
+  type: 'test'
+  ...
+# Subtest: a PNG stream cannot inflate past its declared dimensions
+ok 506 - a PNG stream cannot inflate past its declared dimensions
+  ---
+  duration_ms: 0.9362
+  type: 'test'
+  ...
+# Subtest: an arrowhead occupies one quadrant and points where the path travels
+ok 507 - an arrowhead occupies one quadrant and points where the path travels
+  ---
+  duration_ms: 5.427
+  type: 'test'
+  ...
+# Subtest: "line … arrow" makes the run END in the arrowhead rather than extend past it
+ok 508 - "line … arrow" makes the run END in the arrowhead rather than extend past it
+  ---
+  duration_ms: 2.3068
+  type: 'test'
+  ...
+# Subtest: an arrow terminating a "to" run points at the box without overlapping it
+ok 509 - an arrow terminating a "to" run points at the box without overlapping it
+  ---
+  duration_ms: 27.926
+  type: 'test'
+  ...
+# Subtest: an arrowhead renders as a triangle pointing the right way
+ok 510 - an arrowhead renders as a triangle pointing the right way
+  ---
+  duration_ms: 12.4489
+  type: 'test'
+  ...
+# Subtest: arrows and hops appear in the ascii view
+ok 511 - arrows and hops appear in the ascii view
+  ---
+  duration_ms: 2.4204
+  type: 'test'
+  ...
+# Subtest: a hop marks a crossing as deliberate and silences the overlap warning
+ok 512 - a hop marks a crossing as deliberate and silences the overlap warning
+  ---
+  duration_ms: 23.4458
+  type: 'test'
+  ...
+# Subtest: a hop renders as a bridge arc rather than a filled square
+ok 513 - a hop renders as a bridge arc rather than a filled square
+  ---
+  duration_ms: 0.7969
+  type: 'test'
+  ...
+# Subtest: the hop still claims its quadrant, so it collides with boxes normally
+ok 514 - the hop still claims its quadrant, so it collides with boxes normally
+  ---
+  duration_ms: 3.1154
+  type: 'test'
+  ...
+# Subtest: finding marks carry their fingerprint so the log links to the drawing
+ok 515 - finding marks carry their fingerprint so the log links to the drawing
+  ---
+  duration_ms: 6.9203
+  type: 'test'
+  ...
+# Subtest: pages are rendered in their own groups so the viewer can toggle them
+ok 516 - pages are rendered in their own groups so the viewer can toggle them
+  ---
+  duration_ms: 1.6181
+  type: 'test'
+  ...
+# Subtest: a hidden page is left out of the render but still collision-checked
+ok 517 - a hidden page is left out of the render but still collision-checked
+  ---
+  duration_ms: 3.2444
+  type: 'test'
+  ...
+# Subtest: free space can be searched in an explicit region far from the content
+ok 518 - free space can be searched in an explicit region far from the content
+  ---
+  duration_ms: 9.0264
+  type: 'test'
+  ...
+# Subtest: stack free space is constrained by every page and page scope remains explicit
+ok 519 - stack free space is constrained by every page and page scope remains explicit
+  ---
+  duration_ms: 3.5108
+  type: 'test'
+  ...
+# Subtest: stack free space includes hidden pages but excludes tracing references
+ok 520 - stack free space includes hidden pages but excludes tracing references
+  ---
+  duration_ms: 0.7484
+  type: 'test'
+  ...
+# Subtest: the default stack search region spans content from every constraining page
+ok 521 - the default stack search region spans content from every constraining page
+  ---
+  duration_ms: 1.028
+  type: 'test'
+  ...
+# Subtest: describe reports live fit status alongside geometry
+ok 522 - describe reports live fit status alongside geometry
+  ---
+  duration_ms: 1.318
+  type: 'test'
+  ...
+# Subtest: the digest tracks WHICH findings are open, not how many
+ok 523 - the digest tracks WHICH findings are open, not how many
+  ---
+  duration_ms: 2.961
+  type: 'test'
+  ...
+# Subtest: it stays quiet until there is a pattern
+ok 524 - it stays quiet until there is a pattern
+  ---
+  duration_ms: 0.4076
+  type: 'test'
+  ...
+# Subtest: it speaks when edits stop changing what is reported
+ok 525 - it speaks when edits stop changing what is reported
+  ---
+  duration_ms: 0.6036
+  type: 'test'
+  ...
+# Subtest: validating repeatedly without editing is not stagnation
+ok 526 - validating repeatedly without editing is not stagnation
+  ---
+  duration_ms: 0.5018
+  type: 'test'
+  ...
+# Subtest: a clean document repeatedly checked is never nagged
+ok 527 - a clean document repeatedly checked is never nagged
+  ---
+  duration_ms: 0.5524
+  type: 'test'
+  ...
+# Subtest: real progress silences it
+ok 528 - real progress silences it
+  ---
+  duration_ms: 0.3418
+  type: 'test'
+  ...
+# Subtest: swapping one finding for another is not treated as standing still
+ok 529 - swapping one finding for another is not treated as standing still
+  ---
+  duration_ms: 0.5272
+  type: 'test'
+  ...
+# Subtest: the log does not grow without bound
+ok 530 - the log does not grow without bound
+  ---
+  duration_ms: 0.4451
+  type: 'test'
+  ...
+# Subtest: artifact manifests expose every quality dimension and never call unreviewed a pass
+ok 531 - artifact manifests expose every quality dimension and never call unreviewed a pass
+  ---
+  duration_ms: 718.8385
+  type: 'test'
+  ...
+# Subtest: artifact catalog is the sole owner of release scope
+ok 532 - artifact catalog is the sole owner of release scope
+  ---
+  duration_ms: 283.7881
+  type: 'test'
+  ...
+# Subtest: a current clean perceptual review satisfies the numeric blocker-count gate
+ok 533 - a current clean perceptual review satisfies the numeric blocker-count gate
+  ---
+  duration_ms: 61.9768
+  type: 'test'
+  ...
+# Subtest: documentation bundles derive model, view, resource, and machine-readable files
+ok 534 - documentation bundles derive model, view, resource, and machine-readable files
+  ---
+  duration_ms: 223.1733
+  type: 'test'
+  ...
+# Subtest: benchmark scoring keeps four dimensions separate and preserves unreviewed truth
+ok 535 - benchmark scoring keeps four dimensions separate and preserves unreviewed truth
+  ---
+  duration_ms: 588.5448
+  type: 'test'
+  ...
+# Subtest: native outputs written during quality work remain readable
+ok 536 - native outputs written during quality work remain readable
+  ---
+  duration_ms: 247.8178
+  type: 'test'
+  ...
+# Subtest: the quickstart sequence works exactly as written
+ok 537 - the quickstart sequence works exactly as written
+  ---
+  duration_ms: 1097.573
+  type: 'test'
+  ...
+# Subtest: every tool the quickstart points at exists
+ok 538 - every tool the quickstart points at exists
+  ---
+  duration_ms: 1.8746
+  type: 'test'
+  ...
+# Subtest: the quickstart file itself is present and links to what it claims
+ok 539 - the quickstart file itself is present and links to what it claims
+  ---
+  duration_ms: 1.4248
+  type: 'test'
+  ...
+# Subtest: package metadata makes the server runnable by a stranger
+ok 540 - package metadata makes the server runnable by a stranger
+  ---
+  duration_ms: 4.2731
+  type: 'test'
+  ...
+# Subtest: package metadata excludes repository backup and transient artifact state
+ok 541 - package metadata excludes repository backup and transient artifact state
+  ---
+  duration_ms: 0.7405
+  type: 'test'
+  ...
+# Subtest: a horizontal ray is exactly the quadrants between its ends
+ok 542 - a horizontal ray is exactly the quadrants between its ends
+  ---
+  duration_ms: 2.3956
+  type: 'test'
+  ...
+# Subtest: a 45 degree ray steps one across for one down, every step
+ok 543 - a 45 degree ray steps one across for one down, every step
+  ---
+  duration_ms: 0.219
+  type: 'test'
+  ...
+# Subtest: a shallow ray distributes its steps evenly, which is what Bresenham is for
+ok 544 - a shallow ray distributes its steps evenly, which is what Bresenham is for
+  ---
+  duration_ms: 0.4291
+  type: 'test'
+  ...
+# Subtest: a ray is symmetric: drawing it backwards covers the same quadrants
+ok 545 - a ray is symmetric: drawing it backwards covers the same quadrants
+  ---
+  duration_ms: 0.2817
+  type: 'test'
+  ...
+# Subtest: every one of the eight directions is a unit step
+ok 546 - every one of the eight directions is a unit step
+  ---
+  duration_ms: 0.2554
+  type: 'test'
+  ...
+# Subtest: a circle is eight-way symmetric, which is how the midpoint algorithm works
+ok 547 - a circle is eight-way symmetric, which is how the midpoint algorithm works
+  ---
+  duration_ms: 2.2358
+  type: 'test'
+  ...
+# Subtest: a circle sits on its radius, never drifting off it
+ok 548 - a circle sits on its radius, never drifting off it
+  ---
+  duration_ms: 0.4978
+  type: 'test'
+  ...
+# Subtest: a circle has no duplicate quadrants, so it cannot self-overlap
+ok 549 - a circle has no duplicate quadrants, so it cannot self-overlap
+  ---
+  duration_ms: 0.2584
+  type: 'test'
+  ...
+# Subtest: a degenerate radius is refused by name rather than drawn as nothing
+ok 550 - a degenerate radius is refused by name rather than drawn as nothing
+  ---
+  duration_ms: 0.931
+  type: 'test'
+  ...
+# Subtest: an arc is the part of the circle inside its angles, and stays connected
+ok 551 - an arc is the part of the circle inside its angles, and stays connected
+  ---
+  duration_ms: 1.0769
+  type: 'test'
+  ...
+# Subtest: a full sweep of arc is the whole circle
+ok 552 - a full sweep of arc is the whole circle
+  ---
+  duration_ms: 0.4994
+  type: 'test'
+  ...
+# Subtest: a triangle is a closed polygon of three rays
+ok 553 - a triangle is a closed polygon of three rays
+  ---
+  duration_ms: 0.3306
+  type: 'test'
+  ...
+# Subtest: a polygon of fewer than three points is refused
+ok 554 - a polygon of fewer than three points is refused
+  ---
+  duration_ms: 0.2152
+  type: 'test'
+  ...
+# Subtest: a dot is a single quadrant
+ok 555 - a dot is a single quadrant
+  ---
+  duration_ms: 0.2639
+  type: 'test'
+  ...
+# Subtest: a dash runs the length asked, in the direction asked
+ok 556 - a dash runs the length asked, in the direction asked
+  ---
+  duration_ms: 0.1634
+  type: 'test'
+  ...
+# Subtest: a dash runs diagonally too, which is the whole point of eight directions
+ok 557 - a dash runs diagonally too, which is the whole point of eight directions
+  ---
+  duration_ms: 0.2376
+  type: 'test'
+  ...
+# Subtest: an unknown direction is named in the error, with the legal set
+ok 558 - an unknown direction is named in the error, with the legal set
+  ---
+  duration_ms: 0.2416
+  type: 'test'
+  ...
+# Subtest: a dash of zero length is refused rather than silently drawing nothing
+ok 559 - a dash of zero length is refused rather than silently drawing nothing
+  ---
+  duration_ms: 0.2643
+  type: 'test'
+  ...
+# Subtest: a curve passes through every control point it is given
+ok 560 - a curve passes through every control point it is given
+  ---
+  duration_ms: 1.0417
+  type: 'test'
+  ...
+# Subtest: a curve is contiguous — every quadrant touches the one before it
+ok 561 - a curve is contiguous — every quadrant touches the one before it
+  ---
+  duration_ms: 0.4287
+  type: 'test'
+  ...
+# Subtest: a curve is deterministic and lands on whole quadrants
+ok 562 - a curve is deterministic and lands on whole quadrants
+  ---
+  duration_ms: 1.0505
+  type: 'test'
+  ...
+# Subtest: two points is a ray, and curve says so rather than drawing one badly
+ok 563 - two points is a ray, and curve says so rather than drawing one badly
+  ---
+  duration_ms: 0.2245
+  type: 'test'
+  ...
+# Subtest: a curve bends — it is not the straight line between its ends
+ok 564 - a curve bends — it is not the straight line between its ends
+  ---
+  duration_ms: 0.3074
+  type: 'test'
+  ...
+# Subtest: an ellipse with equal radii is exactly the circle of that radius
+ok 565 - an ellipse with equal radii is exactly the circle of that radius
+  ---
+  duration_ms: 0.9582
+  type: 'test'
+  ...
+# Subtest: an ellipse spans its own radii on both axes
+ok 566 - an ellipse spans its own radii on both axes
+  ---
+  duration_ms: 1.1492
+  type: 'test'
+  ...
+# Subtest: a rotated ellipse keeps its area but not its bounding box
+ok 567 - a rotated ellipse keeps its area but not its bounding box
+  ---
+  duration_ms: 38.2915
+  type: 'test'
+  ...
+# Subtest: an ellipse is closed and contiguous
+ok 568 - an ellipse is closed and contiguous
+  ---
+  duration_ms: 1.0849
+  type: 'test'
+  ...
+# Subtest: a degenerate ellipse is refused by name
+ok 569 - a degenerate ellipse is refused by name
+  ---
+  duration_ms: 0.3616
+  type: 'test'
+  ...
+# Subtest: a filled rectangle contains every quadrant inside its outline
+ok 570 - a filled rectangle contains every quadrant inside its outline
+  ---
+  duration_ms: 0.7618
+  type: 'test'
+  ...
+# Subtest: a filled circle is denser than its outline and stays inside its radius
+ok 571 - a filled circle is denser than its outline and stays inside its radius
+  ---
+  duration_ms: 1.1015
+  type: 'test'
+  ...
+# Subtest: filling a closed shape agrees with the disc the engine already draws
+ok 572 - filling a closed shape agrees with the disc the engine already draws
+  ---
+  duration_ms: 1.9276
+  type: 'test'
+  ...
+# Subtest: a shape with a concavity fills the concavity but not the bay outside it
+ok 573 - a shape with a concavity fills the concavity but not the bay outside it
+  ---
+  duration_ms: 1.7302
+  type: 'test'
+  ...
+# Subtest: an open path fills nothing rather than leaking across the sheet
+ok 574 - an open path fills nothing rather than leaking across the sheet
+  ---
+  duration_ms: 0.5873
+  type: 'test'
+  ...
+# Subtest: a curved relationship starts and ends at named node ports through an explicit bend
+ok 575 - a curved relationship starts and ends at named node ports through an explicit bend
+  ---
+  duration_ms: 16.4116
+  type: 'test'
+  ...
+# Subtest: curved routing refuses to invent its bend
+ok 576 - curved routing refuses to invent its bend
+  ---
+  duration_ms: 2.3869
+  type: 'test'
+  ...
+# Subtest: direct, orthogonal, and curved routing remain literal and persistent
+ok 577 - direct, orthogonal, and curved routing remain literal and persistent
+  ---
+  duration_ms: 14.4854
+  type: 'test'
+  ...
+# Subtest: semantic annotations persist and describe returns them for nodes and relationships
+ok 578 - semantic annotations persist and describe returns them for nodes and relationships
+  ---
+  duration_ms: 19.036
+  type: 'test'
+  ...
+# Subtest: styled semantic relationships retain a visible arrowhead
+ok 579 - styled semantic relationships retain a visible arrowhead
+  ---
+  duration_ms: 8.7963
+  type: 'test'
+  ...
+# Subtest: replace_path preserves relationship meaning only when endpoints still agree
+ok 580 - replace_path preserves relationship meaning only when endpoints still agree
+  ---
+  duration_ms: 2.0909
+  type: 'test'
+  ...
+# Subtest: renaming a node updates relationship topology and pen endpoint references
+ok 581 - renaming a node updates relationship topology and pen endpoint references
+  ---
+  duration_ms: 0.8894
+  type: 'test'
+  ...
+# Subtest: saved semantic metadata is validated on load instead of crashing later inspection
+ok 582 - saved semantic metadata is validated on load instead of crashing later inspection
+  ---
+  duration_ms: 0.8894
+  type: 'test'
+  ...
+# Subtest: every text run carries textLength — the renderer cannot disagree with the measurer
+ok 583 - every text run carries textLength — the renderer cannot disagree with the measurer
+  ---
+  duration_ms: 42.9485
+  type: 'test'
+  ...
+# Subtest: the measured width and the emitted textLength are the same number
+ok 584 - the measured width and the emitted textLength are the same number
+  ---
+  duration_ms: 1.8677
+  type: 'test'
+  ...
+# Subtest: corner styles produce different outlines, and square is the plain rectangle
+ok 585 - corner styles produce different outlines, and square is the plain rectangle
+  ---
+  duration_ms: 0.3141
+  type: 'test'
+  ...
+# Subtest: a box too small to carry corner cuts keeps its square outline
+ok 586 - a box too small to carry corner cuts keeps its square outline
+  ---
+  duration_ms: 1.9138
+  type: 'test'
+  ...
+# Subtest: svg geometry is integer pixels throughout
+ok 587 - svg geometry is integer pixels throughout
+  ---
+  duration_ms: 2.1166
+  type: 'test'
+  ...
+# Subtest: ascii renders two characters per cell with Excel headers and a legend
+ok 588 - ascii renders two characters per cell with Excel headers and a legend
+  ---
+  duration_ms: 17.8302
+  type: 'test'
+  ...
+# Subtest: ascii marks collisions where the log says they are
+ok 589 - ascii marks collisions where the log says they are
+  ---
+  duration_ms: 3.581
+  type: 'test'
+  ...
+# Subtest: lowercase keys mark claimed-but-not-inked corner quadrants
+ok 590 - lowercase keys mark claimed-but-not-inked corner quadrants
+  ---
+  duration_ms: 2.5526
+  type: 'test'
+  ...
+# Subtest: documents round-trip through serialisation unchanged
+ok 591 - documents round-trip through serialisation unchanged
+  ---
+  duration_ms: 15.51
+  type: 'test'
+  ...
+# Subtest: forced-save provenance survives a document round trip
+ok 592 - forced-save provenance survives a document round trip
+  ---
+  duration_ms: 3.6554
+  type: 'test'
+  ...
+# Subtest: composition source and perspective provenance survive a document round trip
+ok 593 - composition source and perspective provenance survive a document round trip
+  ---
+  duration_ms: 1.5108
+  type: 'test'
+  ...
+# Subtest: rendering can preserve the declared canvas instead of cropping to content
+ok 594 - rendering can preserve the declared canvas instead of cropping to content
+  ---
+  duration_ms: 1.1394
+  type: 'test'
+  ...
+# Subtest: lattice info gives the AI the arithmetic it needs
+ok 595 - lattice info gives the AI the arithmetic it needs
+  ---
+  duration_ms: 0.4123
+  type: 'test'
+  ...
+# Subtest: a page carries an author-set opacity instead of a hardcoded one
+ok 596 - a page carries an author-set opacity instead of a hardcoded one
+  ---
+  duration_ms: 0.4416
+  type: 'test'
+  ...
+# Subtest: overlay and exclusive defaults preserve the previous output exactly
+ok 597 - overlay and exclusive defaults preserve the previous output exactly
+  ---
+  duration_ms: 0.2148
+  type: 'test'
+  ...
+# Subtest: element opacity composes with its page, and never touches geometry
+ok 598 - element opacity composes with its page, and never touches geometry
+  ---
+  duration_ms: 1.2796
+  type: 'test'
+  ...
+# Subtest: an element faded to invisibility while still claiming space is reported
+ok 599 - an element faded to invisibility while still claiming space is reported
+  ---
+  duration_ms: 1.0555
+  type: 'test'
+  ...
+# Subtest: an opacity outside the legal range is refused, not clamped silently
+ok 600 - an opacity outside the legal range is refused, not clamped silently
+  ---
+  duration_ms: 0.8634
+  type: 'test'
+  ...
+# Subtest: the palette is muted and hard-edged — no gradients, blurs or soft shadows
+ok 601 - the palette is muted and hard-edged — no gradients, blurs or soft shadows
+  ---
+  duration_ms: 1.0462
+  type: 'test'
+  ...
+# Subtest: every palette colour is genuinely muted — low chroma, not vivid
+ok 602 - every palette colour is genuinely muted — low chroma, not vivid
+  ---
+  duration_ms: 1.0348
+  type: 'test'
+  ...
+# Subtest: severity carries a second, non-colour cue so it survives desaturation
+ok 603 - severity carries a second, non-colour cue so it survives desaturation
+  ---
+  duration_ms: 0.1446
+  type: 'test'
+  ...
+# Subtest: paper defaults to the palette and survives a round trip when set
+ok 604 - paper defaults to the palette and survives a round trip when set
+  ---
+  duration_ms: 1.6247
+  type: 'test'
+  ...
+# Subtest: a bad paper colour is refused by name
+ok 605 - a bad paper colour is refused by name
+  ---
+  duration_ms: 1.7229
+  type: 'test'
+  ...
+# Subtest: a box can be filled with a gradient, and the def is emitted once per box
+ok 606 - a box can be filled with a gradient, and the def is emitted once per box
+  ---
+  duration_ms: 1.8178
+  type: 'test'
+  ...
+# Subtest: a gradient survives save and reopen
+ok 607 - a gradient survives save and reopen
+  ---
+  duration_ms: 0.6297
+  type: 'test'
+  ...
+# Subtest: a gradient with a bad stop is refused by name
+ok 608 - a gradient with a bad stop is refused by name
+  ---
+  duration_ms: 0.2815
+  type: 'test'
+  ...
+# Subtest: a flat hex fill still works exactly as before
+ok 609 - a flat hex fill still works exactly as before
+  ---
+  duration_ms: 0.3768
+  type: 'test'
+  ...
+# Subtest: a dotted pattern is visible
+ok 610 - a dotted pattern is visible
+  ---
+  duration_ms: 13.2523
+  type: 'test'
+  ...
+# Subtest: bar does not render as a plain rectangle
+ok 611 - bar does not render as a plain rectangle
+  ---
+  duration_ms: 0.7491
+  type: 'test'
+  ...
+# Subtest: every shape that claims a distinct symbol emits a distinct outline
+ok 612 - every shape that claims a distinct symbol emits a distinct outline
+  ---
+  duration_ms: 0.6369
+  type: 'test'
+  ...
+# Subtest: data is drawn with its top ellipse, not as a drum
+ok 613 - data is drawn with its top ellipse, not as a drum
+  ---
+  duration_ms: 6.2586
+  type: 'test'
+  ...
+# Subtest: the document foot matches the depth of its own mask
+ok 614 - the document foot matches the depth of its own mask
+  ---
+  duration_ms: 0.274
+  type: 'test'
+  ...
+# Subtest: a fix becomes the call that performs it
+ok 615 - a fix becomes the call that performs it
+  ---
+  duration_ms: 35.5571
+  type: 'test'
+  ...
+# Subtest: applying a fix actually clears the finding
+ok 616 - applying a fix actually clears the finding
+  ---
+  duration_ms: 8.9853
+  type: 'test'
+  ...
+# Subtest: an advisory fix is refused by name, not guessed at
+ok 617 - an advisory fix is refused by name, not guessed at
+  ---
+  duration_ms: 19.6084
+  type: 'test'
+  ...
+# Subtest: a stale fingerprint is refused with the reason
+ok 618 - a stale fingerprint is refused with the reason
+  ---
+  duration_ms: 2.0044
+  type: 'test'
+  ...
+# Subtest: every executable fix names an operation the engine really has
+ok 619 - every executable fix names an operation the engine really has
+  ---
+  duration_ms: 1.7516
+  type: 'test'
+  ...
+# Subtest: a repair reports whether it actually helped
+ok 620 - a repair reports whether it actually helped
+  ---
+  duration_ms: 6.6628
+  type: 'test'
+  ...
+# Subtest: a repair over the real wire is saved to disk and undone by one undo
+ok 621 - a repair over the real wire is saved to disk and undone by one undo
+  ---
+  duration_ms: 1679.5957
+  type: 'test'
+  ...
+# Subtest: a clear straight run is found and needs no turns
+ok 622 - a clear straight run is found and needs no turns
+  ---
+  duration_ms: 39.7774
+  type: 'test'
+  ...
+# Subtest: the emitted program actually draws a clean connector
+ok 623 - the emitted program actually draws a clean connector
+  ---
+  duration_ms: 72.8257
+  type: 'test'
+  ...
+# Subtest: routing changes nothing by itself
+ok 624 - routing changes nothing by itself
+  ---
+  duration_ms: 1.6794
+  type: 'test'
+  ...
+# Subtest: an offset target is reached with turns
+ok 625 - an offset target is reached with turns
+  ---
+  duration_ms: 4.2676
+  type: 'test'
+  ...
+# Subtest: an occupied track is reported blocked rather than routed around forever
+ok 626 - an occupied track is reported blocked rather than routed around forever
+  ---
+  duration_ms: 3.5652
+  type: 'test'
+  ...
+# Subtest: a blocked route names what is in the way
+ok 627 - a blocked route names what is in the way
+  ---
+  duration_ms: 0.722
+  type: 'test'
+  ...
+# Subtest: every attempt it made is reported, not just the outcome
+ok 628 - every attempt it made is reported, not just the outcome
+  ---
+  duration_ms: 0.5635
+  type: 'test'
+  ...
+# Subtest: faces are required on both ends
+ok 629 - faces are required on both ends
+  ---
+  duration_ms: 0.7091
+  type: 'test'
+  ...
+# Subtest: an unknown element is refused by name
+ok 630 - an unknown element is refused by name
+  ---
+  duration_ms: 0.7457
+  type: 'test'
+  ...
+# Subtest: every route the engine proposes is a program the pen can actually run
+ok 631 - every route the engine proposes is a program the pen can actually run
+  ---
+  duration_ms: 63.9509
+  type: 'test'
+  ...
+# Subtest: the port slot survives routing instead of being thrown away
+ok 632 - the port slot survives routing instead of being thrown away
+  ---
+  duration_ms: 3.1127
+  type: 'test'
+  ...
+# Subtest: a named track puts the crossing leg exactly where the caller asked
+ok 633 - a named track puts the crossing leg exactly where the caller asked
+  ---
+  duration_ms: 0.6307
+  type: 'test'
+  ...
+# Subtest: avoid "boxes" treats a connector as a crossing and a box as a wall
+ok 634 - avoid "boxes" treats a connector as a crossing and a box as a wall
+  ---
+  duration_ms: 0.6441
+  type: 'test'
+  ...
+# Subtest: a loop back up the page arrives travelling toward its target
+ok 635 - a loop back up the page arrives travelling toward its target
+  ---
+  duration_ms: 0.6433
+  type: 'test'
+  ...
+# Subtest: a strict SVG subset compiles to exact editable lattice paths
+ok 636 - a strict SVG subset compiles to exact editable lattice paths
+  ---
+  duration_ms: 16.9346
+  type: 'test'
+  ...
+# Subtest: the SVG compiler refuses unsupported or unsafe constructs before document mutation
+ok 637 - the SVG compiler refuses unsupported or unsafe constructs before document mutation
+  ---
+  duration_ms: 2.3844
+  type: 'test'
+  ...
+# Subtest: nearest SVG quantization is opt-in and reports every shifted coordinate
+ok 638 - nearest SVG quantization is opt-in and reports every shifted coordinate
+  ---
+  duration_ms: 0.6402
+  type: 'test'
+  ...
+# Subtest: SVG import shares plan semantics and leaves source markup out of document state
+ok 639 - SVG import shares plan semantics and leaves source markup out of document state
+  ---
+  duration_ms: 12.1379
+  type: 'test'
+  ...
+# Subtest: direct SVG import and plan resolve a file relative to the active diagram alike
+ok 640 - direct SVG import and plan resolve a file relative to the active diagram alike
+  ---
+  duration_ms: 611.894
+  type: 'test'
+  ...
+# Subtest: capacity is countable — 6px advance at the default 10px font
+ok 641 - capacity is countable — 6px advance at the default 10px font
+  ---
+  duration_ms: 1.4736
+  type: 'test'
+  ...
+# Subtest: a 12x5 box holds 18 characters per line
+ok 642 - a 12x5 box holds 18 characters per line
+  ---
+  duration_ms: 0.8013
+  type: 'test'
+  ...
+# Subtest: wrapping breaks on words and hard-breaks over-long ones
+ok 643 - wrapping breaks on words and hard-breaks over-long ones
+  ---
+  duration_ms: 1.0011
+  type: 'test'
+  ...
+# Subtest: a label that fits reports no overflow
+ok 644 - a label that fits reports no overflow
+  ---
+  duration_ms: 0.4871
+  type: 'test'
+  ...
+# Subtest: a label that does not fit reports the exact shortfall and concrete fixes
+ok 645 - a label that does not fit reports the exact shortfall and concrete fixes
+  ---
+  duration_ms: 1.0279
+  type: 'test'
+  ...
+# Subtest: required size is answerable before anything is placed
+ok 646 - required size is answerable before anything is placed
+  ---
+  duration_ms: 0.5573
+  type: 'test'
+  ...
+# Subtest: measurement is deterministic — the same input yields byte-identical output
+ok 647 - measurement is deterministic — the same input yields byte-identical output
+  ---
+  duration_ms: 0.3148
+  type: 'test'
+  ...
+# Subtest: a custom advance ratio survives requiredCellsFor
+ok 648 - a custom advance ratio survives requiredCellsFor
+  ---
+  duration_ms: 0.3132
+  type: 'test'
+  ...
+# Subtest: a font size may be named, and every name clears the legibility floor
+ok 649 - a font size may be named, and every name clears the legibility floor
+  ---
+  duration_ms: 0.5558
+  type: 'test'
+  ...
+# Subtest: an unknown size name is refused by name, not silently defaulted
+ok 650 - an unknown size name is refused by name, not silently defaulted
+  ---
+  duration_ms: 0.915
+  type: 'test'
+  ...
+# Subtest: centred text reports the bias when the leftover is odd
+ok 651 - centred text reports the bias when the leftover is odd
+  ---
+  duration_ms: 0.3762
+  type: 'test'
+  ...
+# Subtest: fitReport carries centerBiasPx only when centred
+ok 652 - fitReport carries centerBiasPx only when centred
+  ---
+  duration_ms: 0.2548
+  type: 'test'
+  ...
+# Subtest: timeline dates preserve precision and reject impossible or non-ISO values
+ok 653 - timeline dates preserve precision and reject impossible or non-ISO values
+  ---
+  duration_ms: 5.255
+  type: 'test'
+  ...
+# Subtest: a semantic timeline compiles to ordinary stable primitives and a flat group
+ok 654 - a semantic timeline compiles to ordinary stable primitives and a flat group
+  ---
+  duration_ms: 100.8932
+  type: 'test'
+  ...
+# Subtest: chronological order is default, same dates keep input order, and undated events stay undated
+ok 655 - chronological order is default, same dates keep input order, and undated events stay undated
+  ---
+  duration_ms: 10.3767
+  type: 'test'
+  ...
+# Subtest: temporal spacing declares a quantitative position scale and refuses a too-small explicit span
+ok 656 - temporal spacing declares a quantitative position scale and refuses a too-small explicit span
+  ---
+  duration_ms: 13.7242
+  type: 'test'
+  ...
+# Subtest: timeline event actions keep stable ids and reflow both orientations
+ok 657 - timeline event actions keep stable ids and reflow both orientations
+  ---
+  duration_ms: 49.27
+  type: 'test'
+  ...
+# Subtest: reflow preserves safe presentation overrides and reports replaced manual geometry
+ok 658 - reflow preserves safe presentation overrides and reports replaced manual geometry
+  ---
+  duration_ms: 11.1516
+  type: 'test'
+  ...
+# Subtest: timeline source and baseline survive deterministic serialization
+ok 659 - timeline source and baseline survive deterministic serialization
+  ---
+  duration_ms: 20.1838
+  type: 'test'
+  ...
+# Subtest: semantic validation detects broken associations, references, chronology, and current conflicts
+ok 660 - semantic validation detects broken associations, references, chronology, and current conflicts
+  ---
+  duration_ms: 6.0727
+  type: 'test'
+  ...
+# Subtest: multi-track requires explicit choices and phase-band emits ordinary container boxes
+ok 661 - multi-track requires explicit choices and phase-band emits ordinary container boxes
+  ---
+  duration_ms: 261.4856
+  type: 'test'
+  ...
+# Subtest: timeline output expands the canvas deterministically and keeps monochrome state cues
+ok 662 - timeline output expands the canvas deterministically and keeps monochrome state cues
+  ---
+  duration_ms: 15.3769
+  type: 'test'
+  ...
+# Subtest: half tone inks exactly half of a 4x4 Bayer tile
+ok 663 - half tone inks exactly half of a 4x4 Bayer tile
+  ---
+  duration_ms: 1.8546
+  type: 'test'
+  ...
+# Subtest: quarter and three-quarter land on their exact matrix ranks
+ok 664 - quarter and three-quarter land on their exact matrix ranks
+  ---
+  duration_ms: 0.7158
+  type: 'test'
+  ...
+# Subtest: tone 1 is a no-op and returns the same array
+ok 665 - tone 1 is a no-op and returns the same array
+  ---
+  duration_ms: 0.1811
+  type: 'test'
+  ...
+# Subtest: the threshold keys off absolute lattice position, so tiles line up
+ok 666 - the threshold keys off absolute lattice position, so tiles line up
+  ---
+  duration_ms: 0.5496
+  type: 'test'
+  ...
+# Subtest: a toned path claims exactly what it inks
+ok 667 - a toned path claims exactly what it inks
+  ---
+  duration_ms: 9.5095
+  type: 'test'
+  ...
+# Subtest: feather thins the boundary and leaves the core solid
+ok 668 - feather thins the boundary and leaves the core solid
+  ---
+  duration_ms: 0.8512
+  type: 'test'
+  ...
+# Subtest: texture is deterministic for a given seed
+ok 669 - texture is deterministic for a given seed
+  ---
+  duration_ms: 2.9358
+  type: 'test'
+  ...
+# Subtest: normalizeTone accepts named steps and rejects the unrenderable
+ok 670 - normalizeTone accepts named steps and rejects the unrenderable
+  ---
+  duration_ms: 0.5303
+  type: 'test'
+  ...
+# Subtest: the floor is the lowest density that inks anything, and it is position-dependent
+ok 671 - the floor is the lowest density that inks anything, and it is position-dependent
+  ---
+  duration_ms: 1.2361
+  type: 'test'
+  ...
+# Subtest: a tone that would erase the whole path is refused, not silently drawn empty
+ok 672 - a tone that would erase the whole path is refused, not silently drawn empty
+  ---
+  duration_ms: 1.4868
+  type: 'test'
+  ...
+# Subtest: tone reaches the same place through plan as through the tool
+ok 673 - tone reaches the same place through plan as through the tool
+  ---
+  duration_ms: 0.8952
+  type: 'test'
+  ...
+# Subtest: dashed and dotted keep their exact cadence
+ok 674 - dashed and dotted keep their exact cadence
+  ---
+  duration_ms: 0.9552
+  type: 'test'
+  ...
+# Subtest: a dash is keyed to distance travelled, not to the lattice
+ok 675 - a dash is keyed to distance travelled, not to the lattice
+  ---
+  duration_ms: 0.5248
+  type: 'test'
+  ...
+# Subtest: a dashed path claims only the quadrants it inks
+ok 676 - a dashed path claims only the quadrants it inks
+  ---
+  duration_ms: 1.0386
+  type: 'test'
+  ...
+# Subtest: normalizePattern rejects anything not in the closed set
+ok 677 - normalizePattern rejects anything not in the closed set
+  ---
+  duration_ms: 0.3475
+  type: 'test'
+  ...
+# Subtest: the metrics are whole quadrants and hold together
+ok 678 - the metrics are whole quadrants and hold together
+  ---
+  duration_ms: 2.6648
+  type: 'test'
+  ...
+# Subtest: every glyph is whole quadrants and stays inside the line box
+ok 679 - every glyph is whole quadrants and stays inside the line box
+  ---
+  duration_ms: 18.3584
+  type: 'test'
+  ...
+# Subtest: an accented letter is its letter plus a mark, never a second drawing
+ok 680 - an accented letter is its letter plus a mark, never a second drawing
+  ---
+  duration_ms: 1.6676
+  type: 'test'
+  ...
+# Subtest: the mark is centred over the letter it sits on
+ok 681 - the mark is centred over the letter it sits on
+  ---
+  duration_ms: 0.4979
+  type: 'test'
+  ...
+# Subtest: every composed glyph names a base that is actually drawn
+ok 682 - every composed glyph names a base that is actually drawn
+  ---
+  duration_ms: 0.476
+  type: 'test'
+  ...
+# Subtest: an aliased letter IS its counterpart, quadrant for quadrant
+ok 683 - an aliased letter IS its counterpart, quadrant for quadrant
+  ---
+  duration_ms: 5.7313
+  type: 'test'
+  ...
+# Subtest: scale must be a whole number, because it is a multiple of the design size
+ok 684 - scale must be a whole number, because it is a multiple of the design size
+  ---
+  duration_ms: 1.9541
+  type: 'test'
+  ...
+# Subtest: scaling multiplies the block exactly
+ok 685 - scaling multiplies the block exactly
+  ---
+  duration_ms: 3.5412
+  type: 'test'
+  ...
+# Subtest: a missing glyph is refused, not silently dropped
+ok 686 - a missing glyph is refused, not silently dropped
+  ---
+  duration_ms: 1.7691
+  type: 'test'
+  ...
+# Subtest: measuring and drawing are the same numbers
+ok 687 - measuring and drawing are the same numbers
+  ---
+  duration_ms: 10.7607
+  type: 'test'
+  ...
+# Subtest: the reserved height does not depend on which letters turned up
+ok 688 - the reserved height does not depend on which letters turned up
+  ---
+  duration_ms: 0.7236
+  type: 'test'
+  ...
+# Subtest: a newline starts a line and the block grows by exactly one advance
+ok 689 - a newline starts a line and the block grows by exactly one advance
+  ---
+  duration_ms: 1.4233
+  type: 'test'
+  ...
+# Subtest: wrapping breaks between words and admits when a word will not fit
+ok 690 - wrapping breaks between words and admits when a word will not fit
+  ---
+  duration_ms: 4.9959
+  type: 'test'
+  ...
+# Subtest: centring shifts a short line by exactly half the slack
+ok 691 - centring shifts a short line by exactly half the slack
+  ---
+  duration_ms: 1.8343
+  type: 'test'
+  ...
+# Subtest: a dot keeps its weight when the text is scaled
+ok 692 - a dot keeps its weight when the text is scaled
+  ---
+  duration_ms: 0.271
+  type: 'test'
+  ...
+# Subtest: space draws nothing but still advances
+ok 693 - space draws nothing but still advances
+  ---
+  duration_ms: 0.2334
+  type: 'test'
+  ...
+# Subtest: the face covers more than letters and digits
+ok 694 - the face covers more than letters and digits
+  ---
+  duration_ms: 1.1123
+  type: 'test'
+  ...
+# Subtest: two glyphs that must be told apart are not the same drawing
+ok 695 - two glyphs that must be told apart are not the same drawing
+  ---
+  duration_ms: 2.7682
+  type: 'test'
+  ...
+# Subtest: stroke text lands in a document as ink the collision engine can see
+ok 696 - stroke text lands in a document as ink the collision engine can see
+  ---
+  duration_ms: 27.8965
+  type: 'test'
+  ...
+# Subtest: stroke text refuses to place a string it cannot spell
+ok 697 - stroke text refuses to place a string it cannot spell
+  ---
+  duration_ms: 0.5419
+  type: 'test'
+  ...
+# Subtest: the glyph table has no duplicate or empty entry
+ok 698 - the glyph table has no duplicate or empty entry
+  ---
+  duration_ms: 1.0798
+  type: 'test'
+  ...
+# Subtest: no shape is drawn twice under two names
+ok 699 - no shape is drawn twice under two names
+  ---
+  duration_ms: 0.7841
+  type: 'test'
+  ...
+# Subtest: no character is drawn in two tables
+ok 700 - no character is drawn in two tables
+  ---
+  duration_ms: 0.418
+  type: 'test'
+  ...
+# Subtest: an alias never points at a character that is also drawn
+ok 701 - an alias never points at a character that is also drawn
+  ---
+  duration_ms: 0.8027
+  type: 'test'
+  ...
+# Subtest: every mark is used, and no two marks are the same drawing
+ok 702 - every mark is used, and no two marks are the same drawing
+  ---
+  duration_ms: 0.3223
+  type: 'test'
+  ...
+# Subtest: a composed letter always adds something to its base
+ok 703 - a composed letter always adds something to its base
+  ---
+  duration_ms: 0.245
+  type: 'test'
+  ...
+# Subtest: the pairs a render actually confused stay apart
+ok 704 - the pairs a render actually confused stay apart
+  ---
+  duration_ms: 1.2848
+  type: 'test'
+  ...
+# Subtest: the dashes get longer in the right order
+ok 705 - the dashes get longer in the right order
+  ---
+  duration_ms: 1.2103
+  type: 'test'
+  ...
+# Subtest: a quarter turn is exact: nothing is gained or lost
+ok 706 - a quarter turn is exact: nothing is gained or lost
+  ---
+  duration_ms: 6.4786
+  type: 'test'
+  ...
+# Subtest: a quarter turn swaps the block, a half turn does not
+ok 707 - a quarter turn swaps the block, a half turn does not
+  ---
+  duration_ms: 0.8288
+  type: 'test'
+  ...
+# Subtest: four quarter turns come back to where they started
+ok 708 - four quarter turns come back to where they started
+  ---
+  duration_ms: 2.7978
+  type: 'test'
+  ...
+# Subtest: any angle but a quarter turn is refused
+ok 709 - any angle but a quarter turn is refused
+  ---
+  duration_ms: 0.3678
+  type: 'test'
+  ...
+# Subtest: a rotated block still starts where it was placed
+ok 710 - a rotated block still starts where it was placed
+  ---
+  duration_ms: 0.4888
+  type: 'test'
+  ...
+# Subtest: inspecting a glyph reports where its drawing came from
+ok 711 - inspecting a glyph reports where its drawing came from
+  ---
+  duration_ms: 1.1763
+  type: 'test'
+  ...
+# Subtest: the fingerprint is what tells an edit from a no-op
+ok 712 - the fingerprint is what tells an edit from a no-op
+  ---
+  duration_ms: 1.0196
+  type: 'test'
+  ...
+# Subtest: the picture shows the glyph against its own metrics
+ok 713 - the picture shows the glyph against its own metrics
+  ---
+  duration_ms: 0.4112
+  type: 'test'
+  ...
+# Subtest: a stroke label centres itself in the room the symbol leaves
+ok 714 - a stroke label centres itself in the room the symbol leaves
+  ---
+  duration_ms: 3.9416
+  type: 'test'
+  ...
+# Subtest: a label that does not fit is refused with the numbers to fix it
+ok 715 - a label that does not fit is refused with the numbers to fix it
+  ---
+  duration_ms: 1.7477
+  type: 'test'
+  ...
+# Subtest: a symbol gets less room than its bounding box
+ok 716 - a symbol gets less room than its bounding box
+  ---
+  duration_ms: 1.574
+  type: 'test'
+  ...
+# Subtest: a label refuses anything but a box
+ok 717 - a label refuses anything but a box
+  ---
+  duration_ms: 3.8332
+  type: 'test'
+  ...
+# Subtest: a label does not trip the rule about strokes crossing nodes
+ok 718 - a label does not trip the rule about strokes crossing nodes
+  ---
+  duration_ms: 21.2541
+  type: 'test'
+  ...
+# Subtest: the letters a full sweep found wrong stay fixed
+ok 719 - the letters a full sweep found wrong stay fixed
+  ---
+  duration_ms: 4.8482
+  type: 'test'
+  ...
+# Subtest: a filled mark is filled and a hollow one is not
+ok 720 - a filled mark is filled and a hollow one is not
+  ---
+  duration_ms: 1.6645
+  type: 'test'
+  ...
+# Subtest: the pen is as thick as the glyph is big
+ok 721 - the pen is as thick as the glyph is big
+  ---
+  duration_ms: 1.2843
+  type: 'test'
+  ...
+# Subtest: a tittle sits over its stem, not beside it
+ok 722 - a tittle sits over its stem, not beside it
+  ---
+  duration_ms: 0.9401
+  type: 'test'
+  ...
+# Subtest: the advance box scales exactly and the pen box says what the ink needs
+ok 723 - the advance box scales exactly and the pen box says what the ink needs
+  ---
+  duration_ms: 1.6402
+  type: 'test'
+  ...
+# Subtest: size is a cap height, and any whole number of quadrants works
+ok 724 - size is a cap height, and any whole number of quadrants works
+  ---
+  duration_ms: 8.6459
+  type: 'test'
+  ...
+# Subtest: a bigger size makes a bigger block, monotonically
+ok 725 - a bigger size makes a bigger block, monotonically
+  ---
+  duration_ms: 5.6627
+  type: 'test'
+  ...
+# Subtest: rounding is reported rather than hidden
+ok 726 - rounding is reported rather than hidden
+  ---
+  duration_ms: 0.595
+  type: 'test'
+  ...
+# Subtest: below the measured floor a size is refused, not rendered badly
+ok 727 - below the measured floor a size is refused, not rendered badly
+  ---
+  duration_ms: 22.4012
+  type: 'test'
+  ...
+# Subtest: size and scale are two ways to say one thing, and not both at once
+ok 728 - size and scale are two ways to say one thing, and not both at once
+  ---
+  duration_ms: 2.6497
+  type: 'test'
+  ...
+# Subtest: weight is independent of size
+ok 729 - weight is independent of size
+  ---
+  duration_ms: 4.412
+  type: 'test'
+  ...
+# Subtest: a document records the size it actually drew at
+ok 730 - a document records the size it actually drew at
+  ---
+  duration_ms: 0.5787
+  type: 'test'
+  ...
+# Subtest: a duplicate id is still refused
+ok 731 - a duplicate id is still refused
+  ---
+  duration_ms: 6.6122
+  type: 'test'
+  ...
+# Subtest: the refusal names a free id
+ok 732 - the refusal names a free id
+  ---
+  duration_ms: 0.759
+  type: 'test'
+  ...
+# Subtest: it skips ids that are also taken
+ok 733 - it skips ids that are also taken
+  ---
+  duration_ms: 0.6005
+  type: 'test'
+  ...
+# Subtest: it does not stack suffixes on an already-numbered id
+ok 734 - it does not stack suffixes on an already-numbered id
+  ---
+  duration_ms: 1.1845
+  type: 'test'
+  ...
+# Subtest: a group id collision is refused and suggests too
+ok 735 - a group id collision is refused and suggests too
+  ---
+  duration_ms: 0.9023
+  type: 'test'
+  ...
+# Subtest: the suggestion is actually usable
+ok 736 - the suggestion is actually usable
+  ---
+  duration_ms: 0.4008
+  type: 'test'
+  ...
+# Subtest: the live viewer serves its UI, brand, and cheap unchanged state responses
+ok 737 - the live viewer serves its UI, brand, and cheap unchanged state responses
+  ---
+  duration_ms: 636.9048
+  type: 'test'
+  ...
+# Subtest: the state endpoint projects named views and supports a lighter canvas payload
+ok 738 - the state endpoint projects named views and supports a lighter canvas payload
+  ---
+  duration_ms: 551.1838
+  type: 'test'
+  ...
+# Subtest: the live viewer reports a missing document without crashing
+ok 739 - the live viewer reports a missing document without crashing
+  ---
+  duration_ms: 416.18
+  type: 'test'
+  ...
+# Subtest: the live viewer exposes image scale, readability, and simplification state
+ok 740 - the live viewer exposes image scale, readability, and simplification state
+  ---
+  duration_ms: 952.6826
+  type: 'test'
+  ...
+# Subtest: the WebSocket editor persists mutations, broadcasts exact state, restores history, and reloads outside edits
+ok 741 - the WebSocket editor persists mutations, broadcasts exact state, restores history, and reloads outside edits
+  ---
+  duration_ms: 1434.906
+  type: 'test'
+  ...
+# Subtest: the WebSocket editor validates, audits, and withdraws finding acceptances
+ok 742 - the WebSocket editor validates, audits, and withdraws finding acceptances
+  ---
+  duration_ms: 641.2818
+  type: 'test'
+  ...
+# Subtest: every browser-authorized tool completes through the WebSocket editor
+ok 743 - every browser-authorized tool completes through the WebSocket editor
+  ---
+  duration_ms: 1209.6342
+  type: 'test'
+  ...
+# Subtest: the WebSocket upgrade rejects foreign origins and closes unmasked client frames
+ok 744 - the WebSocket upgrade rejects foreign origins and closes unmasked client frames
+  ---
+  duration_ms: 436.5356
+  type: 'test'
+  ...
+# Subtest: the WebSocket frame contract handles controls and rejects every unsupported frame class
+ok 745 - the WebSocket frame contract handles controls and rejects every unsupported frame class
+  ---
+  duration_ms: 419.0523
+  type: 'test'
+  ...
+# Subtest: schema 5 migrates old models and round-trips workspace state
+ok 746 - schema 5 migrates old models and round-trips workspace state
+  ---
+  duration_ms: 14.0484
+  type: 'test'
+  ...
+# Subtest: filtered views project shared elements and include connecting relationships
+ok 747 - filtered views project shared elements and include connecting relationships
+  ---
+  duration_ms: 2.0057
+  type: 'test'
+  ...
+# Subtest: dynamic views preserve explicit relationship order and endpoint context
+ok 748 - dynamic views preserve explicit relationship order and endpoint context
+  ---
+  duration_ms: 2.4168
+  type: 'test'
+  ...
+# Subtest: tag and perspective styling produce a generated key
+ok 749 - tag and perspective styling produce a generated key
+  ---
+  duration_ms: 2.0424
+  type: 'test'
+  ...
+# Subtest: resources are durable references and removal never reaches their targets
+ok 750 - resources are durable references and removal never reaches their targets
+  ---
+  duration_ms: 1.5813
+  type: 'test'
+  ...
+# Subtest: semantic findings are fingerprinted, accepted with reasons, and lapse after repair
+ok 751 - semantic findings are fingerprinted, accepted with reasons, and lapse after repair
+  ---
+  duration_ms: 32.2942
+  type: 'test'
+  ...
+1..751
+# tests 751
+# suites 0
+# pass 751
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 17956.8965

@@ -1,0 +1,149 @@
+TAP version 13
+# Subtest: Bezier sweep makes a capped outward tube and converges to analytic cylinder volume
+ok 1 - Bezier sweep makes a capped outward tube and converges to analytic cylinder volume
+  ---
+  duration_ms: 97.244
+  type: 'test'
+  ...
+# Subtest: tapered curved sweep preserves source, transforms, stable frames, and export precision
+ok 2 - tapered curved sweep preserves source, transforms, stable frames, and export precision
+  ---
+  duration_ms: 420.0675
+  type: 'test'
+  ...
+# Subtest: elliptical loft has analytic volume, supports poles and rounded-square cross-sections
+ok 3 - elliptical loft has analytic volume, supports poles and rounded-square cross-sections
+  ---
+  duration_ms: 18.9626
+  type: 'test'
+  ...
+# Subtest: malformed curves and over-budget tessellation fail atomically, including imported sources
+ok 4 - malformed curves and over-budget tessellation fail atomically, including imported sources
+  ---
+  duration_ms: 6.6992
+  type: 'test'
+  ...
+# Subtest: explicit smooth GLB shading shares unit normals across triangle corners without changing geometry
+ok 5 - explicit smooth GLB shading shares unit normals across triangle corners without changing geometry
+  ---
+  duration_ms: 26.2272
+  type: 'test'
+  ...
+# Subtest: 3D document data persists, old schemas migrate and failed batches leave both spaces untouched
+ok 6 - 3D document data persists, old schemas migrate and failed batches leave both spaces untouched
+  ---
+  duration_ms: 19.3384
+  type: 'test'
+  ...
+# Subtest: drawing extrusion snapshots exact cell artwork with explicit physical scale
+ok 7 - drawing extrusion snapshots exact cell artwork with explicit physical scale
+  ---
+  duration_ms: 15.751
+  type: 'test'
+  ...
+# Subtest: MCP geometry supports rehearsal, rollback, undo/redo, reopen and bounded export paths
+ok 8 - MCP geometry supports rehearsal, rollback, undo/redo, reopen and bounded export paths
+  ---
+  duration_ms: 101.8061
+  type: 'test'
+  ...
+# TurtlePen: geometry3d needs --out with an extension matching --format
+# Subtest: CLI recipes and saved TPF use the same deterministic geometry pipeline
+ok 9 - CLI recipes and saved TPF use the same deterministic geometry pipeline
+  ---
+  duration_ms: 878.3568
+  type: 'test'
+  ...
+# Subtest: box is a closed outward solid with analytic bounds and volume
+ok 10 - box is a closed outward solid with analytic bounds and volume
+  ---
+  duration_ms: 10.439
+  type: 'test'
+  ...
+# Subtest: curved primitives produce watertight meshes and converge to analytic volume
+ok 11 - curved primitives produce watertight meshes and converge to analytic volume
+  ---
+  duration_ms: 113.6399
+  type: 'test'
+  ...
+# Subtest: concave polygon extrusion preserves concavity and winding
+ok 12 - concave polygon extrusion preserves concavity and winding
+  ---
+  duration_ms: 18.9532
+  type: 'test'
+  ...
+# Subtest: scene transactions reject malformed profiles, unsupported inputs and excessive detail atomically
+ok 13 - scene transactions reject malformed profiles, unsupported inputs and excessive detail atomically
+  ---
+  duration_ms: 5.4417
+  type: 'test'
+  ...
+# Subtest: flat groups transform members once and mirrored scaling retains outward orientation
+ok 14 - flat groups transform members once and mirrored scaling retains outward orientation
+  ---
+  duration_ms: 3.5538
+  type: 'test'
+  ...
+# Subtest: orthogonal booleans produce one joined boundary and correct subtraction/intersection volume
+ok 15 - orthogonal booleans produce one joined boundary and correct subtraction/intersection volume
+  ---
+  duration_ms: 11.5157
+  type: 'test'
+  ...
+# Subtest: overlapping assemblies cannot be mislabeled as printable STL
+ok 16 - overlapping assemblies cannot be mislabeled as printable STL
+  ---
+  duration_ms: 7.9291
+  type: 'test'
+  ...
+# Subtest: TPF round trips are deterministic, strict and do not accept nonfinite or unknown data
+ok 17 - TPF round trips are deterministic, strict and do not accept nonfinite or unknown data
+  ---
+  duration_ms: 1.2487
+  type: 'test'
+  ...
+# Subtest: binary STL emits millimeters and deterministic outward triangle records
+ok 18 - binary STL emits millimeters and deterministic outward triangle records
+  ---
+  duration_ms: 4.383
+  type: 'test'
+  ...
+# Subtest: GLB uses glTF 2.0 aligned chunks, meters and right-handed Y-up coordinates
+ok 19 - GLB uses glTF 2.0 aligned chunks, meters and right-handed Y-up coordinates
+  ---
+  duration_ms: 2.3326
+  type: 'test'
+  ...
+# Subtest: named profiles, transforms and groups survive TPF and produce physical extrusions
+ok 20 - named profiles, transforms and groups survive TPF and produce physical extrusions
+  ---
+  duration_ms: 6.7417
+  type: 'test'
+  ...
+# Subtest: mesh defects and corner-only unions are reported and cannot escape through STL
+ok 21 - mesh defects and corner-only unions are reported and cannot escape through STL
+  ---
+  duration_ms: 4.3585
+  type: 'test'
+  ...
+# Subtest: exports reject float32 feature collapse and booleans reject unsupported rotation or empty results
+ok 22 - exports reject float32 feature collapse and booleans reject unsupported rotation or empty results
+  ---
+  duration_ms: 1.967
+  type: 'test'
+  ...
+# Subtest: orientation checks distinguish a reversed disconnected shell from a legitimate cavity
+ok 23 - orientation checks distinguish a reversed disconnected shell from a legitimate cavity
+  ---
+  duration_ms: 14.9556
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1299.6672

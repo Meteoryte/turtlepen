@@ -1,0 +1,145 @@
+TAP version 13
+# Subtest: 3D document data persists, old schemas migrate and failed batches leave both spaces untouched
+ok 1 - 3D document data persists, old schemas migrate and failed batches leave both spaces untouched
+  ---
+  duration_ms: 19.7601
+  type: 'test'
+  ...
+# Subtest: drawing extrusion snapshots exact cell artwork with explicit physical scale
+ok 2 - drawing extrusion snapshots exact cell artwork with explicit physical scale
+  ---
+  duration_ms: 17.0609
+  type: 'test'
+  ...
+# Subtest: MCP geometry supports rehearsal, rollback, undo/redo, reopen and bounded export paths
+not ok 3 - MCP geometry supports rehearsal, rollback, undo/redo, reopen and bounded export paths
+  ---
+  duration_ms: 44.7213
+  type: 'test'
+  location: 'X:\\Python Projects\\Home Base - Brainn.dev\\03_EXPERIMENTS\\TurtlePen\\test\\geometry3d-integration.test.js:27:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'objects')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d-integration.test.js:32:45)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# TurtlePen: geometry3d needs --out with an extension matching --format
+# Subtest: CLI recipes and saved TPF use the same deterministic geometry pipeline
+ok 4 - CLI recipes and saved TPF use the same deterministic geometry pipeline
+  ---
+  duration_ms: 882.0971
+  type: 'test'
+  ...
+# Subtest: box is a closed outward solid with analytic bounds and volume
+ok 5 - box is a closed outward solid with analytic bounds and volume
+  ---
+  duration_ms: 8.8375
+  type: 'test'
+  ...
+# Subtest: curved primitives produce watertight meshes and converge to analytic volume
+ok 6 - curved primitives produce watertight meshes and converge to analytic volume
+  ---
+  duration_ms: 111.4603
+  type: 'test'
+  ...
+# Subtest: concave polygon extrusion preserves concavity and winding
+ok 7 - concave polygon extrusion preserves concavity and winding
+  ---
+  duration_ms: 8.9641
+  type: 'test'
+  ...
+# Subtest: scene transactions reject malformed profiles, unsupported inputs and excessive detail atomically
+ok 8 - scene transactions reject malformed profiles, unsupported inputs and excessive detail atomically
+  ---
+  duration_ms: 3.9404
+  type: 'test'
+  ...
+# Subtest: flat groups transform members once and mirrored scaling retains outward orientation
+ok 9 - flat groups transform members once and mirrored scaling retains outward orientation
+  ---
+  duration_ms: 3.4543
+  type: 'test'
+  ...
+# Subtest: orthogonal booleans produce one joined boundary and correct subtraction/intersection volume
+ok 10 - orthogonal booleans produce one joined boundary and correct subtraction/intersection volume
+  ---
+  duration_ms: 12.743
+  type: 'test'
+  ...
+# Subtest: overlapping assemblies cannot be mislabeled as printable STL
+ok 11 - overlapping assemblies cannot be mislabeled as printable STL
+  ---
+  duration_ms: 4.605
+  type: 'test'
+  ...
+# Subtest: TPF round trips are deterministic, strict and do not accept nonfinite or unknown data
+ok 12 - TPF round trips are deterministic, strict and do not accept nonfinite or unknown data
+  ---
+  duration_ms: 1.012
+  type: 'test'
+  ...
+# Subtest: binary STL emits millimeters and deterministic outward triangle records
+ok 13 - binary STL emits millimeters and deterministic outward triangle records
+  ---
+  duration_ms: 4.4456
+  type: 'test'
+  ...
+# Subtest: GLB uses glTF 2.0 aligned chunks, meters and right-handed Y-up coordinates
+not ok 14 - GLB uses glTF 2.0 aligned chunks, meters and right-handed Y-up coordinates
+  ---
+  duration_ms: 2.0292
+  type: 'test'
+  location: 'X:\\Python Projects\\Home Base - Brainn.dev\\03_EXPERIMENTS\\TurtlePen\\test\\geometry3d.test.js:76:1'
+  failureType: 'testCodeFailure'
+  error: '0.5019607843137255 differs from 0.21586050011389926'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    near (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d.test.js:6:37)
+    TestContext.<anonymous> (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d.test.js:81:2)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: named profiles, transforms and groups survive TPF and produce physical extrusions
+ok 15 - named profiles, transforms and groups survive TPF and produce physical extrusions
+  ---
+  duration_ms: 8.7342
+  type: 'test'
+  ...
+# Subtest: mesh defects and corner-only unions are reported and cannot escape through STL
+ok 16 - mesh defects and corner-only unions are reported and cannot escape through STL
+  ---
+  duration_ms: 4.5704
+  type: 'test'
+  ...
+# Subtest: exports reject float32 feature collapse and booleans reject unsupported rotation or empty results
+ok 17 - exports reject float32 feature collapse and booleans reject unsupported rotation or empty results
+  ---
+  duration_ms: 4.4626
+  type: 'test'
+  ...
+# Subtest: orientation checks distinguish a reversed disconnected shell from a legitimate cavity
+ok 18 - orientation checks distinguish a reversed disconnected shell from a legitimate cavity
+  ---
+  duration_ms: 15.0731
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 16
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1208.8655

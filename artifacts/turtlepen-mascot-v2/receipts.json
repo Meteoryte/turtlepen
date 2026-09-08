@@ -1,0 +1,5948 @@
+{
+  "artifacts": [
+    {
+      "file": "mascot.tpf",
+      "format": "tpf",
+      "units": "mm",
+      "mimeType": "application/json",
+      "inspection": {
+        "vertices": 84633,
+        "triangles": 179076,
+        "bounds": {
+          "min": [
+            -63,
+            -35,
+            0
+          ],
+          "max": [
+            65,
+            35,
+            83
+          ]
+        },
+        "volume": 176408.4467377642,
+        "manifold": false,
+        "outward": false,
+        "openEdges": 0,
+        "nonManifoldEdges": 14544,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 639,
+        "degenerateFaces": 0,
+        "shells": 76,
+        "orientationChecked": true,
+        "misorientedShells": 23,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "plinth",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                -63,
+                -35,
+                0
+              ],
+              "max": [
+                65,
+                35,
+                5
+              ]
+            },
+            "volume": 40104.25429397043,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "plinth-inlay",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                -61,
+                -33,
+                4.4
+              ],
+              "max": [
+                63,
+                33,
+                5.300000000000001
+              ]
+            },
+            "volume": 6643.595734153212,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "plinth-top",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                -60.2,
+                -32.2,
+                5.1
+              ],
+              "max": [
+                62.2,
+                32.2,
+                6
+              ]
+            },
+            "volume": 6398.6985440723965,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-rim",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -57.083735171827314,
+                -12.5,
+                9.091045804320533
+              ],
+              "max": [
+                -12.916264828172682,
+                12.5,
+                60.90895419567947
+              ]
+            },
+            "volume": 29855.67369959317,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-dome",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -56.47947226081415,
+                -13.7,
+                9.886569666526313
+              ],
+              "max": [
+                -13.520527739185852,
+                13.7,
+                60.11343033347369
+              ]
+            },
+            "volume": 30850.03883415669,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "body",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -38.5,
+                -18.052129626836535,
+                9
+              ],
+              "max": [
+                -7.21669085257443,
+                4.052129626836535,
+                57
+              ]
+            },
+            "volume": 17719.2564551755,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "belly",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -31.757003101333808,
+                -20.11523861920674,
+                13.5
+              ],
+              "max": [
+                -8.4,
+                -10.484761380793262,
+                52.5
+              ]
+            },
+            "volume": 4698.210670333976,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "left-foot",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -44.35633939054024,
+                -22.563358877628406,
+                4.7
+              ],
+              "max": [
+                -23.643660609459758,
+                2.5633588776284064,
+                15.3
+              ]
+            },
+            "volume": 2942.646278479324,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "right-foot",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -22.236875167986625,
+                -24.00261372248793,
+                4.7
+              ],
+              "max": [
+                -3.763124832013375,
+                2.0026137224879275,
+                15.3
+              ]
+            },
+            "volume": 2754.3169166566563,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "neck",
+            "vertices": 794,
+            "triangles": 1584,
+            "bounds": {
+              "min": [
+                -31.106239073808627,
+                -13.997849080439467,
+                44.16484174636379
+              ],
+              "max": [
+                -9.574183551593851,
+                2.2761975981386833,
+                62.97032657936246
+              ]
+            },
+            "volume": 2926.116136709034,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "head",
+            "vertices": 3762,
+            "triangles": 7520,
+            "bounds": {
+              "min": [
+                -33.53245131083013,
+                -19.114746334371844,
+                53
+              ],
+              "max": [
+                -1,
+                5.114746334371844,
+                83
+              ]
+            },
+            "volume": 12508.01465365129,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-eye-rim",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -28.200000000000003,
+                -16.675052163397332,
+                68.05
+              ],
+              "max": [
+                -18.4,
+                -13.275052163397332,
+                79.55
+              ]
+            },
+            "volume": 199.20433437214382,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-eye",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -27.950000000000003,
+                -17.37505216339733,
+                68.3
+              ],
+              "max": [
+                -18.65,
+                -13.77505216339733,
+                79.3
+              ]
+            },
+            "volume": 191.45825007195884,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-iris",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -24.400000000000002,
+                -17.77505216339733,
+                69.7
+              ],
+              "max": [
+                -19.400000000000002,
+                -16.475052163397333,
+                75.89999999999999
+              ]
+            },
+            "volume": 20.950818610567918,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-pupil",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -23.35,
+                -18.02505216339733,
+                70.44999999999999
+              ],
+              "max": [
+                -19.950000000000003,
+                -17.12505216339733,
+                75.25
+              ]
+            },
+            "volume": 7.635871557122061,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-glint",
+            "vertices": 266,
+            "triangles": 528,
+            "bounds": {
+              "min": [
+                -22.68,
+                -18.14505216339733,
+                73.14999999999999
+              ],
+              "max": [
+                -21.520000000000003,
+                -17.745052163397332,
+                74.45
+              ]
+            },
+            "volume": 0.3069196480058392,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-brow",
+            "vertices": 594,
+            "triangles": 1184,
+            "bounds": {
+              "min": [
+                -26.284114869652427,
+                -14.587177894835266,
+                78.09470027634748
+              ],
+              "max": [
+                -19.412566696556052,
+                -6.62,
+                79.4143877186832
+              ]
+            },
+            "volume": 3.233340996567437,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-eye-rim",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -14.600000000000001,
+                -16.971253671291258,
+                68.85
+              ],
+              "max": [
+                -6.000000000000001,
+                -13.571253671291258,
+                79.15
+              ]
+            },
+            "volume": 156.57071817821125,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-eye",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -14.350000000000001,
+                -17.671253671291257,
+                69.1
+              ],
+              "max": [
+                -6.250000000000001,
+                -14.071253671291256,
+                78.9
+              ]
+            },
+            "volume": 148.5626186775365,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-iris",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -11.4,
+                -18.071253671291256,
+                69.9
+              ],
+              "max": [
+                -6.4,
+                -16.77125367129126,
+                76.1
+              ]
+            },
+            "volume": 20.950818610567918,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-pupil",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -10.35,
+                -18.321253671291256,
+                70.64999999999999
+              ],
+              "max": [
+                -6.95,
+                -17.421253671291257,
+                75.45
+              ]
+            },
+            "volume": 7.6358715571220666,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-glint",
+            "vertices": 266,
+            "triangles": 528,
+            "bounds": {
+              "min": [
+                -9.680000000000001,
+                -18.441253671291257,
+                73.35
+              ],
+              "max": [
+                -8.520000000000001,
+                -18.04125367129126,
+                74.65
+              ]
+            },
+            "volume": 0.30691964800583965,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-brow",
+            "vertices": 594,
+            "triangles": 1184,
+            "bounds": {
+              "min": [
+                -12.97201907224511,
+                -14.83270109335299,
+                78.09613957697348
+              ],
+              "max": [
+                -6.877210376501661,
+                -11.504280176854849,
+                79.41781166555488
+              ]
+            },
+            "volume": 2.0586737251614613,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "smile",
+            "vertices": 1170,
+            "triangles": 2336,
+            "bounds": {
+              "min": [
+                -23.167118199689277,
+                -19.00991865648584,
+                61.10397589155132
+              ],
+              "max": [
+                -4.641989153614215,
+                -14.839098005758816,
+                65.33999450886758
+              ]
+            },
+            "volume": 8.777653872023606,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "smile-dimple",
+            "vertices": 266,
+            "triangles": 528,
+            "bounds": {
+              "min": [
+                -5.6000000000000005,
+                -15.566743576431342,
+                64.3
+              ],
+              "max": [
+                -4.2,
+                -14.666743576431344,
+                65.7
+              ]
+            },
+            "volume": 0.8975567955608442,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "nostril",
+            "vertices": 266,
+            "triangles": 528,
+            "bounds": {
+              "min": [
+                -4.05,
+                -14.287538641581014,
+                68.6
+              ],
+              "max": [
+                -2.95,
+                -13.387538641581015,
+                69.4
+              ]
+            },
+            "volume": 0.402984683721199,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "drawing-arm",
+            "vertices": 1570,
+            "triangles": 3136,
+            "bounds": {
+              "min": [
+                -20.203683891172577,
+                -23.358650363683065,
+                34.448751090182604
+              ],
+              "max": [
+                14.588152564982227,
+                -7.775156193171379,
+                50.591863241077746
+              ]
+            },
+            "volume": 2202.837057441572,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "drawing-hand",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                8.712895882685945,
+                -21.11319534406638,
+                44.29710224007687
+              ],
+              "max": [
+                17.287104117314055,
+                -14.086804655933623,
+                53.30289775992313
+              ]
+            },
+            "volume": 282.3553364428579,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "gripping-thumb",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                11.748606831089512,
+                -22.2,
+                47.34909930613661
+              ],
+              "max": [
+                16.85139316891049,
+                -17.8,
+                52.65090069386339
+              ]
+            },
+            "volume": 62.00793768377055,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "resting-arm",
+            "vertices": 986,
+            "triangles": 1968,
+            "bounds": {
+              "min": [
+                -44.7666999537772,
+                -20.390275416513624,
+                25.0979167534694
+              ],
+              "max": [
+                -32.86649129557138,
+                -5.06452035960037,
+                48.29396032097355
+              ]
+            },
+            "volume": 1051.7834099565014,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "resting-hand",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -40.561635607520365,
+                -20.4,
+                23.255586296767163
+              ],
+              "max": [
+                -32.438364392479635,
+                -13.6,
+                32.144413703232836
+              ]
+            },
+            "volume": 255.54786439371955,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "pen",
+            "vertices": 162,
+            "triangles": 320,
+            "bounds": {
+              "min": [
+                8.169195595425116,
+                -21.944208705376425,
+                46.02451253548383
+              ],
+              "max": [
+                29.933073647334627,
+                -3.094100920020935,
+                56.696819465811075
+              ]
+            },
+            "volume": 202.19684210758413,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "pen-ferrule",
+            "vertices": 130,
+            "triangles": 256,
+            "bounds": {
+              "min": [
+                21.505406772130087,
+                -10.679294065517254,
+                46.44903579039365
+              ],
+              "max": [
+                27.154593227869913,
+                -5.186705934482745,
+                50.97296420960635
+              ]
+            },
+            "volume": 44.72563474147743,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "pen-tip",
+            "vertices": 130,
+            "triangles": 256,
+            "bounds": {
+              "min": [
+                25.263816545033002,
+                -7.376089928600417,
+                46.06733235920889
+              ],
+              "max": [
+                30.111554736412817,
+                -2.977022841663285,
+                49.01115120678096
+              ]
+            },
+            "volume": 10.79517198792321,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "easel-left-leg",
+            "vertices": 130,
+            "triangles": 256,
+            "bounds": {
+              "min": [
+                13.280070117902843,
+                -2.4802784524584043,
+                5.046736685776024
+              ],
+              "max": [
+                27.15132241962735,
+                6.122670055253431,
+                49.420480118810225
+              ]
+            },
+            "volume": 707.8909195620574,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "easel-right-leg",
+            "vertices": 130,
+            "triangles": 256,
+            "bounds": {
+              "min": [
+                46.81768572163422,
+                -2.527152454284553,
+                5.095381795534378
+              ],
+              "max": [
+                59.744753163972796,
+                6.1532529333181945,
+                49.38350983539387
+              ]
+            },
+            "volume": 704.8463057602515,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "easel-back-leg",
+            "vertices": 130,
+            "triangles": 256,
+            "bounds": {
+              "min": [
+                34.98388584239016,
+                3.0373271216466655,
+                4.958840403472092
+              ],
+              "max": [
+                45.10140385590419,
+                26.31337183821829,
+                71.52458512443192
+              ]
+            },
+            "volume": 934.3564860878425,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "easel-brace",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                19.5,
+                -0.75,
+                17
+              ],
+              "max": [
+                52.5,
+                2.75,
+                20
+              ]
+            },
+            "volume": 320.33453356881137,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "board",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                14.5,
+                -1.8,
+                28
+              ],
+              "max": [
+                59.5,
+                1.8,
+                80
+              ]
+            },
+            "volume": 8084.0591569470325,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "paper",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                16.5,
+                -2.6,
+                30.3
+              ],
+              "max": [
+                57.5,
+                -1.6,
+                77.8
+              ]
+            },
+            "volume": 1873.3419802265153,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "tray",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                12.5,
+                -5.6,
+                27
+              ],
+              "max": [
+                61.5,
+                2.4,
+                30
+              ]
+            },
+            "volume": 1108.1007745482636,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "clip",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                32.5,
+                -3.65,
+                77.2
+              ],
+              "max": [
+                41.5,
+                0.8500000000000001,
+                82.4
+              ]
+            },
+            "volume": 197.2555792876671,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "clip-rivet",
+            "vertices": 266,
+            "triangles": 528,
+            "bounds": {
+              "min": [
+                36.15,
+                -4.05,
+                78.65
+              ],
+              "max": [
+                37.85,
+                -3.55,
+                80.35
+              ]
+            },
+            "volume": 0.7352435201731421,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-0",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -46.16705964578648,
+                11.012118056825457,
+                23.885564190792294
+              ],
+              "max": [
+                -41.24024628868161,
+                12.522742205310868,
+                40.63815487620391
+              ]
+            },
+            "volume": 4.752282005649721,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-1",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -46.10666268336603,
+                10.116871547917608,
+                40.34725790281717
+              ],
+              "max": [
+                -36.99335335685372,
+                11.95004393744391,
+                51.04767169437758
+              ]
+            },
+            "volume": 3.743838985244521,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-2",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -37.39465270997785,
+                10.115351562712913,
+                44.05581250109643
+              ],
+              "max": [
+                -26.054486896714668,
+                11.779054605329069,
+                51.10235215830287
+              ]
+            },
+            "volume": 3.5598497244980956,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-3",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -26.509696044472765,
+                10.706254963880014,
+                26.2742753072494
+              ],
+              "max": [
+                -24.397083437648444,
+                12.383971320537299,
+                44.38509792273459
+              ]
+            },
+            "volume": 5.010473121929212,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-4",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -32.85632973911758,
+                9.6461235925942,
+                17.94843273821899
+              ],
+              "max": [
+                -24.4805096572729,
+                11.443816706084052,
+                26.558745104286388
+              ]
+            },
+            "volume": 3.1751568680328552,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-5",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -41.69462083652518,
+                9.647943407917749,
+                17.913946445554522
+              ],
+              "max": [
+                -32.45247588097482,
+                11.637835336541357,
+                24.235004144400254
+              ]
+            },
+            "volume": 2.9690036273186093,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-0",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -48.40466386007382,
+                6.8764594471285365,
+                20.74384786376567
+              ],
+              "max": [
+                -41.38105282406138,
+                11.588554331054837,
+                24.25811430632646
+              ]
+            },
+            "volume": 2.334626424300697,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-1",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -52.45673429588315,
+                6.902820828922063,
+                40.25355972767041
+              ],
+              "max": [
+                -45.73674499341866,
+                11.595339031681059,
+                42.96640377703427
+              ]
+            },
+            "volume": 2.195622953702512,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-2",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -38.220743311922206,
+                7.1613090813309075,
+                50.71700449963177
+              ],
+              "max": [
+                -36.92920136933765,
+                10.677764824925434,
+                55.98602161949453
+              ]
+            },
+            "volume": 1.612938554679981,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-3",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -26.377215275076477,
+                6.900723167539698,
+                44.04524344595246
+              ],
+              "max": [
+                -20.319994053466093,
+                11.40201070141196,
+                47.41342233571619
+              ]
+            },
+            "volume": 2.076093198115272,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-4",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -24.817462770602035,
+                6.877977399332245,
+                24.90747554264216
+              ],
+              "max": [
+                -18.268825267492584,
+                11.275758822686921,
+                26.645595098643902
+              ]
+            },
+            "volume": 2.0603584656004656,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-5",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -32.93171798995471,
+                7.161381762407899,
+                14.013819858751516
+              ],
+              "max": [
+                -31.779211864975576,
+                10.201217134636435,
+                18.30252480958658
+              ]
+            },
+            "volume": 1.3083191120331963,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-0",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -46.16705964578648,
+                -12.522742205310868,
+                23.88556419079229
+              ],
+              "max": [
+                -41.24024628868161,
+                -11.012118056825457,
+                40.63815487620391
+              ]
+            },
+            "volume": 4.752282005649713,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-1",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -46.10666268336603,
+                -11.95004393744391,
+                40.34725790281717
+              ],
+              "max": [
+                -36.99335335685372,
+                -10.116871547917608,
+                51.04767169437758
+              ]
+            },
+            "volume": 3.7438389852445133,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-2",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -37.39465270997785,
+                -11.779054605329069,
+                44.05581250109643
+              ],
+              "max": [
+                -26.054486896714668,
+                -10.115351562712913,
+                51.10235215830287
+              ]
+            },
+            "volume": 3.55984972449814,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-3",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -26.509696044472765,
+                -12.383971320537299,
+                26.2742753072494
+              ],
+              "max": [
+                -24.397083437648444,
+                -10.706254963880014,
+                44.38509792273459
+              ]
+            },
+            "volume": 5.010473121929217,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-4",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -32.85632973911758,
+                -11.443816706084052,
+                17.94843273821899
+              ],
+              "max": [
+                -24.4805096572729,
+                -9.6461235925942,
+                26.558745104286388
+              ]
+            },
+            "volume": 3.1751568680328535,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-5",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -41.69462083652518,
+                -11.637835336541357,
+                17.913946445554522
+              ],
+              "max": [
+                -32.45247588097482,
+                -9.647943407917749,
+                24.235004144400254
+              ]
+            },
+            "volume": 2.969003627318634,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-0",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -48.40466386007382,
+                -11.588554331054837,
+                20.74384786376567
+              ],
+              "max": [
+                -41.38105282406138,
+                -6.8764594471285365,
+                24.25811430632646
+              ]
+            },
+            "volume": 2.3346264243006845,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-1",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -52.45673429588315,
+                -11.595339031681059,
+                40.25355972767041
+              ],
+              "max": [
+                -45.73674499341866,
+                -6.902820828922063,
+                42.96640377703427
+              ]
+            },
+            "volume": 2.195622953702526,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-2",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -38.220743311922206,
+                -10.677764824925434,
+                50.71700449963177
+              ],
+              "max": [
+                -36.92920136933765,
+                -7.1613090813309075,
+                55.98602161949453
+              ]
+            },
+            "volume": 1.6129385546799795,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-3",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -26.377215275076477,
+                -11.40201070141196,
+                44.04524344595246
+              ],
+              "max": [
+                -20.319994053466093,
+                -6.900723167539698,
+                47.41342233571619
+              ]
+            },
+            "volume": 2.0760931981152835,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-4",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -24.817462770602035,
+                -11.275758822686921,
+                24.90747554264216
+              ],
+              "max": [
+                -18.268825267492584,
+                -6.877977399332245,
+                26.645595098643902
+              ]
+            },
+            "volume": 2.060358465600463,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-5",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -32.93171798995471,
+                -10.201217134636435,
+                14.013819858751516
+              ],
+              "max": [
+                -31.779211864975576,
+                -7.161381762407899,
+                18.30252480958658
+              ]
+            },
+            "volume": 1.3083191120331945,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "belly-seam-23",
+            "vertices": 594,
+            "triangles": 1184,
+            "bounds": {
+              "min": [
+                -28.19808012613237,
+                -19.769965536295484,
+                22.769999999999996
+              ],
+              "max": [
+                -12.827560899508653,
+                -18.14523275582044,
+                23.230000000000004
+              ]
+            },
+            "volume": 2.505740686513253,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "belly-seam-33",
+            "vertices": 594,
+            "triangles": 1184,
+            "bounds": {
+              "min": [
+                -28.5886719911365,
+                -20.281332255527623,
+                32.769999999999996
+              ],
+              "max": [
+                -11.411328008863498,
+                -18.51597096614125,
+                33.230000000000004
+              ]
+            },
+            "volume": 2.8037320037208384,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "belly-seam-43",
+            "vertices": 594,
+            "triangles": 1184,
+            "bounds": {
+              "min": [
+                -26.57369327805405,
+                -19.43105199648921,
+                42.76999999999999
+              ],
+              "max": [
+                -12.400665696305117,
+                -17.899522203146763,
+                43.230000000000004
+              ]
+            },
+            "volume": 2.3082438836353782,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "drawing-turtle-and-wordmark",
+            "vertices": 15970,
+            "triangles": 31908,
+            "bounds": {
+              "min": [
+                20.82,
+                -3.5359999999999996,
+                37.18
+              ],
+              "max": [
+                53.02,
+                -3.32,
+                64.78
+              ]
+            },
+            "volume": 84.189715200005,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 10,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "drawing-shell",
+            "vertices": 7736,
+            "triangles": 15468,
+            "bounds": {
+              "min": [
+                26.800000000000004,
+                -3.6799999999999997,
+                49.14
+              ],
+              "max": [
+                49.57000000000001,
+                -3.5359999999999996,
+                62.94
+              ]
+            },
+            "volume": 28.017532800001817,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 2,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "drawing-pen-nib",
+            "vertices": 2390,
+            "triangles": 4772,
+            "bounds": {
+              "min": [
+                31.400000000000002,
+                -3.788,
+                50.980000000000004
+              ],
+              "max": [
+                49.57000000000001,
+                -3.6799999999999997,
+                61.1
+              ]
+            },
+            "volume": 6.078844800000019,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 2,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [
+          [
+            "plinth",
+            "plinth-inlay"
+          ],
+          [
+            "plinth",
+            "left-foot"
+          ],
+          [
+            "plinth",
+            "right-foot"
+          ],
+          [
+            "plinth",
+            "easel-back-leg"
+          ],
+          [
+            "plinth-inlay",
+            "plinth-top"
+          ],
+          [
+            "plinth-inlay",
+            "left-foot"
+          ],
+          [
+            "plinth-inlay",
+            "right-foot"
+          ],
+          [
+            "plinth-inlay",
+            "easel-left-leg"
+          ],
+          [
+            "plinth-inlay",
+            "easel-right-leg"
+          ],
+          [
+            "plinth-inlay",
+            "easel-back-leg"
+          ],
+          [
+            "plinth-top",
+            "left-foot"
+          ],
+          [
+            "plinth-top",
+            "right-foot"
+          ],
+          [
+            "plinth-top",
+            "easel-left-leg"
+          ],
+          [
+            "plinth-top",
+            "easel-right-leg"
+          ],
+          [
+            "plinth-top",
+            "easel-back-leg"
+          ],
+          [
+            "shell-rim",
+            "shell-dome"
+          ],
+          [
+            "shell-rim",
+            "body"
+          ],
+          [
+            "shell-rim",
+            "belly"
+          ],
+          [
+            "shell-rim",
+            "left-foot"
+          ],
+          [
+            "shell-rim",
+            "right-foot"
+          ],
+          [
+            "shell-rim",
+            "neck"
+          ],
+          [
+            "shell-rim",
+            "head"
+          ],
+          [
+            "shell-rim",
+            "drawing-arm"
+          ],
+          [
+            "shell-rim",
+            "resting-arm"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-0"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-1"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-2"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-3"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-4"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-5"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-0"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-1"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-2"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-3"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-4"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-5"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-0"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-1"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-2"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-3"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-4"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-5"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-0"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-1"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-2"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-3"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-4"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-5"
+          ],
+          [
+            "shell-dome",
+            "body"
+          ],
+          [
+            "shell-dome",
+            "belly"
+          ],
+          [
+            "shell-dome",
+            "left-foot"
+          ],
+          [
+            "shell-dome",
+            "right-foot"
+          ],
+          [
+            "shell-dome",
+            "neck"
+          ],
+          [
+            "shell-dome",
+            "head"
+          ],
+          [
+            "shell-dome",
+            "drawing-arm"
+          ],
+          [
+            "shell-dome",
+            "resting-arm"
+          ],
+          [
+            "shell-dome",
+            "resting-hand"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-0"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-1"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-2"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-3"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-4"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-5"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-0"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-1"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-2"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-3"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-4"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-5"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-0"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-1"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-2"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-3"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-4"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-5"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-0"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-1"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-2"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-3"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-4"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-5"
+          ],
+          [
+            "body",
+            "belly"
+          ],
+          [
+            "body",
+            "left-foot"
+          ],
+          [
+            "body",
+            "right-foot"
+          ],
+          [
+            "body",
+            "neck"
+          ],
+          [
+            "body",
+            "head"
+          ],
+          [
+            "body",
+            "drawing-arm"
+          ],
+          [
+            "body",
+            "resting-arm"
+          ],
+          [
+            "body",
+            "resting-hand"
+          ],
+          [
+            "body",
+            "shell-true-seam-1"
+          ],
+          [
+            "body",
+            "shell-true-seam-2"
+          ],
+          [
+            "body",
+            "shell-true-seam-3"
+          ],
+          [
+            "body",
+            "shell-true-seam-4"
+          ],
+          [
+            "body",
+            "shell-true-seam-5"
+          ],
+          [
+            "body",
+            "shell-true-radial-2"
+          ],
+          [
+            "body",
+            "shell-true-radial-3"
+          ],
+          [
+            "body",
+            "shell-true-radial-4"
+          ],
+          [
+            "body",
+            "shell-true-radial-5"
+          ],
+          [
+            "body",
+            "belly-seam-43"
+          ],
+          [
+            "belly",
+            "left-foot"
+          ],
+          [
+            "belly",
+            "right-foot"
+          ],
+          [
+            "belly",
+            "neck"
+          ],
+          [
+            "belly",
+            "drawing-arm"
+          ],
+          [
+            "belly",
+            "shell-true-seam-2"
+          ],
+          [
+            "belly",
+            "shell-true-seam-3"
+          ],
+          [
+            "belly",
+            "shell-true-seam-4"
+          ],
+          [
+            "belly",
+            "shell-true-radial-3"
+          ],
+          [
+            "belly",
+            "shell-true-radial-4"
+          ],
+          [
+            "belly",
+            "belly-seam-23"
+          ],
+          [
+            "belly",
+            "belly-seam-33"
+          ],
+          [
+            "belly",
+            "belly-seam-43"
+          ],
+          [
+            "left-foot",
+            "shell-true-radial-5"
+          ],
+          [
+            "neck",
+            "head"
+          ],
+          [
+            "neck",
+            "drawing-arm"
+          ],
+          [
+            "neck",
+            "shell-true-seam-2"
+          ],
+          [
+            "neck",
+            "shell-true-seam-3"
+          ],
+          [
+            "neck",
+            "shell-true-radial-3"
+          ],
+          [
+            "head",
+            "near-eye-rim"
+          ],
+          [
+            "head",
+            "near-eye"
+          ],
+          [
+            "head",
+            "near-iris"
+          ],
+          [
+            "head",
+            "near-pupil"
+          ],
+          [
+            "head",
+            "near-glint"
+          ],
+          [
+            "head",
+            "near-brow"
+          ],
+          [
+            "head",
+            "far-eye-rim"
+          ],
+          [
+            "head",
+            "far-eye"
+          ],
+          [
+            "head",
+            "far-iris"
+          ],
+          [
+            "head",
+            "far-pupil"
+          ],
+          [
+            "head",
+            "far-glint"
+          ],
+          [
+            "head",
+            "far-brow"
+          ],
+          [
+            "head",
+            "smile"
+          ],
+          [
+            "head",
+            "smile-dimple"
+          ],
+          [
+            "head",
+            "nostril"
+          ],
+          [
+            "near-eye-rim",
+            "near-eye"
+          ],
+          [
+            "near-eye-rim",
+            "near-iris"
+          ],
+          [
+            "near-eye-rim",
+            "near-brow"
+          ],
+          [
+            "near-eye",
+            "near-iris"
+          ],
+          [
+            "near-eye",
+            "near-pupil"
+          ],
+          [
+            "near-eye",
+            "near-brow"
+          ],
+          [
+            "near-iris",
+            "near-pupil"
+          ],
+          [
+            "near-iris",
+            "near-glint"
+          ],
+          [
+            "near-pupil",
+            "near-glint"
+          ],
+          [
+            "far-eye-rim",
+            "far-eye"
+          ],
+          [
+            "far-eye-rim",
+            "far-iris"
+          ],
+          [
+            "far-eye-rim",
+            "far-brow"
+          ],
+          [
+            "far-eye",
+            "far-iris"
+          ],
+          [
+            "far-eye",
+            "far-pupil"
+          ],
+          [
+            "far-eye",
+            "far-brow"
+          ],
+          [
+            "far-iris",
+            "far-pupil"
+          ],
+          [
+            "far-iris",
+            "far-glint"
+          ],
+          [
+            "far-pupil",
+            "far-glint"
+          ],
+          [
+            "smile",
+            "smile-dimple"
+          ],
+          [
+            "drawing-arm",
+            "drawing-hand"
+          ],
+          [
+            "drawing-arm",
+            "gripping-thumb"
+          ],
+          [
+            "drawing-arm",
+            "pen"
+          ],
+          [
+            "drawing-arm",
+            "belly-seam-43"
+          ],
+          [
+            "drawing-hand",
+            "gripping-thumb"
+          ],
+          [
+            "drawing-hand",
+            "pen"
+          ],
+          [
+            "gripping-thumb",
+            "pen"
+          ],
+          [
+            "resting-arm",
+            "resting-hand"
+          ],
+          [
+            "resting-arm",
+            "shell-true-seam-0"
+          ],
+          [
+            "resting-arm",
+            "shell-true-seam-1"
+          ],
+          [
+            "resting-arm",
+            "shell-true-seam-2"
+          ],
+          [
+            "pen",
+            "pen-ferrule"
+          ],
+          [
+            "pen",
+            "pen-tip"
+          ],
+          [
+            "pen",
+            "drawing-turtle-and-wordmark"
+          ],
+          [
+            "pen",
+            "drawing-shell"
+          ],
+          [
+            "pen-ferrule",
+            "pen-tip"
+          ],
+          [
+            "pen-tip",
+            "drawing-turtle-and-wordmark"
+          ],
+          [
+            "easel-left-leg",
+            "easel-brace"
+          ],
+          [
+            "easel-left-leg",
+            "board"
+          ],
+          [
+            "easel-left-leg",
+            "paper"
+          ],
+          [
+            "easel-left-leg",
+            "tray"
+          ],
+          [
+            "easel-right-leg",
+            "easel-brace"
+          ],
+          [
+            "easel-right-leg",
+            "board"
+          ],
+          [
+            "easel-right-leg",
+            "paper"
+          ],
+          [
+            "easel-right-leg",
+            "tray"
+          ],
+          [
+            "board",
+            "paper"
+          ],
+          [
+            "board",
+            "tray"
+          ],
+          [
+            "board",
+            "clip"
+          ],
+          [
+            "paper",
+            "clip"
+          ],
+          [
+            "clip",
+            "clip-rivet"
+          ],
+          [
+            "shell-false-seam-0",
+            "shell-false-seam-1"
+          ],
+          [
+            "shell-false-seam-0",
+            "shell-false-seam-5"
+          ],
+          [
+            "shell-false-seam-0",
+            "shell-false-radial-0"
+          ],
+          [
+            "shell-false-seam-0",
+            "shell-false-radial-1"
+          ],
+          [
+            "shell-false-seam-1",
+            "shell-false-seam-2"
+          ],
+          [
+            "shell-false-seam-1",
+            "shell-false-radial-1"
+          ],
+          [
+            "shell-false-seam-1",
+            "shell-false-radial-2"
+          ],
+          [
+            "shell-false-seam-2",
+            "shell-false-seam-3"
+          ],
+          [
+            "shell-false-seam-2",
+            "shell-false-radial-2"
+          ],
+          [
+            "shell-false-seam-2",
+            "shell-false-radial-3"
+          ],
+          [
+            "shell-false-seam-3",
+            "shell-false-seam-4"
+          ],
+          [
+            "shell-false-seam-3",
+            "shell-false-radial-3"
+          ],
+          [
+            "shell-false-seam-3",
+            "shell-false-radial-4"
+          ],
+          [
+            "shell-false-seam-4",
+            "shell-false-seam-5"
+          ],
+          [
+            "shell-false-seam-4",
+            "shell-false-radial-4"
+          ],
+          [
+            "shell-false-seam-4",
+            "shell-false-radial-5"
+          ],
+          [
+            "shell-false-seam-5",
+            "shell-false-radial-0"
+          ],
+          [
+            "shell-false-seam-5",
+            "shell-false-radial-5"
+          ],
+          [
+            "shell-true-seam-0",
+            "shell-true-seam-1"
+          ],
+          [
+            "shell-true-seam-0",
+            "shell-true-seam-5"
+          ],
+          [
+            "shell-true-seam-0",
+            "shell-true-radial-0"
+          ],
+          [
+            "shell-true-seam-0",
+            "shell-true-radial-1"
+          ],
+          [
+            "shell-true-seam-1",
+            "shell-true-seam-2"
+          ],
+          [
+            "shell-true-seam-1",
+            "shell-true-radial-1"
+          ],
+          [
+            "shell-true-seam-1",
+            "shell-true-radial-2"
+          ],
+          [
+            "shell-true-seam-2",
+            "shell-true-seam-3"
+          ],
+          [
+            "shell-true-seam-2",
+            "shell-true-radial-2"
+          ],
+          [
+            "shell-true-seam-2",
+            "shell-true-radial-3"
+          ],
+          [
+            "shell-true-seam-3",
+            "shell-true-seam-4"
+          ],
+          [
+            "shell-true-seam-3",
+            "shell-true-radial-3"
+          ],
+          [
+            "shell-true-seam-3",
+            "shell-true-radial-4"
+          ],
+          [
+            "shell-true-seam-4",
+            "shell-true-seam-5"
+          ],
+          [
+            "shell-true-seam-4",
+            "shell-true-radial-4"
+          ],
+          [
+            "shell-true-seam-4",
+            "shell-true-radial-5"
+          ],
+          [
+            "shell-true-seam-5",
+            "shell-true-radial-0"
+          ],
+          [
+            "shell-true-seam-5",
+            "shell-true-radial-5"
+          ],
+          [
+            "drawing-turtle-and-wordmark",
+            "drawing-shell"
+          ],
+          [
+            "drawing-shell",
+            "drawing-pen-nib"
+          ]
+        ],
+        "solidReady": false,
+        "warnings": [
+          "Part bounds overlap or touch; STL requires separated parts or an explicit supported boolean. This conservative check can include separated curved surfaces.",
+          "Mesh is empty, open, degenerate, inconsistently oriented, or non-manifold.",
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      },
+      "byteLength": 1300927,
+      "sha256": "a05dfdf1395a67e09241191284014c0ac64e58d21a259dbb4fef394952a5657c"
+    },
+    {
+      "file": "mascot.glb",
+      "format": "glb",
+      "units": "m",
+      "mimeType": "model/gltf-binary",
+      "inspection": {
+        "vertices": 84633,
+        "triangles": 179076,
+        "bounds": {
+          "min": [
+            -63,
+            -35,
+            0
+          ],
+          "max": [
+            65,
+            35,
+            83
+          ]
+        },
+        "volume": 176408.4467377642,
+        "manifold": false,
+        "outward": false,
+        "openEdges": 0,
+        "nonManifoldEdges": 14544,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 639,
+        "degenerateFaces": 0,
+        "shells": 76,
+        "orientationChecked": true,
+        "misorientedShells": 23,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "plinth",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                -63,
+                -35,
+                0
+              ],
+              "max": [
+                65,
+                35,
+                5
+              ]
+            },
+            "volume": 40104.25429397043,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "plinth-inlay",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                -61,
+                -33,
+                4.4
+              ],
+              "max": [
+                63,
+                33,
+                5.300000000000001
+              ]
+            },
+            "volume": 6643.595734153212,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "plinth-top",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                -60.2,
+                -32.2,
+                5.1
+              ],
+              "max": [
+                62.2,
+                32.2,
+                6
+              ]
+            },
+            "volume": 6398.6985440723965,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-rim",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -57.083735171827314,
+                -12.5,
+                9.091045804320533
+              ],
+              "max": [
+                -12.916264828172682,
+                12.5,
+                60.90895419567947
+              ]
+            },
+            "volume": 29855.67369959317,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-dome",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -56.47947226081415,
+                -13.7,
+                9.886569666526313
+              ],
+              "max": [
+                -13.520527739185852,
+                13.7,
+                60.11343033347369
+              ]
+            },
+            "volume": 30850.03883415669,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "body",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -38.5,
+                -18.052129626836535,
+                9
+              ],
+              "max": [
+                -7.21669085257443,
+                4.052129626836535,
+                57
+              ]
+            },
+            "volume": 17719.2564551755,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "belly",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -31.757003101333808,
+                -20.11523861920674,
+                13.5
+              ],
+              "max": [
+                -8.4,
+                -10.484761380793262,
+                52.5
+              ]
+            },
+            "volume": 4698.210670333976,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "left-foot",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -44.35633939054024,
+                -22.563358877628406,
+                4.7
+              ],
+              "max": [
+                -23.643660609459758,
+                2.5633588776284064,
+                15.3
+              ]
+            },
+            "volume": 2942.646278479324,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "right-foot",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -22.236875167986625,
+                -24.00261372248793,
+                4.7
+              ],
+              "max": [
+                -3.763124832013375,
+                2.0026137224879275,
+                15.3
+              ]
+            },
+            "volume": 2754.3169166566563,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "neck",
+            "vertices": 794,
+            "triangles": 1584,
+            "bounds": {
+              "min": [
+                -31.106239073808627,
+                -13.997849080439467,
+                44.16484174636379
+              ],
+              "max": [
+                -9.574183551593851,
+                2.2761975981386833,
+                62.97032657936246
+              ]
+            },
+            "volume": 2926.116136709034,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "head",
+            "vertices": 3762,
+            "triangles": 7520,
+            "bounds": {
+              "min": [
+                -33.53245131083013,
+                -19.114746334371844,
+                53
+              ],
+              "max": [
+                -1,
+                5.114746334371844,
+                83
+              ]
+            },
+            "volume": 12508.01465365129,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-eye-rim",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -28.200000000000003,
+                -16.675052163397332,
+                68.05
+              ],
+              "max": [
+                -18.4,
+                -13.275052163397332,
+                79.55
+              ]
+            },
+            "volume": 199.20433437214382,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-eye",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -27.950000000000003,
+                -17.37505216339733,
+                68.3
+              ],
+              "max": [
+                -18.65,
+                -13.77505216339733,
+                79.3
+              ]
+            },
+            "volume": 191.45825007195884,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-iris",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -24.400000000000002,
+                -17.77505216339733,
+                69.7
+              ],
+              "max": [
+                -19.400000000000002,
+                -16.475052163397333,
+                75.89999999999999
+              ]
+            },
+            "volume": 20.950818610567918,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-pupil",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -23.35,
+                -18.02505216339733,
+                70.44999999999999
+              ],
+              "max": [
+                -19.950000000000003,
+                -17.12505216339733,
+                75.25
+              ]
+            },
+            "volume": 7.635871557122061,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-glint",
+            "vertices": 266,
+            "triangles": 528,
+            "bounds": {
+              "min": [
+                -22.68,
+                -18.14505216339733,
+                73.14999999999999
+              ],
+              "max": [
+                -21.520000000000003,
+                -17.745052163397332,
+                74.45
+              ]
+            },
+            "volume": 0.3069196480058392,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "near-brow",
+            "vertices": 594,
+            "triangles": 1184,
+            "bounds": {
+              "min": [
+                -26.284114869652427,
+                -14.587177894835266,
+                78.09470027634748
+              ],
+              "max": [
+                -19.412566696556052,
+                -6.62,
+                79.4143877186832
+              ]
+            },
+            "volume": 3.233340996567437,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-eye-rim",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -14.600000000000001,
+                -16.971253671291258,
+                68.85
+              ],
+              "max": [
+                -6.000000000000001,
+                -13.571253671291258,
+                79.15
+              ]
+            },
+            "volume": 156.57071817821125,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-eye",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -14.350000000000001,
+                -17.671253671291257,
+                69.1
+              ],
+              "max": [
+                -6.250000000000001,
+                -14.071253671291256,
+                78.9
+              ]
+            },
+            "volume": 148.5626186775365,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-iris",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -11.4,
+                -18.071253671291256,
+                69.9
+              ],
+              "max": [
+                -6.4,
+                -16.77125367129126,
+                76.1
+              ]
+            },
+            "volume": 20.950818610567918,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-pupil",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -10.35,
+                -18.321253671291256,
+                70.64999999999999
+              ],
+              "max": [
+                -6.95,
+                -17.421253671291257,
+                75.45
+              ]
+            },
+            "volume": 7.6358715571220666,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-glint",
+            "vertices": 266,
+            "triangles": 528,
+            "bounds": {
+              "min": [
+                -9.680000000000001,
+                -18.441253671291257,
+                73.35
+              ],
+              "max": [
+                -8.520000000000001,
+                -18.04125367129126,
+                74.65
+              ]
+            },
+            "volume": 0.30691964800583965,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "far-brow",
+            "vertices": 594,
+            "triangles": 1184,
+            "bounds": {
+              "min": [
+                -12.97201907224511,
+                -14.83270109335299,
+                78.09613957697348
+              ],
+              "max": [
+                -6.877210376501661,
+                -11.504280176854849,
+                79.41781166555488
+              ]
+            },
+            "volume": 2.0586737251614613,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "smile",
+            "vertices": 1170,
+            "triangles": 2336,
+            "bounds": {
+              "min": [
+                -23.167118199689277,
+                -19.00991865648584,
+                61.10397589155132
+              ],
+              "max": [
+                -4.641989153614215,
+                -14.839098005758816,
+                65.33999450886758
+              ]
+            },
+            "volume": 8.777653872023606,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "smile-dimple",
+            "vertices": 266,
+            "triangles": 528,
+            "bounds": {
+              "min": [
+                -5.6000000000000005,
+                -15.566743576431342,
+                64.3
+              ],
+              "max": [
+                -4.2,
+                -14.666743576431344,
+                65.7
+              ]
+            },
+            "volume": 0.8975567955608442,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "nostril",
+            "vertices": 266,
+            "triangles": 528,
+            "bounds": {
+              "min": [
+                -4.05,
+                -14.287538641581014,
+                68.6
+              ],
+              "max": [
+                -2.95,
+                -13.387538641581015,
+                69.4
+              ]
+            },
+            "volume": 0.402984683721199,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "drawing-arm",
+            "vertices": 1570,
+            "triangles": 3136,
+            "bounds": {
+              "min": [
+                -20.203683891172577,
+                -23.358650363683065,
+                34.448751090182604
+              ],
+              "max": [
+                14.588152564982227,
+                -7.775156193171379,
+                50.591863241077746
+              ]
+            },
+            "volume": 2202.837057441572,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "drawing-hand",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                8.712895882685945,
+                -21.11319534406638,
+                44.29710224007687
+              ],
+              "max": [
+                17.287104117314055,
+                -14.086804655933623,
+                53.30289775992313
+              ]
+            },
+            "volume": 282.3553364428579,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "gripping-thumb",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                11.748606831089512,
+                -22.2,
+                47.34909930613661
+              ],
+              "max": [
+                16.85139316891049,
+                -17.8,
+                52.65090069386339
+              ]
+            },
+            "volume": 62.00793768377055,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "resting-arm",
+            "vertices": 986,
+            "triangles": 1968,
+            "bounds": {
+              "min": [
+                -44.7666999537772,
+                -20.390275416513624,
+                25.0979167534694
+              ],
+              "max": [
+                -32.86649129557138,
+                -5.06452035960037,
+                48.29396032097355
+              ]
+            },
+            "volume": 1051.7834099565014,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "resting-hand",
+            "vertices": 2498,
+            "triangles": 4992,
+            "bounds": {
+              "min": [
+                -40.561635607520365,
+                -20.4,
+                23.255586296767163
+              ],
+              "max": [
+                -32.438364392479635,
+                -13.6,
+                32.144413703232836
+              ]
+            },
+            "volume": 255.54786439371955,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "pen",
+            "vertices": 162,
+            "triangles": 320,
+            "bounds": {
+              "min": [
+                8.169195595425116,
+                -21.944208705376425,
+                46.02451253548383
+              ],
+              "max": [
+                29.933073647334627,
+                -3.094100920020935,
+                56.696819465811075
+              ]
+            },
+            "volume": 202.19684210758413,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "pen-ferrule",
+            "vertices": 130,
+            "triangles": 256,
+            "bounds": {
+              "min": [
+                21.505406772130087,
+                -10.679294065517254,
+                46.44903579039365
+              ],
+              "max": [
+                27.154593227869913,
+                -5.186705934482745,
+                50.97296420960635
+              ]
+            },
+            "volume": 44.72563474147743,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "pen-tip",
+            "vertices": 130,
+            "triangles": 256,
+            "bounds": {
+              "min": [
+                25.263816545033002,
+                -7.376089928600417,
+                46.06733235920889
+              ],
+              "max": [
+                30.111554736412817,
+                -2.977022841663285,
+                49.01115120678096
+              ]
+            },
+            "volume": 10.79517198792321,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "easel-left-leg",
+            "vertices": 130,
+            "triangles": 256,
+            "bounds": {
+              "min": [
+                13.280070117902843,
+                -2.4802784524584043,
+                5.046736685776024
+              ],
+              "max": [
+                27.15132241962735,
+                6.122670055253431,
+                49.420480118810225
+              ]
+            },
+            "volume": 707.8909195620574,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "easel-right-leg",
+            "vertices": 130,
+            "triangles": 256,
+            "bounds": {
+              "min": [
+                46.81768572163422,
+                -2.527152454284553,
+                5.095381795534378
+              ],
+              "max": [
+                59.744753163972796,
+                6.1532529333181945,
+                49.38350983539387
+              ]
+            },
+            "volume": 704.8463057602515,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "easel-back-leg",
+            "vertices": 130,
+            "triangles": 256,
+            "bounds": {
+              "min": [
+                34.98388584239016,
+                3.0373271216466655,
+                4.958840403472092
+              ],
+              "max": [
+                45.10140385590419,
+                26.31337183821829,
+                71.52458512443192
+              ]
+            },
+            "volume": 934.3564860878425,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "easel-brace",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                19.5,
+                -0.75,
+                17
+              ],
+              "max": [
+                52.5,
+                2.75,
+                20
+              ]
+            },
+            "volume": 320.33453356881137,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "board",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                14.5,
+                -1.8,
+                28
+              ],
+              "max": [
+                59.5,
+                1.8,
+                80
+              ]
+            },
+            "volume": 8084.0591569470325,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "paper",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                16.5,
+                -2.6,
+                30.3
+              ],
+              "max": [
+                57.5,
+                -1.6,
+                77.8
+              ]
+            },
+            "volume": 1873.3419802265153,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "tray",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                12.5,
+                -5.6,
+                27
+              ],
+              "max": [
+                61.5,
+                2.4,
+                30
+              ]
+            },
+            "volume": 1108.1007745482636,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "clip",
+            "vertices": 770,
+            "triangles": 1536,
+            "bounds": {
+              "min": [
+                32.5,
+                -3.65,
+                77.2
+              ],
+              "max": [
+                41.5,
+                0.8500000000000001,
+                82.4
+              ]
+            },
+            "volume": 197.2555792876671,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "clip-rivet",
+            "vertices": 266,
+            "triangles": 528,
+            "bounds": {
+              "min": [
+                36.15,
+                -4.05,
+                78.65
+              ],
+              "max": [
+                37.85,
+                -3.55,
+                80.35
+              ]
+            },
+            "volume": 0.7352435201731421,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-0",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -46.16705964578648,
+                11.012118056825457,
+                23.885564190792294
+              ],
+              "max": [
+                -41.24024628868161,
+                12.522742205310868,
+                40.63815487620391
+              ]
+            },
+            "volume": 4.752282005649721,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-1",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -46.10666268336603,
+                10.116871547917608,
+                40.34725790281717
+              ],
+              "max": [
+                -36.99335335685372,
+                11.95004393744391,
+                51.04767169437758
+              ]
+            },
+            "volume": 3.743838985244521,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-2",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -37.39465270997785,
+                10.115351562712913,
+                44.05581250109643
+              ],
+              "max": [
+                -26.054486896714668,
+                11.779054605329069,
+                51.10235215830287
+              ]
+            },
+            "volume": 3.5598497244980956,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-3",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -26.509696044472765,
+                10.706254963880014,
+                26.2742753072494
+              ],
+              "max": [
+                -24.397083437648444,
+                12.383971320537299,
+                44.38509792273459
+              ]
+            },
+            "volume": 5.010473121929212,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-4",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -32.85632973911758,
+                9.6461235925942,
+                17.94843273821899
+              ],
+              "max": [
+                -24.4805096572729,
+                11.443816706084052,
+                26.558745104286388
+              ]
+            },
+            "volume": 3.1751568680328552,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-seam-5",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -41.69462083652518,
+                9.647943407917749,
+                17.913946445554522
+              ],
+              "max": [
+                -32.45247588097482,
+                11.637835336541357,
+                24.235004144400254
+              ]
+            },
+            "volume": 2.9690036273186093,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-0",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -48.40466386007382,
+                6.8764594471285365,
+                20.74384786376567
+              ],
+              "max": [
+                -41.38105282406138,
+                11.588554331054837,
+                24.25811430632646
+              ]
+            },
+            "volume": 2.334626424300697,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-1",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -52.45673429588315,
+                6.902820828922063,
+                40.25355972767041
+              ],
+              "max": [
+                -45.73674499341866,
+                11.595339031681059,
+                42.96640377703427
+              ]
+            },
+            "volume": 2.195622953702512,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-2",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -38.220743311922206,
+                7.1613090813309075,
+                50.71700449963177
+              ],
+              "max": [
+                -36.92920136933765,
+                10.677764824925434,
+                55.98602161949453
+              ]
+            },
+            "volume": 1.612938554679981,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-3",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -26.377215275076477,
+                6.900723167539698,
+                44.04524344595246
+              ],
+              "max": [
+                -20.319994053466093,
+                11.40201070141196,
+                47.41342233571619
+              ]
+            },
+            "volume": 2.076093198115272,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-4",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -24.817462770602035,
+                6.877977399332245,
+                24.90747554264216
+              ],
+              "max": [
+                -18.268825267492584,
+                11.275758822686921,
+                26.645595098643902
+              ]
+            },
+            "volume": 2.0603584656004656,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-false-radial-5",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -32.93171798995471,
+                7.161381762407899,
+                14.013819858751516
+              ],
+              "max": [
+                -31.779211864975576,
+                10.201217134636435,
+                18.30252480958658
+              ]
+            },
+            "volume": 1.3083191120331963,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-0",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -46.16705964578648,
+                -12.522742205310868,
+                23.88556419079229
+              ],
+              "max": [
+                -41.24024628868161,
+                -11.012118056825457,
+                40.63815487620391
+              ]
+            },
+            "volume": 4.752282005649713,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-1",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -46.10666268336603,
+                -11.95004393744391,
+                40.34725790281717
+              ],
+              "max": [
+                -36.99335335685372,
+                -10.116871547917608,
+                51.04767169437758
+              ]
+            },
+            "volume": 3.7438389852445133,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-2",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -37.39465270997785,
+                -11.779054605329069,
+                44.05581250109643
+              ],
+              "max": [
+                -26.054486896714668,
+                -10.115351562712913,
+                51.10235215830287
+              ]
+            },
+            "volume": 3.55984972449814,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-3",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -26.509696044472765,
+                -12.383971320537299,
+                26.2742753072494
+              ],
+              "max": [
+                -24.397083437648444,
+                -10.706254963880014,
+                44.38509792273459
+              ]
+            },
+            "volume": 5.010473121929217,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-4",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -32.85632973911758,
+                -11.443816706084052,
+                17.94843273821899
+              ],
+              "max": [
+                -24.4805096572729,
+                -9.6461235925942,
+                26.558745104286388
+              ]
+            },
+            "volume": 3.1751568680328535,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-seam-5",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -41.69462083652518,
+                -11.637835336541357,
+                17.913946445554522
+              ],
+              "max": [
+                -32.45247588097482,
+                -9.647943407917749,
+                24.235004144400254
+              ]
+            },
+            "volume": 2.969003627318634,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-0",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -48.40466386007382,
+                -11.588554331054837,
+                20.74384786376567
+              ],
+              "max": [
+                -41.38105282406138,
+                -6.8764594471285365,
+                24.25811430632646
+              ]
+            },
+            "volume": 2.3346264243006845,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-1",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -52.45673429588315,
+                -11.595339031681059,
+                40.25355972767041
+              ],
+              "max": [
+                -45.73674499341866,
+                -6.902820828922063,
+                42.96640377703427
+              ]
+            },
+            "volume": 2.195622953702526,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-2",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -38.220743311922206,
+                -10.677764824925434,
+                50.71700449963177
+              ],
+              "max": [
+                -36.92920136933765,
+                -7.1613090813309075,
+                55.98602161949453
+              ]
+            },
+            "volume": 1.6129385546799795,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-3",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -26.377215275076477,
+                -11.40201070141196,
+                44.04524344595246
+              ],
+              "max": [
+                -20.319994053466093,
+                -6.900723167539698,
+                47.41342233571619
+              ]
+            },
+            "volume": 2.0760931981152835,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-4",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -24.817462770602035,
+                -11.275758822686921,
+                24.90747554264216
+              ],
+              "max": [
+                -18.268825267492584,
+                -6.877977399332245,
+                26.645595098643902
+              ]
+            },
+            "volume": 2.060358465600463,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "shell-true-radial-5",
+            "vertices": 530,
+            "triangles": 1056,
+            "bounds": {
+              "min": [
+                -32.93171798995471,
+                -10.201217134636435,
+                14.013819858751516
+              ],
+              "max": [
+                -31.779211864975576,
+                -7.161381762407899,
+                18.30252480958658
+              ]
+            },
+            "volume": 1.3083191120331945,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "belly-seam-23",
+            "vertices": 594,
+            "triangles": 1184,
+            "bounds": {
+              "min": [
+                -28.19808012613237,
+                -19.769965536295484,
+                22.769999999999996
+              ],
+              "max": [
+                -12.827560899508653,
+                -18.14523275582044,
+                23.230000000000004
+              ]
+            },
+            "volume": 2.505740686513253,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "belly-seam-33",
+            "vertices": 594,
+            "triangles": 1184,
+            "bounds": {
+              "min": [
+                -28.5886719911365,
+                -20.281332255527623,
+                32.769999999999996
+              ],
+              "max": [
+                -11.411328008863498,
+                -18.51597096614125,
+                33.230000000000004
+              ]
+            },
+            "volume": 2.8037320037208384,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "belly-seam-43",
+            "vertices": 594,
+            "triangles": 1184,
+            "bounds": {
+              "min": [
+                -26.57369327805405,
+                -19.43105199648921,
+                42.76999999999999
+              ],
+              "max": [
+                -12.400665696305117,
+                -17.899522203146763,
+                43.230000000000004
+              ]
+            },
+            "volume": 2.3082438836353782,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "drawing-turtle-and-wordmark",
+            "vertices": 15970,
+            "triangles": 31908,
+            "bounds": {
+              "min": [
+                20.82,
+                -3.5359999999999996,
+                37.18
+              ],
+              "max": [
+                53.02,
+                -3.32,
+                64.78
+              ]
+            },
+            "volume": 84.189715200005,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 10,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "drawing-shell",
+            "vertices": 7736,
+            "triangles": 15468,
+            "bounds": {
+              "min": [
+                26.800000000000004,
+                -3.6799999999999997,
+                49.14
+              ],
+              "max": [
+                49.57000000000001,
+                -3.5359999999999996,
+                62.94
+              ]
+            },
+            "volume": 28.017532800001817,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 2,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "drawing-pen-nib",
+            "vertices": 2390,
+            "triangles": 4772,
+            "bounds": {
+              "min": [
+                31.400000000000002,
+                -3.788,
+                50.980000000000004
+              ],
+              "max": [
+                49.57000000000001,
+                -3.6799999999999997,
+                61.1
+              ]
+            },
+            "volume": 6.078844800000019,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 2,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [
+          [
+            "plinth",
+            "plinth-inlay"
+          ],
+          [
+            "plinth",
+            "left-foot"
+          ],
+          [
+            "plinth",
+            "right-foot"
+          ],
+          [
+            "plinth",
+            "easel-back-leg"
+          ],
+          [
+            "plinth-inlay",
+            "plinth-top"
+          ],
+          [
+            "plinth-inlay",
+            "left-foot"
+          ],
+          [
+            "plinth-inlay",
+            "right-foot"
+          ],
+          [
+            "plinth-inlay",
+            "easel-left-leg"
+          ],
+          [
+            "plinth-inlay",
+            "easel-right-leg"
+          ],
+          [
+            "plinth-inlay",
+            "easel-back-leg"
+          ],
+          [
+            "plinth-top",
+            "left-foot"
+          ],
+          [
+            "plinth-top",
+            "right-foot"
+          ],
+          [
+            "plinth-top",
+            "easel-left-leg"
+          ],
+          [
+            "plinth-top",
+            "easel-right-leg"
+          ],
+          [
+            "plinth-top",
+            "easel-back-leg"
+          ],
+          [
+            "shell-rim",
+            "shell-dome"
+          ],
+          [
+            "shell-rim",
+            "body"
+          ],
+          [
+            "shell-rim",
+            "belly"
+          ],
+          [
+            "shell-rim",
+            "left-foot"
+          ],
+          [
+            "shell-rim",
+            "right-foot"
+          ],
+          [
+            "shell-rim",
+            "neck"
+          ],
+          [
+            "shell-rim",
+            "head"
+          ],
+          [
+            "shell-rim",
+            "drawing-arm"
+          ],
+          [
+            "shell-rim",
+            "resting-arm"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-0"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-1"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-2"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-3"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-4"
+          ],
+          [
+            "shell-rim",
+            "shell-false-seam-5"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-0"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-1"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-2"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-3"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-4"
+          ],
+          [
+            "shell-rim",
+            "shell-false-radial-5"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-0"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-1"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-2"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-3"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-4"
+          ],
+          [
+            "shell-rim",
+            "shell-true-seam-5"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-0"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-1"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-2"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-3"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-4"
+          ],
+          [
+            "shell-rim",
+            "shell-true-radial-5"
+          ],
+          [
+            "shell-dome",
+            "body"
+          ],
+          [
+            "shell-dome",
+            "belly"
+          ],
+          [
+            "shell-dome",
+            "left-foot"
+          ],
+          [
+            "shell-dome",
+            "right-foot"
+          ],
+          [
+            "shell-dome",
+            "neck"
+          ],
+          [
+            "shell-dome",
+            "head"
+          ],
+          [
+            "shell-dome",
+            "drawing-arm"
+          ],
+          [
+            "shell-dome",
+            "resting-arm"
+          ],
+          [
+            "shell-dome",
+            "resting-hand"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-0"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-1"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-2"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-3"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-4"
+          ],
+          [
+            "shell-dome",
+            "shell-false-seam-5"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-0"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-1"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-2"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-3"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-4"
+          ],
+          [
+            "shell-dome",
+            "shell-false-radial-5"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-0"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-1"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-2"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-3"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-4"
+          ],
+          [
+            "shell-dome",
+            "shell-true-seam-5"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-0"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-1"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-2"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-3"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-4"
+          ],
+          [
+            "shell-dome",
+            "shell-true-radial-5"
+          ],
+          [
+            "body",
+            "belly"
+          ],
+          [
+            "body",
+            "left-foot"
+          ],
+          [
+            "body",
+            "right-foot"
+          ],
+          [
+            "body",
+            "neck"
+          ],
+          [
+            "body",
+            "head"
+          ],
+          [
+            "body",
+            "drawing-arm"
+          ],
+          [
+            "body",
+            "resting-arm"
+          ],
+          [
+            "body",
+            "resting-hand"
+          ],
+          [
+            "body",
+            "shell-true-seam-1"
+          ],
+          [
+            "body",
+            "shell-true-seam-2"
+          ],
+          [
+            "body",
+            "shell-true-seam-3"
+          ],
+          [
+            "body",
+            "shell-true-seam-4"
+          ],
+          [
+            "body",
+            "shell-true-seam-5"
+          ],
+          [
+            "body",
+            "shell-true-radial-2"
+          ],
+          [
+            "body",
+            "shell-true-radial-3"
+          ],
+          [
+            "body",
+            "shell-true-radial-4"
+          ],
+          [
+            "body",
+            "shell-true-radial-5"
+          ],
+          [
+            "body",
+            "belly-seam-43"
+          ],
+          [
+            "belly",
+            "left-foot"
+          ],
+          [
+            "belly",
+            "right-foot"
+          ],
+          [
+            "belly",
+            "neck"
+          ],
+          [
+            "belly",
+            "drawing-arm"
+          ],
+          [
+            "belly",
+            "shell-true-seam-2"
+          ],
+          [
+            "belly",
+            "shell-true-seam-3"
+          ],
+          [
+            "belly",
+            "shell-true-seam-4"
+          ],
+          [
+            "belly",
+            "shell-true-radial-3"
+          ],
+          [
+            "belly",
+            "shell-true-radial-4"
+          ],
+          [
+            "belly",
+            "belly-seam-23"
+          ],
+          [
+            "belly",
+            "belly-seam-33"
+          ],
+          [
+            "belly",
+            "belly-seam-43"
+          ],
+          [
+            "left-foot",
+            "shell-true-radial-5"
+          ],
+          [
+            "neck",
+            "head"
+          ],
+          [
+            "neck",
+            "drawing-arm"
+          ],
+          [
+            "neck",
+            "shell-true-seam-2"
+          ],
+          [
+            "neck",
+            "shell-true-seam-3"
+          ],
+          [
+            "neck",
+            "shell-true-radial-3"
+          ],
+          [
+            "head",
+            "near-eye-rim"
+          ],
+          [
+            "head",
+            "near-eye"
+          ],
+          [
+            "head",
+            "near-iris"
+          ],
+          [
+            "head",
+            "near-pupil"
+          ],
+          [
+            "head",
+            "near-glint"
+          ],
+          [
+            "head",
+            "near-brow"
+          ],
+          [
+            "head",
+            "far-eye-rim"
+          ],
+          [
+            "head",
+            "far-eye"
+          ],
+          [
+            "head",
+            "far-iris"
+          ],
+          [
+            "head",
+            "far-pupil"
+          ],
+          [
+            "head",
+            "far-glint"
+          ],
+          [
+            "head",
+            "far-brow"
+          ],
+          [
+            "head",
+            "smile"
+          ],
+          [
+            "head",
+            "smile-dimple"
+          ],
+          [
+            "head",
+            "nostril"
+          ],
+          [
+            "near-eye-rim",
+            "near-eye"
+          ],
+          [
+            "near-eye-rim",
+            "near-iris"
+          ],
+          [
+            "near-eye-rim",
+            "near-brow"
+          ],
+          [
+            "near-eye",
+            "near-iris"
+          ],
+          [
+            "near-eye",
+            "near-pupil"
+          ],
+          [
+            "near-eye",
+            "near-brow"
+          ],
+          [
+            "near-iris",
+            "near-pupil"
+          ],
+          [
+            "near-iris",
+            "near-glint"
+          ],
+          [
+            "near-pupil",
+            "near-glint"
+          ],
+          [
+            "far-eye-rim",
+            "far-eye"
+          ],
+          [
+            "far-eye-rim",
+            "far-iris"
+          ],
+          [
+            "far-eye-rim",
+            "far-brow"
+          ],
+          [
+            "far-eye",
+            "far-iris"
+          ],
+          [
+            "far-eye",
+            "far-pupil"
+          ],
+          [
+            "far-eye",
+            "far-brow"
+          ],
+          [
+            "far-iris",
+            "far-pupil"
+          ],
+          [
+            "far-iris",
+            "far-glint"
+          ],
+          [
+            "far-pupil",
+            "far-glint"
+          ],
+          [
+            "smile",
+            "smile-dimple"
+          ],
+          [
+            "drawing-arm",
+            "drawing-hand"
+          ],
+          [
+            "drawing-arm",
+            "gripping-thumb"
+          ],
+          [
+            "drawing-arm",
+            "pen"
+          ],
+          [
+            "drawing-arm",
+            "belly-seam-43"
+          ],
+          [
+            "drawing-hand",
+            "gripping-thumb"
+          ],
+          [
+            "drawing-hand",
+            "pen"
+          ],
+          [
+            "gripping-thumb",
+            "pen"
+          ],
+          [
+            "resting-arm",
+            "resting-hand"
+          ],
+          [
+            "resting-arm",
+            "shell-true-seam-0"
+          ],
+          [
+            "resting-arm",
+            "shell-true-seam-1"
+          ],
+          [
+            "resting-arm",
+            "shell-true-seam-2"
+          ],
+          [
+            "pen",
+            "pen-ferrule"
+          ],
+          [
+            "pen",
+            "pen-tip"
+          ],
+          [
+            "pen",
+            "drawing-turtle-and-wordmark"
+          ],
+          [
+            "pen",
+            "drawing-shell"
+          ],
+          [
+            "pen-ferrule",
+            "pen-tip"
+          ],
+          [
+            "pen-tip",
+            "drawing-turtle-and-wordmark"
+          ],
+          [
+            "easel-left-leg",
+            "easel-brace"
+          ],
+          [
+            "easel-left-leg",
+            "board"
+          ],
+          [
+            "easel-left-leg",
+            "paper"
+          ],
+          [
+            "easel-left-leg",
+            "tray"
+          ],
+          [
+            "easel-right-leg",
+            "easel-brace"
+          ],
+          [
+            "easel-right-leg",
+            "board"
+          ],
+          [
+            "easel-right-leg",
+            "paper"
+          ],
+          [
+            "easel-right-leg",
+            "tray"
+          ],
+          [
+            "board",
+            "paper"
+          ],
+          [
+            "board",
+            "tray"
+          ],
+          [
+            "board",
+            "clip"
+          ],
+          [
+            "paper",
+            "clip"
+          ],
+          [
+            "clip",
+            "clip-rivet"
+          ],
+          [
+            "shell-false-seam-0",
+            "shell-false-seam-1"
+          ],
+          [
+            "shell-false-seam-0",
+            "shell-false-seam-5"
+          ],
+          [
+            "shell-false-seam-0",
+            "shell-false-radial-0"
+          ],
+          [
+            "shell-false-seam-0",
+            "shell-false-radial-1"
+          ],
+          [
+            "shell-false-seam-1",
+            "shell-false-seam-2"
+          ],
+          [
+            "shell-false-seam-1",
+            "shell-false-radial-1"
+          ],
+          [
+            "shell-false-seam-1",
+            "shell-false-radial-2"
+          ],
+          [
+            "shell-false-seam-2",
+            "shell-false-seam-3"
+          ],
+          [
+            "shell-false-seam-2",
+            "shell-false-radial-2"
+          ],
+          [
+            "shell-false-seam-2",
+            "shell-false-radial-3"
+          ],
+          [
+            "shell-false-seam-3",
+            "shell-false-seam-4"
+          ],
+          [
+            "shell-false-seam-3",
+            "shell-false-radial-3"
+          ],
+          [
+            "shell-false-seam-3",
+            "shell-false-radial-4"
+          ],
+          [
+            "shell-false-seam-4",
+            "shell-false-seam-5"
+          ],
+          [
+            "shell-false-seam-4",
+            "shell-false-radial-4"
+          ],
+          [
+            "shell-false-seam-4",
+            "shell-false-radial-5"
+          ],
+          [
+            "shell-false-seam-5",
+            "shell-false-radial-0"
+          ],
+          [
+            "shell-false-seam-5",
+            "shell-false-radial-5"
+          ],
+          [
+            "shell-true-seam-0",
+            "shell-true-seam-1"
+          ],
+          [
+            "shell-true-seam-0",
+            "shell-true-seam-5"
+          ],
+          [
+            "shell-true-seam-0",
+            "shell-true-radial-0"
+          ],
+          [
+            "shell-true-seam-0",
+            "shell-true-radial-1"
+          ],
+          [
+            "shell-true-seam-1",
+            "shell-true-seam-2"
+          ],
+          [
+            "shell-true-seam-1",
+            "shell-true-radial-1"
+          ],
+          [
+            "shell-true-seam-1",
+            "shell-true-radial-2"
+          ],
+          [
+            "shell-true-seam-2",
+            "shell-true-seam-3"
+          ],
+          [
+            "shell-true-seam-2",
+            "shell-true-radial-2"
+          ],
+          [
+            "shell-true-seam-2",
+            "shell-true-radial-3"
+          ],
+          [
+            "shell-true-seam-3",
+            "shell-true-seam-4"
+          ],
+          [
+            "shell-true-seam-3",
+            "shell-true-radial-3"
+          ],
+          [
+            "shell-true-seam-3",
+            "shell-true-radial-4"
+          ],
+          [
+            "shell-true-seam-4",
+            "shell-true-seam-5"
+          ],
+          [
+            "shell-true-seam-4",
+            "shell-true-radial-4"
+          ],
+          [
+            "shell-true-seam-4",
+            "shell-true-radial-5"
+          ],
+          [
+            "shell-true-seam-5",
+            "shell-true-radial-0"
+          ],
+          [
+            "shell-true-seam-5",
+            "shell-true-radial-5"
+          ],
+          [
+            "drawing-turtle-and-wordmark",
+            "drawing-shell"
+          ],
+          [
+            "drawing-shell",
+            "drawing-pen-nib"
+          ]
+        ],
+        "solidReady": false,
+        "warnings": [
+          "Part bounds overlap or touch; STL requires separated parts or an explicit supported boolean. This conservative check can include separated curved surfaces.",
+          "Mesh is empty, open, degenerate, inconsistently oriented, or non-manifold.",
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      },
+      "byteLength": 12946724,
+      "sha256": "4ece3dd0b05faf392630ba8ba64925e5a966f3e9be6e1b86781783a4c32735aa"
+    }
+  ]
+}

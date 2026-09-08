@@ -1,0 +1,109 @@
+TAP version 13
+# Subtest: Bezier sweep makes a capped outward tube and converges to analytic cylinder volume
+not ok 1 - Bezier sweep makes a capped outward tube and converges to analytic cylinder volume
+  ---
+  duration_ms: 1.339
+  type: 'test'
+  location: 'X:\\Python Projects\\Home Base - Brainn.dev\\03_EXPERIMENTS\\TurtlePen\\test\\geometry3d-curves.test.js:9:1'
+  failureType: 'testCodeFailure'
+  error: 'unknown geometry operation: sweep'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Module.applyCommands (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/src/core/geometry3d/scene.js:59:51)
+    build (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d-curves.test.js:5:34)
+    TestContext.<anonymous> (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d-curves.test.js:10:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: tapered curved sweep preserves source, transforms, stable frames, and export precision
+not ok 2 - tapered curved sweep preserves source, transforms, stable frames, and export precision
+  ---
+  duration_ms: 0.1697
+  type: 'test'
+  location: 'X:\\Python Projects\\Home Base - Brainn.dev\\03_EXPERIMENTS\\TurtlePen\\test\\geometry3d-curves.test.js:16:1'
+  failureType: 'testCodeFailure'
+  error: 'unknown geometry operation: sweep'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Module.applyCommands (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/src/core/geometry3d/scene.js:59:51)
+    build (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d-curves.test.js:5:34)
+    TestContext.<anonymous> (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d-curves.test.js:18:17)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: elliptical loft has analytic volume, supports poles and rounded-square cross-sections
+not ok 3 - elliptical loft has analytic volume, supports poles and rounded-square cross-sections
+  ---
+  duration_ms: 0.1684
+  type: 'test'
+  location: 'X:\\Python Projects\\Home Base - Brainn.dev\\03_EXPERIMENTS\\TurtlePen\\test\\geometry3d-curves.test.js:26:1'
+  failureType: 'testCodeFailure'
+  error: 'unknown geometry operation: loft'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Module.applyCommands (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/src/core/geometry3d/scene.js:59:51)
+    build (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d-curves.test.js:5:34)
+    TestContext.<anonymous> (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d-curves.test.js:27:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed curves and over-budget tessellation fail atomically, including imported sources
+not ok 4 - malformed curves and over-budget tessellation fail atomically, including imported sources
+  ---
+  duration_ms: 5.5785
+  type: 'test'
+  location: 'X:\\Python Projects\\Home Base - Brainn.dev\\03_EXPERIMENTS\\TurtlePen\\test\\geometry3d-curves.test.js:37:1'
+  failureType: 'testCodeFailure'
+  error: 'unknown geometry operation: sweep'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Module.applyCommands (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/src/core/geometry3d/scene.js:59:51)
+    build (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d-curves.test.js:5:34)
+    TestContext.<anonymous> (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d-curves.test.js:48:18)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: explicit smooth GLB shading shares unit normals across triangle corners without changing geometry
+not ok 5 - explicit smooth GLB shading shares unit normals across triangle corners without changing geometry
+  ---
+  duration_ms: 30.3856
+  type: 'test'
+  location: 'X:\\Python Projects\\Home Base - Brainn.dev\\03_EXPERIMENTS\\TurtlePen\\test\\geometry3d-curves.test.js:59:1'
+  failureType: 'testCodeFailure'
+  error: 'unknown command property: shading'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    strict (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/src/core/geometry3d/scene.js:10:67)
+    Module.applyCommands (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/src/core/geometry3d/scene.js:61:3)
+    build (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d-curves.test.js:5:34)
+    TestContext.<anonymous> (file:///X:/Python%20Projects/Home%20Base%20-%20Brainn.dev/03_EXPERIMENTS/TurtlePen/test/geometry3d-curves.test.js:61:89)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 0
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 141.0209

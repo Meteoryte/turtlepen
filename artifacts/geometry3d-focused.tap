@@ -1,0 +1,119 @@
+TAP version 13
+# Subtest: 3D document data persists, old schemas migrate and failed batches leave both spaces untouched
+ok 1 - 3D document data persists, old schemas migrate and failed batches leave both spaces untouched
+  ---
+  duration_ms: 16.3231
+  type: 'test'
+  ...
+# Subtest: drawing extrusion snapshots exact cell artwork with explicit physical scale
+ok 2 - drawing extrusion snapshots exact cell artwork with explicit physical scale
+  ---
+  duration_ms: 18.0336
+  type: 'test'
+  ...
+# Subtest: MCP geometry supports rehearsal, rollback, undo/redo, reopen and bounded export paths
+ok 3 - MCP geometry supports rehearsal, rollback, undo/redo, reopen and bounded export paths
+  ---
+  duration_ms: 430.2456
+  type: 'test'
+  ...
+# TurtlePen: geometry3d needs --out with an extension matching --format
+# Subtest: CLI recipes and saved TPF use the same deterministic geometry pipeline
+ok 4 - CLI recipes and saved TPF use the same deterministic geometry pipeline
+  ---
+  duration_ms: 902.1708
+  type: 'test'
+  ...
+# Subtest: box is a closed outward solid with analytic bounds and volume
+ok 5 - box is a closed outward solid with analytic bounds and volume
+  ---
+  duration_ms: 13.4819
+  type: 'test'
+  ...
+# Subtest: curved primitives produce watertight meshes and converge to analytic volume
+ok 6 - curved primitives produce watertight meshes and converge to analytic volume
+  ---
+  duration_ms: 199.3667
+  type: 'test'
+  ...
+# Subtest: concave polygon extrusion preserves concavity and winding
+ok 7 - concave polygon extrusion preserves concavity and winding
+  ---
+  duration_ms: 65.4611
+  type: 'test'
+  ...
+# Subtest: scene transactions reject malformed profiles, unsupported inputs and excessive detail atomically
+ok 8 - scene transactions reject malformed profiles, unsupported inputs and excessive detail atomically
+  ---
+  duration_ms: 6.2152
+  type: 'test'
+  ...
+# Subtest: flat groups transform members once and mirrored scaling retains outward orientation
+ok 9 - flat groups transform members once and mirrored scaling retains outward orientation
+  ---
+  duration_ms: 2.9456
+  type: 'test'
+  ...
+# Subtest: orthogonal booleans produce one joined boundary and correct subtraction/intersection volume
+ok 10 - orthogonal booleans produce one joined boundary and correct subtraction/intersection volume
+  ---
+  duration_ms: 24.9242
+  type: 'test'
+  ...
+# Subtest: overlapping assemblies cannot be mislabeled as printable STL
+ok 11 - overlapping assemblies cannot be mislabeled as printable STL
+  ---
+  duration_ms: 7.7906
+  type: 'test'
+  ...
+# Subtest: TPF round trips are deterministic, strict and do not accept nonfinite or unknown data
+ok 12 - TPF round trips are deterministic, strict and do not accept nonfinite or unknown data
+  ---
+  duration_ms: 2.3842
+  type: 'test'
+  ...
+# Subtest: binary STL emits millimeters and deterministic outward triangle records
+ok 13 - binary STL emits millimeters and deterministic outward triangle records
+  ---
+  duration_ms: 4.4726
+  type: 'test'
+  ...
+# Subtest: GLB uses glTF 2.0 aligned chunks, meters and right-handed Y-up coordinates
+ok 14 - GLB uses glTF 2.0 aligned chunks, meters and right-handed Y-up coordinates
+  ---
+  duration_ms: 2.348
+  type: 'test'
+  ...
+# Subtest: named profiles, transforms and groups survive TPF and produce physical extrusions
+ok 15 - named profiles, transforms and groups survive TPF and produce physical extrusions
+  ---
+  duration_ms: 7.7421
+  type: 'test'
+  ...
+# Subtest: mesh defects and corner-only unions are reported and cannot escape through STL
+ok 16 - mesh defects and corner-only unions are reported and cannot escape through STL
+  ---
+  duration_ms: 5.1641
+  type: 'test'
+  ...
+# Subtest: exports reject float32 feature collapse and booleans reject unsupported rotation or empty results
+ok 17 - exports reject float32 feature collapse and booleans reject unsupported rotation or empty results
+  ---
+  duration_ms: 3.7179
+  type: 'test'
+  ...
+# Subtest: orientation checks distinguish a reversed disconnected shell from a legitimate cavity
+ok 18 - orientation checks distinguish a reversed disconnected shell from a legitimate cavity
+  ---
+  duration_ms: 18.3359
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1706.2123
