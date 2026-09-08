@@ -1,0 +1,231 @@
+{
+  "blender": "5.0.1",
+  "scope": "Independent import, topology, winding, physical bounds and volume. No slicing or physical print.",
+  "passed": true,
+  "results": [
+    {
+      "file": "stacked-cubes.stl",
+      "passed": true,
+      "boundsMeters": {
+        "min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max": [
+          0.020000001415610313,
+          0.020000001415610313,
+          0.020000001415610313
+        ]
+      },
+      "meshes": [
+        {
+          "object": "stacked-cubes",
+          "triangles": 68,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 5.000000968575543e-06
+        }
+      ]
+    },
+    {
+      "file": "stacked-cubes.glb",
+      "passed": true,
+      "boundsMeters": {
+        "min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max": [
+          0.019999999552965164,
+          0.019999999552965164,
+          0.019999999552965164
+        ]
+      },
+      "meshes": [
+        {
+          "object": "stack",
+          "triangles": 68,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 4.9999996647238795e-06
+        }
+      ]
+    },
+    {
+      "file": "curved-robot.glb",
+      "passed": true,
+      "boundsMeters": {
+        "min": [
+          -0.025153884664177895,
+          -0.012000000104308128,
+          0.0
+        ],
+        "max": [
+          0.025153884664177895,
+          0.012000000104308128,
+          0.05700000002980232
+        ]
+      },
+      "meshes": [
+        {
+          "object": "body",
+          "triangles": 188,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 7.205045869034266e-06
+        },
+        {
+          "object": "head",
+          "triangles": 2208,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 7.186702691617767e-06
+        },
+        {
+          "object": "left-eye",
+          "triangles": 960,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 3.29755299992931e-08
+        },
+        {
+          "object": "right-eye",
+          "triangles": 960,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 3.297552999929302e-08
+        },
+        {
+          "object": "left-leg",
+          "triangles": 124,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 8.490331242666886e-07
+        },
+        {
+          "object": "right-leg",
+          "triangles": 124,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 8.490331242666893e-07
+        },
+        {
+          "object": "left-arm",
+          "triangles": 124,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 5.618601474210756e-07
+        },
+        {
+          "object": "right-arm",
+          "triangles": 124,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 5.618601522861884e-07
+        }
+      ]
+    },
+    {
+      "file": "extruded-drawing.stl",
+      "passed": true,
+      "boundsMeters": {
+        "min": [
+          0.004000000189989805,
+          -0.04400000348687172,
+          0.0
+        ],
+        "max": [
+          0.04400000348687172,
+          -0.004000000189989805,
+          0.004000000189989805
+        ]
+      },
+      "meshes": [
+        {
+          "object": "extruded-drawing",
+          "triangles": 316,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 6.240001112669787e-07
+        }
+      ]
+    },
+    {
+      "file": "extruded-drawing.glb",
+      "passed": true,
+      "boundsMeters": {
+        "min": [
+          0.004000000189989805,
+          -0.04399999976158142,
+          0.0
+        ],
+        "max": [
+          0.04399999976158142,
+          -0.004000000189989805,
+          0.004000000189989805
+        ]
+      },
+      "meshes": [
+        {
+          "object": "letter-t",
+          "triangles": 316,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 6.240000516623279e-07
+        }
+      ]
+    },
+    {
+      "file": "castle.stl",
+      "passed": true,
+      "boundsMeters": {
+        "min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max": [
+          0.07000000029802322,
+          0.055000003427267075,
+          0.036000002175569534
+        ]
+      },
+      "meshes": [
+        {
+          "object": "castle",
+          "triangles": 768,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 3.924800586914294e-05
+        }
+      ]
+    },
+    {
+      "file": "castle.glb",
+      "passed": true,
+      "boundsMeters": {
+        "min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max": [
+          0.07000000029802322,
+          0.054999999701976776,
+          0.035999998450279236
+        ]
+      },
+      "meshes": [
+        {
+          "object": "castle",
+          "triangles": 768,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 3.924800139134347e-05
+        }
+      ]
+    }
+  ]
+}

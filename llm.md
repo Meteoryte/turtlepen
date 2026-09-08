@@ -18,11 +18,17 @@ of placement and makes every defect a ranked, numeric finding.
 
 ## Invariants — do not break these
 
-- **Integer geometry.** Every coordinate in the engine is a whole number of
+- **Integer diagram geometry.** Every coordinate in the 2D engine is a whole number of
   quadrants (5px). No floats reach the collision engine. `rect()` throws on
   non-integers on purpose; do not relax it, and do not introduce a coordinate
   that requires rounding. If a feature needs a half-quadrant, the feature is
   wrong, not the lattice.
+- **Spatial geometry is independent.** `src/core/geometry3d/` owns physical
+  floating-point XYZ data, explicit units, deterministic meshes and TPF/STL/GLB.
+  It never feeds floats into 2D collision or rendering. `geometry3d-document.js`
+  snapshots explicit cell artwork at `unitsPerQuadrant`; page Z-order remains
+  drawing order. Schema 5 preserves this separate scene. See `docs/3d-geometry.md`.
+  Mesh topology evidence must not be labeled slicer or physical-print acceptance.
 - **The engine never silently changes geometry.** It measures and reports; the
   AI decides. No auto-resize, no auto-shrink, no snapping a stroke onto a track
   without emitting `L014`. Auto-fit is still a deferred feature, and when built

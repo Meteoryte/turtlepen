@@ -1,0 +1,546 @@
+{
+  "blender": "5.0.1",
+  "passed": true,
+  "scope": "Independent imports, component topology, physical bounds and volume. No slicer or printer acceptance.",
+  "results": [
+    {
+      "file": "full-logo.glb",
+      "sha256": "ee8cb176ba38cb25cc5cc26d2ca4fcddede9eada41a667ec09032df6d6f395a1",
+      "passed": true,
+      "boundsMeters": {
+        "min": [
+          -0.06300000101327896,
+          -0.03500000014901161,
+          0.0
+        ],
+        "max": [
+          0.07100000232458115,
+          0.039000000804662704,
+          0.08699999749660492
+        ]
+      },
+      "meshes": [
+        {
+          "object": "smile-3",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 3.4320549998726306e-09
+        },
+        {
+          "object": "resting-hand",
+          "triangles": 1520,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 4.1977298703186807e-07
+        },
+        {
+          "object": "easel-left-leg",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 8.252554221662926e-07
+        },
+        {
+          "object": "easel-cross-brace",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.962028707674771e-07
+        },
+        {
+          "object": "board-flourish-1",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.5138109224364037e-08
+        },
+        {
+          "object": "board-flourish-5",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 5.622155730129121e-09
+        },
+        {
+          "object": "shell-central-plate-1",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.1364861828616332e-08
+        },
+        {
+          "object": "shell-central-plate-5",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.9379409047457826e-08
+        },
+        {
+          "object": "shell-central-plate-6",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.638760242345335e-08
+        },
+        {
+          "object": "shell-panel-seam-1",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.8372016763495566e-08
+        },
+        {
+          "object": "shell-panel-seam-2",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.1123888727707298e-08
+        },
+        {
+          "object": "belly-seam-33-1",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 4.737407082501214e-09
+        },
+        {
+          "object": "shell",
+          "triangles": 3968,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.971267997254867e-05
+        },
+        {
+          "object": "board-clip",
+          "triangles": 12,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.399998446740413e-07
+        },
+        {
+          "object": "shell-central-plate-2",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.85609383869358e-08
+        },
+        {
+          "object": "easel-right-leg",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 8.155842385769171e-07
+        },
+        {
+          "object": "left-foot",
+          "triangles": 1520,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 3.2338068835603813e-06
+        },
+        {
+          "object": "neck",
+          "triangles": 1520,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.0314939144335543e-06
+        },
+        {
+          "object": "board-flourish-3",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.6391244262792613e-08
+        },
+        {
+          "object": "board-flourish-4",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 7.166859833019636e-09
+        },
+        {
+          "object": "belly-seam-33-2",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 4.6765682954975145e-09
+        },
+        {
+          "object": "belly-seam-44-1",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 4.767544561486306e-09
+        },
+        {
+          "object": "right-foot",
+          "triangles": 1520,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.9104260907595866e-06
+        },
+        {
+          "object": "head",
+          "triangles": 3968,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 8.99482303600833e-06
+        },
+        {
+          "object": "right-pupil",
+          "triangles": 1520,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.0149109892368462e-08
+        },
+        {
+          "object": "right-eye-glint",
+          "triangles": 528,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 7.978286072632638e-10
+        },
+        {
+          "object": "drawing-hand",
+          "triangles": 1520,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 4.5604967766730114e-07
+        },
+        {
+          "object": "drawing-paper",
+          "triangles": 12,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.6945599454875252e-06
+        },
+        {
+          "object": "shell-central-plate-3",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.727922460206725e-08
+        },
+        {
+          "object": "right-eye-white",
+          "triangles": 1520,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.0596867030135884e-07
+        },
+        {
+          "object": "left-pupil",
+          "triangles": 1520,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.4626675762298208e-08
+        },
+        {
+          "object": "left-eye-glint",
+          "triangles": 528,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.0420601179039108e-09
+        },
+        {
+          "object": "pen-nib",
+          "triangles": 8,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 8.750001857748582e-09
+        },
+        {
+          "object": "easel-tray",
+          "triangles": 12,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.472000939905649e-06
+        },
+        {
+          "object": "shell-panel-seam-0",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.0461043435963323e-08
+        },
+        {
+          "object": "shell-panel-seam-5",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.2532641841803354e-08
+        },
+        {
+          "object": "turtlepen-wordmark",
+          "triangles": 3464,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.4682348055373943e-07
+        },
+        {
+          "object": "belly",
+          "triangles": 2208,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 6.288364961277393e-06
+        },
+        {
+          "object": "snout",
+          "triangles": 2208,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.722047012014036e-06
+        },
+        {
+          "object": "left-eye-white",
+          "triangles": 1520,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.611921289928496e-07
+        },
+        {
+          "object": "brow-1",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 5.164869973856742e-09
+        },
+        {
+          "object": "smile-1",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 3.409006750611684e-09
+        },
+        {
+          "object": "brow-2",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 5.834783003427541e-09
+        },
+        {
+          "object": "smile-2",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 3.80726317806217e-09
+        },
+        {
+          "object": "drawing-forearm",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 8.380770848121084e-07
+        },
+        {
+          "object": "resting-arm",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 8.222743591115632e-07
+        },
+        {
+          "object": "pen-barrel",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.2009321721482882e-07
+        },
+        {
+          "object": "pen-grip",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 5.087628587926047e-08
+        },
+        {
+          "object": "display-base",
+          "triangles": 380,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 3.89122449508648e-05
+        },
+        {
+          "object": "nostril",
+          "triangles": 528,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.1753744900222195e-09
+        },
+        {
+          "object": "upper-drawing-arm",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 9.34972123711172e-07
+        },
+        {
+          "object": "easel-rear-leg",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.1452666147103592e-06
+        },
+        {
+          "object": "board-frame",
+          "triangles": 12,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 6.2399998386204085e-06
+        },
+        {
+          "object": "clip-hinge",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.0062885268255569e-07
+        },
+        {
+          "object": "board-flourish-2",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.552466730291376e-08
+        },
+        {
+          "object": "shell-central-plate-4",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.1360416075185246e-08
+        },
+        {
+          "object": "shell-panel-seam-3",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.5510169347365325e-08
+        },
+        {
+          "object": "shell-panel-seam-4",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.7931739771516387e-08
+        },
+        {
+          "object": "belly-seam-22-1",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 4.790151856618501e-09
+        },
+        {
+          "object": "shell-rim",
+          "triangles": 1520,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.1741132023968554e-05
+        },
+        {
+          "object": "drawing-elbow",
+          "triangles": 1520,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 4.3044044742712654e-07
+        },
+        {
+          "object": "belly-seam-22-2",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 4.68654242410113e-09
+        },
+        {
+          "object": "belly-seam-44-2",
+          "triangles": 92,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 4.682452645654416e-09
+        }
+      ]
+    },
+    {
+      "file": "raised-brand-badge.stl",
+      "sha256": "b93d501c6ccba5e829d19833369acf28981f7b767fd5310a93d75d8ee4878d38",
+      "passed": true,
+      "boundsMeters": {
+        "min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max": [
+          0.08400000631809235,
+          0.08400000631809235,
+          0.005600000265985727
+        ]
+      },
+      "meshes": [
+        {
+          "object": "raised-brand-badge",
+          "triangles": 117276,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.414760388519147e-05
+        }
+      ]
+    },
+    {
+      "file": "raised-brand-badge-color.glb",
+      "sha256": "8453a41a7ee6f9ad01ef97e689df37fe1660144712738563a499dcdc170e580f",
+      "passed": true,
+      "boundsMeters": {
+        "min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max": [
+          0.08399999886751175,
+          0.08399999886751175,
+          0.00559999980032444
+        ]
+      },
+      "meshes": [
+        {
+          "object": "backing",
+          "triangles": 113568,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.1041999667919316e-05
+        },
+        {
+          "object": "shell",
+          "triangles": 15468,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 7.356000182975186e-07
+        },
+        {
+          "object": "pen-nib",
+          "triangles": 4772,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 1.595999574095176e-07
+        },
+        {
+          "object": "turtle-and-wordmark",
+          "triangles": 31908,
+          "nonManifoldEdges": 0,
+          "nonManifoldVertices": 0,
+          "volumeCubicMeters": 2.2103995239928536e-06
+        }
+      ]
+    }
+  ],
+  "renders": [
+    "full-logo-front.png",
+    "full-logo-back.png",
+    "raised-brand-badge.png",
+    "collection.png"
+  ]
+}

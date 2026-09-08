@@ -8,3 +8,7 @@ output/playwright/
 *.bak
 *.gdoc
 scratch/
+artifacts/**/checkpoint/
+artifacts/**/*.blend1
+artifacts/turtlepen-mascot-v2/preview*.png
+artifacts/*-files.zip

@@ -1,5 +1,5 @@
 {
-  "schema": 4,
+  "schema": 5,
   "name": "TurtlePen logo — turtle at easel",
   "canvas": {
     "cols": 120,
@@ -144978,1519 +144978,1772 @@
             "x": 86,
             "y": 40,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 79,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 93,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 78,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 79,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 93,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 94,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 78,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 79,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 93,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 94,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 78,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 79,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 93,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 94,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 78,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 79,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 93,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 94,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 77,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 78,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 79,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 93,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 94,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 95,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 78,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 79,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 93,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 94,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 78,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 79,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 93,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 94,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 78,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 79,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 93,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 94,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 78,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 79,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 93,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 94,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 79,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 93,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 80,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 92,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 81,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 82,
             "y": 57,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 57,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 57,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 57,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 57,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 57,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 57,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 57,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 57,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 58,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -146515,1183 +146768,1380 @@
             "x": 113,
             "y": 40,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 119,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 119,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 106,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 119,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 120,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 106,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 119,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 120,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 106,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 119,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 120,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 105,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 106,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 119,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 120,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 121,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 106,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 119,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 120,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 106,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 119,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 120,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 106,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 119,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 120,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 119,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 119,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 117,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 118,
             "y": 54,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 115,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 116,
             "y": 55,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 56,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -148330,295 +148780,344 @@
             "x": 87,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 83,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 91,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 84,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 90,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 85,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 86,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 53,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -148643,175 +149142,204 @@
             "x": 111,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 114,
             "y": 49,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 50,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 109,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 110,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 51,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 52,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -148836,31 +149364,36 @@
             "x": 88,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 87,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 89,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 88,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -148885,31 +149418,36 @@
             "x": 112,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 47,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 48,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -149042,31 +149580,36 @@
             "x": 112,
             "y": 60,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 111,
             "y": 61,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 61,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 113,
             "y": 61,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 112,
             "y": 62,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -152140,16 +152683,28 @@
     }
   ],
   "perceptual": {
-    "renderHash": "856b76bf51f54736",
+    "renderHash": "009ec233a371c6ce",
     "renderProfile": {
       "showGrid": true,
       "markFindings": false,
       "bounds": "content",
       "margin": 20
     },
-    "reviewer": "claude-code/claude-opus-5",
-    "reviewedAt": "2026-08-31T06:44:06.988Z",
-    "note": "Re-export after the background-fill change. Looked at the PNG: turtle at the easel with the TURTLE PEN / MCP wordmark reads correctly, shell banding and plastron are coherent, the pen meets the board. Overlapping light-green shell outline remains as previously accepted.",
-    "findings": []
+    "reviewer": "Codex renderer regression inspection",
+    "reviewedAt": "2026-09-07T07:56:13.943Z",
+    "note": "Looked at full scaled SVG in artifacts/game-video-study-2026-09-07/logo-review-scaled.png. Turtle, easel, pen, complete wordmark and MCP label are recognizable. Existing fingerprinted S2 art construction exceptions retained. This is a fresh review after regenerated bytes invalidated the prior review.",
+    "findings": [
+      {
+        "id": "legacy-cell-seams",
+        "severity": "P2",
+        "category": "illegible-density",
+        "elements": [],
+        "region": null,
+        "symptom": "Fine horizontal seams remain in legacy cell-painted colored regions when scaled down.",
+        "consequence": "Thumbnail polish is limited, while the turtle and wordmark remain readable.",
+        "confidence": 1,
+        "repair": "advice-only"
+      }
+    ]
   }
 }

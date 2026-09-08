@@ -1,0 +1,125 @@
+{
+  "name": "curved-robot",
+  "units": "mm",
+  "commands": [
+    {
+      "op": "cylinder",
+      "id": "body",
+      "radius": 10,
+      "height": 23,
+      "position": [
+        0,
+        0,
+        14
+      ],
+      "segments": 48,
+      "color": "#43a87e"
+    },
+    {
+      "op": "sphere",
+      "id": "head",
+      "radius": 12,
+      "position": [
+        0,
+        0,
+        45
+      ],
+      "segments": 48,
+      "color": "#59bd93"
+    },
+    {
+      "op": "sphere",
+      "id": "left-eye",
+      "radius": 2,
+      "position": [
+        -4,
+        -10,
+        48
+      ],
+      "color": "#263748"
+    },
+    {
+      "op": "sphere",
+      "id": "right-eye",
+      "radius": 2,
+      "position": [
+        4,
+        -10,
+        48
+      ],
+      "color": "#263748"
+    },
+    {
+      "op": "cylinder",
+      "id": "left-leg",
+      "radius": 4,
+      "height": 17,
+      "position": [
+        -6,
+        0,
+        0
+      ],
+      "color": "#345c85"
+    },
+    {
+      "op": "cylinder",
+      "id": "right-leg",
+      "radius": 4,
+      "height": 17,
+      "position": [
+        6,
+        0,
+        0
+      ],
+      "color": "#345c85"
+    },
+    {
+      "op": "cylinder",
+      "id": "left-arm",
+      "radius": 3,
+      "height": 20,
+      "rotation": [
+        0,
+        -40,
+        0
+      ],
+      "position": [
+        -10,
+        0,
+        33
+      ],
+      "color": "#43a87e"
+    },
+    {
+      "op": "cylinder",
+      "id": "right-arm",
+      "radius": 3,
+      "height": 20,
+      "rotation": [
+        0,
+        40,
+        0
+      ],
+      "position": [
+        10,
+        0,
+        33
+      ],
+      "color": "#43a87e"
+    },
+    {
+      "op": "group",
+      "id": "robot",
+      "members": [
+        "body",
+        "head",
+        "left-eye",
+        "right-eye",
+        "left-leg",
+        "right-leg",
+        "left-arm",
+        "right-arm"
+      ]
+    }
+  ]
+}

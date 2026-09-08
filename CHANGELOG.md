@@ -1,6 +1,26 @@
 # Changelog
 
-## Unreleased
+## 0.6.0 — spatial authoring and artwork fidelity
+
+- Added bounded cubic Bezier sweeps, elliptical/superelliptical lofts and
+  explicit smooth GLB normals through core, CLI recipes and MCP. Parameters
+  persist in TPF; malformed inputs roll back without changing either scene.
+- Rebuilt the turtle-at-easel sculpture using native curved forms. Preserved
+  the accepted turtle/nib brand mark and the earlier artwork for comparison.
+- Preserved filled artwork metadata and transparent export across SVG/PNG;
+  compacted uniform baked SVG strokes without changing the source lattice.
+
+### Spatial geometry first prototype
+
+- Added true XYZ primitives, profiles/extrusion, affine transforms, flat groups,
+  and axis-aligned box union/subtraction/intersection. Spatial units remain
+  separate from page Z-order and integer diagram geometry.
+- Added schema-5 document persistence, TPF schema 1, deterministic binary STL
+  and GLB, mesh inspection, drawing-footprint extrusion, CLI recipes and three
+  MCP tools. Rehearsal diffs, rollback and undo/redo preserve the 3D scene.
+- Added geometry, integration and hosted-adapter tests plus independent Blender
+  import/size/volume/topology verification. Physical printing and production
+  deployment are not claimed. See `docs/3d-geometry-implementation-report.md`.
 
 ### 0.5.0 — native editing completion
 

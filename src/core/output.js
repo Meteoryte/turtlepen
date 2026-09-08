@@ -346,7 +346,7 @@ function paintPath(element, layer, width, height, ox, oy, themed) {
     let group = [];
     for (const piece of element.pieces) {
       const previous = group.at(-1);
-      if (previous && (Math.abs(piece.x - previous.x) > 1 || Math.abs(piece.y - previous.y) > 1)) {
+      if (previous && (!!piece.fill !== !!previous.fill || (!piece.fill && (Math.abs(piece.x - previous.x) > 1 || Math.abs(piece.y - previous.y) > 1)))) {
         groups.push(group);
         group = [];
       }
@@ -354,6 +354,10 @@ function paintPath(element, layer, width, height, ox, oy, themed) {
     }
     if (group.length) groups.push(group);
     for (const pieces of groups) {
+      if (pieces[0].fill) {
+        for (const piece of pieces) rect(layer, width, height, piece.x * PX_PER_QUAD + ox, piece.y * PX_PER_QUAD + oy, PX_PER_QUAD, PX_PER_QUAD, rgba(piece.color ?? themed.stroke ?? stroke.color));
+        continue;
+      }
       if (pieces.length === 1) {
         const p = pieces[0];
         rect(layer, width, height, p.x * PX_PER_QUAD + ox, p.y * PX_PER_QUAD + oy, PX_PER_QUAD, PX_PER_QUAD, p.color ? rgba(p.color) : defaultColor);
@@ -499,7 +503,8 @@ function needsCompositingLayer(doc, element, perspective, pageOpacity, masks) {
   return false;
 }
 
-export function rasterizeDocument(doc, { view = null, pages = null, showGrid = true, margin = 20, bounds = 'content' } = {}) {
+export function rasterizeDocument(doc, { view = null, pages = null, showGrid = true, margin = 20, bounds = 'content', transparent = false } = {}) {
+  if (typeof transparent !== 'boolean') throw new TypeError('PNG transparent must be boolean');
   if (!['content', 'canvas'].includes(bounds)) throw new SyntaxError('PNG bounds must be content or canvas');
   const resolved = resolveView(doc, view);
   const selectedPages = pages ?? (resolved.view?.pages.length ? resolved.view.pages : null);
@@ -518,7 +523,7 @@ export function rasterizeDocument(doc, { view = null, pages = null, showGrid = t
   const width = px.w + margin * 2 + keyWidth, height = px.h + margin * 2;
   const ox = margin - px.x, oy = margin - px.y;
   const pixels = new Uint8Array(width * height * 4);
-  rect(pixels, width, height, 0, 0, width, height, rgba(doc.background ?? doc.theme?.tokens?.paper ?? PALETTE.paper));
+  if (!transparent) rect(pixels, width, height, 0, 0, width, height, rgba(doc.background ?? doc.theme?.tokens?.paper ?? PALETTE.paper));
   if (showGrid) {
     const minor = rgba(doc.theme?.tokens?.grid ?? PALETTE.grid);
     const major = rgba(doc.theme?.tokens?.gridMajor ?? PALETTE.gridMajor);
@@ -564,6 +569,7 @@ function pdfObject(number, body) {
 }
 
 export function renderPdf(doc, options = {}) {
+  if (options.transparent) throw new TypeError('Transparent export is supported for SVG and PNG; PDF requires a paper background');
   const raster = rasterizeDocument(doc, options);
   const rgb = Buffer.alloc(raster.width * raster.height * 3);
   for (let source = 0, destination = 0; source < raster.pixels.length; source += 4) {

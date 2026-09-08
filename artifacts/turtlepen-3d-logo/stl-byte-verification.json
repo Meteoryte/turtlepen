@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "scope": "Independent binary STL structure, finite coordinates, edge incidence, winding, area, connected components and volume; no slicing or physical printing",
+  "results": [
+    {
+      "file": "full-logo-solid.stl",
+      "sha256": "864ed587c8e1bc148fbbcc01f05e71be01619d5976d7f4d1ebf4f07701a5e045",
+      "bytes": 16906484,
+      "triangles": 338128,
+      "vertices": 169048,
+      "nonManifoldEdges": 0,
+      "inconsistentEdges": 0,
+      "degenerateTriangles": 0,
+      "connectedComponents": 1,
+      "volumeCubicMillimeters": 98173.3809947453,
+      "boundsMillimeters": {
+        "min": [
+          -62.98539352416992,
+          -34.99549865722656,
+          0.0
+        ],
+        "max": [
+          70.98539733886719,
+          38.99549865722656,
+          86.98033905029297
+        ]
+      },
+      "passed": true
+    },
+    {
+      "file": "raised-brand-badge.stl",
+      "sha256": "b93d501c6ccba5e829d19833369acf28981f7b767fd5310a93d75d8ee4878d38",
+      "bytes": 5863884,
+      "triangles": 117276,
+      "vertices": 58640,
+      "nonManifoldEdges": 0,
+      "inconsistentEdges": 0,
+      "degenerateTriangles": 0,
+      "connectedComponents": 1,
+      "volumeCubicMillimeters": 24147.59979868459,
+      "boundsMillimeters": {
+        "min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max": [
+          84.0,
+          84.0,
+          5.599999904632568
+        ]
+      },
+      "passed": true
+    }
+  ]
+}

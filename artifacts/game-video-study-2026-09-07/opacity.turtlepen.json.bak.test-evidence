@@ -1,0 +1,44 @@
+{
+  "schema": 4,
+  "name": "opacity",
+  "canvas": {
+    "cols": 160,
+    "rows": 100
+  },
+  "font": {
+    "family": "ui-monospace, SFMono-Regular, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "size": 10,
+    "advanceRatio": 0.6,
+    "paddingQuads": 1
+  },
+  "createdAt": "2026-09-07T07:56:16.851Z",
+  "pages": [
+    {
+      "id": "base",
+      "z": 0,
+      "intent": "exclusive",
+      "title": "Base",
+      "visible": true,
+      "opacity": 1
+    },
+    {
+      "id": "paint",
+      "z": 1,
+      "intent": "overlay",
+      "title": "paint",
+      "visible": true,
+      "opacity": 1
+    }
+  ],
+  "elements": {
+    "base": [],
+    "paint": []
+  },
+  "theme": {
+    "name": "TurtlePen",
+    "tokens": {},
+    "tagStyles": [],
+    "perspectiveStyles": []
+  },
+  "acceptances": []
+}

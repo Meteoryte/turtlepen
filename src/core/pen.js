@@ -393,7 +393,7 @@ export function runPen(program, ctx = {}) {
           }
         }
         for (const q of quads) {
-          recordPiece(pieces, occupied, notes, { x: q.x, y: q.y, type: 'mark', style: cmd.style ?? 'square' }, step + 1);
+          recordPiece(pieces, occupied, notes, { x: q.x, y: q.y, type: 'mark', style: cmd.style ?? 'square', ...(cmd.fillRegion || cmd.element === 'disc' ? { fill: true } : {}) }, step + 1);
         }
         // The cursor lands on the last quadrant drawn, so a shape can be
         // followed by more drawing without re-stating where you are.

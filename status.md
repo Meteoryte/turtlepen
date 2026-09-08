@@ -1,5 +1,38 @@
 # TurtlePen — status
 
+**0.6.0 candidate, 2026-09-08:** the complete local check passes **758/758 tests**,
+all eight release artifacts, and governance **READY**. The spatial layer now
+includes joined cubic Bezier sweeps, explicit elliptical/superelliptical lofts,
+and smooth GLB normals through core, CLI and the existing 87-tool MCP registry.
+The revised mascot uses those native operations and preserves the accepted
+turtle/nib brand mark. Its TPF/GLB and independently verified joined STL live in
+`artifacts/turtlepen-mascot-v2/`. Aesthetic review and topology evidence are
+recorded separately. Physical printing remains untested. Publication evidence
+will be recorded after the exact source is merged and deployed.
+
+**Local unreleased implementation, 2026-09-08:** the recovered
+[3D geometry / fabrication prototype](docs/3d-geometry-plan-status.md) is implemented:
+physical XYZ primitives, profiles/extrusion, transforms/groups, axis-aligned box
+booleans, drawing-footprint extrusion, schema-5 persistence, TPF and STL/GLB.
+Core, CLI and three new MCP tools share the same implementation. **751/751 tests**
+pass; full `pnpm run check` and governance are **READY**, with all eight existing
+release artifacts passing. Blender 5.0.1 independently imported all seven binary
+exports and verified topology, bounds and volume. The local registry has **87 tools**.
+General curved CAD booleans, slicer acceptance and physical printing remain outside
+this prototype. No version bump, push or hosted deployment occurred. See the
+[verification report](docs/3d-geometry-implementation-report.md) and
+[usage guide](docs/3d-geometry.md). The dated sections below retain historical results.
+
+**Local unreleased update, 2026-09-07:** game-video study and Fever Dream integration.
+Filled-region metadata preserves solid paint with thin strokes; uniform baked-color
+SVG strokes compact without changing geometry; SVG/PNG support explicit transparent
+export with render-bound review profiles. MCP now exposes core page opacity. Full
+`pnpm run check`: **732/732 tests**, all eight existing release artifacts and governance
+pass. No version bump, push or hosted deployment occurred. See
+`artifacts/game-video-study-2026-09-07/case-study.md` and `loop-ledger.json` for the three
+attempts and fidelity limits. Older saved fill paths need regeneration or their cells
+treatment; legacy cell-render seams remain visible in the logo's scaled review.
+
 **As of 2026-09-05.** Prototype, working end to end, 728/728 tests green,
 zero runtime dependencies. `pnpm run check` runs everything below.
 

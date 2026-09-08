@@ -1,5 +1,5 @@
 {
-  "schema": 4,
+  "schema": 5,
   "name": "TurtlePen connection history",
   "canvas": {
     "cols": 110,
@@ -1865,91 +1865,106 @@
             "x": 74,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 73,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 74,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 72,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 73,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 74,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 71,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 72,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 73,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 74,
             "y": 45,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 70,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 71,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 72,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 73,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 74,
             "y": 46,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -2167,91 +2182,106 @@
             "x": 74,
             "y": 92,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 73,
             "y": 93,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 74,
             "y": 93,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 72,
             "y": 94,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 73,
             "y": 94,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 74,
             "y": 94,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 71,
             "y": 95,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 72,
             "y": 95,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 73,
             "y": 95,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 74,
             "y": 95,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 70,
             "y": 96,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 71,
             "y": 96,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 72,
             "y": 96,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 73,
             "y": 96,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 74,
             "y": 96,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -2296,79 +2326,92 @@
             "x": 72,
             "y": 110,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 71,
             "y": 111,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 72,
             "y": 111,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 73,
             "y": 111,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 70,
             "y": 112,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 71,
             "y": 112,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 72,
             "y": 112,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 73,
             "y": 112,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 74,
             "y": 112,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 71,
             "y": 113,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 72,
             "y": 113,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 73,
             "y": 113,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 72,
             "y": 114,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -2749,7 +2792,7 @@
           },
           "turtlepen-history__account-feature-setting__marker": {
             "kind": "path",
-            "geometryHash": "fd44c1a2b475666179f96ac875138c0e2cc21d6ab9da38e4c4deff95c9445104",
+            "geometryHash": "a19daacc0aca03fc50864529a2b46033abe37383ba64fae2d5270b96ab03d5ab",
             "presentation": {
               "role": "artwork",
               "stroke": {
@@ -2880,7 +2923,7 @@
           },
           "turtlepen-history__canonical-engine__marker": {
             "kind": "path",
-            "geometryHash": "f42d867f0a1935931d82fd91d796510155ef4ee64a182bfb6638e21493aa9d9d",
+            "geometryHash": "7d445c275ae3c45137307aee60f45d55699d5f64cdee433d293db63f950d9066",
             "presentation": {
               "role": "artwork",
               "stroke": {
@@ -2987,7 +3030,7 @@
           },
           "turtlepen-history__capability-restored__marker": {
             "kind": "path",
-            "geometryHash": "45e352be455ee7d106f0c85212e86e1bb4884cad923f914bcf94c1a4a91837a2",
+            "geometryHash": "6bbb214680db059d68479efe9bbcd9f281656d0e4c7399e49474dfc7d9410467",
             "presentation": {
               "role": "artwork",
               "stroke": {
@@ -3560,18 +3603,5 @@
       "tags": []
     }
   ],
-  "acceptances": [],
-  "perceptual": {
-    "renderHash": "f5705020386e3d12",
-    "renderProfile": {
-      "showGrid": true,
-      "markFindings": false,
-      "bounds": "content",
-      "margin": 20
-    },
-    "reviewer": "codex/gpt-5.6",
-    "reviewedAt": "2026-09-03T05:28:04.019Z",
-    "note": "Vertical phase-banded history is legible, chronologically scannable, balanced, and preserves distinct marker/status cues with no blocking perceptual findings. Hash updated only for schema-metadata normalization; rendered pixels are unchanged.",
-    "findings": []
-  }
+  "acceptances": []
 }

@@ -1,0 +1,48 @@
+{
+  "source": "full-logo.glb",
+  "sourceSha256": "ee8cb176ba38cb25cc5cc26d2ca4fcddede9eada41a667ec09032df6d6f395a1",
+  "file": "full-logo-solid.stl",
+  "sha256": "864ed587c8e1bc148fbbcc01f05e71be01619d5976d7f4d1ebf4f07701a5e045",
+  "blender": "5.0.1",
+  "operation": "explicit 0.5 mm voxel union of native TurtlePen assembly",
+  "units": "mm",
+  "voxelSizeMillimeters": 0.5,
+  "bedTranslationZ": 2.9802322387695312e-08,
+  "triangles": 338128,
+  "connectedComponents": 1,
+  "removedVoxelDebris": [
+    {
+      "vertices": 8,
+      "volumeCubicMillimeters": 0.0010848840756807465,
+      "boundsMillimeters": {
+        "min": [
+          -23.4240779876709,
+          -5.124978542327881,
+          82.72834777832031
+        ],
+        "max": [
+          -22.4307861328125,
+          -4.127726078033447,
+          83.62039947509766
+        ]
+      }
+    }
+  ],
+  "nonManifoldEdges": 0,
+  "nonManifoldVertices": 0,
+  "volumeCubicMillimeters": 98173.38099479236,
+  "boundsMillimeters": {
+    "min": [
+      -62.98539352416992,
+      -34.99549865722656,
+      0.0
+    ],
+    "max": [
+      70.98539733886719,
+      38.99549865722656,
+      86.98033905029297
+    ]
+  },
+  "physicalPrint": "not_tested",
+  "slicerAcceptance": "not_tested"
+}

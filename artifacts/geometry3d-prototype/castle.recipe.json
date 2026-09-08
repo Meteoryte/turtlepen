@@ -1,0 +1,419 @@
+{
+  "name": "castle",
+  "units": "mm",
+  "commands": [
+    {
+      "op": "box",
+      "id": "foundation",
+      "size": [
+        70,
+        55,
+        4
+      ],
+      "position": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "op": "box",
+      "id": "back",
+      "size": [
+        50,
+        4,
+        18
+      ],
+      "position": [
+        10,
+        51,
+        4
+      ]
+    },
+    {
+      "op": "box",
+      "id": "west",
+      "size": [
+        4,
+        35,
+        18
+      ],
+      "position": [
+        0,
+        10,
+        4
+      ]
+    },
+    {
+      "op": "box",
+      "id": "east",
+      "size": [
+        4,
+        35,
+        18
+      ],
+      "position": [
+        66,
+        10,
+        4
+      ]
+    },
+    {
+      "op": "box",
+      "id": "gate-left",
+      "size": [
+        18,
+        4,
+        18
+      ],
+      "position": [
+        10,
+        0,
+        4
+      ]
+    },
+    {
+      "op": "box",
+      "id": "gate-right",
+      "size": [
+        18,
+        4,
+        18
+      ],
+      "position": [
+        42,
+        0,
+        4
+      ]
+    },
+    {
+      "op": "box",
+      "id": "lintel",
+      "size": [
+        14,
+        4,
+        7
+      ],
+      "position": [
+        28,
+        0,
+        15
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-0-0",
+      "size": [
+        10,
+        10,
+        28
+      ],
+      "position": [
+        0,
+        0,
+        4
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-0-0-merlon-0",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        0,
+        0,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-0-0-merlon-1",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        6,
+        0,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-0-0-merlon-2",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        0,
+        6,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-0-0-merlon-3",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        6,
+        6,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-0-45",
+      "size": [
+        10,
+        10,
+        28
+      ],
+      "position": [
+        0,
+        45,
+        4
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-0-45-merlon-0",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        0,
+        45,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-0-45-merlon-1",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        6,
+        45,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-0-45-merlon-2",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        0,
+        51,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-0-45-merlon-3",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        6,
+        51,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-60-0",
+      "size": [
+        10,
+        10,
+        28
+      ],
+      "position": [
+        60,
+        0,
+        4
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-60-0-merlon-0",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        60,
+        0,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-60-0-merlon-1",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        66,
+        0,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-60-0-merlon-2",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        60,
+        6,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-60-0-merlon-3",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        66,
+        6,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-60-45",
+      "size": [
+        10,
+        10,
+        28
+      ],
+      "position": [
+        60,
+        45,
+        4
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-60-45-merlon-0",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        60,
+        45,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-60-45-merlon-1",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        66,
+        45,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-60-45-merlon-2",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        60,
+        51,
+        32
+      ]
+    },
+    {
+      "op": "box",
+      "id": "tower-60-45-merlon-3",
+      "size": [
+        4,
+        4,
+        4
+      ],
+      "position": [
+        66,
+        51,
+        32
+      ]
+    },
+    {
+      "op": "boolean",
+      "id": "castle",
+      "operation": "union",
+      "ids": [
+        "foundation",
+        "back",
+        "west",
+        "east",
+        "gate-left",
+        "gate-right",
+        "lintel",
+        "tower-0-0",
+        "tower-0-0-merlon-0",
+        "tower-0-0-merlon-1",
+        "tower-0-0-merlon-2",
+        "tower-0-0-merlon-3",
+        "tower-0-45",
+        "tower-0-45-merlon-0",
+        "tower-0-45-merlon-1",
+        "tower-0-45-merlon-2",
+        "tower-0-45-merlon-3",
+        "tower-60-0",
+        "tower-60-0-merlon-0",
+        "tower-60-0-merlon-1",
+        "tower-60-0-merlon-2",
+        "tower-60-0-merlon-3",
+        "tower-60-45",
+        "tower-60-45-merlon-0",
+        "tower-60-45-merlon-1",
+        "tower-60-45-merlon-2",
+        "tower-60-45-merlon-3"
+      ],
+      "color": "#527fbb"
+    }
+  ]
+}

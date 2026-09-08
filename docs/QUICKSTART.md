@@ -3,6 +3,9 @@
 Clone to first validated drawing, in about five minutes. No dependencies to
 install — TurtlePen has none.
 
+For physical XYZ geometry and STL/GLB exports, use the [3D prototype guide](3d-geometry.md).
+That workflow is separate from the diagram steps below and currently requires this local source.
+
 ```bash
 git clone https://github.com/Meteoryte/turtlepen
 cd turtlepen
@@ -153,6 +156,19 @@ have to compete with artwork for the same quadrants.
 - `turtlepen_help` — always current, and the authority over all of the above
 
 ## Native CLI
+
+For independently composable game/UI assets, use `render` with `transparent: true`
+over MCP, or `--transparent --no-grid --bounds canvas` with the CLI. SVG omits
+the paper rectangle; PNG preserves empty alpha. PDF requires an opaque background
+and refuses transparent export. The default remains opaque. Transparent SVG
+profiles bind to their own perceptual-review hash. Set artwork page `opacity: 1`
+when an opaque foreground is intended; transparency does not change authored opacity.
+
+Filled pen regions retain solid paint with `paint: "line"`, including programs
+that mix filled regions and thin open strokes. Existing saved documents predate
+fill metadata: regenerate those pen programs to gain this behavior, or retain
+their explicit `paint: "cells"` treatment. Flat-color ink uses compact presentation
+polylines; variable-color gradients retain their per-segment color transitions.
 
 The same document format can be checked and published without an MCP host:
 

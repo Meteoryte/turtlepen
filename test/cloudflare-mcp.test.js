@@ -155,3 +155,23 @@ test('the Cloudflare adapter refuses bad content negotiation before touching sto
   assert.equal(response.status, 406);
   assert.equal(touched, false);
 });
+
+test('hosted geometry survives separate D1/R2 requests and exports actual binary payloads', async () => {
+  const db = new MemoryD1(), artifacts = new MemoryBucket();
+  const handlers = createCloudflareHandlers({ getBindings: async () => ({ db, artifacts }) });
+  const initialized = await handlers.POST(rpcRequest({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {} } }));
+  const session = initialized.headers.get('mcp-session-id'); let id = 1;
+  const call = async (name, args = {}) => {
+    const response = await handlers.POST(rpcRequest({ jsonrpc: '2.0', id: ++id, method: 'tools/call', params: { name, arguments: args } }, session));
+    assert.equal(response.status, 200); const rpc = await message(response);
+    assert.ok(!rpc.error && !rpc.result.isError, JSON.stringify(rpc)); return rpc.result;
+  };
+  await call('new_diagram', { name: 'hosted geometry', path: 'geometry.turtlepen.json' });
+  await call('geometry3d', { action: 'create', units: 'mm', commands: [{ op: 'cylinder', id: 'part', radius: 5, height: 10 }] });
+  const inspection = (await call('inspect_geometry3d')).structuredContent.result; assert.equal(inspection.solidReady, true);
+  const result = (await call('export_geometry3d', { format: 'glb' })).structuredContent.result;
+  assert.equal(Buffer.from(result.base64, 'base64').readUInt32LE(0), 0x46546c67);
+  assert.equal(result.byteLength, Buffer.from(result.base64, 'base64').length);
+  await call('history', { action: 'undo' }); await call('history', { action: 'redo' });
+  assert.equal((await call('inspect_geometry3d')).structuredContent.result.volume, inspection.volume);
+});

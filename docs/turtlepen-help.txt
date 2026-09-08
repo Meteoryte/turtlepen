@@ -1,5 +1,24 @@
 TurtlePen — an integer-exact grid for AI-authored diagrams.
 
+SPATIAL GEOMETRY (FIRST PROTOTYPE)
+  geometry3d {action:"create",units:"mm",commands:[{op:"box",id:"part",size:[10,20,30]}]}
+  geometry3d {action:"apply",commands:[{op:"transform",id:"part",position:[0,0,5]}]}
+  inspect_geometry3d {} reports topology, bounds, volume, units and unchecked manufacturing concerns.
+  export_geometry3d {format:"tpf"|"stl"|"glb"} returns base64 bytes and a hash;
+  optional path writes inside allowed roots. Inline binary limit: 4 MiB.
+  True XYZ is right-handed Z-up, separate from page order and the 2D lattice.
+  Units: mm/cm/m/in; rotations: XYZ degrees, world-space T*Rz*Ry*Rx*S.
+  Commands: box, sphere, cylinder, circle/polygon profiles, extrude, transform,
+  group, ungroup, remove, boolean. Booleans support axis-aligned boxes only,
+  consume operands, and create baked meshes. No curved/general CAD booleans.
+  Extrude cell-painted drawing paths with action:"extrude_drawing", id, ids,
+  positive height and explicit unitsPerQuadrant. Convert line paths with stroke_to_path.
+  Document schema 5 and TPF schema 1 preserve source and undo history.
+  STL uses millimeters and refuses unresolved overlapping or touching parts.
+  GLB uses meters/Y-up and permits assemblies with overlap warnings.
+  solidReady is topology evidence; slicing and physical printing remain unverified.
+  See docs/3d-geometry.md for command fields, limits and complete examples.
+
 WHY IT EXISTS
   Diagram tools measure text at render time, long after a layout was chosen, so
   labels overflow their boxes and nothing notices. Here measurement happens

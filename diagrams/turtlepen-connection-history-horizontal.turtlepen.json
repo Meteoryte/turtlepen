@@ -1,5 +1,5 @@
 {
-  "schema": 4,
+  "schema": 5,
   "name": "TurtlePen connection history",
   "canvas": {
     "cols": 230,
@@ -3739,91 +3739,106 @@
             "x": 108,
             "y": 40,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 106,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 105,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 106,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 104,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 105,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 106,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 107,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 108,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -4041,91 +4056,106 @@
             "x": 312,
             "y": 40,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 311,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 312,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 310,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 311,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 312,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 309,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 310,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 311,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 312,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 308,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 309,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 310,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 311,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 312,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -4170,79 +4200,92 @@
             "x": 378,
             "y": 40,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 377,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 378,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 379,
             "y": 41,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 376,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 377,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 378,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 379,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 380,
             "y": 42,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 377,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 378,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 379,
             "y": 43,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           },
           {
             "x": 378,
             "y": 44,
             "type": "mark",
-            "style": "square"
+            "style": "square",
+            "fill": true
           }
         ],
         "stroke": {
@@ -4617,7 +4660,7 @@
           },
           "turtlepen-history__account-feature-setting__marker": {
             "kind": "path",
-            "geometryHash": "c737c470717b33f82f3617eeb0c5c1f6ca1294b3e070502e02a3728d95b6aefd",
+            "geometryHash": "fdc4f7150940dfbffdb85f41b6992261927fe9493abf8480e4924fb3ec869006",
             "presentation": {
               "role": "artwork",
               "stroke": {
@@ -4748,7 +4791,7 @@
           },
           "turtlepen-history__canonical-engine__marker": {
             "kind": "path",
-            "geometryHash": "5defccba082ef0d9b1e50d2b3e0190a155038ebd0de30fe9740a08f85de20a47",
+            "geometryHash": "cab848a1577dad7e8171cee52b2b4ad4b1ad77de90d8d924277c58ec502ee29a",
             "presentation": {
               "role": "artwork",
               "stroke": {
@@ -4855,7 +4898,7 @@
           },
           "turtlepen-history__capability-restored__marker": {
             "kind": "path",
-            "geometryHash": "d86d99338cc9793d65c3be75ea4883d73c52ff4d9e48b119c5b102d842877528",
+            "geometryHash": "df6a6b3391ba52a748fce8171f6ee7ddec684fba9821dd75ddeaa29f234b51c7",
             "presentation": {
               "role": "artwork",
               "stroke": {
@@ -5266,18 +5309,5 @@
       "tags": []
     }
   ],
-  "acceptances": [],
-  "perceptual": {
-    "renderHash": "925bf401545021fa",
-    "renderProfile": {
-      "showGrid": true,
-      "markFindings": false,
-      "bounds": "content",
-      "margin": 20
-    },
-    "reviewer": "codex/gpt-5.6",
-    "reviewedAt": "2026-09-03T05:28:04.195Z",
-    "note": "Horizontal detailed history is legible, balanced, and keeps event descriptions associated with the correct markers with no blocking perceptual findings. Hash updated only for schema-metadata normalization; rendered pixels are unchanged.",
-    "findings": []
-  }
+  "acceptances": []
 }

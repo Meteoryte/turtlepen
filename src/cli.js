@@ -36,7 +36,10 @@ const HELP = [
   '  governance [--json]                  source-checkout naming, SSOT, catalog, and drift gate',
   '  validate <document> [--json]         structural validation',
   '  inspect <document> [--json]          semantic-model inspection',
+  '  geometry3d [document|model.tpf] [--recipe recipe.json] --format tpf|stl|glb --out path',
+  '  geometry3d <document|model.tpf> --inspect   spatial mesh inspection',
   '  render <document> --format svg|png|pdf [--out path] [--view key] [--force]',
+  '    --no-grid --bounds canvas --transparent   SVG/PNG game asset export',
   '  review <document> --status [--json]   show current perceptual-review state',
   '  review <document> --render-hash hash --reviewer name [--findings path] [--note text]',
   '  manifest [documents...] [--catalog path] [--out path] [--generated-at ISO] [--enforce]',
@@ -103,6 +106,28 @@ async function main() {
     return;
   }
 
+  if (command === 'geometry3d') {
+    const input = positional()[0], recipe = option('recipe');
+    if ((!input && !recipe) || (input && recipe)) throw new Error('geometry3d needs exactly one document/TPF input or --recipe');
+    let scene;
+    if (recipe) {
+      const value = JSON.parse(await readFile(resolve(recipe), 'utf8'));
+      if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).some(key => !['name', 'units', 'commands'].includes(key))) throw new Error('recipe allows only name, units and commands');
+      scene = core.geometry3d.applyCommands(core.geometry3d.createScene({ name: value.name, units: value.units }), value.commands);
+    } else {
+      const value = JSON.parse(await readFile(resolve(input), 'utf8'));
+      scene = value.format === 'turtlepen-geometry' ? core.geometry3d.deserializeTpf(value) : core.deserialize(value).geometry3d;
+      if (!scene) throw new Error('document has no 3D geometry');
+    }
+    if (has('inspect')) return writeJsonOrPrint(core.geometry3d.inspectScene(scene), null);
+    const format = option('format', 'tpf'), out = option('out');
+    if (!out || extname(out).toLowerCase() !== '.' + format) throw new Error('geometry3d needs --out with an extension matching --format');
+    if (resolve(out).toLowerCase() === resolve(input ?? recipe).toLowerCase()) throw new Error('export cannot overwrite its input');
+    const { bytes, ...receipt } = core.geometry3d.exportScene(scene, format);
+    await atomicWriteFile(resolve(out), bytes, { backup: true });
+    return writeJsonOrPrint({ ...receipt, path: resolve(out), byteLength: bytes.length }, null);
+  }
+
   if (command === 'validate' || command === 'inspect') {
     const path = positional()[0];
     if (!path) throw new Error(command + ' needs a document path');
@@ -127,6 +152,7 @@ async function main() {
       view: option('view'),
       bounds: option('bounds', 'content'),
       showGrid: !has('no-grid'),
+      transparent: has('transparent'),
       backup: true,
     };
     if (format === 'svg') await core.exportSvg(doc, out, options);

@@ -1,0 +1,39 @@
+{
+  "name": "stacked-cubes",
+  "units": "mm",
+  "commands": [
+    {
+      "op": "box",
+      "id": "base",
+      "size": [
+        20,
+        20,
+        10
+      ]
+    },
+    {
+      "op": "box",
+      "id": "top",
+      "size": [
+        10,
+        10,
+        10
+      ],
+      "position": [
+        5,
+        5,
+        10
+      ]
+    },
+    {
+      "op": "boolean",
+      "id": "stack",
+      "operation": "union",
+      "ids": [
+        "base",
+        "top"
+      ],
+      "color": "#4178c0"
+    }
+  ]
+}

@@ -1,0 +1,2898 @@
+{
+  "renderHash": "009ec233a371c6ce",
+  "release": {
+    "releasable": true,
+    "verdict": "PASS_WITH_EXCEPTIONS",
+    "blockers": [],
+    "structural": {
+      "S0": 0,
+      "S1": 0,
+      "S2": 0,
+      "S3": 134,
+      "total": 134,
+      "accepted": 69,
+      "acceptedBySeverity": {
+        "S0": 0,
+        "S1": 0,
+        "S2": 69,
+        "S3": 0
+      },
+      "stale": 0,
+      "clean": true,
+      "state": "structurally-clear",
+      "verdict": "PASS_WITH_EXCEPTIONS",
+      "acceptedDecisions": 69
+    },
+    "perceptual": {
+      "reviewed": true,
+      "reviewer": "Codex renderer regression inspection",
+      "findings": 1,
+      "blocking": 0,
+      "clean": true,
+      "stale": false,
+      "currentRenderHash": "009ec233a371c6ce"
+    },
+    "exceptions": [
+      {
+        "fingerprint": "5e87f6771ca1",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"shell-rim\" and \"shell-left-plates\" share 4 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-rim",
+          "shell-left-plates"
+        ],
+        "cells": [
+          "AC72.q3",
+          "AC72.q4",
+          "AD73.q1",
+          "AE37.q2"
+        ],
+        "cellSummary": "AC72 AD73 AE37",
+        "metrics": {
+          "quadrants": 4
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-rim and shell-left-plates is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "9c5e026721a8",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"shell-rim\" and \"shell-right-plates\" share 4 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-rim",
+          "shell-right-plates"
+        ],
+        "cells": [
+          "AE37.q2",
+          "AG73.q1",
+          "AG73.q2",
+          "AH72.q4"
+        ],
+        "cellSummary": "AE37 AG73 AH72",
+        "metrics": {
+          "quadrants": 4
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-rim and shell-right-plates is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "afa95232c2ff",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"shell-left-plates\" and \"shell-right-plates\" share 3 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-left-plates",
+          "shell-right-plates"
+        ],
+        "cells": [
+          "AE37.q2",
+          "AE55.q2",
+          "AE74.q2"
+        ],
+        "cellSummary": "AE37 AE55 AE74",
+        "metrics": {
+          "quadrants": 3
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-left-plates and shell-right-plates is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "aaa9091bcdbc",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"shell-band\" and \"shell-left-plates\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-band",
+          "shell-left-plates"
+        ],
+        "cells": [
+          "AE55.q1",
+          "AE55.q2"
+        ],
+        "cellSummary": "AE55",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-band and shell-left-plates is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "b873ffa81c5a",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"shell-band\" and \"shell-right-plates\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-band",
+          "shell-right-plates"
+        ],
+        "cells": [
+          "AE55.q2",
+          "AF55.q1"
+        ],
+        "cellSummary": "AE55 AF55",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-band and shell-right-plates is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "16c840ef6ff3",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"shell-right-plates\" and \"chest-seams\" share 4 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-right-plates",
+          "chest-seams"
+        ],
+        "cells": [
+          "AK60.q4",
+          "AK70.q2",
+          "AL60.q3",
+          "AN51.q2"
+        ],
+        "cellSummary": "AK60 AK70 AL60 AN51",
+        "metrics": {
+          "quadrants": 4
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-right-plates and chest-seams is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "4d8775378307",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"eye-left-white\" and \"eye-left-outline\" share 28 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "eye-left-white",
+          "eye-left-outline"
+        ],
+        "cells": [
+          "AM25.q4",
+          "AN23.q2",
+          "AN23.q3",
+          "AN24.q1",
+          "AN27.q1",
+          "AN27.q3",
+          "AN28.q2",
+          "AO22.q2",
+          "AO29.q2",
+          "AP21.q3",
+          "AP21.q4",
+          "AP29.q3",
+          "AP29.q4",
+          "AR21.q1",
+          "AR30.q1",
+          "AS21.q4",
+          "AS29.q4",
+          "AT21.q3",
+          "AT22.q2",
+          "AT29.q2",
+          "AT29.q3",
+          "AU23.q2",
+          "AU28.q2",
+          "AV23.q3"
+        ],
+        "cellSummary": "AM25 AN23 AN24 AN27 AN28 AO22 AO29 AP21 …+11 more",
+        "metrics": {
+          "quadrants": 28
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between eye-left-white and eye-left-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "c46ab03ff9ba",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"shell-rim\" and \"chest-seams\" share 3 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-rim",
+          "chest-seams"
+        ],
+        "cells": [
+          "AN70.q2",
+          "AU51.q2",
+          "AU60.q3"
+        ],
+        "cellSummary": "AN70 AU51 AU60",
+        "metrics": {
+          "quadrants": 3
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-rim and chest-seams is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "4b9d888d97b3",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"eye-left-white\" and \"pupil-left\" share 49 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "eye-left-white",
+          "pupil-left"
+        ],
+        "cells": [
+          "AP25.q4",
+          "AQ24.q2",
+          "AQ24.q3",
+          "AQ24.q4",
+          "AQ25.q1",
+          "AQ25.q2",
+          "AQ25.q3",
+          "AQ25.q4",
+          "AQ26.q1",
+          "AQ26.q2",
+          "AQ26.q3",
+          "AQ26.q4",
+          "AQ27.q2",
+          "AR23.q4",
+          "AR24.q1",
+          "AR24.q2",
+          "AR24.q3",
+          "AR24.q4",
+          "AR25.q1",
+          "AR25.q2",
+          "AR25.q3",
+          "AR25.q4",
+          "AR26.q1",
+          "AR26.q2"
+        ],
+        "cellSummary": "AP25 AQ24 AQ25 AQ26 AQ27 AR23 AR24 AR25 …+1 more",
+        "metrics": {
+          "quadrants": 49
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between eye-left-white and pupil-left is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "8f3a7e34d267",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"eye-left-white\" and \"eye-glint-left\" share 5 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "eye-left-white",
+          "eye-glint-left"
+        ],
+        "cells": [
+          "AR24.q4",
+          "AS24.q1",
+          "AS24.q3",
+          "AS24.q4",
+          "AS25.q1"
+        ],
+        "cellSummary": "AR24 AS24 AS25",
+        "metrics": {
+          "quadrants": 5
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between eye-left-white and eye-glint-left is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "5f6ad5a29a00",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"pupil-left\" and \"eye-glint-left\" share 5 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "pupil-left",
+          "eye-glint-left"
+        ],
+        "cells": [
+          "AR24.q4",
+          "AS24.q1",
+          "AS24.q3",
+          "AS24.q4",
+          "AS25.q1"
+        ],
+        "cellSummary": "AR24 AS24 AS25",
+        "metrics": {
+          "quadrants": 5
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between pupil-left and eye-glint-left is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "528187118d30",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"shell-rim\" and \"shell-band\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-rim",
+          "shell-band"
+        ],
+        "cells": [
+          "AV55.q1",
+          "P55.q1"
+        ],
+        "cellSummary": "AV55 P55",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-rim and shell-band is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "2bd93028afb1",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"eye-right-white\" and \"eye-right-outline\" share 20 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "eye-right-white",
+          "eye-right-outline"
+        ],
+        "cells": [
+          "BA25.q2",
+          "BB22.q4",
+          "BB23.q3",
+          "BB26.q3",
+          "BB27.q4",
+          "BC22.q1",
+          "BC28.q1",
+          "BD21.q3",
+          "BD28.q3",
+          "BE21.q2",
+          "BE29.q2",
+          "BG21.q3",
+          "BG28.q3",
+          "BH22.q1",
+          "BH22.q4",
+          "BH27.q4",
+          "BH28.q1",
+          "BI23.q3",
+          "BI25.q2",
+          "BI26.q3"
+        ],
+        "cellSummary": "BA25 BB22 BB23 BB26 BB27 BC22 BC28 BD21 …+11 more",
+        "metrics": {
+          "quadrants": 20
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between eye-right-white and eye-right-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "915b77d572db",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"eye-right-white\" and \"pupil-right\" share 29 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "eye-right-white",
+          "pupil-right"
+        ],
+        "cells": [
+          "BC24.q4",
+          "BC25.q2",
+          "BC25.q3",
+          "BC25.q4",
+          "BC26.q2",
+          "BC26.q4",
+          "BD24.q2",
+          "BD24.q3",
+          "BD24.q4",
+          "BD25.q1",
+          "BD25.q2",
+          "BD25.q3",
+          "BD25.q4",
+          "BD26.q1",
+          "BD26.q2",
+          "BD26.q3",
+          "BD26.q4",
+          "BD27.q2",
+          "BE24.q3",
+          "BE24.q4",
+          "BE25.q1",
+          "BE25.q2",
+          "BE25.q3",
+          "BE25.q4"
+        ],
+        "cellSummary": "BC24 BC25 BC26 BD24 BD25 BD26 BD27 BE24 …+1 more",
+        "metrics": {
+          "quadrants": 29
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between eye-right-white and pupil-right is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "6732db99256e",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"eye-right-white\" and \"eye-glint-right\" share 5 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "eye-right-white",
+          "eye-glint-right"
+        ],
+        "cells": [
+          "BD24.q4",
+          "BE24.q1",
+          "BE24.q3",
+          "BE24.q4",
+          "BE25.q1"
+        ],
+        "cellSummary": "BD24 BE24 BE25",
+        "metrics": {
+          "quadrants": 5
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between eye-right-white and eye-glint-right is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "e245ae30a59e",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"pupil-right\" and \"eye-glint-right\" share 4 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "pupil-right",
+          "eye-glint-right"
+        ],
+        "cells": [
+          "BD24.q4",
+          "BE24.q3",
+          "BE24.q4",
+          "BE25.q1"
+        ],
+        "cellSummary": "BD24 BE24 BE25",
+        "metrics": {
+          "quadrants": 4
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between pupil-right and eye-glint-right is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "181790f8589c",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"pen-inner\" and \"pen-nib-fill\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "pen-inner",
+          "pen-nib-fill"
+        ],
+        "cells": [
+          "CF48.q2",
+          "CG48.q3"
+        ],
+        "cellSummary": "CF48 CG48",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between pen-inner and pen-nib-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "68ed08c845c2",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"pen-nib-fill\" and \"pen-nib-outline\" share 6 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "pen-nib-fill",
+          "pen-nib-outline"
+        ],
+        "cells": [
+          "CF48.q4",
+          "CF49.q2",
+          "CF49.q3",
+          "CG48.q1",
+          "CH50.q4",
+          "CJ51.q1"
+        ],
+        "cellSummary": "CF48 CF49 CG48 CH50 CJ51",
+        "metrics": {
+          "quadrants": 6
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between pen-nib-fill and pen-nib-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "7e57b63b2412",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"pen-outer\" and \"pen-nib-fill\" share 3 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "pen-outer",
+          "pen-nib-fill"
+        ],
+        "cells": [
+          "CF49.q2",
+          "CG49.q1",
+          "CG49.q4"
+        ],
+        "cellSummary": "CF49 CG49",
+        "metrics": {
+          "quadrants": 3
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between pen-outer and pen-nib-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "a282ef6fdb74",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"pen-outer\" and \"pen-nib-outline\" share 1 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "pen-outer",
+          "pen-nib-outline"
+        ],
+        "cells": [
+          "CF49.q2"
+        ],
+        "cellSummary": "CF49",
+        "metrics": {
+          "quadrants": 1
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between pen-outer and pen-nib-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "25f91315d05e",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "features",
+        "message": "paths \"pen-nib-outline\" and \"board-flourish\" share 1 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "pen-nib-outline",
+          "board-flourish"
+        ],
+        "cells": [
+          "CJ51.q2"
+        ],
+        "cellSummary": "CJ51",
+        "metrics": {
+          "quadrants": 1
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between pen-nib-outline and board-flourish is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "f00b10ee94c8",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"shell-fill\" and \"left-foot-fill\" share 127 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-fill",
+          "left-foot-fill"
+        ],
+        "cells": [
+          "AD75.q2",
+          "AD75.q4",
+          "AD76.q1",
+          "AD76.q2",
+          "AE74.q2",
+          "AE74.q3",
+          "AE74.q4",
+          "AE75.q1",
+          "AE75.q2",
+          "AE75.q3",
+          "AE75.q4",
+          "AE76.q1",
+          "AE76.q2",
+          "AF73.q3",
+          "AF73.q4",
+          "AF74.q1",
+          "AF74.q2",
+          "AF74.q3",
+          "AF74.q4",
+          "AF75.q1",
+          "AF75.q2",
+          "AF75.q3",
+          "AF75.q4",
+          "AF76.q1"
+        ],
+        "cellSummary": "AD75 AD76 AE74 AE75 AE76 AF73 AF74 AF75 …+1 more",
+        "metrics": {
+          "quadrants": 127
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-fill and left-foot-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "012ca42721a8",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"shell-fill\" and \"head-fill\" share 88 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-fill",
+          "head-fill"
+        ],
+        "cells": [
+          "AI34.q2",
+          "AJ34.q1",
+          "AJ34.q3",
+          "AJ34.q4",
+          "AJ35.q2",
+          "AJ35.q4",
+          "AK34.q3",
+          "AK34.q4",
+          "AK35.q1",
+          "AK35.q2",
+          "AK35.q3",
+          "AK35.q4",
+          "AK36.q1",
+          "AK36.q2",
+          "AK36.q4",
+          "AL35.q1",
+          "AL35.q2",
+          "AL35.q3",
+          "AL35.q4",
+          "AL36.q1",
+          "AL36.q2",
+          "AL36.q3",
+          "AL36.q4",
+          "AL37.q2"
+        ],
+        "cellSummary": "AI34 AJ34 AJ35 AK34 AK35 AK36 AL35 AL36 …+1 more",
+        "metrics": {
+          "quadrants": 88
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-fill and head-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "b1c3a690b598",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"shell-fill\" and \"plastron-fill\" share 1710 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-fill",
+          "plastron-fill"
+        ],
+        "cells": [
+          "AI56.q4",
+          "AJ48.q2",
+          "AJ48.q4",
+          "AJ49.q2",
+          "AJ49.q4",
+          "AJ50.q2",
+          "AJ50.q3",
+          "AJ50.q4",
+          "AJ51.q1",
+          "AJ51.q2",
+          "AJ51.q3",
+          "AJ51.q4",
+          "AJ52.q1",
+          "AJ52.q2",
+          "AJ52.q3",
+          "AJ52.q4",
+          "AJ53.q1",
+          "AJ53.q2",
+          "AJ53.q3",
+          "AJ53.q4",
+          "AJ54.q1",
+          "AJ54.q2",
+          "AJ54.q3",
+          "AJ54.q4"
+        ],
+        "cellSummary": "AI56 AJ48 AJ49 AJ50 AJ51 AJ52 AJ53 AJ54",
+        "metrics": {
+          "quadrants": 1710
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-fill and plastron-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "90c58705eb0b",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"shell-fill\" and \"neck-fill\" share 298 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-fill",
+          "neck-fill"
+        ],
+        "cells": [
+          "AL37.q2",
+          "AL37.q4",
+          "AL38.q2",
+          "AM37.q1",
+          "AM37.q2",
+          "AM37.q3",
+          "AM37.q4",
+          "AM38.q1",
+          "AM38.q2",
+          "AM38.q3",
+          "AM38.q4",
+          "AM39.q1",
+          "AM39.q2",
+          "AM39.q3",
+          "AM39.q4",
+          "AM40.q1",
+          "AM40.q2",
+          "AM40.q3",
+          "AM40.q4",
+          "AM41.q1",
+          "AM41.q2",
+          "AM41.q3",
+          "AM41.q4",
+          "AM42.q2"
+        ],
+        "cellSummary": "AL37 AL38 AM37 AM38 AM39 AM40 AM41 AM42",
+        "metrics": {
+          "quadrants": 298
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-fill and neck-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "059ccfcb77e4",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"neck-fill\" and \"head-fill\" share 131 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "neck-fill",
+          "head-fill"
+        ],
+        "cells": [
+          "AL37.q2",
+          "AM37.q1",
+          "AM37.q2",
+          "AM37.q3",
+          "AM37.q4",
+          "AM38.q2",
+          "AN37.q1",
+          "AN37.q2",
+          "AN37.q3",
+          "AN37.q4",
+          "AN38.q1",
+          "AN38.q2",
+          "AN38.q4",
+          "AO37.q1",
+          "AO37.q2",
+          "AO37.q3",
+          "AO37.q4",
+          "AO38.q1",
+          "AO38.q2",
+          "AO38.q3",
+          "AO38.q4",
+          "AO39.q2",
+          "AP37.q1",
+          "AP37.q2"
+        ],
+        "cellSummary": "AL37 AM37 AM38 AN37 AN38 AO37 AO38 AO39 …+1 more",
+        "metrics": {
+          "quadrants": 131
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between neck-fill and head-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "809bf0d54d3a",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"plastron-fill\" and \"neck-fill\" share 409 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "plastron-fill",
+          "neck-fill"
+        ],
+        "cells": [
+          "AM40.q2",
+          "AM40.q4",
+          "AM41.q1",
+          "AM41.q2",
+          "AM41.q3",
+          "AM41.q4",
+          "AM42.q2",
+          "AM42.q4",
+          "AM43.q2",
+          "AM43.q4",
+          "AM44.q2",
+          "AM44.q4",
+          "AN38.q4",
+          "AN39.q2",
+          "AN39.q3",
+          "AN39.q4",
+          "AN40.q1",
+          "AN40.q2",
+          "AN40.q3",
+          "AN40.q4",
+          "AN41.q1",
+          "AN41.q2",
+          "AN41.q3",
+          "AN41.q4"
+        ],
+        "cellSummary": "AM40 AM41 AM42 AM43 AM44 AN38 AN39 AN40 …+1 more",
+        "metrics": {
+          "quadrants": 409
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between plastron-fill and neck-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "d1c235c043e3",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"plastron-fill\" and \"head-fill\" share 165 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "plastron-fill",
+          "head-fill"
+        ],
+        "cells": [
+          "AN38.q4",
+          "AO37.q4",
+          "AO38.q1",
+          "AO38.q2",
+          "AO38.q3",
+          "AO38.q4",
+          "AO39.q2",
+          "AP36.q4",
+          "AP37.q1",
+          "AP37.q2",
+          "AP37.q3",
+          "AP37.q4",
+          "AP38.q1",
+          "AP38.q2",
+          "AP38.q3",
+          "AP38.q4",
+          "AP39.q1",
+          "AP39.q2",
+          "AQ36.q2",
+          "AQ36.q3",
+          "AQ36.q4",
+          "AQ37.q1",
+          "AQ37.q2",
+          "AQ37.q3"
+        ],
+        "cellSummary": "AN38 AO37 AO38 AO39 AP36 AP37 AP38 AP39 …+2 more",
+        "metrics": {
+          "quadrants": 165
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between plastron-fill and head-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "b9f203d59b8f",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"left-foot-fill\" and \"plastron-fill\" share 8 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "left-foot-fill",
+          "plastron-fill"
+        ],
+        "cells": [
+          "AN73.q3",
+          "AN74.q2",
+          "AN74.q4",
+          "AO74.q3",
+          "AO75.q1",
+          "AO75.q2",
+          "AO75.q4",
+          "AP76.q1"
+        ],
+        "cellSummary": "AN73 AN74 AO74 AO75 AP76",
+        "metrics": {
+          "quadrants": 8
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between left-foot-fill and plastron-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "f6ff6f7e13e9",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"head-fill\" and \"snout-fill\" share 659 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "head-fill",
+          "snout-fill"
+        ],
+        "cells": [
+          "AR30.q4",
+          "AS27.q4",
+          "AS28.q2",
+          "AS28.q3",
+          "AS28.q4",
+          "AS29.q1",
+          "AS29.q2",
+          "AS29.q3",
+          "AS29.q4",
+          "AS30.q1",
+          "AS30.q2",
+          "AS30.q3",
+          "AS30.q4",
+          "AS31.q1",
+          "AS31.q2",
+          "AS31.q3",
+          "AS31.q4",
+          "AS32.q1",
+          "AS32.q2",
+          "AS32.q3",
+          "AS32.q4",
+          "AS33.q2",
+          "AS33.q4",
+          "AT26.q2"
+        ],
+        "cellSummary": "AR30 AS27 AS28 AS29 AS30 AS31 AS32 AS33 …+1 more",
+        "metrics": {
+          "quadrants": 659
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between head-fill and snout-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "80b6b5c22c8b",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"plastron-fill\" and \"snout-fill\" share 15 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "plastron-fill",
+          "snout-fill"
+        ],
+        "cells": [
+          "AT35.q2",
+          "AU35.q4",
+          "AV35.q3",
+          "AV35.q4",
+          "AV36.q1",
+          "AV36.q2",
+          "AW36.q1",
+          "AW36.q2",
+          "AW36.q3",
+          "AW36.q4",
+          "AX36.q3",
+          "AX36.q4",
+          "AX37.q1",
+          "AX37.q2",
+          "AY37.q1"
+        ],
+        "cellSummary": "AT35 AU35 AV35 AV36 AW36 AX36 AX37 AY37",
+        "metrics": {
+          "quadrants": 15
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between plastron-fill and snout-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "68bf081f47cd",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"shell-fill\" and \"arm-fill\" share 104 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-fill",
+          "arm-fill"
+        ],
+        "cells": [
+          "AT47.q2",
+          "AT47.q4",
+          "AU47.q1",
+          "AU47.q2",
+          "AU47.q3",
+          "AU47.q4",
+          "AU48.q1",
+          "AU48.q2",
+          "AU48.q3",
+          "AU48.q4",
+          "AU49.q1",
+          "AU49.q2",
+          "AU49.q3",
+          "AU49.q4",
+          "AU50.q2",
+          "AU50.q4",
+          "AU51.q2",
+          "AU51.q4",
+          "AV47.q3",
+          "AV47.q4",
+          "AV48.q1",
+          "AV48.q2",
+          "AV48.q3",
+          "AV48.q4"
+        ],
+        "cellSummary": "AT47 AU47 AU48 AU49 AU50 AU51 AV47 AV48",
+        "metrics": {
+          "quadrants": 104
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-fill and arm-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "a3e3b936920c",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"plastron-fill\" and \"arm-fill\" share 278 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "plastron-fill",
+          "arm-fill"
+        ],
+        "cells": [
+          "AT47.q2",
+          "AT47.q4",
+          "AU47.q1",
+          "AU47.q2",
+          "AU47.q3",
+          "AU47.q4",
+          "AU48.q1",
+          "AU48.q2",
+          "AU48.q3",
+          "AU48.q4",
+          "AU49.q1",
+          "AU49.q2",
+          "AU49.q3",
+          "AU49.q4",
+          "AU50.q2",
+          "AU50.q4",
+          "AU51.q2",
+          "AU51.q4",
+          "AV47.q3",
+          "AV47.q4",
+          "AV48.q1",
+          "AV48.q2",
+          "AV48.q3",
+          "AV48.q4"
+        ],
+        "cellSummary": "AT47 AU47 AU48 AU49 AU50 AU51 AV47 AV48",
+        "metrics": {
+          "quadrants": 278
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between plastron-fill and arm-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "dc3bcd6af2a9",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"right-foot-fill\" and \"plastron-fill\" share 90 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "right-foot-fill",
+          "plastron-fill"
+        ],
+        "cells": [
+          "AT74.q2",
+          "AT74.q4",
+          "AT75.q2",
+          "AT75.q4",
+          "AT76.q2",
+          "AT76.q4",
+          "AT77.q1",
+          "AT77.q2",
+          "AT77.q3",
+          "AT77.q4",
+          "AT78.q2",
+          "AU74.q1",
+          "AU74.q2",
+          "AU74.q3",
+          "AU74.q4",
+          "AU75.q1",
+          "AU75.q2",
+          "AU75.q3",
+          "AU75.q4",
+          "AU76.q1",
+          "AU76.q2",
+          "AU76.q3",
+          "AU76.q4",
+          "AU77.q1"
+        ],
+        "cellSummary": "AT74 AT75 AT76 AT77 AT78 AU74 AU75 AU76 …+1 more",
+        "metrics": {
+          "quadrants": 90
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between right-foot-fill and plastron-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "49a9bc6a3527",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"neck-fill\" and \"snout-fill\" share 3 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "neck-fill",
+          "snout-fill"
+        ],
+        "cells": [
+          "AX37.q1",
+          "AX37.q2",
+          "AY37.q1"
+        ],
+        "cellSummary": "AX37 AY37",
+        "metrics": {
+          "quadrants": 3
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between neck-fill and snout-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "8c72be68aecd",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"arm-fill\" and \"hand-fill\" share 244 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "arm-fill",
+          "hand-fill"
+        ],
+        "cells": [
+          "BO45.q4",
+          "BP44.q4",
+          "BP45.q1",
+          "BP45.q2",
+          "BP45.q3",
+          "BP45.q4",
+          "BP46.q1",
+          "BP46.q2",
+          "BP46.q3",
+          "BP46.q4",
+          "BP47.q1",
+          "BP47.q2",
+          "BP47.q4",
+          "BP48.q2",
+          "BQ44.q2",
+          "BQ44.q3",
+          "BQ44.q4",
+          "BQ45.q1",
+          "BQ45.q2",
+          "BQ45.q3",
+          "BQ45.q4",
+          "BQ46.q1",
+          "BQ46.q2",
+          "BQ46.q3"
+        ],
+        "cellSummary": "BO45 BP44 BP45 BP46 BP47 BP48 BQ44 BQ45 …+1 more",
+        "metrics": {
+          "quadrants": 244
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between arm-fill and hand-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "f3a3b873a129",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"board-fill\" and \"tray-fill\" share 66 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "board-fill",
+          "tray-fill"
+        ],
+        "cells": [
+          "BO64.q1",
+          "BO64.q2",
+          "BP64.q1",
+          "BP64.q2",
+          "BQ64.q1",
+          "BQ64.q2",
+          "BR64.q1",
+          "BR64.q2",
+          "BS64.q1",
+          "BS64.q2",
+          "BT64.q1",
+          "BT64.q2",
+          "BU64.q1",
+          "BU64.q2",
+          "BV64.q1",
+          "BV64.q2",
+          "BW64.q1",
+          "BW64.q2",
+          "BX64.q1",
+          "BX64.q2",
+          "BY64.q1",
+          "BY64.q2",
+          "BZ64.q1",
+          "BZ64.q2"
+        ],
+        "cellSummary": "BO64 BP64 BQ64 BR64 BS64 BT64 BU64 BV64 …+4 more",
+        "metrics": {
+          "quadrants": 66
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between board-fill and tray-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "ec1336e2ee5a",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"board-fill\" and \"arm-fill\" share 253 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "board-fill",
+          "arm-fill"
+        ],
+        "cells": [
+          "BP53.q4",
+          "BQ47.q2",
+          "BQ47.q4",
+          "BQ48.q2",
+          "BQ48.q4",
+          "BQ49.q2",
+          "BQ49.q4",
+          "BQ50.q2",
+          "BQ50.q3",
+          "BQ50.q4",
+          "BQ51.q1",
+          "BQ51.q2",
+          "BQ51.q3",
+          "BQ51.q4",
+          "BQ52.q1",
+          "BQ52.q2",
+          "BQ52.q3",
+          "BQ52.q4",
+          "BQ53.q1",
+          "BQ53.q2",
+          "BR43.q4",
+          "BR44.q1",
+          "BR44.q2",
+          "BR44.q3"
+        ],
+        "cellSummary": "BP53 BQ47 BQ48 BQ49 BQ50 BQ51 BQ52 BQ53 …+2 more",
+        "metrics": {
+          "quadrants": 253
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between board-fill and arm-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "d295d8f86293",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"board-fill\" and \"hand-fill\" share 326 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "board-fill",
+          "hand-fill"
+        ],
+        "cells": [
+          "BQ47.q2",
+          "BQ47.q4",
+          "BQ48.q2",
+          "BQ48.q4",
+          "BQ49.q2",
+          "BR41.q4",
+          "BR42.q2",
+          "BR42.q4",
+          "BR43.q2",
+          "BR43.q4",
+          "BR44.q1",
+          "BR44.q2",
+          "BR44.q3",
+          "BR44.q4",
+          "BR45.q1",
+          "BR45.q2",
+          "BR45.q3",
+          "BR45.q4",
+          "BR46.q1",
+          "BR46.q2",
+          "BR46.q3",
+          "BR46.q4",
+          "BR47.q1",
+          "BR47.q2"
+        ],
+        "cellSummary": "BQ47 BQ48 BQ49 BR41 BR42 BR43 BR44 BR45 …+2 more",
+        "metrics": {
+          "quadrants": 326
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between board-fill and hand-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "0aafa66b422b",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"tray-fill\" and \"leg-left-fill\" share 9 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "tray-fill",
+          "leg-left-fill"
+        ],
+        "cells": [
+          "BR67.q2",
+          "BS67.q1",
+          "BS67.q2",
+          "BT67.q1",
+          "BT67.q2",
+          "BU67.q1",
+          "BU67.q2",
+          "BV67.q1",
+          "BV67.q2"
+        ],
+        "cellSummary": "BR67 BS67 BT67 BU67 BV67",
+        "metrics": {
+          "quadrants": 9
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between tray-fill and leg-left-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "a41fab7e6ff8",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"leg-left-fill\" and \"brace-fill\" share 4 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "leg-left-fill",
+          "brace-fill"
+        ],
+        "cells": [
+          "BS79.q2",
+          "BS79.q4",
+          "BS80.q2",
+          "BT78.q1"
+        ],
+        "cellSummary": "BS79 BS80 BT78",
+        "metrics": {
+          "quadrants": 4
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between leg-left-fill and brace-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "917ca5f85513",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"board-fill\" and \"clip-fill\" share 142 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "board-fill",
+          "clip-fill"
+        ],
+        "cells": [
+          "CE24.q2",
+          "CE24.q4",
+          "CE25.q2",
+          "CE25.q4",
+          "CE26.q2",
+          "CF23.q1",
+          "CF23.q2",
+          "CF23.q3",
+          "CF23.q4",
+          "CF24.q1",
+          "CF24.q2",
+          "CF24.q3",
+          "CF24.q4",
+          "CF25.q1",
+          "CF25.q2",
+          "CF25.q3",
+          "CF25.q4",
+          "CF26.q1",
+          "CF26.q2",
+          "CG23.q1",
+          "CG23.q2",
+          "CG23.q3",
+          "CG23.q4",
+          "CG24.q1"
+        ],
+        "cellSummary": "CE24 CE25 CE26 CF23 CF24 CF25 CF26 CG23 …+1 more",
+        "metrics": {
+          "quadrants": 142
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between board-fill and clip-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "dbcefc686aba",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"clip-fill\" and \"clip-tab-fill\" share 9 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "clip-fill",
+          "clip-tab-fill"
+        ],
+        "cells": [
+          "CI21.q3",
+          "CI21.q4",
+          "CJ21.q3",
+          "CJ21.q4",
+          "CK21.q3",
+          "CK21.q4",
+          "CL21.q3",
+          "CL21.q4",
+          "CM21.q3"
+        ],
+        "cellSummary": "CI21 CJ21 CK21 CL21 CM21",
+        "metrics": {
+          "quadrants": 9
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between clip-fill and clip-tab-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "24c5e74425e9",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"tray-fill\" and \"leg-right-fill\" share 9 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "tray-fill",
+          "leg-right-fill"
+        ],
+        "cells": [
+          "CO67.q1",
+          "CO67.q2",
+          "CP67.q1",
+          "CP67.q2",
+          "CQ67.q1",
+          "CQ67.q2",
+          "CR67.q1",
+          "CR67.q2",
+          "CS67.q1"
+        ],
+        "cellSummary": "CO67 CP67 CQ67 CR67 CS67",
+        "metrics": {
+          "quadrants": 9
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between tray-fill and leg-right-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "c3db398833c5",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "fills",
+        "message": "paths \"leg-right-fill\" and \"brace-fill\" share 1 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "leg-right-fill",
+          "brace-fill"
+        ],
+        "cells": [
+          "CQ78.q2"
+        ],
+        "cellSummary": "CQ78",
+        "metrics": {
+          "quadrants": 1
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between leg-right-fill and brace-fill is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "768276bb4723",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"shell-outline\" and \"head-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-outline",
+          "head-outline"
+        ],
+        "cells": [
+          "AI34.q2",
+          "AT40.q1"
+        ],
+        "cellSummary": "AI34 AT40",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-outline and head-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "724792fce6fe",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"neck-outline\" and \"head-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "neck-outline",
+          "head-outline"
+        ],
+        "cells": [
+          "AL37.q2",
+          "AY39.q1"
+        ],
+        "cellSummary": "AL37 AY39",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between neck-outline and head-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "61ce1e89d22c",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"plastron-outline\" and \"neck-outline\" share 5 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "plastron-outline",
+          "neck-outline"
+        ],
+        "cells": [
+          "AM40.q3",
+          "AM41.q1",
+          "AP37.q1",
+          "AY37.q1",
+          "AY37.q4"
+        ],
+        "cellSummary": "AM40 AM41 AP37 AY37",
+        "metrics": {
+          "quadrants": 5
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between plastron-outline and neck-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "1dc5216ff097",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"left-foot-outline\" and \"plastron-outline\" share 4 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "left-foot-outline",
+          "plastron-outline"
+        ],
+        "cells": [
+          "AM72.q3",
+          "AM73.q2",
+          "AP76.q1",
+          "AP76.q4"
+        ],
+        "cellSummary": "AM72 AM73 AP76",
+        "metrics": {
+          "quadrants": 4
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between left-foot-outline and plastron-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "d6793dd9dd33",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"shell-outline\" and \"plastron-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-outline",
+          "plastron-outline"
+        ],
+        "cells": [
+          "AN74.q4",
+          "AP37.q1"
+        ],
+        "cellSummary": "AN74 AP37",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-outline and plastron-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "3f9627bebcd2",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"shell-outline\" and \"left-foot-outline\" share 1 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-outline",
+          "left-foot-outline"
+        ],
+        "cells": [
+          "AO74.q1"
+        ],
+        "cellSummary": "AO74",
+        "metrics": {
+          "quadrants": 1
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-outline and left-foot-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "e77e5d5c558e",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"shell-outline\" and \"neck-outline\" share 3 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-outline",
+          "neck-outline"
+        ],
+        "cells": [
+          "AP37.q1",
+          "AP37.q2",
+          "AX46.q3"
+        ],
+        "cellSummary": "AP37 AX46",
+        "metrics": {
+          "quadrants": 3
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-outline and neck-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "6a28c59b6f5d",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"plastron-outline\" and \"snout-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "plastron-outline",
+          "snout-outline"
+        ],
+        "cells": [
+          "AT35.q2",
+          "AY37.q4"
+        ],
+        "cellSummary": "AT35 AY37",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between plastron-outline and snout-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "e30e34bcdc0a",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"right-foot-outline\" and \"plastron-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "right-foot-outline",
+          "plastron-outline"
+        ],
+        "cells": [
+          "AT78.q1",
+          "BA73.q3"
+        ],
+        "cellSummary": "AT78 BA73",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between right-foot-outline and plastron-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "db5f43c9f39c",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"neck-outline\" and \"snout-outline\" share 4 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "neck-outline",
+          "snout-outline"
+        ],
+        "cells": [
+          "AW37.q2",
+          "AX37.q1",
+          "AX37.q2",
+          "AY37.q4"
+        ],
+        "cellSummary": "AW37 AX37 AY37",
+        "metrics": {
+          "quadrants": 4
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between neck-outline and snout-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "7a7e9b4e9de9",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"shell-outline\" and \"arm-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "shell-outline",
+          "arm-outline"
+        ],
+        "cells": [
+          "AX47.q4",
+          "AY55.q4"
+        ],
+        "cellSummary": "AX47 AY55",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between shell-outline and arm-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "55e63d6aa883",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"plastron-outline\" and \"head-outline\" share 1 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "plastron-outline",
+          "head-outline"
+        ],
+        "cells": [
+          "AZ38.q4"
+        ],
+        "cellSummary": "AZ38",
+        "metrics": {
+          "quadrants": 1
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between plastron-outline and head-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "80f3170dc720",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"head-outline\" and \"snout-outline\" share 3 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "head-outline",
+          "snout-outline"
+        ],
+        "cells": [
+          "BB37.q3",
+          "BB37.q4",
+          "BH26.q3"
+        ],
+        "cellSummary": "BB37 BH26",
+        "metrics": {
+          "quadrants": 3
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between head-outline and snout-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "fad40311db01",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"plastron-outline\" and \"arm-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "plastron-outline",
+          "arm-outline"
+        ],
+        "cells": [
+          "BE50.q3",
+          "BE56.q4"
+        ],
+        "cellSummary": "BE50 BE56",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between plastron-outline and arm-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "7149b776a1f0",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"arm-outline\" and \"hand-outline\" share 3 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "arm-outline",
+          "hand-outline"
+        ],
+        "cells": [
+          "BO46.q2",
+          "BV50.q3",
+          "BV50.q4"
+        ],
+        "cellSummary": "BO46 BV50",
+        "metrics": {
+          "quadrants": 3
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between arm-outline and hand-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "aeb97b8d2cd4",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"board-outline\" and \"tray-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "board-outline",
+          "tray-outline"
+        ],
+        "cells": [
+          "BO64.q1",
+          "CV64.q1"
+        ],
+        "cellSummary": "BO64 CV64",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between board-outline and tray-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "fc8fb498da82",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"board-outline\" and \"arm-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "board-outline",
+          "arm-outline"
+        ],
+        "cells": [
+          "BP54.q2",
+          "BR43.q4"
+        ],
+        "cellSummary": "BP54 BR43",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between board-outline and arm-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "489bb52315b9",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"board-outline\" and \"hand-outline\" share 3 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "board-outline",
+          "hand-outline"
+        ],
+        "cells": [
+          "BQ49.q2",
+          "BQ49.q4",
+          "BR41.q2"
+        ],
+        "cellSummary": "BQ49 BR41",
+        "metrics": {
+          "quadrants": 3
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between board-outline and hand-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "7bf60cef158b",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"tray-outline\" and \"leg-left-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "tray-outline",
+          "leg-left-outline"
+        ],
+        "cells": [
+          "BR67.q4",
+          "BW67.q3"
+        ],
+        "cellSummary": "BR67 BW67",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between tray-outline and leg-left-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "d9cafa8d0aa4",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"leg-left-outline\" and \"brace-outline\" share 3 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "leg-left-outline",
+          "brace-outline"
+        ],
+        "cells": [
+          "BT78.q2",
+          "BT79.q1",
+          "BT80.q3"
+        ],
+        "cellSummary": "BT78 BT79 BT80",
+        "metrics": {
+          "quadrants": 3
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between leg-left-outline and brace-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "95931edae97f",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"board-outline\" and \"clip-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "board-outline",
+          "clip-outline"
+        ],
+        "cells": [
+          "CF23.q1",
+          "CP23.q1"
+        ],
+        "cellSummary": "CF23 CP23",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between board-outline and clip-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "164957d5b4e7",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"clip-outline\" and \"clip-tab-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "clip-outline",
+          "clip-tab-outline"
+        ],
+        "cells": [
+          "CI21.q3",
+          "CM21.q4"
+        ],
+        "cellSummary": "CI21 CM21",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between clip-outline and clip-tab-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "93c27883841d",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"tray-outline\" and \"leg-right-outline\" share 2 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "tray-outline",
+          "leg-right-outline"
+        ],
+        "cells": [
+          "CO67.q3",
+          "CS67.q4"
+        ],
+        "cellSummary": "CO67 CS67",
+        "metrics": {
+          "quadrants": 2
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between tray-outline and leg-right-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      },
+      {
+        "fingerprint": "932dac2ae65e",
+        "rule": "L006",
+        "severity": "S2",
+        "severityLabel": "WARN",
+        "title": "stroke overlap",
+        "page": "outlines",
+        "message": "paths \"leg-right-outline\" and \"brace-outline\" share 5 quadrant(s) with no junction or hop — they will render as a merged line",
+        "actors": [
+          "leg-right-outline",
+          "brace-outline"
+        ],
+        "cells": [
+          "CQ78.q2",
+          "CR79.q1",
+          "CR79.q3",
+          "CR80.q1",
+          "CR80.q3"
+        ],
+        "cellSummary": "CQ78 CR79 CR80",
+        "metrics": {
+          "quadrants": 5
+        },
+        "fixes": [
+          {
+            "kind": "offset",
+            "description": "shift one path to the opposite alignment within its cell (left/right or top/bottom)"
+          },
+          {
+            "kind": "hop",
+            "description": "or mark the crossing deliberate with a \"hop\" piece in one of the paths"
+          }
+        ],
+        "accepted": true,
+        "reason": "Intentional logo construction: L006 between leg-right-outline and brace-outline is required by the supplied turtle-at-easel composition.",
+        "acceptedAt": "2026-08-08T00:00:00.000Z"
+      }
+    ],
+    "weakAcceptances": []
+  }
+}

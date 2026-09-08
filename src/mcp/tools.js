@@ -16,6 +16,7 @@ import { VERSION } from '../version.js';
 import { assertSchema } from './schema.js';
 import { capabilityRegistry, doctorReport, searchCapabilities } from '../capabilities.js';
 import { editingTools } from './editing-tools.js';
+import { geometry3dTools } from './geometry3d-tools.js';
 
 /**
  * The file-access boundary.
@@ -622,14 +623,15 @@ export function createTools(session) {
         properties: {
           id: { type: 'string' },
           z: { type: 'integer', description: 'stacking order; defaults to one above the highest existing page' },
+          opacity: { type: 'number', minimum: 0, maximum: 1, description: 'explicit page opacity; use 1 for solid game artwork' },
           intent: { type: 'string', enum: ['exclusive', 'overlay'] },
           title: { type: 'string' },
         },
         required: ['id', 'intent'],
         additionalProperties: false,
       },
-      handler: async ({ id, z = null, intent, title = null }) => {
-        const page = core.addPage(need(session), { id, z, intent, title });
+      handler: async ({ id, z = null, intent, title = null, opacity = null }) => {
+        const page = core.addPage(need(session), { id, z, intent, title, opacity });
         await persist(session);
         return `added page "${page.id}" at z:${page.z} (${page.intent})`;
       },
@@ -1251,6 +1253,7 @@ ${stalled}` : core.formatLog(result);
           z: { type: 'integer' },
           title: { type: 'string' },
           visible: { type: 'boolean' },
+          opacity: { type: 'number', minimum: 0, maximum: 1, description: 'explicit page opacity, independent of collision intent' },
         },
         required: ['id'],
         additionalProperties: false,
@@ -2138,6 +2141,7 @@ ${stalled}` : core.formatLog(result);
           committed: commit,
           applied: result.applied,
           diff,
+          ...(rehearsal.preview.geometry3d ? { geometry3d: core.geometry3d.inspectScene(rehearsal.preview.geometry3d) } : {}),
           validation: {
             summary: result.validation.summary,
             open: result.validation.open.map((finding) => ({
@@ -2172,16 +2176,17 @@ ${stalled}` : core.formatLog(result);
           showGrid: { type: 'boolean' },
           markFindings: { type: 'boolean' },
           force: { type: 'boolean', description: 'render even with findings outstanding' },
+          transparent: { type: 'boolean', description: 'omit the paper background for composable game/UI assets (default false)' },
           bounds: { type: 'string', enum: ['content', 'canvas'], description: 'crop to occupied content (default), or preserve the declared canvas composition' },
           margin: { type: 'integer', minimum: 0, description: 'outer margin in px (default 20)' },
         },
         additionalProperties: false,
       },
-      handler: async ({ path = null, showGrid = true, markFindings = false, force = false, bounds = 'content', margin = 20 }) => {
+      handler: async ({ path = null, showGrid = true, markFindings = false, force = false, bounds = 'content', margin = 20, transparent = false }) => {
         const doc = need(session);
         const target = await resolveInside(session, session.cwd, path ?? (session.path ? session.path.replace(/\.turtlepen\.json$/, '.svg') : 'diagram.svg'));
         const findings = markFindings ? core.validate(doc).open : null;
-        await core.exportSvg(doc, target, { showGrid, findings, force, bounds, margin });
+        await core.exportSvg(doc, target, { showGrid, findings, force, bounds, margin, transparent });
         // The hash of the bytes actually written. A perceptual review binds to
         // it, so a review of an older render is visibly stale rather than
         // quietly wrong. Returning it here is what makes that loop closeable.
@@ -2189,7 +2194,7 @@ ${stalled}` : core.formatLog(result);
         const hash = core.renderHash(await readFile(target, 'utf8'));
         session.lastRender = {
           renderHash: hash,
-          renderProfile: { showGrid, markFindings, bounds, margin },
+          renderProfile: { showGrid, markFindings, bounds, margin, ...(transparent ? { transparent } : {}) },
         };
         return `wrote ${target}\nrenderHash: ${hash}\n\nNow LOOK at it. When you have, record what you saw with perceptual_review — validate cannot tell you whether the drawing depicts what was asked for.`;
       },
@@ -2842,8 +2847,10 @@ ${r.program}`;
   ];
 
   tools.push(...editingTools({ core, session, need, applyAndPersist, json }));
+  tools.push(...geometry3dTools({ core, session, need, applyAndPersist, json, resolveInside }));
   const readOnlyTools = new Set(['turtlepen_help', 'search_help', 'runtime_info', 'doctor', 'measure', 'measure_image', 'describe', 'validate', 'inspect', 'inspect_svg', 'inspect_scale', 'query', 'inspect_model', 'release_check', 'font_coverage', 'ascii', 'free_space', 'route', 'import_mermaid', 'export_prompt', 'export_timeline']);
   const restyleProperties = { ...tools.find(tool => tool.name === 'restyle').inputSchema.properties };
+  readOnlyTools.add('inspect_geometry3d');
   delete restyleProperties.id;
   tools.find(tool => tool.name === 'group').inputSchema.properties.style = { type: 'object', properties: restyleProperties, additionalProperties: false };
   for (const tool of tools) {
@@ -3095,7 +3102,8 @@ WORKFLOW
   a fingerprinted acceptance reason.
 
 CORE FACTS
-  1 cell = 10px; 1 quadrant = 5px; all geometry is integer-exact.
+  1 cell = 10px; 1 quadrant = 5px; 2D geometry is integer-exact.
+  geometry3d stores independent physical XYZ geometry with explicit units.
   Addresses use Excel columns: C4, C4.tl, C4.q1. The canvas grows right/down.
   Use pen from <id>.<face> for attached connectors; gateway.S#2 selects an
   indexed face seat. Use connect for semantic direct, orthogonal, or
@@ -3107,6 +3115,7 @@ DISCOVERY
   doctor                                     runtime/schema/registry checks
   runtime_info                               version, hashes, and tool count
   timeline { action: "create", ... }         semantic histories and roadmaps
+  search_help { query: "geometry3d" }       solids, extrusion and STL/GLB exports
 
 RECOVERY AND OUTPUT
   plan with format:"json" returns an exact object diff before commit.
@@ -3119,6 +3128,25 @@ PERCEPTUAL REVIEW
   micro_mask provides reversible 1-design-pixel cleanup on artwork and images.`;
 
 const HELP = `TurtlePen — an integer-exact grid for AI-authored diagrams.
+
+SPATIAL GEOMETRY (FIRST PROTOTYPE)
+  geometry3d {action:"create",units:"mm",commands:[{op:"box",id:"part",size:[10,20,30]}]}
+  geometry3d {action:"apply",commands:[{op:"transform",id:"part",position:[0,0,5]}]}
+  inspect_geometry3d {} reports topology, bounds, volume, units and unchecked manufacturing concerns.
+  export_geometry3d {format:"tpf"|"stl"|"glb"} returns base64 bytes and a hash;
+  optional path writes inside allowed roots. Inline binary limit: 4 MiB.
+  True XYZ is right-handed Z-up, separate from page order and the 2D lattice.
+  Units: mm/cm/m/in; rotations: XYZ degrees, world-space T*Rz*Ry*Rx*S.
+  Commands: box, sphere, cylinder, circle/polygon profiles, extrude, transform,
+  group, ungroup, remove, boolean. Booleans support axis-aligned boxes only,
+  consume operands, and create baked meshes. No curved/general CAD booleans.
+  Extrude cell-painted drawing paths with action:"extrude_drawing", id, ids,
+  positive height and explicit unitsPerQuadrant. Convert line paths with stroke_to_path.
+  Document schema 5 and TPF schema 1 preserve source and undo history.
+  STL uses millimeters and refuses unresolved overlapping or touching parts.
+  GLB uses meters/Y-up and permits assemblies with overlap warnings.
+  solidReady is topology evidence; slicing and physical printing remain unverified.
+  See docs/3d-geometry.md for command fields, limits and complete examples.
 
 WHY IT EXISTS
   Diagram tools measure text at render time, long after a layout was chosen, so

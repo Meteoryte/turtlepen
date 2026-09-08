@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "currentHash": "60a9abff86d4277970e374e0e70e72ded923aacb097be190fdf2b4fce88fa0f3",
+  "limit": 100,
+  "history": [
+    {
+      "label": "add_page \"paint\"",
+      "state": "{\n  \"schema\": 4,\n  \"name\": \"opacity\",\n  \"canvas\": {\n    \"cols\": 160,\n    \"rows\": 100\n  },\n  \"font\": {\n    \"family\": \"ui-monospace, SFMono-Regular, \\\"Cascadia Mono\\\", Menlo, Consolas, monospace\",\n    \"size\": 10,\n    \"advanceRatio\": 0.6,\n    \"paddingQuads\": 1\n  },\n  \"createdAt\": \"2026-09-07T07:56:16.851Z\",\n  \"pages\": [\n    {\n      \"id\": \"base\",\n      \"z\": 0,\n      \"intent\": \"exclusive\",\n      \"title\": \"Base\",\n      \"visible\": true,\n      \"opacity\": 1\n    }\n  ],\n  \"elements\": {\n    \"base\": []\n  },\n  \"theme\": {\n    \"name\": \"TurtlePen\",\n    \"tokens\": {},\n    \"tagStyles\": [],\n    \"perspectiveStyles\": []\n  },\n  \"acceptances\": []\n}"
+    },
+    {
+      "label": "plan (1 operations)",
+      "state": "{\n  \"schema\": 4,\n  \"name\": \"opacity\",\n  \"canvas\": {\n    \"cols\": 160,\n    \"rows\": 100\n  },\n  \"font\": {\n    \"family\": \"ui-monospace, SFMono-Regular, \\\"Cascadia Mono\\\", Menlo, Consolas, monospace\",\n    \"size\": 10,\n    \"advanceRatio\": 0.6,\n    \"paddingQuads\": 1\n  },\n  \"createdAt\": \"2026-09-07T07:56:16.851Z\",\n  \"pages\": [\n    {\n      \"id\": \"base\",\n      \"z\": 0,\n      \"intent\": \"exclusive\",\n      \"title\": \"Base\",\n      \"visible\": true,\n      \"opacity\": 1\n    },\n    {\n      \"id\": \"paint\",\n      \"z\": 1,\n      \"intent\": \"overlay\",\n      \"title\": \"paint\",\n      \"visible\": true,\n      \"opacity\": 1\n    }\n  ],\n  \"elements\": {\n    \"base\": [],\n    \"paint\": []\n  },\n  \"theme\": {\n    \"name\": \"TurtlePen\",\n    \"tokens\": {},\n    \"tagStyles\": [],\n    \"perspectiveStyles\": []\n  },\n  \"acceptances\": []\n}"
+    }
+  ],
+  "future": []
+}

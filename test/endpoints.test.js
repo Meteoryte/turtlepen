@@ -40,6 +40,10 @@ test('every advertised MCP tool completes a representative use case over stdio',
     assert.equal(runtime.toolCount, advertised.length);
     await invoke('measure', { text: 'Outdoor condensing unit', fontSize: 10, maxWidthCells: 12 });
     await invoke('new_diagram', { name: 'endpoint matrix', path: 'endpoint.turtlepen.json', cols: 80, rows: 50 });
+    await invoke('geometry3d', { action: 'create', units: 'mm', commands: [{ op: 'box', id: 'spatial-block', size: [10, 20, 30] }] });
+    assert.equal(JSON.parse(await invoke('inspect_geometry3d')).volume, 6000);
+    const spatialExport = JSON.parse(await invoke('export_geometry3d', { format: 'glb' }));
+    assert.equal(Buffer.from(spatialExport.base64, 'base64').readUInt32LE(0), 0x46546c67);
     await invoke('scale', { action: 'define', id: 'capacity', domain: [0, 100], quads: 40, kind: 'magnitude' });
     const projection = JSON.parse(await invoke('inspect_scale', { id: 'capacity', value: 15 }));
     assert.equal(projection.projection.quads, 6);

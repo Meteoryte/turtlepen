@@ -1,0 +1,13 @@
+async (page) => {
+ await page.setViewportSize({width:1440,height:1000});await page.goto('http://127.0.0.1:4318/');await page.waitForFunction(()=>document.body.dataset.ready==='true');
+ for(const attempt of ['attempt-01','attempt-02','attempt-03']){await page.locator('#attempt').selectOption(attempt);for(const id of ['scene','knight','cathedral','dialogue','map']){await page.locator(`[data-asset="${id}"]`).click();if(!await page.locator('#art').getAttribute('data').then(x=>x===`${attempt}/${id}.svg`))throw Error('Wrong asset');}}
+ await page.locator('[data-asset=scene]').click();await page.waitForFunction(()=>[...document.querySelectorAll('.drawing')].every(x=>x.shadowRoot&&!x.shadowRoot.querySelector('rect.bg')));
+ await page.locator('#next').click();if(await page.locator('#scene-count').textContent()!=='2 / 3')throw Error('Dialogue next');await page.locator('#previous').click();
+ await page.locator('#character-toggle').click();if(await page.locator('#character').isVisible())throw Error('Hide character');await page.locator('#character-toggle').click();
+ await page.locator('#fullscreen').click();if(!await page.evaluate(()=>document.fullscreenElement))throw Error('Fullscreen');await page.locator('#fullscreen').click();
+ await page.locator('[data-time="32.5"]').click();await page.waitForFunction(()=>{const v=document.querySelector('#video');return v.readyState>=2&&Math.abs(v.currentTime-32.5)<.2;});
+ await page.locator('#video').screenshot({path:'X:/Python Projects/Home Base - Brainn.dev/03_EXPERIMENTS/TurtlePen/artifacts/game-video-study-2026-09-07/video-browser-seek.png'});
+ const duration=await page.locator('#video').evaluate(v=>v.duration);
+ await page.setViewportSize({width:390,height:844});if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw Error('Mobile overflow');
+ return {status:'PASS',attempts:3,assetsPerAttempt:5,transparentComposition:true,dialogue:true,characterToggle:true,fullscreen:true,sourceSeek:32.5,sourceDuration:duration,mobileOverflow:false};
+}

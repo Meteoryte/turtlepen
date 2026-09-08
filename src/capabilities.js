@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 
 const CATEGORY_RULES = Object.freeze([
+  ['geometry3d', /geometry3d/],
   ['editing', /^(transform|paint_path|guide|cleanup|page|array|boolean|slice|path_edit|normalize_path|offset_path|duplicate|reorder)$/],
   ['workspace', /view|theme|resource|model|annotate|connect/],
   ['authoring', /place|pen|stroke|wireframe|timeline|perspective|mermaid/],

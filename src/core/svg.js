@@ -80,8 +80,9 @@ export const SEVERITY_CUE = Object.freeze({
 
 export function renderSvg(doc, {
   pages = null, findings = null, showGrid = true, margin = 20, bounds = 'content',
-  view = null, title = null, description = null, showKey = null,
+  view = null, title = null, description = null, showKey = null, transparent = false,
 } = {}) {
+  if (typeof transparent !== 'boolean') throw new TypeError('SVG transparent must be boolean');
   const resolved = resolveView(doc, view);
   const selected = resolved.elementIds;
   const selectedPages = pages ?? (resolved.view?.pages.length ? resolved.view.pages : null);
@@ -123,7 +124,7 @@ export function renderSvg(doc, {
       .filter((role) => role && role !== 'plain'),
   )].sort();
   parts.push(style(doc.background ?? null, gradients(projected), microMaskDefs(projected), doc.theme?.tokens, semanticRoles));
-  parts.push(`<rect class="bg" x="0" y="0" width="${width}" height="${height}"/>`);
+  if (!transparent) parts.push(`<rect class="bg" x="0" y="0" width="${width}" height="${height}"/>`);
   if (showGrid) parts.push(gridPattern(b, ox, oy));
   parts.push(`<g transform="translate(${ox},${oy})">`);
 
@@ -514,7 +515,7 @@ function styledPath(el, themed = {}, order = null) {
   let group = [];
   for (const piece of el.pieces) {
     const prev = group.at(-1);
-    if (prev && (Math.abs(piece.x - prev.x) > 1 || Math.abs(piece.y - prev.y) > 1)) {
+    if (prev && (!!piece.fill !== !!prev.fill || (!piece.fill && (Math.abs(piece.x - prev.x) > 1 || Math.abs(piece.y - prev.y) > 1)))) {
       groups.push(group);
       group = [];
     }
@@ -526,7 +527,10 @@ function styledPath(el, themed = {}, order = null) {
   const width = stroke.width;
   const cap = stroke.cap;
   const ink = groups.map((pieces, groupIndex) => {
-    if (pieces.some(piece => piece.color)) {
+    if (pieces[0].fill) return paintedCells({ ...el, pieces, relationshipLabel: null }, themed, null, true);
+    const colors = new Set(pieces.map(piece => piece.color ?? themed.stroke ?? stroke.color));
+    const color = escapeAttr(colors.values().next().value);
+    if (colors.size > 1) {
       const xy = piece => ({ x: piece.x * PX_PER_QUAD + 2, y: piece.y * PX_PER_QUAD + 2 });
       if (pieces.length === 1) {
         const p = xy(pieces[0]);
@@ -573,7 +577,7 @@ function styledPath(el, themed = {}, order = null) {
 }
 
 /** Colour exact claimed quadrants, merging adjacent cells into compact runs. */
-function paintedCells(el, themed = {}, order = null) {
+function paintedCells(el, themed = {}, order = null, solid = el.pieces.every(piece => piece.fill)) {
   // Runs break on a colour change as well as on a gap. A run-length encoder
   // that only watched position would paint a whole gradient in whichever
   // colour happened to start the row.
@@ -583,17 +587,25 @@ function paintedCells(el, themed = {}, order = null) {
     rows.get(piece.y).set(piece.x, piece.color ?? themed.stroke ?? el.stroke.color);
   }
   const rects = [];
+  const compounds = new Map();
   for (const y of [...rows.keys()].sort((a, b) => a - b)) {
     const row = rows.get(y);
     const xs = [...row.keys()].sort((a, b) => a - b);
     let start = xs[0], previous = xs[0];
-    const emit = () => rects.push(`<rect x="${start * PX_PER_QUAD}" y="${y * PX_PER_QUAD}" width="${(previous - start + 1) * PX_PER_QUAD}" height="${PX_PER_QUAD}" fill="${escapeAttr(row.get(start))}"/>`);
+    const emit = () => {
+      const x = start * PX_PER_QUAD, yy = y * PX_PER_QUAD, w = (previous - start + 1) * PX_PER_QUAD;
+      const color = row.get(start);
+      if (solid) compounds.set(color, (compounds.get(color) ?? '') + `M${x},${yy}h${w}v${PX_PER_QUAD}h-${w}z`);
+      else rects.push(`<rect x="${x}" y="${yy}" width="${w}" height="${PX_PER_QUAD}" fill="${escapeAttr(color)}"/>`);
+    };
     for (let i = 1; i < xs.length; i += 1) {
       if (xs[i] !== previous + 1 || row.get(xs[i]) !== row.get(previous)) { emit(); start = xs[i]; }
       previous = xs[i];
     }
     emit();
   }
+  // One compound path per color avoids anti-aliased seams between adjacent fill rows.
+  for (const [color, d] of compounds) rects.push(`<path data-fill="solid" d="${d}" fill="${escapeAttr(color)}"/>`);
   return `<g data-id="${escapeAttr(el.id)}" data-kind="path" data-role="${escapeAttr(el.role ?? 'connector')}" data-paint="cells">${rects.join('')}${orderMarker(el, order)}${relationshipLabel(el)}</g>`;
 }
 

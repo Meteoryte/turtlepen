@@ -169,10 +169,10 @@ test('a deterministic rebuild preserves review provenance only for byte-matched 
   assert.equal(changed.perceptual, undefined);
 });
 
-test('schema 1 documents migrate to schema 4 and unknown future schemas are refused', () => {
+test('schema 1 documents migrate to schema 5 and unknown future schemas are refused', () => {
   const current = JSON.parse(serialize(docWithSheep()));
   const migrated = deserialize({ ...current, schema: 1 });
-  assert.equal(migrated.schema, 4);
-  assert.match(serialize(migrated), /"schema": 4/);
+  assert.equal(migrated.schema, 5);
+  assert.match(serialize(migrated), /"schema": 5/);
   assert.throws(() => deserialize({ ...current, schema: 999 }), /schema 999 is not supported/);
 });

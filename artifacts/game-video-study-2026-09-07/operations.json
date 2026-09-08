@@ -1,0 +1,1648 @@
+{
+  "schema": 1,
+  "authoring": "TurtlePen MCP pen operations; no image generation or imported screenshot pixels in final art",
+  "coordinatePolicy": "Authored frame coordinates quantized explicitly to 5px quadrants at 2x source scale; maximum authored endpoint shift 1.25 source pixels",
+  "assets": [
+    {
+      "id": "cathedral",
+      "title": "Cathedral background",
+      "ref": "frame-07.png",
+      "cols": 164,
+      "rows": 96,
+      "operations": [
+        {
+          "op": "add_page",
+          "id": "distant-atmosphere",
+          "z": 1,
+          "intent": "overlay",
+          "title": "distant atmosphere"
+        },
+        {
+          "op": "pen",
+          "id": "distant-atmosphere-ink",
+          "page": "distant-atmosphere",
+          "role": "artwork",
+          "color": "#b5c8c7",
+          "fillColor": "#b5c8c7",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon A1.q1 FF1.q2 FF91.q4 A91.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "aisle-shadows",
+          "z": 3,
+          "intent": "overlay",
+          "title": "aisle shadows"
+        },
+        {
+          "op": "pen",
+          "id": "aisle-shadows-ink",
+          "page": "aisle-shadows",
+          "role": "artwork",
+          "color": "#789b9e",
+          "fillColor": "#789b9e",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon A4.q3 Q8.q2 AE33.q3 AH73.q1 V91.q2 A91.q1 fill\npolygon FG4.q3 EP8.q2 EC33.q3 DZ73.q1 EK91.q2 FF91.q2 fill\npolygon AI3.q3 AS15.q1 BC39.q3 BD67.q2 AQ79.q1 AH77.q2 fill\npolygon DY3.q3 DO15.q1 DE39.q3 DC67.q2 DQ79.q1 DY77.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "stone-vault",
+          "z": 5,
+          "intent": "overlay",
+          "title": "stone vault"
+        },
+        {
+          "op": "pen",
+          "id": "stone-vault-ink",
+          "page": "stone-vault",
+          "role": "artwork",
+          "color": "#d4d0c6",
+          "fillColor": "#d4d0c6",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon A1.q1 Q1.q1 AO14.q4 BA30.q4 BL47.q1 BN67.q2 BK77.q1 AV82.q1 AD87.q3 AD79.q1 AW70.q2 AY45.q2 AO24.q2 Y13.q1 A6.q1 fill\npolygon FG1.q1 EQ1.q1 DR14.q4 DF30.q4 CV47.q1 CS67.q2 CW77.q1 DL82.q1 ED87.q3 ED79.q1 DJ70.q2 DH45.q2 DR24.q2 EI13.q1 FF6.q2 fill\npolygon Z1.q2 AN1.q1 BB16.q1 BK34.q2 BQ54.q4 BP70.q4 BM72.q1 BM52.q4 BG33.q1 AX16.q1 fill\npolygon EG1.q2 DT1.q1 DF16.q1 CV34.q2 CP54.q4 CQ70.q4 CU72.q1 CT52.q4 DA33.q1 DJ16.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "window-light",
+          "z": 7,
+          "intent": "overlay",
+          "title": "window light"
+        },
+        {
+          "op": "pen",
+          "id": "window-light-ink",
+          "page": "window-light",
+          "role": "artwork",
+          "color": "#f0d5b9",
+          "fillColor": "#f0d5b9",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BP66.q3 BP36.q3 BQ26.q4 BT21.q2 BX16.q3 CA20.q1 CC29.q2 CD66.q1 fill\npolygon CE66.q1 CE28.q3 CH20.q3 CK16.q2 CO21.q1 CR29.q1 CR66.q2 fill\npolygon CA66.q4 CA15.q3 CD9.q3 CG15.q2 CG66.q3 fill\npolygon AO7.q4 AP3.q3 AR7.q1 AU23.q3 AT35.q1 AR30.q2 fill\npolygon DR7.q4 DR3.q3 DP7.q1 DM23.q3 DN35.q1 DO30.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "floor",
+          "z": 9,
+          "intent": "overlay",
+          "title": "floor"
+        },
+        {
+          "op": "pen",
+          "id": "floor-ink",
+          "page": "floor",
+          "role": "artwork",
+          "color": "#a9bdba",
+          "fillColor": "#a9bdba",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AD86.q3 BO67.q1 CS67.q1 ED86.q3 FF91.q3 A91.q4 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "vault-ink",
+          "z": 11,
+          "intent": "overlay",
+          "title": "vault ink"
+        },
+        {
+          "op": "pen",
+          "id": "vault-ink-ink",
+          "page": "vault-ink",
+          "role": "artwork",
+          "color": "#9c9292",
+          "fillColor": "#9c9292",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "curve D1.q2 AC7.q1 AV25.q4 BJ46.q2 BO67.q4\ncurve FC1.q2 EE7.q1 DK25.q4 CW46.q2 CR67.q4\ncurve F1.q2 AE7.q1 AW25.q4 BK46.q1 BP67.q3\ncurve FA1.q2 EC7.q1 DJ25.q4 CW46.q1 CR67.q3\ncurve H1.q1 AG7.q1 AY25.q3 BK46.q2 BP67.q3\ncurve EZ1.q1 EA7.q1 DI25.q3 CV46.q2 CR67.q3\ncurve J1.q1 AH7.q2 AZ25.q3 BL46.q1 BP67.q4\ncurve EX1.q1 DY7.q2 DH25.q3 CV46.q1 CQ67.q4\ncurve L1.q1 AJ7.q2 BA25.q3 BL46.q2 BP67.q4\ncurve EV1.q1 DW7.q2 DG25.q3 CU46.q2 CQ67.q4\ncurve M1.q2 AL7.q1 BB25.q3 BM46.q1 BQ67.q3\ncurve ET1.q2 DV7.q1 DF25.q3 CU46.q1 CQ67.q3\ncurve AD84.q3 AG39.q1 AP12.q3 CD1.q1\ncurve AE85.q2 AH39.q2 AQ13.q2 CD3.q1\ncurve AL81.q2 AO36.q4 AY12.q3 CD4.q1\ncurve AN81.q3 AQ36.q3 AZ13.q1 CD6.q1\ncurve AU78.q1 AX34.q1 BG12.q4 CD7.q1\ncurve AV78.q2 AY34.q2 BH13.q2 CD9.q1\ncurve BD74.q3 BG31.q3 BP12.q3 CD10.q1\ncurve BE74.q3 BH31.q3 BQ13.q1 CD12.q1\ncurve BL71.q2 BO29.q2 BX12.q4 CD13.q1\ncurve BN71.q1 BQ29.q1 BZ13.q1 CD15.q1\ncurve ED84.q3 EA39.q1 DR12.q3 CD1.q1\ncurve EB85.q2 DY39.q2 DP13.q2 CD3.q1\ncurve DU81.q2 DR36.q4 DI12.q3 CD4.q1\ncurve DT81.q3 DQ36.q3 DH13.q1 CD6.q1\ncurve DM78.q1 DJ34.q1 CZ12.q4 CD7.q1\ncurve DK78.q2 DH34.q2 CY13.q2 CD9.q1\ncurve DD74.q3 DA31.q3 CR12.q3 CD10.q1\ncurve DC74.q3 CZ31.q3 CQ13.q1 CD12.q1\ncurve CU71.q2 CR29.q2 CI12.q4 CD13.q1\ncurve CT71.q1 CQ29.q1 CH13.q1 CD15.q1\ncurve BS66.q1 BS34.q1 BU24.q1 CD12.q1\ncurve BW66.q1 BW34.q1 BX24.q2 CD12.q1\ncurve CA66.q1 CA34.q1 CB24.q1 CD12.q1\ncurve CE66.q1 CE34.q1 CE24.q1 CD12.q1\ncurve CI66.q1 CI34.q1 CH24.q1 CD12.q1\ncurve CM66.q1 CM34.q1 CK24.q1 CD12.q1\ncurve CP66.q2 CP34.q2 CN24.q1 CD12.q1\ncurve E90.q1 BO67.q1 CR67.q2 FC90.q1\ncurve E86.q3 BO67.q1 CR67.q2 FC86.q3\ncurve E83.q1 BO67.q1 CR67.q2 FC83.q1\ncurve E79.q1 BO67.q1 CR67.q2 FC79.q1"
+        },
+        {
+          "op": "add_page",
+          "id": "pillars",
+          "z": 13,
+          "intent": "overlay",
+          "title": "pillars"
+        },
+        {
+          "op": "pen",
+          "id": "pillars-ink",
+          "page": "pillars",
+          "role": "artwork",
+          "color": "#bbc7c1",
+          "fillColor": "#bbc7c1",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon L42.q2 X42.q2 W81.q1 Z85.q1 J85.q1 L81.q2 fill\npolygon I42.q2 AA42.q2 Z45.q2 X47.q2 K47.q1 I44.q2 fill\npolygon EI42.q2 EU42.q2 ET81.q1 EW85.q1 EG85.q1 EI81.q2 fill\npolygon EF42.q2 EX42.q2 EW45.q2 EU47.q2 EH47.q1 EF44.q2 fill\npolygon AQ43.q3 AU43.q4 AT71.q4 AW75.q1 AN75.q2 AQ71.q3 fill\npolygon AN43.q3 AX43.q4 AX47.q1 AU48.q4 AP48.q3 AN45.q3 fill\npolygon DL43.q3 DP43.q4 DO71.q4 DR75.q1 DI75.q2 DL71.q3 fill\npolygon DI43.q3 DS43.q4 DS47.q1 DP48.q4 DK48.q3 DI45.q3 fill\npolygon BI48.q1 BJ48.q1 BH65.q2 BK69.q2 BF69.q2 BI65.q1 fill\npolygon BF48.q1 BM48.q1 BL51.q1 BJ53.q1 BG53.q2 BF50.q1 fill\npolygon CX48.q1 CY48.q1 CX65.q1 CZ69.q2 CU69.q2 CX65.q1 fill\npolygon CU48.q1 DB48.q1 DA51.q1 CY53.q1 CW53.q1 CU50.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "pillar-shadow",
+          "z": 15,
+          "intent": "overlay",
+          "title": "pillar shadow"
+        },
+        {
+          "op": "pen",
+          "id": "pillar-shadow-ink",
+          "page": "pillar-shadow",
+          "role": "artwork",
+          "color": "#8daba9",
+          "fillColor": "#8daba9",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon V47.q1 W47.q2 W81.q2 V81.q1 fill\npolygon ES47.q1 ET47.q2 ET81.q2 ES81.q1 fill\npolygon AS48.q3 AU48.q3 AU71.q3 AS71.q3 fill\npolygon DN48.q3 DP48.q3 DP71.q3 DN71.q3 fill\npolygon BG53.q1 BI53.q1 BI65.q1 BG65.q1 fill\npolygon CV53.q2 CX53.q1 CX65.q1 CV65.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "pillar-ink",
+          "z": 17,
+          "intent": "overlay",
+          "title": "pillar ink"
+        },
+        {
+          "op": "pen",
+          "id": "pillar-ink-ink",
+          "page": "pillar-ink",
+          "role": "artwork",
+          "color": "#879395",
+          "fillColor": "#879395",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "curve L46.q4 L81.q2 K83.q3 Z83.q3 W81.q2 W47.q2\npolygon I42.q2 AA42.q2 Z45.q2 X47.q2 K47.q1\npen K47.q3\nray to X47.q4\npen L55.q4\nray to W56.q1\npen L64.q4\nray to W64.q3\npen L73.q2\nray to W73.q3\ncurve L43.q1 L45.q2 N45.q3 N44.q1\ncurve P43.q1 P45.q2 R45.q3 R44.q1\ncurve T43.q1 T45.q2 V45.q3 V44.q1\ncurve EI46.q4 EI81.q2 EH83.q3 EW83.q3 ET81.q2 ET47.q2\npolygon EF42.q2 EX42.q2 EW45.q2 EU47.q2 EH47.q1\npen EH47.q3\nray to EU47.q4\npen EI55.q4\nray to ET56.q1\npen EI64.q4\nray to ET64.q3\npen EI73.q2\nray to ET73.q3\ncurve EI43.q1 EI45.q2 EK45.q3 EK44.q1\ncurve EM43.q1 EM45.q2 EO45.q3 EO44.q1\ncurve EQ43.q1 EQ45.q2 ES45.q3 ES44.q1\ncurve AQ48.q3 AQ71.q1 AO73.q4 AW73.q3 AT71.q2 AT48.q4\npolygon AN43.q3 AX43.q4 AX47.q1 AU48.q4 AP48.q3\npen AO49.q4\nray to AV49.q3\npen AQ54.q3\nray to AT54.q3\npen AQ60.q3\nray to AT60.q3\npen AQ66.q1\nray to AT66.q3\ncurve AP45.q2 AQ47.q1 AR47.q2 AS45.q3\ncurve AR45.q1 AR47.q2 AT47.q1 AT45.q4\ncurve AS45.q2 AT47.q2 AU47.q2 AV45.q3\ncurve DL48.q3 DL71.q1 DJ73.q4 DR73.q3 DO71.q2 DO48.q4\npolygon DI43.q3 DS43.q4 DS47.q1 DP48.q4 DK48.q3\npen DJ49.q4\nray to DQ49.q3\npen DL54.q3\nray to DO54.q3\npen DL60.q3\nray to DO60.q3\npen DL66.q1\nray to DO66.q3\ncurve DK45.q2 DL47.q1 DM47.q2 DN45.q3\ncurve DM45.q1 DM47.q2 DO47.q1 DO45.q4\ncurve DN45.q2 DO47.q2 DP47.q2 DQ45.q3\ncurve BI53.q1 BI65.q1 BG67.q4 BK67.q4 BI65.q1 BI53.q1\npolygon BF48.q1 BM48.q1 BL51.q1 BJ53.q1 BG53.q2\npen BG54.q1\nray to BJ54.q1\npen BI56.q1\nray to BH56.q4\npen BI59.q3\nray to BH59.q4\npen BI62.q3\nray to BH63.q2\ncurve BH49.q2 BI51.q1 BJ51.q3 BJ50.q2\ncurve BH49.q2 BI51.q2 BJ51.q4 BK50.q1\ncurve BI49.q1 BI51.q2 BK51.q3 BK50.q2\ncurve CX53.q1 CX65.q1 CV67.q4 CZ67.q4 CX65.q1 CX53.q1\npolygon CU48.q1 DB48.q1 DA51.q1 CY53.q1 CW53.q1\npen CV54.q2\nray to CY54.q1\npen CX56.q1\nray to CW56.q4\npen CX59.q3\nray to CW59.q4\npen CX62.q3\nray to CW63.q2\ncurve CW49.q2 CX51.q1 CY51.q4 CZ50.q1\ncurve CX49.q1 CX51.q2 CY51.q4 CZ50.q1\ncurve CX49.q2 CY51.q1 CZ51.q3 CZ50.q2"
+        },
+        {
+          "op": "add_page",
+          "id": "pillar-light",
+          "z": 19,
+          "intent": "overlay",
+          "title": "pillar light"
+        },
+        {
+          "op": "pen",
+          "id": "pillar-light-ink",
+          "page": "pillar-light",
+          "role": "artwork",
+          "color": "#e0dccc",
+          "fillColor": "#e0dccc",
+          "width": 3,
+          "cap": "round",
+          "paint": "line",
+          "program": "pen N48.q2\nray to N79.q4\npen EK48.q2\nray to EK79.q4\npen AS50.q1\nray to AS69.q3\npen DN50.q1\nray to DN69.q3\npen BK54.q3\nray to BK63.q3\npen CZ54.q3\nray to CZ63.q3"
+        },
+        {
+          "op": "add_page",
+          "id": "arch-detail",
+          "z": 21,
+          "intent": "overlay",
+          "title": "arch detail"
+        },
+        {
+          "op": "pen",
+          "id": "arch-detail-ink",
+          "page": "arch-detail",
+          "role": "artwork",
+          "color": "#8b8d90",
+          "fillColor": "#8b8d90",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "curve A63.q2 C36.q2 K20.q1 S10.q1 AA14.q3 AG27.q2 AI56.q2\ncurve C62.q3 E36.q4 L22.q3 S13.q3 Y17.q2 AD29.q2 AF56.q3\ncurve D3.q4 O5.q2 Z8.q3 AH16.q4\ncurve FF63.q2 FD36.q2 EW20.q1 EO10.q1 EG14.q3 DZ27.q2 DX56.q2\ncurve FE62.q3 FB36.q4 EV22.q3 EO13.q3 EH17.q2 EC29.q2 EB56.q3\ncurve FC3.q4 ER5.q2 EH8.q3 DY16.q4\ncurve BO66.q3 BO36.q3 BQ25.q2 CD9.q1\ncurve CR66.q4 CR36.q4 CP25.q2 CD9.q1"
+        }
+      ]
+    },
+    {
+      "id": "knight",
+      "title": "Golden knight portrait",
+      "ref": "frame-07.png",
+      "cols": 164,
+      "rows": 96,
+      "operations": [
+        {
+          "op": "add_page",
+          "id": "fur-cloak",
+          "z": 1,
+          "intent": "overlay",
+          "title": "fur cloak"
+        },
+        {
+          "op": "pen",
+          "id": "fur-cloak-ink",
+          "page": "fur-cloak",
+          "role": "artwork",
+          "color": "#f1debd",
+          "fillColor": "#f1debd",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon CH31.q3 CL32.q4 CM34.q3 CQ34.q4 CQ36.q1 CU36.q3 CS38.q1 CX39.q2 CY40.q3 DE41.q3 DH46.q2 DI49.q1 DL50.q4 DL52.q1 DO55.q4 DQ57.q4 DO57.q4 DS60.q1 DO59.q4 DQ62.q2 DM61.q2 DP64.q1 DM63.q1 DN67.q1 DL74.q4 DO91.q2 BH91.q2 BF81.q1 BB72.q4 BB60.q3 AX57.q2 AX54.q4 BA52.q2 BA47.q1 BH39.q3 BS34.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "cloak-shadow",
+          "z": 3,
+          "intent": "overlay",
+          "title": "cloak shadow"
+        },
+        {
+          "op": "pen",
+          "id": "cloak-shadow-ink",
+          "page": "cloak-shadow",
+          "role": "artwork",
+          "color": "#bfaa98",
+          "fillColor": "#bfaa98",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon DA46.q3 DE48.q3 DE52.q2 DJ54.q1 DH55.q4 DM58.q1 DJ58.q1 DM61.q3 DH60.q2 DH67.q1 DM91.q1 DE91.q2 DA68.q3 CU59.q2 CT52.q1 fill\npolygon BG55.q3 BD61.q4 BE71.q1 BL83.q3 BL91.q2 BF91.q1 BA69.q3 AY64.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "bronze-armor",
+          "z": 5,
+          "intent": "overlay",
+          "title": "bronze armor"
+        },
+        {
+          "op": "pen",
+          "id": "bronze-armor-ink",
+          "page": "bronze-armor",
+          "role": "artwork",
+          "color": "#c29453",
+          "fillColor": "#c29453",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BQ33.q2 BX37.q1 CE36.q2 CL38.q2 CR47.q2 CU59.q3 CR68.q2 CY91.q1 BK91.q2 BL75.q1 BJ65.q4 BE53.q4 BH41.q3 fill\npolygon BQ34.q2 BN34.q3 BF39.q1 AY45.q3 AZ47.q4 BF49.q2 BH54.q3 BL54.q3 BP51.q1 BT44.q1 fill\npolygon CE40.q2 CK38.q1 CQ38.q3 CY39.q3 DF43.q1 DF46.q4 DC49.q1 CU48.q4 CP46.q1 CL46.q1 CI50.q1 CE47.q3 fill\npolygon BP50.q4 BU55.q3 CE58.q1 CM62.q4 CQ65.q1 CO68.q1 CD66.q2 BU62.q2 BO57.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "armor-dark",
+          "z": 7,
+          "intent": "overlay",
+          "title": "armor dark"
+        },
+        {
+          "op": "pen",
+          "id": "armor-dark-ink",
+          "page": "armor-dark",
+          "role": "artwork",
+          "color": "#96715c",
+          "fillColor": "#96715c",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BS39.q1 BW41.q3 BU46.q1 BR48.q2 BS51.q2 BZ53.q3 CF53.q1 CK48.q1 CM49.q2 CK56.q2 CC59.q2 BT55.q3 BO50.q2 fill\npolygon CR56.q2 CV60.q2 CV65.q2 CR68.q3 CM65.q1 CK61.q2 fill\npolygon BJ72.q3 BP75.q1 BW79.q3 BW91.q1 BK91.q1 fill\npolygon CF68.q2 CM66.q1 CR69.q4 CV77.q4 CX91.q1 CQ91.q1 CN77.q2 fill\npolygon BD47.q1 BI47.q3 BJ52.q3 BG53.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "golden-highlights",
+          "z": 9,
+          "intent": "overlay",
+          "title": "golden highlights"
+        },
+        {
+          "op": "pen",
+          "id": "golden-highlights-ink",
+          "page": "golden-highlights",
+          "role": "artwork",
+          "color": "#dfb569",
+          "fillColor": "#dfb569",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AY45.q2 BH38.q4 BN36.q3 BQ36.q2 BN38.q3 BG41.q2 BC45.q1 fill\npolygon BT36.q3 BV38.q2 BQ46.q4 BR49.q3 BV51.q1 CD54.q1 CA55.q1 BS52.q1 BP49.q1 BP46.q2 fill\npolygon BV41.q2 BY42.q1 CC41.q1 CH39.q3 CJ41.q1 CD44.q2 BY45.q1 BU44.q1 fill\npolygon CK39.q3 CR39.q3 CZ42.q2 DD44.q4 CY44.q2 CQ42.q4 CL43.q4 CI46.q4 CG46.q1 fill\npolygon BS52.q4 BV56.q2 CD57.q1 CE59.q3 BW58.q2 BT56.q1 fill\npolygon BV66.q3 BX65.q2 CB68.q4 CD75.q2 CG81.q2 CE90.q4 CB90.q4 CC81.q1 CA75.q1 fill\npolygon BP79.q1 BR80.q2 BR91.q2 BO91.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "gauntlets",
+          "z": 11,
+          "intent": "overlay",
+          "title": "gauntlets"
+        },
+        {
+          "op": "pen",
+          "id": "gauntlets-ink",
+          "page": "gauntlets",
+          "role": "artwork",
+          "color": "#b6a397",
+          "fillColor": "#b6a397",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon CC56.q2 CF55.q1 CG57.q2 CK59.q2 CQ62.q1 CS63.q2 CQ65.q2 CN64.q4 CN66.q4 CL66.q1 CI64.q2 CF63.q4 CD59.q3 fill\npolygon BM58.q1 BP58.q3 BS57.q1 BU58.q1 BT60.q1 BQ61.q1 BU63.q1 BS65.q1 BO63.q2 BN64.q1 BK62.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "scarlet-lining",
+          "z": 13,
+          "intent": "overlay",
+          "title": "scarlet lining"
+        },
+        {
+          "op": "pen",
+          "id": "scarlet-lining-ink",
+          "page": "scarlet-lining",
+          "role": "artwork",
+          "color": "#a44643",
+          "fillColor": "#a44643",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon CP60.q4 CU62.q3 CY64.q3 CW67.q3 CS65.q2 fill\npolygon BC55.q1 BG53.q2 BI55.q1 BD58.q2 AZ58.q4 fill\npolygon CO68.q4 CR68.q4 CU91.q1 CR91.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "ruff-shadow",
+          "z": 15,
+          "intent": "overlay",
+          "title": "ruff shadow"
+        },
+        {
+          "op": "pen",
+          "id": "ruff-shadow-ink",
+          "page": "ruff-shadow",
+          "role": "artwork",
+          "color": "#97877b",
+          "fillColor": "#97877b",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BU30.q1 CA32.q3 CH29.q1 CJ31.q1 CJ34.q3 CG38.q1 CA40.q4 BW38.q3 BT35.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "ruff-ivory",
+          "z": 17,
+          "intent": "overlay",
+          "title": "ruff ivory"
+        },
+        {
+          "op": "pen",
+          "id": "ruff-ivory-ink",
+          "page": "ruff-ivory",
+          "role": "artwork",
+          "color": "#f3e1c4",
+          "fillColor": "#f3e1c4",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BU30.q3 CA33.q1 CH29.q2 CI34.q1 CF37.q2 CA40.q1 BW37.q1 BT34.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "skin",
+          "z": 19,
+          "intent": "overlay",
+          "title": "skin"
+        },
+        {
+          "op": "pen",
+          "id": "skin-ink",
+          "page": "skin",
+          "role": "artwork",
+          "color": "#e8cbae",
+          "fillColor": "#e8cbae",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BS16.q3 BW13.q3 CD14.q2 CI17.q1 CJ23.q2 CI25.q3 CG26.q3 CF29.q3 CA34.q1 BW31.q4 BU28.q1 BS26.q4 BT23.q3 BR21.q4 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "face-shadow",
+          "z": 21,
+          "intent": "overlay",
+          "title": "face shadow"
+        },
+        {
+          "op": "pen",
+          "id": "face-shadow-ink",
+          "page": "face-shadow",
+          "role": "artwork",
+          "color": "#c59f8d",
+          "fillColor": "#c59f8d",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon CF18.q1 CI20.q2 CJ23.q1 CH25.q4 CG26.q3 CF29.q3 CA33.q1 BZ32.q1 CD29.q1 CE25.q1 CE23.q4 fill\npolygon BS22.q2 BV23.q1 BT25.q2 BV26.q2 BU27.q1 BS26.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "hair-gold",
+          "z": 23,
+          "intent": "overlay",
+          "title": "hair gold"
+        },
+        {
+          "op": "pen",
+          "id": "hair-gold-ink",
+          "page": "hair-gold",
+          "role": "artwork",
+          "color": "#d9a355",
+          "fillColor": "#d9a355",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BR20.q3 BQ17.q3 BQ15.q1 BS12.q4 BW10.q3 CA10.q3 CE12.q1 CH14.q1 CJ17.q1 CK21.q4 CJ24.q1 CI23.q1 CH20.q2 CF18.q1 CD16.q2 CE19.q1 CA18.q2 BY15.q4 CA18.q3 BX18.q1 BV15.q3 BV20.q2 BT19.q1 BT22.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "hair-light",
+          "z": 25,
+          "intent": "overlay",
+          "title": "hair light"
+        },
+        {
+          "op": "pen",
+          "id": "hair-light-ink",
+          "page": "hair-light",
+          "role": "artwork",
+          "color": "#efcb81",
+          "fillColor": "#efcb81",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BR15.q3 BT12.q4 BX11.q2 CC12.q3 CG15.q1 CD14.q1 BZ13.q2 BW13.q3 BU15.q3 BS17.q3 fill\npolygon CE14.q2 CH16.q3 CJ21.q1 CH20.q2 CG17.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "hair-shade",
+          "z": 27,
+          "intent": "overlay",
+          "title": "hair shade"
+        },
+        {
+          "op": "pen",
+          "id": "hair-shade-ink",
+          "page": "hair-shade",
+          "role": "artwork",
+          "color": "#ae8357",
+          "fillColor": "#ae8357",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BQ17.q4 BS17.q1 BS19.q2 BT21.q2 BS22.q3 fill\npolygon BX16.q3 CA18.q1 CE19.q1 CC20.q4 CA19.q1 fill\npolygon CF17.q1 CH19.q4 CI23.q4 CG22.q2 CG20.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "portrait-ink",
+          "z": 29,
+          "intent": "overlay",
+          "title": "portrait ink"
+        },
+        {
+          "op": "pen",
+          "id": "portrait-ink-ink",
+          "page": "portrait-ink",
+          "role": "artwork",
+          "color": "#66505a",
+          "fillColor": "#66505a",
+          "width": 3,
+          "cap": "round",
+          "paint": "line",
+          "program": "polygon CH31.q3 CL32.q4 CM34.q3 CQ34.q4 CQ36.q1 CU36.q3 CS38.q1 CX39.q2 CY40.q3 DE41.q3 DH46.q2 DI49.q1 DL50.q4 DL52.q1 DO55.q4 DQ57.q4 DO57.q4 DS60.q1 DO59.q4 DQ62.q2 DM61.q2 DP64.q1 DM63.q1 DN67.q1 DL74.q4 DO91.q2 BH91.q2 BF81.q1 BB72.q4 BB60.q3 AX57.q2 AX54.q4 BA52.q2 BA47.q1 BH39.q3 BS34.q2\npolygon BQ33.q2 BX37.q1 CE36.q2 CL38.q2 CR47.q2 CU59.q3 CR68.q2 CY91.q1 BK91.q2 BL75.q1 BJ65.q4 BE53.q4 BH41.q3\npolygon BQ34.q2 BN34.q3 BF39.q1 AY45.q3 AZ47.q4 BF49.q2 BH54.q3 BL54.q3 BP51.q1 BT44.q1\npolygon CE40.q2 CK38.q1 CQ38.q3 CY39.q3 DF43.q1 DF46.q4 DC49.q1 CU48.q4 CP46.q1 CL46.q1 CI50.q1 CE47.q3\npolygon BR20.q3 BQ17.q3 BQ15.q1 BS12.q4 BW10.q3 CA10.q3 CE12.q1 CH14.q1 CJ17.q1 CK21.q4 CJ24.q1 CI23.q1 CH20.q2 CF18.q1 CD16.q2 CE19.q1 CA18.q2 BY15.q4 CA18.q3 BX18.q1 BV15.q3 BV20.q2 BT19.q1 BT22.q1\ncurve BS23.q2 BT25.q1 BS26.q1 BU26.q3 BV29.q1 BX31.q3 CA33.q3 CF30.q1 CG26.q3\ncurve BV21.q3 BW21.q1 BY21.q3\ncurve CA21.q1 CB20.q4 CD21.q2\ncurve BV23.q1 BW22.q1 BY22.q3\ncurve CA22.q3 CB21.q4 CD22.q1\npen BX23.q1\nray to BX23.q3\npen CB22.q4\nray to CB23.q2\ncurve BY22.q2 BY24.q1 BX25.q1 BY25.q4\npolygon BV27.q3 BW27.q2 BZ27.q2 BY28.q1 BW28.q2\npen BX29.q1\nray to BZ29.q1\ncurve CH23.q1 CH22.q2 CI23.q2 CH24.q3\ncurve BR16.q4 BT15.q2 BU19.q1\ncurve BW13.q1 BX15.q4 BZ17.q4\ncurve BZ12.q4 CC15.q1 CD18.q1\ncurve CD13.q3 CF16.q2 CH20.q1\ncurve BU30.q3 CA33.q3 CH29.q3\ncurve BT34.q2 BW37.q3 CA40.q1 CF37.q2 CI33.q3\ncurve BT38.q1 BP45.q3 BO49.q2 BR52.q4 BX55.q1 CD56.q3 CI54.q4 CL49.q2\ncurve BS41.q3 BU43.q1 BX43.q4 CD42.q2 CH40.q3\ncurve BQ45.q1 BV47.q2 CB47.q4 CG45.q3\ncurve BQ49.q4 BV50.q4 CB51.q1 CF48.q4\ncurve BS53.q3 BX56.q3 CD57.q4\ncurve BH40.q1 BI43.q3 BH47.q1 BJ52.q1\ncurve BA45.q1 BF46.q2 BI47.q4 BK52.q2\ncurve CM40.q1 CR41.q2 CY42.q4 DD45.q2\ncurve CJ44.q1 CN43.q1 CS45.q2 DA46.q3\ncurve BO57.q1 BQ59.q1 BU57.q1 BV58.q3 BS60.q4 BU63.q1 BS64.q3 BO62.q3\ncurve BQ61.q1 BN60.q1 BM61.q3 BO63.q1\ncurve CD56.q1 CF56.q2 CG58.q4 CK60.q2 CR64.q1\ncurve CE58.q3 CG60.q1 CI62.q2 CO65.q1\ncurve CE60.q2 CG62.q1 CI63.q4 CL65.q4\ncurve CG56.q1 CF58.q1 CF59.q4\ncurve CI58.q1 CH60.q1 CI61.q3\ncurve CK59.q2 CJ61.q2 CK63.q2\ncurve CM61.q2 CM63.q1 CN64.q2\ncurve BM64.q3 BQ68.q1 BV70.q3 BZ75.q4 CD82.q1 CB91.q2\ncurve CO68.q1 CQ73.q3 CR80.q1 CT91.q2\ncurve DA65.q4 DE72.q2 DH81.q4 DJ91.q1\ncurve BU31.q4 BV35.q1 BW36.q1\ncurve BW32.q1 BW35.q3 BX37.q1\ncurve BX32.q3 BX36.q4 BY37.q3\ncurve BY33.q1 BY37.q2 BZ38.q2\ncurve BZ33.q2 CA37.q3 CA38.q4\ncurve CA33.q2 CB37.q3 CC38.q3\ncurve CC33.q1 CC37.q1 CD38.q1\ncurve CD32.q3 CD36.q4 CE38.q1\ncurve CE32.q1 CE36.q2 CF37.q2\ncurve CF31.q4 CG35.q1 CG36.q4\npen BI41.q2\nellipse 1 1\npen BE45.q1\nellipse 1 1\npen BK37.q2\nellipse 1 1\npen BN43.q1\nellipse 1 1\npen BL49.q2\nellipse 1 1\npen BS43.q2\nellipse 1 1\npen BT49.q3\nellipse 1 1\npen BW53.q2\nellipse 1 1\npen CG51.q1\nellipse 1 1\npen CJ45.q2\nellipse 1 1\npen CO41.q1\nellipse 1 1\npen CT43.q1\nellipse 1 1\npen BQ68.q2\nellipse 1 1\npen BX72.q4\nellipse 1 1\ncurve BK40.q1 BK38.q1 BL37.q3 BN39.q1 BM40.q1 BL39.q1\ncurve BL46.q4 BL45.q1 BM44.q2 BO45.q3 BN46.q3 BM45.q3\ncurve BW47.q3 BV46.q2 BX45.q3 BY46.q4 BY48.q1 BX47.q1\ncurve BZ50.q1 BZ48.q1 CA47.q3 CC49.q1 CB50.q1 CA49.q1\ncurve BQ76.q4 BQ75.q1 BR74.q2 BT75.q3 BS76.q3 BR75.q3"
+        },
+        {
+          "op": "add_page",
+          "id": "armor-sparkles",
+          "z": 31,
+          "intent": "overlay",
+          "title": "armor sparkles"
+        },
+        {
+          "op": "pen",
+          "id": "armor-sparkles-ink",
+          "page": "armor-sparkles",
+          "role": "artwork",
+          "color": "#fff0c2",
+          "fillColor": "#fff0c2",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon CM39.q2 CN42.q1 CQ43.q1 CN44.q1 CM47.q2 CL44.q2 CI43.q2 CM42.q1 fill\npolygon DF45.q2 DG49.q1 DK50.q2 DG51.q2 DF55.q2 DF51.q1 DA50.q2 DF49.q1 fill\npolygon BI54.q3 BJ56.q1 BK57.q2 BJ58.q1 BI59.q3 BH58.q2 BG57.q1 BH56.q2 fill"
+        }
+      ]
+    },
+    {
+      "id": "dialogue",
+      "title": "Ornamental dialogue panel",
+      "ref": "frame-07.png",
+      "cols": 164,
+      "rows": 96,
+      "operations": [
+        {
+          "op": "add_page",
+          "id": "panel-shadow",
+          "z": 1,
+          "intent": "overlay",
+          "title": "panel shadow"
+        },
+        {
+          "op": "pen",
+          "id": "panel-shadow-ink",
+          "page": "panel-shadow",
+          "role": "artwork",
+          "color": "#63434f",
+          "fillColor": "#63434f",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AC71.q2 AI69.q3 AL66.q4 DS66.q4 DX69.q3 ED71.q1 ED86.q3 AC86.q4 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "panel-paper",
+          "z": 3,
+          "intent": "overlay",
+          "title": "panel paper"
+        },
+        {
+          "op": "pen",
+          "id": "panel-paper-ink",
+          "page": "panel-paper",
+          "role": "artwork",
+          "color": "#d6b6aa",
+          "fillColor": "#d6b6aa",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AE70.q4 AK68.q1 DV68.q2 EB70.q4 EB85.q2 AE85.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "panel-rose",
+          "z": 5,
+          "intent": "overlay",
+          "title": "panel rose"
+        },
+        {
+          "op": "pen",
+          "id": "panel-rose-ink",
+          "page": "panel-rose",
+          "role": "artwork",
+          "color": "#b97875",
+          "fillColor": "#b97875",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AF70.q1 AN70.q1 AN85.q1 AF85.q1 fill\npolygon DT70.q1 EB70.q1 EB85.q1 DT85.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "panel-gold",
+          "z": 7,
+          "intent": "overlay",
+          "title": "panel gold"
+        },
+        {
+          "op": "pen",
+          "id": "panel-gold-ink",
+          "page": "panel-gold",
+          "role": "artwork",
+          "color": "#dcb27c",
+          "fillColor": "#dcb27c",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AJ69.q3 AK71.q4 AJ73.q3 AH71.q4 fill\npolygon AG72.q1 AI73.q3 AG75.q1 AF73.q1 fill\npolygon AJ74.q1 AK76.q2 AJ78.q1 AH76.q2 fill\npolygon AG76.q3 AI78.q1 AG79.q3 AF78.q1 fill\npolygon AJ78.q3 AK80.q4 AJ82.q3 AH80.q4 fill\npolygon AG81.q1 AI82.q3 AG84.q1 AF82.q3 fill\npolygon DW69.q4 DY71.q3 DW73.q4 DV71.q3 fill\npolygon DU72.q1 DV73.q4 DU75.q1 DS73.q2 fill\npolygon DW74.q2 DY76.q1 DW78.q2 DV76.q1 fill\npolygon DU76.q3 DV78.q2 DU79.q3 DS78.q2 fill\npolygon DW78.q4 DY80.q3 DW82.q4 DV80.q3 fill\npolygon DU81.q1 DV82.q4 DU84.q1 DS82.q4 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "panel-sage",
+          "z": 9,
+          "intent": "overlay",
+          "title": "panel sage"
+        },
+        {
+          "op": "pen",
+          "id": "panel-sage-ink",
+          "page": "panel-sage",
+          "role": "artwork",
+          "color": "#809986",
+          "fillColor": "#809986",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "pen AJ71.q3\nellipse 1 1 fill\npen AJ76.q1\nellipse 1 1 fill\npen AJ80.q3\nellipse 1 1 fill\npen DW71.q4\nellipse 1 1 fill\npen DW76.q2\nellipse 1 1 fill\npen DW80.q4\nellipse 1 1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "panel-center",
+          "z": 11,
+          "intent": "overlay",
+          "title": "panel center"
+        },
+        {
+          "op": "pen",
+          "id": "panel-center-ink",
+          "page": "panel-center",
+          "role": "artwork",
+          "color": "#d7bdb5",
+          "fillColor": "#d7bdb5",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AO67.q4 DR67.q4 DT69.q4 DT83.q2 DR85.q2 AP85.q1 AN83.q1 AN69.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "nameplate",
+          "z": 13,
+          "intent": "overlay",
+          "title": "nameplate"
+        },
+        {
+          "op": "pen",
+          "id": "nameplate-ink",
+          "page": "nameplate",
+          "role": "artwork",
+          "color": "#d8c1b6",
+          "fillColor": "#d8c1b6",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AQ65.q1 BO65.q1 BN69.q1 AP69.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "panel-line",
+          "z": 15,
+          "intent": "overlay",
+          "title": "panel line"
+        },
+        {
+          "op": "pen",
+          "id": "panel-line-ink",
+          "page": "panel-line",
+          "role": "artwork",
+          "color": "#66505a",
+          "fillColor": "#66505a",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "polygon AJ69.q3 AK71.q4 AJ73.q3 AH71.q4\npolygon AJ74.q1 AK76.q2 AJ78.q1 AH76.q2\npolygon AJ78.q3 AK80.q4 AJ82.q3 AH80.q4\npolygon DW69.q4 DY71.q3 DW73.q4 DV71.q3\npolygon DW74.q2 DY76.q1 DW78.q2 DV76.q1\npolygon DW78.q4 DY80.q3 DW82.q4 DV80.q3\ncurve AO67.q4 AN70.q1 AN83.q1 AP85.q1 DR85.q2 DT83.q2 DT70.q2 DR67.q4\npolygon AQ65.q1 BO65.q1 BN69.q1 AP69.q1\ncurve AE70.q1 AE85.q1 EB85.q2 EB70.q2"
+        }
+      ]
+    },
+    {
+      "id": "map",
+      "title": "Parchment world map",
+      "ref": "frame-10.png",
+      "cols": 164,
+      "rows": 96,
+      "operations": [
+        {
+          "op": "add_page",
+          "id": "map-sea",
+          "z": 1,
+          "intent": "overlay",
+          "title": "map sea"
+        },
+        {
+          "op": "pen",
+          "id": "map-sea-ink",
+          "page": "map-sea",
+          "role": "artwork",
+          "color": "#afa98b",
+          "fillColor": "#afa98b",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon A1.q1 FF1.q2 FF91.q4 A91.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "map-land",
+          "z": 3,
+          "intent": "overlay",
+          "title": "map land"
+        },
+        {
+          "op": "pen",
+          "id": "map-land-ink",
+          "page": "map-land",
+          "role": "artwork",
+          "color": "#c9ae6c",
+          "fillColor": "#c9ae6c",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon N54.q2 P47.q2 U44.q2 Y38.q1 AD36.q2 AG31.q1 AM31.q1 AO24.q1 AU22.q1 AY15.q3 BB19.q2 BG20.q1 BH13.q4 BO11.q3 BR6.q3 BX10.q2 CC5.q3 CG8.q2 CN5.q4 CT10.q4 DB12.q1 DF18.q2 DI23.q2 DP25.q1 DS30.q3 EA32.q1 EB37.q3 EJ39.q3 EG45.q1 EK51.q1 EE56.q3 EJ61.q3 EB67.q2 DW68.q3 DS74.q1 DL73.q2 DG78.q2 CZ76.q3 CU83.q1 CM80.q3 CF86.q1 CA82.q1 BT84.q3 BO80.q3 BI84.q1 BB80.q2 AW82.q2 AQ79.q2 AM82.q3 AE79.q2 AA75.q2 X77.q3 T72.q4 AA68.q3 AG69.q3 AK66.q2 AJ61.q1 AD59.q1 X61.q4 R58.q3 N58.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "map-forest",
+          "z": 5,
+          "intent": "overlay",
+          "title": "map forest"
+        },
+        {
+          "op": "pen",
+          "id": "map-forest-ink",
+          "page": "map-forest",
+          "role": "artwork",
+          "color": "#99915d",
+          "fillColor": "#99915d",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BS13.q3 CG11.q1 CU15.q4 DI25.q3 DC37.q2 CU42.q2 CK36.q2 CD40.q4 BX30.q2 BQ25.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "map-rust",
+          "z": 7,
+          "intent": "overlay",
+          "title": "map rust"
+        },
+        {
+          "op": "pen",
+          "id": "map-rust-ink",
+          "page": "map-rust",
+          "role": "artwork",
+          "color": "#b98c65",
+          "fillColor": "#b98c65",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon DF37.q3 DP33.q1 DW42.q1 EA50.q1 DT57.q2 DL56.q4 DG50.q1 CY45.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "map-south",
+          "z": 9,
+          "intent": "overlay",
+          "title": "map south"
+        },
+        {
+          "op": "pen",
+          "id": "map-south-ink",
+          "page": "map-south",
+          "role": "artwork",
+          "color": "#d2b675",
+          "fillColor": "#d2b675",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AQ66.q1 BF61.q3 BT67.q3 CI69.q1 CP78.q2 CF82.q3 BT80.q3 BJ79.q3 BC77.q1 AT79.q3 AL76.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "map-sea-ink",
+          "z": 11,
+          "intent": "overlay",
+          "title": "map sea ink"
+        },
+        {
+          "op": "pen",
+          "id": "map-sea-ink-ink",
+          "page": "map-sea-ink",
+          "role": "artwork",
+          "color": "#8e917e",
+          "fillColor": "#8e917e",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "curve AS5.q1 AT4.q4 AV5.q2 AX4.q4\ncurve V19.q2 X19.q1 Y19.q2 AB19.q1\ncurve AJ6.q3 AK6.q2 AM6.q3 AO6.q2\ncurve AE20.q1 AF20.q2 AH20.q1 AJ20.q2\ncurve AK6.q2 AM5.q3 AN6.q2 AQ5.q3\ncurve AC16.q2 AE15.q3 AG16.q1 AI15.q3\ncurve N7.q3 O7.q2 Q7.q3 S7.q2\ncurve Z21.q3 AA21.q2 AC21.q3 AE21.q2\ncurve Z12.q3 AA12.q2 AC12.q4 AE12.q2\ncurve U8.q2 W8.q1 X8.q2 AA8.q1\ncurve Z16.q4 AB16.q1 AC16.q4 AF16.q1\ncurve AR18.q4 AT18.q1 AV18.q3 AX18.q1\ncurve AX5.q2 AZ4.q3 BA5.q2 BD4.q3\ncurve AM12.q3 AN12.q2 AP12.q4 AR12.q2\ncurve AI12.q3 AJ12.q2 AL12.q4 AN12.q2\ncurve U14.q4 W14.q1 Y14.q3 AA14.q1\ncurve AE5.q2 AF4.q4 AH5.q2 AJ4.q4\ncurve W8.q4 Y8.q1 AA8.q3 AC8.q1\ncurve T20.q1 U20.q2 W20.q2 Y20.q2\ncurve Y10.q4 AA10.q1 AB10.q4 AE10.q1\ncurve AQ16.q1 AR15.q4 AT16.q1 AV15.q4\ncurve U5.q3 V5.q2 X5.q4 Z5.q2\ncurve AC16.q3 AD16.q2 AF16.q4 AH16.q2\ncurve G77.q4 I77.q2 K77.q4\ncurve O80.q4 Q80.q4 S80.q4\ncurve F72.q3 H72.q1 J72.q3\ncurve J76.q3 L76.q1 N76.q3\ncurve N65.q1 P65.q1 R65.q1\ncurve H84.q2 J83.q4 L84.q2\ncurve J67.q2 L66.q4 N67.q2\ncurve G71.q4 I71.q2 K71.q4\ncurve F78.q2 H77.q4 J78.q2\ncurve I86.q3 K86.q3 M86.q3\ncurve G74.q3 I74.q1 K74.q3\ncurve J77.q2 L77.q2 N77.q2\ncurve D85.q3 F85.q1 H85.q3\ncurve O76.q1 Q75.q3 S76.q1\ncurve F67.q4 H67.q2 J67.q4\ncurve N83.q2 P83.q2 R83.q2"
+        },
+        {
+          "op": "add_page",
+          "id": "map-trees",
+          "z": 13,
+          "intent": "overlay",
+          "title": "map trees"
+        },
+        {
+          "op": "pen",
+          "id": "map-trees-ink",
+          "page": "map-trees",
+          "role": "artwork",
+          "color": "#6d7955",
+          "fillColor": "#6d7955",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "pen CC33.q4\nellipse 3 3\npen CC34.q4\nray to CC36.q2\npen BT20.q2\nellipse 3 3\npen BT21.q2\nray to BT22.q4\npen CR31.q1\nellipse 3 3\npen CR32.q1\nray to CR33.q3\npen DC23.q1\nellipse 3 3\npen DC24.q1\nray to DC25.q3\npen DA24.q2\nellipse 2 3\npen DA25.q2\nray to DA26.q4\npen DE28.q1\nellipse 2 3\npen DE29.q1\nray to DE30.q3\npen CO26.q2\nellipse 3 3\npen CO27.q2\nray to CO28.q4\npen CO20.q2\nellipse 2 3\npen CO21.q2\nray to CO22.q2\npen CT28.q3\nellipse 3 4\npen CT29.q3\nray to CT31.q1\npen BX19.q4\nellipse 3 2\npen BX20.q4\nray to BX22.q2\npen CT16.q3\nellipse 2 3\npen CT17.q3\nray to CT19.q1\npen BY18.q2\nellipse 2 3\npen BY19.q2\nray to BY20.q4\npen BT23.q2\nellipse 2 3\npen BT24.q2\nray to BT25.q4\npen CO26.q2\nellipse 3 3\npen CO27.q2\nray to CO28.q4\npen DA29.q3\nellipse 2 3\npen DA30.q3\nray to DA32.q1\npen CH28.q4\nellipse 2 3\npen CH29.q4\nray to CH30.q4\npen BY22.q4\nellipse 2 3\npen BY23.q4\nray to BY24.q4\npen CT18.q1\nellipse 2 3\npen CT19.q1\nray to CT20.q3\npen BT33.q2\nellipse 3 2\npen BT34.q2\nray to BT35.q4\npen DB30.q2\nellipse 2 3\npen DB31.q2\nray to DB32.q4\npen CM21.q1\nellipse 3 3\npen CM22.q1\nray to CM23.q3\npen CL22.q3\nellipse 3 3\npen CL23.q3\nray to CL25.q1\npen CK34.q3\nellipse 2 2\npen CK35.q3\nray to CK36.q3\npen CT29.q3\nellipse 2 2\npen CT30.q3\nray to CT32.q1\npen DE35.q2\nellipse 2 3\npen DE36.q2\nray to DE37.q4\npen DD26.q1\nellipse 3 2\npen DD27.q1\nray to DD28.q3\npen BV23.q3\nellipse 2 3\npen BV24.q3\nray to BV26.q1\npen CF24.q1\nellipse 2 2\npen CF25.q1\nray to CF26.q3\npen CH24.q2\nellipse 2 3\npen CH25.q2\nray to CH26.q4\npen CG16.q4\nellipse 2 3\npen CG17.q4\nray to CG19.q2\npen CW33.q1\nellipse 2 3\npen CW34.q1\nray to CW35.q3\npen CE20.q4\nellipse 2 3\npen CE21.q4\nray to CE22.q4\npen CO29.q2\nellipse 2 2\npen CO30.q2\nray to CO31.q4\npen CO21.q1\nellipse 3 2\npen CO22.q1\nray to CO23.q3\npen CV20.q4\nellipse 3 2\npen CV21.q4\nray to CV23.q2\npen CI18.q4\nellipse 2 3\npen CI19.q4\nray to CI20.q4\npen DA18.q2\nellipse 3 3\npen DA19.q2\nray to DA20.q4\npen CC31.q4\nellipse 3 2\npen CC32.q4\nray to CC34.q2\npen CX27.q4\nellipse 3 2\npen CX28.q4\nray to CX30.q2\npen DC31.q1\nellipse 2 3\npen DC32.q1\nray to DC33.q3\npen CH24.q4\nellipse 2 2\npen CH25.q4\nray to CH27.q2\npen CI24.q2\nellipse 2 2\npen CI25.q2\nray to CI26.q2\npen CR25.q4\nellipse 2 2\npen CR26.q4\nray to CR28.q2\npen BS27.q2\nellipse 3 3\npen BS28.q2\nray to BS29.q2\npen CB29.q4\nellipse 2 3\npen CB30.q4\nray to CB31.q4\npen CM18.q1\nellipse 3 3\npen CM19.q1\nray to CM20.q3\npen CA31.q1\nellipse 3 2\npen CA32.q1\nray to CA33.q3\npen BS29.q2\nellipse 2 3\npen BS30.q2\nray to BS31.q4\npen DE23.q1\nellipse 2 3\npen DE24.q1\nray to DE25.q3\npen CX21.q4\nellipse 3 4\npen CX22.q4\nray to CX24.q2\npen DB32.q1\nellipse 2 2\npen DB33.q1\nray to DB34.q3\npen CV19.q4\nellipse 3 3\npen CV20.q4\nray to CV22.q2\npen CX25.q2\nellipse 3 3\npen CX26.q2\nray to CX27.q4\npen CW29.q4\nellipse 2 2\npen CW30.q4\nray to CW32.q2\npen BV26.q4\nellipse 2 3\npen BV27.q4\nray to BV29.q2\npen DA17.q4\nellipse 3 3\npen DA18.q4\nray to DA20.q2\npen DD27.q2\nellipse 3 3\npen DD28.q2\nray to DD29.q4\npen CE26.q4\nellipse 2 2\npen CE27.q4\nray to CE29.q2\npen CA24.q1\nellipse 2 4\npen CA25.q1\nray to CA26.q3\npen BY21.q3\nellipse 2 3\npen BY22.q3\nray to BY23.q3\npen DE32.q2\nellipse 2 3\npen DE33.q2\nray to DE34.q4\npen BW26.q3\nellipse 2 3\npen BW27.q3\nray to BW29.q1\npen CA27.q4\nellipse 3 2\npen CA28.q4\nray to CA30.q2\npen CT32.q2\nellipse 3 3\npen CT33.q2\nray to CT34.q2"
+        },
+        {
+          "op": "add_page",
+          "id": "map-castles",
+          "z": 15,
+          "intent": "overlay",
+          "title": "map castles"
+        },
+        {
+          "op": "pen",
+          "id": "map-castles-ink",
+          "page": "map-castles",
+          "role": "artwork",
+          "color": "#cfbba0",
+          "fillColor": "#cfbba0",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AT35.q3 AY35.q3 AY40.q3 AT40.q3 fill\npolygon AS33.q3 AU33.q3 AU40.q3 AS40.q3 fill\npolygon AX33.q4 AZ33.q4 AZ40.q4 AX40.q4 fill\npolygon CP20.q2 CU20.q2 CU25.q2 CP25.q2 fill\npolygon CO18.q2 CQ18.q2 CQ25.q2 CO25.q2 fill\npolygon CU18.q1 CW18.q1 CW25.q1 CU25.q1 fill\npolygon DL43.q3 DQ43.q3 DQ48.q3 DL48.q3 fill\npolygon DK41.q3 DM41.q3 DM48.q3 DK48.q3 fill\npolygon DP41.q4 DR41.q4 DR48.q4 DP48.q4 fill\npolygon BO60.q1 BS60.q2 BS65.q2 BO65.q1 fill\npolygon BM58.q2 BO58.q2 BO65.q2 BM65.q2 fill\npolygon BS58.q1 BU58.q1 BU65.q1 BS65.q1 fill\npolygon AI68.q1 AN68.q1 AN73.q1 AI73.q1 fill\npolygon AH66.q1 AJ66.q1 AJ73.q1 AH73.q1 fill\npolygon AM66.q1 AO66.q1 AO73.q1 AM73.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "map-roofs",
+          "z": 17,
+          "intent": "overlay",
+          "title": "map roofs"
+        },
+        {
+          "op": "pen",
+          "id": "map-roofs-ink",
+          "page": "map-roofs",
+          "role": "artwork",
+          "color": "#a06b68",
+          "fillColor": "#a06b68",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AR33.q4 AT31.q1 AU33.q4 fill\npolygon AX33.q3 AY31.q2 BA33.q3 fill\npolygon CO18.q1 CP15.q4 CR18.q1 fill\npolygon CT18.q1 CV15.q3 CW18.q2 fill\npolygon DJ41.q4 DL39.q1 DM41.q4 fill\npolygon DP41.q3 DQ39.q2 DS41.q3 fill\npolygon BM58.q1 BN56.q2 BP58.q1 fill\npolygon BR58.q2 BT56.q1 BU58.q2 fill\npolygon AG66.q1 AI63.q3 AJ66.q2 fill\npolygon AL66.q2 AN63.q3 AP66.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "map-terrain",
+          "z": 19,
+          "intent": "overlay",
+          "title": "map terrain"
+        },
+        {
+          "op": "pen",
+          "id": "map-terrain-ink",
+          "page": "map-terrain",
+          "role": "artwork",
+          "color": "#927445",
+          "fillColor": "#927445",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "polygon N54.q2 P47.q2 U44.q2 Y38.q1 AD36.q2 AG31.q1 AM31.q1 AO24.q1 AU22.q1 AY15.q3 BB19.q2 BG20.q1 BH13.q4 BO11.q3 BR6.q3 BX10.q2 CC5.q3 CG8.q2 CN5.q4 CT10.q4 DB12.q1 DF18.q2 DI23.q2 DP25.q1 DS30.q3 EA32.q1 EB37.q3 EJ39.q3 EG45.q1 EK51.q1 EE56.q3 EJ61.q3 EB67.q2 DW68.q3 DS74.q1 DL73.q2 DG78.q2 CZ76.q3 CU83.q1 CM80.q3 CF86.q1 CA82.q1 BT84.q3 BO80.q3 BI84.q1 BB80.q2 AW82.q2 AQ79.q2 AM82.q3 AE79.q2 AA75.q2 X77.q3 T72.q4 AA68.q3 AG69.q3 AK66.q2 AJ61.q1 AD59.q1 X61.q4 R58.q3 N58.q3\ncurve AK42.q4 AL42.q1 AM41.q3 AN42.q3\ncurve AX68.q3 AY67.q3 AZ67.q1 BA68.q3\ncurve DA38.q3 DA37.q4 DB37.q4 DC38.q4\ncurve AX67.q4 AY66.q4 AZ66.q2 BA67.q4\ncurve CZ71.q1 CZ70.q4 DA70.q2 DB71.q2\ncurve BF57.q2 BG56.q3 BH56.q1 BI57.q1\ncurve BV67.q1 BW66.q1 BX65.q3 BY67.q1\ncurve DE38.q2 DF37.q4 DG37.q2 DH38.q2\ncurve BD42.q2 BE41.q1 BF40.q3 BG42.q1\ncurve CJ41.q3 CJ40.q4 CK40.q4 CL41.q4\ncurve CS70.q4 CT70.q1 CU69.q3 CV70.q3\ncurve CY57.q2 CZ56.q2 DA55.q4 DB57.q2\ncurve DF41.q2 DG40.q2 DH39.q4 DI41.q2\ncurve CS60.q4 CT59.q4 CU59.q4 CV60.q4\ncurve BS57.q4 BT57.q1 BU56.q3 BV57.q3\ncurve BV64.q2 BW63.q1 BX62.q3 BY64.q1\ncurve AJ45.q1 AK44.q3 AL44.q1 AM45.q1\ncurve BB40.q2 BC39.q1 BD38.q3 BE40.q1\ncurve CL69.q3 CL69.q2 CM68.q4 CN69.q4\ncurve DA59.q3 DB59.q1 DC58.q3 DD59.q3\ncurve CM57.q4 CN56.q3 CO56.q3 CP57.q3\ncurve CC46.q3 CC45.q4 CD45.q2 CE46.q4\ncurve DG58.q4 DH57.q4 DI57.q2 DJ58.q4\ncurve BK38.q2 BL37.q2 BM36.q4 BN38.q2\ncurve BC63.q3 BC63.q2 BD62.q4 BE63.q4\ncurve CH59.q1 CH58.q4 CI58.q2 CJ59.q2\ncurve BT50.q4 BU49.q4 BV49.q2 BW50.q4\ncurve CF45.q3 CF44.q4 CG44.q2 CH45.q4\ncurve AQ64.q1 AR63.q1 AS63.q1 AT64.q1\ncurve AW50.q2 AX49.q1 AY48.q3 AZ50.q1\ncurve DG62.q4 DH62.q1 DI61.q3 DJ62.q3\ncurve DE46.q4 DF46.q2 DG45.q4 DH46.q4\ncurve CS71.q2 CT70.q2 CU69.q4 CV71.q2\ncurve AO45.q1 AP44.q1 AQ43.q3 AR45.q1\ncurve BK57.q3 BK56.q4 BL56.q4 BM57.q4\ncurve CN60.q2 CO59.q3 CP59.q1 CQ60.q1\ncurve AW73.q4 AX72.q4 AY72.q2 AZ73.q4\ncurve BB66.q3 BB65.q4 BC65.q2 BD66.q4\ncurve BR41.q4 BS40.q4 BT40.q4 BU41.q4\ncurve CN64.q3 CN64.q2 CO63.q4 CP64.q4\ncurve CC40.q2 CD39.q2 CE38.q4 CF40.q2\ncurve BV56.q2 BW55.q1 BX55.q1 BY56.q1\ncurve AW60.q3 AX59.q3 AY59.q1 AZ60.q3\ncurve DB67.q2 DC66.q2 DD65.q4 DE67.q2\ncurve BD64.q4 BE64.q2 BF63.q4 BG64.q4\ncurve BB71.q1 BC70.q3 BD70.q1 BE71.q1\ncurve CT52.q3 CT51.q4 CU51.q4 CV52.q4\ncurve BF48.q1 BF47.q4 BG47.q2 BH48.q2\ncurve AW53.q4 AX53.q2 AY52.q4 AZ53.q4\ncurve DK70.q1 DL69.q3 DM69.q1 DN70.q1\ncurve CU62.q4 CV61.q4 CW61.q2 CX62.q4\ncurve CP73.q1 CQ72.q1 CR71.q3 CS73.q1\ncurve BL55.q4 BM54.q4 BN54.q2 BO55.q4\ncurve BR40.q4 BS39.q4 BT39.q2 BU40.q4\ncurve CX63.q1 CY62.q1 CZ62.q1 DA63.q1\ncurve AM60.q3 AN60.q1 AO59.q3 AP60.q3\ncurve DJ56.q3 DK56.q1 DL55.q3 DM56.q3\ncurve BG22.q4 BJ32.q4 BH42.q3 BK50.q1 BG58.q1 BJ64.q1 BH74.q1\ncurve CD43.q1 CI48.q3 CE54.q2 CJ62.q1 CG67.q3\ncurve AS33.q3 AS40.q3 AZ40.q4 AZ33.q4\ncurve AV40.q3 AV38.q1 AW38.q2 AW40.q4\ncurve CO18.q2 CO25.q2 CW25.q1 CW18.q1\ncurve CR25.q1 CR22.q3 CT22.q3 CT25.q1\ncurve DK41.q3 DK48.q3 DR48.q4 DR41.q4\ncurve DN48.q3 DN46.q1 DO46.q2 DO48.q4\ncurve BM58.q2 BM65.q2 BU65.q1 BU58.q1\ncurve BP65.q2 BP63.q2 BR63.q1 BR65.q1\ncurve AH66.q1 AH73.q1 AO73.q1 AO66.q1\ncurve AJ73.q2 AJ70.q4 AL70.q3 AL73.q1"
+        },
+        {
+          "op": "add_page",
+          "id": "map-ribbons",
+          "z": 21,
+          "intent": "overlay",
+          "title": "map ribbons"
+        },
+        {
+          "op": "pen",
+          "id": "map-ribbons-ink",
+          "page": "map-ribbons",
+          "role": "artwork",
+          "color": "#e4cca1",
+          "fillColor": "#e4cca1",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon T64.q1 V65.q1 AN65.q1 AP64.q1 AO67.q3 AM67.q1 V67.q2 T68.q1 fill\npolygon BU12.q2 BW12.q4 CY12.q4 DA12.q1 CZ15.q2 CX14.q4 BX14.q3 BV15.q3 fill\npolygon CZ59.q1 DB60.q1 DY60.q2 EA59.q1 DZ62.q4 DX61.q4 DB61.q4 CZ62.q4 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "map-ribbon-ink",
+          "z": 23,
+          "intent": "overlay",
+          "title": "map ribbon ink"
+        },
+        {
+          "op": "pen",
+          "id": "map-ribbon-ink-ink",
+          "page": "map-ribbon-ink",
+          "role": "artwork",
+          "color": "#a18661",
+          "fillColor": "#a18661",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "curve V65.q1 W67.q1 AM67.q1 AN65.q1\ncurve BX12.q3 BX14.q4 CX14.q3 CY12.q4\ncurve DB60.q2 DC61.q3 DX61.q3 DY60.q2"
+        },
+        {
+          "op": "add_page",
+          "id": "map-fog",
+          "z": 25,
+          "intent": "overlay",
+          "title": "map fog"
+        },
+        {
+          "op": "pen",
+          "id": "map-fog-ink",
+          "page": "map-fog",
+          "role": "artwork",
+          "color": "#c9b59f",
+          "fillColor": "#c9b59f",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon EK1.q1 FF1.q2 FF91.q4 EM91.q3 EQ85.q1 EL80.q1 ES74.q1 EM68.q3 ES62.q3 EO56.q3 ET51.q3 EN45.q1 ES39.q3 EO34.q4 ET29.q1 EO23.q1 ES17.q2 EN12.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "map-fog-ink",
+          "z": 27,
+          "intent": "overlay",
+          "title": "map fog ink"
+        },
+        {
+          "op": "pen",
+          "id": "map-fog-ink-ink",
+          "page": "map-fog-ink",
+          "role": "artwork",
+          "color": "#ac9290",
+          "fillColor": "#ac9290",
+          "width": 3,
+          "cap": "round",
+          "paint": "line",
+          "program": "curve EV1.q1 ER7.q4 EV14.q3 EQ21.q2 EV28.q4 ER35.q2 EW42.q3 ES49.q3 EW58.q2 ES65.q1 EW72.q3 ES80.q3 EW88.q1"
+        }
+      ]
+    },
+    {
+      "id": "scene",
+      "title": "Court dialogue composition",
+      "ref": "frame-07.png",
+      "cols": 164,
+      "rows": 96,
+      "operations": [
+        {
+          "op": "add_page",
+          "id": "cathedral-distant-atmosphere",
+          "z": 1,
+          "intent": "overlay",
+          "title": "distant atmosphere"
+        },
+        {
+          "op": "pen",
+          "id": "cathedral-distant-atmosphere-ink",
+          "page": "cathedral-distant-atmosphere",
+          "role": "artwork",
+          "color": "#b5c8c7",
+          "fillColor": "#b5c8c7",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon A1.q1 FF1.q2 FF91.q4 A91.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "cathedral-aisle-shadows",
+          "z": 2,
+          "intent": "overlay",
+          "title": "aisle shadows"
+        },
+        {
+          "op": "pen",
+          "id": "cathedral-aisle-shadows-ink",
+          "page": "cathedral-aisle-shadows",
+          "role": "artwork",
+          "color": "#789b9e",
+          "fillColor": "#789b9e",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon A4.q3 Q8.q2 AE33.q3 AH73.q1 V91.q2 A91.q1 fill\npolygon FG4.q3 EP8.q2 EC33.q3 DZ73.q1 EK91.q2 FF91.q2 fill\npolygon AI3.q3 AS15.q1 BC39.q3 BD67.q2 AQ79.q1 AH77.q2 fill\npolygon DY3.q3 DO15.q1 DE39.q3 DC67.q2 DQ79.q1 DY77.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "cathedral-stone-vault",
+          "z": 3,
+          "intent": "overlay",
+          "title": "stone vault"
+        },
+        {
+          "op": "pen",
+          "id": "cathedral-stone-vault-ink",
+          "page": "cathedral-stone-vault",
+          "role": "artwork",
+          "color": "#d4d0c6",
+          "fillColor": "#d4d0c6",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon A1.q1 Q1.q1 AO14.q4 BA30.q4 BL47.q1 BN67.q2 BK77.q1 AV82.q1 AD87.q3 AD79.q1 AW70.q2 AY45.q2 AO24.q2 Y13.q1 A6.q1 fill\npolygon FG1.q1 EQ1.q1 DR14.q4 DF30.q4 CV47.q1 CS67.q2 CW77.q1 DL82.q1 ED87.q3 ED79.q1 DJ70.q2 DH45.q2 DR24.q2 EI13.q1 FF6.q2 fill\npolygon Z1.q2 AN1.q1 BB16.q1 BK34.q2 BQ54.q4 BP70.q4 BM72.q1 BM52.q4 BG33.q1 AX16.q1 fill\npolygon EG1.q2 DT1.q1 DF16.q1 CV34.q2 CP54.q4 CQ70.q4 CU72.q1 CT52.q4 DA33.q1 DJ16.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "cathedral-window-light",
+          "z": 4,
+          "intent": "overlay",
+          "title": "window light"
+        },
+        {
+          "op": "pen",
+          "id": "cathedral-window-light-ink",
+          "page": "cathedral-window-light",
+          "role": "artwork",
+          "color": "#f0d5b9",
+          "fillColor": "#f0d5b9",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BP66.q3 BP36.q3 BQ26.q4 BT21.q2 BX16.q3 CA20.q1 CC29.q2 CD66.q1 fill\npolygon CE66.q1 CE28.q3 CH20.q3 CK16.q2 CO21.q1 CR29.q1 CR66.q2 fill\npolygon CA66.q4 CA15.q3 CD9.q3 CG15.q2 CG66.q3 fill\npolygon AO7.q4 AP3.q3 AR7.q1 AU23.q3 AT35.q1 AR30.q2 fill\npolygon DR7.q4 DR3.q3 DP7.q1 DM23.q3 DN35.q1 DO30.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "cathedral-floor",
+          "z": 5,
+          "intent": "overlay",
+          "title": "floor"
+        },
+        {
+          "op": "pen",
+          "id": "cathedral-floor-ink",
+          "page": "cathedral-floor",
+          "role": "artwork",
+          "color": "#a9bdba",
+          "fillColor": "#a9bdba",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AD86.q3 BO67.q1 CS67.q1 ED86.q3 FF91.q3 A91.q4 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "cathedral-vault-ink",
+          "z": 6,
+          "intent": "overlay",
+          "title": "vault ink"
+        },
+        {
+          "op": "pen",
+          "id": "cathedral-vault-ink-ink",
+          "page": "cathedral-vault-ink",
+          "role": "artwork",
+          "color": "#9c9292",
+          "fillColor": "#9c9292",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "curve D1.q2 AC7.q1 AV25.q4 BJ46.q2 BO67.q4\ncurve FC1.q2 EE7.q1 DK25.q4 CW46.q2 CR67.q4\ncurve F1.q2 AE7.q1 AW25.q4 BK46.q1 BP67.q3\ncurve FA1.q2 EC7.q1 DJ25.q4 CW46.q1 CR67.q3\ncurve H1.q1 AG7.q1 AY25.q3 BK46.q2 BP67.q3\ncurve EZ1.q1 EA7.q1 DI25.q3 CV46.q2 CR67.q3\ncurve J1.q1 AH7.q2 AZ25.q3 BL46.q1 BP67.q4\ncurve EX1.q1 DY7.q2 DH25.q3 CV46.q1 CQ67.q4\ncurve L1.q1 AJ7.q2 BA25.q3 BL46.q2 BP67.q4\ncurve EV1.q1 DW7.q2 DG25.q3 CU46.q2 CQ67.q4\ncurve M1.q2 AL7.q1 BB25.q3 BM46.q1 BQ67.q3\ncurve ET1.q2 DV7.q1 DF25.q3 CU46.q1 CQ67.q3\ncurve AD84.q3 AG39.q1 AP12.q3 CD1.q1\ncurve AE85.q2 AH39.q2 AQ13.q2 CD3.q1\ncurve AL81.q2 AO36.q4 AY12.q3 CD4.q1\ncurve AN81.q3 AQ36.q3 AZ13.q1 CD6.q1\ncurve AU78.q1 AX34.q1 BG12.q4 CD7.q1\ncurve AV78.q2 AY34.q2 BH13.q2 CD9.q1\ncurve BD74.q3 BG31.q3 BP12.q3 CD10.q1\ncurve BE74.q3 BH31.q3 BQ13.q1 CD12.q1\ncurve BL71.q2 BO29.q2 BX12.q4 CD13.q1\ncurve BN71.q1 BQ29.q1 BZ13.q1 CD15.q1\ncurve ED84.q3 EA39.q1 DR12.q3 CD1.q1\ncurve EB85.q2 DY39.q2 DP13.q2 CD3.q1\ncurve DU81.q2 DR36.q4 DI12.q3 CD4.q1\ncurve DT81.q3 DQ36.q3 DH13.q1 CD6.q1\ncurve DM78.q1 DJ34.q1 CZ12.q4 CD7.q1\ncurve DK78.q2 DH34.q2 CY13.q2 CD9.q1\ncurve DD74.q3 DA31.q3 CR12.q3 CD10.q1\ncurve DC74.q3 CZ31.q3 CQ13.q1 CD12.q1\ncurve CU71.q2 CR29.q2 CI12.q4 CD13.q1\ncurve CT71.q1 CQ29.q1 CH13.q1 CD15.q1\ncurve BS66.q1 BS34.q1 BU24.q1 CD12.q1\ncurve BW66.q1 BW34.q1 BX24.q2 CD12.q1\ncurve CA66.q1 CA34.q1 CB24.q1 CD12.q1\ncurve CE66.q1 CE34.q1 CE24.q1 CD12.q1\ncurve CI66.q1 CI34.q1 CH24.q1 CD12.q1\ncurve CM66.q1 CM34.q1 CK24.q1 CD12.q1\ncurve CP66.q2 CP34.q2 CN24.q1 CD12.q1\ncurve E90.q1 BO67.q1 CR67.q2 FC90.q1\ncurve E86.q3 BO67.q1 CR67.q2 FC86.q3\ncurve E83.q1 BO67.q1 CR67.q2 FC83.q1\ncurve E79.q1 BO67.q1 CR67.q2 FC79.q1"
+        },
+        {
+          "op": "add_page",
+          "id": "cathedral-pillars",
+          "z": 7,
+          "intent": "overlay",
+          "title": "pillars"
+        },
+        {
+          "op": "pen",
+          "id": "cathedral-pillars-ink",
+          "page": "cathedral-pillars",
+          "role": "artwork",
+          "color": "#bbc7c1",
+          "fillColor": "#bbc7c1",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon L42.q2 X42.q2 W81.q1 Z85.q1 J85.q1 L81.q2 fill\npolygon I42.q2 AA42.q2 Z45.q2 X47.q2 K47.q1 I44.q2 fill\npolygon EI42.q2 EU42.q2 ET81.q1 EW85.q1 EG85.q1 EI81.q2 fill\npolygon EF42.q2 EX42.q2 EW45.q2 EU47.q2 EH47.q1 EF44.q2 fill\npolygon AQ43.q3 AU43.q4 AT71.q4 AW75.q1 AN75.q2 AQ71.q3 fill\npolygon AN43.q3 AX43.q4 AX47.q1 AU48.q4 AP48.q3 AN45.q3 fill\npolygon DL43.q3 DP43.q4 DO71.q4 DR75.q1 DI75.q2 DL71.q3 fill\npolygon DI43.q3 DS43.q4 DS47.q1 DP48.q4 DK48.q3 DI45.q3 fill\npolygon BI48.q1 BJ48.q1 BH65.q2 BK69.q2 BF69.q2 BI65.q1 fill\npolygon BF48.q1 BM48.q1 BL51.q1 BJ53.q1 BG53.q2 BF50.q1 fill\npolygon CX48.q1 CY48.q1 CX65.q1 CZ69.q2 CU69.q2 CX65.q1 fill\npolygon CU48.q1 DB48.q1 DA51.q1 CY53.q1 CW53.q1 CU50.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "cathedral-pillar-shadow",
+          "z": 8,
+          "intent": "overlay",
+          "title": "pillar shadow"
+        },
+        {
+          "op": "pen",
+          "id": "cathedral-pillar-shadow-ink",
+          "page": "cathedral-pillar-shadow",
+          "role": "artwork",
+          "color": "#8daba9",
+          "fillColor": "#8daba9",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon V47.q1 W47.q2 W81.q2 V81.q1 fill\npolygon ES47.q1 ET47.q2 ET81.q2 ES81.q1 fill\npolygon AS48.q3 AU48.q3 AU71.q3 AS71.q3 fill\npolygon DN48.q3 DP48.q3 DP71.q3 DN71.q3 fill\npolygon BG53.q1 BI53.q1 BI65.q1 BG65.q1 fill\npolygon CV53.q2 CX53.q1 CX65.q1 CV65.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "cathedral-pillar-ink",
+          "z": 9,
+          "intent": "overlay",
+          "title": "pillar ink"
+        },
+        {
+          "op": "pen",
+          "id": "cathedral-pillar-ink-ink",
+          "page": "cathedral-pillar-ink",
+          "role": "artwork",
+          "color": "#879395",
+          "fillColor": "#879395",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "curve L46.q4 L81.q2 K83.q3 Z83.q3 W81.q2 W47.q2\npolygon I42.q2 AA42.q2 Z45.q2 X47.q2 K47.q1\npen K47.q3\nray to X47.q4\npen L55.q4\nray to W56.q1\npen L64.q4\nray to W64.q3\npen L73.q2\nray to W73.q3\ncurve L43.q1 L45.q2 N45.q3 N44.q1\ncurve P43.q1 P45.q2 R45.q3 R44.q1\ncurve T43.q1 T45.q2 V45.q3 V44.q1\ncurve EI46.q4 EI81.q2 EH83.q3 EW83.q3 ET81.q2 ET47.q2\npolygon EF42.q2 EX42.q2 EW45.q2 EU47.q2 EH47.q1\npen EH47.q3\nray to EU47.q4\npen EI55.q4\nray to ET56.q1\npen EI64.q4\nray to ET64.q3\npen EI73.q2\nray to ET73.q3\ncurve EI43.q1 EI45.q2 EK45.q3 EK44.q1\ncurve EM43.q1 EM45.q2 EO45.q3 EO44.q1\ncurve EQ43.q1 EQ45.q2 ES45.q3 ES44.q1\ncurve AQ48.q3 AQ71.q1 AO73.q4 AW73.q3 AT71.q2 AT48.q4\npolygon AN43.q3 AX43.q4 AX47.q1 AU48.q4 AP48.q3\npen AO49.q4\nray to AV49.q3\npen AQ54.q3\nray to AT54.q3\npen AQ60.q3\nray to AT60.q3\npen AQ66.q1\nray to AT66.q3\ncurve AP45.q2 AQ47.q1 AR47.q2 AS45.q3\ncurve AR45.q1 AR47.q2 AT47.q1 AT45.q4\ncurve AS45.q2 AT47.q2 AU47.q2 AV45.q3\ncurve DL48.q3 DL71.q1 DJ73.q4 DR73.q3 DO71.q2 DO48.q4\npolygon DI43.q3 DS43.q4 DS47.q1 DP48.q4 DK48.q3\npen DJ49.q4\nray to DQ49.q3\npen DL54.q3\nray to DO54.q3\npen DL60.q3\nray to DO60.q3\npen DL66.q1\nray to DO66.q3\ncurve DK45.q2 DL47.q1 DM47.q2 DN45.q3\ncurve DM45.q1 DM47.q2 DO47.q1 DO45.q4\ncurve DN45.q2 DO47.q2 DP47.q2 DQ45.q3\ncurve BI53.q1 BI65.q1 BG67.q4 BK67.q4 BI65.q1 BI53.q1\npolygon BF48.q1 BM48.q1 BL51.q1 BJ53.q1 BG53.q2\npen BG54.q1\nray to BJ54.q1\npen BI56.q1\nray to BH56.q4\npen BI59.q3\nray to BH59.q4\npen BI62.q3\nray to BH63.q2\ncurve BH49.q2 BI51.q1 BJ51.q3 BJ50.q2\ncurve BH49.q2 BI51.q2 BJ51.q4 BK50.q1\ncurve BI49.q1 BI51.q2 BK51.q3 BK50.q2\ncurve CX53.q1 CX65.q1 CV67.q4 CZ67.q4 CX65.q1 CX53.q1\npolygon CU48.q1 DB48.q1 DA51.q1 CY53.q1 CW53.q1\npen CV54.q2\nray to CY54.q1\npen CX56.q1\nray to CW56.q4\npen CX59.q3\nray to CW59.q4\npen CX62.q3\nray to CW63.q2\ncurve CW49.q2 CX51.q1 CY51.q4 CZ50.q1\ncurve CX49.q1 CX51.q2 CY51.q4 CZ50.q1\ncurve CX49.q2 CY51.q1 CZ51.q3 CZ50.q2"
+        },
+        {
+          "op": "add_page",
+          "id": "cathedral-pillar-light",
+          "z": 10,
+          "intent": "overlay",
+          "title": "pillar light"
+        },
+        {
+          "op": "pen",
+          "id": "cathedral-pillar-light-ink",
+          "page": "cathedral-pillar-light",
+          "role": "artwork",
+          "color": "#e0dccc",
+          "fillColor": "#e0dccc",
+          "width": 3,
+          "cap": "round",
+          "paint": "line",
+          "program": "pen N48.q2\nray to N79.q4\npen EK48.q2\nray to EK79.q4\npen AS50.q1\nray to AS69.q3\npen DN50.q1\nray to DN69.q3\npen BK54.q3\nray to BK63.q3\npen CZ54.q3\nray to CZ63.q3"
+        },
+        {
+          "op": "add_page",
+          "id": "cathedral-arch-detail",
+          "z": 11,
+          "intent": "overlay",
+          "title": "arch detail"
+        },
+        {
+          "op": "pen",
+          "id": "cathedral-arch-detail-ink",
+          "page": "cathedral-arch-detail",
+          "role": "artwork",
+          "color": "#8b8d90",
+          "fillColor": "#8b8d90",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "curve A63.q2 C36.q2 K20.q1 S10.q1 AA14.q3 AG27.q2 AI56.q2\ncurve C62.q3 E36.q4 L22.q3 S13.q3 Y17.q2 AD29.q2 AF56.q3\ncurve D3.q4 O5.q2 Z8.q3 AH16.q4\ncurve FF63.q2 FD36.q2 EW20.q1 EO10.q1 EG14.q3 DZ27.q2 DX56.q2\ncurve FE62.q3 FB36.q4 EV22.q3 EO13.q3 EH17.q2 EC29.q2 EB56.q3\ncurve FC3.q4 ER5.q2 EH8.q3 DY16.q4\ncurve BO66.q3 BO36.q3 BQ25.q2 CD9.q1\ncurve CR66.q4 CR36.q4 CP25.q2 CD9.q1"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-fur-cloak",
+          "z": 12,
+          "intent": "overlay",
+          "title": "fur cloak"
+        },
+        {
+          "op": "pen",
+          "id": "knight-fur-cloak-ink",
+          "page": "knight-fur-cloak",
+          "role": "artwork",
+          "color": "#f1debd",
+          "fillColor": "#f1debd",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon CH31.q3 CL32.q4 CM34.q3 CQ34.q4 CQ36.q1 CU36.q3 CS38.q1 CX39.q2 CY40.q3 DE41.q3 DH46.q2 DI49.q1 DL50.q4 DL52.q1 DO55.q4 DQ57.q4 DO57.q4 DS60.q1 DO59.q4 DQ62.q2 DM61.q2 DP64.q1 DM63.q1 DN67.q1 DL74.q4 DO91.q2 BH91.q2 BF81.q1 BB72.q4 BB60.q3 AX57.q2 AX54.q4 BA52.q2 BA47.q1 BH39.q3 BS34.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-cloak-shadow",
+          "z": 13,
+          "intent": "overlay",
+          "title": "cloak shadow"
+        },
+        {
+          "op": "pen",
+          "id": "knight-cloak-shadow-ink",
+          "page": "knight-cloak-shadow",
+          "role": "artwork",
+          "color": "#bfaa98",
+          "fillColor": "#bfaa98",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon DA46.q3 DE48.q3 DE52.q2 DJ54.q1 DH55.q4 DM58.q1 DJ58.q1 DM61.q3 DH60.q2 DH67.q1 DM91.q1 DE91.q2 DA68.q3 CU59.q2 CT52.q1 fill\npolygon BG55.q3 BD61.q4 BE71.q1 BL83.q3 BL91.q2 BF91.q1 BA69.q3 AY64.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-bronze-armor",
+          "z": 14,
+          "intent": "overlay",
+          "title": "bronze armor"
+        },
+        {
+          "op": "pen",
+          "id": "knight-bronze-armor-ink",
+          "page": "knight-bronze-armor",
+          "role": "artwork",
+          "color": "#c29453",
+          "fillColor": "#c29453",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BQ33.q2 BX37.q1 CE36.q2 CL38.q2 CR47.q2 CU59.q3 CR68.q2 CY91.q1 BK91.q2 BL75.q1 BJ65.q4 BE53.q4 BH41.q3 fill\npolygon BQ34.q2 BN34.q3 BF39.q1 AY45.q3 AZ47.q4 BF49.q2 BH54.q3 BL54.q3 BP51.q1 BT44.q1 fill\npolygon CE40.q2 CK38.q1 CQ38.q3 CY39.q3 DF43.q1 DF46.q4 DC49.q1 CU48.q4 CP46.q1 CL46.q1 CI50.q1 CE47.q3 fill\npolygon BP50.q4 BU55.q3 CE58.q1 CM62.q4 CQ65.q1 CO68.q1 CD66.q2 BU62.q2 BO57.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-armor-dark",
+          "z": 15,
+          "intent": "overlay",
+          "title": "armor dark"
+        },
+        {
+          "op": "pen",
+          "id": "knight-armor-dark-ink",
+          "page": "knight-armor-dark",
+          "role": "artwork",
+          "color": "#96715c",
+          "fillColor": "#96715c",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BS39.q1 BW41.q3 BU46.q1 BR48.q2 BS51.q2 BZ53.q3 CF53.q1 CK48.q1 CM49.q2 CK56.q2 CC59.q2 BT55.q3 BO50.q2 fill\npolygon CR56.q2 CV60.q2 CV65.q2 CR68.q3 CM65.q1 CK61.q2 fill\npolygon BJ72.q3 BP75.q1 BW79.q3 BW91.q1 BK91.q1 fill\npolygon CF68.q2 CM66.q1 CR69.q4 CV77.q4 CX91.q1 CQ91.q1 CN77.q2 fill\npolygon BD47.q1 BI47.q3 BJ52.q3 BG53.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-golden-highlights",
+          "z": 16,
+          "intent": "overlay",
+          "title": "golden highlights"
+        },
+        {
+          "op": "pen",
+          "id": "knight-golden-highlights-ink",
+          "page": "knight-golden-highlights",
+          "role": "artwork",
+          "color": "#dfb569",
+          "fillColor": "#dfb569",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AY45.q2 BH38.q4 BN36.q3 BQ36.q2 BN38.q3 BG41.q2 BC45.q1 fill\npolygon BT36.q3 BV38.q2 BQ46.q4 BR49.q3 BV51.q1 CD54.q1 CA55.q1 BS52.q1 BP49.q1 BP46.q2 fill\npolygon BV41.q2 BY42.q1 CC41.q1 CH39.q3 CJ41.q1 CD44.q2 BY45.q1 BU44.q1 fill\npolygon CK39.q3 CR39.q3 CZ42.q2 DD44.q4 CY44.q2 CQ42.q4 CL43.q4 CI46.q4 CG46.q1 fill\npolygon BS52.q4 BV56.q2 CD57.q1 CE59.q3 BW58.q2 BT56.q1 fill\npolygon BV66.q3 BX65.q2 CB68.q4 CD75.q2 CG81.q2 CE90.q4 CB90.q4 CC81.q1 CA75.q1 fill\npolygon BP79.q1 BR80.q2 BR91.q2 BO91.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-gauntlets",
+          "z": 17,
+          "intent": "overlay",
+          "title": "gauntlets"
+        },
+        {
+          "op": "pen",
+          "id": "knight-gauntlets-ink",
+          "page": "knight-gauntlets",
+          "role": "artwork",
+          "color": "#b6a397",
+          "fillColor": "#b6a397",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon CC56.q2 CF55.q1 CG57.q2 CK59.q2 CQ62.q1 CS63.q2 CQ65.q2 CN64.q4 CN66.q4 CL66.q1 CI64.q2 CF63.q4 CD59.q3 fill\npolygon BM58.q1 BP58.q3 BS57.q1 BU58.q1 BT60.q1 BQ61.q1 BU63.q1 BS65.q1 BO63.q2 BN64.q1 BK62.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-scarlet-lining",
+          "z": 18,
+          "intent": "overlay",
+          "title": "scarlet lining"
+        },
+        {
+          "op": "pen",
+          "id": "knight-scarlet-lining-ink",
+          "page": "knight-scarlet-lining",
+          "role": "artwork",
+          "color": "#a44643",
+          "fillColor": "#a44643",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon CP60.q4 CU62.q3 CY64.q3 CW67.q3 CS65.q2 fill\npolygon BC55.q1 BG53.q2 BI55.q1 BD58.q2 AZ58.q4 fill\npolygon CO68.q4 CR68.q4 CU91.q1 CR91.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-ruff-shadow",
+          "z": 19,
+          "intent": "overlay",
+          "title": "ruff shadow"
+        },
+        {
+          "op": "pen",
+          "id": "knight-ruff-shadow-ink",
+          "page": "knight-ruff-shadow",
+          "role": "artwork",
+          "color": "#97877b",
+          "fillColor": "#97877b",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BU30.q1 CA32.q3 CH29.q1 CJ31.q1 CJ34.q3 CG38.q1 CA40.q4 BW38.q3 BT35.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-ruff-ivory",
+          "z": 20,
+          "intent": "overlay",
+          "title": "ruff ivory"
+        },
+        {
+          "op": "pen",
+          "id": "knight-ruff-ivory-ink",
+          "page": "knight-ruff-ivory",
+          "role": "artwork",
+          "color": "#f3e1c4",
+          "fillColor": "#f3e1c4",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BU30.q3 CA33.q1 CH29.q2 CI34.q1 CF37.q2 CA40.q1 BW37.q1 BT34.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-skin",
+          "z": 21,
+          "intent": "overlay",
+          "title": "skin"
+        },
+        {
+          "op": "pen",
+          "id": "knight-skin-ink",
+          "page": "knight-skin",
+          "role": "artwork",
+          "color": "#e8cbae",
+          "fillColor": "#e8cbae",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BS16.q3 BW13.q3 CD14.q2 CI17.q1 CJ23.q2 CI25.q3 CG26.q3 CF29.q3 CA34.q1 BW31.q4 BU28.q1 BS26.q4 BT23.q3 BR21.q4 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-face-shadow",
+          "z": 22,
+          "intent": "overlay",
+          "title": "face shadow"
+        },
+        {
+          "op": "pen",
+          "id": "knight-face-shadow-ink",
+          "page": "knight-face-shadow",
+          "role": "artwork",
+          "color": "#c59f8d",
+          "fillColor": "#c59f8d",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon CF18.q1 CI20.q2 CJ23.q1 CH25.q4 CG26.q3 CF29.q3 CA33.q1 BZ32.q1 CD29.q1 CE25.q1 CE23.q4 fill\npolygon BS22.q2 BV23.q1 BT25.q2 BV26.q2 BU27.q1 BS26.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-hair-gold",
+          "z": 23,
+          "intent": "overlay",
+          "title": "hair gold"
+        },
+        {
+          "op": "pen",
+          "id": "knight-hair-gold-ink",
+          "page": "knight-hair-gold",
+          "role": "artwork",
+          "color": "#d9a355",
+          "fillColor": "#d9a355",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BR20.q3 BQ17.q3 BQ15.q1 BS12.q4 BW10.q3 CA10.q3 CE12.q1 CH14.q1 CJ17.q1 CK21.q4 CJ24.q1 CI23.q1 CH20.q2 CF18.q1 CD16.q2 CE19.q1 CA18.q2 BY15.q4 CA18.q3 BX18.q1 BV15.q3 BV20.q2 BT19.q1 BT22.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-hair-light",
+          "z": 24,
+          "intent": "overlay",
+          "title": "hair light"
+        },
+        {
+          "op": "pen",
+          "id": "knight-hair-light-ink",
+          "page": "knight-hair-light",
+          "role": "artwork",
+          "color": "#efcb81",
+          "fillColor": "#efcb81",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BR15.q3 BT12.q4 BX11.q2 CC12.q3 CG15.q1 CD14.q1 BZ13.q2 BW13.q3 BU15.q3 BS17.q3 fill\npolygon CE14.q2 CH16.q3 CJ21.q1 CH20.q2 CG17.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-hair-shade",
+          "z": 25,
+          "intent": "overlay",
+          "title": "hair shade"
+        },
+        {
+          "op": "pen",
+          "id": "knight-hair-shade-ink",
+          "page": "knight-hair-shade",
+          "role": "artwork",
+          "color": "#ae8357",
+          "fillColor": "#ae8357",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon BQ17.q4 BS17.q1 BS19.q2 BT21.q2 BS22.q3 fill\npolygon BX16.q3 CA18.q1 CE19.q1 CC20.q4 CA19.q1 fill\npolygon CF17.q1 CH19.q4 CI23.q4 CG22.q2 CG20.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-portrait-ink",
+          "z": 26,
+          "intent": "overlay",
+          "title": "portrait ink"
+        },
+        {
+          "op": "pen",
+          "id": "knight-portrait-ink-ink",
+          "page": "knight-portrait-ink",
+          "role": "artwork",
+          "color": "#66505a",
+          "fillColor": "#66505a",
+          "width": 3,
+          "cap": "round",
+          "paint": "line",
+          "program": "polygon CH31.q3 CL32.q4 CM34.q3 CQ34.q4 CQ36.q1 CU36.q3 CS38.q1 CX39.q2 CY40.q3 DE41.q3 DH46.q2 DI49.q1 DL50.q4 DL52.q1 DO55.q4 DQ57.q4 DO57.q4 DS60.q1 DO59.q4 DQ62.q2 DM61.q2 DP64.q1 DM63.q1 DN67.q1 DL74.q4 DO91.q2 BH91.q2 BF81.q1 BB72.q4 BB60.q3 AX57.q2 AX54.q4 BA52.q2 BA47.q1 BH39.q3 BS34.q2\npolygon BQ33.q2 BX37.q1 CE36.q2 CL38.q2 CR47.q2 CU59.q3 CR68.q2 CY91.q1 BK91.q2 BL75.q1 BJ65.q4 BE53.q4 BH41.q3\npolygon BQ34.q2 BN34.q3 BF39.q1 AY45.q3 AZ47.q4 BF49.q2 BH54.q3 BL54.q3 BP51.q1 BT44.q1\npolygon CE40.q2 CK38.q1 CQ38.q3 CY39.q3 DF43.q1 DF46.q4 DC49.q1 CU48.q4 CP46.q1 CL46.q1 CI50.q1 CE47.q3\npolygon BR20.q3 BQ17.q3 BQ15.q1 BS12.q4 BW10.q3 CA10.q3 CE12.q1 CH14.q1 CJ17.q1 CK21.q4 CJ24.q1 CI23.q1 CH20.q2 CF18.q1 CD16.q2 CE19.q1 CA18.q2 BY15.q4 CA18.q3 BX18.q1 BV15.q3 BV20.q2 BT19.q1 BT22.q1\ncurve BS23.q2 BT25.q1 BS26.q1 BU26.q3 BV29.q1 BX31.q3 CA33.q3 CF30.q1 CG26.q3\ncurve BV21.q3 BW21.q1 BY21.q3\ncurve CA21.q1 CB20.q4 CD21.q2\ncurve BV23.q1 BW22.q1 BY22.q3\ncurve CA22.q3 CB21.q4 CD22.q1\npen BX23.q1\nray to BX23.q3\npen CB22.q4\nray to CB23.q2\ncurve BY22.q2 BY24.q1 BX25.q1 BY25.q4\npolygon BV27.q3 BW27.q2 BZ27.q2 BY28.q1 BW28.q2\npen BX29.q1\nray to BZ29.q1\ncurve CH23.q1 CH22.q2 CI23.q2 CH24.q3\ncurve BR16.q4 BT15.q2 BU19.q1\ncurve BW13.q1 BX15.q4 BZ17.q4\ncurve BZ12.q4 CC15.q1 CD18.q1\ncurve CD13.q3 CF16.q2 CH20.q1\ncurve BU30.q3 CA33.q3 CH29.q3\ncurve BT34.q2 BW37.q3 CA40.q1 CF37.q2 CI33.q3\ncurve BT38.q1 BP45.q3 BO49.q2 BR52.q4 BX55.q1 CD56.q3 CI54.q4 CL49.q2\ncurve BS41.q3 BU43.q1 BX43.q4 CD42.q2 CH40.q3\ncurve BQ45.q1 BV47.q2 CB47.q4 CG45.q3\ncurve BQ49.q4 BV50.q4 CB51.q1 CF48.q4\ncurve BS53.q3 BX56.q3 CD57.q4\ncurve BH40.q1 BI43.q3 BH47.q1 BJ52.q1\ncurve BA45.q1 BF46.q2 BI47.q4 BK52.q2\ncurve CM40.q1 CR41.q2 CY42.q4 DD45.q2\ncurve CJ44.q1 CN43.q1 CS45.q2 DA46.q3\ncurve BO57.q1 BQ59.q1 BU57.q1 BV58.q3 BS60.q4 BU63.q1 BS64.q3 BO62.q3\ncurve BQ61.q1 BN60.q1 BM61.q3 BO63.q1\ncurve CD56.q1 CF56.q2 CG58.q4 CK60.q2 CR64.q1\ncurve CE58.q3 CG60.q1 CI62.q2 CO65.q1\ncurve CE60.q2 CG62.q1 CI63.q4 CL65.q4\ncurve CG56.q1 CF58.q1 CF59.q4\ncurve CI58.q1 CH60.q1 CI61.q3\ncurve CK59.q2 CJ61.q2 CK63.q2\ncurve CM61.q2 CM63.q1 CN64.q2\ncurve BM64.q3 BQ68.q1 BV70.q3 BZ75.q4 CD82.q1 CB91.q2\ncurve CO68.q1 CQ73.q3 CR80.q1 CT91.q2\ncurve DA65.q4 DE72.q2 DH81.q4 DJ91.q1\ncurve BU31.q4 BV35.q1 BW36.q1\ncurve BW32.q1 BW35.q3 BX37.q1\ncurve BX32.q3 BX36.q4 BY37.q3\ncurve BY33.q1 BY37.q2 BZ38.q2\ncurve BZ33.q2 CA37.q3 CA38.q4\ncurve CA33.q2 CB37.q3 CC38.q3\ncurve CC33.q1 CC37.q1 CD38.q1\ncurve CD32.q3 CD36.q4 CE38.q1\ncurve CE32.q1 CE36.q2 CF37.q2\ncurve CF31.q4 CG35.q1 CG36.q4\npen BI41.q2\nellipse 1 1\npen BE45.q1\nellipse 1 1\npen BK37.q2\nellipse 1 1\npen BN43.q1\nellipse 1 1\npen BL49.q2\nellipse 1 1\npen BS43.q2\nellipse 1 1\npen BT49.q3\nellipse 1 1\npen BW53.q2\nellipse 1 1\npen CG51.q1\nellipse 1 1\npen CJ45.q2\nellipse 1 1\npen CO41.q1\nellipse 1 1\npen CT43.q1\nellipse 1 1\npen BQ68.q2\nellipse 1 1\npen BX72.q4\nellipse 1 1\ncurve BK40.q1 BK38.q1 BL37.q3 BN39.q1 BM40.q1 BL39.q1\ncurve BL46.q4 BL45.q1 BM44.q2 BO45.q3 BN46.q3 BM45.q3\ncurve BW47.q3 BV46.q2 BX45.q3 BY46.q4 BY48.q1 BX47.q1\ncurve BZ50.q1 BZ48.q1 CA47.q3 CC49.q1 CB50.q1 CA49.q1\ncurve BQ76.q4 BQ75.q1 BR74.q2 BT75.q3 BS76.q3 BR75.q3"
+        },
+        {
+          "op": "add_page",
+          "id": "knight-armor-sparkles",
+          "z": 27,
+          "intent": "overlay",
+          "title": "armor sparkles"
+        },
+        {
+          "op": "pen",
+          "id": "knight-armor-sparkles-ink",
+          "page": "knight-armor-sparkles",
+          "role": "artwork",
+          "color": "#fff0c2",
+          "fillColor": "#fff0c2",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon CM39.q2 CN42.q1 CQ43.q1 CN44.q1 CM47.q2 CL44.q2 CI43.q2 CM42.q1 fill\npolygon DF45.q2 DG49.q1 DK50.q2 DG51.q2 DF55.q2 DF51.q1 DA50.q2 DF49.q1 fill\npolygon BI54.q3 BJ56.q1 BK57.q2 BJ58.q1 BI59.q3 BH58.q2 BG57.q1 BH56.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "dialogue-panel-shadow",
+          "z": 28,
+          "intent": "overlay",
+          "title": "panel shadow"
+        },
+        {
+          "op": "pen",
+          "id": "dialogue-panel-shadow-ink",
+          "page": "dialogue-panel-shadow",
+          "role": "artwork",
+          "color": "#63434f",
+          "fillColor": "#63434f",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AC71.q2 AI69.q3 AL66.q4 DS66.q4 DX69.q3 ED71.q1 ED86.q3 AC86.q4 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "dialogue-panel-paper",
+          "z": 29,
+          "intent": "overlay",
+          "title": "panel paper"
+        },
+        {
+          "op": "pen",
+          "id": "dialogue-panel-paper-ink",
+          "page": "dialogue-panel-paper",
+          "role": "artwork",
+          "color": "#d6b6aa",
+          "fillColor": "#d6b6aa",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AE70.q4 AK68.q1 DV68.q2 EB70.q4 EB85.q2 AE85.q2 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "dialogue-panel-rose",
+          "z": 30,
+          "intent": "overlay",
+          "title": "panel rose"
+        },
+        {
+          "op": "pen",
+          "id": "dialogue-panel-rose-ink",
+          "page": "dialogue-panel-rose",
+          "role": "artwork",
+          "color": "#b97875",
+          "fillColor": "#b97875",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AF70.q1 AN70.q1 AN85.q1 AF85.q1 fill\npolygon DT70.q1 EB70.q1 EB85.q1 DT85.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "dialogue-panel-gold",
+          "z": 31,
+          "intent": "overlay",
+          "title": "panel gold"
+        },
+        {
+          "op": "pen",
+          "id": "dialogue-panel-gold-ink",
+          "page": "dialogue-panel-gold",
+          "role": "artwork",
+          "color": "#dcb27c",
+          "fillColor": "#dcb27c",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AJ69.q3 AK71.q4 AJ73.q3 AH71.q4 fill\npolygon AG72.q1 AI73.q3 AG75.q1 AF73.q1 fill\npolygon AJ74.q1 AK76.q2 AJ78.q1 AH76.q2 fill\npolygon AG76.q3 AI78.q1 AG79.q3 AF78.q1 fill\npolygon AJ78.q3 AK80.q4 AJ82.q3 AH80.q4 fill\npolygon AG81.q1 AI82.q3 AG84.q1 AF82.q3 fill\npolygon DW69.q4 DY71.q3 DW73.q4 DV71.q3 fill\npolygon DU72.q1 DV73.q4 DU75.q1 DS73.q2 fill\npolygon DW74.q2 DY76.q1 DW78.q2 DV76.q1 fill\npolygon DU76.q3 DV78.q2 DU79.q3 DS78.q2 fill\npolygon DW78.q4 DY80.q3 DW82.q4 DV80.q3 fill\npolygon DU81.q1 DV82.q4 DU84.q1 DS82.q4 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "dialogue-panel-sage",
+          "z": 32,
+          "intent": "overlay",
+          "title": "panel sage"
+        },
+        {
+          "op": "pen",
+          "id": "dialogue-panel-sage-ink",
+          "page": "dialogue-panel-sage",
+          "role": "artwork",
+          "color": "#809986",
+          "fillColor": "#809986",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "pen AJ71.q3\nellipse 1 1 fill\npen AJ76.q1\nellipse 1 1 fill\npen AJ80.q3\nellipse 1 1 fill\npen DW71.q4\nellipse 1 1 fill\npen DW76.q2\nellipse 1 1 fill\npen DW80.q4\nellipse 1 1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "dialogue-panel-center",
+          "z": 33,
+          "intent": "overlay",
+          "title": "panel center"
+        },
+        {
+          "op": "pen",
+          "id": "dialogue-panel-center-ink",
+          "page": "dialogue-panel-center",
+          "role": "artwork",
+          "color": "#d7bdb5",
+          "fillColor": "#d7bdb5",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AO67.q4 DR67.q4 DT69.q4 DT83.q2 DR85.q2 AP85.q1 AN83.q1 AN69.q3 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "dialogue-nameplate",
+          "z": 34,
+          "intent": "overlay",
+          "title": "nameplate"
+        },
+        {
+          "op": "pen",
+          "id": "dialogue-nameplate-ink",
+          "page": "dialogue-nameplate",
+          "role": "artwork",
+          "color": "#d8c1b6",
+          "fillColor": "#d8c1b6",
+          "width": 3,
+          "cap": "round",
+          "paint": "cells",
+          "program": "polygon AQ65.q1 BO65.q1 BN69.q1 AP69.q1 fill"
+        },
+        {
+          "op": "add_page",
+          "id": "dialogue-panel-line",
+          "z": 35,
+          "intent": "overlay",
+          "title": "panel line"
+        },
+        {
+          "op": "pen",
+          "id": "dialogue-panel-line-ink",
+          "page": "dialogue-panel-line",
+          "role": "artwork",
+          "color": "#66505a",
+          "fillColor": "#66505a",
+          "width": 2,
+          "cap": "round",
+          "paint": "line",
+          "program": "polygon AJ69.q3 AK71.q4 AJ73.q3 AH71.q4\npolygon AJ74.q1 AK76.q2 AJ78.q1 AH76.q2\npolygon AJ78.q3 AK80.q4 AJ82.q3 AH80.q4\npolygon DW69.q4 DY71.q3 DW73.q4 DV71.q3\npolygon DW74.q2 DY76.q1 DW78.q2 DV76.q1\npolygon DW78.q4 DY80.q3 DW82.q4 DV80.q3\ncurve AO67.q4 AN70.q1 AN83.q1 AP85.q1 DR85.q2 DT83.q2 DT70.q2 DR67.q4\npolygon AQ65.q1 BO65.q1 BN69.q1 AP69.q1\ncurve AE70.q1 AE85.q1 EB85.q2 EB70.q2"
+        }
+      ]
+    }
+  ]
+}

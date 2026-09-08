@@ -1,0 +1,20 @@
+{
+  "originalLogoUnchanged": true,
+  "exportsMatchReceipts": true,
+  "allTpfImportsPass": true,
+  "blenderValidatedCurrentBytes": true,
+  "nativeBrandArt": [
+    {
+      "file": "brand-mark.turtlepen.json",
+      "verdict": "PASS"
+    },
+    {
+      "file": "brand-icon.turtlepen.json",
+      "verdict": "PASS"
+    },
+    {
+      "file": "brand-mark-single-color.turtlepen.json",
+      "verdict": "PASS"
+    }
+  ]
+}

@@ -6,11 +6,14 @@ An integer-exact grid substrate for **AI-authored diagrams**, with a turtle/pen
 command language, measurement before placement, and severity-ranked collision
 reporting across Z-page overlays.
 
-Status: **prototype** — 728 tests green, zero runtime dependencies, 84 MCP tools
+Status: **prototype** — 751 tests green, zero runtime dependencies, 87 local MCP tools
 with versioned structured-output schemas,
 with a hosted deployment at **`https://brainn.dev/api/mcp/turtlepen`**. The local
 0.5 source adds [native editing workflows](docs/native-editing-workflows.md);
 the hosted deployment must be updated separately before claiming version parity.
+The local [3D geometry prototype](docs/3d-geometry.md) adds physical XYZ primitives,
+extrusion, box booleans, TPF and STL/GLB export. It has independent Blender import
+verification; slicing and physical printing remain unverified.
 
 **[Start here: the five-minute quickstart →](docs/QUICKSTART.md)**
 
@@ -25,6 +28,7 @@ the hosted deployment must be updated separately before claiming version parity.
 | see the flowchart work and what was deliberately not built | [`docs/flowchart-support-todo.md`](docs/flowchart-support-todo.md) |
 | create histories, roadmaps, incident chronologies, or phase bands | [`docs/semantic-timelines.md`](docs/semantic-timelines.md) |
 | repair existing lattice geometry | [`docs/lattice-editing.md`](docs/lattice-editing.md) |
+| create spatial geometry or export STL/GLB | [`docs/3d-geometry.md`](docs/3d-geometry.md) |
 | choose a diagram type, and know what the engine checks about it | [`docs/diagram-types.md`](docs/diagram-types.md) |
 | know exactly which vector-editing operations exist | [`docs/svg-editing-capability-status.md`](docs/svg-editing-capability-status.md) — every capability marked SUPPORTED / PARTIAL / MISSING / OUT OF SCOPE |
 | import a compatible SVG safely | [`docs/svg-import.md`](docs/svg-import.md) |
@@ -724,7 +728,7 @@ still needs TLS, OAuth identity, per-user quotas, and an authenticated file
 bridge. See the [remote MCP transport contract](docs/remote-mcp.md), including
 the required dual `Accept` header and Cloudflare user-agent gotcha.
 
-84 tools. Every tool advertises a strict object `outputSchema` and returns a
+87 local tools. Every tool advertises a strict object `outputSchema` and returns a
 matching, versioned `structuredContent` envelope while preserving its original
 text response for existing clients. Call `turtlepen_help` first for a compact orientation, use
 `search_help { query }` for task-focused discovery, and request

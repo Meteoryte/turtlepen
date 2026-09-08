@@ -1,0 +1,1310 @@
+{
+  "schema": 1,
+  "scope": "local first-prototype exports; no physical print or hosted deployment",
+  "artifacts": [
+    {
+      "file": "stacked-cubes.tpf",
+      "format": "tpf",
+      "bytes": 6847,
+      "sha256": "65bc3361b0f0d069cc7fefc4f59a6c6d0baf374748109e25abdfedc79a411be2",
+      "units": "mm",
+      "inspection": {
+        "vertices": 36,
+        "triangles": 68,
+        "bounds": {
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            20,
+            20,
+            20
+          ]
+        },
+        "volume": 5000.000000000002,
+        "manifold": true,
+        "outward": true,
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 0,
+        "degenerateFaces": 0,
+        "shells": 1,
+        "orientationChecked": true,
+        "misorientedShells": 0,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "stack",
+            "vertices": 36,
+            "triangles": 68,
+            "bounds": {
+              "min": [
+                0,
+                0,
+                0
+              ],
+              "max": [
+                20,
+                20,
+                20
+              ]
+            },
+            "volume": 5000.000000000002,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [],
+        "solidReady": true,
+        "warnings": [
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      }
+    },
+    {
+      "file": "stacked-cubes.stl",
+      "format": "stl",
+      "bytes": 3484,
+      "sha256": "1feb628c402b90897df003a4081d7c6916db9c72e511ea5442d87f87d170d95e",
+      "units": "mm",
+      "inspection": {
+        "vertices": 36,
+        "triangles": 68,
+        "bounds": {
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            20,
+            20,
+            20
+          ]
+        },
+        "volume": 5000.000000000002,
+        "manifold": true,
+        "outward": true,
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 0,
+        "degenerateFaces": 0,
+        "shells": 1,
+        "orientationChecked": true,
+        "misorientedShells": 0,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "stack",
+            "vertices": 36,
+            "triangles": 68,
+            "bounds": {
+              "min": [
+                0,
+                0,
+                0
+              ],
+              "max": [
+                20,
+                20,
+                20
+              ]
+            },
+            "volume": 5000.000000000002,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [],
+        "solidReady": true,
+        "warnings": [
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      }
+    },
+    {
+      "file": "stacked-cubes.glb",
+      "format": "glb",
+      "bytes": 5832,
+      "sha256": "e4be8c6e4fca8f5b1f51a41cfdfed7cc51093ebe055ee5f7030964614dcceb68",
+      "units": "m",
+      "inspection": {
+        "vertices": 36,
+        "triangles": 68,
+        "bounds": {
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            20,
+            20,
+            20
+          ]
+        },
+        "volume": 5000.000000000002,
+        "manifold": true,
+        "outward": true,
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 0,
+        "degenerateFaces": 0,
+        "shells": 1,
+        "orientationChecked": true,
+        "misorientedShells": 0,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "stack",
+            "vertices": 36,
+            "triangles": 68,
+            "bounds": {
+              "min": [
+                0,
+                0,
+                0
+              ],
+              "max": [
+                20,
+                20,
+                20
+              ]
+            },
+            "volume": 5000.000000000002,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [],
+        "solidReady": true,
+        "warnings": [
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      }
+    },
+    {
+      "file": "curved-robot.tpf",
+      "format": "tpf",
+      "bytes": 3279,
+      "sha256": "ef8f393e46e6c0eb1d98ef989bed4b0dad7e33c2486d4e7fb71033998768583e",
+      "units": "mm",
+      "inspection": {
+        "vertices": 2422,
+        "triangles": 4812,
+        "bounds": {
+          "min": [
+            -25.15388552308772,
+            -12,
+            0
+          ],
+          "max": [
+            25.15388552308772,
+            12,
+            57
+          ]
+        },
+        "volume": 17279.48593803799,
+        "manifold": true,
+        "outward": false,
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 0,
+        "degenerateFaces": 0,
+        "shells": 8,
+        "orientationChecked": true,
+        "misorientedShells": 3,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "body",
+            "vertices": 96,
+            "triangles": 188,
+            "bounds": {
+              "min": [
+                -10,
+                -10,
+                14
+              ],
+              "max": [
+                10,
+                10,
+                37
+              ]
+            },
+            "volume": 7205.04581054685,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "head",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -12,
+                -12,
+                33
+              ],
+              "max": [
+                12,
+                12,
+                57
+              ]
+            },
+            "volume": 7186.702641997269,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "left-eye",
+            "vertices": 482,
+            "triangles": 960,
+            "bounds": {
+              "min": [
+                -6,
+                -12,
+                46
+              ],
+              "max": [
+                -2,
+                -8,
+                50
+              ]
+            },
+            "volume": 32.975533926286786,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "right-eye",
+            "vertices": 482,
+            "triangles": 960,
+            "bounds": {
+              "min": [
+                2,
+                -12,
+                46
+              ],
+              "max": [
+                6,
+                -8,
+                50
+              ]
+            },
+            "volume": 32.97553392628678,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "left-leg",
+            "vertices": 64,
+            "triangles": 124,
+            "bounds": {
+              "min": [
+                -10,
+                -4,
+                0
+              ],
+              "max": [
+                -2,
+                4,
+                17
+              ]
+            },
+            "volume": 849.0330814141904,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "right-leg",
+            "vertices": 64,
+            "triangles": 124,
+            "bounds": {
+              "min": [
+                2,
+                -4,
+                0
+              ],
+              "max": [
+                10,
+                4,
+                17
+              ]
+            },
+            "volume": 849.0330814141904,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "left-arm",
+            "vertices": 64,
+            "triangles": 124,
+            "bounds": {
+              "min": [
+                -25.15388552308772,
+                -3,
+                31.07163717094038
+              ],
+              "max": [
+                -7.701866670643065,
+                3,
+                50.24925169143918
+              ]
+            },
+            "volume": 561.8601274064492,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "right-arm",
+            "vertices": 64,
+            "triangles": 124,
+            "bounds": {
+              "min": [
+                7.701866670643065,
+                -3,
+                31.07163717094038
+              ],
+              "max": [
+                25.15388552308772,
+                3,
+                50.24925169143918
+              ]
+            },
+            "volume": 561.8601274064494,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [
+          [
+            "body",
+            "head"
+          ],
+          [
+            "body",
+            "left-leg"
+          ],
+          [
+            "body",
+            "right-leg"
+          ],
+          [
+            "body",
+            "left-arm"
+          ],
+          [
+            "body",
+            "right-arm"
+          ],
+          [
+            "head",
+            "left-eye"
+          ],
+          [
+            "head",
+            "right-eye"
+          ],
+          [
+            "head",
+            "left-arm"
+          ],
+          [
+            "head",
+            "right-arm"
+          ]
+        ],
+        "solidReady": false,
+        "warnings": [
+          "Part bounds overlap or touch; STL requires separated parts or an explicit supported boolean. This conservative check can include separated curved surfaces.",
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      }
+    },
+    {
+      "file": "curved-robot.glb",
+      "format": "glb",
+      "bytes": 352344,
+      "sha256": "6dafcce353d6eb27692e6b0ebf44abe7c49ebb3db53ba3d1d77374350b71fdf5",
+      "units": "m",
+      "inspection": {
+        "vertices": 2422,
+        "triangles": 4812,
+        "bounds": {
+          "min": [
+            -25.15388552308772,
+            -12,
+            0
+          ],
+          "max": [
+            25.15388552308772,
+            12,
+            57
+          ]
+        },
+        "volume": 17279.48593803799,
+        "manifold": true,
+        "outward": false,
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 0,
+        "degenerateFaces": 0,
+        "shells": 8,
+        "orientationChecked": true,
+        "misorientedShells": 3,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "body",
+            "vertices": 96,
+            "triangles": 188,
+            "bounds": {
+              "min": [
+                -10,
+                -10,
+                14
+              ],
+              "max": [
+                10,
+                10,
+                37
+              ]
+            },
+            "volume": 7205.04581054685,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "head",
+            "vertices": 1106,
+            "triangles": 2208,
+            "bounds": {
+              "min": [
+                -12,
+                -12,
+                33
+              ],
+              "max": [
+                12,
+                12,
+                57
+              ]
+            },
+            "volume": 7186.702641997269,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "left-eye",
+            "vertices": 482,
+            "triangles": 960,
+            "bounds": {
+              "min": [
+                -6,
+                -12,
+                46
+              ],
+              "max": [
+                -2,
+                -8,
+                50
+              ]
+            },
+            "volume": 32.975533926286786,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "right-eye",
+            "vertices": 482,
+            "triangles": 960,
+            "bounds": {
+              "min": [
+                2,
+                -12,
+                46
+              ],
+              "max": [
+                6,
+                -8,
+                50
+              ]
+            },
+            "volume": 32.97553392628678,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "left-leg",
+            "vertices": 64,
+            "triangles": 124,
+            "bounds": {
+              "min": [
+                -10,
+                -4,
+                0
+              ],
+              "max": [
+                -2,
+                4,
+                17
+              ]
+            },
+            "volume": 849.0330814141904,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "right-leg",
+            "vertices": 64,
+            "triangles": 124,
+            "bounds": {
+              "min": [
+                2,
+                -4,
+                0
+              ],
+              "max": [
+                10,
+                4,
+                17
+              ]
+            },
+            "volume": 849.0330814141904,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "left-arm",
+            "vertices": 64,
+            "triangles": 124,
+            "bounds": {
+              "min": [
+                -25.15388552308772,
+                -3,
+                31.07163717094038
+              ],
+              "max": [
+                -7.701866670643065,
+                3,
+                50.24925169143918
+              ]
+            },
+            "volume": 561.8601274064492,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          },
+          {
+            "id": "right-arm",
+            "vertices": 64,
+            "triangles": 124,
+            "bounds": {
+              "min": [
+                7.701866670643065,
+                -3,
+                31.07163717094038
+              ],
+              "max": [
+                25.15388552308772,
+                3,
+                50.24925169143918
+              ]
+            },
+            "volume": 561.8601274064494,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [
+          [
+            "body",
+            "head"
+          ],
+          [
+            "body",
+            "left-leg"
+          ],
+          [
+            "body",
+            "right-leg"
+          ],
+          [
+            "body",
+            "left-arm"
+          ],
+          [
+            "body",
+            "right-arm"
+          ],
+          [
+            "head",
+            "left-eye"
+          ],
+          [
+            "head",
+            "right-eye"
+          ],
+          [
+            "head",
+            "left-arm"
+          ],
+          [
+            "head",
+            "right-arm"
+          ]
+        ],
+        "solidReady": false,
+        "warnings": [
+          "Part bounds overlap or touch; STL requires separated parts or an explicit supported boolean. This conservative check can include separated curved surfaces.",
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      }
+    },
+    {
+      "file": "extruded-drawing.tpf",
+      "format": "tpf",
+      "bytes": 30207,
+      "sha256": "3855c575e8b2916edbd6586fb19ba5340dbc09abadcdb62cff3232b5f9bc794f",
+      "units": "mm",
+      "inspection": {
+        "vertices": 160,
+        "triangles": 316,
+        "bounds": {
+          "min": [
+            4,
+            -44,
+            0
+          ],
+          "max": [
+            44,
+            -4,
+            4
+          ]
+        },
+        "volume": 623.9999999999991,
+        "manifold": true,
+        "outward": true,
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 0,
+        "degenerateFaces": 0,
+        "shells": 1,
+        "orientationChecked": true,
+        "misorientedShells": 0,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "letter-t",
+            "vertices": 160,
+            "triangles": 316,
+            "bounds": {
+              "min": [
+                4,
+                -44,
+                0
+              ],
+              "max": [
+                44,
+                -4,
+                4
+              ]
+            },
+            "volume": 623.9999999999991,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [],
+        "solidReady": true,
+        "warnings": [
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      }
+    },
+    {
+      "file": "extruded-drawing.stl",
+      "format": "stl",
+      "bytes": 15884,
+      "sha256": "d39405f3f32d9caca486b8ab4abff6c708b29841de9ffda04850ed39ac0afbb9",
+      "units": "mm",
+      "inspection": {
+        "vertices": 160,
+        "triangles": 316,
+        "bounds": {
+          "min": [
+            4,
+            -44,
+            0
+          ],
+          "max": [
+            44,
+            -4,
+            4
+          ]
+        },
+        "volume": 623.9999999999991,
+        "manifold": true,
+        "outward": true,
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 0,
+        "degenerateFaces": 0,
+        "shells": 1,
+        "orientationChecked": true,
+        "misorientedShells": 0,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "letter-t",
+            "vertices": 160,
+            "triangles": 316,
+            "bounds": {
+              "min": [
+                4,
+                -44,
+                0
+              ],
+              "max": [
+                44,
+                -4,
+                4
+              ]
+            },
+            "volume": 623.9999999999991,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [],
+        "solidReady": true,
+        "warnings": [
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      }
+    },
+    {
+      "file": "extruded-drawing.glb",
+      "format": "glb",
+      "bytes": 23744,
+      "sha256": "eee4fd458b61fb86e611ecbaee3d0ad4923b50ff4b53e8c414d55c196a0f87cc",
+      "units": "m",
+      "inspection": {
+        "vertices": 160,
+        "triangles": 316,
+        "bounds": {
+          "min": [
+            4,
+            -44,
+            0
+          ],
+          "max": [
+            44,
+            -4,
+            4
+          ]
+        },
+        "volume": 623.9999999999991,
+        "manifold": true,
+        "outward": true,
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 0,
+        "degenerateFaces": 0,
+        "shells": 1,
+        "orientationChecked": true,
+        "misorientedShells": 0,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "letter-t",
+            "vertices": 160,
+            "triangles": 316,
+            "bounds": {
+              "min": [
+                4,
+                -44,
+                0
+              ],
+              "max": [
+                44,
+                -4,
+                4
+              ]
+            },
+            "volume": 623.9999999999991,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [],
+        "solidReady": true,
+        "warnings": [
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      }
+    },
+    {
+      "file": "castle.tpf",
+      "format": "tpf",
+      "bytes": 73167,
+      "sha256": "209ddf082d0ca10b3dc8d409c0770623f287d402ffdad4bee5c8a2d37a14ff4a",
+      "units": "mm",
+      "inspection": {
+        "vertices": 384,
+        "triangles": 768,
+        "bounds": {
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            70,
+            55,
+            36
+          ]
+        },
+        "volume": 39248,
+        "manifold": true,
+        "outward": true,
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 0,
+        "degenerateFaces": 0,
+        "shells": 1,
+        "orientationChecked": true,
+        "misorientedShells": 0,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "castle",
+            "vertices": 384,
+            "triangles": 768,
+            "bounds": {
+              "min": [
+                0,
+                0,
+                0
+              ],
+              "max": [
+                70,
+                55,
+                36
+              ]
+            },
+            "volume": 39248,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [],
+        "solidReady": true,
+        "warnings": [
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      }
+    },
+    {
+      "file": "castle.stl",
+      "format": "stl",
+      "bytes": 38484,
+      "sha256": "6903b8e1b543f30858a84d68cf7084d42a51259290744968d89091b195b51c35",
+      "units": "mm",
+      "inspection": {
+        "vertices": 384,
+        "triangles": 768,
+        "bounds": {
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            70,
+            55,
+            36
+          ]
+        },
+        "volume": 39248,
+        "manifold": true,
+        "outward": true,
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 0,
+        "degenerateFaces": 0,
+        "shells": 1,
+        "orientationChecked": true,
+        "misorientedShells": 0,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "castle",
+            "vertices": 384,
+            "triangles": 768,
+            "bounds": {
+              "min": [
+                0,
+                0,
+                0
+              ],
+              "max": [
+                70,
+                55,
+                36
+              ]
+            },
+            "volume": 39248,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [],
+        "solidReady": true,
+        "warnings": [
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      }
+    },
+    {
+      "file": "castle.glb",
+      "format": "glb",
+      "bytes": 56232,
+      "sha256": "e4c52a41c1b00e90a6315c3b295dcd1488514d484f74f9e28cdba48445cbbc4d",
+      "units": "m",
+      "inspection": {
+        "vertices": 384,
+        "triangles": 768,
+        "bounds": {
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            70,
+            55,
+            36
+          ]
+        },
+        "volume": 39248,
+        "manifold": true,
+        "outward": true,
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "inconsistentEdges": 0,
+        "nonManifoldVertices": 0,
+        "degenerateFaces": 0,
+        "shells": 1,
+        "orientationChecked": true,
+        "misorientedShells": 0,
+        "units": "mm",
+        "parts": [
+          {
+            "id": "castle",
+            "vertices": 384,
+            "triangles": 768,
+            "bounds": {
+              "min": [
+                0,
+                0,
+                0
+              ],
+              "max": [
+                70,
+                55,
+                36
+              ]
+            },
+            "volume": 39248,
+            "manifold": true,
+            "outward": true,
+            "openEdges": 0,
+            "nonManifoldEdges": 0,
+            "inconsistentEdges": 0,
+            "nonManifoldVertices": 0,
+            "degenerateFaces": 0,
+            "shells": 1,
+            "orientationChecked": true,
+            "misorientedShells": 0
+          }
+        ],
+        "profiles": 0,
+        "possibleOverlaps": [],
+        "solidReady": true,
+        "warnings": [
+          "Topology checks do not establish manufacturability; self-intersection, wall thickness, supports and printer settings require a slicer review."
+        ],
+        "checks": {
+          "selfIntersections": "not_evaluated",
+          "wallThickness": "not_evaluated",
+          "printerCompatibility": "not_evaluated"
+        }
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Endpoint and use-case coverage
 
-**As of 2026-08-29.** This is the executable surface contract for TurtlePen.
+**Updated 2026-09-08.** This is the executable surface contract for TurtlePen.
 An endpoint is covered only when a test crosses its real transport or exercises
 the exact shared core path. Name-count checks alone are not considered coverage.
 
@@ -13,14 +13,14 @@ the exact shared core path. Name-count checks alone are not considered coverage.
 | `notifications/cancelled` | accepted without a reply | notification response suppression | `test/mcp.test.js` |
 | `ping` | returns an empty result | connection remains ordered | `test/mcp.test.js` |
 | `tools/list` | schemas for the complete live tool set | exact comparison to `createTools` prevents drift | `test/mcp.test.js`, `test/http-mcp.test.js` |
-| `tools/call` | all 77 tools complete over real stdio | unknown tool, schema refusal, and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
+| `tools/call` | all 87 tools complete over real stdio | unknown tool, schema refusal, and readable tool error | `test/endpoints.test.js`, `test/mcp.test.js` |
 | unknown request | n/a | JSON-RPC `-32601` | `test/mcp.test.js` |
 | malformed JSON | n/a | JSON-RPC `-32700` with null id | `test/mcp.test.js` |
 
 ## MCP Streamable HTTP boundary
 
 `test/http-mcp.test.js` starts the real TCP server on an ephemeral port. It
-proves that HTTP is a transport over the canonical 77-tool registry, preserves
+proves that HTTP is a transport over the canonical live registry, preserves
 one active document across separate POSTs, isolates simultaneous sessions, and
 uses request-scoped `event: message` / `data:` SSE frames.
 
@@ -41,6 +41,9 @@ tool without a successful transport case fails the suite.
 | `turtlepen_help` | retrieve the complete authoring reference before a document exists |
 | `runtime_info` | identify the running version, schema, capabilities, session, and document hash |
 | `new_diagram` | create and checkpoint a named diagram with explicit canvas bounds |
+| `geometry3d` | create a persistent physical XYZ box through stdio; rehearsal/rollback/history through shared handlers and D1/R2 adapter fixtures |
+| `inspect_geometry3d` | report manifold topology and the expected physical volume |
+| `export_geometry3d` | deliver actual GLB bytes through MCP; binary headers, local path confinement and format protection tested separately |
 | `open_diagram` | reopen persisted wireframe source and history state |
 | `add_page` | add an overlay page |
 | `remove_page` | remove temporary tracing scaffolding |

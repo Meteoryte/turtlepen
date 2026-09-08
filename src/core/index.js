@@ -27,6 +27,9 @@ import * as workspace from './workspace.js';
 import * as edit_ from './edit.js';
 import * as svgImport_ from './svg-import.js';
 import * as timeline_ from './timeline.js';
+import * as geometry3d from './geometry3d/index.js';
+import { editGeometry3d } from './geometry3d-document.js';
+export { geometry3d };
 import { queryElements, transformElements, editGuide, cleanupElements, editPages, paintPaths, repeatTransforms, atomicEdit, moveSelection, isConstructionGuide } from './advanced-edit.js';
 export { queryElements, transformElements, editGuide, cleanupElements, editPages } from './advanced-edit.js';
 export { exportTimeline } from './timeline-export.js';
@@ -113,6 +116,7 @@ export function renderSvgForReview(doc, rawProfile = {}) {
     showGrid: profile.showGrid,
     bounds: profile.bounds,
     margin: profile.margin,
+    transparent: profile.transparent ?? false,
     findings: profile.markFindings ? validate(doc).open : null,
   });
 }
@@ -1031,6 +1035,7 @@ export const OPERATIONS = Object.freeze({
   stroke_label: (doc, a) => placeStrokeLabel(doc, a.page ?? null, a),
   wireframe: (doc, a) => applyWireframe(doc, a),
   timeline: (doc, a) => applyTimeline(doc, a),
+  geometry3d: (doc, a) => editGeometry3d(doc, a),
   perspective_scene: (doc, a) => applyPerspectiveScene(doc, a),
   micro_mask: (doc, a) => {
     if (a.action === 'add') return addMicroMask(doc, a);
@@ -1320,13 +1325,19 @@ export function documentDiff(before, after) {
   const resources = compare(before.resources ?? [], after.resources ?? [], 'id');
   const scales = compare(Object.values(before.scales ?? {}), Object.values(after.scales ?? {}), 'id');
   const themeChanged = JSON.stringify(before.theme ?? null) !== JSON.stringify(after.theme ?? null);
+  const spatial = before.geometry3d || after.geometry3d ? {
+    objects: compare(before.geometry3d?.objects ?? [], after.geometry3d?.objects ?? [], 'id'),
+    groups: compare(before.geometry3d?.groups ?? [], after.geometry3d?.groups ?? [], 'id'),
+    settingsChanged: ['name', 'units', 'coordinateSystem'].some(key => before.geometry3d?.[key] !== after.geometry3d?.[key]),
+  } : null;
+  const spatialChanges = spatial ? Object.values(spatial.objects).flat().length + Object.values(spatial.groups).flat().length + Number(spatial.settingsChanged) : 0;
   const changed = [...elements.added, ...elements.removed, ...elements.changed].length
     + [...pages.added, ...pages.removed, ...pages.changed].length
     + [...views.added, ...views.removed, ...views.changed].length
     + [...resources.added, ...resources.removed, ...resources.changed].length
     + [...scales.added, ...scales.removed, ...scales.changed].length
-    + Number(themeChanged);
-  return { changed, elements, pages, views, resources, scales, themeChanged };
+    + Number(themeChanged) + spatialChanges;
+  return { changed, elements, pages, views, resources, scales, themeChanged, ...(spatial ? { geometry3d: spatial } : {}) };
 }
 
 export async function checkpointDocumentRecord(doc, path, { expectedHash = undefined, backup = true } = {}) {

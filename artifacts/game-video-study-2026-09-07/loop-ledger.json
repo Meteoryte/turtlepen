@@ -1,0 +1,154 @@
+{
+  "protocol": "LOOPBANK",
+  "loop": "ad-hoc video art and renderer refinement",
+  "maximumAttempts": 3,
+  "attemptsUsed": 3,
+  "stopReason": "budget exhausted with verified best state",
+  "pipelineOutcome": "PASS",
+  "sourceGameFidelity": "PARTIAL",
+  "bestAttempt": "attempt-03",
+  "baselineCommit": "3e7604023243fc1ae6b746a71bee287048db8aa0",
+  "assets": [
+    {
+      "id": "cathedral",
+      "geometryUnchanged": true,
+      "attempts": [
+        {
+          "attempt": "attempt-01",
+          "bytes": 1195980,
+          "lineElements": 10471,
+          "polylineElements": 0,
+          "opaquePaper": true
+        },
+        {
+          "attempt": "attempt-02",
+          "bytes": 82589,
+          "lineElements": 0,
+          "polylineElements": 119,
+          "opaquePaper": true
+        },
+        {
+          "attempt": "attempt-03",
+          "bytes": 82532,
+          "lineElements": 0,
+          "polylineElements": 119,
+          "opaquePaper": false
+        }
+      ]
+    },
+    {
+      "id": "knight",
+      "geometryUnchanged": true,
+      "attempts": [
+        {
+          "attempt": "attempt-01",
+          "bytes": 314235,
+          "lineElements": 2362,
+          "polylineElements": 0,
+          "opaquePaper": true
+        },
+        {
+          "attempt": "attempt-02",
+          "bytes": 43970,
+          "lineElements": 1,
+          "polylineElements": 72,
+          "opaquePaper": true
+        },
+        {
+          "attempt": "attempt-03",
+          "bytes": 43913,
+          "lineElements": 1,
+          "polylineElements": 72,
+          "opaquePaper": false
+        }
+      ]
+    },
+    {
+      "id": "dialogue",
+      "geometryUnchanged": true,
+      "attempts": [
+        {
+          "attempt": "attempt-01",
+          "bytes": 97455,
+          "lineElements": 751,
+          "polylineElements": 0,
+          "opaquePaper": true
+        },
+        {
+          "attempt": "attempt-02",
+          "bytes": 12507,
+          "lineElements": 0,
+          "polylineElements": 11,
+          "opaquePaper": true
+        },
+        {
+          "attempt": "attempt-03",
+          "bytes": 12450,
+          "lineElements": 0,
+          "polylineElements": 11,
+          "opaquePaper": false
+        }
+      ]
+    },
+    {
+      "id": "map",
+      "geometryUnchanged": true,
+      "attempts": [
+        {
+          "attempt": "attempt-01",
+          "bytes": 434364,
+          "lineElements": 3701,
+          "polylineElements": 0,
+          "opaquePaper": true
+        },
+        {
+          "attempt": "attempt-02",
+          "bytes": 66048,
+          "lineElements": 0,
+          "polylineElements": 241,
+          "opaquePaper": true
+        },
+        {
+          "attempt": "attempt-03",
+          "bytes": 65991,
+          "lineElements": 0,
+          "polylineElements": 241,
+          "opaquePaper": false
+        }
+      ]
+    },
+    {
+      "id": "scene",
+      "geometryUnchanged": true,
+      "attempts": [
+        {
+          "attempt": "attempt-01",
+          "bytes": 290779,
+          "lineElements": 1,
+          "polylineElements": 202,
+          "opaquePaper": true
+        },
+        {
+          "attempt": "attempt-02",
+          "bytes": 136595,
+          "lineElements": 1,
+          "polylineElements": 202,
+          "opaquePaper": true
+        },
+        {
+          "attempt": "attempt-03",
+          "bytes": 136538,
+          "lineElements": 1,
+          "polylineElements": 202,
+          "opaquePaper": false
+        }
+      ]
+    }
+  ],
+  "postLoopIntegration": "Fever Dream exposed an existing core page-opacity option missing in MCP schema. Exposed it without changing default opacity; regression added. This was integration repair, not a fourth art-fidelity attempt.",
+  "checks": {
+    "baselineTests": 728,
+    "finalTests": 732,
+    "finalReleaseArtifacts": 8
+  }
+}

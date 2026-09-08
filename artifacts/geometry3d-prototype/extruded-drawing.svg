@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
+<title id="tp-title">Extruded TurtlePen T</title>
+<desc id="tp-desc">2 diagram elements across 1 visible page(s)</desc>
+<metadata>{"schema":5,"name":"Extruded TurtlePen T","view":null,"elements":2}</metadata>
+<style>
+  .bg { fill: #f4f3ef; }
+  .grid { stroke: #dedbd3; stroke-width: 0.5; }
+  .grid-major { stroke: #cbc7bd; stroke-width: 0.5; }
+  .box { fill: #e9e7e1; stroke: #2b2a26; stroke-width: 1; }
+  .box-label, .key-title, .key-label { fill: #2b2a26; }
+  .stroke { fill: #2b2a26; }
+  .hop { stroke: #2b2a26; }
+  .free-text { fill: #6b6862; }
+  .hit-S0 { fill: #8a5b56; opacity: 0.30; }
+  .hit-S1 { fill: #96755c; opacity: 0.28; }
+  .hit-S2 { fill: #87805a; opacity: 0.24; }
+  .hit-S3 { fill: #4a6572; opacity: 0.20; }
+  .dimmed { fill: url(#tp-stipple); }
+  .dither-run { fill: #2b2a26; }
+  .simplify-run { fill: #2b2a26; }
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #1a1917; }
+    .grid { stroke: #2e2c28; }
+    .grid-major { stroke: #3d3a35; }
+    .box { fill: #232220; stroke: #dedbd3; }
+    .box-label { fill: #dedbd3; }
+    .free-text { fill: #9a968d; }
+    .stroke { fill: #dedbd3; }
+    .hop { stroke: #dedbd3; }
+  }
+
+</style>
+<defs>
+
+  <!-- Grey earned by pattern rather than assumed. The stipple is drawn at the
+       5px quadrant so a dimmed element is made of the same units as every
+       other mark on the page. -->
+  <pattern id="tp-stipple" width="10" height="10" patternUnits="userSpaceOnUse">
+    <rect width="5" height="5" fill="#2b2a26"/>
+    <rect x="5" y="5" width="5" height="5" fill="#2b2a26"/>
+  </pattern>
+</defs>
+<rect class="bg" x="0" y="0" width="140" height="140"/>
+<g transform="translate(10,10)">
+<g data-page="base" data-z="0" opacity="1">
+<g data-element="top" role="group" aria-label="path top">
+<g data-id="top" data-kind="path" data-role="artwork" data-paint="cells"><rect x="10" y="10" width="100" height="5" fill="#2b2a26"/></g>
+</g>
+<g data-element="stem" role="group" aria-label="path stem">
+<g data-id="stem" data-kind="path" data-role="artwork" data-paint="cells"><rect x="60" y="10" width="5" height="5" fill="#2b2a26"/><rect x="60" y="15" width="5" height="5" fill="#2b2a26"/><rect x="60" y="20" width="5" height="5" fill="#2b2a26"/><rect x="60" y="25" width="5" height="5" fill="#2b2a26"/><rect x="60" y="30" width="5" height="5" fill="#2b2a26"/><rect x="60" y="35" width="5" height="5" fill="#2b2a26"/><rect x="60" y="40" width="5" height="5" fill="#2b2a26"/><rect x="60" y="45" width="5" height="5" fill="#2b2a26"/><rect x="60" y="50" width="5" height="5" fill="#2b2a26"/><rect x="60" y="55" width="5" height="5" fill="#2b2a26"/><rect x="60" y="60" width="5" height="5" fill="#2b2a26"/><rect x="60" y="65" width="5" height="5" fill="#2b2a26"/><rect x="60" y="70" width="5" height="5" fill="#2b2a26"/><rect x="60" y="75" width="5" height="5" fill="#2b2a26"/><rect x="60" y="80" width="5" height="5" fill="#2b2a26"/><rect x="60" y="85" width="5" height="5" fill="#2b2a26"/><rect x="60" y="90" width="5" height="5" fill="#2b2a26"/><rect x="60" y="95" width="5" height="5" fill="#2b2a26"/><rect x="60" y="100" width="5" height="5" fill="#2b2a26"/><rect x="60" y="105" width="5" height="5" fill="#2b2a26"/></g>
+</g>
+</g>
+</g>
+</svg>

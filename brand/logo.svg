@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1040" height="1100" viewBox="0 0 1040 1100" font-family="&quot;Segoe UI&quot;, Arial, sans-serif" role="img" aria-labelledby="tp-title tp-desc">
 <title id="tp-title">TurtlePen logo — turtle at easel</title>
 <desc id="tp-desc">60 diagram elements across 5 visible page(s)</desc>
-<metadata>{"schema":4,"name":"TurtlePen logo — turtle at easel","view":null,"elements":60}</metadata>
+<metadata>{"schema":5,"name":"TurtlePen logo — turtle at easel","view":null,"elements":60}</metadata>
 <style>
   .bg { fill: #f4f3ef; }
   .grid { stroke: #dedbd3; stroke-width: 0.5; }
@@ -162,10 +162,10 @@
 <g data-id="chest-seams" data-kind="path" data-role="artwork"><polyline points="367,502 472,502" fill="none" stroke="#001b35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="352,597 497,597" fill="none" stroke="#001b35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="367,692 507,692" fill="none" stroke="#001b35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
 </g>
 <g data-element="eye-left-white" role="group" aria-label="path eye-left-white">
-<g data-id="eye-left-white" data-kind="path" data-role="artwork" data-paint="cells"><rect x="430" y="200" width="5" height="5" fill="#fffdf5"/><rect x="410" y="205" width="45" height="5" fill="#fffdf5"/><rect x="405" y="210" width="55" height="5" fill="#fffdf5"/><rect x="400" y="215" width="65" height="5" fill="#fffdf5"/><rect x="395" y="220" width="75" height="5" fill="#fffdf5"/><rect x="390" y="225" width="85" height="5" fill="#fffdf5"/><rect x="390" y="230" width="85" height="5" fill="#fffdf5"/><rect x="390" y="235" width="85" height="5" fill="#fffdf5"/><rect x="390" y="240" width="85" height="5" fill="#fffdf5"/><rect x="385" y="245" width="95" height="5" fill="#fffdf5"/><rect x="390" y="250" width="85" height="5" fill="#fffdf5"/><rect x="390" y="255" width="85" height="5" fill="#fffdf5"/><rect x="390" y="260" width="85" height="5" fill="#fffdf5"/><rect x="390" y="265" width="85" height="5" fill="#fffdf5"/><rect x="395" y="270" width="75" height="5" fill="#fffdf5"/><rect x="400" y="275" width="65" height="5" fill="#fffdf5"/><rect x="405" y="280" width="55" height="5" fill="#fffdf5"/><rect x="410" y="285" width="45" height="5" fill="#fffdf5"/><rect x="430" y="290" width="5" height="5" fill="#fffdf5"/></g>
+<g data-id="eye-left-white" data-kind="path" data-role="artwork" data-paint="cells"><path data-fill="solid" d="M430,200h5v5h-5zM410,205h45v5h-45zM405,210h55v5h-55zM400,215h65v5h-65zM395,220h75v5h-75zM390,225h85v5h-85zM390,230h85v5h-85zM390,235h85v5h-85zM390,240h85v5h-85zM385,245h95v5h-95zM390,250h85v5h-85zM390,255h85v5h-85zM390,260h85v5h-85zM390,265h85v5h-85zM395,270h75v5h-75zM400,275h65v5h-65zM405,280h55v5h-55zM410,285h45v5h-45zM430,290h5v5h-5z" fill="#fffdf5"/></g>
 </g>
 <g data-element="eye-right-white" role="group" aria-label="path eye-right-white">
-<g data-id="eye-right-white" data-kind="path" data-role="artwork" data-paint="cells"><rect x="565" y="200" width="5" height="5" fill="#fffdf5"/><rect x="550" y="205" width="35" height="5" fill="#fffdf5"/><rect x="540" y="210" width="55" height="5" fill="#fffdf5"/><rect x="535" y="215" width="65" height="5" fill="#fffdf5"/><rect x="535" y="220" width="65" height="5" fill="#fffdf5"/><rect x="530" y="225" width="75" height="5" fill="#fffdf5"/><rect x="530" y="230" width="75" height="5" fill="#fffdf5"/><rect x="530" y="235" width="75" height="5" fill="#fffdf5"/><rect x="525" y="240" width="85" height="5" fill="#fffdf5"/><rect x="530" y="245" width="75" height="5" fill="#fffdf5"/><rect x="530" y="250" width="75" height="5" fill="#fffdf5"/><rect x="530" y="255" width="75" height="5" fill="#fffdf5"/><rect x="535" y="260" width="65" height="5" fill="#fffdf5"/><rect x="535" y="265" width="65" height="5" fill="#fffdf5"/><rect x="540" y="270" width="55" height="5" fill="#fffdf5"/><rect x="550" y="275" width="35" height="5" fill="#fffdf5"/><rect x="565" y="280" width="5" height="5" fill="#fffdf5"/></g>
+<g data-id="eye-right-white" data-kind="path" data-role="artwork" data-paint="cells"><path data-fill="solid" d="M565,200h5v5h-5zM550,205h35v5h-35zM540,210h55v5h-55zM535,215h65v5h-65zM535,220h65v5h-65zM530,225h75v5h-75zM530,230h75v5h-75zM530,235h75v5h-75zM525,240h85v5h-85zM530,245h75v5h-75zM530,250h75v5h-75zM530,255h75v5h-75zM535,260h65v5h-65zM535,265h65v5h-65zM540,270h55v5h-55zM550,275h35v5h-35zM565,280h5v5h-5z" fill="#fffdf5"/></g>
 </g>
 <g data-element="eye-left-outline" role="group" aria-label="path eye-left-outline">
 <g data-id="eye-left-outline" data-kind="path" data-role="artwork"><polyline points="387,247 387,237 397,217 422,202 442,202 462,212 477,237 477,257 467,277 442,292 422,292 402,282 387,252" fill="none" stroke="#001b35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
@@ -174,22 +174,22 @@
 <g data-id="eye-right-outline" data-kind="path" data-role="artwork"><polyline points="527,242 532,222 557,202 577,202 587,207 607,232 607,252 602,262 577,282 557,282 547,277 532,262 527,247" fill="none" stroke="#001b35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
 </g>
 <g data-element="pupil-left" role="group" aria-label="path pupil-left">
-<g data-id="pupil-left" data-kind="path" data-role="artwork" data-paint="cells"><rect x="435" y="225" width="5" height="5" fill="#001b35"/><rect x="425" y="230" width="25" height="5" fill="#001b35"/><rect x="420" y="235" width="35" height="5" fill="#001b35"/><rect x="420" y="240" width="35" height="5" fill="#001b35"/><rect x="415" y="245" width="45" height="5" fill="#001b35"/><rect x="420" y="250" width="35" height="5" fill="#001b35"/><rect x="420" y="255" width="35" height="5" fill="#001b35"/><rect x="425" y="260" width="25" height="5" fill="#001b35"/><rect x="435" y="265" width="5" height="5" fill="#001b35"/></g>
+<g data-id="pupil-left" data-kind="path" data-role="artwork" data-paint="cells"><path data-fill="solid" d="M435,225h5v5h-5zM425,230h25v5h-25zM420,235h35v5h-35zM420,240h35v5h-35zM415,245h45v5h-45zM420,250h35v5h-35zM420,255h35v5h-35zM425,260h25v5h-25zM435,265h5v5h-5z" fill="#001b35"/></g>
 </g>
 <g data-element="pupil-right" role="group" aria-label="path pupil-right">
-<g data-id="pupil-right" data-kind="path" data-role="artwork" data-paint="cells"><rect x="555" y="230" width="5" height="5" fill="#001b35"/><rect x="545" y="235" width="25" height="5" fill="#001b35"/><rect x="545" y="240" width="25" height="5" fill="#001b35"/><rect x="540" y="245" width="35" height="5" fill="#001b35"/><rect x="545" y="250" width="25" height="5" fill="#001b35"/><rect x="545" y="255" width="25" height="5" fill="#001b35"/><rect x="555" y="260" width="5" height="5" fill="#001b35"/></g>
+<g data-id="pupil-right" data-kind="path" data-role="artwork" data-paint="cells"><path data-fill="solid" d="M555,230h5v5h-5zM545,235h25v5h-25zM545,240h25v5h-25zM540,245h35v5h-35zM545,250h25v5h-25zM545,255h25v5h-25zM555,260h5v5h-5z" fill="#001b35"/></g>
 </g>
 <g data-element="eye-glint-left" role="group" aria-label="path eye-glint-left">
-<g data-id="eye-glint-left" data-kind="path" data-role="artwork" data-paint="cells"><rect x="440" y="230" width="5" height="5" fill="#fffdf5"/><rect x="435" y="235" width="15" height="5" fill="#fffdf5"/><rect x="440" y="240" width="5" height="5" fill="#fffdf5"/></g>
+<g data-id="eye-glint-left" data-kind="path" data-role="artwork" data-paint="cells"><path data-fill="solid" d="M440,230h5v5h-5zM435,235h15v5h-15zM440,240h5v5h-5z" fill="#fffdf5"/></g>
 </g>
 <g data-element="eye-glint-right" role="group" aria-label="path eye-glint-right">
-<g data-id="eye-glint-right" data-kind="path" data-role="artwork" data-paint="cells"><rect x="560" y="230" width="5" height="5" fill="#fffdf5"/><rect x="555" y="235" width="15" height="5" fill="#fffdf5"/><rect x="560" y="240" width="5" height="5" fill="#fffdf5"/></g>
+<g data-id="eye-glint-right" data-kind="path" data-role="artwork" data-paint="cells"><path data-fill="solid" d="M560,230h5v5h-5zM555,235h15v5h-15zM560,240h5v5h-5z" fill="#fffdf5"/></g>
 </g>
 <g data-element="brow" role="group" aria-label="path brow">
 <g data-id="brow" data-kind="path" data-role="artwork"><polyline points="392,197 417,182 457,182" fill="none" stroke="#001b35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
 </g>
 <g data-element="nostril" role="group" aria-label="path nostril">
-<g data-id="nostril" data-kind="path" data-role="artwork" data-paint="cells"><rect x="560" y="300" width="5" height="5" fill="#001b35"/><rect x="555" y="305" width="15" height="5" fill="#001b35"/><rect x="560" y="310" width="5" height="5" fill="#001b35"/></g>
+<g data-id="nostril" data-kind="path" data-role="artwork" data-paint="cells"><path data-fill="solid" d="M560,300h5v5h-5zM555,305h15v5h-15zM560,310h5v5h-5z" fill="#001b35"/></g>
 </g>
 <g data-element="smile" role="group" aria-label="path smile">
 <g data-id="smile" data-kind="path" data-role="artwork"><polyline points="467,327 487,347 507,352 512,357 552,347" fill="none" stroke="#001b35" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>

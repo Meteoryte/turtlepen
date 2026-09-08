@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1080" height="750" viewBox="0 0 1080 750" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
 <title id="tp-title">TurtlePen native editing</title>
 <desc id="tp-desc">22 diagram elements across 3 visible page(s)</desc>
-<metadata>{"schema":4,"name":"TurtlePen native editing","view":null,"elements":22}</metadata>
+<metadata>{"schema":5,"name":"TurtlePen native editing","view":null,"elements":22}</metadata>
 <style>
   .bg { fill: #f8fafc; }
   .grid { stroke: #dedbd3; stroke-width: 0.5; }

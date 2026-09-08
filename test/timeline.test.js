@@ -111,7 +111,7 @@ test('timeline source and baseline survive deterministic serialization', () => {
   core.applyTimeline(doc, { id: 'history', layout: 'detailed', events: EVENTS });
   const json = core.serialize(doc);
   const reopened = core.deserialize(json);
-  assert.equal(reopened.schema, 4);
+  assert.equal(reopened.schema, 5);
   assert.equal(core.findTimeline(reopened, 'history').events.length, 4);
   assert.ok(core.findTimeline(reopened, 'history').generated.baselines['history__stdio__card']);
   assert.equal(core.serialize(reopened), json);

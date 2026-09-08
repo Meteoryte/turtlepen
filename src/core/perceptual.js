@@ -72,6 +72,9 @@ export function normalizeRenderProfile(raw = {}) {
   };
   if (typeof profile.showGrid !== 'boolean') fail('render profile showGrid must be boolean');
   if (typeof profile.markFindings !== 'boolean') fail('render profile markFindings must be boolean');
+  if (raw.transparent != null && typeof raw.transparent !== 'boolean') fail('render profile transparent must be boolean');
+  // Keep legacy opaque profiles stable, while binding transparent output to its own review.
+  if (raw.transparent === true) profile.transparent = true;
   if (!['content', 'canvas'].includes(profile.bounds)) fail('render profile bounds must be content or canvas');
   if (!Number.isSafeInteger(profile.margin) || profile.margin < 0) fail('render profile margin must be a non-negative whole number');
   return Object.freeze(profile);

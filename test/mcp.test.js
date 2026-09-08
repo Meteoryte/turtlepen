@@ -29,7 +29,7 @@ test('the tool module loads and every tool is well formed', () => {
   const tools = createTools(createSession());
   assert.ok(tools.length > 0, 'the live tool registry is not empty');
   for (const t of tools) {
-    assert.match(t.name, /^[a-z_]+$/, `bad tool name "${t.name}"`);
+    assert.match(t.name, /^[a-z_][a-z0-9_]*$/, `bad tool name "${t.name}"`);
     assert.ok(t.description.length > 30, `${t.name} needs a real description`);
     assert.equal(t.inputSchema.type, 'object', `${t.name} schema`);
     assert.equal(t.outputSchema.type, 'object', `${t.name} output schema`);
@@ -111,7 +111,7 @@ test('runtime diagnostics report the one package version and live capability fin
   const tools = createTools(createSession());
   const info = JSON.parse(await tools.find((tool) => tool.name === 'runtime_info').handler({}));
   assert.equal(info.version, VERSION);
-  assert.equal(info.schemaVersion, 4);
+  assert.equal(info.schemaVersion, 5);
   assert.equal(info.toolCount, tools.length);
   assert.match(info.capabilityFingerprint, /^[0-9a-f]{16}$/);
   assert.equal(info.activeDocument, null);

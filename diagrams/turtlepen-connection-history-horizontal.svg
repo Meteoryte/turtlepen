@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="2060" height="340" viewBox="0 0 2060 340" font-family="ui-monospace, SFMono-Regular, &quot;Cascadia Mono&quot;, Menlo, Consolas, monospace" role="img" aria-labelledby="tp-title tp-desc">
 <title id="tp-title">TurtlePen connection history</title>
 <desc id="tp-desc">20 diagram elements across 4 visible page(s)</desc>
-<metadata>{"schema":4,"name":"TurtlePen connection history","view":null,"elements":20}</metadata>
+<metadata>{"schema":5,"name":"TurtlePen connection history","view":null,"elements":20}</metadata>
 <style>
   .bg { fill: #f4f3ef; }
   .grid { stroke: #dedbd3; stroke-width: 0.5; }
@@ -123,7 +123,7 @@ current">
 <g data-id="turtlepen-history__original-prototype__marker" data-kind="path" data-role="artwork"><polyline points="202,212 192,222 182,212 197,212" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
 <g data-element="turtlepen-history__canonical-engine__marker" role="group" aria-label="path turtlepen-history__canonical-engine__marker: Marker for Canonical stateful engine">
-<g data-id="turtlepen-history__canonical-engine__marker" data-kind="path" data-role="artwork"><polyline points="542,202 537,207 542,207" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><polyline points="532,212 542,212" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><polyline points="527,217 542,217" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><polyline points="522,222 542,222" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/></g>
+<g data-id="turtlepen-history__canonical-engine__marker" data-kind="path" data-role="artwork"><g data-id="turtlepen-history__canonical-engine__marker" data-kind="path" data-role="artwork" data-paint="cells"><path data-fill="solid" d="M540,200h5v5h-5zM535,205h10v5h-10zM530,210h15v5h-15zM525,215h20v5h-20zM520,220h25v5h-25z" fill="#2b2a26"/></g></g>
 </g>
 <g data-element="turtlepen-history__stale-beta-connector__marker" role="group" aria-label="path turtlepen-history__stale-beta-connector__marker: Marker for Installed beta connector stayed stale">
 <g data-id="turtlepen-history__stale-beta-connector__marker" data-kind="path" data-role="artwork"><polyline points="882,212 872,222 862,212 877,212" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/></g>
@@ -132,10 +132,10 @@ current">
 <g data-id="turtlepen-history__unsupported-sites-key__marker" data-kind="path" data-role="artwork"><polyline points="1222,212 1212,222 1202,212 1217,212" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/></g>
 </g>
 <g data-element="turtlepen-history__capability-restored__marker" role="group" aria-label="path turtlepen-history__capability-restored__marker: Marker for Supported MCP capability published">
-<g data-id="turtlepen-history__capability-restored__marker" data-kind="path" data-role="artwork"><polyline points="1562,202 1557,207 1562,207" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><polyline points="1552,212 1562,212" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><polyline points="1547,217 1562,217" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><polyline points="1542,222 1562,222" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/></g>
+<g data-id="turtlepen-history__capability-restored__marker" data-kind="path" data-role="artwork"><g data-id="turtlepen-history__capability-restored__marker" data-kind="path" data-role="artwork" data-paint="cells"><path data-fill="solid" d="M1560,200h5v5h-5zM1555,205h10v5h-10zM1550,210h15v5h-15zM1545,215h20v5h-20zM1540,220h25v5h-25z" fill="#2b2a26"/></g></g>
 </g>
 <g data-element="turtlepen-history__account-feature-setting__marker" role="group" aria-label="path turtlepen-history__account-feature-setting__marker: Marker for Account setting still controls access">
-<g data-id="turtlepen-history__account-feature-setting__marker" data-kind="path" data-role="artwork"><polyline points="1892,202 1887,207 1897,207" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><polyline points="1882,212 1902,212" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><polyline points="1887,217 1897,217 1892,222" fill="none" stroke="#2b2a26" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/></g>
+<g data-id="turtlepen-history__account-feature-setting__marker" data-kind="path" data-role="artwork"><g data-id="turtlepen-history__account-feature-setting__marker" data-kind="path" data-role="artwork" data-paint="cells"><path data-fill="solid" d="M1890,200h5v5h-5zM1885,205h15v5h-15zM1880,210h25v5h-25zM1885,215h15v5h-15zM1890,220h5v5h-5z" fill="#2b2a26"/></g></g>
 </g>
 </g>
 </g>

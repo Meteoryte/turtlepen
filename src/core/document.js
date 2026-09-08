@@ -23,6 +23,7 @@ import { assertEmbeddedSource, assertMode as assertImageMode, scaleReport } from
 import { analyseRuns, SIMPLIFY_DETAILS, SIMPLIFY_SUPERSAMPLES } from './dither.js';
 import { restorePerceptualReview } from './perceptual.js';
 import { createWorkspaceState, restoreWorkspaceState } from './workspace.js';
+import { deserializeTpf } from './geometry3d/scene.js';
 
 // `schematic` stacks exactly like `exclusive`; it exists to carry authorial meaning —
 // "this page is deliberately spare" — which the composition rules read and skip.
@@ -31,7 +32,7 @@ export const PATH_ROLES = Object.freeze(['connector', 'artwork']);
 export const PATH_PAINTS = Object.freeze(['line', 'cells']);
 export const TEXT_ALIGNS = Object.freeze(['left', 'center', 'right']);
 export const IMAGE_FITS = Object.freeze(['contain', 'cover']);
-export const SCHEMA_VERSION = 4;
+export const SCHEMA_VERSION = 5;
 
 function restoreTimelineRecords(value) {
   if (value == null) return [];
@@ -1046,6 +1047,7 @@ export function serialize(doc) {
       // perspective receipt is the only durable record of real-world inputs.
       ...(doc.wireframe ? { wireframe: doc.wireframe } : {}),
       ...(doc.perspective_scene ? { perspective_scene: doc.perspective_scene } : {}),
+      ...(doc.geometry3d ? { geometry3d: deserializeTpf(doc.geometry3d) } : {}),
       ...(doc.perceptual ? { perceptual: doc.perceptual } : {}),
       // Present only when the adjudication gate was overridden. Its absence is
       // the normal case and says the document was written clean.
@@ -1058,12 +1060,13 @@ export function serialize(doc) {
 
 export function deserialize(json) {
   const parsed = typeof json === 'string' ? JSON.parse(json) : json;
-  if (![1, 2, 3, SCHEMA_VERSION].includes(parsed.schema)) {
-    throw new Error(`document schema ${parsed.schema} is not supported by this build (expected 1, 2, 3, or ${SCHEMA_VERSION})`);
+  if (![1, 2, 3, 4, SCHEMA_VERSION].includes(parsed.schema)) {
+    throw new Error(`document schema ${parsed.schema} is not supported by this build (expected 1, 2, 3, 4, or ${SCHEMA_VERSION})`);
   }
   // Schema 2 added durable perceptual review. Schema 3 added workspace views,
   // themes, resources, and semantic finding acceptances. Schema 4 adds durable
-  // semantic timeline source. None of these migrations rewrites geometry.
+  // semantic timeline source. Schema 5 adds independent spatial geometry.
+  // None of these migrations rewrites the 2D geometry.
   const raw = parsed.schema < SCHEMA_VERSION ? { ...parsed, schema: SCHEMA_VERSION } : parsed;
   if (raw.groups != null && !Array.isArray(raw.groups)) throw new TypeError('document groups must be an array');
   if (raw.constraints != null && !Array.isArray(raw.constraints)) throw new TypeError('document constraints must be an array');
@@ -1096,6 +1099,7 @@ export function deserialize(json) {
     createdAt: raw.createdAt,
     ...(raw.wireframe ? { wireframe: raw.wireframe } : {}),
     ...(raw.perspective_scene ? { perspective_scene: raw.perspective_scene } : {}),
+    ...(raw.geometry3d != null ? { geometry3d: deserializeTpf(raw.geometry3d) } : {}),
     ...(raw.forcedSave ? { forcedSave: raw.forcedSave } : {}),
   };
   for (const [page, elements] of Object.entries(doc.elements ?? {})) {

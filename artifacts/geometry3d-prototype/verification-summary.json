@@ -1,0 +1,44 @@
+{
+  "verifiedAt": "2026-09-08T18:42:39.679Z",
+  "scope": "local recovered first prototype",
+  "tests": {
+    "passed": 751,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fullCheck": "PASS",
+  "governance": "READY",
+  "toolCount": 87,
+  "documentSchema": 5,
+  "tpfSchema": 1,
+  "independentBlender": {
+    "version": "5.0.1",
+    "passed": 7,
+    "failed": 0
+  },
+  "all11ExportsMatchCurrentSource": true,
+  "physicalPrint": "not_tested",
+  "slicer": "not_tested",
+  "productionDeployment": "not_performed",
+  "codeHashes": {
+    "src/core/geometry3d/index.js": "a08f7f7dbf9f8c8972cacb5c7c7185e725d96dc2eabaa126f39957e1b4a8857f",
+    "src/core/geometry3d/scene.js": "73282bef6bc51a78a0ff36dc1017af462ed1a94986e8ad03b40aa3440a7266e6",
+    "src/core/geometry3d/math.js": "b3ae1cf6b50c28dd9f5ed22d9d22c127d0d41080b3b36f11b4152b2187951076",
+    "src/core/geometry3d/mesh.js": "5e88ae8f961338cc6f77d68908967c3ede3bcf187eb0b87136fc260d4b4d353c",
+    "src/core/geometry3d/primitives.js": "deefc62a28e3d3ffe2afdbcd2f4c1addcce1109a33cfcb70709a0ef3a427c8f6",
+    "src/core/geometry3d/export.js": "ef34b8a8f840b9ff3b3d5093a3a6b751e8196ac826b2ef60a8ef3058fecb50ca",
+    "src/core/geometry3d-document.js": "ca7fd40981b46bccfaac2b8960ccaf17c61d2d7c82a3ab6b9221195346a25228",
+    "src/core/document.js": "38b368c8c74630efcbbe1569b9793d135f093c4f9226acdc677bba747f015029",
+    "src/core/index.js": "e624bca91f8f1bc96292ac9b03741a57ab94e05cb6b12cced961c2845c98cba5",
+    "src/mcp/geometry3d-tools.js": "9e4b26e0276ab7aa3b7b95909b76fad8f4f28bf0c6c049e4590a088ea67ede41",
+    "src/mcp/tools.js": "7cf06d0ab4184539b899162a527e8d91c7920bd115b3a932f7e94e7774ad2924",
+    "src/cli.js": "cbf924a5794e77fa98916ed6263a38273b7826faa1aed91362218c815cb68998",
+    "src/capabilities.js": "4f01ba4e116b538c524d34f426791785bad38b8749d22b76f7ebbc6960517dd1",
+    "test/geometry3d.test.js": "fa5b3b7e352905b79ec15f364896f8073b9b867d6077451a126ff1914b48abe9",
+    "test/geometry3d-integration.test.js": "41b3b6f4f4a95cc86cbf1f612655af96face145085f369cbf97f31e761e4016c",
+    "test/cloudflare-mcp.test.js": "c61dc7ed4abd1a33ad42b7f56822d2e213842755a8f890045c702c845132635a",
+    "test/endpoints.test.js": "bf2ca6d889f78afc69fccae3e60cc289921bdc47e08d4672dfac16d586373032",
+    "examples/geometry3d-prototype.js": "a20d6f93943c42fe19f62ce0cfe871331b03055cfe1ebb39fb5bb7f7ba848710",
+    "examples/verify-geometry3d-blender.py": "785656e6679a4c0730b11cdf7309b9fe20b54a80bccef3f6917c74a13eb2c526"
+  }
+}

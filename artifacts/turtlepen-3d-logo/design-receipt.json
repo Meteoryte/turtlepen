@@ -1,0 +1,28 @@
+{
+  "source": "brand/logo.turtlepen.json",
+  "sourceHash": "1d9fbf1bc50000fae56c73faea80f8da6b8ec4788aef1a216075836a9fd0dde2",
+  "canonicalLogoReplaced": false,
+  "fullScene": {
+    "objects": 63,
+    "wordmark": "native TurtleFont",
+    "style": "fully dimensional turtle at easel; lime/navy/cream palette"
+  },
+  "brandRedesign": {
+    "concept": "Turtle silhouette with a fountain-pen nib in the shell",
+    "pitchMillimeters": 0.5,
+    "baseThicknessMillimeters": 3,
+    "totalHeightMillimeters": 5.6,
+    "bridgeCounts": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "wordmark": "native TurtleFont",
+    "sizeMillimeters": [
+      84,
+      84
+    ],
+    "approval": "new concept requested by user; canonical brand not replaced"
+  }
+}
