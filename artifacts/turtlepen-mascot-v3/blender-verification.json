@@ -1,0 +1,647 @@
+{
+  "passed": true,
+  "blender": "5.0.1",
+  "device": "NVIDIA GeForce RTX 4080 SUPER",
+  "source": "mascot.glb",
+  "sha256": "68bb8c100ba0108c5fd5fb4af0b175c995e2e54dbb2b4bf2d5e18111d5614e76",
+  "boundsMeters": {
+    "min": [
+      -0.0829537883400917,
+      -0.024936165660619736,
+      0.0
+    ],
+    "max": [
+      0.10758815705776215,
+      0.04892406985163689,
+      0.14300000667572021
+    ]
+  },
+  "toeCounts": {
+    "near": 3,
+    "far": 3
+  },
+  "parts": [
+    {
+      "object": "shell-convex-carapace",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 0.00011550319573284991
+    },
+    {
+      "object": "shell-body-side-rim",
+      "triangles": 1464,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 2.625891190485755e-07
+    },
+    {
+      "object": "shell-false-central-seam-0",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.3451248525586007e-08
+    },
+    {
+      "object": "shell-false-central-seam-1",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.5077243265837116e-08
+    },
+    {
+      "object": "shell-false-central-seam-2",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.5894305419867573e-08
+    },
+    {
+      "object": "shell-false-central-seam-3",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.2075522993953497e-08
+    },
+    {
+      "object": "shell-false-central-seam-4",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.58943033733588e-08
+    },
+    {
+      "object": "shell-false-central-seam-5",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.5077238074004478e-08
+    },
+    {
+      "object": "shell-false-radial-seam-0",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 8.37760230047805e-09
+    },
+    {
+      "object": "shell-false-radial-seam-1",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 8.377600943548115e-09
+    },
+    {
+      "object": "shell-false-radial-seam-2",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 7.649988596373975e-09
+    },
+    {
+      "object": "shell-false-radial-seam-3",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 8.932902150629575e-09
+    },
+    {
+      "object": "shell-false-radial-seam-4",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 8.932912440598656e-09
+    },
+    {
+      "object": "shell-false-radial-seam-5",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 7.64998863551077e-09
+    },
+    {
+      "object": "shell-true-central-seam-0",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.345124739381349e-08
+    },
+    {
+      "object": "shell-true-central-seam-1",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.5077243458383557e-08
+    },
+    {
+      "object": "shell-true-central-seam-2",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.5894308635025467e-08
+    },
+    {
+      "object": "shell-true-central-seam-3",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.2075526065464173e-08
+    },
+    {
+      "object": "shell-true-central-seam-4",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.5894306989601296e-08
+    },
+    {
+      "object": "shell-true-central-seam-5",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.507723849021527e-08
+    },
+    {
+      "object": "shell-true-radial-seam-0",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 8.377602082953925e-09
+    },
+    {
+      "object": "shell-true-radial-seam-1",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 8.37760343297362e-09
+    },
+    {
+      "object": "shell-true-radial-seam-2",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 7.649984463022068e-09
+    },
+    {
+      "object": "shell-true-radial-seam-3",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 8.93290400654556e-09
+    },
+    {
+      "object": "shell-true-radial-seam-4",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 8.932903482823393e-09
+    },
+    {
+      "object": "shell-true-radial-seam-5",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 7.649987071679182e-09
+    },
+    {
+      "object": "body",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 3.562110686001328e-05
+    },
+    {
+      "object": "plastron",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.044016881777751e-05
+    },
+    {
+      "object": "belly-plate-seam-42",
+      "triangles": 984,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 6.1651720669490775e-09
+    },
+    {
+      "object": "belly-plate-seam-57",
+      "triangles": 984,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 7.171232270627446e-09
+    },
+    {
+      "object": "belly-plate-seam-72",
+      "triangles": 984,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.769294821992682e-09
+    },
+    {
+      "object": "near-leg",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 6.138169734034201e-06
+    },
+    {
+      "object": "near-foot-instep",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 3.1616973897290695e-06
+    },
+    {
+      "object": "near-toe-1",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.757003255964105e-07
+    },
+    {
+      "object": "near-toe-2",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.757003317546022e-07
+    },
+    {
+      "object": "near-toe-3",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.757003581943285e-07
+    },
+    {
+      "object": "far-leg",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 6.138169697517925e-06
+    },
+    {
+      "object": "far-foot-instep",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 3.1616973512596723e-06
+    },
+    {
+      "object": "far-toe-1",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.757003458278155e-07
+    },
+    {
+      "object": "far-toe-2",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.757003463884084e-07
+    },
+    {
+      "object": "far-toe-3",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.757003495662208e-07
+    },
+    {
+      "object": "neck",
+      "triangles": 1584,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 6.1162624640124e-06
+    },
+    {
+      "object": "head",
+      "triangles": 6016,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 6.249738423105226e-05
+    },
+    {
+      "object": "near-eye-outline",
+      "triangles": 1520,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 6.748549801166653e-07
+    },
+    {
+      "object": "near-eye-white",
+      "triangles": 1520,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.927319058258533e-07
+    },
+    {
+      "object": "near-pupil",
+      "triangles": 1520,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.7105726835992826e-08
+    },
+    {
+      "object": "near-eye-highlight",
+      "triangles": 528,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.7096324973178232e-09
+    },
+    {
+      "object": "far-eye-outline",
+      "triangles": 1520,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.370762495731981e-07
+    },
+    {
+      "object": "far-eye-white",
+      "triangles": 1520,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 4.6405127776825836e-07
+    },
+    {
+      "object": "far-pupil",
+      "triangles": 1520,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.7105746655554096e-08
+    },
+    {
+      "object": "far-eye-highlight",
+      "triangles": 528,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.7096317348880804e-09
+    },
+    {
+      "object": "eyebrow",
+      "triangles": 744,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.8264138073302544e-08
+    },
+    {
+      "object": "smile",
+      "triangles": 1464,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 3.434529188084692e-08
+    },
+    {
+      "object": "smile-corner",
+      "triangles": 504,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 3.580049454052309e-09
+    },
+    {
+      "object": "near-nostril",
+      "triangles": 528,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 2.61939723549826e-09
+    },
+    {
+      "object": "far-nostril",
+      "triangles": 528,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 2.619400084365112e-09
+    },
+    {
+      "object": "resting-arm",
+      "triangles": 1968,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 4.040639040381072e-06
+    },
+    {
+      "object": "resting-palm",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 8.120224271185133e-07
+    },
+    {
+      "object": "resting-finger-1",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.3567042281827824e-07
+    },
+    {
+      "object": "resting-finger-2",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.3567042663454685e-07
+    },
+    {
+      "object": "resting-finger-3",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.356704291296466e-07
+    },
+    {
+      "object": "drawing-arm",
+      "triangles": 3136,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 7.308437223438158e-06
+    },
+    {
+      "object": "drawing-palm",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 7.425205345659138e-07
+    },
+    {
+      "object": "gripping-fingers",
+      "triangles": 840,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 2.731050013031663e-07
+    },
+    {
+      "object": "gripping-thumb",
+      "triangles": 2976,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 2.0900579457601574e-07
+    },
+    {
+      "object": "pen-barrel",
+      "triangles": 256,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 6.005305968363072e-07
+    },
+    {
+      "object": "pen-gold-band",
+      "triangles": 128,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 2.225152484475426e-08
+    },
+    {
+      "object": "fountain-nib",
+      "triangles": 144,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 4.0980824278951976e-08
+    },
+    {
+      "object": "easel-left-leg",
+      "triangles": 960,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 3.0988776982568304e-06
+    },
+    {
+      "object": "easel-right-leg",
+      "triangles": 960,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 3.1170415108210667e-06
+    },
+    {
+      "object": "easel-back-leg",
+      "triangles": 960,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 3.7367841371637093e-06
+    },
+    {
+      "object": "easel-cross-brace",
+      "triangles": 960,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.3323665632587627e-06
+    },
+    {
+      "object": "board",
+      "triangles": 960,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 2.460693298443521e-05
+    },
+    {
+      "object": "paper",
+      "triangles": 960,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 5.250762452413588e-06
+    },
+    {
+      "object": "easel-tray",
+      "triangles": 960,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 3.639838429776274e-06
+    },
+    {
+      "object": "clip-stem",
+      "triangles": 960,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 3.7972114228760477e-07
+    },
+    {
+      "object": "clip-back",
+      "triangles": 960,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 7.576656575356645e-07
+    },
+    {
+      "object": "clip-face",
+      "triangles": 960,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.2191193879774135e-07
+    },
+    {
+      "object": "drawn-curve",
+      "triangles": 1568,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 7.639733822892209e-08
+    },
+    {
+      "object": "drawn-arrow",
+      "triangles": 800,
+      "nonManifoldEdges": 0,
+      "nonManifoldVertices": 0,
+      "volumeCubicMeters": 1.730501545094151e-08
+    }
+  ],
+  "renders": [
+    {
+      "file": "mascot-front.png",
+      "sha256": "d4aef4dadc2588ccd7cce131c9fc64ce31a7aac74acf88d4327f10bfae613169",
+      "camera": [
+        -110,
+        -340,
+        165
+      ],
+      "target": [
+        10,
+        8,
+        70
+      ]
+    },
+    {
+      "file": "mascot-back.png",
+      "sha256": "b9d5a3508b26babefcfe31d837065d300727f80cce7ffa4b4adf9ee1e9b40f4e",
+      "camera": [
+        -140,
+        290,
+        170
+      ],
+      "target": [
+        10,
+        8,
+        70
+      ]
+    },
+    {
+      "file": "mascot-side.png",
+      "sha256": "1f4fda7863036dfdaa5244749c693e03eae91b5437e2035ba2c8a64bc9a38092",
+      "camera": [
+        -300,
+        -60,
+        150
+      ],
+      "target": [
+        -40,
+        4,
+        71
+      ]
+    },
+    {
+      "file": "mascot-detail.png",
+      "sha256": "6b8f528bbab5188569ca63a379f07947d7a0a50b97bb98839d263e3341ab3b46",
+      "camera": [
+        -70,
+        -360,
+        160
+      ],
+      "target": [
+        -40,
+        -8,
+        98
+      ]
+    }
+  ],
+  "previewGeometry": "Unmodified native TurtlePen GLB positions/normals; staging, lighting and material roughness only",
+  "assembly": "Intentional overlapping colored components; not a fused solid",
+  "slicerAcceptance": "not_tested",
+  "physicalPrint": "not_tested"
+}

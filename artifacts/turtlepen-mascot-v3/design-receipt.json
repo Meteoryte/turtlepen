@@ -1,0 +1,37 @@
+{
+  "reference": "approved-reference.png",
+  "nativeAuthoring": "TurtlePen geometry3d commands; no downstream sculpting",
+  "toeCount": {
+    "near": 3,
+    "far": 3
+  },
+  "toeObjects": [
+    "near-toe-1",
+    "near-toe-2",
+    "near-toe-3",
+    "far-toe-1",
+    "far-toe-2",
+    "far-toe-3"
+  ],
+  "shell": {
+    "center": [
+      -55,
+      16,
+      63
+    ],
+    "backwardDirection": [
+      -0.573576436351046,
+      0.8191520442889918,
+      0
+    ],
+    "outerRadiiMm": [
+      30,
+      22,
+      42
+    ],
+    "interior": "Solid outer-carapace approximation, overlapping the body; no hollow wall claim"
+  },
+  "sourceInterpretation": "Editable sculpted interpretation of the user-approved 2D image; hidden surfaces authored explicitly",
+  "fabrication": "overlapping colored assembly, not a fused print-ready solid",
+  "referenceSha256": "249a4004921f63f685373225093ba00d99ce81ccd905beed5947d6665392db50"
+}
