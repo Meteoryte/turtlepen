@@ -129,8 +129,9 @@ test('the Cloudflare adapter exposes and preserves the canonical registry throug
 
   const listed = await handlers.POST(rpcRequest({ jsonrpc: '2.0', id: 2, method: 'tools/list' }, session));
   const tools = (await message(listed)).result.tools;
-  assert.equal(tools.length, createTools(createSession()).length);
+  assert.equal(tools.length, createTools(createSession()).length + 1);
   assert.ok(tools.some((tool) => tool.name === 'release_check'));
+  assert.ok(tools.some((tool) => tool.name === 'open_studio' && tool._meta?.ui?.resourceUri === 'ui://turtlepen/studio/v1'));
   assert.ok(tools.every((tool) => tool.outputSchema?.type === 'object'));
 
   const runtimeResponse = await handlers.POST(rpcRequest({
@@ -142,6 +143,45 @@ test('the Cloudflare adapter exposes and preserves the canonical registry throug
   assert.equal(runtime.structuredContent.result.toolCount, createTools(createSession()).length);
   assert.equal(runtime.structuredContent.result.version, VERSION);
   assert.equal(db.sessions.get(session).version, 4, 'each request commits one optimistic state version');
+});
+
+test('the Cloudflare adapter exposes TurtlePen Studio as an MCP Apps resource', async () => {
+  const db = new MemoryD1();
+  const artifacts = new MemoryBucket();
+  const handlers = createCloudflareHandlers({ getBindings: async () => ({ db, artifacts }) });
+
+  const initialized = await handlers.POST(rpcRequest({
+    jsonrpc: '2.0', id: 1, method: 'initialize',
+    params: { protocolVersion: '2025-06-18', capabilities: {} },
+  }));
+  const initMessage = await message(initialized);
+  assert.deepEqual(initMessage.result.capabilities.resources, { listChanged: false });
+  const session = initialized.headers.get('mcp-session-id');
+
+  const listed = await handlers.POST(rpcRequest({ jsonrpc: '2.0', id: 2, method: 'resources/list' }, session));
+  const resources = (await message(listed)).result.resources;
+  assert.equal(resources.length, 1);
+  assert.equal(resources[0].uri, 'ui://turtlepen/studio/v1');
+  assert.equal(resources[0].mimeType, 'text/html;profile=mcp-app');
+
+  const read = await handlers.POST(rpcRequest({
+    jsonrpc: '2.0', id: 3, method: 'resources/read',
+    params: { uri: 'ui://turtlepen/studio/v1' },
+  }, session));
+  const resource = (await message(read)).result.contents[0];
+  assert.equal(resource.mimeType, 'text/html;profile=mcp-app');
+  assert.deepEqual(resource._meta['openai/ui'].availableDisplayModes, ['inline', 'fullscreen']);
+  assert.match(resource.text, /ui\/initialize/);
+  assert.match(resource.text, /tools\/call/);
+  assert.match(resource.text, /TurtlePen Studio/);
+
+  const opened = await handlers.POST(rpcRequest({
+    jsonrpc: '2.0', id: 4, method: 'tools/call', params: { name: 'open_studio', arguments: {} },
+  }, session));
+  const studio = (await message(opened)).result.structuredContent;
+  assert.equal(studio.tool, 'open_studio');
+  assert.equal(studio.result.hasDocument, false);
+  assert.equal(studio.result.history.undo, 0);
 });
 
 test('the Cloudflare adapter refuses bad content negotiation before touching storage', async () => {
