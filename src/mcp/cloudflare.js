@@ -20,8 +20,15 @@ import {
 import {
   createSession,
   createTools,
-  structuredToolOutput
+  structuredToolOutput,
+  toolOutputSchema
 } from "./tools.js";
+import {
+  createStudioTool,
+  STUDIO_RESOURCE,
+  STUDIO_RESOURCE_CONTENT,
+  STUDIO_URI
+} from "./studio.js";
 const dynamic = "force-dynamic";
 const MiB = 1024 * 1024;
 const BODY_LIMIT = 12 * MiB;
@@ -385,6 +392,9 @@ ${JSON.stringify({
 }
 async function invoke(message, session, root) {
   const tools = createTools(session);
+  const studioTool = createStudioTool(session, root);
+  studioTool.outputSchema = toolOutputSchema(studioTool.name);
+  tools.push(studioTool);
   const byName = new Map(tools.map((tool) => [tool.name, tool]));
   const id = message.id ?? null;
   const params = message.params ?? {};
@@ -397,7 +407,10 @@ async function invoke(message, session, root) {
         id,
         result: {
           protocolVersion,
-          capabilities: { tools: { listChanged: false } },
+          capabilities: {
+            tools: { listChanged: false },
+            resources: { listChanged: false }
+          },
           serverInfo: SERVER_INFO,
           instructions: buildInstructions(tools)
         }
@@ -405,6 +418,13 @@ async function invoke(message, session, root) {
     }
     case "ping":
       return { jsonrpc: "2.0", id, result: {} };
+    case "resources/list":
+      return { jsonrpc: "2.0", id, result: { resources: [STUDIO_RESOURCE] } };
+    case "resources/read": {
+      const uri = typeof params.uri === "string" ? params.uri : "";
+      if (uri !== STUDIO_URI) return errorPayload(id, -32602, `unknown resource "${uri}"`);
+      return { jsonrpc: "2.0", id, result: { contents: [STUDIO_RESOURCE_CONTENT] } };
+    }
     case "tools/list":
       return {
         jsonrpc: "2.0",
@@ -415,7 +435,8 @@ async function invoke(message, session, root) {
             description: tool.description,
             inputSchema: tool.inputSchema,
             outputSchema: tool.outputSchema,
-            annotations: tool.annotations
+            annotations: tool.annotations,
+            _meta: tool._meta
           }))
         }
       };
